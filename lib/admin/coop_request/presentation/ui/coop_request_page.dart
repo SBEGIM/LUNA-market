@@ -37,15 +37,16 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
               color: Colors.black,
             ),
           )),
-      body: Column(
+      body: ListView(
         children: [
           const SizedBox(
             height: 10,
           ),
           Container(
             padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
+              shrinkWrap: true,
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
                   'Укажите данные Вашего бизнеса',
@@ -98,6 +99,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     )),
+                    SizedBox(height: 50,)
                   ],
                 ),
               ],
@@ -111,10 +113,10 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
             const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
         child: InkWell(
           onTap: () {
-              Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AuthAdminPage()),
-                  );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AuthAdminPage()),
+            );
             // Navigator.pop(context);
           },
           child: Container(
