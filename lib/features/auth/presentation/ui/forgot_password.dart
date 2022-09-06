@@ -90,6 +90,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   bottom: MediaQuery.of(context).viewInsets.bottom * 0.001,
                 ),
                 child: DefaultButton(
+                  backgroundColor: AppColors.kPrimaryColor,
                     text: 'Отправить код',
                     press: () {
                       showModalBottomSheet(

@@ -78,11 +78,11 @@ class StocksCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) =>  BonusPage()),
-  );
+          context,
+          MaterialPageRoute(builder: (context) => BonusPage()),
+        );
       },
       child: Center(
         child: Container(
@@ -91,11 +91,45 @@ class StocksCardWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(
-                'assets/images/stocks.png',
+              Stack(
+                children: [
+                  Image.asset(
+                    'assets/images/stocks.png',
+                  ),
+                  const Padding(
+                    padding:  EdgeInsets.only(left: 12.0, top: 12),
+                    child: Text(
+                      'Продукты',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Padding(
+                    padding:  const EdgeInsets.only(left: 12.0, top: 50),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(4)),
+                      child: const Padding(
+                        padding:   EdgeInsets.only(
+                            left: 8.0, right: 8, top: 4, bottom: 4),
+                        child:  Text(
+                          '5% Б',
+                          style:  TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(
+                    left: 8.0, right: 8, bottom: 16, top: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [

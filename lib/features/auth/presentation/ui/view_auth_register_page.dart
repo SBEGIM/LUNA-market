@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/app/widgets/custom_switch_button.dart';
@@ -20,7 +21,6 @@ class _ViewAuthRegisterPageState extends State<ViewAuthRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -67,6 +67,9 @@ class _ViewAuthRegisterPageState extends State<ViewAuthRegisterPage> {
                         'Вход',
                         style: TextStyle(
                           fontSize: 15,
+                          fontWeight: segmentValue == 0
+                              ? FontWeight.w700
+                              : FontWeight.w500,
                           color: segmentValue == 0
                               ? Colors.black
                               : const Color(0xff9B9B9B),
@@ -83,6 +86,9 @@ class _ViewAuthRegisterPageState extends State<ViewAuthRegisterPage> {
                       child: Text(
                         'Регистрация',
                         style: TextStyle(
+                          fontWeight: segmentValue == 1
+                              ? FontWeight.w700
+                              : FontWeight.w500,
                           fontSize: 14,
                           color: segmentValue == 1
                               ? Colors.black
@@ -105,9 +111,10 @@ class _ViewAuthRegisterPageState extends State<ViewAuthRegisterPage> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 22.0),
-            child: CustomDropButton(
-              onTap: () {},
-            ),
+            child: SvgPicture.asset('assets/icons/cancel.svg'),
+            // child: Ico(
+            //   onTap: () {},
+            // ),
           ),
         ],
       ),
@@ -115,9 +122,9 @@ class _ViewAuthRegisterPageState extends State<ViewAuthRegisterPage> {
         color: AppColors.kBackgroundColor,
         child: IndexedStack(
           index: segmentValue,
-          children:const [
-             AuthPage(),
-             RegisterPage(),
+          children: const [
+            AuthPage(),
+            RegisterPage(),
             // ViewRegisterPage(),
             // AuthPage(),
           ],

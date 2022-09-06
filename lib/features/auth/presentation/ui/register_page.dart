@@ -14,130 +14,185 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final maskFormatter = MaskTextInputFormatter(mask: '+#(###)-###-##-##');
+  bool isChecked = false;
+  bool isButtonEnabled = false;
+  TextEditingController nameControllerRegister = TextEditingController();
+  TextEditingController phoneControllerRegister = TextEditingController();
+  TextEditingController passwordControllerRegister = TextEditingController();
+  TextEditingController repePasswordControllerRegister =
+      TextEditingController();
+  setIsButtonEnabled(bool value) {
+    // log("is button state changed $value");
+    isButtonEnabled = value;
+    setState(() {});
+  }
+  FocusNode myFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 45),
-      child: ListView(
+      child: Column(
         children: [
-          Column(
-            children: [
-              Container(
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: SvgPicture.asset(
-                        'assets/icons/user.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      title: const TextField(
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Имя и фамилия',
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            // borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                      ),
-                      // trailing: SvgPicture.asset(
-                      //   'assets/icons/delete_circle.svg',
-                      //   height: 24,
-                      //   width: 24,
-                      // ),
-                    ),
-                    ListTile(
-                      leading: SvgPicture.asset(
-                        'assets/icons/phone.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      title: TextField(
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [maskFormatter],
-                        // controller: phoneControllerAuth,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: '+7(777) 777-71-18',
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            // borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                      ),
-                      trailing: SvgPicture.asset(
-                        'assets/icons/delete_circle.svg',
-                        height: 24,
-                        width: 24,
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(8)),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: SvgPicture.asset(
+                    'assets/icons/user.svg',
+                    height: 24,
+                    width: 24,
+                  ),
+                  title: TextField(
+                    focusNode: myFocusNode,
+                    controller: nameControllerRegister,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Имя и фамилия',
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        // borderRadius: BorderRadius.circular(3),
                       ),
                     ),
-                    ListTile(
-                      leading: SvgPicture.asset(
-                        'assets/icons/password.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      title: const TextField(
-                        keyboardType: TextInputType.phone,
-                        // inputFormatters: [maskFormatter],
-                        // controller: phoneControllerAuth,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: ' Пароль',
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            // borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: SvgPicture.asset(
-                        'assets/icons/password.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      title: const TextField(
-                        keyboardType: TextInputType.phone,
-                        // inputFormatters: [maskFormatter],
-                        // controller: phoneControllerAuth,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Подтвердите пароль',
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            // borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                    onChanged: (value) {
+                      if (nameControllerRegister.text.isNotEmpty) {
+                        setIsButtonEnabled(true);
+                      } else {
+                        setIsButtonEnabled(false);
+                      }
+                    },
+                  ),
+                  // trailing: SvgPicture.asset(
+                  //   'assets/icons/delete_circle.svg',
+                  //   height: 24,
+                  //   width: 24,
+                  // ),
                 ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              const Center(
-                child: Text(
-                  textAlign: TextAlign.center,
-                  '*Регистрируясь, вы соглашаетесь с пользовательским соглашением',
-                  style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400),
+                ListTile(
+                  leading: SvgPicture.asset(
+                    'assets/icons/phone.svg',
+                    height: 24,
+                    width: 24,
+                  ),
+                  title: TextField(
+                    focusNode: myFocusNode,
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: [maskFormatter],
+                    controller: phoneControllerRegister,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Номер телефона',
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        // borderRadius: BorderRadius.circular(3),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      if (phoneControllerRegister.text.length == 17) {
+                        setIsButtonEnabled(true);
+                      } else {
+                        setIsButtonEnabled(false);
+                      }
+                    },
+                  ),
+                  trailing: SvgPicture.asset(
+                    'assets/icons/delete_circle.svg',
+                  ),
                 ),
-              )
-            ],
+                ListTile(
+                  leading: SvgPicture.asset(
+                    'assets/icons/password.svg',
+                    height: 24,
+                    width: 24,
+                  ),
+                  title: TextField(
+                    // inputFormatters: [maskFormatter],
+                    controller: passwordControllerRegister,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Пароль',
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        // borderRadius: BorderRadius.circular(3),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      if (passwordControllerRegister.text.isNotEmpty) {
+                        setIsButtonEnabled(true);
+                      } else {
+                        setIsButtonEnabled(false);
+                      }
+                    },
+                  ),
+                ),
+                ListTile(
+                  leading: SvgPicture.asset(
+                    'assets/icons/password.svg',
+                    height: 24,
+                    width: 24,
+                  ),
+                  title: TextField(
+                    // inputFormatters: [maskFormatter],
+                    controller: repePasswordControllerRegister,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Подтвердите пароль',
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        // borderRadius: BorderRadius.circular(3),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      if (passwordControllerRegister.text ==
+                          repePasswordControllerRegister.text) {
+                        setIsButtonEnabled(true);
+                      } else {
+                        setIsButtonEnabled(false);
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Center(
+            child: Row(
+              children: [
+                Checkbox(
+                  checkColor: Colors.white,
+                  // fillColor: MaterialStateProperty.resolveWith(Colors.),
+                  value: isChecked,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      isChecked = value!;
+                    });
+                  },
+                ),
+                const Flexible(
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    'Регистрируясь, вы соглашаетесь с пользовательским соглашением',
+                    style: TextStyle(
+                        color: AppColors.kGray900,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ),
+              ],
+            ),
           ),
           const Spacer(),
           Padding(
             padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
+              bottom: MediaQuery.of(context).viewInsets.bottom * 0.001,
             ),
             child: DefaultButton(
+backgroundColor: isButtonEnabled? AppColors.kPrimaryColor: const Color(0xFFD6D8DB),
                 text: 'Зарегистрироваться',
                 press: () {
                   Navigator.push(
@@ -150,6 +205,8 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ],
       ),
+
+      // SizedBox(height: 20,),
     );
   }
 }

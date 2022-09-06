@@ -115,6 +115,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   bottom: MediaQuery.of(context).viewInsets.bottom * 0.001,
                 ),
                 child: DefaultButton(
+                  backgroundColor: AppColors.kPrimaryColor,
                     text: 'Изменить пароль',
                     press: () {
                        Navigator.push(

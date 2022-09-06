@@ -39,73 +39,81 @@ class _NotificationPageState extends State<NotificationPage> {
             height: 10,
           ),
           Container(
-            padding: const EdgeInsets.all(16),
             color: Colors.white,
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children:const [
-                    Text(
-                      'Транзакции',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppColors.kPrimaryColor,
-                    )
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16, right: 16, top: 12, bottom: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        'Транзакции',
+                        style: TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: AppColors.kPrimaryColor,
+                        size: 18,
+                      )
+                    ],
+                  ),
                 ),
                 const Divider(
                   color: AppColors.kGray400,
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const[
-                    Text(
-                      'Бонусы',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppColors.kPrimaryColor,
-                    )
-                  ],
-                ),
-                const Divider(
-                  color: AppColors.kGray400,
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children:const [
-                    Text(
-                      'Акции',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppColors.kPrimaryColor,
-                    )
-                  ],
+
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16, right: 16, top: 12, bottom: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        'Бонусы',
+                        style: TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: AppColors.kPrimaryColor,
+                        size: 18,
+                      )
+                    ],
+                  ),
                 ),
                 const Divider(
                   color: AppColors.kGray400,
                 ),
+
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16, right: 16, top: 12, bottom: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        'Акции',
+                        style: TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: AppColors.kPrimaryColor,
+                        size: 18,
+                      )
+                    ],
+                  ),
+                ),
+
                 // SizedBox(height: 8,),
               ],
             ),

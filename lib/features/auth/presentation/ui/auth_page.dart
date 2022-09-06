@@ -14,7 +14,17 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+  bool isButtonEnabled = false;
+
+  setIsButtonEnabled(bool value) {
+    // log("is button state changed $value");
+    isButtonEnabled = value;
+    setState(() {});
+  }
+
   final maskFormatter = MaskTextInputFormatter(mask: '+#(###)-###-##-##');
+  TextEditingController phoneControllerAuth = TextEditingController();
+  TextEditingController passwordControllerAuth = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +35,9 @@ class _AuthPageState extends State<AuthPage> {
           Column(
             children: [
               Container(
-                color: Colors.white,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8)),
                 child: Column(
                   children: [
                     ListTile(
@@ -37,10 +49,17 @@ class _AuthPageState extends State<AuthPage> {
                       title: TextField(
                         keyboardType: TextInputType.phone,
                         inputFormatters: [maskFormatter],
-                        // controller: phoneControllerAuth,
+                        controller: phoneControllerAuth,
+                        onChanged: (value) {
+                          if (phoneControllerAuth.text.length == 17) {
+                            setIsButtonEnabled(true);
+                          } else {
+                            setIsButtonEnabled(false);
+                          }
+                        },
                         decoration: const InputDecoration(
                           border: InputBorder.none,
-                          hintText: '+7(777) 777-71-18',
+                          hintText: 'Номер телефона',
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                             // borderRadius: BorderRadius.circular(3),
@@ -49,8 +68,6 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                       trailing: SvgPicture.asset(
                         'assets/icons/delete_circle.svg',
-                        height: 24,
-                        width: 24,
                       ),
                     ),
                     ListTile(
@@ -59,11 +76,18 @@ class _AuthPageState extends State<AuthPage> {
                         height: 24,
                         width: 24,
                       ),
-                      title: const TextField(
+                      title:  TextField(
                         keyboardType: TextInputType.phone,
                         // inputFormatters: [maskFormatter],
-                        // controller: phoneControllerAuth,
-                        decoration: InputDecoration(
+                        controller: passwordControllerAuth,
+                        onChanged: (value) {
+                          if (passwordControllerAuth.text.isNotEmpty) {
+                            setIsButtonEnabled(true);
+                          } else {
+                            setIsButtonEnabled(false);
+                          }
+                        },
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Введите пароль',
                           enabledBorder: UnderlineInputBorder(
@@ -80,11 +104,12 @@ class _AuthPageState extends State<AuthPage> {
                 height: 16,
               ),
               InkWell(
-                onTap: (){
-                   Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const ForgotPasswordPage()),
-  );
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ForgotPasswordPage()),
+                  );
                 },
                 child: const Center(
                   child: Text(
@@ -104,12 +129,16 @@ class _AuthPageState extends State<AuthPage> {
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
             child: DefaultButton(
-                text: 'Войти', press: () {
-                     Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const HomePage()),
-  );
-                }, color: Colors.white, width: 343),
+              backgroundColor: isButtonEnabled? AppColors.kPrimaryColor: const Color(0xFFD6D8DB),
+                text: 'Войти',
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
+                },
+                color: Colors.white,
+                width: 343),
           ),
         ],
       ),

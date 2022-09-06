@@ -38,6 +38,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
             ),
           )),
       body: ListView(
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           const SizedBox(
             height: 10,
@@ -99,7 +100,9 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     )),
-                    SizedBox(height: 50,)
+                    SizedBox(
+                      height: 50,
+                    )
                   ],
                 ),
               ],

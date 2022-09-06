@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/presentation/ui/drawer_home.dart';
 import 'package:haji_market/features/home/presentation/widgets/banner_watceh_recently_widget.dart';
@@ -33,27 +34,27 @@ class _HomePageState extends State<HomePage> {
           MaterialPageRoute(builder: (context) => StocksPage()),
         );
       },
-      icon: 'assets/icons/phone.svg',
+      icon: 'assets/icons/cat2.svg',
     ),
     GridLayoutCategory(
       title: 'Cмартфоны',
-      icon: 'assets/icons/phone.svg',
+      icon: 'assets/icons/cat1.svg',
     ),
     GridLayoutCategory(
       title: 'Аптека',
-      icon: 'assets/icons/phone.svg',
+      icon: 'assets/icons/cat2.svg',
     ),
     GridLayoutCategory(
       title: 'Скидки',
-      icon: 'assets/icons/phone.svg',
+      icon: 'assets/icons/cat4.svg',
     ),
     GridLayoutCategory(
       title: 'Игрушки',
-      icon: 'assets/icons/phone.svg',
+      icon: 'assets/icons/cat3.svg',
     ),
     GridLayoutCategory(
       title: 'Cмартфоны',
-      icon: 'assets/icons/phone.svg',
+      icon: 'assets/icons/cat1.svg',
       // ontap1: () {},
     ),
   ];
@@ -71,17 +72,17 @@ class _HomePageState extends State<HomePage> {
         //   Icons.menu,
         //   color: AppColors.kPrimaryColor,
         // ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 22.0),
-            child: Icon(
-              Icons.search,
-            ),
-          )
+              padding: const EdgeInsets.only(right: 22.0),
+              child: SvgPicture.asset('assets/icons/search.svg'))
         ],
-        title: const Text(
-          'HAJI-MARKET',
-          style: AppTextStyles.appBarTextStylea,
+        title: Transform(
+          transform: Matrix4.translationValues(-50, 0, 0),
+          child: const Text(
+            'HAJI-MARKET',
+            style: AppTextStyles.appBarTextStylea,
+          ),
         ),
       ),
       body: ListView(
@@ -104,16 +105,17 @@ class _HomePageState extends State<HomePage> {
           Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 16.0, top: 16, bottom: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Категории',
-                    style: AppTextStyles.appBarTextStylea,
-                  ),
+                  const Text('Категории',
+                      style: TextStyle(
+                          color: AppColors.kGray900,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700)),
                   const SizedBox(
-                    height: 9,
+                    height: 16,
                   ),
                   GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
@@ -122,8 +124,8 @@ class _HomePageState extends State<HomePage> {
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
                               childAspectRatio: 2 / 2,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10),
+                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 16),
                       itemCount: myProducts.length,
                       itemBuilder: (BuildContext ctx, index) {
                         return GridOptionsCategory(
@@ -140,16 +142,19 @@ class _HomePageState extends State<HomePage> {
           Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Категории',
-                    style: AppTextStyles.appBarTextStylea,
+                    'Популярное',
+                    style: TextStyle(
+                        color: AppColors.kGray900,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(
-                    height: 9,
+                    height: 16,
                   ),
                   GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
@@ -167,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       }),
                   const SizedBox(
-                    height: 12,
+                    height: 24,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -179,11 +184,12 @@ class _HomePageState extends State<HomePage> {
                       Icon(
                         Icons.arrow_forward_ios,
                         color: AppColors.kPrimaryColor,
+                        size: 16,
                       )
                     ],
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 4,
                   ),
                 ],
               ),
@@ -195,16 +201,19 @@ class _HomePageState extends State<HomePage> {
           Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Популярные магазины',
-                    style: AppTextStyles.appBarTextStylea,
+                    style: TextStyle(
+                        color: AppColors.kGray900,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(
-                    height: 9,
+                    height: 16,
                   ),
                   GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
@@ -234,11 +243,12 @@ class _HomePageState extends State<HomePage> {
                       Icon(
                         Icons.arrow_forward_ios,
                         color: AppColors.kPrimaryColor,
+                        size: 16,
                       )
                     ],
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 4,
                   ),
                 ],
               ),
@@ -250,16 +260,19 @@ class _HomePageState extends State<HomePage> {
           Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Вы недавно смотрели',
-                    style: AppTextStyles.appBarTextStylea,
+                    style: TextStyle(
+                        color: AppColors.kGray900,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(
-                    height: 9,
+                    height: 16,
                   ),
                   SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -282,7 +295,7 @@ class _HomePageState extends State<HomePage> {
           Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -314,51 +327,54 @@ class _HomePageState extends State<HomePage> {
           Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
                   Text(
                     'Партнерам',
-                    style: AppTextStyles.appBarTextStylea,
+                    style: TextStyle(
+                        color: AppColors.kGray900,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
                   ),
                   SizedBox(
-                    height: 9,
+                    height: 20,
                   ),
                   Text(
                     'Кабинет продавца',
-                    style: AppTextStyles.kcolorPrimaryTextStyle,
+                    style: AppTextStyles.kcolorPartnerTextStyle,
                   ),
                   SizedBox(
-                    height: 9,
+                    height: 12,
                   ),
                   Text(
                     'Начать продавать с «»',
-                    style: AppTextStyles.kcolorPrimaryTextStyle,
+                    style: AppTextStyles.kcolorPartnerTextStyle,
                   ),
                   SizedBox(
-                    height: 9,
+                    height: 12,
                   ),
                   Text(
                     'Договор присоединения',
-                    style: AppTextStyles.kcolorPrimaryTextStyle,
+                    style: AppTextStyles.kcolorPartnerTextStyle,
                   ),
                   SizedBox(
-                    height: 9,
+                    height: 12,
                   ),
                   Text(
                     'Договор по оказанию услуги доставки',
-                    style: AppTextStyles.kcolorPrimaryTextStyle,
+                    style: AppTextStyles.kcolorPartnerTextStyle,
                   ),
                   SizedBox(
-                    height: 9,
-                  ),
-                  SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                 ],
               ),
             ),
+          ),
+          const SizedBox(
+            height: 12,
           ),
         ],
       ),
@@ -374,7 +390,7 @@ class BannerImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 16.0, left: 16, bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -391,5 +407,3 @@ class BannerImage extends StatelessWidget {
     );
   }
 }
-
-

@@ -109,6 +109,7 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
               bottom: MediaQuery.of(context).viewInsets.bottom * 0.01,
             ),
             child: DefaultButton(
+              backgroundColor: AppColors.kPrimaryColor,
                 text: 'Войти',
                 press: () {
                   Navigator.push(

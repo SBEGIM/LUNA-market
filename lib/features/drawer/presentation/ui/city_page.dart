@@ -11,6 +11,8 @@ class CityPage extends StatefulWidget {
 }
 
 class _CityPageState extends State<CityPage> {
+  int _selectedIndex = -1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,25 +34,53 @@ class _CityPageState extends State<CityPage> {
         ),
         elevation: 0,
       ),
-      body: Column(
+      body: ListView(
+        shrinkWrap: true,
         children: [
-          const SizedBox(
-            height: 20,
+          Container(
+            padding: const EdgeInsets.all(16),
+            height: 50,
+            child: const Text(
+              'A',
+              style:  TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.kGray900),
+            ),
           ),
           Container(
             color: Colors.white,
             child: ListView.separated(
                 shrinkWrap: true,
-                separatorBuilder: (BuildContext context, int index) => const Divider(),
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: 5,
                 itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                      leading: const Text('Аксай',style: TextStyle(color: AppColors.kGray900,fontSize: 16,fontWeight: FontWeight.w400),),
-                      trailing:
-                          SvgPicture.asset('assets/icons/check_circle.svg')
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        // устанавливаем индекс выделенного элемента
+                        _selectedIndex = index;
+                      });
+                    },
+                    child: ListTile(
+                      selected: index == _selectedIndex,
+                      leading: const Text(
+                        'Аксай',
+                        style: TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+
+                      trailing: _selectedIndex == index
+                          ? SvgPicture.asset('assets/icons/check_circle.svg')
+                          : const SizedBox(),
+
                       // title: Text("List item $index"));
-                      );
+                    ),
+                  );
                 }),
           )
         ],

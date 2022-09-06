@@ -24,20 +24,27 @@ class GridOptionsCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: layout.onTap,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        elevation: 0,
-        color: AppColors.kBackgroundColor,
+      child: Container(
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.circular(15.0),
+        // ),
+        // elevation: 0,
+        height: 80,
+        decoration: BoxDecoration(
+            color: AppColors.kBackgroundColor,
+            borderRadius: BorderRadius.circular(10)),
+
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.min,
             children: [
               SvgPicture.asset(
                 layout.icon!,
                 color: AppColors.kPrimaryColor,
                 // size: 30,
+              ),
+              const SizedBox(
+                height: 13,
               ),
               Text(layout.title!, style: AppTextStyles.categoryTextStyle),
             ],

@@ -124,6 +124,7 @@ class _NewBankCardPageState extends State<NewBankCardPage> {
                   height: 20,
                 ),
                 DefaultButton(
+                  backgroundColor: AppColors.kPrimaryColor,
                     text: 'Добавить',
                     press: () {},
                     color: Colors.white,

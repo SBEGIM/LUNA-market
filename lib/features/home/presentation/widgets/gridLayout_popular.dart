@@ -50,7 +50,12 @@ class GridOptionsPopular extends StatelessWidget {
             layout!.icon!,
           ),
         ),
-        Text(layout!.title!, style: AppTextStyles.categoryTextStyle),
+        const SizedBox(
+          height: 8,
+        ),
+        Flexible(
+            child:
+                Text(layout!.title!, style: AppTextStyles.categoryTextStyle)),
       ],
     );
   }

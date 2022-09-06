@@ -53,7 +53,6 @@ mixin AppColors {
   static const Color kReviewBg = Color(0xffF7F7FC);
 }
 
-
 mixin AppTextStyles {
   static const appBarTextStyle = TextStyle(
     fontSize: 17,
@@ -61,29 +60,34 @@ mixin AppTextStyles {
     fontWeight: FontWeight.w500,
   );
   static const catalogTextStyle = TextStyle(
+    fontSize: 16,
+    color: AppColors.kGray900,
+    fontWeight: FontWeight.w400,
+  );
+  static const chanheLangTextStyle = TextStyle(
     fontSize: 17,
     color: AppColors.kGray900,
     fontWeight: FontWeight.w500,
   );
-   static const chanheLangTextStyle = TextStyle(
-    fontSize: 17,
-    color: AppColors.kGray900,
-    fontWeight: FontWeight.w500,
-  );
-   static const drawer1TextStyle = TextStyle(
+  static const drawer1TextStyle = TextStyle(
     fontSize: 16,
     color: Colors.white,
     fontWeight: FontWeight.w500,
   );
-   static const drawer2TextStyle = TextStyle(
-    fontSize: 18,
+  static const drawer2TextStyle = TextStyle(
+    fontSize: 16,
     color: AppColors.kGray900,
     fontWeight: FontWeight.w400,
   );
-   static const kcolorPrimaryTextStyle = TextStyle(
-    fontSize: 15,
+  static const kcolorPrimaryTextStyle = TextStyle(
+    fontSize: 14,
     color: AppColors.kPrimaryColor,
     fontWeight: FontWeight.w500,
+  );
+    static const kcolorPartnerTextStyle = TextStyle(
+    fontSize: 16,
+    color: AppColors.kPrimaryColor,
+    fontWeight: FontWeight.w400,
   );
 
   static const categoryTextStyle = TextStyle(
@@ -91,17 +95,17 @@ mixin AppTextStyles {
     color: AppColors.kGray900,
     fontWeight: FontWeight.w500,
   );
-   static const bannerTextStyle = TextStyle(
-    fontSize: 15,
+  static const bannerTextStyle = TextStyle(
+    fontSize: 12,
     color: AppColors.kGray300,
     fontWeight: FontWeight.w400,
   );
-   static const appBarTextStylea = TextStyle(
+  static const appBarTextStylea = TextStyle(
     fontSize: 20,
-    color: AppColors.kLightBlackColor,
+    color: AppColors.kGray900,
     fontWeight: FontWeight.w700,
   );
-  
+
   static const defButtonTextStyle = TextStyle(
     fontSize: 17,
     color: Colors.white,
@@ -113,7 +117,7 @@ mixin AppTextStyles {
     color: Color(0xFFAAAEB3),
     fontWeight: FontWeight.w500,
   );
-    static const kGray400Text = TextStyle(
+  static const kGray400Text = TextStyle(
     fontSize: 17,
     color: AppColors.kGray400,
     fontWeight: FontWeight.w500,

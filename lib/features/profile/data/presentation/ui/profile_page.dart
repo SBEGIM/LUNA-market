@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/profile/data/presentation/ui/my_bank_card_page.dart';
 
@@ -14,6 +16,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -25,14 +28,10 @@ class _ProfilePageState extends State<ProfilePage> {
               fontWeight: FontWeight.w500),
         ),
         elevation: 0,
-        actions: const [
+        actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Icon(
-              Icons.notifications_active,
-              color: AppColors.kPrimaryColor,
-            ),
-          )
+              padding: const EdgeInsets.only(right: 16.0),
+              child: SvgPicture.asset('assets/icons/notification.svg'))
         ],
       ),
       body: Column(
@@ -41,13 +40,22 @@ class _ProfilePageState extends State<ProfilePage> {
           const SizedBox(
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.all(1.0),
-            child: Container(
+          SizedBox(
+            height: 98,
+            child: Center(
               child: ListTile(
+                horizontalTitleGap: 12,
                 leading: CircleAvatar(
-                    radius: 30,
-                    child: Image.asset('assets/images/wireles.png')),
+                  backgroundImage: const AssetImage('assets/images/kana.png'),
+                  radius: 34,
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: SvgPicture.asset(
+                      'assets/icons/camera.svg',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
                 title: const Text(
                   'Маржан Жумадилова',
                   style: TextStyle(
@@ -55,12 +63,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       fontSize: 17,
                       fontWeight: FontWeight.w700),
                 ),
-                subtitle: const Text(
-                  'Алматы',
-                  style: TextStyle(
-                      color: AppColors.kGray400,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14),
+                subtitle: const Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    'Алматы',
+                    style: TextStyle(
+                        color: AppColors.kGray400,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14),
+                  ),
                 ),
               ),
             ),
@@ -70,10 +81,10 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     left: 16,
                     right: 16,
-                    top: 6,
+                    top: 10.5,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,16 +96,19 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
                       ),
-                      Switch(
-                        value: isSwitched,
-                        onChanged: (value) {
-                          setState(() {
-                            isSwitched = value;
-                            // print(isSwitched);
-                          });
-                        },
-                        activeTrackColor: AppColors.kPrimaryColor,
-                        activeColor: Colors.white,
+                      Transform.scale(
+                        scale: 0.8,
+                        child: CupertinoSwitch(
+                          value: isSwitched,
+                          onChanged: (value) {
+                            setState(() {
+                              isSwitched = value;
+                              // print(isSwitched);
+                            });
+                          },
+                          trackColor: AppColors.kPrimaryColor,
+                          activeColor: Colors.grey.shade200,
+                        ),
                       ),
                     ],
                   ),
@@ -103,11 +117,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: AppColors.kGray400,
                 ),
                 Container(
-                  padding: EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    top: 6,
-                  ),
+                  padding: const EdgeInsets.only(
+                      left: 16, right: 16, top: 14, bottom: 14),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -132,6 +143,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       const Icon(
                         Icons.arrow_forward_ios,
+                        size: 20,
+                        color: AppColors.kGray300,
                       )
                     ],
                   ),
@@ -141,10 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Container(
                   padding: const EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    top: 6,
-                  ),
+                      left: 16, right: 16, top: 10, bottom: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -162,6 +172,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       const Icon(
                         Icons.arrow_forward_ios,
+                        size: 20,
+                        color: AppColors.kGray300,
                       )
                     ],
                   ),
@@ -173,7 +185,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.only(
                     left: 16,
                     right: 16,
-                    top: 6,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -185,16 +196,19 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
                       ),
-                      Switch(
-                        value: isSwitched,
-                        onChanged: (value) {
-                          setState(() {
-                            isSwitched = value;
-                            // print(isSwitched);
-                          });
-                        },
-                        activeTrackColor: AppColors.kPrimaryColor,
-                        activeColor: Colors.white,
+                      Transform.scale(
+                        scale: 0.8,
+                        child: CupertinoSwitch(
+                          value: isSwitched,
+                          onChanged: (value) {
+                            setState(() {
+                              isSwitched = value;
+                              // print(isSwitched);
+                            });
+                          },
+                          trackColor: AppColors.kPrimaryColor,
+                          activeColor: Colors.grey.shade200,
+                        ),
                       ),
                     ],
                   ),
@@ -204,10 +218,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Container(
                   padding: const EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    top: 6,
-                  ),
+                      left: 16, right: 16, top: 10, bottom: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -225,6 +236,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       const Icon(
                         Icons.arrow_forward_ios,
+                        size: 20,
+                        color: AppColors.kGray300,
                       )
                     ],
                   ),
@@ -233,18 +246,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: AppColors.kGray400,
                 ),
                 InkWell(
-                  onTap: (){
-                     Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MyBankCardPage()),
-                  );
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MyBankCardPage()),
+                    );
                   },
                   child: Container(
                     padding: const EdgeInsets.only(
-                      left: 16,
-                      right: 16,
-                      top: 6,
-                    ),
+                        left: 16, right: 16, top: 10, bottom: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -262,6 +273,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         const Icon(
                           Icons.arrow_forward_ios,
+                          size: 20,
+                          color: AppColors.kGray300,
                         )
                       ],
                     ),
@@ -272,10 +285,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Container(
                   padding: const EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    top: 6,
-                  ),
+                      left: 16, right: 16, top: 10, bottom: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -291,8 +301,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ],
                       ),
-                      Text(
-                        'Мои бонусы',
+                      const Text(
+                        '987 ₸ ',
                         style: TextStyle(
                             color: AppColors.kGray300,
                             fontSize: 12,
@@ -306,10 +316,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Container(
                   padding: const EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    top: 6,
-                  ),
+                      left: 16, right: 16, top: 10, bottom: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -327,6 +334,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       const Icon(
                         Icons.arrow_forward_ios,
+                        size: 20,
+                        color: AppColors.kGray300,
                       )
                     ],
                   ),

@@ -37,37 +37,35 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8)),
-                height: MediaQuery.of(context).size.height * 0.242,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 12.0, right: 12, top: 8, bottom: 8),
-                  child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: 4,
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                          onTap: () {
-                            setState(() {
-                              // устанавливаем индекс выделенного элемента
-                              _selectedIndex = index;
-                            });
-                          },
-                          child: ListTile(
-                            selected: index == _selectedIndex,
-                            leading: SvgPicture.asset('assets/temp/kaz.svg'),
-                            title: const Text(
-                              'Қазақстан',
-                              style: AppTextStyles.appBarTextStyle,
-                            ),
-                            trailing: _selectedIndex == index
-                                ? SvgPicture.asset(
-                                    'assets/icons/done.svg',
-                                  )
-                                : const SizedBox(),
-                          ));
-                    },
-                  ),
+                // height: MediaQuery.of(context).size.height * 0.242,
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: 4,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                        onTap: () {
+                          setState(() {
+                            // устанавливаем индекс выделенного элемента
+                            _selectedIndex = index;
+                          });
+                        },
+                        child: ListTile(
+                          minLeadingWidth: 8,
+
+                          selected: index == _selectedIndex,
+                          leading: SvgPicture.asset('assets/temp/kaz.svg'),
+                          title: const Text(
+                            'Қазақстан',
+                            style: AppTextStyles.appBarTextStyle,
+                          ),
+                          trailing: _selectedIndex == index
+                              ? SvgPicture.asset(
+                                  'assets/icons/done.svg',
+                                )
+                              : const SizedBox(),
+                        ));
+                  },
                 ),
               ),
             ),
@@ -76,12 +74,14 @@ class _SelectCountryPageState extends State<SelectCountryPage> {
               height: MediaQuery.of(context).size.height * 0.124,
               child: Center(
                   child: DefaultButton(
+                    backgroundColor: AppColors.kPrimaryColor,
                 text: 'Готово',
                 press: () {
-                    Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const ViewAuthRegisterPage()),
-  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ViewAuthRegisterPage()),
+                  );
                 },
                 color: Colors.white,
                 width: 343,

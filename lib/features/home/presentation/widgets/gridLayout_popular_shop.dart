@@ -50,6 +50,9 @@ class GridOptionsPopularShop extends StatelessWidget {
             layout!.icon!,
           ),
         ),
+        const SizedBox(
+          height: 8,
+        ),
         Text(layout!.title!, style: AppTextStyles.categoryTextStyle),
       ],
     );

@@ -490,52 +490,65 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             height: 10,
           ),
           Container(
-            padding: const EdgeInsets.all(16),
+            // padding: const EdgeInsets.all(16),
             color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Характеристики',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                const Text(
-                  'Назначение: Обычные\nТип конструкции: Полноразмерные\nТип крепления: С оголовьем\nЧастотный диапазон, Гц-кГц: 20 - 20\nИмпеданс, Ом: 32\nТип подключения: Беспроводное',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Характеристики',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Text(
+                        'Назначение: Обычные\nТип конструкции: Полноразмерные\nТип крепления: С оголовьем\nЧастотный диапазон, Гц-кГц: 20 - 20\nИмпеданс, Ом: 32\nТип подключения: Беспроводное',
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
                 ),
                 const Divider(
                   color: AppColors.kGray400,
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SpecificationsPage()),
-                    );
-                    // SpecificationsPage
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Подробнее',
-                        style: TextStyle(
-                            color: AppColors.kPrimaryColor,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: AppColors.kPrimaryColor,
-                      )
-                    ],
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SpecificationsPage()),
+                      );
+                      // SpecificationsPage
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text(
+                          'Подробнее',
+                          style: TextStyle(
+                              color: AppColors.kPrimaryColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppColors.kPrimaryColor,
+                          size: 16,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -570,13 +583,17 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             ),
                         ],
                       ),
-                      const Icon(Icons.arrow_forward_ios)
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                        color: AppColors.kGray400,
+                      )
                     ],
                   );
                 },
               )),
           const SizedBox(
-            height: 10,
+            height: 8,
           ),
           Container(
             padding: const EdgeInsets.all(16),
@@ -592,7 +609,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(
-                  height: 9,
+                  height: 20,
                 ),
                 SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -622,7 +639,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(
-                  height: 9,
+                  height: 20,
                 ),
                 SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -635,32 +652,37 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               ],
             ),
           ),
+          const SizedBox(
+            height: 90,
+          ),
         ],
       ),
       bottomSheet: Container(
         color: Colors.white,
         padding:
-            const EdgeInsets.only(left: 10, right: 10, top: 16, bottom: 26),
+            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 36),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             InkWell(
               onTap: () {
                 // Navigator.pop(context);
               },
               child: Container(
+                  height: 44,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: AppColors.kPrimaryColor,
                   ),
-                  width: MediaQuery.of(context).size.width * 0.440,
-                  padding: const EdgeInsets.all(8),
+                  // width: MediaQuery.of(context).size.width * 0.440,
+                  padding: const EdgeInsets.only(
+                      left: 15, right: 15, top: 13, bottom: 13),
                   child: const Text(
                     'Оформить сейчас',
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 16),
+                        fontSize: 14),
                     textAlign: TextAlign.center,
                   )),
             ),
@@ -669,18 +691,20 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 // Navigator.pop(context);
               },
               child: Container(
+                  height: 44,
+                  // width: MediaQuery.of(context).size.width * 0.490,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.black,
                   ),
-                  width: MediaQuery.of(context).size.width * 0.440,
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.only(
+                      left: 21.5, right: 21.5, top: 13, bottom: 13),
                   child: const Text(
                     'Добавить в корзину',
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 16),
+                        fontSize: 14),
                     textAlign: TextAlign.center,
                   )),
             ),

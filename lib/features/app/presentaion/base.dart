@@ -7,6 +7,7 @@ import 'package:haji_market/features/app/bloc/navigation_cubit/navigation_cubit.
 
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:haji_market/features/basket/presentation/ui/basket_page.dart';
+import 'package:haji_market/features/drawer/presentation/ui/drawer_home.dart';
 import 'package:haji_market/features/favorite/presentation/ui/favorite_page.dart';
 import 'package:haji_market/features/home/presentation/ui/home_page.dart';
 import 'package:haji_market/features/my_order/presentation/ui/my_order_page.dart';
@@ -44,6 +45,7 @@ class _BaseState extends State<Base> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      drawer: const DrawerHome(),
       bottomNavigationBar: BlocBuilder<NavigationCubit, NavigationState>(
         builder: (context, state) {
           return BottomNavigationBar(
@@ -76,17 +78,17 @@ class _BaseState extends State<Base> {
                 basePageIndex = index;
               });
             },
-            selectedItemColor: AppColors.kPinkColor,
-            unselectedItemColor: const Color(0xFF99A2AD),
+            selectedItemColor: AppColors.kPrimaryColor,
+            unselectedItemColor: AppColors.kGray200,
             selectedFontSize: 12,
             elevation: 4,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
             items: [
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
                   'assets/icons/store.svg',
-                  color: Colors.grey.shade600,
+color: AppColors.kGray200,
                 ),
                 label: 'Маркет',
                 activeIcon: ClipOval(
@@ -106,7 +108,7 @@ class _BaseState extends State<Base> {
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
                   'assets/icons/tape.svg',
-                  color: Colors.grey.shade600,
+                  color: AppColors.kGray200,
                 ),
                 label: 'Лента',
                 activeIcon: ClipOval(
@@ -126,7 +128,7 @@ class _BaseState extends State<Base> {
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
                   'assets/icons/favorite.svg',
-                  color: Colors.grey.shade600,
+                  color: AppColors.kGray200,
                 ),
                 label: 'Избранное',
                 activeIcon: ClipOval(
@@ -146,7 +148,7 @@ class _BaseState extends State<Base> {
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
                   'assets/icons/basket.svg',
-                  color: Colors.grey.shade600,
+                  color: AppColors.kGray200,
                 ),
                 label: 'Корзина',
                 activeIcon: ClipOval(
@@ -166,7 +168,7 @@ class _BaseState extends State<Base> {
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
                   'assets/icons/my_orders.svg',
-                  color: Colors.grey.shade600,
+                  color: AppColors.kGray200,
                 ),
                 label: 'Мои заказы',
                 activeIcon: ClipOval(

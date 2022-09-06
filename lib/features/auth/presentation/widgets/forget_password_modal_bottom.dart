@@ -82,7 +82,7 @@ class _ForgotPasswordModalBottomState extends State<ForgotPasswordModalBottom> {
                 style: AppTextStyles.timerInReRegTextStyle,
               ),
               const Spacer(),
-              DefaultButton(text: 'Переотправить код', press: (){}, color: AppColors.floatingActionButton, width: MediaQuery.of(context).size.width),
+              DefaultButton(backgroundColor: AppColors.kPrimaryColor,text: 'Переотправить код', press: (){}, color: AppColors.floatingActionButton, width: MediaQuery.of(context).size.width),
               const SizedBox(height: 50,)
         ],
       ),

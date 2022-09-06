@@ -23,39 +23,49 @@ class _DrawerHomeState extends State<DrawerHome> {
     return Drawer(
       backgroundColor: Colors.white,
       elevation: 0,
-      child: ListView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
-              );
-            },
-            child: Container(
-              color: AppColors.kPrimaryColor,
-              padding: const EdgeInsets.only(
-                  top: 56.0, left: 16, right: 16, bottom: 16),
-              height: 140,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CircleAvatar(
-                    child: SvgPicture.asset('assets/icons/phone.svg'),
-                  ),
-                  const Text(
-                    'Маржан Жумадилова',
-                    style: AppTextStyles.drawer1TextStyle,
-                  ),
-                  const Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.white,
-                  )
-                ],
+          Container(
+            height: 140,
+            color: AppColors.kPrimaryColor,
+            child: DrawerHeader(
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 30,
+                      child: CircleAvatar(
+                    radius: 28,
+                        child: SvgPicture.asset('assets/icons/phone.svg'),
+                      ),
+                    ),
+                    const Text(
+                      'Маржан Жумадилова',
+                      style: AppTextStyles.drawer1TextStyle,
+                    ),
+                    const Icon(
+                      
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                      color: Colors.white,
+                    )
+                  ],
+                ),
               ),
             ),
           ),
           Column(
+
             children: [
               InkWell(
                 onTap: () {
@@ -100,8 +110,8 @@ class _DrawerHomeState extends State<DrawerHome> {
                 color: AppColors.kGray200,
               ),
               InkWell(
-                onTap: (){
-                      Navigator.push(
+                onTap: () {
+                  Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => CoopRequestPage()),
                   );
@@ -157,9 +167,6 @@ class _DrawerHomeState extends State<DrawerHome> {
                   color: AppColors.kPrimaryColor,
                 ),
               ),
-              const Divider(
-                color: AppColors.kGray200,
-              ),
             ],
           ),
           Padding(
@@ -182,10 +189,10 @@ class _DrawerHomeState extends State<DrawerHome> {
                         ),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(10))),
-                    child:  Center(
+                    child: Center(
                         child: Text(
                       'Қаз',
-                      style:TextStyle(
+                      style: TextStyle(
                         fontSize: 17,
                         color: selected == false ? Colors.black : Colors.white,
                         // AppColors.kLightBlackColor,
@@ -212,7 +219,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                         ),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(10))),
-                    child:  Center(
+                    child: Center(
                         child: Text(
                       'Рус',
                       style: TextStyle(
@@ -242,15 +249,32 @@ class DrawerListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        text,
-        style: AppTextStyles.drawer2TextStyle,
-      ),
-      trailing: const Icon(
-        Icons.arrow_forward_ios,
-        color: AppColors.kPrimaryColor,
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            text,
+            style: AppTextStyles.drawer2TextStyle,
+          ),
+          const Icon(
+            Icons.arrow_forward_ios,
+            size: 14,
+            color: AppColors.kPrimaryColor,
+          ),
+        ],
       ),
     );
+    // ListTile(
+    //   title: Text(
+    //     text,
+    //     style: AppTextStyles.drawer2TextStyle,
+    //   ),
+    //   trailing: const Icon(
+    //     Icons.arrow_forward_ios,
+    //     color: AppColors.kPrimaryColor,
+    //   ),
+    // );
   }
 }
