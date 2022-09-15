@@ -96,7 +96,7 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
             ),
           ),
           const SizedBox(
-            height: 16,
+            height: 10,
           ),
           InkWell(
             onTap: () {

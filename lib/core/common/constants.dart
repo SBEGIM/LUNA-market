@@ -118,7 +118,7 @@ mixin AppTextStyles {
     fontWeight: FontWeight.w500,
   );
   static const kGray400Text = TextStyle(
-    fontSize: 17,
+    fontSize: 16,
     color: AppColors.kGray400,
     fontWeight: FontWeight.w500,
   );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/under_catalog_page.dart';
 
 class CatalogPage extends StatefulWidget {
@@ -15,31 +16,28 @@ class _CatalogPageState extends State<CatalogPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.kPrimaryColor,
-            ),
-          ),
-          actions: [
-            Padding(
-                padding: const EdgeInsets.only(right: 22.0),
-                child: SvgPicture.asset('assets/icons/share.svg'))
-          ],
-
-          title: Container(
-            width: double.infinity,
-            height: 40,
-            decoration: BoxDecoration(
-                color: const Color(0xFFF8F8F8),
-                borderRadius: BorderRadius.circular(10)),
-            child: const TextField(
+        iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.only(left:16.0),
+          child: CustomBackButton(onTap: () {
+            Navigator.pop(context);
+          }),
+        ),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.only(right: 22.0),
+              child: SvgPicture.asset('assets/icons/share.svg'))
+        ],
+        // leadingWidth: 1,
+        title: Container(
+          width: double.infinity,
+          height: 40,
+          decoration: BoxDecoration(
+              color: const Color(0xFFF8F8F8),
+              borderRadius: BorderRadius.circular(10)),
+          child: const TextField(
               decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
@@ -54,9 +52,9 @@ class _CatalogPageState extends State<CatalogPage> {
               ),
               style: TextStyle(
                 color: Colors.black,
-              ),
-            ),
-          )),
+              )),
+        ),
+      ),
       body: Column(
         children: [
           InkWell(

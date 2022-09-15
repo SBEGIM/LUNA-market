@@ -21,15 +21,6 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         backgroundColor: Colors.white,
         elevation: 0,
-        // leading: IconButton(
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //   },
-        //   icon: const Icon(
-        //     Icons.arrow_back_ios,
-        //     color: AppColors.kPrimaryColor,
-        //   ),
-        // ),
         centerTitle: true,
         title: const Text(
           'Редактирование профиля',
@@ -37,14 +28,10 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
             color: Colors.black,
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 16.0),
-            child: Icon(
-              Icons.timer,
-              color: AppColors.kPrimaryColor,
-            ),
-          )
+              padding: const EdgeInsets.only(right: 16.0),
+              child: SvgPicture.asset('assets/icons/notification.svg'))
         ],
       ),
       bottomSheet: Container(
@@ -78,16 +65,18 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
             height: 10,
           ),
           ListTile(
-            leading: ClipOval(
-              child: SizedBox(
-                height: 60,
-                width: 60,
-                child: Image.asset(
-                  'assets/images/wireles.png',
-                  fit: BoxFit.cover,
+             horizontalTitleGap: 12,
+                leading: CircleAvatar(
+                  backgroundImage: const AssetImage('assets/images/kana.png'),
+                  radius: 34,
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: SvgPicture.asset(
+                      'assets/icons/camera.svg',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              ),
-            ),
             title: const Text(
               'Маржан Жумадилова',
               style: TextStyle(

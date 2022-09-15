@@ -8,8 +8,7 @@ import 'package:haji_market/features/auth/presentation/ui/select_country_page.da
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
+  
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -25,8 +24,8 @@ class MyApp extends StatelessWidget {
         ),
         home:
 // const BaseAdmin()
-            // SelectCountryPage()
-            const Base(),
+            const SelectCountryPage()
+            // const Base(),
       ),
     );
   }

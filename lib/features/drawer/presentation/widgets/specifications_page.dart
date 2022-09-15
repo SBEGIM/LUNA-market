@@ -53,20 +53,23 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                 ),
                 Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    Text(
-                      'Назначение',
-                      style: TextStyle(
-                          color: AppColors.kGray400,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400),
-                    ),
+                  children: [
                     SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.33,
+                      child: const Text(
+                        'Назначение',
+                        style: const TextStyle(
+                            color: AppColors.kGray400,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    const SizedBox(
                       width: 40,
                     ),
-                    Text(
+                    const Text(
                       'Обычные',
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: AppColors.kGray1000,
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
@@ -78,20 +81,23 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                 ),
                 Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    Text(
-                      'Тип конструкции ',
-                      style: TextStyle(
-                          color: AppColors.kGray400,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400),
-                    ),
+                  children: [
                     SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.33,
+                      child: const Text(
+                        'Тип конструкции ',
+                        style: const TextStyle(
+                            color: AppColors.kGray400,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    const SizedBox(
                       width: 40,
                     ),
-                    Text(
+                    const Text(
                       'Полноразмерные',
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: AppColors.kGray1000,
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
@@ -103,20 +109,23 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                 ),
                 Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    Text(
-                      'Тип крепления',
-                      style: TextStyle(
-                          color: AppColors.kGray400,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400),
-                    ),
+                  children: [
                     SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.33,
+                      child: const Text(
+                        'Тип крепления',
+                        style: const TextStyle(
+                            color: AppColors.kGray400,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    const SizedBox(
                       width: 40,
                     ),
-                    Text(
+                    const Text(
                       'С оголовьем',
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: AppColors.kGray1000,
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
@@ -128,20 +137,23 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                 ),
                 Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    Text(
-                      'Частотный диапазон, Гц-кГц:',
-                      style: TextStyle(
-                          color: AppColors.kGray400,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400),
-                    ),
+                  children: [
                     SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.33,
+                      child: const Text(
+                        'Частотный диапазон, Гц-кГц:',
+                        style: TextStyle(
+                            color: AppColors.kGray400,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    const SizedBox(
                       width: 40,
                     ),
-                    Text(
+                    const Text(
                       '20 - 20',
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: AppColors.kGray1000,
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
@@ -154,18 +166,21 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                 Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Импеданс, Ом',
-                      style: TextStyle(
-                          color: AppColors.kGray400,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400),
-                    ),
+                  children: [
                     SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.33,
+                      child: const Text(
+                        'Импеданс, Ом',
+                        style: TextStyle(
+                            color: AppColors.kGray400,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    const SizedBox(
                       width: 40,
                     ),
-                    Text(
+                    const Text(
                       '32',
                       style: TextStyle(
                           color: AppColors.kGray1000,
@@ -203,18 +218,21 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                         Row(
                           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           // crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              'Импеданс, Ом',
-                              style: TextStyle(
-                                  color: AppColors.kGray400,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400),
-                            ),
+                          children: [
                             SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.33,
+                              child: const Text(
+                                'Импеданс, Ом',
+                                style: TextStyle(
+                                    color: AppColors.kGray400,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                            const SizedBox(
                               width: 40,
                             ),
-                            Text(
+                            const Text(
                               '32',
                               style: TextStyle(
                                   color: AppColors.kGray1000,

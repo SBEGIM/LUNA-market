@@ -12,109 +12,179 @@
 
 part of 'app_router.dart';
 
-class _$$AppRouter extends RootStackRouter {
-  _$$AppRouter([GlobalKey<NavigatorState>? navigatorKey]) : super(navigatorKey);
+class _$AppRouter extends RootStackRouter {
+  _$AppRouter([GlobalKey<NavigatorState>? navigatorKey]) : super(navigatorKey);
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    HomeRoute.name: (routeData) {
+    LauncherAppRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: const HomePage());
+          routeData: routeData, child: const LauncherApp());
     },
-    TapeRoute.name: (routeData) {
-      final args =
-          routeData.argsAs<TapeRouteArgs>(orElse: () => const TapeRouteArgs());
+    BaseHomeRouter.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const EmptyRouterPage());
+    },
+    TapePageRoute.name: (routeData) {
+      final args = routeData.argsAs<TapePageRouteArgs>(
+          orElse: () => const TapePageRouteArgs());
       return MaterialPageX<dynamic>(
           routeData: routeData, child: TapePage(key: args.key));
     },
-    FavoriteRoute.name: (routeData) {
-      final args = routeData.argsAs<FavoriteRouteArgs>(
-          orElse: () => const FavoriteRouteArgs());
+    FavoritePageRoute.name: (routeData) {
+      final args = routeData.argsAs<FavoritePageRouteArgs>(
+          orElse: () => const FavoritePageRouteArgs());
       return MaterialPageX<dynamic>(
           routeData: routeData, child: FavoritePage(key: args.key));
     },
-    BasketRoute.name: (routeData) {
+    BasketPageRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const BasketPage());
     },
-    MyOrderRoute.name: (routeData) {
+    MyOrderPageRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const MyOrderPage());
+    },
+    HomePageRoute.name: (routeData) {
+      final args = routeData.argsAs<HomePageRouteArgs>(
+          orElse: () => const HomePageRouteArgs());
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: HomePage(
+              globalKey: args.globalKey,
+              drawerCallback: args.drawerCallback,
+              key: args.key));
     }
   };
 
   @override
   List<RouteConfig> get routes => [
-        RouteConfig(HomeRoute.name, path: '/home-page'),
-        RouteConfig(TapeRoute.name, path: '/tape-page'),
-        RouteConfig(FavoriteRoute.name, path: '/favorite-page'),
-        RouteConfig(BasketRoute.name, path: '/basket-page'),
-        RouteConfig(MyOrderRoute.name, path: '/my-order-page')
+        RouteConfig(LauncherAppRoute.name, path: '/', children: [
+          RouteConfig(BaseHomeRouter.name,
+              path: 'empty-router-page',
+              parent: LauncherAppRoute.name,
+              children: [
+                RouteConfig(HomePageRoute.name,
+                    path: '', parent: BaseHomeRouter.name)
+              ]),
+          RouteConfig(TapePageRoute.name,
+              path: 'tape-page', parent: LauncherAppRoute.name),
+          RouteConfig(FavoritePageRoute.name,
+              path: 'favorite-page', parent: LauncherAppRoute.name),
+          RouteConfig(BasketPageRoute.name,
+              path: 'basket-page', parent: LauncherAppRoute.name),
+          RouteConfig(MyOrderPageRoute.name,
+              path: 'my-order-page', parent: LauncherAppRoute.name)
+        ])
       ];
 }
 
 /// generated route for
-/// [HomePage]
-class HomeRoute extends PageRouteInfo<void> {
-  const HomeRoute() : super(HomeRoute.name, path: '/home-page');
+/// [LauncherApp]
+class LauncherAppRoute extends PageRouteInfo<void> {
+  const LauncherAppRoute({List<PageRouteInfo>? children})
+      : super(LauncherAppRoute.name, path: '/', initialChildren: children);
 
-  static const String name = 'HomeRoute';
+  static const String name = 'LauncherAppRoute';
+}
+
+/// generated route for
+/// [EmptyRouterPage]
+class BaseHomeRouter extends PageRouteInfo<void> {
+  const BaseHomeRouter({List<PageRouteInfo>? children})
+      : super(BaseHomeRouter.name,
+            path: 'empty-router-page', initialChildren: children);
+
+  static const String name = 'BaseHomeRouter';
 }
 
 /// generated route for
 /// [TapePage]
-class TapeRoute extends PageRouteInfo<TapeRouteArgs> {
-  TapeRoute({Key? key})
-      : super(TapeRoute.name,
-            path: '/tape-page', args: TapeRouteArgs(key: key));
+class TapePageRoute extends PageRouteInfo<TapePageRouteArgs> {
+  TapePageRoute({Key? key})
+      : super(TapePageRoute.name,
+            path: 'tape-page', args: TapePageRouteArgs(key: key));
 
-  static const String name = 'TapeRoute';
+  static const String name = 'TapePageRoute';
 }
 
-class TapeRouteArgs {
-  const TapeRouteArgs({this.key});
+class TapePageRouteArgs {
+  const TapePageRouteArgs({this.key});
 
   final Key? key;
 
   @override
   String toString() {
-    return 'TapeRouteArgs{key: $key}';
+    return 'TapePageRouteArgs{key: $key}';
   }
 }
 
 /// generated route for
 /// [FavoritePage]
-class FavoriteRoute extends PageRouteInfo<FavoriteRouteArgs> {
-  FavoriteRoute({Key? key})
-      : super(FavoriteRoute.name,
-            path: '/favorite-page', args: FavoriteRouteArgs(key: key));
+class FavoritePageRoute extends PageRouteInfo<FavoritePageRouteArgs> {
+  FavoritePageRoute({Key? key})
+      : super(FavoritePageRoute.name,
+            path: 'favorite-page', args: FavoritePageRouteArgs(key: key));
 
-  static const String name = 'FavoriteRoute';
+  static const String name = 'FavoritePageRoute';
 }
 
-class FavoriteRouteArgs {
-  const FavoriteRouteArgs({this.key});
+class FavoritePageRouteArgs {
+  const FavoritePageRouteArgs({this.key});
 
   final Key? key;
 
   @override
   String toString() {
-    return 'FavoriteRouteArgs{key: $key}';
+    return 'FavoritePageRouteArgs{key: $key}';
   }
 }
 
 /// generated route for
 /// [BasketPage]
-class BasketRoute extends PageRouteInfo<void> {
-  const BasketRoute() : super(BasketRoute.name, path: '/basket-page');
+class BasketPageRoute extends PageRouteInfo<void> {
+  const BasketPageRoute() : super(BasketPageRoute.name, path: 'basket-page');
 
-  static const String name = 'BasketRoute';
+  static const String name = 'BasketPageRoute';
 }
 
 /// generated route for
 /// [MyOrderPage]
-class MyOrderRoute extends PageRouteInfo<void> {
-  const MyOrderRoute() : super(MyOrderRoute.name, path: '/my-order-page');
+class MyOrderPageRoute extends PageRouteInfo<void> {
+  const MyOrderPageRoute()
+      : super(MyOrderPageRoute.name, path: 'my-order-page');
 
-  static const String name = 'MyOrderRoute';
+  static const String name = 'MyOrderPageRoute';
+}
+
+/// generated route for
+/// [HomePage]
+class HomePageRoute extends PageRouteInfo<HomePageRouteArgs> {
+  HomePageRoute(
+      {GlobalKey<ScaffoldState>? globalKey,
+      void Function()? drawerCallback,
+      Key? key})
+      : super(HomePageRoute.name,
+            path: '',
+            args: HomePageRouteArgs(
+                globalKey: globalKey,
+                drawerCallback: drawerCallback,
+                key: key));
+
+  static const String name = 'HomePageRoute';
+}
+
+class HomePageRouteArgs {
+  const HomePageRouteArgs({this.globalKey, this.drawerCallback, this.key});
+
+  final GlobalKey<ScaffoldState>? globalKey;
+
+  final void Function()? drawerCallback;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'HomePageRouteArgs{globalKey: $globalKey, drawerCallback: $drawerCallback, key: $key}';
+  }
 }

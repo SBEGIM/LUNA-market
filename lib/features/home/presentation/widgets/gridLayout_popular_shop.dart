@@ -44,6 +44,7 @@ class GridOptionsPopularShop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Center(
           child: Image.asset(

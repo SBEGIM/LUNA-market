@@ -31,6 +31,13 @@ class _DrawerHomeState extends State<DrawerHome> {
             height: 140,
             color: AppColors.kPrimaryColor,
             child: DrawerHeader(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: Divider.createBorderSide(context,
+                      color: AppColors.kPrimaryColor, width: 0.0),
+                ),
+                // color: AppColors.kPrimaryColor,
+              ),
               child: InkWell(
                 onTap: () {
                   Navigator.push(
@@ -45,7 +52,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                       backgroundColor: Colors.white,
                       radius: 30,
                       child: CircleAvatar(
-                    radius: 28,
+                        radius: 28,
                         child: SvgPicture.asset('assets/icons/phone.svg'),
                       ),
                     ),
@@ -54,7 +61,6 @@ class _DrawerHomeState extends State<DrawerHome> {
                       style: AppTextStyles.drawer1TextStyle,
                     ),
                     const Icon(
-                      
                       Icons.arrow_forward_ios,
                       size: 14,
                       color: Colors.white,
@@ -65,7 +71,6 @@ class _DrawerHomeState extends State<DrawerHome> {
             ),
           ),
           Column(
-
             children: [
               InkWell(
                 onTap: () {
@@ -164,13 +169,14 @@ class _DrawerHomeState extends State<DrawerHome> {
                 ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
+                  size: 14,
                   color: AppColors.kPrimaryColor,
                 ),
               ),
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 30),
+            padding: const EdgeInsets.only(left: 16.0, top: 90),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -202,7 +208,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                   ),
                 ),
                 const SizedBox(
-                  width: 20,
+                  width: 8,
                 ),
                 InkWell(
                   onTap: () {

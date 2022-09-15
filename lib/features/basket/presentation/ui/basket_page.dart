@@ -175,14 +175,14 @@ class BasketProductCardWidget extends StatelessWidget {
                                 style: TextStyle(
                                     color: Colors.red,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 18),
+                                    fontSize: 16),
                               ),
                               Text(
                                 '556 900 ₸ ',
                                 style: TextStyle(
                                   color: AppColors.kGray900,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   decoration: TextDecoration.lineThrough,
                                 ),
                               ),
@@ -196,7 +196,7 @@ class BasketProductCardWidget extends StatelessWidget {
                             style: TextStyle(
                               color: AppColors.kGray300,
                               fontWeight: FontWeight.w400,
-                              fontSize: 14,
+                              fontSize: 12,
                             ),
                           ),
                           const SizedBox(
@@ -205,7 +205,7 @@ class BasketProductCardWidget extends StatelessWidget {
                           const Text(
                             'Silver MacBook M1 13.1in.\nApple 256GB',
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: AppColors.kGray900,
                                 fontWeight: FontWeight.w400),
                           ),
@@ -215,7 +215,7 @@ class BasketProductCardWidget extends StatelessWidget {
                           const Text(
                             'Продавец: Sulpak',
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: AppColors.kGray900,
                                 fontWeight: FontWeight.w400),
                           ),
@@ -225,7 +225,7 @@ class BasketProductCardWidget extends StatelessWidget {
                           const Text(
                             'Доставка: сегодня',
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: AppColors.kGray900,
                                 fontWeight: FontWeight.w400),
                           ),

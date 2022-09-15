@@ -25,6 +25,12 @@ class _NewBankCardPageState extends State<NewBankCardPage> {
               fontSize: 16,
               fontWeight: FontWeight.w500),
         ),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 22.0),
+          child: CustomBackButton(onTap: () {
+            Navigator.pop(context);
+          }),
+        ),
         elevation: 0,
       ),
       body: Column(
@@ -65,10 +71,8 @@ class _NewBankCardPageState extends State<NewBankCardPage> {
                     child: Column(
                       children: [
                         ListTile(
-                          leading: const Icon(
-                            Icons.credit_card,
-                            color: AppColors.kPrimaryColor,
-                          ),
+                          leading:
+                              SvgPicture.asset('assets/icons/bank_card.svg'),
                           title: const TextField(
                             decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -92,10 +96,8 @@ class _NewBankCardPageState extends State<NewBankCardPage> {
                               'assets/icons/delete_circle.svg'),
                         ),
                         ListTile(
-                          leading: const Icon(
-                            Icons.credit_card,
-                            color: AppColors.kPrimaryColor,
-                          ),
+                          leading:
+                              SvgPicture.asset('assets/icons/card_bank1.svg'),
                           title: const TextField(
                             decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -103,18 +105,33 @@ class _NewBankCardPageState extends State<NewBankCardPage> {
                                 hintStyle:
                                     TextStyle(color: AppColors.kGray300)),
                           ),
-                          trailing: SvgPicture.asset(
-                              'assets/icons/delete_circle.svg'),
+                          trailing:
+                              SvgPicture.asset('assets/icons/master_card.svg'),
                         ),
                         Container(
                           padding: const EdgeInsets.only(left: 16),
-                          child: const TextField(
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Номер карты',
-                                  hintStyle:
-                                      TextStyle(color: AppColors.kGray300)),
-                            ),
+                          child: Row(
+                            children: const [
+                              Flexible(
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Срок действия',
+                                      hintStyle:
+                                          TextStyle(color: AppColors.kGray300)),
+                                ),
+                              ),
+                              Flexible(
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'CVV',
+                                      hintStyle:
+                                          TextStyle(color: AppColors.kGray300)),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -124,7 +141,7 @@ class _NewBankCardPageState extends State<NewBankCardPage> {
                   height: 20,
                 ),
                 DefaultButton(
-                  backgroundColor: AppColors.kPrimaryColor,
+                    backgroundColor: AppColors.kPrimaryColor,
                     text: 'Добавить',
                     press: () {},
                     color: Colors.white,

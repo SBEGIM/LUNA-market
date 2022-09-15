@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:haji_market/admin/my_products_admin/presentation/ui/banner_watch_recently_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/category_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/show_alert_statictics_widget.dart';
 import 'package:haji_market/core/common/constants.dart';
@@ -19,6 +20,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         backgroundColor: Colors.white,
         elevation: 0,
@@ -89,7 +91,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
             itemBuilder: (BuildContext ctx, index) {
               return Stack(
                 children: [
-                  const BannerWatcehRecently(),
+                  const BannerWatcehRecentlyAdminPage(),
                   Container(
                     decoration: BoxDecoration(
                         color: Colors.black38,

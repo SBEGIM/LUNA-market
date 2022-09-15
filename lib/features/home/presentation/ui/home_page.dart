@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
@@ -9,7 +10,13 @@ import 'package:haji_market/features/home/presentation/widgets/gridlayout_catego
 import 'package:haji_market/features/home/presentation/widgets/stocks_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final void Function()? drawerCallback;
+  final GlobalKey<ScaffoldState>? globalKey;
+  const HomePage({
+    this.globalKey,
+    this.drawerCallback,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -62,16 +69,20 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const DrawerHome(),
+      // drawer: const DrawerHome(),
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         backgroundColor: Colors.white,
         elevation: 0,
-        // leading: const Icon(
-        //   Icons.menu,
-        //   color: AppColors.kPrimaryColor,
-        // ),
+        leading: IconButton(
+          // onPressed: widget.drawerCallback,
+          onPressed: () {
+            widget.globalKey!.currentState!.openDrawer();
+          },
+          icon: Icon(Icons.menu),
+          color: AppColors.kPrimaryColor,
+        ),
         actions: [
           Padding(
               padding: const EdgeInsets.only(right: 22.0),
@@ -105,7 +116,8 @@ class _HomePageState extends State<HomePage> {
           Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 16, bottom: 16),
+              padding: const EdgeInsets.only(
+                  left: 16.0, top: 16, bottom: 16, right: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -301,7 +313,10 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   const Text(
                     'Вас могут заинтересовать',
-                    style: AppTextStyles.appBarTextStylea,
+                    style: TextStyle(
+                        color: AppColors.kGray900,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(
                     height: 9,

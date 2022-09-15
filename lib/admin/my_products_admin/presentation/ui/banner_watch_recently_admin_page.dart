@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 
-class BannerWatcehRecently extends StatelessWidget {
-  const BannerWatcehRecently({
+class BannerWatcehRecentlyAdminPage extends StatelessWidget {
+  const BannerWatcehRecentlyAdminPage({
     Key? key,
   }) : super(key: key);
 
@@ -16,7 +16,7 @@ class BannerWatcehRecently extends StatelessWidget {
         decoration: BoxDecoration(
             color: const Color(0xFFFAFAFA),
             borderRadius: BorderRadius.circular(10)),
-        child: Column(
+        child: ListView(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
@@ -113,43 +113,6 @@ class BannerWatcehRecently extends StatelessWidget {
                     height: 8,
                   ),
                   Row(
-                    children: [
-                      RatingBar(
-                        ignoreGestures: true,
-                        initialRating: 2,
-                        unratedColor: const Color(0x30F11712),
-                        itemSize: 15,
-                        // itemPadding:
-                        // const EdgeInsets.symmetric(horizontal: 4.0),
-                        ratingWidget: RatingWidget(
-                          full: const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          ),
-                          half: const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          ),
-                          empty: const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          ),
-                        ),
-                        onRatingUpdate: (double value) {},
-                      ),
-                      const Text(
-                        '(98 отзывов)',
-                        style: TextStyle(
-                            color: AppColors.kGray300,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
@@ -167,43 +130,6 @@ class BannerWatcehRecently extends StatelessWidget {
                             decoration: TextDecoration.lineThrough,
                             fontSize: 10,
                             color: Color(0xFF19191A),
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        decoration: const BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.all(Radius.circular(4))),
-                        child: const Padding(
-                          padding: EdgeInsets.only(
-                              left: 4, right: 4, top: 4, bottom: 4),
-                          child: Text(
-                            '110 300',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: Color(0xFF19191A),
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      const Text(
-                        'х3',
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: AppColors.kGray300,
                             fontWeight: FontWeight.w400),
                       ),
                     ],

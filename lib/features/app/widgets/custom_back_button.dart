@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class CustomBackButton extends StatelessWidget {
   final Function() onTap;
@@ -57,11 +58,8 @@ class CustomDropButton extends StatelessWidget {
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            children:const [
-               Icon(
-                Icons.not_interested,
-                color: Color(0xFF1DC4CF),
-              ),
+            children: [
+              SvgPicture.asset('assets/icons/cancel.svg')
             ],
           ),
         ),

@@ -11,8 +11,8 @@ class AdminNavigationCubit extends Cubit<AdminNavigationState> {
     // final bool auth = await checkToken();
 
     state.when(
-      homeAdmin: () => emit(const HomeAdminState()),
       tapeAdmin: () => emit(const TapeAdminState()),
+      homeAdmin: () => emit(const HomeAdminState()),
       myOrderAdmin: () => emit(const MyOrderAdminState()),
       profile: () => emit(const ProfileState()),
       adminAuth: () => emit(const AdminAuthState()),

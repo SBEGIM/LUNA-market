@@ -62,12 +62,12 @@ class _TapeAdminPageState extends State<TapeAdminPage> {
                   child: const Text(
                     'ZARA',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 30),
+                    style: TextStyle(color: Colors.white, fontSize: 12,fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 8.0, top: 12),
+                padding: const EdgeInsets.only(right: 5.0, top: 5),
                 child: Align(
                     alignment: Alignment.topRight,
                     child: Container(

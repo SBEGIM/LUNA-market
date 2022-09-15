@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 
 class ProductCardWidget extends StatefulWidget {
@@ -19,7 +20,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     return Padding(
       padding: const EdgeInsets.all(9),
       child: Container(
-        padding: const EdgeInsets.all(9),
+        padding: const EdgeInsets.only(left: 4, top: 4, bottom: 9, right: 1),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             boxShadow: const [
@@ -32,15 +33,85 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
         // height: MediaQuery.of(context).size.height * 0.86,
         // color: Colors.red,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              children: [
-                Image.asset(
-                  'assets/images/wireles.png',
-                  height: 104,
-                  width: 104,
-                )
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 7.0),
+              child: Stack(
+                children: [
+                  Image.asset(
+                    'assets/images/mac.png',
+                    height: 104,
+                    width: 104,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 4, right: 4, bottom: 8, top: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: AppColors.kPrimaryColor,
+                              borderRadius: BorderRadius.circular(4)),
+                          child: const Padding(
+                            padding: EdgeInsets.only(
+                                left: 8.0, right: 8, top: 4, bottom: 4),
+                            child:  Text(
+                              '0.0.12',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(4)),
+                          child: const Padding(
+                            padding: EdgeInsets.only(
+                                left: 4.0, right: 4, top: 4, bottom: 4),
+                            child: Text(
+                              '10% Б',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ),
+                         const SizedBox(
+                          height: 22,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(4)),
+                          child: const Padding(
+                            padding: EdgeInsets.only(
+                                left: 4.0, right: 4, top: 4, bottom: 4),
+                            child: Text(
+                              '-10%',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               width: 10,
@@ -49,46 +120,56 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
                       'Silver MacBook M1 13.1in.\nApple 256GB',
                       style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           color: AppColors.kGray900,
-                          fontWeight: FontWeight.w400),
+                          fontWeight: FontWeight.w500),
                     ),
-                    //  SizedBox(
-                    //   width: MediaQuery.of(context).size.width * 0.06,
-                    // ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.14,
+                    ),
                     IconButton(
                         onPressed: () {},
-                        icon: const Icon(
-                          Icons.heart_broken,
-                          color: Colors.red,
-                        ))
+                        icon: SvgPicture.asset('assets/icons/heart_fill.svg'))
                   ],
                 ),
-                const Text(
-                  'Ноутбук',
-                  style: TextStyle(
-                      color: AppColors.kGray300,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400),
+                const Padding(
+                  padding: EdgeInsets.only(top: 0, bottom: 6),
+                  child: Text(
+                    'Ноутбук',
+                    style: TextStyle(
+                        color: AppColors.kGray300,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
+                  ),
                 ),
                 Row(
                   children: [
                     RatingBar(
-                      ignoreGestures: true,
+                      ignoreGestures: false,
                       initialRating: 2,
-                      unratedColor: const Color(0x30F11712),
+                      // unratedColor: const Color(0x30F11712),
                       itemSize: 15,
+                      unratedColor: Color(0xFFFFC107),
                       // itemPadding:
                       // const EdgeInsets.symmetric(horizontal: 4.0),
                       ratingWidget: RatingWidget(
-                        full: const Icon(Icons.star),
-                        half: const Icon(Icons.star),
-                        empty: const Icon(Icons.star),
+                        full: const Icon(
+                          Icons.star,
+                          color: Color(0xFFFFC107),
+                        ),
+                        half: const Icon(
+                          Icons.star,
+                          color: Color(0xFFFFC107),
+                        ),
+                        empty: const Icon(
+                          Icons.star,
+                          color: Color(0xFFFFC107),
+                        ),
                       ),
                       onRatingUpdate: (double value) {},
                     ),
@@ -101,6 +182,9 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 8,
+                ),
                 Row(
                   children: const [
                     Text(
@@ -108,31 +192,35 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       style: TextStyle(
                           color: Colors.red,
                           fontWeight: FontWeight.w500,
-                          fontSize: 18),
+                          fontSize: 16),
                     ),
                     Text(
                       '556 900 ₸ ',
                       style: TextStyle(
                         color: AppColors.kGray900,
                         fontWeight: FontWeight.w500,
-                        fontSize: 18,
+                        fontSize: 14,
                         decoration: TextDecoration.lineThrough,
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 7,
+                ),
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(4),
-                      child: Text(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFC107),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Text(
                         '110 300',
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w600),
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.yellow,
-                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                     SizedBox(
@@ -151,12 +239,14 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           });
                         },
                         child: Container(
-                          height: 40,
+                          width: MediaQuery.of(context).size.width * 0.29,
+                          height: 32,
                           decoration: BoxDecoration(
                             color: const Color(0xFF1DC4CF),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.only(
+                              left: 12, right: 12, bottom: 6, top: 6),
                           child: const Center(
                             child: Text(
                               'В корзину',
@@ -169,59 +259,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                         ),
                       ),
                     ),
-                    // Visibility(
-                    //    visible: isvisible,
-                    //     child: Container(
-                    //   child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //       children: [
-                    //         ClipOval(
-                    //           child: Material(
-                    //             color: Colors.grey[300], // Button color
-                    //             child: InkWell(
-                    //               splashColor:
-                    //                   AppColors.reviewStar, // Splash color
-                    //               onTap: () {
-                    //                 // if (model.countAdults! > 0) {
-                    //                 //   model.countAdults =
-                    //                 //       model.countAdults! - 1;
-                    //                 // }
-                    //               },
-                    //               child: const SizedBox(
-                    //                 width: 40,
-                    //                 height: 40,
-                    //                 child: Icon(Icons.remove),
-                    //               ),
-                    //             ),
-                    //           ),
-                    //         ),
-                    //         Text(
-                    //           '0',
-                    //         ),
-                    //         ClipOval(
-                    //           child: Material(
-                    //             color: AppColors.kReviewBg, // Button color
-                    //             child: InkWell(
-                    //               splashColor:
-                    //                   AppColors.reviewStar, // Splash color
-                    //               onTap: () {
-                    //                 // model.countAdults ??= 0;
-                    //                 // model.countAdults = model.countAdults! + 1;
-                    //               },
-                    //               child: const SizedBox(
-                    //                 width: 40,
-                    //                 height: 40,
-                    //                 child: Icon(
-                    //                   Icons.add,
-                    //                   color: Colors.white,
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           ),
-                    //         )
-                    //       ],
-                    //     ),
-                    // ))
+                    
                   ],
                 )
               ],

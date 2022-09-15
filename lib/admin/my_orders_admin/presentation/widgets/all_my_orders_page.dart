@@ -32,11 +32,12 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                   height: 10,
                 ),
                 InkWell(
-                  onTap: (){
-                     Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DetailMyOrdersPage()),
-                  );
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailMyOrdersPage()),
+                    );
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -50,20 +51,19 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
-                              children: const [
-                                Text(
+                              children:  [
+                                const Text(
                                   '№1920-293',
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       color: AppColors.kGray700),
                                 ),
-                                Icon(
-                                  Icons.credit_card,
-                                )
+                             const   SizedBox(width: 8,),
+                                SvgPicture.asset('assets/icons/master_card.svg')
                               ],
                             ),
-                            const Icon(Icons.more_vert_rounded)
+                            const Icon(Icons.more_horiz),
                           ],
                         ),
                         const SizedBox(
@@ -96,7 +96,8 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                             itemCount: 2,
                             itemBuilder: (BuildContext context, int index) {
                               return Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: const [
                                   Text(
                                     'Silver Macbook Air M1',
@@ -167,10 +168,16 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.green.shade200,
+                              color: Color(0x104BB34B),
                               borderRadius: BorderRadius.circular(4)),
                           padding: const EdgeInsets.all(5),
-                          child: const Text('Передан курьеру'),
+                          child: const Text(
+                            'Передан курьеру',
+                            style: TextStyle(
+                                color: Color(0xFF4BB34B),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400),
+                          ),
                         )
                       ],
                     ),

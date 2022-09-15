@@ -10,8 +10,8 @@ class NavigationCubit extends Cubit<NavigationState> {
     // final bool auth = await checkToken();
 
     state.when(
-      home: () => emit(const HomeState()),
       tape: () => emit(const TapeState()),
+      home: () => emit(const HomeState()),
       favorite: () => emit(const FavoriteState()),
       basket: () => emit(const BasketState()),
       myOrder: () => emit(const MyOrderState()),

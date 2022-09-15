@@ -53,11 +53,8 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
                   color: Colors.white,
                   height: 120,
                   width: 120,
-                  child: const Center(
-                    child: Icon(
-                      Icons.camera_alt,
-                      color: AppColors.kPrimaryColor,
-                    ),
+                  child:  Center(
+                    child: SvgPicture.asset('assets/icons/camera2.svg')
                   ),
                 ),
                 const SizedBox(
@@ -80,10 +77,11 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
                   color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: ListTile(
                 leading: SvgPicture.asset(
-                  'assets/icons/store.svg',
+                  'assets/icons/shop1.svg',
                   height: 24,
                   width: 24,
                 ),
+                minLeadingWidth: 10,
                 title: const TextField(
                   // controller: phoneControllerAuth,
                   decoration: InputDecoration(

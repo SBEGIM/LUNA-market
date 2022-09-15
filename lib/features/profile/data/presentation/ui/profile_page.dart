@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/profile/data/presentation/ui/my_bank_card_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -19,6 +20,12 @@ class _ProfilePageState extends State<ProfilePage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
+          leading: Padding(
+          padding: const EdgeInsets.only(left: 22.0),
+          child: CustomBackButton(onTap: () {
+            Navigator.pop(context);
+          }),
+        ),
         backgroundColor: Colors.white,
         title: const Text(
           'Редактирование профиля',
@@ -132,6 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400),
                           ),
+                          SizedBox(height: 2,),
                           Text(
                             'Русский',
                             style: TextStyle(

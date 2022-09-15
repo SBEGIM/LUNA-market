@@ -1,8 +1,10 @@
 // ignore_for_file: avoid_print
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/core/router/app_router.dart';
 import 'package:haji_market/features/app/bloc/navigation_cubit/navigation_cubit.dart';
 
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
@@ -14,8 +16,7 @@ import 'package:haji_market/features/my_order/presentation/ui/my_order_page.dart
 import 'package:haji_market/features/tape/presentation/ui/tape_page.dart';
 
 class Base extends StatefulWidget {
-  final int? index;
-  const Base({this.index, Key? key}) : super(key: key);
+  const Base({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -25,26 +26,22 @@ class Base extends StatefulWidget {
 int basePageIndex = 0;
 
 class _BaseState extends State<Base> {
+  Future<void> init() async {}
+
   @override
   void initState() {
-    // if (widget.index != null) {
-    //   basePageIndex = widget.index!;
-
-    //   if (basePageIndex == 0) {
-    //     BlocProvider.of<NavigationCubit>(context)
-    //         .getNavBarItem(const NavigationState.home());
-    //   } else if (basePageIndex == 3) {
-    //     BlocProvider.of<NavigationCubit>(context)
-    //         .getNavBarItem(const NavigationState.profile());
-    //   }
-    // }
+    init();
     super.initState();
   }
 
+
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return   
+     Scaffold(
       backgroundColor: Colors.white,
+      key: _key,
       drawer: const DrawerHome(),
       bottomNavigationBar: BlocBuilder<NavigationCubit, NavigationState>(
         builder: (context, state) {
@@ -54,11 +51,12 @@ class _BaseState extends State<Base> {
               switch (index) {
                 case 0:
                   BlocProvider.of<NavigationCubit>(context)
-                      .getNavBarItem(const NavigationState.home());
+                      .getNavBarItem(const NavigationState.tape());
                   break;
+
                 case 1:
                   BlocProvider.of<NavigationCubit>(context)
-                      .getNavBarItem(const NavigationState.tape());
+                      .getNavBarItem(const NavigationState.home());
                   break;
                 case 2:
                   BlocProvider.of<NavigationCubit>(context)
@@ -87,26 +85,6 @@ class _BaseState extends State<Base> {
             items: [
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  'assets/icons/store.svg',
-color: AppColors.kGray200,
-                ),
-                label: 'Маркет',
-                activeIcon: ClipOval(
-                  child: Material(
-                    color: Colors.white, // Button color
-                    child: SizedBox(
-                      width: 42,
-                      height: 42,
-                      child: SvgPicture.asset(
-                        'assets/icons/store.svg',
-                        color: AppColors.kPrimaryColor,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
                   'assets/icons/tape.svg',
                   color: AppColors.kGray200,
                 ),
@@ -119,6 +97,26 @@ color: AppColors.kGray200,
                       height: 42,
                       child: SvgPicture.asset(
                         'assets/icons/tape.svg',
+                        color: AppColors.kPrimaryColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  'assets/icons/store.svg',
+                  color: AppColors.kGray200,
+                ),
+                label: 'Маркет',
+                activeIcon: ClipOval(
+                  child: Material(
+                    color: Colors.white, // Button color
+                    child: SizedBox(
+                      width: 42,
+                      height: 42,
+                      child: SvgPicture.asset(
+                        'assets/icons/store.svg',
                         color: AppColors.kPrimaryColor,
                       ),
                     ),
@@ -191,16 +189,18 @@ color: AppColors.kGray200,
       ),
       body: BlocBuilder<NavigationCubit, NavigationState>(
         builder: (context, state) {
-          if (state is HomeState) {
-            return const HomePage();
-          } else if (state is TapeState) {
+          if (state is TapeState) {
             return TapePage();
+          } else if (state is HomeState) {
+            return HomePage(
+              globalKey: _key,
+            );
           } else if (state is FavoriteState) {
             return FavoritePage();
           } else if (state is BasketState) {
             return const BasketPage();
           } else if (state is MyOrderState) {
-            return MyOrderPage();
+            return const MyOrderPage();
           } else if (state is AuthState) {
             return const ViewAuthRegisterPage();
           }
@@ -208,5 +208,161 @@ color: AppColors.kGray200,
         },
       ),
     );
+    // AutoTabsScaffold(
+    //   key: _key,
+    //   drawer: const DrawerHome(),
+    //   routes: [
+    //     BaseHomeRouter(
+    //       children: [
+    //         HomePageRoute(
+    //           drawerCallback: () {
+    //             _key.currentState!.openDrawer();
+    //           },
+    //         )
+    //       ],
+    //     ), // globalKey: _key
+    //     TapePageRoute(),
+    //     FavoritePageRoute(),
+    //     const BasketPageRoute(),
+    //     const MyOrderPageRoute(),
+    //   ],
+    //   bottomNavigationBuilder: (_, tabsRouter) {
+    //     return SizedBox(
+    //       child: BottomNavigationBar(
+    //         currentIndex: tabsRouter.activeIndex,
+    //         selectedItemColor: AppColors.kPrimaryColor,
+    //         unselectedItemColor: AppColors.kGray200,
+    //         selectedFontSize: 12,
+    //         elevation: 4,
+    //         showSelectedLabels: true,
+    //         showUnselectedLabels: true,
+    //         onTap: (int index) {
+    //           // log('Before ontap ${context.router.stack}', name: _tag);
+
+    //           if (tabsRouter.activeIndex == index) {
+    //             // log('${tabsRouter.canPopSelfOrChildren}');
+    //             // context
+    //             //     .innerRouterOf<TabsRouter>(LauncherRoute.name)
+    //             //     ?.root
+    //             //     .popUntil((route) => route.isFirst);
+    //             tabsRouter.popTop();
+    //             // tabsRouter.popTop();
+
+    //             // context.router.replace(LauncherRoute());
+    //             // context.router.po((route) {
+    //             //   log('', name: _tag);
+    //             //   return route.isFirst;
+    //             // });
+    //           } else {
+    //             tabsRouter.setActiveIndex(index);
+    //           }
+    //         },
+    //         items: [
+    //           BottomNavigationBarItem(
+    //             icon: SvgPicture.asset(
+    //               'assets/icons/tape.svg',
+    //               color: AppColors.kGray200,
+    //             ),
+    //             label: 'Лента',
+    //             activeIcon: ClipOval(
+    //               child: Material(
+    //                 color: Colors.white, // Button color
+    //                 child: SizedBox(
+    //                   width: 42,
+    //                   height: 42,
+    //                   child: SvgPicture.asset(
+    //                     'assets/icons/tape.svg',
+    //                     color: AppColors.kPrimaryColor,
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //           BottomNavigationBarItem(
+    //             icon: SvgPicture.asset(
+    //               'assets/icons/store.svg',
+    //               color: AppColors.kGray200,
+    //             ),
+    //             label: 'Маркет',
+    //             activeIcon: ClipOval(
+    //               child: Material(
+    //                 color: Colors.white, // Button color
+    //                 child: SizedBox(
+    //                   width: 42,
+    //                   height: 42,
+    //                   child: SvgPicture.asset(
+    //                     'assets/icons/store.svg',
+    //                     color: AppColors.kPrimaryColor,
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //           BottomNavigationBarItem(
+    //             icon: SvgPicture.asset(
+    //               'assets/icons/favorite.svg',
+    //               color: AppColors.kGray200,
+    //             ),
+    //             label: 'Избранное',
+    //             activeIcon: ClipOval(
+    //               child: Material(
+    //                 color: Colors.white, // Button color
+    //                 child: SizedBox(
+    //                   width: 42,
+    //                   height: 42,
+    //                   child: SvgPicture.asset(
+    //                     'assets/icons/favorite.svg',
+    //                     color: AppColors.kPrimaryColor,
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //           BottomNavigationBarItem(
+    //             icon: SvgPicture.asset(
+    //               'assets/icons/basket.svg',
+    //               color: AppColors.kGray200,
+    //             ),
+    //             label: 'Корзина',
+    //             activeIcon: ClipOval(
+    //               child: Material(
+    //                 color: Colors.white, // Button color
+    //                 child: SizedBox(
+    //                   width: 42,
+    //                   height: 42,
+    //                   child: SvgPicture.asset(
+    //                     'assets/icons/basket.svg',
+    //                     color: AppColors.kPrimaryColor,
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //           BottomNavigationBarItem(
+    //             icon: SvgPicture.asset(
+    //               'assets/icons/my_orders.svg',
+    //               color: AppColors.kGray200,
+    //             ),
+    //             label: 'Мои заказы',
+    //             activeIcon: ClipOval(
+    //               child: Material(
+    //                 color: Colors.white, // Button color
+    //                 child: SizedBox(
+    //                   width: 42,
+    //                   height: 42,
+    //                   child: SvgPicture.asset(
+    //                     'assets/icons/my_orders.svg',
+    //                     color: AppColors.kPrimaryColor,
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     );
+    //   },
+    // );
+  
   }
 }

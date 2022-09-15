@@ -9,7 +9,6 @@ import 'package:haji_market/admin/my_products_admin/presentation/ui/my_products_
 import 'package:haji_market/admin/tape_admin/presentation/ui/tape_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 
-
 import '../../profile_admin/presentation/ui/admin_profile_page.dart';
 
 class BaseAdmin extends StatefulWidget {
@@ -21,7 +20,7 @@ class BaseAdmin extends StatefulWidget {
   _BaseAdminState createState() => _BaseAdminState();
 }
 
-int basePageIndex = 0;
+int basePageIndex1 = 0;
 
 class _BaseAdminState extends State<BaseAdmin> {
   @override
@@ -48,18 +47,18 @@ class _BaseAdminState extends State<BaseAdmin> {
           BlocBuilder<AdminNavigationCubit, AdminNavigationState>(
         builder: (context, state) {
           return BottomNavigationBar(
-            currentIndex: basePageIndex,
+            currentIndex: basePageIndex1,
             onTap: (int index) {
               switch (index) {
                 case 0:
                   BlocProvider.of<AdminNavigationCubit>(context)
                       .getNavBarItemAdmin(
-                          const AdminNavigationState.homeAdmin());
+                          const AdminNavigationState.tapeAdmin());
                   break;
                 case 1:
                   BlocProvider.of<AdminNavigationCubit>(context)
                       .getNavBarItemAdmin(
-                          const AdminNavigationState.tapeAdmin());
+                          const AdminNavigationState.homeAdmin());
                   break;
                 case 2:
                   BlocProvider.of<AdminNavigationCubit>(context)
@@ -73,42 +72,22 @@ class _BaseAdminState extends State<BaseAdmin> {
               }
               print(index);
               setState(() {
-                basePageIndex = index;
+                basePageIndex1 = index;
               });
             },
-            selectedItemColor: AppColors.kPinkColor,
-            unselectedItemColor: const Color(0xFF99A2AD),
+            selectedItemColor: AppColors.kPrimaryColor,
+            unselectedItemColor: AppColors.kGray200,
             selectedFontSize: 12,
             elevation: 4,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
             items: [
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  'assets/icons/store.svg',
-                  color: Colors.grey.shade600,
-                ),
-                label: 'Маркет',
-                activeIcon: ClipOval(
-                  child: Material(
-                    color: Colors.white, // Button color
-                    child: SizedBox(
-                      width: 42,
-                      height: 42,
-                      child: SvgPicture.asset(
-                        'assets/icons/store.svg',
-                        color: AppColors.kPrimaryColor,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
                   'assets/icons/tape.svg',
-                  color: Colors.grey.shade600,
+                  color: AppColors.kGray200,
                 ),
-                label: 'Избранное',
+                label: 'Лента',
                 activeIcon: ClipOval(
                   child: Material(
                     color: Colors.white, // Button color
@@ -125,10 +104,10 @@ class _BaseAdminState extends State<BaseAdmin> {
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  'assets/icons/basket.svg',
-                  color: Colors.grey.shade600,
+                  'assets/icons/date.svg',
+                  color: AppColors.kGray200,
                 ),
-                label: 'Корзина',
+                label: 'Мои товары',
                 activeIcon: ClipOval(
                   child: Material(
                     color: Colors.white, // Button color
@@ -136,7 +115,7 @@ class _BaseAdminState extends State<BaseAdmin> {
                       width: 42,
                       height: 42,
                       child: SvgPicture.asset(
-                        'assets/icons/basket.svg',
+                        'assets/icons/date.svg',
                         color: AppColors.kPrimaryColor,
                       ),
                     ),
@@ -145,10 +124,10 @@ class _BaseAdminState extends State<BaseAdmin> {
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  'assets/icons/user.svg',
-                  color: Colors.grey.shade600,
+                  'assets/icons/docs.svg',
+                  color: AppColors.kGray200,
                 ),
-                label: 'Мои заказы',
+                label: 'Заказы',
                 activeIcon: ClipOval(
                   child: Material(
                     color: Colors.white, // Button color
@@ -156,7 +135,27 @@ class _BaseAdminState extends State<BaseAdmin> {
                       width: 42,
                       height: 42,
                       child: SvgPicture.asset(
-                        'assets/icons/user.svg',
+                        'assets/icons/docs.svg',
+                        color: AppColors.kPrimaryColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  'assets/icons/account.svg',
+                  color: AppColors.kGray200,
+                ),
+                label: 'Профиль',
+                activeIcon: ClipOval(
+                  child: Material(
+                    color: Colors.white, // Button color
+                    child: SizedBox(
+                      width: 42,
+                      height: 42,
+                      child: SvgPicture.asset(
+                        'assets/icons/account.svg',
                         color: AppColors.kPrimaryColor,
                       ),
                     ),
@@ -169,10 +168,10 @@ class _BaseAdminState extends State<BaseAdmin> {
       ),
       body: BlocBuilder<AdminNavigationCubit, AdminNavigationState>(
         builder: (context, state) {
-          if (state is HomeAdminState) {
-            return MyProductsAdminPage();
-          } else if (state is TapeAdminState) {
+          if (state is TapeAdminState) {
             return TapeAdminPage();
+          } else if (state is HomeAdminState) {
+            return const MyProductsAdminPage();
           } else if (state is MyOrderAdminState) {
             return MyOrdersAdminPage();
           } else if (state is ProfileState) {

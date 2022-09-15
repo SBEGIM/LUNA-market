@@ -18,8 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AdminNavigationState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() homeAdmin,
     required TResult Function() tapeAdmin,
+    required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
     required TResult Function() adminAuth,
@@ -27,8 +27,8 @@ mixin _$AdminNavigationState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? homeAdmin,
     TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
     TResult Function()? adminAuth,
@@ -36,8 +36,8 @@ mixin _$AdminNavigationState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? homeAdmin,
     TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
     TResult Function()? adminAuth,
@@ -46,8 +46,8 @@ mixin _$AdminNavigationState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
     required TResult Function(AdminAuthState value) adminAuth,
@@ -55,8 +55,8 @@ mixin _$AdminNavigationState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
     TResult Function(AdminAuthState value)? adminAuth,
@@ -64,8 +64,8 @@ mixin _$AdminNavigationState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
     TResult Function(AdminAuthState value)? adminAuth,
@@ -89,129 +89,6 @@ class _$AdminNavigationStateCopyWithImpl<$Res>
   final AdminNavigationState _value;
   // ignore: unused_field
   final $Res Function(AdminNavigationState) _then;
-}
-
-/// @nodoc
-abstract class _$$HomeAdminStateCopyWith<$Res> {
-  factory _$$HomeAdminStateCopyWith(
-          _$HomeAdminState value, $Res Function(_$HomeAdminState) then) =
-      __$$HomeAdminStateCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$HomeAdminStateCopyWithImpl<$Res>
-    extends _$AdminNavigationStateCopyWithImpl<$Res>
-    implements _$$HomeAdminStateCopyWith<$Res> {
-  __$$HomeAdminStateCopyWithImpl(
-      _$HomeAdminState _value, $Res Function(_$HomeAdminState) _then)
-      : super(_value, (v) => _then(v as _$HomeAdminState));
-
-  @override
-  _$HomeAdminState get _value => super._value as _$HomeAdminState;
-}
-
-/// @nodoc
-
-class _$HomeAdminState implements HomeAdminState {
-  const _$HomeAdminState();
-
-  @override
-  String toString() {
-    return 'AdminNavigationState.homeAdmin()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$HomeAdminState);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() homeAdmin,
-    required TResult Function() tapeAdmin,
-    required TResult Function() myOrderAdmin,
-    required TResult Function() profile,
-    required TResult Function() adminAuth,
-  }) {
-    return homeAdmin();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? homeAdmin,
-    TResult Function()? tapeAdmin,
-    TResult Function()? myOrderAdmin,
-    TResult Function()? profile,
-    TResult Function()? adminAuth,
-  }) {
-    return homeAdmin?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? homeAdmin,
-    TResult Function()? tapeAdmin,
-    TResult Function()? myOrderAdmin,
-    TResult Function()? profile,
-    TResult Function()? adminAuth,
-    required TResult orElse(),
-  }) {
-    if (homeAdmin != null) {
-      return homeAdmin();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(HomeAdminState value) homeAdmin,
-    required TResult Function(TapeAdminState value) tapeAdmin,
-    required TResult Function(MyOrderAdminState value) myOrderAdmin,
-    required TResult Function(ProfileState value) profile,
-    required TResult Function(AdminAuthState value) adminAuth,
-  }) {
-    return homeAdmin(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeAdminState value)? homeAdmin,
-    TResult Function(TapeAdminState value)? tapeAdmin,
-    TResult Function(MyOrderAdminState value)? myOrderAdmin,
-    TResult Function(ProfileState value)? profile,
-    TResult Function(AdminAuthState value)? adminAuth,
-  }) {
-    return homeAdmin?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomeAdminState value)? homeAdmin,
-    TResult Function(TapeAdminState value)? tapeAdmin,
-    TResult Function(MyOrderAdminState value)? myOrderAdmin,
-    TResult Function(ProfileState value)? profile,
-    TResult Function(AdminAuthState value)? adminAuth,
-    required TResult orElse(),
-  }) {
-    if (homeAdmin != null) {
-      return homeAdmin(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class HomeAdminState implements AdminNavigationState {
-  const factory HomeAdminState() = _$HomeAdminState;
 }
 
 /// @nodoc
@@ -255,8 +132,8 @@ class _$TapeAdminState implements TapeAdminState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() homeAdmin,
     required TResult Function() tapeAdmin,
+    required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
     required TResult Function() adminAuth,
@@ -267,8 +144,8 @@ class _$TapeAdminState implements TapeAdminState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? homeAdmin,
     TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
     TResult Function()? adminAuth,
@@ -279,8 +156,8 @@ class _$TapeAdminState implements TapeAdminState {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? homeAdmin,
     TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
     TResult Function()? adminAuth,
@@ -295,8 +172,8 @@ class _$TapeAdminState implements TapeAdminState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
     required TResult Function(AdminAuthState value) adminAuth,
@@ -307,8 +184,8 @@ class _$TapeAdminState implements TapeAdminState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
     TResult Function(AdminAuthState value)? adminAuth,
@@ -319,8 +196,8 @@ class _$TapeAdminState implements TapeAdminState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
     TResult Function(AdminAuthState value)? adminAuth,
@@ -335,6 +212,129 @@ class _$TapeAdminState implements TapeAdminState {
 
 abstract class TapeAdminState implements AdminNavigationState {
   const factory TapeAdminState() = _$TapeAdminState;
+}
+
+/// @nodoc
+abstract class _$$HomeAdminStateCopyWith<$Res> {
+  factory _$$HomeAdminStateCopyWith(
+          _$HomeAdminState value, $Res Function(_$HomeAdminState) then) =
+      __$$HomeAdminStateCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$HomeAdminStateCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res>
+    implements _$$HomeAdminStateCopyWith<$Res> {
+  __$$HomeAdminStateCopyWithImpl(
+      _$HomeAdminState _value, $Res Function(_$HomeAdminState) _then)
+      : super(_value, (v) => _then(v as _$HomeAdminState));
+
+  @override
+  _$HomeAdminState get _value => super._value as _$HomeAdminState;
+}
+
+/// @nodoc
+
+class _$HomeAdminState implements HomeAdminState {
+  const _$HomeAdminState();
+
+  @override
+  String toString() {
+    return 'AdminNavigationState.homeAdmin()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$HomeAdminState);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() tapeAdmin,
+    required TResult Function() homeAdmin,
+    required TResult Function() myOrderAdmin,
+    required TResult Function() profile,
+    required TResult Function() adminAuth,
+  }) {
+    return homeAdmin();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
+    TResult Function()? myOrderAdmin,
+    TResult Function()? profile,
+    TResult Function()? adminAuth,
+  }) {
+    return homeAdmin?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
+    TResult Function()? myOrderAdmin,
+    TResult Function()? profile,
+    TResult Function()? adminAuth,
+    required TResult orElse(),
+  }) {
+    if (homeAdmin != null) {
+      return homeAdmin();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(HomeAdminState value) homeAdmin,
+    required TResult Function(MyOrderAdminState value) myOrderAdmin,
+    required TResult Function(ProfileState value) profile,
+    required TResult Function(AdminAuthState value) adminAuth,
+  }) {
+    return homeAdmin(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
+    TResult Function(MyOrderAdminState value)? myOrderAdmin,
+    TResult Function(ProfileState value)? profile,
+    TResult Function(AdminAuthState value)? adminAuth,
+  }) {
+    return homeAdmin?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
+    TResult Function(MyOrderAdminState value)? myOrderAdmin,
+    TResult Function(ProfileState value)? profile,
+    TResult Function(AdminAuthState value)? adminAuth,
+    required TResult orElse(),
+  }) {
+    if (homeAdmin != null) {
+      return homeAdmin(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class HomeAdminState implements AdminNavigationState {
+  const factory HomeAdminState() = _$HomeAdminState;
 }
 
 /// @nodoc
@@ -378,8 +378,8 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() homeAdmin,
     required TResult Function() tapeAdmin,
+    required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
     required TResult Function() adminAuth,
@@ -390,8 +390,8 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? homeAdmin,
     TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
     TResult Function()? adminAuth,
@@ -402,8 +402,8 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? homeAdmin,
     TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
     TResult Function()? adminAuth,
@@ -418,8 +418,8 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
     required TResult Function(AdminAuthState value) adminAuth,
@@ -430,8 +430,8 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
     TResult Function(AdminAuthState value)? adminAuth,
@@ -442,8 +442,8 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
     TResult Function(AdminAuthState value)? adminAuth,
@@ -501,8 +501,8 @@ class _$ProfileState implements ProfileState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() homeAdmin,
     required TResult Function() tapeAdmin,
+    required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
     required TResult Function() adminAuth,
@@ -513,8 +513,8 @@ class _$ProfileState implements ProfileState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? homeAdmin,
     TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
     TResult Function()? adminAuth,
@@ -525,8 +525,8 @@ class _$ProfileState implements ProfileState {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? homeAdmin,
     TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
     TResult Function()? adminAuth,
@@ -541,8 +541,8 @@ class _$ProfileState implements ProfileState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
     required TResult Function(AdminAuthState value) adminAuth,
@@ -553,8 +553,8 @@ class _$ProfileState implements ProfileState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
     TResult Function(AdminAuthState value)? adminAuth,
@@ -565,8 +565,8 @@ class _$ProfileState implements ProfileState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
     TResult Function(AdminAuthState value)? adminAuth,
@@ -624,8 +624,8 @@ class _$AdminAuthState implements AdminAuthState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() homeAdmin,
     required TResult Function() tapeAdmin,
+    required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
     required TResult Function() adminAuth,
@@ -636,8 +636,8 @@ class _$AdminAuthState implements AdminAuthState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? homeAdmin,
     TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
     TResult Function()? adminAuth,
@@ -648,8 +648,8 @@ class _$AdminAuthState implements AdminAuthState {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? homeAdmin,
     TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
     TResult Function()? adminAuth,
@@ -664,8 +664,8 @@ class _$AdminAuthState implements AdminAuthState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
     required TResult Function(AdminAuthState value) adminAuth,
@@ -676,8 +676,8 @@ class _$AdminAuthState implements AdminAuthState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
     TResult Function(AdminAuthState value)? adminAuth,
@@ -688,8 +688,8 @@ class _$AdminAuthState implements AdminAuthState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
     TResult Function(AdminAuthState value)? adminAuth,

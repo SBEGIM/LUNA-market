@@ -35,6 +35,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
             'Заявка на сотрудничество',
             style: TextStyle(
               color: Colors.black,
+              fontSize: 16,fontWeight: FontWeight.w500,
             ),
           )),
       body: ListView(
@@ -97,10 +98,10 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                       'Я согласен на обработку персональных данных',
                       style: TextStyle(
                           color: AppColors.kGray900,
-                          fontSize: 16,
+                          fontSize: 15,
                           fontWeight: FontWeight.w400),
                     )),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     )
                   ],

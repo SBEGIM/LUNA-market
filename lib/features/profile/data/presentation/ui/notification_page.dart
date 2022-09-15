@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 
 class NotificationPage extends StatefulWidget {
   NotificationPage({Key? key}) : super(key: key);
@@ -15,6 +16,12 @@ class _NotificationPageState extends State<NotificationPage> {
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 22.0),
+          child: CustomBackButton(onTap: () {
+            Navigator.pop(context);
+          }),
+        ),
         title: const Text(
           'Уведомления',
           style: TextStyle(
@@ -36,7 +43,7 @@ class _NotificationPageState extends State<NotificationPage> {
       body: Column(
         children: [
           const SizedBox(
-            height: 10,
+            height: 8,
           ),
           Container(
             color: Colors.white,
@@ -58,7 +65,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       Icon(
                         Icons.arrow_forward_ios,
                         color: AppColors.kPrimaryColor,
-                        size: 18,
+                        size: 14,
                       )
                     ],
                   ),
@@ -83,7 +90,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       Icon(
                         Icons.arrow_forward_ios,
                         color: AppColors.kPrimaryColor,
-                        size: 18,
+                        size: 14,
                       )
                     ],
                   ),
@@ -108,7 +115,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       Icon(
                         Icons.arrow_forward_ios,
                         color: AppColors.kPrimaryColor,
-                        size: 18,
+                        size: 14,
                       )
                     ],
                   ),

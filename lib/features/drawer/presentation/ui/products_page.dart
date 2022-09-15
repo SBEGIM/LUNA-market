@@ -22,34 +22,46 @@ class _ProductsPageState extends State<ProductsPage> {
           iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
           backgroundColor: Colors.white,
           elevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.kPrimaryColor,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: AppColors.kPrimaryColor,
+              ),
             ),
           ),
-          actions: const [
+          actions: [
             Padding(
-              padding: EdgeInsets.only(right: 22.0),
-              child: Icon(
-                Icons.download_rounded,
-              ),
-            )
+                padding: const EdgeInsets.only(right: 20.0),
+                child: SvgPicture.asset('assets/icons/share.svg'))
           ],
-          title: const TextField(
-            decoration: InputDecoration(
-              hintText: 'Поиск',
-              hintStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
+          leadingWidth: 11,
+          title: Container(
+            width: double.infinity,
+            height: 40,
+            decoration: BoxDecoration(
+                color: const Color(0xFFF8F8F8),
+                borderRadius: BorderRadius.circular(10)),
+            child: const TextField(
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: AppColors.kGray300,
+                ),
+                hintText: 'Поиск',
+                hintStyle: TextStyle(
+                  color: AppColors.kGray300,
+                  fontSize: 18,
+                ),
+                border: InputBorder.none,
               ),
-              border: InputBorder.none,
-            ),
-            style: TextStyle(
-              color: Colors.black,
+              style: TextStyle(
+                color: Colors.black,
+              ),
             ),
           )),
       body: ListView(
@@ -62,7 +74,10 @@ class _ProductsPageState extends State<ProductsPage> {
             padding: const EdgeInsets.all(9),
             child: const Text(
               'Компьютеры',
-              style: AppTextStyles.appBarTextStylea,
+              style: TextStyle(
+                  color: AppColors.kGray900,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
             ),
           ),
           const SizedBox(
@@ -77,18 +92,18 @@ class _ProductsPageState extends State<ProductsPage> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Wrap(
-                        spacing: 6,
+                        spacing: 12,
                         runSpacing: 6,
                         children: [
-                          chip('Гаджеты',AppColors.kPrimaryColor),
-                          chip('Аксессуары',AppColors.kPrimaryColor),
-                          chip('Смартфоны',AppColors.kPrimaryColor),
-                          chip('Радиотелефоны',AppColors.kPrimaryColor),
+                          chipCat('Гаджеты', AppColors.kPrimaryColor),
+                          chipCat('Аксессуары', AppColors.kPrimaryColor),
+                          chipCat('Смартфоны', AppColors.kPrimaryColor),
+                          chipCat('Радиотелефоны', AppColors.kPrimaryColor),
                         ],
                       ),
                     )),
                 const Divider(
-                  color: Colors.black,
+                  color: AppColors.kGray400,
                 ),
               ],
             ),
@@ -137,7 +152,7 @@ class _ProductsPageState extends State<ProductsPage> {
             ),
           ),
           const Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.only(left: 8.0, right: 8, top: 16, bottom: 12),
             child: Text(
               'Найдено 19245 товаров',
               style: AppTextStyles.kGray400Text,
@@ -180,14 +195,40 @@ Widget chip(
       ),
     ),
     backgroundColor: color,
-    elevation: 6.0,
-    shadowColor: Colors.grey[60],
+    elevation: 1.0,
+
+    // shadowColor: Colors.grey[60],
     padding: const EdgeInsets.all(6.0),
   );
 }
+
+Widget chipCat(
+  String label,
+  Color color,
+) {
+  return Chip(
+    labelPadding: const EdgeInsets.all(4.0),
+    label: Text(
+      label,
+      style: const TextStyle(
+        color: Colors.white,
+      ),
+    ),
+    backgroundColor: color,
+    elevation: 1.0,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(10),
+            bottomRight: Radius.circular(10),
+            topLeft: Radius.circular(10),
+            bottomLeft: Radius.circular(10))),
+    // shadowColor: Colors.grey[60],
+    padding: const EdgeInsets.all(6.0),
+  );
+}
+
 Widget chipDate(
   String label,
-
 ) {
   return Chip(
     labelPadding: const EdgeInsets.all(1.0),
@@ -209,15 +250,25 @@ Widget chipWithDropDown(
 ) {
   return Chip(
     labelPadding: const EdgeInsets.all(4.0),
-    label: Text(
-      label,
-      style: const TextStyle(
-        color: Colors.black,
-      ),
+    label: Row(
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        const Icon(
+          Icons.keyboard_arrow_down_sharp,
+          color: AppColors.kGray400,
+          size: 16,
+        )
+      ],
     ),
     backgroundColor: Colors.white,
-    elevation: 6.0,
-    shadowColor: Colors.grey[60],
+    shape: const RoundedRectangleBorder(
+        side: BorderSide(color: AppColors.kGray2), //the outline color
+        borderRadius: BorderRadius.all(Radius.circular(10))),
     padding: const EdgeInsets.all(6.0),
   );
 }

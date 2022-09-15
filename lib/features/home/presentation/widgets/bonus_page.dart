@@ -112,7 +112,7 @@ class _BonusPageState extends State<BonusPage> {
                     fontSize: 12,
                     fontWeight: FontWeight.w400),
               ),
-              trailing: Icon(Icons.arrow_forward_ios),
+              trailing: Icon(Icons.arrow_forward_ios,size: 16,),
             ),
           ),
           const SizedBox(
@@ -135,7 +135,7 @@ class _BonusPageState extends State<BonusPage> {
                     fontSize: 12,
                     fontWeight: FontWeight.w400),
               ),
-              trailing: Icon(Icons.arrow_forward_ios),
+              trailing: Icon(Icons.arrow_forward_ios,size: 16,),
             ),
           ),
         ],

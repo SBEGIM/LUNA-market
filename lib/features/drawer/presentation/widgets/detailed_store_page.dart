@@ -14,7 +14,7 @@ class DetailStorePage extends StatefulWidget {
 class _DetailStorePageState extends State<DetailStorePage> {
   // List<bool>? isSelected;
   int index = 0;
-
+  bool isSelected = true;
   // @override
   // void initState() {
   //   isSelected = [true, false];
@@ -45,14 +45,10 @@ class _DetailStorePageState extends State<DetailStorePage> {
               fontWeight: FontWeight.w500,
               fontSize: 18),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 16.0),
-            child: Icon(
-              Icons.ios_share_rounded,
-              color: AppColors.kPrimaryColor,
-            ),
-          )
+              padding: const EdgeInsets.only(right: 16.0),
+              child: SvgPicture.asset('assets/icons/share.svg'))
         ],
       ),
       // appBar: ,
@@ -63,65 +59,115 @@ class _DetailStorePageState extends State<DetailStorePage> {
             height: 10,
           ),
           Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.only(
+                left: 16,
+                // right: 16,
+              ),
               color: Colors.white,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Дата регистрации: 20.06.2022',
-                    style: TextStyle(
-                        color: AppColors.kGray300,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500),
+                  ListTile(
+                    minVerticalPadding: 14,
+                    leading: Image.asset(
+                      'assets/images/zara.png',
+                      width: 50,
+                      height: 50,
+                    ),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          'Дата регистрации: 20.06.2022',
+                          style: TextStyle(
+                              color: AppColors.kGray300,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        RatingBar(
+                          ignoreGestures: true,
+                          initialRating: 2,
+                          unratedColor: const Color(0x30F11712),
+                          itemSize: 15,
+                          // itemPadding:
+                          // const EdgeInsets.symmetric(horizontal: 4.0),
+                          ratingWidget: RatingWidget(
+                            full: const Icon(
+                              Icons.star,
+                              color: Color(0xFFFFC107),
+                            ),
+                            half: const Icon(
+                              Icons.star,
+                              color: Color(0xFFFFC107),
+                            ),
+                            empty: const Icon(
+                              Icons.star,
+                              color: Color(0xFFFFC107),
+                            ),
+                          ),
+                          onRatingUpdate: (double value) {},
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15, left: 10),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset('assets/icons/check_circle.svg'),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              const Text(
+                                'Более 1 000 успешных продаж',
+                                style: TextStyle(
+                                    color: AppColors.kPrimaryColor,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        isSelected = false;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.kPrimaryColor),
+                          borderRadius: BorderRadius.circular(10),
+                          color: isSelected == true
+                              ? Colors.white
+                              : const Color(0x331DC4CF),
+                              // : const Color.fromRGBO(29, 196, 207, 0.2),
+                        ),
+                        padding: const EdgeInsets.only(
+                            left: 16, right: 16, top: 16, bottom: 16),
+                        child: Text(
+                          isSelected == true ? 'Подписаться' : 'Вы подписаны',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.kPrimaryColor),
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  RatingBar(
-                    ignoreGestures: true,
-                    initialRating: 2,
-                    unratedColor: const Color(0x30F11712),
-                    itemSize: 15,
-                    // itemPadding:
-                    // const EdgeInsets.symmetric(horizontal: 4.0),
-                    ratingWidget: RatingWidget(
-                      full: const Icon(Icons.star),
-                      half: const Icon(Icons.star),
-                      empty: const Icon(Icons.star),
-                    ),
-                    onRatingUpdate: (double value) {},
-                  ),
-                  ListTile(
-                    leading: SvgPicture.asset('assets/icons/check_circle.svg'),
-                    title: const Text(
-                      'Более 1 000 успешных продаж',
-                      style: TextStyle(
-                          color: AppColors.kPrimaryColor,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.kPrimaryColor),
-                      borderRadius: BorderRadius.circular(10),
-                      // color: Colors.black),
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    child: const Text(
-                      'Подписаться',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.kPrimaryColor),
-                    ),
-                  )
                 ],
               )),
           Container(
@@ -131,12 +177,10 @@ class _DetailStorePageState extends State<DetailStorePage> {
                 const Divider(
                   color: AppColors.kGray300,
                 ),
-                const ListTile(
-                  leading: Icon(
-                    Icons.message_rounded,
-                    color: AppColors.kPrimaryColor,
-                  ),
-                  title: Text(
+                ListTile(
+                  minLeadingWidth: 10,
+                  leading: SvgPicture.asset('assets/icons/message.svg'),
+                  title: const Text(
                     'Чат с поддержкой',
                     style: TextStyle(
                         color: AppColors.kGray900,
@@ -158,6 +202,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
                     trailing: Icon(
                       Icons.arrow_forward_ios,
                       color: AppColors.kPrimaryColor,
+                      size: 16,
                     )),
                 const Divider(
                   color: AppColors.kGray300,
@@ -196,8 +241,8 @@ class _DetailStorePageState extends State<DetailStorePage> {
                         decoration: BoxDecoration(
                             border: Border.all(color: AppColors.kGray300),
                             borderRadius: const BorderRadius.only(
-                                topRight: const Radius.circular(10),
-                                bottomRight: const Radius.circular(10))),
+                                topRight:  Radius.circular(10),
+                                bottomRight:  Radius.circular(10))),
                         child: const Text(
                           'Пункты самовывоза',
                           textAlign: TextAlign.center,
@@ -226,25 +271,22 @@ class _DetailStorePageState extends State<DetailStorePage> {
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(),
               itemBuilder: (BuildContext context, int index) {
-                return const ListTile(
+                return  ListTile(
                   minLeadingWidth: 23,
                   leading: Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: Icon(
-                      Icons.share_location_outlined,
-                      color: AppColors.kPrimaryColor,
-                    ),
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: SvgPicture.asset('assets/icons/location.svg')
                   ),
-                  title: Text(
+                  title: const Text(
                     'Алматы, улица Байзакова, 280',
                     style: TextStyle(
                         color: AppColors.kGray900,
                         fontSize: 16,
                         fontWeight: FontWeight.w400),
                   ),
-                  subtitle: Text(
+                  subtitle: const Text(
                     'Пн – Сб с 10:00 до 18:00, Вс – выходной',
-                    style: TextStyle(
+                    style:  TextStyle(
                         color: AppColors.kGray300,
                         fontSize: 12,
                         fontWeight: FontWeight.w400),

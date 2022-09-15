@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/auth/presentation/ui/forgot_password.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -134,7 +135,7 @@ class _AuthPageState extends State<AuthPage> {
                 press: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
+                    MaterialPageRoute(builder: (context) =>const  Base()),
                   );
                 },
                 color: Colors.white,

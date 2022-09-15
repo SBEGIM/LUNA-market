@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/categories_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/sorting_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/stores_sellers_page.dart';
-
 class FilterPage extends StatefulWidget {
   const FilterPage({Key? key}) : super(key: key);
 
@@ -80,21 +80,13 @@ class _FilterPageState extends State<FilterPage> {
                               selectedView = true;
                               setState(() {});
                             },
-                            child: Icon(Icons.menu,
-                                color: selectedView == false
-                                    ? AppColors.kPrimaryColor
-                                    : Colors.black)),
+                            child: SvgPicture.asset('assets/icons/all_cat.svg')),
                         InkWell(
                             onTap: () {
                               selectedView = false;
                               setState(() {});
                             },
-                            child: Icon(
-                              Icons.grid_3x3,
-                              color: selectedView == true
-                                  ? AppColors.kPrimaryColor
-                                  : Colors.black,
-                            )),
+                            child: SvgPicture.asset('assets/icons/all_cat2.svg')),
                       ],
                     ),
                   ),
@@ -206,6 +198,7 @@ class _FilterPageState extends State<FilterPage> {
                   ],
                 ),
                 RangeSlider(
+                  
                     divisions: 5,
                     activeColor: AppColors.kPrimaryColor,
                     inactiveColor: AppColors.kGray300,
@@ -416,17 +409,23 @@ class _FilterPageState extends State<FilterPage> {
     String label,
   ) {
     return Chip(
-      labelPadding: const EdgeInsets.all(4.0),
-      label: Text(
-        label,
-        style: const TextStyle(
-          color: Colors.black,
+    labelPadding: const EdgeInsets.all(4.0),
+    label:Text(
+          label,
+          style: const TextStyle(
+            color: Colors.black,
+          ),
         ),
-      ),
-      backgroundColor: Colors.white,
-      elevation: 6.0,
-      // shadowColor: AppColors.kPrimaryColor,
-      padding: const EdgeInsets.all(6.0),
-    );
+    backgroundColor: Colors.white,
+    elevation: 1.0,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(10),
+            bottomRight: Radius.circular(10),
+            topLeft: Radius.circular(10),
+            bottomLeft: Radius.circular(10))),
+    // shadowColor: Colors.grey[60],
+    padding: const EdgeInsets.all(6.0),
+  );
   }
 }

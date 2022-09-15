@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/features/home/presentation/ui/home_page.dart';
@@ -197,7 +198,7 @@ backgroundColor: isButtonEnabled? AppColors.kPrimaryColor: const Color(0xFFD6D8D
                 press: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
+                    MaterialPageRoute(builder: (context) =>const  Base()),
                   );
                 },
                 color: Colors.white,
