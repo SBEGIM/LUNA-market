@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/home/presentation/widgets/gridlayout_categor.dart';
-
-import '../widgets/grid_tape_list.dart';
+import 'package:haji_market/features/tape/presentation/widgets/tape_card_widget.dart';
 
 class TapePage extends StatefulWidget {
   TapePage({Key? key}) : super(key: key);
@@ -36,42 +34,51 @@ class _TapePageState extends State<TapePage> {
             ),
           )
         ],
-        title: DropdownButton(
-            elevation: 0,
-            icon: const Icon(
-              Icons.keyboard_arrow_down_sharp,
-              color: AppColors.kPrimaryColor,
-              size: 40,
-            ),
-            items: [
-              DropdownMenuItem(
-                value: 1,
+        title: PopupMenuButton(
+          onSelected: (value) {
+            // your logic
+            // if (value == 0) {
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => CategoryAdminPage()),
+            //   );
+            // }
+          },
+          itemBuilder: (BuildContext bc) {
+            return [
+              PopupMenuItem(
                 child: Row(
                   children: [
-                    const Text("Подписки"),
+                    Text(
+                      "Добавить товар",
+                      style: TextStyle(color: Colors.black),
+                    ),
                     SvgPicture.asset('assets/icons/lenta1.svg'),
                   ],
                 ),
+                value: 0,
               ),
-              DropdownMenuItem(
-                value: 2,
+              PopupMenuItem(
                 child: Row(
                   children: [
-                    const Text("Избранное"),
+                    Text("Добавить видео"),
                     SvgPicture.asset('assets/icons/lenta2.svg'),
                   ],
                 ),
-              )
-            ],
-            onChanged: (int? value) {
-              setState(() {
-                _value = value!;
-              });
-            },
-            hint: const Text(
-              "Лента",
-              style: AppTextStyles.appBarTextStylea,
-            )),
+                value: 1,
+              ),
+            ];
+          },
+          child: Text(
+            'Лента',
+            style: TextStyle(
+                color: AppColors.kGray900,
+                fontSize: 16,
+                fontWeight: FontWeight.w500),
+          ),
+          // Icon(Icons.done,color: AppColors.kPrimaryColor,size: 16,)
+        ),
       ),
       body: GridView(
         padding: const EdgeInsets.all(1),
@@ -81,35 +88,12 @@ class _TapePageState extends State<TapePage> {
           mainAxisSpacing: 3,
           crossAxisSpacing: 3,
         ),
-        children: [
-          Stack(
-            children: [
-              Image.asset('assets/images/tape.png'),
-               Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.transparent.withOpacity(0.4),
-                  child: const Text(
-                    'ZARA',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 30),
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(right: 8.0, top: 12),
-                child: Align(
-                    alignment: Alignment.topRight,
-                    child: Icon(Icons.rocket_launch_rounded)),
-              ),
-             
-            ],
-          ),
-          
-       
+        children:const [
+          TapeCardWidget(),
         ],
       ),
     );
   }
 }
+
+

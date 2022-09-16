@@ -14,7 +14,8 @@ class ProductCardWidget extends StatefulWidget {
 
 class _ProductCardWidgetState extends State<ProductCardWidget> {
   int count = 0;
-  bool isvisible = true;
+  bool isvisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -57,7 +58,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           child: const Padding(
                             padding: EdgeInsets.only(
                                 left: 8.0, right: 8, top: 4, bottom: 4),
-                            child:  Text(
+                            child: Text(
                               '0.0.12',
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -87,7 +88,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                             ),
                           ),
                         ),
-                         const SizedBox(
+                        const SizedBox(
                           height: 22,
                         ),
                         Container(
@@ -230,36 +231,101 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.12,
                     ),
-                    Visibility(
-                      visible: isvisible,
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            isvisible = !isvisible;
-                          });
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.29,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF1DC4CF),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: const EdgeInsets.only(
-                              left: 12, right: 12, bottom: 6, top: 6),
-                          child: const Center(
-                            child: Text(
-                              'В корзину',
-                              // textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600),
+                    count < 1
+                        ? SizedBox()
+                        : Visibility(
+                            visible: isvisible,
+                            child: Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      count -= 1;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    child: SvgPicture.asset(
+                                        'assets/icons/basket_1.svg'),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.1),
+                                          spreadRadius: 1,
+                                          blurRadius: 1,
+                                          offset: const Offset(0,
+                                              1), // changes position of shadow
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 14,
+                                ),
+                                Text('$count'),
+                                const SizedBox(
+                                  width: 14,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      count += 1;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    child: SvgPicture.asset(
+                                        'assets/icons/add_1.svg'),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.1),
+                                          spreadRadius: 1,
+                                          blurRadius: 1,
+                                          offset: const Offset(0,
+                                              1), // changes position of shadow
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                    
+                    count >= 1
+                        ? const SizedBox()
+                        : InkWell(
+                            onTap: () {
+                              setState(() {
+                                isvisible = !isvisible;
+                                count = 1;
+                              });
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.29,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF1DC4CF),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.only(
+                                  left: 12, right: 12, bottom: 6, top: 6),
+                              child: const Center(
+                                child: Text(
+                                  'В корзину',
+                                  // textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ),
+                          ),
                   ],
                 )
               ],

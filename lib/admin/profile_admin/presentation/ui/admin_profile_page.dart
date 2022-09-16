@@ -19,7 +19,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.kBackgroundColor,
+      // backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         backgroundColor: Colors.white,
@@ -40,59 +40,93 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
             color: Colors.black,
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Icon(
-              Icons.timer,
-              color: AppColors.kPrimaryColor,
-            ),
-          )
+              padding: EdgeInsets.only(right: 16.0),
+              child: SvgPicture.asset('assets/icons/notification.svg'))
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            ListTile(
-                leading: ClipOval(
-                  child: SizedBox(
-                    height: 60,
-                    width: 60,
-                    child: Image.asset(
-                      'assets/images/wireles.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+      body: Column(
+        children: [
+          ListTile(
+            horizontalTitleGap: 12,
+            leading: CircleAvatar(
+              backgroundImage: const AssetImage('assets/images/kana.png'),
+              radius: 34,
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: SvgPicture.asset(
+                  'assets/icons/camera.svg',
+                  fit: BoxFit.cover,
                 ),
-                title: const Text(
-                  'Маржан Жумадилова',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.kGray900,
-                    fontSize: 15,
-                  ),
-                ),
-                subtitle: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ReqirectProfilePage()),
-                    );
-                  },
-                  child: const Text(
-                    'Редактирование',
-                    style: TextStyle(
-                        color: AppColors.kPrimaryColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400),
-                  ),
-                )),
-            const Divider(
-              color: AppColors.kGray400,
+              ),
             ),
-            Row(
+            title: const Text(
+              'Маржан Жумадилова',
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.kGray900,
+                  fontSize: 16),
+            ),
+            subtitle: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ReqirectProfilePage()),
+                );
+              },
+              child: const Text(
+                'Редактирование',
+                style: TextStyle(
+                    color: AppColors.kPrimaryColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400),
+              ),
+            ),
+          ),
+          // ListTile(
+          //     leading: ClipOval(
+          //       child: SizedBox(
+          //         height: 60,
+          //         width: 60,
+          //         child: Image.asset(
+          //           'assets/images/wireles.png',
+          //           fit: BoxFit.cover,
+          //         ),
+          //       ),
+          //     ),
+          //     title: const Text(
+          //       'Маржан Жумадилова',
+          //       style: TextStyle(
+          //         fontWeight: FontWeight.w400,
+          //         color: AppColors.kGray900,
+          //         fontSize: 15,
+          //       ),
+          //     ),
+          // subtitle: InkWell(
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) => ReqirectProfilePage()),
+          //     );
+          //   },
+          //   child: const Text(
+          //     'Редактирование',
+          //     style: TextStyle(
+          //         color: AppColors.kPrimaryColor,
+          //         fontSize: 14,
+          //         fontWeight: FontWeight.w400),
+          //   ),
+          //     )),
+          const Divider(
+            color: AppColors.kGray400,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 15.0, bottom: 15, right: 15, left: 15),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
                 Text(
@@ -102,19 +136,27 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       fontSize: 16,
                       fontWeight: FontWeight.w400),
                 ),
-                Icon(Icons.arrow_forward_ios)
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                  color: AppColors.kGray300,
+                )
               ],
             ),
-            const Divider(
-              color: AppColors.kGray400,
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AbouShopAdminPage()),
-                );
-              },
+          ),
+          const Divider(
+            color: AppColors.kGray400,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AbouShopAdminPage()),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
@@ -125,15 +167,19 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                         fontSize: 16,
                         fontWeight: FontWeight.w400),
                   ),
-                  Icon(Icons.arrow_forward_ios)
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                    color: AppColors.kGray300,
+                  )
                 ],
               ),
             ),
-            const Divider(
-              color: AppColors.kGray400,
-            ),
-          ],
-        ),
+          ),
+          const Divider(
+            color: AppColors.kGray400,
+          ),
+        ],
       ),
     );
   }

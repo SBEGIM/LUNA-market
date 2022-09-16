@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:haji_market/features/app/widgets/custom_switch_button.dart';
+import 'package:haji_market/features/drawer/presentation/widgets/punkts_widget.dart';
 
 import '../../../../core/common/constants.dart';
 
@@ -12,6 +14,7 @@ class DetailStorePage extends StatefulWidget {
 }
 
 class _DetailStorePageState extends State<DetailStorePage> {
+  int segmentValue = 0;
   // List<bool>? isSelected;
   int index = 0;
   bool isSelected = true;
@@ -150,7 +153,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
                           color: isSelected == true
                               ? Colors.white
                               : const Color(0x331DC4CF),
-                              // : const Color.fromRGBO(29, 196, 207, 0.2),
+                          // : const Color.fromRGBO(29, 196, 207, 0.2),
                         ),
                         padding: const EdgeInsets.only(
                             left: 16, right: 16, top: 16, bottom: 16),
@@ -210,46 +213,52 @@ class _DetailStorePageState extends State<DetailStorePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        index = 0;
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        width: MediaQuery.of(context).size.width * 0.45,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.kGray300),
-                            borderRadius: const BorderRadius.only(
-                                bottomLeft: const Radius.circular(10),
-                                topLeft: const Radius.circular(10))),
-                        child: const Text(
-                          'Отзывы',
-                          textAlign: TextAlign.center,
-                        ),
+                CustomSwitchButton<int>(
+                  groupValue: segmentValue,
+                  children: {
+                    0: Container(
+                      alignment: Alignment.center,
+                      height: 39,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: const Text(
+                        'Отзывы ',
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            color:
+                                // segmentValue == 0
+                                Colors.black
+                            // : const Color(0xff9B9B9B),
+                            ),
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        index = 1;
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.45,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.kGray300),
-                            borderRadius: const BorderRadius.only(
-                                topRight:  Radius.circular(10),
-                                bottomRight:  Radius.circular(10))),
-                        child: const Text(
-                          'Пункты самовывоза',
-                          textAlign: TextAlign.center,
-                        ),
+                    1: Container(
+                      width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.center,
+                      height: 39,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: const Text(
+                        'Пункты самовывоза',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: Colors.black
+                            // : const Color(0xff9B9B9B),
+                            ),
                       ),
                     ),
-                  ],
+                  },
+                  onValueChanged: (int? value) async {
+                    if (value != null) {
+                      segmentValue = value;
+                    }
+                    setState(() {});
+                  },
                 ),
                 const SizedBox(
                   height: 20,
@@ -261,40 +270,14 @@ class _DetailStorePageState extends State<DetailStorePage> {
           const SizedBox(
             height: 10,
           ),
-          Container(
-            padding: const EdgeInsets.all(16),
-            color: Colors.white,
-            child: ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 4,
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-              itemBuilder: (BuildContext context, int index) {
-                return  ListTile(
-                  minLeadingWidth: 23,
-                  leading: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: SvgPicture.asset('assets/icons/location.svg')
-                  ),
-                  title: const Text(
-                    'Алматы, улица Байзакова, 280',
-                    style: TextStyle(
-                        color: AppColors.kGray900,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400),
-                  ),
-                  subtitle: const Text(
-                    'Пн – Сб с 10:00 до 18:00, Вс – выходной',
-                    style:  TextStyle(
-                        color: AppColors.kGray300,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
-                  ),
-                );
-              },
-            ),
+          IndexedStack(
+            index: segmentValue,
+            children: [
+              ReviewsWidget(),
+              PunktsWidget(),
+            ],
           )
+
           // ReviewsWidget(),
 
           // IndexedStack(
@@ -317,8 +300,10 @@ class ReviewsWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             'Отзывы',
@@ -376,9 +361,18 @@ class ReviewsWidget extends StatelessWidget {
                           // itemPadding:
                           // const EdgeInsets.symmetric(horizontal: 4.0),
                           ratingWidget: RatingWidget(
-                            full: const Icon(Icons.star),
-                            half: const Icon(Icons.star),
-                            empty: const Icon(Icons.star),
+                            full: const Icon(
+                              Icons.star,
+                              color: Color(0xFFFFC107),
+                            ),
+                            half: const Icon(
+                              Icons.star,
+                              color: Color(0xFFFFC107),
+                            ),
+                            empty: const Icon(
+                              Icons.star,
+                              color: Color(0xFFFFC107),
+                            ),
                           ),
                           onRatingUpdate: (double value) {},
                         ),
@@ -389,16 +383,19 @@ class ReviewsWidget extends StatelessWidget {
                     ),
                     const Text(
                       '14 мая 2021г.',
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.kGray300,
                           fontWeight: FontWeight.w500,
-                          fontSize: 14),
+                          fontSize: 12),
+                    ),
+                    const SizedBox(
+                      height: 4,
                     ),
                     const Text(
                       'Here is some long text that I am expecting will go off of the screen.',
                       style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14.0,
                           color: Colors.black),
                     ),
                     const SizedBox(

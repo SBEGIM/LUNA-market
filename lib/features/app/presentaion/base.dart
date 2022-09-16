@@ -16,7 +16,8 @@ import 'package:haji_market/features/my_order/presentation/ui/my_order_page.dart
 import 'package:haji_market/features/tape/presentation/ui/tape_page.dart';
 
 class Base extends StatefulWidget {
-  const Base({super.key});
+  final int? index;
+  const Base({ this.index,super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -30,16 +31,26 @@ class _BaseState extends State<Base> {
 
   @override
   void initState() {
+     if (widget.index != null) {
+      basePageIndex = widget.index!;
+
+      if (basePageIndex == 0) {
+        BlocProvider.of<NavigationCubit>(context)
+            .getNavBarItem(const NavigationState.home());
+      }
+      // } else if (basePageIndex == 3) {
+      //   BlocProvider.of<NavigationCubit>(context)
+      //       .getNavBarItem(const NavigationState.profile());
+      // }
+    }
     init();
     super.initState();
   }
 
-
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    return   
-     Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       key: _key,
       drawer: const DrawerHome(),
@@ -363,6 +374,5 @@ class _BaseState extends State<Base> {
     //     );
     //   },
     // );
-  
   }
 }

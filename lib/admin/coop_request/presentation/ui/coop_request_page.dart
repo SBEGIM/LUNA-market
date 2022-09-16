@@ -21,21 +21,13 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
           iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
           backgroundColor: Colors.white,
           elevation: 0,
-          // leading: IconButton(
-          //   onPressed: () {
-          //     Navigator.pop(context);
-          //   },
-          //   icon: const Icon(
-          //     Icons.arrow_back_ios,
-          //     color: AppColors.kPrimaryColor,
-          //   ),
-          // ),
           centerTitle: true,
           title: const Text(
             'Заявка на сотрудничество',
             style: TextStyle(
               color: Colors.black,
-              fontSize: 16,fontWeight: FontWeight.w500,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
           )),
       body: ListView(
@@ -58,27 +50,27 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                       color: AppColors.kGray900),
                 ),
                 const FieldsCoopRequest(
-                  titleText: 'ИИН/БИН *',
+                  titleText: 'ИИН/БИН ',
                   hintText: 'Введите ИИН/БИН',
                 ),
                 const FieldsCoopRequest(
-                  titleText: 'Название компании *',
+                  titleText: 'Название компании ',
                   hintText: 'Введите название компании',
                 ),
                 const FieldsCoopRequest(
-                  titleText: 'Основная категория товаров *',
+                  titleText: 'Основная категория товаров ',
                   hintText: 'Выберите категорию',
                 ),
                 const FieldsCoopRequest(
-                  titleText: 'Контактное имя *',
+                  titleText: 'Контактное имя ',
                   hintText: 'Введите контактное имя',
                 ),
                 const FieldsCoopRequest(
-                  titleText: 'Мобильный телефон *',
+                  titleText: 'Мобильный телефон ',
                   hintText: 'Введите мобильный телефон ',
                 ),
                 const FieldsCoopRequest(
-                  titleText: 'Email *',
+                  titleText: 'Email ',
                   hintText: 'Введите Email',
                 ),
                 Row(
@@ -160,12 +152,23 @@ class FieldsCoopRequest extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            titleText,
-            style: const TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 12,
-                color: AppColors.kGray900),
+          Row(
+            children: [
+              Text(
+                titleText,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                    color: AppColors.kGray900),
+              ),
+              Text(
+                '*',
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                    color: Colors.red),
+              ),
+            ],
           ),
           const SizedBox(
             height: 10,

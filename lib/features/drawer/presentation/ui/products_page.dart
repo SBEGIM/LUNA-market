@@ -231,16 +231,22 @@ Widget chipDate(
   String label,
 ) {
   return Chip(
-    labelPadding: const EdgeInsets.all(1.0),
+    labelPadding: const EdgeInsets.all(4.0),
     label: Text(
       label,
       style: const TextStyle(
-        color: Colors.black,
+        color: AppColors.kGray900,
       ),
     ),
-    backgroundColor: Colors.grey.shade50,
-    elevation: 6.0,
-    shadowColor: Colors.grey[60],
+    backgroundColor: const Color(0xFFEBEDF0),
+    // elevation: 1.0,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(4),
+            bottomRight: Radius.circular(4),
+            topLeft: Radius.circular(4),
+            bottomLeft: Radius.circular(4))),
+    // shadowColor: Colors.grey[60],
     padding: const EdgeInsets.all(6.0),
   );
 }

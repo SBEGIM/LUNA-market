@@ -12,6 +12,9 @@ class MyOrderCardWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+         const SizedBox(
+          height: 12,
+        ),
         const Text(
           'Сегодня',
           style: TextStyle(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 
 class AboutUsPage extends StatefulWidget {
@@ -23,21 +24,42 @@ class _AboutUsPageState extends State<AboutUsPage> {
               fontSize: 16,
               fontWeight: FontWeight.w500),
         ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.kPrimaryColor,
+          ),
+        ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        shrinkWrap: true,
         children: [
           const SizedBox(
             height: 10,
           ),
           Container(
-              padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.only(top: 16, bottom: 4),
+            color: Colors.white,
+            child: Center(
+              child: Image.asset(
+                'assets/images/shopClick.png',
+                height: 80,
+                width: 80,
+              ),
+            ),
+          ),
+          Container(
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
               color: Colors.white,
               child: Row(
                 children: const [
                   Flexible(
                     child: (Text(
-                      'ТОП-10 Лучших Маркетплейсов России. Маркетплейс для Физических, Самозанятых и Юридических Лиц. Выставить Свои Товары на Маркетплейс России. Продвижение Вашего Бизнеса. Реклама Товаров. Раскрутка Новых Брендов. Бизнес Проект Компании ТОО Маркетплейс.',
+                      'ТОП-10 Лучших Маркетплейсов Казахстана. Маркетплейс для Физических, Самозанятых и Юридических Лиц. Выставить Свои Товары на Маркетплейс Казахстана. Продвижение Вашего Бизнеса. Реклама Товаров. Раскрутка Новых Брендов. Бизнес Проект Компании ТОО Маркетплейс.',
                       style: TextStyle(
                           color: AppColors.kGray900,
                           fontSize: 16,
@@ -57,9 +79,9 @@ class _AboutUsPageState extends State<AboutUsPage> {
               children: [
                 const Text(
                   'Адрес',
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.kGray900,
-                      fontSize: 17,
+                      fontSize: 16,
                       fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(
@@ -74,7 +96,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 ),
                 const Text(
                   'г. Алматы, ул. Шевченко 90(БЦ Каратал), офис 108',
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       color: AppColors.kGray700),
@@ -92,8 +114,8 @@ class _AboutUsPageState extends State<AboutUsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Телеграм',
-                  style: const TextStyle(
+                  'Почта',
+                  style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
                       color: AppColors.kGray700),
@@ -103,15 +125,12 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 ),
                 Row(
                   children: [
-                    const Icon(
-                      Icons.telegram,
-                      color: AppColors.kPrimaryColor,
-                    ),
+                    SvgPicture.asset('assets/icons/mail.svg'),
                     const SizedBox(
                       width: 8,
                     ),
                     const Text(
-                      'https://t.me/haji_market',
+                      'hajimarken@gmail.com',
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -145,20 +164,24 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 const Text(
                   'Мы в соцсетях:',
                   style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.kGray700,
-                  ),
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.kGray900,
+                      fontSize: 16),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
                 Row(
-                  children: const [
-                    Icon(Icons.install_mobile_outlined),
-                    SizedBox(
-                      width: 10,
+                  children: [
+                    SvgPicture.asset('assets/icons/insta.svg'),
+                    const SizedBox(
+                      width: 16,
                     ),
-                    Icon(Icons.format_list_bulleted_outlined),
+                    SvgPicture.asset('assets/icons/facebook.svg'),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    SvgPicture.asset('assets/icons/telegram.svg'),
                   ],
                 )
               ],

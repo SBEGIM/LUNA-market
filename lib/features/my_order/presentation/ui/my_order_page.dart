@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/my_order/presentation/widget/my_order_card_widget.dart';
 import 'package:haji_market/features/my_order/presentation/widget/my_order_status_page.dart';
@@ -31,7 +32,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                   onTap: () {
                     showFilterDialog(context);
                   },
-                  child: const Icon(Icons.schema_rounded)),
+                  child: SvgPicture.asset('assets/icons/filter.svg')),
             )
           ],
           centerTitle: true,
@@ -42,14 +43,14 @@ class _MyOrderPageState extends State<MyOrderPage> {
             ),
           )),
       body: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.only(left:16,right: 16,bottom: 16),
         child: ListView(
           shrinkWrap: true,
           children: [
             ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(8),
+                // padding: const EdgeInsets.all(8),
                 itemCount: 10,
                 itemBuilder: (BuildContext context, int index) {
                   return const MyOrderCardWidget();

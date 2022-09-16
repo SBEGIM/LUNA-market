@@ -65,27 +65,27 @@ class _CreateProductPageState extends State<CreateProductPage> {
         child: ListView(
           children: [
             const FieldsCoopRequest(
-              titleText: 'Артикул *',
+              titleText: 'Артикул ',
               hintText: 'Введите артикул  ',
             ),
             const FieldsCoopRequest(
-              titleText: 'Цена товара *',
+              titleText: 'Цена товара ',
               hintText: 'Введите цену  ',
             ),
             const FieldsCoopRequest(
-              titleText: 'Скидка при оплате наличными, %',
+              titleText: 'Скидка при оплате наличными, % ',
               hintText: 'Введите размер скидки',
             ),
             const FieldsCoopRequest(
-              titleText: 'Категория *',
+              titleText: 'Категория ',
               hintText: 'Выберите категорию',
             ),
             const FieldsCoopRequest(
-              titleText: 'Название товара *',
+              titleText: 'Название товара ',
               hintText: 'Введите название товара',
             ),
             const FieldsCoopRequest(
-              titleText: 'Наименование бренда *',
+              titleText: 'Наименование бренда ',
               hintText: 'Выберите бренд',
             ),
             const SizedBox(
@@ -102,11 +102,11 @@ class _CreateProductPageState extends State<CreateProductPage> {
               height: 10,
             ),
             const FieldsCoopRequest(
-              titleText: 'Тип *',
+              titleText: 'Тип ',
               hintText: 'Выберите тип',
             ),
             const FieldsCoopRequest(
-              titleText: 'Количество в комплекте *',
+              titleText: 'Количество в комплекте ',
               hintText: 'Выберите количество',
             ),
             const FieldsCoopRequest(
@@ -114,23 +114,23 @@ class _CreateProductPageState extends State<CreateProductPage> {
               hintText: 'Выберите цвет',
             ),
             const FieldsCoopRequest(
-              titleText: 'Ширина, мм',
+              titleText: 'Ширина, мм ',
               hintText: 'Введите ширину',
             ),
             const FieldsCoopRequest(
-              titleText: 'Высота, мм',
+              titleText: 'Высота, мм ',
               hintText: 'Введите высоту',
             ),
             const FieldsCoopRequest(
-              titleText: 'Глубина, мм',
+              titleText: 'Глубина, мм ',
               hintText: 'Введите глубину',
             ),
             const FieldsCoopRequest(
-              titleText: 'Вес, г',
+              titleText: 'Вес, г ',
               hintText: 'Введите вес',
             ),
             const FieldsCoopRequest(
-              titleText: 'Дополнительно',
+              titleText: 'Дополнительно ',
               hintText: 'Для дополнительной информации',
             ),
             const SizedBox(
@@ -257,7 +257,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
               height: 10,
             ),
             const FieldsCoopRequest(
-              titleText: 'Магазин *',
+              titleText: 'Магазин ',
               hintText: 'Магазин',
             ),
             const SizedBox(

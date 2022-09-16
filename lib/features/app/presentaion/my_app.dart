@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
         ),
         home:
 // const BaseAdmin()
-            const SelectCountryPage()
-            // const Base(),
+            // const SelectCountryPage()
+            const Base(),
       ),
     );
   }

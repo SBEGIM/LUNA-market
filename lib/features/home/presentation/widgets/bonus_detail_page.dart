@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/home/presentation/widgets/bonus_detail_page.dart';
 
-class BonusPage extends StatefulWidget {
-  BonusPage({Key? key}) : super(key: key);
+class BonusDetailPage extends StatefulWidget {
+  BonusDetailPage({Key? key}) : super(key: key);
 
   @override
-  State<BonusPage> createState() => _BonusPageState();
+  State<BonusDetailPage> createState() => _BonusDetailPageState();
 }
 
-class _BonusPageState extends State<BonusPage> {
+class _BonusDetailPageState extends State<BonusDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +44,16 @@ class _BonusPageState extends State<BonusPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const Padding(
+                  padding: const EdgeInsets.only(left: 16.0, bottom: 16),
+                  child: Text(
+                    'Дарим 5% бонусов в магазинах Вашего города',
+                    style: TextStyle(
+                        color: AppColors.kGray900,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
                 Stack(
                   children: [
                     Center(
@@ -96,62 +105,52 @@ class _BonusPageState extends State<BonusPage> {
           const SizedBox(
             height: 20,
           ),
-          InkWell(
-            onTap: (){
- Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) =>  BonusDetailPage()),
-  );
-            },
-            child: Container(
-              color: Colors.white,
-              child: const ListTile(
-                title: Text(
-                  'Магазины на Haji market',
-                  style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
-                ),
-                subtitle: Text(
-                  'Выбирайте товары в магазинах города',
-                  style: TextStyle(
-                      color: AppColors.kGray300,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400),
-                ),
-                trailing: Icon(Icons.arrow_forward_ios,size: 16,),
+          Container(
+            color: Colors.white,
+            child: const ListTile(
+              title: Text(
+                'Magnum',
+                style: TextStyle(
+                    color: AppColors.kGray900,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+              ),
+              subtitle: Text(
+                'Магазинов: 8',
+                style: TextStyle(
+                    color: AppColors.kGray300,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400),
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
               ),
             ),
           ),
           const SizedBox(
             height: 10,
           ),
-          InkWell(
-            onTap: (){
- Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) =>  BonusDetailPage()),
-  );
-            },
-            child: Container(
-              color: Colors.white,
-              child: const ListTile(
-                title: Text(
-                  'Магазины вашего города',
-                  style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
-                ),
-                subtitle: Text(
-                  'Выбирайте товары и покупайте онлайн',
-                  style: TextStyle(
-                      color: AppColors.kGray300,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400),
-                ),
-                trailing: Icon(Icons.arrow_forward_ios,size: 16,),
+          Container(
+            color: Colors.white,
+            child: const ListTile(
+              title: Text(
+                'Small',
+                style: TextStyle(
+                    color: AppColors.kGray900,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+              ),
+              subtitle: Text(
+                'Магазинов: 8',
+                style: TextStyle(
+                    color: AppColors.kGray300,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400),
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
               ),
             ),
           ),

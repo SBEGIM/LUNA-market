@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
 
 import '../../../../core/common/constants.dart';
@@ -41,13 +42,13 @@ class _StatisticsPageState extends State<StatisticsPage> {
               children: [
                 Image.asset('assets/images/mac.png'),
                 const SizedBox(
-                  width: 5,
+                  width: 16,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
                     Text(
-                      'Silver MacBook M1 13.1in. Apple 256GB',
+                      'Silver MacBook M1 13.1in. Apple\n256GB',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           color: AppColors.kGray900,
@@ -96,7 +97,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
               SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 4),
                     child: Wrap(
                       spacing: 6,
                       runSpacing: 6,
@@ -125,7 +126,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
               SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(bottom: 8),
                     child: Wrap(
                       spacing: 6,
                       runSpacing: 6,
@@ -160,10 +161,12 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   StatisticWidgetContainer(
                     text: '129',
                     subText: 'Количество кликов',
+                    url: 'assets/icons/click1.svg',
                   ),
                   StatisticWidgetContainer(
                     text: '110',
-                    subText: 'Добавлен в избранное',
+                    subText: 'Добавлен в\nизбранное',
+                    url: 'assets/icons/click2.svg',
                   )
                 ],
               ),
@@ -176,10 +179,12 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   StatisticWidgetContainer(
                     text: '110',
                     subText: 'Добавлен в корзину ',
+                    url: 'assets/icons/click3.svg',
                   ),
                   StatisticWidgetContainer(
                     text: '129',
                     subText: 'Количество покупок',
+                    url: 'assets/icons/click4.svg',
                   )
                 ],
               )
@@ -194,22 +199,28 @@ class _StatisticsPageState extends State<StatisticsPage> {
 class StatisticWidgetContainer extends StatelessWidget {
   final String text;
   final String subText;
+  final String url;
   const StatisticWidgetContainer({
     required this.text,
     required this.subText,
+    required this.url,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 168,
+      height: 156,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
+        color: Colors.white,
+        boxShadow: [
           BoxShadow(
-            offset: Offset(0, 2),
-            blurRadius: 12,
-            color: Color.fromRGBO(0, 0, 0, 0.08),
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            // blurRadius: 1,
+            offset: const Offset(0, 1), // changes position of shadow
           ),
         ],
       ),
@@ -217,10 +228,11 @@ class StatisticWidgetContainer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(
-            'assets/temp/tape1.png',
-            width: 44,
-            height: 44,
+          SvgPicture.asset(
+            url,
+          ),
+          const SizedBox(
+            height: 12,
           ),
           Text(
             text,
@@ -228,6 +240,9 @@ class StatisticWidgetContainer extends StatelessWidget {
                 color: AppColors.kGray900,
                 fontSize: 24,
                 fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(
+            height: 4,
           ),
           Text(
             subText,

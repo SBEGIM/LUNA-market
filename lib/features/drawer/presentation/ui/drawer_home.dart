@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/drawer/presentation/ui/about_us_page.dart';
 import 'package:haji_market/features/drawer/presentation/ui/catalog_page.dart';
 import 'package:haji_market/features/drawer/presentation/ui/city_page.dart';
@@ -128,8 +129,21 @@ class _DrawerHomeState extends State<DrawerHome> {
               const Divider(
                 color: AppColors.kGray200,
               ),
-              const DrawerListTile(
-                text: 'Маркет',
+              InkWell(
+                onTap: (){
+                    Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Base(
+                  index: 0,
+                ),
+              ),
+              (route) => false,
+            );
+                },
+                child: const DrawerListTile(
+                  text: 'Маркет',
+                ),
               ),
               const Divider(
                 color: AppColors.kGray200,

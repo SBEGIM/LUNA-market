@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/basket/presentation/ui/interesting_product_widget.dart';
 import 'package:haji_market/features/home/presentation/ui/home_page.dart';
 
 import '../../../home/presentation/widgets/banner_watceh_recently_widget.dart';
@@ -29,13 +31,10 @@ class _BasketPageState extends State<BasketPage> {
               color: AppColors.kPrimaryColor,
             ),
           ),
-          actions: const [
+          actions: [
             Padding(
-              padding: EdgeInsets.only(right: 22.0),
-              child: Icon(
-                Icons.ios_share_rounded,
-              ),
-            )
+                padding: EdgeInsets.only(right: 22.0),
+                child: SvgPicture.asset('assets/icons/share.svg'))
           ],
           title: const Text(
             'Корзина',
@@ -48,12 +47,12 @@ class _BasketPageState extends State<BasketPage> {
         children: [
           Container(
             padding: const EdgeInsets.all(16),
-            child: ListView.separated(
+            child: ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: 5,
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
+              // separatorBuilder: (BuildContext context, int index) =>
+              //     const Divider(),
               itemBuilder: (BuildContext context, int index) {
                 return const BasketProductCardWidget();
               },
@@ -80,8 +79,8 @@ class _BasketPageState extends State<BasketPage> {
                 ),
                 Row(
                   children: const [
-                    BannerWatcehRecently(),
-                    BannerWatcehRecently(),
+                    // InterestingProductWidget(),
+                    InterestingProductWidget(),
                   ],
                 ),
                 const SizedBox(
@@ -98,7 +97,6 @@ class _BasketPageState extends State<BasketPage> {
             const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
         child: InkWell(
           onTap: () {
-            
             // Navigator.pop(context);
           },
           child: Container(
@@ -122,11 +120,17 @@ class _BasketPageState extends State<BasketPage> {
   }
 }
 
-class BasketProductCardWidget extends StatelessWidget {
+class BasketProductCardWidget extends StatefulWidget {
   const BasketProductCardWidget({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<BasketProductCardWidget> createState() =>
+      _BasketProductCardWidgetState();
+}
+
+class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -304,8 +308,25 @@ class BasketProductCardWidget extends StatelessWidget {
         const SizedBox(
           height: 8,
         ),
-        const Text('Выберите карту, чтобы поделиться')
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Выберите карту, чтобы поделиться'),
+            Checkbox(
+              checkColor: Colors.white,
+              // fillColor: MaterialStateProperty.resolveWith(Colors.),
+              value: isChecked,
+              onChanged: (bool? value) {
+                setState(() {
+                  isChecked = value!;
+                });
+              },
+            ),
+          ],
+        )
       ],
     );
   }
+
+  bool isChecked = false;
 }
