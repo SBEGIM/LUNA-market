@@ -1,0 +1,40 @@
+
+import 'dart:convert';
+import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/features/home/data/model/Cats.dart';
+import 'package:haji_market/features/home/data/model/PopularShops.dart';
+import 'package:http/http.dart' as http;
+
+import '../model/Banners.dart';
+
+
+const   baseUrl = 'http://80.87.202.73:8001/api';
+
+class PopularShopsRepository{
+
+  PopularShopsApi  _shopsApi = PopularShopsApi();
+
+  Future<List<PopularShops>> popularShops() => _shopsApi.popularShops();
+
+}
+
+
+class PopularShopsApi{
+
+final _box = GetStorage();
+
+
+  Future<List<PopularShops>> popularShops() async {
+    final String? token =  _box.read('token');
+
+    final response = await http.get(Uri.parse('$baseUrl/shop/popular/shops') , headers:{
+          "Authorization": "Bearer $token"
+
+        });
+
+    final data = jsonDecode(response.body);
+
+    return  (data as List).map((e) => PopularShops.fromJson(e)).toList();
+  }
+
+}

@@ -1,0 +1,43 @@
+
+
+
+import 'dart:developer';
+
+import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:untitled/data/bloc/login_state.dart';
+import '../repo/LoginRepo.dart';
+
+class LoginCubit extends Cubit<LoginState> {
+
+  final LoginRepository loginRepository;
+
+  LoginCubit({required this.loginRepository}) : super(InitState());
+
+
+  Future<void> login(String phone , String password) async {
+    try {
+      emit(LoadingState());
+      final data = await loginRepository.login(phone ,password);
+      
+      if(data == 200){
+        emit(LoadedState());
+        emit(InitState());
+      }
+      if(data == 400){
+        emit(InitState());
+        Get.snackbar('Ошибка запроса!' , 'Неверный телефон или пароль' , backgroundColor: Colors.redAccent);
+      }
+      if(data == 500){
+        emit(InitState());
+        Get.snackbar('500' , 'Ошибка сервера' , backgroundColor: Colors.redAccent);
+      }
+
+    } catch (e) {
+      log(e.toString());
+      // emit(ErrorState(message: 'Ошибка'));
+    }
+  }
+}
