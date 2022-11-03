@@ -1,19 +1,20 @@
 
-import '../model/Banners.dart';
 
-abstract class BannersState{}
+import '../model/PopularShops.dart';
+
+abstract class PopularShopsState{}
 
 
-class InitState extends BannersState{}
+class InitState extends PopularShopsState{}
 
-class LoadingState extends BannersState{}
+class LoadingState extends PopularShopsState{}
 
-class LoadedState extends BannersState{
-  List<Banners> banners;
-  LoadedState(this.banners);
+class LoadedState extends PopularShopsState{
+  List<PopularShops> popularShops;
+  LoadedState(this.popularShops);
 }
 
-class ErrorState extends BannersState{
+class ErrorState extends PopularShopsState{
   String message;
   ErrorState({required this.message}) : assert(message != null);
 

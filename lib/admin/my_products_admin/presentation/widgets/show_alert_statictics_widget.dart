@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:haji_market/admin/my_products_admin/presentation/widgets/edit_product_page%20copy.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/statistics_page.dart';
 
 import '../../../../core/common/constants.dart';
+import '../../../../features/drawer/data/models/product_model.dart';
+import '../../data/models/admin_products_model.dart';
 
-Future<dynamic> showAlertStaticticsWidget(BuildContext context) async {
+Future<dynamic> showAlertStaticticsWidget(
+    BuildContext context, AdminProductsModel product) async {
   return showCupertinoModalPopup(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
@@ -12,29 +16,34 @@ Future<dynamic> showAlertStaticticsWidget(BuildContext context) async {
         CupertinoActionSheetAction(
           child: const Text(
             'Редактировать',
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
           ),
           onPressed: () {
-            Navigator.pop(context, 'One');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EditProductPage(
+                        product: product,
+                      )),
+            );
           },
         ),
         CupertinoActionSheetAction(
           child: const Text(
             'Статистика',
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
           ),
           onPressed: () {
-  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => StatisticsPage()),
-                  );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => StatisticsPage()),
+            );
           },
         ),
         CupertinoActionSheetAction(
           child: const Text(
             'Удалить',
-            style: TextStyle(color: Colors.red),
+            style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500),
           ),
           onPressed: () {
             Navigator.pop(context, 'Two');
@@ -45,8 +54,7 @@ Future<dynamic> showAlertStaticticsWidget(BuildContext context) async {
         child: const Text(
           'Отмена',
           style: TextStyle(
-            color: AppColors.kPrimaryColor,
-          ),
+              color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
         ),
         onPressed: () {
           Navigator.pop(context, 'Cancel');

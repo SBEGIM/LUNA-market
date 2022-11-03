@@ -6,9 +6,10 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:untitled/data/bloc/login_state.dart';
-import '../repo/LoginRepo.dart';
+import 'package:haji_market/features/auth/data/bloc/login_state.dart';
+
+import '../repository/LoginRepo.dart';
+
 
 class LoginCubit extends Cubit<LoginState> {
 

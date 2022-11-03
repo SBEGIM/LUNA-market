@@ -1,9 +1,9 @@
 class PopularShops {
   PopularShops({
-      int? name, 
+    String? name,
       dynamic logo, 
-      String? image, 
-      bool? bonus, 
+      String? image,
+    int? bonus,
       bool? credit,}){
     _name = name;
     _logo = logo;
@@ -19,16 +19,16 @@ class PopularShops {
     _bonus = json['bonus'];
     _credit = json['credit'];
   }
-  int? _name;
+  String? _name;
   dynamic _logo;
   String? _image;
-  bool? _bonus;
+  int? _bonus;
   bool? _credit;
 
-  int? get name => _name;
+  String? get name => _name;
   dynamic get logo => _logo;
   String? get image => _image;
-  bool? get bonus => _bonus;
+  int? get bonus => _bonus;
   bool? get credit => _credit;
 
   Map<String, dynamic> toJson() {

@@ -60,15 +60,19 @@ class Product {
   Product({
       int? id, 
       String? shopName, 
-      String? productName, 
+      int? shopCourier,
+      String? shopPhone,
+      String? productName,
       List<String>? path, 
       int? count, 
       int? price, 
-      dynamic status, 
-      dynamic address, 
+      String? status,
+      String? address,
       String? shopSchedule,}){
     _id = id;
     _shopName = shopName;
+    _shopCourier = shopCourier;
+    _shopPhone = shopPhone;
     _productName = productName;
     _path = path;
     _count = count;
@@ -81,6 +85,8 @@ class Product {
   Product.fromJson(dynamic json) {
     _id = json['id'];
     _shopName = json['shop_name'];
+    _shopPhone= json['shop_phone'];
+    _shopCourier= json['shop_courier'];
     _productName = json['product_name'];
     _path = json['path'] != null ? json['path'].cast<String>() : [];
     _count = json['count'];
@@ -91,28 +97,34 @@ class Product {
   }
   int? _id;
   String? _shopName;
+  int? _shopCourier;
+  String? _shopPhone;
   String? _productName;
   List<String>? _path;
   int? _count;
   int? _price;
-  dynamic _status;
-  dynamic _address;
+  String? _status;
+  String? _address;
   String? _shopSchedule;
 
   int? get id => _id;
   String? get shopName => _shopName;
+  int? get shopCourier => _shopCourier;
+  String? get shopPhone => _shopPhone;
   String? get productName => _productName;
   List<String>? get path => _path;
   int? get count => _count;
   int? get price => _price;
-  dynamic get status => _status;
-  dynamic get address => _address;
+  String? get status => _status;
+  String? get address => _address;
   String? get shopSchedule => _shopSchedule;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['shop_name'] = _shopName;
+    map['shop_phone'] = _shopPhone;
+    map['shop_courier'] = _shopCourier;
     map['product_name'] = _productName;
     map['path'] = _path;
     map['count'] = _count;

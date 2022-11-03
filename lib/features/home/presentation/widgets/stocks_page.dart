@@ -81,7 +81,7 @@ class StocksCardWidget extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => BonusPage()),
+          MaterialPageRoute(builder: (context) =>const BonusPage(name: '', bonus: 0, date: '',image: '')),
         );
       },
       child: Center(

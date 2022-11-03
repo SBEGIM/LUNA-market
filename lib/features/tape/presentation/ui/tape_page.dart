@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/tape/presentation/widgets/tape_card_widget.dart';
 
@@ -14,7 +15,6 @@ class _TapePageState extends State<TapePage> {
   final List<Map> myProducts =
       List.generate(6, (index) => {"id": index, "name": "Product "}).toList();
 
-  int _value = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,9 +22,12 @@ class _TapePageState extends State<TapePage> {
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: const Icon(
-          Icons.arrow_back_ios,
-          color: AppColors.kPrimaryColor,
+        leading:  GestureDetector(
+          onTap: () => Get.back(),
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.kPrimaryColor,
+          ),
         ),
         actions: const [
           Padding(
@@ -45,13 +48,18 @@ class _TapePageState extends State<TapePage> {
             //   );
             // }
           },
+          color: const Color.fromRGBO(230,231,232,1),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))
+          ),
           itemBuilder: (BuildContext bc) {
             return [
               PopupMenuItem(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Добавить товар",
+                      "Подписки",
                       style: TextStyle(color: Colors.black),
                     ),
                     SvgPicture.asset('assets/icons/lenta1.svg'),
@@ -61,8 +69,9 @@ class _TapePageState extends State<TapePage> {
               ),
               PopupMenuItem(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Добавить видео"),
+                    Text("Избранное"),
                     SvgPicture.asset('assets/icons/lenta2.svg'),
                   ],
                 ),
@@ -70,14 +79,24 @@ class _TapePageState extends State<TapePage> {
               ),
             ];
           },
-          child: Text(
-            'Лента',
-            style: TextStyle(
-                color: AppColors.kGray900,
-                fontSize: 16,
-                fontWeight: FontWeight.w500),
-          ),
-          // Icon(Icons.done,color: AppColors.kPrimaryColor,size: 16,)
+          child: Container(
+            padding: EdgeInsets.only(left: 100),
+            child:Row(
+              children: [
+                Text(
+                  'Лента',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: AppColors.kGray900,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500),
+                ),
+                SizedBox(width: 5),
+                Image.asset('assets/icons/down.png' , height: 16.5, width: 9.5,)
+              ],
+            )
+          
+          ), // Icon(Icons.done,color: AppColors.kPrimaryColor,size: 16,)
         ),
       ),
       body: GridView(

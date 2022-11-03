@@ -1,39 +1,43 @@
-
 import 'dart:convert';
-import 'package:flutter/material.dart';
+
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/features/drawer/data/models/product_model.dart';
-import 'package:haji_market/features/home/data/model/PopularShops.dart';
+import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
+import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/shops_drawer_model.dart';
 
 
 
 const   baseUrl = 'http://80.87.202.73:8001/api';
 
-class FavoriteRepository{
+class BasketRepository{
 
-  FavoriteApi  _favoriteApi = FavoriteApi();
+  Basket  _basket = Basket();
 
-  Future<int> favorite(id) => _favoriteApi.favorite(id);
+  Future<int> basketAdd(product_id , count) => _basket.basketAdd(product_id , count);
+  Future<int> basketMinus(product_id , count) => _basket.basketMinus(product_id , count);
+  Future<List<BasketShowModel>> basketShow() => _basket.basketShow();
+  Future<List<BasketOrderModel>> basketOrderShow() => _basket.basketOrderShow();
+  Future<int> basketOrder(List id) => _basket.basketOrder(id);
 
 }
 
 
-class FavoriteApi{
+class Basket{
 
 final _box = GetStorage();
 
-  Future<int> favorite(id) async {
+
+  Future<int> basketAdd(product_id , count) async {
 
 
     final String? token =  _box.read('token');
 
-    final response = await http.post(Uri.parse('$baseUrl/shop/favorite/store') , headers:{
+    final response = await http.post(Uri.parse('$baseUrl/basket/add') , headers:{
           "Authorization": "Bearer $token"
     },body: {
-      'id': id
+      'product_id': product_id,
+      'count': count,
     }
 
     );
@@ -43,5 +47,79 @@ final _box = GetStorage();
 
     return  data;
   }
+
+  Future<int> basketMinus(product_id , count) async {
+
+
+    final String? token =  _box.read('token');
+
+    final response = await http.post(Uri.parse('$baseUrl/basket/minus') , headers:{
+          "Authorization": "Bearer $token"
+    },body: {
+      'product_id': product_id,
+      'count': count,
+    }
+
+    );
+
+
+    final data = response.statusCode;
+
+    return  data;
+  }
+
+  Future<List<BasketShowModel>> basketShow() async {
+
+    final String? token =  _box.read('token');
+
+    final response = await http.get(Uri.parse('$baseUrl/basket/show') , headers:{
+          "Authorization": "Bearer $token"
+    });
+
+    final data = jsonDecode(response.body);
+
+    return  (data['data'] as List).map((e) => BasketShowModel.fromJson(e)).toList();
+  }
+
+
+  Future<List<BasketOrderModel>> basketOrderShow() async {
+
+    final String? token =  _box.read('token');
+
+    final response = await http.get(Uri.parse("$baseUrl/basket/order/status?status=active&page=1") , headers:{
+          "Authorization": "Bearer $token"
+    }
+
+    );
+
+    final data = jsonDecode(response.body);
+    print('wwww1');
+
+    return  (data['data'] as List).map((e) => BasketOrderModel.fromJson(e)).toList();
+  }
+
+
+Future<int> basketOrder(List id) async {
+
+  final String? token =  _box.read('token');
+
+  Map<String,String>?basketData = Map();
+  for(int i=0;i<id.length;i++){
+    basketData.addAll({"id[$i]":"${id[i]}"});
+  }
+
+
+  final response = await http.post(Uri.parse('$baseUrl/basket/order') , headers:{
+    "Authorization": "Bearer $token"
+  },body: basketData
+  //
+  // basketData ,
+  );
+
+
+  final data = response.statusCode;
+
+  return  data;
+}
 
 }

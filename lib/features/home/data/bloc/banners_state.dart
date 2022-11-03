@@ -1,23 +1,19 @@
 
+import '../model/Banners.dart';
+
+abstract class BannersState{}
 
 
-import '../model/Cats.dart';
+class InitState extends BannersState{}
 
-abstract class CatsState{}
+class LoadingState extends BannersState{}
 
-
-class InitState extends CatsState{}
-
-class LoadingState extends CatsState{}
-
-class LoadedState extends CatsState{
-  List<Cats> cats;
-  Set<String> catsSet;
-  String dropdownCats;
-  LoadedState(this.cats , this.catsSet , this.dropdownCats);
+class LoadedState extends BannersState{
+  List<Banners> banners;
+  LoadedState(this.banners);
 }
 
-class ErrorState extends CatsState{
+class ErrorState extends BannersState{
   String message;
   ErrorState({required this.message}) : assert(message != null);
 

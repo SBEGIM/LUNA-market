@@ -3,19 +3,19 @@
 
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 
-abstract class ProductState{}
+abstract class FavoriteState{}
 
 
-class InitState extends ProductState{}
+class InitState extends FavoriteState{}
 
-class LoadingState extends ProductState{}
+class LoadingState extends FavoriteState{}
 
-class LoadedState extends ProductState{
+class LoadedState extends FavoriteState{
   List<ProductModel> productModel;
   LoadedState(this.productModel);
 }
 
-class ErrorState extends ProductState{
+class ErrorState extends FavoriteState{
   String message;
   ErrorState({required this.message}) : assert(message != null);
 

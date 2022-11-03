@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,19 +16,18 @@ import '../../data/bloc/register_cubit.dart';
 import '../../data/bloc/sms_cubit.dart';
 import '../../data/bloc/sms_state.dart';
 
-class ForgotPasswordModalBottom extends StatefulWidget {
+class LoginForgotPasswordModalBottom extends StatefulWidget {
   final String textEditingController;
-  final RegisterDTO register;
-  const ForgotPasswordModalBottom(
-      {required this.textEditingController, required this.register, Key? key})
+  const LoginForgotPasswordModalBottom(
+      {Key? key ,required this.textEditingController,})
       : super(key: key);
 
   @override
-  State<ForgotPasswordModalBottom> createState() =>
-      _ForgotPasswordModalBottomState();
+  State<LoginForgotPasswordModalBottom> createState() =>
+      _LoginForgotPasswordModalBottom();
 }
 
-class _ForgotPasswordModalBottomState extends State<ForgotPasswordModalBottom> {
+class _LoginForgotPasswordModalBottom extends State<LoginForgotPasswordModalBottom> {
 
   late Timer _timer;
   int _start = 60;
@@ -75,10 +75,14 @@ class _ForgotPasswordModalBottomState extends State<ForgotPasswordModalBottom> {
    return  BlocConsumer<SmsCubit, SmsState>(listener: (context, state) {
       if (state is ErrorState) {}
       if (state is LoadedState) {
+        log(widget.textEditingController);
+        // Get.to( () => ChangePasswordPage( textEditingController: widget.textEditingController));
         FocusScope.of(context).requestFocus(FocusNode());
-        final register = BlocProvider.of<RegisterCubit>(context);
-        register.register(widget.register);
-        Get.to(Base());
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>  ChangePasswordPage(textEditingController: widget.textEditingController)),
+        );
       }
     }, builder: (context, state) {
       if (state is LoadingState) {
@@ -129,9 +133,8 @@ class _ForgotPasswordModalBottomState extends State<ForgotPasswordModalBottom> {
                 },
                 onCompleted: (value) async {
                   if (value.length == 4) {
-                  print(value);
                     final sms = BlocProvider.of<SmsCubit>(context);
-                    sms.smsCheck(widget.register.phone, value.toString());
+                    sms.resetCheck(widget.textEditingController, value.toString());
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(

@@ -96,8 +96,13 @@ mixin AppTextStyles {
     fontWeight: FontWeight.w500,
   );
   static const bannerTextStyle = TextStyle(
+    fontSize: 11,
+    color: Colors.white,
+    fontWeight: FontWeight.w400,
+  );
+  static const bannerTextDateStyle = TextStyle(
     fontSize: 12,
-    color: AppColors.kGray300,
+    color: Colors.white,
     fontWeight: FontWeight.w400,
   );
   static const appBarTextStylea = TextStyle(

@@ -1,21 +1,20 @@
 
 
+import '../../../home/data/model/Cats.dart';
 
-import '../model/Cats.dart';
-
-abstract class CatsState{}
+abstract class SubCatsState{}
 
 
-class InitState extends CatsState{}
+class InitState extends SubCatsState{}
 
-class LoadingState extends CatsState{}
+class LoadingState extends SubCatsState{}
 
-class LoadedState extends CatsState{
+class LoadedState extends SubCatsState{
   List<Cats> cats;
   LoadedState(this.cats);
 }
 
-class ErrorState extends CatsState{
+class ErrorState extends SubCatsState{
   String message;
   ErrorState({required this.message}) : assert(message != null);
 

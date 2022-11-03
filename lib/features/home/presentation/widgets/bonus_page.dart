@@ -4,7 +4,13 @@ import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/home/presentation/widgets/bonus_detail_page.dart';
 
 class BonusPage extends StatefulWidget {
-  BonusPage({Key? key}) : super(key: key);
+  final String name;
+  final int bonus;
+  final  String date;
+  final String image;
+ const BonusPage({
+    required this.name,required this.bonus, required this.date , required this.image,
+    Key? key}) : super(key: key);
 
   @override
   State<BonusPage> createState() => _BonusPageState();
@@ -25,9 +31,9 @@ class _BonusPageState extends State<BonusPage> {
             child: SvgPicture.asset('assets/icons/share.svg'),
           ),
         ],
-        title: const Text(
-          'Дарим 5% бонусов',
-          style: TextStyle(
+        title:  Text(
+          'Дарим ${widget.bonus}% бонусов',
+          style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
               color: Color(0xFF1F1F1F)),
@@ -39,7 +45,7 @@ class _BonusPageState extends State<BonusPage> {
             height: 10,
           ),
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(16),
             width: MediaQuery.of(context).size.width,
             color: Colors.white,
             child: Column(
@@ -47,13 +53,20 @@ class _BonusPageState extends State<BonusPage> {
               children: [
                 Stack(
                   children: [
-                    Center(
-                        child: Image.asset('assets/images/card_product.png')),
-                    const Padding(
+                    Container(
+                      height: 218,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image:  DecorationImage(
+                            image: NetworkImage("http://80.87.202.73:8001/storage/${widget.image}"),
+                            fit: BoxFit.cover,
+                          )),
+                    ),
+                     Padding(
                       padding: EdgeInsets.only(left: 24.0, top: 60),
                       child: Text(
-                        'Продукты',
-                        style: TextStyle(
+                        '${widget.name}',
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w500),
@@ -65,12 +78,12 @@ class _BonusPageState extends State<BonusPage> {
                         decoration: BoxDecoration(
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(4)),
-                        child: const Padding(
-                          padding: EdgeInsets.only(
+                        child:  Padding(
+                          padding: const EdgeInsets.only(
                               left: 8.0, right: 8, top: 4, bottom: 4),
                           child: Text(
-                            '5% Б',
-                            style: TextStyle(
+                            '${widget.bonus}% Б',
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500),
@@ -78,11 +91,11 @@ class _BonusPageState extends State<BonusPage> {
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 24.0, top: 160),
+                     Padding(
+                      padding:const EdgeInsets.only(left: 24.0, top: 160),
                       child: Text(
-                        'с 15 по 17 июля',
-                        style: TextStyle(
+                        '${widget.date}',
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w500),
@@ -113,6 +126,7 @@ class _BonusPageState extends State<BonusPage> {
                       fontSize: 16,
                       fontWeight: FontWeight.w400),
                 ),
+                contentPadding :EdgeInsets.fromLTRB(12, 0, 12, 12),
                 subtitle: Text(
                   'Выбирайте товары в магазинах города',
                   style: TextStyle(

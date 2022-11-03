@@ -50,18 +50,23 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
             child: Column(
               children: [
                 Container(
-                  color: Colors.white,
                   height: 120,
                   width: 120,
-                  child:  Center(
-                    child: SvgPicture.asset('assets/icons/camera2.svg')
-                  ),
+                  color: Colors.white,
+                  child: Stack(
+                    children: [
+                      SvgPicture.asset('assets/icons/border.svg'),
+                      Center(
+                          child: SvgPicture.asset('assets/icons/camera2.svg')
+                      ),
+                    ],
+                  )
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 16,
                 ),
                 const Text(
-                  'Загрузить аватарку',
+                  'ЗАГРУЗИТЬ ЛОГОТИП',
                   style: TextStyle(
                       color: AppColors.kPrimaryColor,
                       fontSize: 12,
@@ -80,13 +85,20 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
                   'assets/icons/shop1.svg',
                   height: 24,
                   width: 24,
+                  color: const Color.fromRGBO(28,189,199,1),
                 ),
                 minLeadingWidth: 10,
                 title: const TextField(
                   // controller: phoneControllerAuth,
+                  cursorColor: Color.fromRGBO(31,196,207, 1),
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Название магазина',
+                    hintStyle: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromRGBO(170,174,179,1)
+                    ) ,
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                       // borderRadius: BorderRadius.circular(3),

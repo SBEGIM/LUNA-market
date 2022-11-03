@@ -1,24 +1,22 @@
 
 
-import 'package:untitled/data/model/City.dart';
 
-abstract class CityState{}
+import '../model/Cats.dart';
+
+abstract class CatsState{}
 
 
-class InitState extends CityState{}
+class InitState extends CatsState{}
 
-class LoadingState extends CityState{}
+class LoadingState extends CatsState{}
 
-class LoadedState extends CityState{
-  List<City> cities;
-  Set<String> citiesSet;
-  String dropdownCity;
-  LoadedState(this.cities , this.citiesSet , this.dropdownCity);
+class LoadedState extends CatsState{
+  List<Cats> cats;
+  LoadedState(this.cats);
 }
 
-class ErrorState extends CityState{
+class ErrorState extends CatsState{
   String message;
-
   ErrorState({required this.message}) : assert(message != null);
 
 }

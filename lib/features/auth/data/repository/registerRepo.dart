@@ -3,9 +3,9 @@ import 'dart:convert';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:untitled/data/DTO/register.dart';
+import '../DTO/register.dart';
 
-const   baseUrl = 'http://rizapp.kz/api';
+const   baseUrl = 'http://80.87.202.73:8001/api';
 
 class RegisterRepository{
   RegisterToApi  _registerToApi =  RegisterToApi();
@@ -37,8 +37,6 @@ class RegisterToApi {
     };
     final body = {
       'name': register.name,
-      'city_id': register.city,
-      'sphere_id': register.target,
       'password': register.password,
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'device_token' : device_token.toString(),
@@ -50,9 +48,9 @@ class RegisterToApi {
       'POST', Uri.parse('$baseUrl/user/register'),
     );
 
-    if(register.avatar != ''){
-      request.files.add(await http.MultipartFile.fromPath('avatar', register.avatar),);
-    }
+    // if(register.avatar != ''){
+    //   request.files.add(await http.MultipartFile.fromPath('avatar', register.avatar),);
+    // }
     request.headers.addAll(headers);
     request.fields.addAll(body);
 
@@ -84,7 +82,6 @@ class RegisterToApi {
   }
 
   Future<dynamic> smsCheck(String phone , String code ) async {
-
     String s = phone;
     String result = s.substring(2);
 
@@ -126,7 +123,7 @@ class RegisterToApi {
   }
 
   Future<dynamic> passwordReset(String phone , String password ) async {
-
+    print("111 ${phone}");
     String s = phone;
     String result = s.substring(2);
 

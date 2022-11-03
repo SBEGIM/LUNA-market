@@ -16,18 +16,19 @@ import '../../data/bloc/register_cubit.dart';
 import '../../data/bloc/sms_cubit.dart';
 import '../../data/bloc/sms_state.dart';
 
-class LoginForgotPasswordModalBottom extends StatefulWidget {
+class RegisterSmsCheckModalBottom extends StatefulWidget {
   final String textEditingController;
-  const LoginForgotPasswordModalBottom(
-      {Key? key ,required this.textEditingController,})
+  final RegisterDTO registerDTO;
+  const RegisterSmsCheckModalBottom(
+      {Key? key ,required this.textEditingController, required this.registerDTO})
       : super(key: key);
 
   @override
-  State<LoginForgotPasswordModalBottom> createState() =>
-      _LoginForgotPasswordModalBottom();
+  State<RegisterSmsCheckModalBottom> createState() =>
+      _RegisterSmsCheckModalBottom();
 }
 
-class _LoginForgotPasswordModalBottom extends State<LoginForgotPasswordModalBottom> {
+class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
 
   late Timer _timer;
   int _start = 60;
@@ -75,13 +76,15 @@ class _LoginForgotPasswordModalBottom extends State<LoginForgotPasswordModalBott
    return  BlocConsumer<SmsCubit, SmsState>(listener: (context, state) {
       if (state is ErrorState) {}
       if (state is LoadedState) {
-        log(widget.textEditingController);
         // Get.to( () => ChangePasswordPage( textEditingController: widget.textEditingController));
         FocusScope.of(context).requestFocus(FocusNode());
+
+        final register = BlocProvider.of<RegisterCubit>(context);
+        register.register(widget.registerDTO);
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>  ChangePasswordPage(textEditingController: widget.textEditingController)),
+              builder: (context) =>  Base(index: 0)),
         );
       }
     }, builder: (context, state) {
@@ -91,7 +94,7 @@ class _LoginForgotPasswordModalBottom extends State<LoginForgotPasswordModalBott
         );
       }
       return Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(22.0),
         child: Column(
           //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -103,11 +106,14 @@ class _LoginForgotPasswordModalBottom extends State<LoginForgotPasswordModalBott
                   'Введите код подтверждения,\nкоторый был отправлен по номеру\n${widget.textEditingController}',
                   style: AppTextStyles.appBarTextStyle,
                 ),
-                SvgPicture.asset(
-                  'assets/icons/delete_circle.svg',
-                  height: 24,
-                  width: 24,
-                ),
+                GestureDetector(
+                  onTap: () => Get.back(),
+                  child:  SvgPicture.asset(
+                    'assets/icons/delete_circle.svg',
+                    height: 24,
+                    width: 24,
+                  ),
+                )
               ],
             ),
             const SizedBox(height:40 ,),
@@ -124,7 +130,7 @@ class _LoginForgotPasswordModalBottom extends State<LoginForgotPasswordModalBott
                   inactiveColor: Colors.grey,
                   activeFillColor: Colors.white,
                   borderRadius: BorderRadius.circular(6),
-                  selectedColor: Colors.green,
+                  selectedColor: AppColors.kPrimaryColor,
                   fieldHeight: 48,
                   fieldWidth: 48,
                 ),
@@ -134,7 +140,7 @@ class _LoginForgotPasswordModalBottom extends State<LoginForgotPasswordModalBott
                 onCompleted: (value) async {
                   if (value.length == 4) {
                     final sms = BlocProvider.of<SmsCubit>(context);
-                    sms.resetCheck(widget.textEditingController, value.toString());
+                    sms.smsCheck(widget.textEditingController, value.toString());
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(
@@ -168,7 +174,7 @@ class _LoginForgotPasswordModalBottom extends State<LoginForgotPasswordModalBott
                 },
                 color: AppColors.floatingActionButton,
                 width: MediaQuery.of(context).size.width),
-            const SizedBox(height: 50,)
+            const SizedBox(height: 100)
           ],
         ),
       );

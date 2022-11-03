@@ -25,23 +25,23 @@ class GridOptionsCategory extends StatelessWidget {
     return InkWell(
       onTap: layout.onTap,
       child: Container(
-        // shape: RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.circular(15.0),
-        // ),
-        // elevation: 0,
         height: 80,
         decoration: BoxDecoration(
-            color: AppColors.kBackgroundColor,
+            color:const Color.fromRGBO(249,249,249,1),
             borderRadius: BorderRadius.circular(10)),
 
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SvgPicture.asset(
-                layout.icon!,
-                color: AppColors.kPrimaryColor,
-                // size: 30,
+              Container(
+                height: 20.05,
+                width: 20.05,
+                decoration: BoxDecoration(
+                    image:  DecorationImage(
+                      image: NetworkImage("http://80.87.202.73:8001/storage/${layout.icon!}"),
+                      fit: BoxFit.cover,
+                    )),
               ),
               const SizedBox(
                 height: 13,

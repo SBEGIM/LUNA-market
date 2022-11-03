@@ -1,10 +1,11 @@
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
- const   baseUrl = 'http://rizapp.kz/api';
+ const   baseUrl = 'http://80.87.202.73:8001/api';
 
 class LoginRepository{
   LoginToApi  _loginToApi = LoginToApi();
@@ -18,8 +19,13 @@ class LoginToApi {
 
 
   Future<dynamic> login(String phone , String password) async {
+
     String s = phone;
-    final device_token = _box.read('device_token');
+
+
+   // final device_token = _box.read('device_token');
+    final device_token = '123';
+
 //Removes everything after first '.'
     String result = s.substring(2);
     final response = await http.post(Uri.parse('$baseUrl/user/login') , body:{
@@ -31,12 +37,10 @@ class LoginToApi {
         if(response.statusCode == 200){
           final data = jsonDecode(response.body);
              _box.write('token', data['access_token'].toString());
-             _box.write('user_id', data['user']['id'].toString());
-             _box.write('card', data['user']['card'].toString());
+             _box.write('user_id', data['id'].toString());
+             _box.write('name', data['name'].toString());
+            // _box.write('card', data['user']['card'].toString());
         }
-
-
-
     return response.statusCode;
 
   }

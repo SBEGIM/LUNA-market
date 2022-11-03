@@ -2,7 +2,7 @@ class AdminProductsModel {
   AdminProductsModel({
       int? id, 
       int? catId, 
-      dynamic brandId, 
+      dynamic? brandId,
       int? shopId, 
       int? count, 
       int? currentCount, 

@@ -14,31 +14,34 @@ class TapeCardWidget extends StatelessWidget {
         Image.asset(
           'assets/images/tape.png',
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            width: MediaQuery.of(context).size.width,
-            color: Colors.transparent.withOpacity(0.4),
-            child: const Text(
-              'ZARA',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 12),
-            ),
-          ),
-        ),
         InkWell(
           onTap: (){
-              Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) =>  DetailTapeCardPage()),
-  );
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>  DetailTapeCardPage()),
+          );
           },
           child: Padding(
             padding: const EdgeInsets.only(right: 8.0, top: 8),
             child: Align(
                 alignment: Alignment.topRight,
                 child: SvgPicture.asset('assets/icons/play.svg')),
+          ),
+        ),
+        Container(
+          alignment: Alignment.bottomCenter,
+          margin: const EdgeInsets.only(top: 225),
+          decoration: BoxDecoration(
+            color:  Colors.grey.withOpacity(0.5),
+            borderRadius: const BorderRadius.only(
+             topLeft: Radius.circular(0),
+              topRight: Radius.circular(0),
+              bottomLeft: Radius.circular(8),
+              bottomRight: Radius.circular(8),
+            ),
+          ),
+          child: const Text(
+            'ZARA',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontSize: 12),
           ),
         ),
       ],

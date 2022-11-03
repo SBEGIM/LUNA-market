@@ -1,21 +1,21 @@
 
 
 
-import 'package:haji_market/features/drawer/data/models/shops_drawer_model.dart';
+import 'package:haji_market/features/drawer/data/models/product_model.dart';
 
-abstract class ShopsDrawerState{}
+abstract class ProductState{}
 
 
-class InitState extends ShopsDrawerState{}
+class InitState extends ProductState{}
 
-class LoadingState extends ShopsDrawerState{}
+class LoadingState extends ProductState{}
 
-class LoadedState extends ShopsDrawerState{
-  List<ShopsDrawerModel> shopsDrawer;
-  LoadedState(this.shopsDrawer);
+class LoadedState extends ProductState{
+  List<ProductModel> productModel;
+  LoadedState(this.productModel);
 }
 
-class ErrorState extends ShopsDrawerState{
+class ErrorState extends ProductState{
   String message;
   ErrorState({required this.message}) : assert(message != null);
 

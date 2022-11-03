@@ -1,15 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart';
+import 'package:haji_market/features/drawer/data/bloc/sub_cats_state.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
+import 'package:haji_market/features/home/data/bloc/cats_cubit.dart';
+
+import '../../../home/data/model/Cats.dart';
 
 class UnderCatalogPage extends StatefulWidget {
-  UnderCatalogPage({Key? key}) : super(key: key);
+  final Cats cats;
+  UnderCatalogPage({required this.cats ,Key? key}) : super(key: key);
 
   @override
   State<UnderCatalogPage> createState() => _UnderCatalogPageState();
 }
 
 class _UnderCatalogPageState extends State<UnderCatalogPage> {
+
+  TextEditingController searchController = TextEditingController();
+
+
+  @override
+  void initState() {
+     BlocProvider.of<SubCatsCubit>(context).subCats(widget.cats.id);
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,19 +41,30 @@ class _UnderCatalogPageState extends State<UnderCatalogPage> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.kPrimaryColor,
-            ),
+            icon: SvgPicture.asset('assets/icons/back_header.svg'),
           ),
           title: Container(
-            width: double.infinity,
+            width: 311,
             height: 40,
+            padding: const EdgeInsets.only(right: 16),
             decoration: BoxDecoration(
                 color: const Color(0xFFF8F8F8),
                 borderRadius: BorderRadius.circular(10)),
-            child: const TextField(
-              decoration: InputDecoration(
+            child:  TextField(
+              controller: searchController,
+              onChanged: (value) {
+                if(value.isEmpty){
+                  BlocProvider.of<SubCatsCubit>(context)
+                      .subSave();
+                }else{
+                  BlocProvider.of<SubCatsCubit>(context)
+                      .searchSubCats(value , widget.cats.id);
+                }
+                // if (searchController.text.isEmpty)
+                //   BlocProvider.of<CityCubit>(context)
+                //       .cities(value);
+              },
+              decoration:const InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
                   color: AppColors.kGray300,
@@ -50,94 +80,89 @@ class _UnderCatalogPageState extends State<UnderCatalogPage> {
                 color: Colors.black,
               ),
             ),
-          )),
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            color: AppColors.kBackgroundColor,
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-            child: const Text(
-              'Смартфоны',
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.kGray900),
-            ),
-          ),
-          ListView(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            children: [
-              InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ProductsPage()),
-                    );
-                  },
-                  child: const UnderCatalogListTile(
-                    title: 'Все товары',
-                  )),
-              const Divider(
-                color: AppColors.kGray300,
-              ),
-              const UnderCatalogListTile(
-                title: 'Кабели для моб телефонов',
-              ),
-              const Divider(
-                color: AppColors.kGray300,
-              ),
-              const UnderCatalogListTile(
-                title: 'Держатели для телефонов',
-              ),
-              const Divider(
-                color: AppColors.kGray300,
-              ),
-              const UnderCatalogListTile(
-                title: 'Пауэрбенк',
-              ),
-              const Divider(
-                color: AppColors.kGray300,
-              ),
-              const UnderCatalogListTile(
-                title: 'Ремешки',
-              ),
-              const Divider(
-                color: AppColors.kGray300,
-              ),
-              const UnderCatalogListTile(
-                title: 'Батареи',
-              ),
-              const Divider(
-                color: AppColors.kGray300,
-              ),
-              const UnderCatalogListTile(
-                title: 'Чехлы',
-              ),
-              const Divider(
-                color: AppColors.kGray300,
-              ),
-              const UnderCatalogListTile(
-                title: 'Стикеры',
-              ),
-              const Divider(
-                color: AppColors.kGray300,
-              ),
-              const UnderCatalogListTile(
-                title: 'Беспроводные зарядки',
-              ),
-              const Divider(
-                color: AppColors.kGray300,
-              ),
-            ],
           )
-        ],
       ),
-    );
+      body: BlocConsumer<SubCatsCubit,SubCatsState>(
+          listener: (context, state) {},
+
+          builder: (context, state) {
+            if (state is ErrorState) {
+              return Center(
+                child: Text(
+                  state.message,
+                  style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                ),
+              );
+            }
+            if (state is LoadingState) {
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent)
+              );
+            }
+
+            if (state is LoadedState) {
+              return ListView(
+                shrinkWrap: true,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: AppColors.kBackgroundColor,
+                    padding:
+                    const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+                    child:  Text(
+                      '${widget.cats.name}',
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.kGray900),
+                    ),
+                  ),
+                  InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>  ProductsPage(cats: widget.cats)),
+                        );
+                      },
+                      child: const UnderCatalogListTile(
+                        title: 'Все товары',
+                      )),
+                  const Divider(
+                    color: AppColors.kGray300,
+                  ),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: state.cats.length,
+                      itemBuilder: (context, index){
+                        return  Column(
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>  ProductsPage(cats: state.cats[index])),
+                                  );
+                                },
+                                child:  UnderCatalogListTile(
+                                  title: state.cats[index].name.toString(),
+                                )),
+                            const Divider(
+                              color: AppColors.kGray300,
+                            )
+                          ],
+                        );
+                      }),
+                ]
+              );
+            }else {
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent)
+              );
+            }
+          }),);
   }
 }
 
@@ -150,19 +175,17 @@ class UnderCatalogListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Row(
+    return Container(
+      height: 47,
+      padding: EdgeInsets.only(left: 16,right: 18),
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             title,
             style: AppTextStyles.chanheLangTextStyle,
           ),
-          const Icon(
-            Icons.arrow_forward_ios,
-            color: AppColors.kPrimaryColor,
-            size: 16,
-          ),
+           SvgPicture.asset('assets/icons/back_menu.svg', width: 12, height: 16),
         ],
       ),
     );

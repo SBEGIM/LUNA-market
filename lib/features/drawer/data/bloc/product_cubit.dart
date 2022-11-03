@@ -1,20 +1,22 @@
+
+
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:haji_market/features/drawer/data/models/shops_drawer_model.dart';
-import '../repository/shops_drawer_repo.dart';
-import 'shops_drawer_state.dart';
+import 'package:haji_market/features/drawer/data/bloc/product_state.dart';
 
+import '../models/product_model.dart';
+import '../repository/product_repo.dart';
 
-class ShopsDrawerCubit extends Cubit<ShopsDrawerState> {
-  final ShopsDrawerRepository shopsDrawerRepository;
+class ProductCubit extends Cubit<ProductState> {
+  final ProductRepository productRepository;
 
-  ShopsDrawerCubit({required this.shopsDrawerRepository}) : super(InitState());
+  ProductCubit({required this.productRepository}) : super(InitState());
 
-  Future<void> shopsDrawer() async {
+  Future<void> products() async {
     try {
       emit(LoadingState());
-      final List<ShopsDrawerModel> data = await shopsDrawerRepository.shopsDrawer();
+      final List<ProductModel> data = await productRepository.product();
 
       emit(LoadedState(data));
     } catch (e) {
@@ -22,22 +24,4 @@ class ShopsDrawerCubit extends Cubit<ShopsDrawerState> {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
-
-  // Future<void> searchCity(String city) async {
-  //   if(city.isEmpty) return;
-  //   if(_cities.isEmpty) {
-  //     await cities();
-  //     // final List<City> data = await listRepository.cities();
-  //     // _cities = data;
-  //   }
-  //   List<City> temp = [];
-  //   Set<String> citiesSet = {};
-  //   for(int i = 0 ; i < _cities.length; i++) {
-  //     if(_cities[i].name != null && _cities[i].name!.contains(city)) {
-  //       temp.add(_cities[i]);
-  //       citiesSet.add(_cities[i].name.toString());
-  //     }
-  //   }
-  //   emit(LoadedState(temp, citiesSet, ''));
-  // }
 }

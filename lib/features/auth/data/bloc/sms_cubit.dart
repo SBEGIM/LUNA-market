@@ -4,10 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:untitled/data/DTO/register.dart';
-import 'package:untitled/data/bloc/sms_state.dart';
-import '../../pages/authorization/password_reset_page.dart';
-import '../repo/registerRepo.dart';
+import 'package:haji_market/features/auth/data/bloc/sms_state.dart';
+
+import '../repository/registerRepo.dart';
+
 
 class SmsCubit extends Cubit<SmsState> {
 
@@ -38,6 +38,33 @@ class SmsCubit extends Cubit<SmsState> {
       // emit(ErrorState(message: 'Ошибка'));
     }
   }
+
+
+
+  Future<void> smsResend(String phone) async {
+    try {
+      emit(LoadingState());
+      final data = await registerRepository.smsSend(phone);
+      if(data == 200){
+        Get.snackbar('Успешно!' , 'Код отправлен на ваш номер!' , backgroundColor: Colors.blueAccent);
+        emit(InitState());
+      }
+      if(data == 400){
+        emit(InitState());
+        Get.snackbar('Ошибка запроса!' , 'Номер занят' , backgroundColor: Colors.redAccent);
+      }
+
+      if(data == 500){
+        emit(InitState());
+        Get.snackbar('500' , 'Ошибка сервера' , backgroundColor: Colors.redAccent);
+      }
+
+    } catch (e) {
+      log(e.toString());
+      // emit(ErrorState(message: 'Ошибка'));
+    }
+  }
+
 
   Future<void> smsCheck(String phone , String code) async {
     try {
@@ -71,9 +98,8 @@ class SmsCubit extends Cubit<SmsState> {
       final data = await registerRepository.resetSend(phone);
       if(data == 200){
         Get.snackbar('Успешно!' , 'Код отправлен на ваш номер!' , backgroundColor: Colors.blueAccent);
-        emit(InitState());
-        Get.to(PasswordResetPage(phone: phone));
-
+        emit(LoadedState());
+       // Get.to(PasswordResetPage(phone: phone));
       }
       if(data == 400){
         emit(InitState());

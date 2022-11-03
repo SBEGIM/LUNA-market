@@ -1,12 +1,8 @@
-// ignore_for_file: avoid_print
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/core/router/app_router.dart';
 import 'package:haji_market/features/app/bloc/navigation_cubit/navigation_cubit.dart';
-
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:haji_market/features/basket/presentation/ui/basket_page.dart';
 import 'package:haji_market/features/drawer/presentation/ui/drawer_home.dart';
@@ -33,8 +29,11 @@ class _BaseState extends State<Base> {
   void initState() {
      if (widget.index != null) {
       basePageIndex = widget.index!;
-
-      if (basePageIndex == 0) {
+      if (widget.index == 0 ) {
+        BlocProvider.of<NavigationCubit>(context)
+            .getNavBarItem(const NavigationState.tape());
+      }
+      if (basePageIndex == 1) {
         BlocProvider.of<NavigationCubit>(context)
             .getNavBarItem(const NavigationState.home());
       }

@@ -12,56 +12,54 @@ import '../models/shops_drawer_model.dart';
 
 const   baseUrl = 'http://80.87.202.73:8001/api';
 
-class ProductRepository{
+class FavoriteRepository{
 
-  ProductApi  _productApi = ProductApi();
+  FavoriteApi  _favoriteApi = FavoriteApi();
 
-  Future<List<ProductModel>> product() => _productApi.product();
+  Future<List<ProductModel>> favorites() => _favoriteApi.favorites();
+  Future<int> favorite(id) => _favoriteApi.favorite(id);
 
 }
 
 
-class ProductApi{
+class FavoriteApi{
 
 final _box = GetStorage();
-RangeValues price = const RangeValues(0, 0);
-int brandId = 0;
-int shopId = 0;
-int subCatId = 0;
-bool rating = false;
 
+  Future<List<ProductModel>> favorites() async {
 
-  Future<List<ProductModel>> product() async {
-    _box.listen(() {
-      if(_box.read('priceFilter') != null){
-          price = GetStorage().read('priceFilter');
-      }
-      if(_box.read('brandFilterId') != null){
-          brandId = GetStorage().read('brandFilterId');
-      }
-      if(_box.read('subCatId') != null){
-          subCatId = GetStorage().read('subCatId');
-      }
-      if(_box.read('shopFilterId') != null){
-            shopId = GetStorage().read('shopFilterId');
-      }
-      if(_box.read('ratingFilter') != null){
-        rating = GetStorage().read('ratingFilter');
-      }
-
-
-    });
 
     final String? token =  _box.read('token');
 
-    final response = await http.get(Uri.parse('$baseUrl/shop/search?brand_id=$brandId?shop_id=$shopId?rating=$rating?cat_id=$subCatId') , headers:{
-          "Authorization": "Bearer $token"
-    });
+    final response = await http.get(Uri.parse('$baseUrl/user/favorites') , headers:{
+          "Authorization": "Bearer $token"});
 
 
     final data = jsonDecode(response.body);
 
     return  (data['data'] as List).map((e) => ProductModel.fromJson(e)).toList();
+  }
+
+
+
+
+  Future<int> favorite(id) async {
+
+
+    final String? token =  _box.read('token');
+
+    final response = await http.post(Uri.parse('$baseUrl/shop/favorite/store') , headers:{
+          "Authorization": "Bearer $token"
+    },body: {
+      'id': id
+    }
+
+    );
+
+
+    final data = response.statusCode;
+
+    return  data;
   }
 
 }

@@ -1,21 +1,20 @@
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
-
 import '../../../home/data/model/Cats.dart';
-import '../repository/SubCatsRepo.dart';
-import 'sub_cats_state.dart';
+import '../repository/BrandRepo.dart';
+import 'brand_state.dart';
 
 
-class SubCatsCubit extends Cubit<SubCatsState> {
-  final SubCatsRepository subCatRepository;
 
-  SubCatsCubit({required this.subCatRepository}) : super(InitState());
+class BrandCubit extends Cubit<BrandState> {
+  final BrandsRepository brandRepository;
 
-  Future<void> subCats(sub_cat_id) async {
+  BrandCubit({required this.brandRepository}) : super(InitState());
+
+  Future<void> brands() async {
     try {
       emit(LoadingState());
-      final List<Cats> data = await subCatRepository.subCatApi(sub_cat_id);
+      final List<Cats> data = await brandRepository.brandApi();
 
       emit(LoadedState(data));
     } catch (e) {

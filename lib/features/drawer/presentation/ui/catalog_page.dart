@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/under_catalog_page.dart';
+import 'package:haji_market/features/home/data/model/Cats.dart';
+
+import '../../../home/data/bloc/cats_cubit.dart';
+import '../../../home/data/bloc/cats_state.dart';
 
 class CatalogPage extends StatefulWidget {
   CatalogPage({Key? key}) : super(key: key);
@@ -12,6 +17,11 @@ class CatalogPage extends StatefulWidget {
 }
 
 class _CatalogPageState extends State<CatalogPage> {
+  TextEditingController searchController = TextEditingController();
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,13 +42,28 @@ class _CatalogPageState extends State<CatalogPage> {
         ],
         // leadingWidth: 1,
         title: Container(
-          width: double.infinity,
-          height: 40,
+          height: 34,
+          width: 279,
           decoration: BoxDecoration(
               color: const Color(0xFFF8F8F8),
               borderRadius: BorderRadius.circular(10)),
-          child: const TextField(
-              decoration: InputDecoration(
+          child:  TextField(
+            controller: searchController,
+              onChanged: (value) {
+                if(value.isEmpty){
+                  BlocProvider.of<CatsCubit>(context)
+                      .saveCats();
+                }else{
+                  BlocProvider.of<CatsCubit>(context)
+                      .searchCats(value);
+                }
+
+
+                // if (searchController.text.isEmpty)
+                //   BlocProvider.of<CityCubit>(context)
+                //       .cities(value);
+              },
+              decoration: const InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
                   color: AppColors.kGray300,
@@ -55,75 +80,58 @@ class _CatalogPageState extends State<CatalogPage> {
               )),
         ),
       ),
-      body: Column(
-        children: [
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => UnderCatalogPage()),
-              );
-            },
-            child: const CatalogListTile(
-              title: 'Cмартфоны',
-              url: 'assets/icons/cat1.svg',
-            ),
-          ),
-          const Divider(
-            color: AppColors.kGray400,
-          ),
-          const CatalogListTile(
-            title: 'Компьютеры',
-            url: 'assets/icons/cat2.svg',
-          ),
-          const Divider(
-            color: AppColors.kGray400,
-          ),
-          const CatalogListTile(
-            title: 'ТВ',
-            url: 'assets/icons/cat3.svg',
-          ),
-          const Divider(
-            color: AppColors.kGray400,
-          ),
-          const CatalogListTile(
-            title: 'Аксессуары',
-            url: 'assets/icons/cat4.svg',
-          ),
-          const Divider(
-            color: AppColors.kGray400,
-          ),
-          const CatalogListTile(
-            title: 'Игрушки',
-            url: 'assets/icons/cat1.svg',
-          ),
-          const Divider(
-            color: AppColors.kGray400,
-          ),
-          const CatalogListTile(
-            title: 'Кухня',
-            url: 'assets/icons/cat1.svg',
-          ),
-          const Divider(
-            color: AppColors.kGray400,
-          ),
-          const CatalogListTile(
-            title: 'Кухня',
-            url: 'assets/icons/cat1.svg',
-          ),
-          const Divider(
-            color: AppColors.kGray400,
-          ),
-          const CatalogListTile(
-            title: 'Cмартфоны',
-            url: 'assets/icons/cat1.svg',
-          ),
-          const Divider(
-            color: AppColors.kGray400,
-          ),
-        ],
-      ),
-    );
+      body:  BlocConsumer<CatsCubit, CatsState>(
+        listener: (context, state) {},
+
+        builder: (context, state) {
+          if (state is ErrorState) {
+            return Center(
+              child: Text(
+                state.message,
+                style: TextStyle(fontSize: 20.0, color: Colors.grey),
+              ),
+            );
+          }
+          if (state is LoadingState) {
+            return const Center(
+                child: CircularProgressIndicator(color: Colors.indigoAccent)
+            );
+          }
+
+          if (state is LoadedState) {
+           return ListView.builder(
+             itemCount: state.cats.length,
+             itemBuilder: (context,index){
+               return  Column(
+                 children: [
+                   InkWell(
+                     onTap: () {
+                       Navigator.push(
+                         context,
+                         MaterialPageRoute(builder: (context) => UnderCatalogPage(cats: state.cats[index])),
+                       );
+                     },
+                     child:  CatalogListTile(
+                       title: '${state.cats[index].name}',
+                       url:  "http://80.87.202.73:8001/storage/${state.cats[index].icon!}",
+
+               ),
+                   ),
+                   const Divider(
+                     color: AppColors.kGray400,
+                   ),
+                 ],
+               );
+             },
+           );
+          }else {
+            return const Center(
+                child: CircularProgressIndicator(color: Colors.indigoAccent)
+            );
+          }
+        }),
+
+      );
   }
 }
 
@@ -139,20 +147,20 @@ class CatalogListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: SvgPicture.asset(
-        url,
-        // 'assets/icons/phone.svg',
-        height: 30,
+      leading: Container(
+        height: 20.05,
+        width: 20.05,
+        decoration: BoxDecoration(
+            image:  DecorationImage(
+              image: NetworkImage("${url}"),
+              fit: BoxFit.cover,
+            )),
       ),
       title: Text(
         title,
         style: AppTextStyles.catalogTextStyle,
       ),
-      trailing: const Icon(
-        Icons.arrow_forward_ios,
-        size: 16,
-        color: AppColors.kPrimaryColor,
-      ),
+      trailing: SvgPicture.asset('assets/icons/back_menu.svg', height: 12, width: 16),
     );
   }
 }

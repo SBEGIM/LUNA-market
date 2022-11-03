@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/drawer/data/bloc/basket_cubit.dart';
+import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/detailed_store_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/specifications_page.dart';
 import '../../../home/presentation/widgets/banner_watceh_recently_widget.dart';
+import '../../data/bloc/favorite_cubit.dart';
+import '../../data/bloc/product_cubit.dart';
 
 class DetailCardProductPage extends StatefulWidget {
-  const DetailCardProductPage({Key? key}) : super(key: key);
+  final ProductModel product;
+  const DetailCardProductPage({required this.product ,Key? key}) : super(key: key);
 
   @override
   State<DetailCardProductPage> createState() => _DetailCardProductPageState();
@@ -16,6 +22,8 @@ class DetailCardProductPage extends StatefulWidget {
 class _DetailCardProductPageState extends State<DetailCardProductPage> {
   int? selectedIndex = 0;
   int? selectedIndex2 = 0;
+  bool isvisible = false;
+  bool inFavorite = false;
   List textDescrp = [
     'Все товары APPLE',
     'Беспроводные наушники APPLE',
@@ -27,6 +35,13 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
     '12 мес',
     '24 мес',
   ];
+
+  @override
+  void initState() {
+   isvisible = widget.product.inBasket ?? false;
+   inFavorite = widget.product.inFavorite ?? false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +86,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           Container(
             height: 300,
             color: Colors.white,
-            child: Image.asset('assets/images/wireles.png'),
+            child:Image.network(
+              widget.product.path!.isNotEmpty ? "http://80.87.202.73:8001/storage/${widget.product.path!.first}" : '',
+              height: 375,
+              width: 400,
+            ),
           ),
           const SizedBox(
             height: 8,
@@ -86,34 +105,46 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Черные беспроводные наушники\nAirPods Max',
-                      style: TextStyle(
+                     Text(
+                      "${widget.product.name}",
+                      style: const TextStyle(
                           fontSize: 16,
                           color: AppColors.kGray900,
                           fontWeight: FontWeight.w700),
                     ),
-                    SvgPicture.asset('assets/icons/heart_fill.svg')
+                    IconButton(
+                        onPressed: () async{
+                          final favorite =  BlocProvider.of<FavoriteCubit>(context);
+                          await favorite.favorite(widget.product.id.toString());
+                          setState(() {
+                            inFavorite  = !inFavorite;
+                          });
+                           BlocProvider.of<ProductCubit>(context).products();
+
+                        },
+                        icon: SvgPicture.asset('assets/icons/heart_fill.svg',
+                          color:  inFavorite == true ? Colors.red : Colors.grey,
+                        ))
                   ],
                 ),
-                SizedBox(
+               const SizedBox(
                   height: 8,
                 ),
-                const Text(
-                  'Артикул: 1920983974',
-                  style: TextStyle(
+                 Text(
+                  'Артикул: ${widget.product.id}',
+                  style: const TextStyle(
                       color: AppColors.kGray300,
                       fontSize: 14,
                       fontWeight: FontWeight.w500),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Row(
                   children: [
                     RatingBar(
                       ignoreGestures: true,
-                      initialRating: 2,
+                      initialRating: double.parse(widget.product.rating.toString()),
                       unratedColor: const Color(0x30F11712),
                       itemSize: 15,
                       // itemPadding:
@@ -125,18 +156,18 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         ),
                         half: const Icon(
                           Icons.star,
-                          color: Color(0xFFFFD54F),
+                          color: Colors.grey,
                         ),
                         empty: const Icon(
                           Icons.star,
-                          color: Color(0xFFFFD54F),
+                          color: Colors.grey,
                         ),
                       ),
                       onRatingUpdate: (double value) {},
                     ),
-                    const Text(
-                      '(98 отзывов)',
-                      style: TextStyle(
+                     Text(
+                      '(${widget.product.count} отзывов)',
+                      style: const TextStyle(
                           color: AppColors.kGray300,
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
@@ -147,20 +178,20 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   height: 18.5,
                 ),
                 Row(
-                  children: const [
+                  children:  [
                     Text(
-                      '9 300 000 ₸',
-                      style: TextStyle(
+                      '${widget.product.price!.toInt() -  widget.product.compound!.toInt()} ₸',
+                      style: const TextStyle(
                           color: Colors.red,
                           fontSize: 16,
                           fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(
+                   const SizedBox(
                       width: 10,
                     ),
                     Text(
-                      '9 500 000 ₸',
-                      style: TextStyle(
+                      '${widget.product.price!.toInt()} ₸',
+                      style: const TextStyle(
                           decoration: TextDecoration.lineThrough,
                           color: AppColors.kGray900,
                           fontSize: 14,
@@ -189,9 +220,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         color: Color(0xFFFFD54F),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Text(
-                        '100 000',
-                        style: TextStyle(
+                      child:  Text(
+                        '${(widget.product.price!.toInt() / 3).roundToDouble()}',
+                        style: const TextStyle(
                             color: AppColors.kGray900,
                             fontSize: 14,
                             fontWeight: FontWeight.w500),
@@ -264,7 +295,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: 3,
+                    itemCount: widget.product.color!.length,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         onTap: () {
@@ -399,7 +430,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     const Divider(),
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: 4,
+                itemCount: widget.product.shops!.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -410,18 +441,18 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              'Sulpak',
-                              style: TextStyle(
+                             Text(
+                              '${widget.product.shops![index].shop!.name}',
+                              style: const TextStyle(
                                   color: AppColors.kGray900,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500),
                             ),
                             Row(
                               children: [
-                                const Text(
-                                  '(98 отзывов)',
-                                  style: TextStyle(
+                                 Text(
+                                  '(${widget.product.shop!.id} отзывов)',
+                                  style: const TextStyle(
                                       color: AppColors.kGray300,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400),
@@ -440,11 +471,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                     ),
                                     half: const Icon(
                                       Icons.star,
-                                      color: Color(0xFFFFD54F),
+                                      color: Colors.grey,
                                     ),
                                     empty: const Icon(
                                       Icons.star,
-                                      color: Color(0xFFFFD54F),
+                                      color: Colors.grey,
                                     ),
                                   ),
                                   onRatingUpdate: (double value) {},
@@ -459,9 +490,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              '30 000 ₸',
-                              style: TextStyle(
+                             Text(
+                              '${widget.product.price} ₸',
+                              style: const TextStyle(
                                   color: AppColors.kGray900,
                                   fontSize: 17,
                                   fontWeight: FontWeight.w700),
@@ -474,9 +505,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                     color: const Color(0xFFFFD54F),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: const Text(
-                                    '10 000',
-                                    style: TextStyle(
+                                  child:  Text(
+                                    '${(widget.product.price!.toInt() / 3).round()}',
+                                    style: const TextStyle(
                                         color: AppColors.kGray900,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500),
@@ -750,6 +781,15 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             InkWell(
               onTap: () {
                 // Navigator.pop(context);
+
+                if(isvisible == false && widget.product.inBasket == false){
+                  BlocProvider.of<BasketCubit>(context).basketAdd(widget.product.id.toString() , '1');
+                  setState(() {
+                    isvisible = true;
+                  });
+                  BlocProvider.of<ProductCubit>(context).products();
+                }
+
               },
               child: Container(
                   height: 46,
@@ -760,15 +800,25 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   ),
                   padding: const EdgeInsets.only(
                       left: 21.5, right: 21.5, top: 15, bottom: 15),
-                  child: const Text(
+                  child: (isvisible == false && widget.product.inBasket == false)?
+
+                  const Text(
                     'Добавить в корзину',
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
                         fontSize: 14),
                     textAlign: TextAlign.center,
-                  )),
-            ),
+                  ):       const Text(
+                    'Товар в корзине',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14),
+                    textAlign: TextAlign.center,
+                  )
+              ),
+            )
           ],
         ),
       ),

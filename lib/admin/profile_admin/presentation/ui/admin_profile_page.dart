@@ -2,8 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/profile_admin/presentation/widgets/about_shop_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 
 import '../widgets/reqirect_profile_page.dart';
 
@@ -170,6 +172,45 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 16,
+                    color: AppColors.kGray300,
+                  )
+                ],
+              ),
+            ),
+          ),
+          const Divider(
+            color: AppColors.kGray400,
+          ),
+          GestureDetector(
+            onTap: (){
+              GetStorage().remove('token');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ViewAuthRegisterPage()),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 10, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Выйти',
+                        style: TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
                     color: AppColors.kGray300,
                   )
                 ],

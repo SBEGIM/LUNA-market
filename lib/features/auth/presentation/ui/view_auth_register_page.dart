@@ -27,8 +27,8 @@ class _ViewAuthRegisterPageState extends State<ViewAuthRegisterPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Вход',
+        title:  Text(
+          segmentValue == 0 ? 'Вход' : 'Регистрация',
           style: AppTextStyles.appBarTextStyle,
         ),
         leading: Padding(

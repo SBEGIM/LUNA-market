@@ -1,15 +1,15 @@
 class BasketShowModel {
   BasketShowModel({
-      Product product, 
-      List<String> image, 
-      int priceCourier, 
-      int price, 
-      int basketId, 
-      int basketCount, 
-      dynamic basketColor, 
-      dynamic basketSize, 
-      String shopName, 
-      List<dynamic> address,}){
+      Product? product,
+      List<String>? image,
+      int? priceCourier,
+      int? price,
+      int? basketId,
+      int? basketCount,
+      String? basketColor,
+      String? basketSize,
+      String? shopName,
+      List<String>? address,}){
     _product = product;
     _image = image;
     _priceCourier = priceCourier;
@@ -35,36 +35,36 @@ class BasketShowModel {
     if (json['address'] != null) {
       _address = [];
       json['address'].forEach((v) {
-        _address.add(Dynamic.fromJson(v));
+        _address!.add(v.toString());
       });
     }
   }
-  Product _product;
-  List<String> _image;
-  int _priceCourier;
-  int _price;
-  int _basketId;
-  int _basketCount;
-  dynamic _basketColor;
-  dynamic _basketSize;
-  String _shopName;
-  List<dynamic> _address;
+  Product? _product;
+  List<String>? _image;
+  int? _priceCourier;
+  int? _price;
+  int? _basketId;
+  int? _basketCount;
+  String? _basketColor;
+  String? _basketSize;
+  String? _shopName;
+  List<String>? _address;
 
-  Product get product => _product;
-  List<String> get image => _image;
-  int get priceCourier => _priceCourier;
-  int get price => _price;
-  int get basketId => _basketId;
-  int get basketCount => _basketCount;
-  dynamic get basketColor => _basketColor;
-  dynamic get basketSize => _basketSize;
-  String get shopName => _shopName;
-  List<dynamic> get address => _address;
+  Product? get product => _product;
+  List<String>? get image => _image;
+  int? get priceCourier => _priceCourier;
+  int? get price => _price;
+  int? get basketId => _basketId;
+  int? get basketCount => _basketCount;
+  String? get basketColor => _basketColor;
+  String? get basketSize => _basketSize;
+  String? get shopName => _shopName;
+  List<String>? get address => _address;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (_product != null) {
-      map['product'] = _product.toJson();
+      map['product'] = _product!.toJson();
     }
     map['image'] = _image;
     map['price_courier'] = _priceCourier;
@@ -75,7 +75,7 @@ class BasketShowModel {
     map['basket_size'] = _basketSize;
     map['shop_name'] = _shopName;
     if (_address != null) {
-      map['address'] = _address.map((v) => v.toJson()).toList();
+      map['address'] = _address!.map((v) => v.toString()).toList();
     }
     return map;
   }
@@ -84,12 +84,12 @@ class BasketShowModel {
 
 class Product {
   Product({
-      int id, 
-      int shopId, 
-      String name, 
-      int price, 
-      int compound, 
-      int courierPrice,}){
+      int? id,
+      int? shopId,
+      String? name,
+      int? price,
+      int? compound,
+      int? courierPrice,}){
     _id = id;
     _shopId = shopId;
     _name = name;
@@ -106,19 +106,19 @@ class Product {
     _compound = json['compound'];
     _courierPrice = json['courier_price'];
   }
-  int _id;
-  int _shopId;
-  String _name;
-  int _price;
-  int _compound;
-  int _courierPrice;
+  int? _id;
+  int? _shopId;
+  String? _name;
+  int? _price;
+  int? _compound;
+  int? _courierPrice;
 
-  int get id => _id;
-  int get shopId => _shopId;
-  String get name => _name;
-  int get price => _price;
-  int get compound => _compound;
-  int get courierPrice => _courierPrice;
+  int? get id => _id;
+  int? get shopId => _shopId;
+  String? get name => _name;
+  int? get price => _price;
+  int? get compound => _compound;
+  int? get courierPrice => _courierPrice;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
 import 'package:haji_market/features/my_order/presentation/widget/cancel_order_widget.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 class MyOrderStatusPage extends StatefulWidget {
-  const MyOrderStatusPage({Key? key}) : super(key: key);
+  final BasketOrderModel basketOrder;
+
+  const MyOrderStatusPage({
+    required this.basketOrder,
+    Key? key}) : super(key: key);
 
   @override
   State<MyOrderStatusPage> createState() => _MyOrderStatusPageState();
@@ -21,23 +26,23 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
           backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
-          title: const Text(
-            '№12345678 ',
-            style: TextStyle(
+          title:  Text(
+            '№ ${widget.basketOrder.id}',
+            style: const TextStyle(
               color: Colors.black,
+              fontSize: 16
             ),
           )),
       body: ListView(
-        shrinkWrap: true,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
-                  'Сегодня',
-                  style: TextStyle(
+                  '${widget.basketOrder.date}',
+                  style: const TextStyle(
                       color: AppColors.kGray300,
                       fontSize: 12,
                       fontWeight: FontWeight.w500),
@@ -64,9 +69,12 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         height: 10,
                       ),
                       TimelineTile(
-                        indicatorStyle: const IndicatorStyle(
-                          width: 10,
-                          color: Colors.black,
+                        indicatorStyle: IndicatorStyle(
+                          color: AppColors.kPrimaryColor,
+                          iconStyle: IconStyle(
+                            color: Colors.white,
+                            iconData: Icons.check,
+                          ),
                         ),
                         beforeLineStyle: const LineStyle(
                           thickness: 1.4,
@@ -77,11 +85,11 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               left: 8.0, top: 10, bottom: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text('Заказ оплачен'),
+                            children:  [
+                              const Text('Заказ оплачен'),
                               Text(
-                                '11 июля',
-                                style: TextStyle(
+                                '${widget.basketOrder.date}',
+                                style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 17,
                                   color: AppColors.kGray300,
@@ -92,9 +100,12 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         ),
                       ),
                       TimelineTile(
-                        indicatorStyle: const IndicatorStyle(
-                          width: 10,
-                          color: Colors.black,
+                        indicatorStyle: IndicatorStyle(
+                          color: Colors.grey,
+                          iconStyle: IconStyle(
+                            color: Colors.grey,
+                            iconData: Icons.start,
+                          ),
                         ),
                         beforeLineStyle: const LineStyle(
                           thickness: 1.4,
@@ -127,11 +138,11 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                       ),
                       InkWell(
                         onTap: (){
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) =>  CancelOrderWidget()),
-  );
-                        },
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) =>  CancelOrderWidget()),
+                            );
+                            },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: const [
@@ -155,7 +166,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                    left: 16, right: 16, top: 10, bottom: 10),
+                    left: 16, right: 16, top: 10),
                 child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -164,9 +175,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        const  Text(
                           'Продовец',
-                          style: TextStyle(
+                          style:  TextStyle(
                               color: AppColors.kPrimaryColor,
                               fontSize: 12,
                               fontWeight: FontWeight.w400),
@@ -177,9 +188,16 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         Row(
                           children: [
                             SvgPicture.asset(
-                              'assets/icons/user.svg',
+                              'assets/icons/phone.svg',
                             ),
-                            const Text('+7 777 777 77 77')
+                            const SizedBox(width: 13),
+                             Text('+7${widget.basketOrder.product!.first.shopPhone}',
+                               style: const TextStyle(
+                                 color: Colors.black,
+                                 fontSize: 16,
+                                 fontWeight: FontWeight.w400
+                               ),
+                             )
                           ],
                         )
                       ],
@@ -210,55 +228,106 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             SvgPicture.asset(
                               'assets/icons/user.svg',
                             ),
-                            const Text('Алматы, улица Байзакова, 280')
+                            const SizedBox(width: 13),
+                             Text('${widget.basketOrder.product!.first.address}',
+                             style:const TextStyle(
+                               fontSize: 16,
+                               fontWeight: FontWeight.w400
+                             ),
+                             )
                           ],
                         )
                       ],
                     )),
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Image.asset(
-                  'assets/images/wireles.png',
-                  height: 80,
-                  width: 80,
+                padding: const EdgeInsets.only(left: 16, right: 12),
+                child:Image.network(
+                  "http://80.87.202.73:8001/storage/${widget.basketOrder.product!.first.path!.first.toString()}",
+                  width: 120,
+                  height: 120,
                 ),
               ),
               Container(
                 color: Colors.white,
                 child: Column(
-                  children: const [
-                    ListTile(
-                      title: Text(
-                        'Товар',
-                        style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                  children:  [
+                    Container(
+                      height: 55,
+                      child:ListTile(
+                        title: const Text(
+                          'Товар',
+                          style: TextStyle(
+                              color: AppColors.kGray900,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        subtitle: Text(
+                          '${widget.basketOrder.product!.first.productName}',
+                          style: const TextStyle(
+                              color: AppColors.kGray300,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        trailing: Text('${widget.basketOrder.summa} ₸ ',
+                          style:const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
                       ),
-                      subtitle: Text(
-                        'Беспроводные наушники Sony',
-                        style: TextStyle(
-                            color: AppColors.kGray300,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      trailing: Text('1 009 870 ₸ '),
                     ),
-                    Divider(
+                  const  Divider(
                       color: AppColors.kGray400,
                     ),
-                    ListTile(
-                      title: Text('Доставка'),
-                      trailing: Text('1 009 870 ₸ '),
+                    Container(
+                      height: 35,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding:const EdgeInsets.only(left: 16),
+                            child: const Text('Доставка'),
+                          ),
+                          Container(
+                            padding:const EdgeInsets.only(right: 16),
+                            child:    Text('${widget.basketOrder.product!.first.shopCourier!.toInt()} ₸ ',
+                              style:const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    Divider(
+
+                  const  Divider(
                       color: AppColors.kGray400,
                     ),
-                    ListTile(
-                      title: Text('К оплате'),
-                      trailing: Text('1 009 870 ₸ '),
+                    Container(
+                      height: 35,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding:const EdgeInsets.only(left: 16),
+                            child:   const Text('К оплате' ,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          Container(
+                            padding:const EdgeInsets.only(right: 16),
+                            child:     Text('${widget.basketOrder.summa!.toInt() + widget.basketOrder.product!.first.shopCourier!.toInt()} ₸ ',
+                              style:const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
+                    SizedBox(height: 5,)
                   ],
                 ),
               )

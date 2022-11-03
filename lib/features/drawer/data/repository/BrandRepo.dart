@@ -6,17 +6,17 @@ import 'package:http/http.dart' as http;
 
 const   baseUrl = 'http://80.87.202.73:8001/api';
 
-class SubCatsRepository{
-  SubCatApi  _subCatsApi = SubCatApi();
+class BrandsRepository{
+  BrandApi  _brandApi = BrandApi();
 
-  Future<List<Cats>> subCatApi(sub_cat_id) => _subCatsApi.subCats(sub_cat_id);
+  Future<List<Cats>> brandApi() => _brandApi.brands();
 }
 
 
-class SubCatApi {
+class BrandApi {
 
-  Future<List<Cats>> subCats(sub_cat_id) async {
-    final response = await http.get(Uri.parse('$baseUrl/list/sub/cats?sub_cat_id=$sub_cat_id'));
+  Future<List<Cats>> brands() async {
+    final response = await http.get(Uri.parse('$baseUrl/list/brands'));
 
     final data = jsonDecode(response.body);
 

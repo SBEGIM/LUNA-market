@@ -4,6 +4,7 @@ import 'package:haji_market/features/profile/data/presentation/ui/new_bank_card_
 import 'package:haji_market/features/profile/data/presentation/widgets/show_dialog_redirect.dart';
 
 import '../../../../../core/common/constants.dart';
+import '../../../../app/widgets/custom_back_button.dart';
 
 class MyBankCardPage extends StatefulWidget {
   const MyBankCardPage({Key? key}) : super(key: key);
@@ -18,6 +19,11 @@ class _MyBankCardPageState extends State<MyBankCardPage> {
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
+        leading: Padding(
+        padding: const EdgeInsets.only(left: 22.0),
+        child: CustomBackButton(onTap: () {
+        Navigator.pop(context);
+        }),),
         backgroundColor: Colors.white,
         title: const Text(
           'Мои карты',
@@ -46,76 +52,25 @@ class _MyBankCardPageState extends State<MyBankCardPage> {
               ),
               padding: const EdgeInsets.all(8),
               child: Column(
-                children: [
-                  ListTile(
-                      leading: const Icon(
-                        Icons.credit_card,
-                        color: AppColors.kPrimaryColor,
-                      ),
-                      title: const Text('Kaspi Gold'),
-                      trailing: InkWell(
-                          onTap: () {
-                            showDialogRegirect(context);
-                          },
-                          child:
-                              const Icon(Icons.vertical_distribute_outlined))),
-                  ListTile(
-                    leading: SvgPicture.asset('assets/icons/user.svg'),
-                    title: const Text('ULAN SHOTEYULY'),
-                  ),
-                  const ListTile(
+                children: const[
+                   ListTile(
                     leading: Icon(
                       Icons.credit_card,
                       color: AppColors.kPrimaryColor,
                     ),
-                    title: Text('4400-4400-4400-4400'),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Row(
-                      children: const [
-                        Text('04/23'),
-                        SizedBox(
-                          width: 150,
-                        ),
-                        Text('04/23'),
-                      ],
+                    title: Text('********1254-4400'),
+                    trailing: Icon(
+                      Icons.delete,
+                      color: AppColors.kPrimaryColor,
                     ),
+
                   ),
+
                 ],
               ),
             ),
           ),
         ],
-      ),
-      bottomSheet: Container(
-        color: Colors.white,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
-        child: InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NewBankCardPage()),
-            );
-            // Navigator.pop(context);
-          },
-          child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.kPrimaryColor,
-              ),
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(16),
-              child: const Text(
-                'Добавить новую карту',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
-                textAlign: TextAlign.center,
-              )),
-        ),
       ),
     );
   }

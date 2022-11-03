@@ -1,33 +1,22 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-
-import '../model/Cats.dart';
+import '../model/Banners.dart';
 import '../repository/CatsRepo.dart';
-import 'cats_state.dart';
+import 'banners_state.dart';
 
 
-class CatsCubit extends Cubit<CatsState> {
+class BannersCubit extends Cubit<BannersState> {
   final ListRepository listRepository;
 
-  CatsCubit({required this.listRepository}) : super(InitState());
+  BannersCubit({required this.listRepository}) : super(InitState());
 
-  List<Cats> _cats = [];
-  Future<void> cats() async {
+  Future<void> banners() async {
     try {
       emit(LoadingState());
-      final List<Cats> data = await listRepository.cats();
-      _cats = data;
-      // data.insert(0, City(id: -1, name: city));
-      Set<String> citiesSet = {};
-      // data.contains('Ал');
+      final List<Banners> data = await listRepository.banners();
 
-      for (int i = 0; i < data.length; i++) {
-        // data[i].name.contains('Ал');
-        citiesSet.add(data[i].name.toString());
-      }
-
-      emit(LoadedState(data, citiesSet, data.first.name!));
+      emit(LoadedState(data));
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));

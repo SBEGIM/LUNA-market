@@ -1,24 +1,37 @@
-
-
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
-import 'package:haji_market/features/drawer/data/bloc/product_state.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:haji_market/features/drawer/data/bloc/favorite_state.dart';
+import 'package:haji_market/features/drawer/data/repository/favorite_repo.dart';
 
 import '../models/product_model.dart';
-import '../repository/product_repo.dart';
 
-class ProductCubit extends Cubit<ProductState> {
-  final ProductRepository productRepository;
+class FavoriteCubit extends Cubit<FavoriteState> {
+  final FavoriteRepository favoriteRepository;
 
-  ProductCubit({required this.productRepository}) : super(InitState());
+  FavoriteCubit({required this.favoriteRepository}) : super(InitState());
 
-  Future<void> products() async {
+
+
+  Future<void> myFavorites() async {
     try {
       emit(LoadingState());
-      final List<ProductModel> data = await productRepository.product();
+      final List<ProductModel> data = await favoriteRepository.favorites();
 
       emit(LoadedState(data));
+
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+
+
+  Future<void> favorite(id) async {
+    try {
+      await favoriteRepository.favorite(id);
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));

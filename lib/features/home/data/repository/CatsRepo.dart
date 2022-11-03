@@ -1,34 +1,44 @@
 
 import 'dart:convert';
-
-import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/features/home/data/model/Cats.dart';
 import 'package:http/http.dart' as http;
-import 'package:untitled/data/model/City.dart';
 
- const   baseUrl = 'http://rizapp.kz/api';
+import '../model/Banners.dart';
+
+
+const   baseUrl = 'http://80.87.202.73:8001/api';
 
 class ListRepository{
   ListApi  _listApi = ListApi();
 
-  Future<List<City>> cities() => _listApi.cities();
-  Future<List<City>> shperes() => _listApi.shperes();
+  Future<List<Cats>> cats() => _listApi.cats();
+  Future<List<Banners>> banners() => _listApi.banners();
+  Future<List<Cats>> shperes() => _listApi.shperes();
 }
 
 
 class ListApi {
 
-  Future<List<City>> cities() async {
-    final response = await http.get(Uri.parse('$baseUrl/cities'));
+  Future<List<Cats>> cats() async {
+    final response = await http.get(Uri.parse('$baseUrl/list/cats'));
 
     final data = jsonDecode(response.body);
 
-    return  (data as List).map((e) => City.fromJson(e)).toList();
+    return  (data as List).map((e) => Cats.fromJson(e)).toList();
   }
 
-  Future<List<City>> shperes() async {
+  Future<List<Banners>> banners() async {
+    final response = await http.get(Uri.parse('$baseUrl/list/banners'));
+
+    final data = jsonDecode(response.body);
+
+    return  (data as List).map((e) => Banners.fromJson(e)).toList();
+  }
+
+  Future<List<Cats>> shperes() async {
     final response = await http.get(Uri.parse('$baseUrl/targets'));
     final data = jsonDecode(response.body);
-    return  (data as List).map((e) => City.fromJson(e)).toList();
+    return  (data as List).map((e) => Cats.fromJson(e)).toList();
   }
 
 }

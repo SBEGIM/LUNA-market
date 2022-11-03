@@ -1,9 +1,21 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/categories_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/sorting_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/stores_sellers_page.dart';
+
+import '../../data/bloc/brand_cubit.dart';
+import '../../data/bloc/brand_state.dart';
+import '../../data/bloc/product_cubit.dart' as productCubit;
+import '../../data/bloc/product_state.dart' as productState;
+import '../../data/bloc/shops_drawer_cubit.dart' as shopsCubit;
+import '../../data/bloc/shops_drawer_state.dart' as shopsState;
+import '../ui/products_page.dart';
 class FilterPage extends StatefulWidget {
   const FilterPage({Key? key}) : super(key: key);
 
@@ -12,9 +24,15 @@ class FilterPage extends StatefulWidget {
 }
 
 class _FilterPageState extends State<FilterPage> {
-  RangeValues values = const RangeValues(1, 100);
-  RangeLabels labels = const RangeLabels('1', "100");
+  RangeValues values = const RangeValues(1, 1000000);
+  RangeLabels labels = const RangeLabels('1', "1000000");
   bool isSwitched = false;
+  int _selectBrand = -1;
+  int _selectShop = -1;
+  String subCatName = '';
+  String sortName = '';
+  int count = 0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,378 +72,490 @@ class _FilterPageState extends State<FilterPage> {
           ),
         ],
       ),
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-              color: Colors.white,
-              child: Column(
+      body: BlocConsumer<productCubit.ProductCubit,productState.ProductState>(
+          listener: (context, state) {
+          },
+
+          builder: (context, state) {
+            if (state is productState.ErrorState) {
+              return Center(
+                child: Text(
+                  state.message,
+                  style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                ),
+              );
+            }
+            if (state is productState.LoadingState) {
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent)
+              );
+            }
+
+            if (state is productState.LoadedState) {
+              count = state.productModel.length;
+              return  ListView(
+                shrinkWrap: true,
                 children: [
-                  ListTile(
-                    title: const Text(
-                      'Вид страницы ',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    trailing: Wrap(
-                      spacing: 12,
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          ListTile(
+                            title: const Text(
+                              'Вид страницы ',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                            trailing: Wrap(
+                              spacing: 12,
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      selectedView = true;
+                                      setState(() {});
+                                    },
+                                    child: SvgPicture.asset('assets/icons/all_cat.svg')),
+                                InkWell(
+                                    onTap: () {
+                                      selectedView = false;
+                                      setState(() {});
+                                    },
+                                    child: SvgPicture.asset('assets/icons/all_cat2.svg')),
+                              ],
+                            ),
+                          ),
+                          const Divider(
+                            color: AppColors.kGray200,
+                          ),
+                          InkWell(
+                            onTap: ()  async{
+
+                              final data = await Get.to(() => SortingPage()) as String;
+                              if (data != '') {
+                                sortName = data;
+                                setState(() {});
+
+                              }
+                            },
+                            child:  ListTile(
+                                title: const Text(
+                                  'Сортировка ',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                subtitle: Text(
+                                  sortName,
+                                  style:  const TextStyle(
+                                      color: AppColors.kGray300,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14),
+                                ),
+                                trailing:
+                                InkWell(child: Icon(Icons.arrow_forward_ios))),
+                          ),
+                          const Divider(
+                            color: AppColors.kGray200,
+                          ),
+                          InkWell(
+                            onTap: () async{
+
+                              final data =
+                              await Get.to(() => CategoriesPage()) as String;
+
+                              if (data != '') {
+                                subCatName = data;
+                                setState(() {});
+                              }
+                            },
+                            child:  ListTile(
+                                title: const Text(
+                                  'Категория',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                subtitle: Text(
+                                  subCatName.toString(),
+                                  style:  const TextStyle(
+                                      color: AppColors.kGray300,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14),
+                                ),
+                                trailing:
+                                InkWell(child: Icon(Icons.arrow_forward_ios))),
+                          ),
+                        ],
+                      )),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    color: Colors.white,
+                    // height: 200,
+                    padding: const EdgeInsets.all(13),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        InkWell(
-                            onTap: () {
-                              selectedView = true;
-                              setState(() {});
-                            },
-                            child: SvgPicture.asset('assets/icons/all_cat.svg')),
-                        InkWell(
-                            onTap: () {
-                              selectedView = false;
-                              setState(() {});
-                            },
-                            child: SvgPicture.asset('assets/icons/all_cat2.svg')),
+                        const Text(
+                          'Цена',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.42,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.kGray200,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                'от ${values.start.toString()}',
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.42,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.kGray200,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                'до ${values.end.toString()}',
+                              ),
+                            ),
+                          ],
+                        ),
+                        RangeSlider(
+                            divisions: 5,
+                            activeColor: AppColors.kPrimaryColor,
+                            inactiveColor: AppColors.kGray300,
+                            min: 1,
+                            max: 1000000,
+                            values: values,
+                            labels: labels,
+                            onChanged: (value) {
+                              setState(() {
+                                values = value;
+                              });
+                            }),
                       ],
                     ),
                   ),
-                  const Divider(
-                    color: AppColors.kGray200,
+                  const SizedBox(
+                    height: 10,
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SortingPage()),
-                      );
-                    },
-                    child: const ListTile(
-                        title: Text(
-                          'Сортировка ',
+                  Container(
+                    color: Colors.white,
+                    padding:
+                    const EdgeInsets.only(left: 13, right: 8, bottom: 13, top: 13),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Бренд',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        BlocConsumer<BrandCubit, BrandState>(
+                            listener: (context, state) {},
+                            builder: (context, state) {
+                              if (state is ErrorState) {
+                                return Center(
+                                  child: Text(
+                                    state.message,
+                                    style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                                  ),
+                                );
+                              }
+                              if (state is LoadedState) {
+                                return GridView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 5,
+                                        childAspectRatio: 2 / 2,
+                                        crossAxisSpacing: 8,
+                                        mainAxisSpacing: 2),
+                                    itemCount: state.cats.length,
+                                    itemBuilder: (BuildContext ctx, index) {
+                                      return Container(
+                                          child:  chipBrand('${state.cats[index].name.toString()}' , index)
+
+                                      );
+                                    });
+                              }else {
+                                return const Center(
+                                    child: CircularProgressIndicator(color: Colors.indigoAccent)
+                                );
+                              }
+                            }),
+                        const Divider(
+                          color: AppColors.kGray200,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            Text(
+                              'Показать все',
+                              style: TextStyle(
+                                  color: AppColors.kPrimaryColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              color: AppColors.kGray300,
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(13),
+                    color: Colors.white,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Высокий рейтинг',
                           style: TextStyle(
-                              color: Colors.black,
+                              color: AppColors.kGray900,
                               fontSize: 16,
                               fontWeight: FontWeight.w400),
                         ),
-                        subtitle: Text(
-                          'Популярные',
-                          style: TextStyle(
-                              color: AppColors.kGray300,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14),
+                        Switch(
+                          value: isSwitched,
+                          onChanged: (value) {
+                            setState(() {
+                              isSwitched = value;
+                            });
+                          },
+                          activeTrackColor: AppColors.kPrimaryColor,
+                          activeColor: Colors.white,
                         ),
-                        trailing:
-                            InkWell(child: Icon(Icons.arrow_forward_ios))),
+                      ],
+                    ),
                   ),
-                  const Divider(
-                    color: AppColors.kGray200,
+                  const SizedBox(
+                    height: 10,
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CategoriesPage()),
-                      );
-                    },
-                    child: const ListTile(
-                        title: Text(
-                          'Категории ',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                  Container(
+                    color: Colors.white,
+                    padding:
+                    const EdgeInsets.only(left: 13, right: 8, bottom: 13, top: 13),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Продавцы',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                         ),
-                        subtitle: Text(
-                          'Компьютеры',
-                          style: TextStyle(
-                              color: AppColors.kGray300,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14),
+                        const SizedBox(
+                          height: 10,
                         ),
-                        trailing:
-                            InkWell(child: Icon(Icons.arrow_forward_ios))),
+                        BlocConsumer<shopsCubit.ShopsDrawerCubit, shopsState.ShopsDrawerState>(
+                            listener: (context, state) {},
+                            builder: (context, state) {
+                              if (state is shopsState.ErrorState) {
+                                return Center(
+                                  child: Text(
+                                    state.message,
+                                    style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                                  ),
+                                );
+                              }
+                              if (state is shopsState.LoadedState) {
+                                return GridView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 5,
+                                        childAspectRatio: 2 / 2,
+                                        crossAxisSpacing: 6,
+                                        mainAxisSpacing: 2),
+                                    itemCount: state.shopsDrawer.length,
+                                    itemBuilder: (BuildContext ctx, index) {
+                                      return Container(
+                                          child:  chipShops('${state.shopsDrawer[index].name.toString()}' ,index)
+
+                                      );
+                                    });
+                              }else {
+                                return const Center(
+                                    child: CircularProgressIndicator(color: Colors.indigoAccent)
+                                );
+                              }
+                            }),
+                        const Divider(
+                          color: AppColors.kGray200,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StoresSellersPage()),
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text(
+                                'Показать все',
+                                style: TextStyle(
+                                    color: AppColors.kPrimaryColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: AppColors.kGray300,
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 60,
                   ),
                 ],
+              );
+            }else {
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent)
+              );
+            }
+          }),
+      bottomSheet:GestureDetector(
+        onTap:() {
+          Get.back();
+        },
+        child:
+        Container(
+          color: Colors.white,
+          padding:
+          const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+          child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: AppColors.kPrimaryColor,
+              ),
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.all(16),
+              child:  Text(
+                'Показать ${count}  товара',
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16),
+                textAlign: TextAlign.center,
               )),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            color: Colors.white,
-            // height: 200,
-            padding: const EdgeInsets.all(13),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Цена',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.42,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.kGray200,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: const EdgeInsets.all(8),
-                      child: Text(
-                        'от ${values.start.toString()}',
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.42,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.kGray200,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: const EdgeInsets.all(8),
-                      child: Text(
-                        'до ${values.end.toString()}',
-                      ),
-                    ),
-                  ],
-                ),
-                RangeSlider(
-                  
-                    divisions: 5,
-                    activeColor: AppColors.kPrimaryColor,
-                    inactiveColor: AppColors.kGray300,
-                    min: 1,
-                    max: 100,
-                    values: values,
-                    labels: labels,
-                    onChanged: (value) {
-                      print("START: ${value.start}, End: ${value.end}");
-                      setState(() {
-                        values = value;
-                        // labels = RangeLabels(
-                        //     "${value.start.toInt().toString()}\$",
-                        //     "${value.start.toInt().toString()}\$");
-                      });
-                    }),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            color: Colors.white,
-            padding:
-                const EdgeInsets.only(left: 13, right: 8, bottom: 13, top: 13),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Бренд',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 6,
-                  children: [
-                    chipBrand('Apple'),
-                    chipBrand('ASUS'),
-                    chipBrand('CYBER MARKET'),
-                    chipBrand('Apple'),
-                    chipBrand('ASUS'),
-                    chipBrand('CYBER MARKET'),
-                    chipBrand('Apple'),
-                    chipBrand('ASUS'),
-                    chipBrand('CYBER MARKET'),
-                    chipBrand('Apple'),
-                    chipBrand('ASUS'),
-                    chipBrand('CYBER MARKET'),
-                    chipBrand('Apple'),
-                    chipBrand('ASUS'),
-                    chipBrand('CYBER MARKET'),
-                  ],
-                ),
-                const Divider(
-                  color: AppColors.kGray200,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
-                      'Показать все',
-                      style: TextStyle(
-                          color: AppColors.kPrimaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppColors.kGray300,
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            padding: const EdgeInsets.all(13),
-            color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Высокий рейтинг',
-                  style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
-                ),
-                Switch(
-                  value: isSwitched,
-                  onChanged: (value) {
-                    setState(() {
-                      isSwitched = value;
-                      // print(isSwitched);
-                    });
-                  },
-                  activeTrackColor: AppColors.kPrimaryColor,
-                  activeColor: Colors.white,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            color: Colors.white,
-            padding:
-                const EdgeInsets.only(left: 13, right: 8, bottom: 13, top: 13),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Продавцы',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 6,
-                  children: [
-                    chipBrand('Apple'),
-                    chipBrand('ASUS'),
-                    chipBrand('CYBER MARKET'),
-                    chipBrand('Apple'),
-                    chipBrand('ASUS'),
-                    chipBrand('CYBER MARKET'),
-                    chipBrand('Apple'),
-                    chipBrand('ASUS'),
-                    chipBrand('CYBER MARKET'),
-                    chipBrand('Apple'),
-                    chipBrand('ASUS'),
-                    chipBrand('CYBER MARKET'),
-                    chipBrand('Apple'),
-                    chipBrand('ASUS'),
-                    chipBrand('CYBER MARKET'),
-                  ],
-                ),
-                const Divider(
-                  color: AppColors.kGray200,
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StoresSellersPage()),
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Показать все',
-                        style: TextStyle(
-                            color: AppColors.kPrimaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: AppColors.kGray300,
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 60,
-          ),
-        ],
-      ),
-      bottomSheet: Container(
-        color: Colors.white,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
-        child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: AppColors.kPrimaryColor,
-            ),
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.all(16),
-            child: const Text(
-              'Показать 922 товара',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16),
-              textAlign: TextAlign.center,
-            )),
-      ),
+        )
+      )
     );
   }
 
   Widget chipBrand(
-    String label,
+    String label, int index
   ) {
-    return Chip(
-    labelPadding: const EdgeInsets.all(4.0),
-    label:Text(
+    return GestureDetector(
+      onTap: (){
+        if(_selectBrand == index){
+          _selectBrand = -1;
+        }else{
+          _selectBrand = index;
+        }
+        setState(() {
+        });
+        BlocProvider.of<productCubit.ProductCubit>(context).products();
+      },
+      child: Chip(
+        labelPadding: const EdgeInsets.all(4.0),
+        label:Text(
           label,
           style: const TextStyle(
             color: Colors.black,
           ),
         ),
-    backgroundColor: Colors.white,
-    elevation: 1.0,
-    shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(10),
-            bottomRight: Radius.circular(10),
-            topLeft: Radius.circular(10),
-            bottomLeft: Radius.circular(10))),
-    // shadowColor: Colors.grey[60],
-    padding: const EdgeInsets.all(6.0),
-  );
+        backgroundColor: _selectBrand == index ? AppColors.kPrimaryColor : Colors.white ,
+        elevation: 1.0,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+                topLeft: Radius.circular(10),
+                bottomLeft: Radius.circular(10))),
+        // shadowColor: Colors.grey[60],
+        padding: const EdgeInsets.all(6.0),
+      ),
+    );
+
+  }
+
+  Widget chipShops(
+    String label, int index
+  ) {
+    return GestureDetector(
+      onTap: (){
+        if(_selectShop == index){
+          _selectShop = -1;
+        }else{
+          _selectShop = index;
+        }
+        BlocProvider.of<productCubit.ProductCubit>(context).products();
+
+        setState(() {
+        });
+      },
+      child: Chip(
+        labelPadding: const EdgeInsets.all(4.0),
+        label:Text(
+          label,
+          style: const TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        backgroundColor: _selectShop == index ? AppColors.kPrimaryColor : Colors.white ,
+        elevation: 1.0,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+                topLeft: Radius.circular(10),
+                bottomLeft: Radius.circular(10))),
+        // shadowColor: Colors.grey[60],
+        padding: const EdgeInsets.all(6.0),
+      ),
+    );
+
   }
 }

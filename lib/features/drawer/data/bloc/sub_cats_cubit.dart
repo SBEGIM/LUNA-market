@@ -2,26 +2,47 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 
-import '../model/Cats.dart';
-import '../repository/CatsRepo.dart';
-import 'cats_state.dart';
+import '../../../home/data/model/Cats.dart';
+import '../repository/SubCatsRepo.dart';
+import 'sub_cats_state.dart';
 
 
-class CatsCubit extends Cubit<CatsState> {
-  final ListRepository listRepository;
+class SubCatsCubit extends Cubit<SubCatsState> {
+  final SubCatsRepository subCatRepository;
 
-  CatsCubit({required this.listRepository}) : super(InitState());
+  SubCatsCubit({required this.subCatRepository}) : super(InitState());
+  List<Cats> _subCats = [];
 
-  Future<void> cats() async {
+
+  Future<void> subCats(sub_cat_id) async {
     try {
       emit(LoadingState());
-      final List<Cats> data = await listRepository.cats();
+      final List<Cats> data = await subCatRepository.subCatApi(sub_cat_id);
+      _subCats = data;
 
       emit(LoadedState(data));
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
+  }
+
+  void subSave() {
+    emit(LoadedState(_subCats));
+  }
+
+  Future<void> searchSubCats(String cats ,sub_cat_id ) async {
+    if(cats.isEmpty) return;
+    if(_subCats.isEmpty) {
+      await subCats(sub_cat_id);
+    }
+    List<Cats> temp = [];
+    for(int i = 0 ; i < _subCats.length; i++) {
+      if(_subCats[i].name != null && _subCats[i].name!.toLowerCase().contains(cats.toLowerCase())) {
+        temp.add(_subCats[i]);
+      }
+    }
+    emit(LoadedState(temp));
   }
 
   // Future<void> searchCity(String city) async {

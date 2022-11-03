@@ -11,7 +11,7 @@ class BannerWatcehRecently extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 16.0),
+      padding: const EdgeInsets.only(right: 12.0),
       child: Container(
         decoration: BoxDecoration(
             color: const Color(0xFFFAFAFA),
@@ -21,12 +21,15 @@ class BannerWatcehRecently extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Image.asset(
-                  'assets/images/wireles.png',
-                  alignment: Alignment.center,
-                  fit: BoxFit.cover,
-                  height: 160,
-                  cacheHeight: 11100,
+                Container(
+                  padding: EdgeInsets.all(4),
+                  height: 144,
+                  width: 144,
+                  child:   Image.asset(
+                    'assets/images/wireles.png',
+                    alignment: Alignment.center,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -45,7 +48,7 @@ class BannerWatcehRecently extends StatelessWidget {
                               padding: EdgeInsets.only(
                                   left: 8.0, right: 8, top: 4, bottom: 4),
                               child: const Text(
-                                '0.0.12',
+                                '0·0·12',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.white,
@@ -112,55 +115,55 @@ class BannerWatcehRecently extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Row(
-                    children: [
-                      RatingBar(
-                        ignoreGestures: true,
-                        initialRating: 2,
-                        unratedColor: const Color(0x30F11712),
-                        itemSize: 15,
-                        // itemPadding:
-                        // const EdgeInsets.symmetric(horizontal: 4.0),
-                        ratingWidget: RatingWidget(
-                          full: const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          ),
-                          half: const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          ),
-                          empty: const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          ),
-                        ),
-                        onRatingUpdate: (double value) {},
-                      ),
-                      const Text(
-                        '(98 отзывов)',
-                        style: TextStyle(
-                            color: AppColors.kGray300,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     RatingBar(
+                  //       ignoreGestures: true,
+                  //       initialRating: 2,
+                  //       unratedColor: const Color(0x30F11712),
+                  //       itemSize: 15,
+                  //       // itemPadding:
+                  //       // const EdgeInsets.symmetric(horizontal: 4.0),
+                  //       ratingWidget: RatingWidget(
+                  //         full: const Icon(
+                  //           Icons.star,
+                  //           color: Colors.yellow,
+                  //         ),
+                  //         half: const Icon(
+                  //           Icons.star,
+                  //           color: Colors.yellow,
+                  //         ),
+                  //         empty: const Icon(
+                  //           Icons.star,
+                  //           color: Colors.yellow,
+                  //         ),
+                  //       ),
+                  //       onRatingUpdate: (double value) {},
+                  //     ),
+                  //     const Text(
+                  //       '(98 отзывов)',
+                  //       style: TextStyle(
+                  //           color: AppColors.kGray300,
+                  //           fontSize: 14,
+                  //           fontWeight: FontWeight.w400),
+                  //     ),
+                  //   ],
+                  // ),
                   const SizedBox(
                     height: 8,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
+                    children: const[
                       Text(
                         '330 900 ₸ ',
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontSize: 12,
-                            color: Colors.red.shade600,
+                            color: Color.fromRGBO(255,50,72,1),
                             fontWeight: FontWeight.w700),
                       ),
-                      const Text(
+                       Text(
                         '330 900 ₸',
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

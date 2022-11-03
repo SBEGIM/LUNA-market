@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
+
+import '../../data/bloc/product_cubit.dart';
 
 class SortingPage extends StatefulWidget {
   SortingPage({Key? key}) : super(key: key);
@@ -11,6 +15,15 @@ class SortingPage extends StatefulWidget {
 
 class _SortingPageState extends State<SortingPage> {
   int _selectedIndexSort = -1;
+
+  List<String> sort = [
+    'Популярные',
+    'Новинки',
+    'Сначала дешевые',
+    'Сначала дорогие',
+    'Высокий рейтинг'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +33,7 @@ class _SortingPageState extends State<SortingPage> {
         elevation: 0,
         leading: InkWell(
           onTap: () {
-            Navigator.pop(context);
+            Get.back(result:sort[_selectedIndexSort]);
           },
           child: const Icon(
             Icons.arrow_back_ios,
@@ -42,7 +55,7 @@ class _SortingPageState extends State<SortingPage> {
               const Divider(),
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: 4,
+          itemCount: sort.length,
           itemBuilder: (BuildContext context, int index) {
             return InkWell(
                 onTap: () {
@@ -50,11 +63,13 @@ class _SortingPageState extends State<SortingPage> {
                     // устанавливаем индекс выделенного элемента
                     _selectedIndexSort = index;
                   });
+                  BlocProvider.of<ProductCubit>(context).products();
+
                 },
                 child: ListTile(
                   selected: index == _selectedIndexSort,
-                  leading: const Text(
-                    'Популярные',
+                  leading:  Text(
+                  sort[index],
                     style: AppTextStyles.appBarTextStyle,
                   ),
                   trailing: _selectedIndexSort == index
@@ -74,7 +89,7 @@ class _SortingPageState extends State<SortingPage> {
             const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
         child: InkWell(
           onTap: () {
-            Navigator.pop(context);
+            Get.back(result:sort[_selectedIndexSort]);
           },
           child: Container(
               decoration: BoxDecoration(
