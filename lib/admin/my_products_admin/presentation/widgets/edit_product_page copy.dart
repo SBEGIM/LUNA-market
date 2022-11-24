@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/admin/my_products_admin/data/bloc/color_cubit.dart';
+import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caats_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/drawer/data/bloc/brand_cubit.dart';
+import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart';
+import 'package:haji_market/features/home/data/bloc/cats_cubit.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/drawer/data/models/product_model.dart';
 import '../../../../features/home/data/model/Cats.dart';
@@ -11,6 +17,9 @@ import '../../../coop_request/presentation/ui/coop_request_page.dart';
 import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/bloc/product_admin_state.dart';
 import '../../data/models/admin_products_model.dart';
+import 'brands_admin_page.dart';
+import 'cats_admin_page.dart';
+import 'colors_admin_page.dart';
 
 class EditProductPage extends StatefulWidget {
   final AdminProductsModel product;
@@ -21,6 +30,19 @@ class EditProductPage extends StatefulWidget {
 }
 
 class _EditProductPageState extends State<EditProductPage> {
+  XFile? _image;
+  final ImagePicker _picker = ImagePicker();
+  bool change = false;
+
+  Future<void> _getImage() async {
+    final image = change == true
+        ? await _picker.pickImage(source: ImageSource.camera)
+        : await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+  }
+
   TextEditingController articulController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController compoundController = TextEditingController();
@@ -33,8 +55,38 @@ class _EditProductPageState extends State<EditProductPage> {
   TextEditingController massaController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
+  Cats? cats;
+  Cats? subCats;
+  Cats? brands;
+  Cats? colors;
+
+  Future<void> CatById() async {
+    cats = await BlocProvider.of<CatsCubit>(context)
+        .catById(widget.product.catId.toString());
+    brands = await BlocProvider.of<BrandCubit>(context)
+        .brandById(widget.product.brandId.toString());
+    subCats = await BlocProvider.of<SubCatsCubit>(context).subCatById(
+        widget.product.brandId.toString(), widget.product.catId.toString());
+
+    if (widget.product.color!.first != null) {
+      colors = await BlocProvider.of<ColorCubit>(context)
+          .ColorById(widget.product.color!.first);
+    } else {
+      Cats color = Cats(id: 0, name: 'Выберите цвет');
+    }
+
+    setState(() {
+      cats;
+      brands;
+      subCats;
+      colors;
+    });
+  }
+
   @override
   void initState() {
+    CatById();
+
     articulController.text = widget.product.articul.toString();
     priceController.text = widget.product.price.toString();
     compoundController.text = widget.product.compound.toString();
@@ -75,14 +127,19 @@ class _EditProductPageState extends State<EditProductPage> {
               const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
           child: InkWell(
             onTap: () async {
-              await BlocProvider.of<ProductAdminCubit>(context).product(
+              await BlocProvider.of<ProductAdminCubit>(context).update(
                   priceController.text,
                   countController.text,
                   compoundController.text,
                   cat_id.toString(),
                   brand_id.toString(),
                   descriptionController.text,
-                  nameController.text);
+                  nameController.text,
+                  heightController.text,
+                  widthController.text,
+                  massaController.text,
+                  widget.product.id.toString(),
+                  articulController.text);
             },
             child: Container(
                 decoration: BoxDecoration(
@@ -103,7 +160,7 @@ class _EditProductPageState extends State<EditProductPage> {
         ),
         body: BlocConsumer<ProductAdminCubit, ProductAdminState>(
             listener: (context, state) {
-          if (state is LoadedState) {
+          if (state is ChangeState) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const BaseAdmin()),
@@ -136,11 +193,19 @@ class _EditProductPageState extends State<EditProductPage> {
                   arrow: false,
                   controller: compoundController,
                 ),
-                const FieldsProductRequest(
+                FieldsProductRequest(
                   titleText: 'Категория ',
-                  hintText: 'Выберите категорию',
+                  hintText: cats!.name.toString(),
                   star: false,
                   arrow: true,
+                  onPressed: () async {
+                    final data = await Get.to(CatsAdminPage());
+                    if (data != null) {
+                      final Cats cat = data;
+                      setState(() {});
+                      cats = cat;
+                    }
+                  },
                 ),
                 FieldsProductRequest(
                   titleText: 'Название товара ',
@@ -149,11 +214,19 @@ class _EditProductPageState extends State<EditProductPage> {
                   arrow: false,
                   controller: nameController,
                 ),
-                const FieldsProductRequest(
+                FieldsProductRequest(
                   titleText: 'Наименование бренда ',
-                  hintText: 'Выберите бренд',
+                  hintText: brands!.name.toString(),
                   star: false,
                   arrow: true,
+                  onPressed: () async {
+                    final data = await Get.to(BrandsAdminPage());
+                    if (data != null) {
+                      final Cats brand = data;
+                      setState(() {});
+                      brands = brand;
+                    }
+                  },
                 ),
                 const SizedBox(
                   height: 10,
@@ -168,11 +241,19 @@ class _EditProductPageState extends State<EditProductPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                const FieldsProductRequest(
+                FieldsProductRequest(
                   titleText: 'Тип ',
-                  hintText: 'Выберите тип',
+                  hintText: subCats!.name.toString(),
                   star: false,
                   arrow: true,
+                  onPressed: () async {
+                    final data = await Get.to(SubCatsAdminPage(cats: cats));
+                    if (data != null) {
+                      final Cats cat = data;
+                      setState(() {});
+                      subCats = cat;
+                    }
+                  },
                 ),
                 FieldsProductRequest(
                   titleText: 'Количество в комплекте ',
@@ -181,11 +262,19 @@ class _EditProductPageState extends State<EditProductPage> {
                   arrow: true,
                   controller: countController,
                 ),
-                const FieldsProductRequest(
+                FieldsProductRequest(
                   titleText: 'Цвет ',
-                  hintText: 'Выберите цвет',
+                  hintText: colors!.name.toString(),
                   star: true,
                   arrow: true,
+                  onPressed: () async {
+                    final data = await Get.to(ColorsAdminPage());
+                    if (data != null) {
+                      final Cats cat = data;
+                      setState(() {});
+                      colors = cat;
+                    }
+                  },
                 ),
                 FieldsProductRequest(
                   titleText: 'Ширина, мм ',
@@ -246,29 +335,54 @@ class _EditProductPageState extends State<EditProductPage> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(
-                              Icons.camera_alt,
-                              color: AppColors.kGray300,
+                      GestureDetector(
+                          onTap: () {
+                            Get.defaultDialog(
+                                title: "Изменить фото",
+                                middleText: '',
+                                textConfirm: 'Камера',
+                                textCancel: 'Галлерея',
+                                titlePadding: EdgeInsets.only(top: 40),
+                                onConfirm: () {
+                                  change = true;
+                                  setState(() {
+                                    change;
+                                  });
+                                  _getImage();
+                                },
+                                onCancel: () {
+                                  change = false;
+                                  setState(() {
+                                    change;
+                                  });
+                                  _getImage();
+                                });
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.camera_alt,
+                                  color: change == false
+                                      ? AppColors.kGray300
+                                      : AppColors.kPrimaryColor,
+                                ),
+                                const SizedBox(width: 10),
+                                const Text(
+                                  'Добавить изображение',
+                                  style: TextStyle(
+                                      color: AppColors.kGray300,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
+                                )
+                              ],
                             ),
-                            SizedBox(width: 10),
-                            Text(
-                              'Добавить изображение',
-                              style: TextStyle(
-                                  color: AppColors.kGray300,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            )
-                          ],
-                        ),
-                      ),
+                          )),
                       const SizedBox(
                         height: 8,
                       ),
@@ -307,25 +421,53 @@ class _EditProductPageState extends State<EditProductPage> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset('assets/icons/video.svg',
-                                color: Colors.grey),
-                            const SizedBox(width: 10),
-                            const Text(
-                              'Добавить видео',
-                              style: TextStyle(
-                                  color: AppColors.kGray300,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            )
-                          ],
+                      GestureDetector(
+                        onTap: () {
+                          Get.defaultDialog(
+                              title: "Изменить видео",
+                              middleText: '',
+                              textConfirm: 'Камера',
+                              textCancel: 'Галлерея',
+                              titlePadding: EdgeInsets.only(top: 40),
+                              onConfirm: () {
+                                change = true;
+                                setState(() {
+                                  change;
+                                });
+                                _getImage();
+                              },
+                              onCancel: () {
+                                change = false;
+                                setState(() {
+                                  change;
+                                });
+                                _getImage();
+                              });
+                        },
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/video.svg',
+                                color: change == false
+                                    ? AppColors.kGray300
+                                    : AppColors.kPrimaryColor,
+                              ),
+                              const SizedBox(width: 10),
+                              const Text(
+                                'Добавить видео',
+                                style: TextStyle(
+                                    color: AppColors.kGray300,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -366,12 +508,14 @@ class FieldsProductRequest extends StatefulWidget {
   final bool star;
   final bool arrow;
   final TextEditingController? controller;
+  final void Function()? onPressed;
   const FieldsProductRequest({
     required this.hintText,
     required this.titleText,
     required this.star,
     required this.arrow,
     this.controller,
+    this.onPressed,
     Key? key,
   }) : super(key: key);
 
@@ -435,7 +579,7 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                     // borderRadius: BorderRadius.circular(3),
                   ),
                   suffixIcon: IconButton(
-                      onPressed: () {},
+                      onPressed: widget.onPressed,
                       icon: widget.arrow == true
                           ? SvgPicture.asset('assets/icons/back_menu.svg',
                               color: Colors.grey)

@@ -6,11 +6,15 @@ import 'package:haji_market/features/home/presentation/widgets/bonus_detail_page
 class BonusPage extends StatefulWidget {
   final String name;
   final int bonus;
-  final  String date;
+  final String date;
   final String image;
- const BonusPage({
-    required this.name,required this.bonus, required this.date , required this.image,
-    Key? key}) : super(key: key);
+  const BonusPage(
+      {required this.name,
+      required this.bonus,
+      required this.date,
+      required this.image,
+      Key? key})
+      : super(key: key);
 
   @override
   State<BonusPage> createState() => _BonusPageState();
@@ -31,7 +35,7 @@ class _BonusPageState extends State<BonusPage> {
             child: SvgPicture.asset('assets/icons/share.svg'),
           ),
         ],
-        title:  Text(
+        title: Text(
           'Дарим ${widget.bonus}% бонусов',
           style: const TextStyle(
               fontSize: 16,
@@ -57,13 +61,14 @@ class _BonusPageState extends State<BonusPage> {
                       height: 218,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          image:  DecorationImage(
-                            image: NetworkImage("http://80.87.202.73:8001/storage/${widget.image}"),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                "http://80.87.202.73:8001/storage/${widget.image}"),
                             fit: BoxFit.cover,
                           )),
                     ),
-                     Padding(
-                      padding: EdgeInsets.only(left: 24.0, top: 60),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.0, top: 60),
                       child: Text(
                         '${widget.name}',
                         style: const TextStyle(
@@ -73,12 +78,12 @@ class _BonusPageState extends State<BonusPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 24.0, top: 22),
+                      padding: const EdgeInsets.only(left: 16.0, top: 22),
                       child: Container(
                         decoration: BoxDecoration(
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(4)),
-                        child:  Padding(
+                        child: Padding(
                           padding: const EdgeInsets.only(
                               left: 8.0, right: 8, top: 4, bottom: 4),
                           child: Text(
@@ -91,8 +96,8 @@ class _BonusPageState extends State<BonusPage> {
                         ),
                       ),
                     ),
-                     Padding(
-                      padding:const EdgeInsets.only(left: 24.0, top: 160),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0, top: 160),
                       child: Text(
                         '${widget.date}',
                         style: const TextStyle(
@@ -110,13 +115,14 @@ class _BonusPageState extends State<BonusPage> {
             height: 20,
           ),
           InkWell(
-            onTap: (){
- Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) =>  BonusDetailPage()),
-  );
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BonusDetailPage()),
+              );
             },
             child: Container(
+              padding: const EdgeInsets.only(left: 16, right: 16),
               color: Colors.white,
               child: const ListTile(
                 title: Text(
@@ -126,7 +132,7 @@ class _BonusPageState extends State<BonusPage> {
                       fontSize: 16,
                       fontWeight: FontWeight.w400),
                 ),
-                contentPadding :EdgeInsets.fromLTRB(12, 0, 12, 12),
+                contentPadding: EdgeInsets.fromLTRB(12, 0, 12, 12),
                 subtitle: Text(
                   'Выбирайте товары в магазинах города',
                   style: TextStyle(
@@ -134,7 +140,10 @@ class _BonusPageState extends State<BonusPage> {
                       fontSize: 12,
                       fontWeight: FontWeight.w400),
                 ),
-                trailing: Icon(Icons.arrow_forward_ios,size: 16,),
+                trailing: Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                ),
               ),
             ),
           ),
@@ -142,13 +151,14 @@ class _BonusPageState extends State<BonusPage> {
             height: 10,
           ),
           InkWell(
-            onTap: (){
- Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) =>  BonusDetailPage()),
-  );
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BonusDetailPage()),
+              );
             },
             child: Container(
+              padding: const EdgeInsets.only(left: 16, right: 16),
               color: Colors.white,
               child: const ListTile(
                 title: Text(
@@ -165,7 +175,10 @@ class _BonusPageState extends State<BonusPage> {
                       fontSize: 12,
                       fontWeight: FontWeight.w400),
                 ),
-                trailing: Icon(Icons.arrow_forward_ios,size: 16,),
+                trailing: Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                ),
               ),
             ),
           ),

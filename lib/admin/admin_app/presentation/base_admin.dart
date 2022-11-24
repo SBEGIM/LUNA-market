@@ -70,7 +70,6 @@ class _BaseAdminState extends State<BaseAdmin> {
                       .getNavBarItemAdmin(const AdminNavigationState.profile());
                   break;
               }
-              print(index);
               setState(() {
                 basePageIndex1 = index;
               });

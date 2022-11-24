@@ -11,6 +11,25 @@ class StatisticsPage extends StatefulWidget {
   State<StatisticsPage> createState() => _StatisticsPageState();
 }
 
+List<String> months = [
+  'Январь',
+  'Февраль',
+  'Март',
+  'Апрель',
+  'Май',
+];
+List<String> monthsSecond = [
+  'Июнь',
+  'Июль',
+  'Август',
+  'Сентябрь',
+  'Ноябрь',
+  'Декабрь',
+];
+
+int _selectIndex = -1;
+int _SelectSecondIndex = -1;
+
 class _StatisticsPageState extends State<StatisticsPage> {
   @override
   Widget build(BuildContext context) {
@@ -94,64 +113,94 @@ class _StatisticsPageState extends State<StatisticsPage> {
                     fontWeight: FontWeight.w700,
                     fontSize: 16),
               ),
-              SingleChildScrollView(
+              SizedBox(
+                height: 50,
+                width: 500,
+                child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 4),
-                    child: Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
-                      children: [
-                        chipDate(
-                          'Январь',
+                  itemCount: months.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        _selectIndex = index;
+                        setState(() {
+                          _selectIndex;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 8.0, bottom: 4, left: 4, right: 4),
+                        child: chipDate(
+                          months[index],
+                          index,
+                          _selectIndex,
                         ),
-                        chipDate(
-                          'Февраль',
-                        ),
-                        chipDate(
-                          'Март',
-                        ),
-                        chipDate(
-                          'Апрель',
-                        ),
-                        chipDate(
-                          'Май',
-                        ),
-                        chipDate(
-                          'Июнь',
-                        ),
-                      ],
-                    ),
-                  )),
-              SingleChildScrollView(
+                      ),
+
+                      // GestureDetector(
+                      //   child: chipDate('Январь', false),
+                      // ),
+                      // chipDate('Февраль', false),
+                      // chipDate('Март', false),
+                      // chipDate('Апрель', false),
+                      // chipDate('Май', false),
+                      // chipDate('Июнь', false),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 50,
+                width: 500,
+                child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
-                      children: [
-                        chipDate(
-                          'Июль',
+                  itemCount: monthsSecond.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        _SelectSecondIndex = index;
+                        setState(() {
+                          _SelectSecondIndex;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 8.0, bottom: 4, left: 4, right: 4),
+                        child: chipDate(
+                          monthsSecond[index],
+                          index,
+                          _SelectSecondIndex,
                         ),
-                        chipDate(
-                          'Август',
-                        ),
-                        chipDate(
-                          'Сентябрь',
-                        ),
-                        chipDate(
-                          'Октябрь',
-                        ),
-                        chipDate(
-                          'Ноябрь',
-                        ),
-                        chipDate(
-                          'Декабрь',
-                        ),
-                      ],
-                    ),
-                  )),
+                        // GestureDetector(
+                        //   child: chipDate('Январь', false),
+                        // ),
+                        // chipDate('Февраль', false),
+                        // chipDate('Март', false),
+                        // chipDate('Апрель', false),
+                        // chipDate('Май', false),
+                        // chipDate('Июнь', false),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              // SingleChildScrollView(
+              //     scrollDirection: Axis.horizontal,
+              //     child: Padding(
+              //       padding: const EdgeInsets.only(bottom: 8),
+              //       child: Wrap(
+              //         spacing: 6,
+              //         runSpacing: 6,
+              //         children: [
+              //           chipDate('Июль', true),
+              //           chipDate('Август', false),
+              //           chipDate('Сентябрь', false),
+              //           chipDate('Октябрь', false),
+              //           chipDate('Ноябрь', false),
+              //           chipDate('Декабрь', false),
+              //         ],
+              //       ),
+              //     )),
               const SizedBox(
                 height: 10,
               ),

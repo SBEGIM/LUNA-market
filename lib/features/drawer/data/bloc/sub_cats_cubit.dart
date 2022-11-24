@@ -6,13 +6,11 @@ import '../../../home/data/model/Cats.dart';
 import '../repository/SubCatsRepo.dart';
 import 'sub_cats_state.dart';
 
-
 class SubCatsCubit extends Cubit<SubCatsState> {
   final SubCatsRepository subCatRepository;
 
   SubCatsCubit({required this.subCatRepository}) : super(InitState());
   List<Cats> _subCats = [];
-
 
   Future<void> subCats(sub_cat_id) async {
     try {
@@ -31,18 +29,36 @@ class SubCatsCubit extends Cubit<SubCatsState> {
     emit(LoadedState(_subCats));
   }
 
-  Future<void> searchSubCats(String cats ,sub_cat_id ) async {
-    if(cats.isEmpty) return;
-    if(_subCats.isEmpty) {
+  Future<void> searchSubCats(String cats, sub_cat_id) async {
+    if (cats.isEmpty) return;
+    if (_subCats.isEmpty) {
       await subCats(sub_cat_id);
     }
     List<Cats> temp = [];
-    for(int i = 0 ; i < _subCats.length; i++) {
-      if(_subCats[i].name != null && _subCats[i].name!.toLowerCase().contains(cats.toLowerCase())) {
+    for (int i = 0; i < _subCats.length; i++) {
+      if (_subCats[i].name != null &&
+          _subCats[i].name!.toLowerCase().contains(cats.toLowerCase())) {
         temp.add(_subCats[i]);
       }
     }
     emit(LoadedState(temp));
+  }
+
+  subCatById(String id, String cat_id) async {
+    if (id.isEmpty) return;
+    if (_subCats.isEmpty) {
+      await subCats(cat_id);
+      // final List<City> data = await listRepository.cities();
+      // _cities = data;
+    }
+    Cats cat = Cats(id: 0, name: 'Выберите тип');
+    for (int i = 0; i < _subCats.length; i++) {
+      if (_subCats[i].id.toString() == id) {
+        cat = _subCats[i];
+      }
+    }
+
+    return cat;
   }
 
   // Future<void> searchCity(String city) async {

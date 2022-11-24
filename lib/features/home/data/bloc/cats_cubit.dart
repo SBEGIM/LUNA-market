@@ -6,7 +6,6 @@ import '../model/Cats.dart';
 import '../repository/CatsRepo.dart';
 import 'cats_state.dart';
 
-
 class CatsCubit extends Cubit<CatsState> {
   final ListRepository listRepository;
 
@@ -17,7 +16,7 @@ class CatsCubit extends Cubit<CatsState> {
     try {
       emit(LoadingState());
       final List<Cats> data = await listRepository.cats();
-        _cats = data;
+      _cats = data;
       emit(LoadedState(data));
     } catch (e) {
       log(e.toString());
@@ -25,24 +24,41 @@ class CatsCubit extends Cubit<CatsState> {
     }
   }
 
-  void saveCats(){
+  void saveCats() {
     emit(LoadedState(_cats));
   }
 
-
   Future<void> searchCats(String name) async {
-    if(name.isEmpty) return;
-    if(_cats.isEmpty) {
+    if (name.isEmpty) return;
+    if (_cats.isEmpty) {
       await cats();
       // final List<City> data = await listRepository.cities();
       // _cities = data;
     }
     List<Cats> temp = [];
-    for(int i = 0 ; i < _cats.length; i++) {
-      if(_cats[i].name != null && _cats[i].name!.toLowerCase().contains(name.toLowerCase())) {
+    for (int i = 0; i < _cats.length; i++) {
+      if (_cats[i].name != null &&
+          _cats[i].name!.toLowerCase().contains(name.toLowerCase())) {
         temp.add(_cats[i]);
       }
     }
     emit(LoadedState(temp));
+  }
+
+  catById(String id) async {
+    if (id.isEmpty) return;
+    if (_cats.isEmpty) {
+      await cats();
+      // final List<City> data = await listRepository.cities();
+      // _cities = data;
+    }
+    Cats cat = Cats(id: 0, name: '');
+    for (int i = 0; i < _cats.length; i++) {
+      if (_cats[i].id.toString() == id) {
+        cat = _cats[i];
+      }
+    }
+
+    return cat;
   }
 }

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/basket/presentation/ui/basket_order_page.dart';
 import 'package:haji_market/features/drawer/data/bloc/basket_cubit.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/detailed_store_page.dart';
@@ -13,7 +15,8 @@ import '../../data/bloc/product_cubit.dart';
 
 class DetailCardProductPage extends StatefulWidget {
   final ProductModel product;
-  const DetailCardProductPage({required this.product ,Key? key}) : super(key: key);
+  const DetailCardProductPage({required this.product, Key? key})
+      : super(key: key);
 
   @override
   State<DetailCardProductPage> createState() => _DetailCardProductPageState();
@@ -22,6 +25,10 @@ class DetailCardProductPage extends StatefulWidget {
 class _DetailCardProductPageState extends State<DetailCardProductPage> {
   int? selectedIndex = 0;
   int? selectedIndex2 = 0;
+  int? selectedIndex3 = -1;
+  double procentPrice = 0;
+  int compoundPrice = 0;
+
   bool isvisible = false;
   bool inFavorite = false;
   List textDescrp = [
@@ -36,10 +43,25 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
     '24 мес',
   ];
 
+  List bloc = [
+    'x10',
+    'x20',
+    'x30',
+    'x40',
+  ];
+
   @override
   void initState() {
-   isvisible = widget.product.inBasket ?? false;
-   inFavorite = widget.product.inFavorite ?? false;
+    isvisible = widget.product.inBasket ?? false;
+    inFavorite = widget.product.inFavorite ?? false;
+    super.initState();
+
+    compoundPrice =
+        (widget.product.price!.toInt() - widget.product.compound!.toInt());
+    procentPrice =
+        ((widget.product.price!.toInt() - widget.product.compound!.toInt()) /
+                widget.product.price!.toInt()) *
+            100;
     super.initState();
   }
 
@@ -83,29 +105,107 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
       body: ListView(
         shrinkWrap: true,
         children: [
-          Container(
-            height: 300,
-            color: Colors.white,
-            child:Image.network(
-              widget.product.path!.isNotEmpty ? "http://80.87.202.73:8001/storage/${widget.product.path!.first}" : '',
-              height: 375,
-              width: 400,
-            ),
+          Stack(
+            children: [
+              Container(
+                height: 300,
+                color: Colors.white,
+                child: Image.network(
+                  widget.product.path!.isNotEmpty
+                      ? "http://80.87.202.73:8001/storage/${widget.product.path!.first}"
+                      : '',
+                  height: 375,
+                  width: 400,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(
+                    left: 16.0, right: 4, top: 16, bottom: 4),
+                decoration: BoxDecoration(
+                    color: AppColors.kPrimaryColor,
+                    borderRadius: BorderRadius.circular(4)),
+                child: const Padding(
+                  padding:
+                      EdgeInsets.only(left: 8.0, right: 8, top: 4, bottom: 4),
+                  child: Text(
+                    '0.0.12',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ),
+              ),
+              Container(
+                  margin: const EdgeInsets.only(
+                      left: 323.0, right: 4, top: 16, bottom: 4),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(4)),
+                  child: Image.asset(
+                    'assets/icons/bs.png',
+                  )),
+              Container(
+                margin: const EdgeInsets.only(
+                    left: 16.0, right: 4, top: 48, bottom: 4),
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(4)),
+                child: const Padding(
+                  padding:
+                      EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
+                  child: Text(
+                    '10% Б',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(
+                    left: 16.0, right: 4, top: 260, bottom: 4),
+                decoration: BoxDecoration(
+                    color: Colors.red, borderRadius: BorderRadius.circular(4)),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 4.0, right: 4, top: 4, bottom: 4),
+                  child: Text(
+                    '-${procentPrice.roundToDouble()}%',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ),
+              ),
+              Container(
+                  margin: const EdgeInsets.only(
+                      left: 335.0, right: 4, top: 260, bottom: 4),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(4)),
+                  child: SvgPicture.asset(
+                    'assets/icons/fullscreen 1.svg',
+                  )),
+            ],
           ),
           const SizedBox(
             height: 8,
           ),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.only(right: 16, left: 16, top: 16),
             color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     Text(
+                    Text(
                       "${widget.product.name}",
                       style: const TextStyle(
                           fontSize: 16,
@@ -113,24 +213,25 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           fontWeight: FontWeight.w700),
                     ),
                     IconButton(
-                        onPressed: () async{
-                          final favorite =  BlocProvider.of<FavoriteCubit>(context);
+                        onPressed: () async {
+                          final favorite =
+                              BlocProvider.of<FavoriteCubit>(context);
                           await favorite.favorite(widget.product.id.toString());
                           setState(() {
-                            inFavorite  = !inFavorite;
+                            inFavorite = !inFavorite;
                           });
-                           BlocProvider.of<ProductCubit>(context).products();
-
+                          BlocProvider.of<ProductCubit>(context).products();
                         },
-                        icon: SvgPicture.asset('assets/icons/heart_fill.svg',
-                          color:  inFavorite == true ? Colors.red : Colors.grey,
+                        icon: SvgPicture.asset(
+                          'assets/icons/favorite_product_show.svg',
+                          color: inFavorite == true ? Colors.red : Colors.grey,
                         ))
                   ],
                 ),
-               const SizedBox(
-                  height: 8,
-                ),
-                 Text(
+                // const SizedBox(
+                //   height: 8,
+                // ),
+                Text(
                   'Артикул: ${widget.product.id}',
                   style: const TextStyle(
                       color: AppColors.kGray300,
@@ -144,7 +245,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   children: [
                     RatingBar(
                       ignoreGestures: true,
-                      initialRating: double.parse(widget.product.rating.toString()),
+                      initialRating:
+                          double.parse(widget.product.rating.toString()),
                       unratedColor: const Color(0x30F11712),
                       itemSize: 15,
                       // itemPadding:
@@ -165,7 +267,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       ),
                       onRatingUpdate: (double value) {},
                     ),
-                     Text(
+                    Text(
                       '(${widget.product.count} отзывов)',
                       style: const TextStyle(
                           color: AppColors.kGray300,
@@ -177,28 +279,39 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 const SizedBox(
                   height: 18.5,
                 ),
-                Row(
-                  children:  [
-                    Text(
-                      '${widget.product.price!.toInt() -  widget.product.compound!.toInt()} ₸',
-                      style: const TextStyle(
-                          color: Colors.red,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                    ),
-                   const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      '${widget.product.price!.toInt()} ₸',
-                      style: const TextStyle(
-                          decoration: TextDecoration.lineThrough,
-                          color: AppColors.kGray900,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
+                (widget.product.compound != 0 ||
+                        widget.product.compound != null)
+                    ? Row(
+                        children: [
+                          Text(
+                            '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ₸',
+                            style: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            '${widget.product.price!.toInt()} ₸',
+                            style: const TextStyle(
+                                decoration: TextDecoration.lineThrough,
+                                color: AppColors.kGray900,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      )
+                    : Text(
+                        '${widget.product.price} ₸',
+                        textAlign: TextAlign.start,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF19191A),
+                            fontWeight: FontWeight.w700),
+                      ),
                 const SizedBox(
                   height: 8,
                 ),
@@ -220,7 +333,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         color: Color(0xFFFFD54F),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child:  Text(
+                      child: Text(
                         '${(widget.product.price!.toInt() / 3).roundToDouble()}',
                         style: const TextStyle(
                             color: AppColors.kGray900,
@@ -272,6 +385,70 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           color: AppColors.kPrimaryColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 13),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Оптом',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.585, // 229,
+                      height: 32,
+                      child: ListView.builder(
+                        itemCount: bloc.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              setState(() {
+                                selectedIndex3 = index;
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 4.0),
+                              child: Container(
+                                width: 54,
+                                decoration: BoxDecoration(
+                                  color: selectedIndex3 == index
+                                      ? AppColors.kPrimaryColor
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    width: 1,
+                                    color: selectedIndex3 != index
+                                        ? AppColors.kPrimaryColor
+                                        : Colors.white,
+                                  ),
+                                ),
+                                padding: const EdgeInsets.only(
+                                  top: 8,
+                                  bottom: 8,
+                                ),
+                                child: Text(
+                                  bloc[index],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: selectedIndex3 == index
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -441,7 +618,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                             Text(
+                            Text(
                               '${widget.product.shops![index].shop!.name}',
                               style: const TextStyle(
                                   color: AppColors.kGray900,
@@ -450,7 +627,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             ),
                             Row(
                               children: [
-                                 Text(
+                                Text(
                                   '(${widget.product.shop!.id} отзывов)',
                                   style: const TextStyle(
                                       color: AppColors.kGray300,
@@ -490,7 +667,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                             Text(
+                            Text(
                               '${widget.product.price} ₸',
                               style: const TextStyle(
                                   color: AppColors.kGray900,
@@ -505,7 +682,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                     color: const Color(0xFFFFD54F),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child:  Text(
+                                  child: Text(
                                     '${(widget.product.price!.toInt() / 3).round()}',
                                     style: const TextStyle(
                                         color: AppColors.kGray900,
@@ -757,8 +934,14 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             InkWell(
-              onTap: () {
-                // Navigator.pop(context);
+              onTap: () async {
+                await BlocProvider.of<BasketCubit>(context)
+                    .basketAdd(widget.product.id.toString(), '1');
+                setState(() {
+                  isvisible = true;
+                });
+                BlocProvider.of<ProductCubit>(context).products();
+                Get.to(() => BasketOrderPage());
               },
               child: Container(
                   height: 46,
@@ -782,42 +965,42 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               onTap: () {
                 // Navigator.pop(context);
 
-                if(isvisible == false && widget.product.inBasket == false){
-                  BlocProvider.of<BasketCubit>(context).basketAdd(widget.product.id.toString() , '1');
+                if (isvisible == false && widget.product.inBasket == false) {
+                  BlocProvider.of<BasketCubit>(context)
+                      .basketAdd(widget.product.id.toString(), '1');
                   setState(() {
                     isvisible = true;
                   });
                   BlocProvider.of<ProductCubit>(context).products();
                 }
-
               },
               child: Container(
                   height: 46,
+                  width: 168,
                   // width: MediaQuery.of(context).size.width * 0.490,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.black,
                   ),
-                  padding: const EdgeInsets.only(
-                      left: 21.5, right: 21.5, top: 15, bottom: 15),
-                  child: (isvisible == false && widget.product.inBasket == false)?
-
-                  const Text(
-                    'Добавить в корзину',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14),
-                    textAlign: TextAlign.center,
-                  ):       const Text(
-                    'Товар в корзине',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14),
-                    textAlign: TextAlign.center,
-                  )
-              ),
+                  alignment: Alignment.center,
+                  child:
+                      (isvisible == false && widget.product.inBasket == false)
+                          ? const Text(
+                              'Добавить в корзину',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14),
+                              textAlign: TextAlign.center,
+                            )
+                          : const Text(
+                              'Товар в корзине',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14),
+                              textAlign: TextAlign.center,
+                            )),
             )
           ],
         ),

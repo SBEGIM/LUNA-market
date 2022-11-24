@@ -9,6 +9,7 @@ import 'package:haji_market/features/drawer/presentation/ui/catalog_page.dart';
 import 'package:haji_market/features/drawer/presentation/ui/city_page.dart';
 import 'package:haji_market/features/profile/data/presentation/ui/notification_page.dart';
 import 'package:haji_market/features/profile/data/presentation/ui/profile_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../admin/coop_request/presentation/ui/coop_request_page.dart';
 import '../widgets/country_widget.dart';
@@ -36,58 +37,64 @@ class _DrawerHomeState extends State<DrawerHome> {
         children: [
           Container(
             height: 140,
-            padding:const EdgeInsets.only(left: 16, right: 16,top: 60),
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 60),
             color: AppColors.kPrimaryColor,
-            child:  GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfilePage()),
-                  );
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                   child: Row(children: [
-                     Container(
-                       height: 44,
-                       width: 44,
-                       decoration: BoxDecoration(
-                           borderRadius: BorderRadius.circular(21),
-                           image:  DecorationImage(
-                             image: _box.read('avatar') !=
-                                 null ? NetworkImage("http://80.87.202.73:8001/storage/${_box.read('avatar')}")
-                                 :  AssetImage('assets/icons/profile2.png' ) as ImageProvider,
-                             fit: BoxFit.cover,
-                           )),
-                     ),
-                     // CircleAvatar(
-                     //   backgroundColor: Colors.white,
-                     //   radius: 21,
-                     //   child: CircleAvatar(
-                     //     radius: 20,
-                     //     child: SvgPicture.asset('assets/icons/phone.svg'),
-                     //   ),
-                     // ),
-                     const SizedBox(width: 10,),
-                     Text(
-                         '${_box.read('name')}',
-                         style: const TextStyle(
-                             fontWeight: FontWeight.w400,
-                             fontSize: 16,
-                             color: Colors.white
-                         )
-                     ),
-                   ],)
-                  ),
-                    SvgPicture.asset('assets/icons/back_menu.svg', color: Colors.white,)
-                  ],
-                ),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      child: Row(
+                    children: [
+                      Container(
+                        height: 44,
+                        width: 44,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(21),
+                            image: DecorationImage(
+                              image: _box.read('avatar') != null
+                                  ? NetworkImage(
+                                      "http://80.87.202.73:8001/storage/${_box.read('avatar')}")
+                                  : AssetImage('assets/icons/profile2.png')
+                                      as ImageProvider,
+                              fit: BoxFit.cover,
+                            )),
+                      ),
+                      // CircleAvatar(
+                      //   backgroundColor: Colors.white,
+                      //   radius: 21,
+                      //   child: CircleAvatar(
+                      //     radius: 20,
+                      //     child: SvgPicture.asset('assets/icons/phone.svg'),
+                      //   ),
+                      // ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text('${_box.read('name')}',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                              color: Colors.white)),
+                    ],
+                  )),
+                  SvgPicture.asset(
+                    'assets/icons/back_menu.svg',
+                    color: Colors.white,
+                  )
+                ],
               ),
+            ),
           ),
           Column(
             children: [
+              const SizedBox(height: 10),
               InkWell(
                 onTap: () {
                   Navigator.push(
@@ -145,16 +152,16 @@ class _DrawerHomeState extends State<DrawerHome> {
                 color: AppColors.kGray200,
               ),
               InkWell(
-                onTap: (){
-                    Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const Base(
-                  index: 0,
-                ),
-              ),
-              (route) => false,
-            );
+                onTap: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Base(
+                        index: 1,
+                      ),
+                    ),
+                    (route) => false,
+                  );
                 },
                 child: const DrawerListTile(
                   text: 'Маркет',
@@ -170,12 +177,14 @@ class _DrawerHomeState extends State<DrawerHome> {
                 color: AppColors.kGray200,
               ),
               InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AboutUsPage()),
-                  );
-                },
+                // onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => AboutUsPage()),
+                // );
+                // },
+                onTap: () =>
+                    launch("https://t.me/LUNAmarketru", forceSafariVC: false),
                 child: const DrawerListTile(
                   text: 'Связаться с администрацией',
                 ),
@@ -198,17 +207,18 @@ class _DrawerHomeState extends State<DrawerHome> {
                 color: AppColors.kGray200,
               ),
               GestureDetector(
-                onTap: () async{
-                   Get.to(const CountryWidget());
-                   GetStorage().listen(() {
-                     if(GetStorage().read('country_index') != null){
-                       setState(() {
-                         index = GetStorage().read('country_index');
-                       });
-                     }
-                   });
-                   }, child: Container(
-                height: 45,
+                onTap: () async {
+                  Get.to(const CountryWidget());
+                  GetStorage().listen(() {
+                    if (GetStorage().read('country_index') != null) {
+                      setState(() {
+                        index = GetStorage().read('country_index');
+                      });
+                    }
+                  });
+                },
+                child: Container(
+                  height: 45,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -217,41 +227,39 @@ class _DrawerHomeState extends State<DrawerHome> {
                           const SizedBox(
                             width: 12,
                           ),
-                          if(index == 1 || index == 0)
+                          if (index == 1 || index == 0)
                             SvgPicture.asset('assets/temp/kaz.svg')
-                          else if(index ==2)
+                          else if (index == 2)
                             SvgPicture.asset('assets/temp/rus.svg')
-                          else if(index ==3)
-                              SvgPicture.asset('assets/temp/ukr.svg')
-                            else if(index ==4)
-                                SvgPicture.asset('assets/temp/bel.svg'),
-
+                          else if (index == 3)
+                            SvgPicture.asset('assets/temp/ukr.svg')
+                          else if (index == 4)
+                            SvgPicture.asset('assets/temp/bel.svg'),
                           const SizedBox(
                             width: 12,
                           ),
-                          if(index == 1 || index == 0)
+                          if (index == 1 || index == 0)
                             const Text(
                               'Казахстан',
                               style: AppTextStyles.drawer2TextStyle,
                             )
-                          else if(index ==2)
+                          else if (index == 2)
                             const Text(
                               'Россия',
                               style: AppTextStyles.drawer2TextStyle,
                             )
-                          else if(index ==3)
-                              const Text(
-                                'Украина',
-                                style: AppTextStyles.drawer2TextStyle,
-                              )
-                            else if(index ==4)
-                                const  Text(
-                                  'Беларус',
-                                  style: AppTextStyles.drawer2TextStyle,
-                                ),
+                          else if (index == 3)
+                            const Text(
+                              'Украина',
+                              style: AppTextStyles.drawer2TextStyle,
+                            )
+                          else if (index == 4)
+                            const Text(
+                              'Беларус',
+                              style: AppTextStyles.drawer2TextStyle,
+                            ),
                         ],
                       ),
-
                       Row(
                         children: [
                           SvgPicture.asset('assets/icons/back_menu.svg'),

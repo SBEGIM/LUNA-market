@@ -46,7 +46,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
             color: Colors.white,
             child: Center(
               child: Image.asset(
-                'assets/images/shopClick.png',
+                'assets/images/appIcon.png',
                 height: 80,
                 width: 80,
               ),

@@ -48,8 +48,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
           title: const Text(
             'История заказов',
             style: TextStyle(
-              color: Colors.black,
-            ),
+                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
           )),
       body: BlocConsumer<BasketCubit, BasketState>(
           listener: (context, state) {},

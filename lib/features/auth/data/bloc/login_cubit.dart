@@ -1,6 +1,3 @@
-
-
-
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -10,32 +7,55 @@ import 'package:haji_market/features/auth/data/bloc/login_state.dart';
 
 import '../repository/LoginRepo.dart';
 
-
 class LoginCubit extends Cubit<LoginState> {
-
   final LoginRepository loginRepository;
 
   LoginCubit({required this.loginRepository}) : super(InitState());
 
-
-  Future<void> login(String phone , String password) async {
+  Future<void> login(String phone, String password) async {
     try {
       emit(LoadingState());
-      final data = await loginRepository.login(phone ,password);
-      
-      if(data == 200){
+      final data = await loginRepository.login(phone, password);
+
+      if (data == 200) {
         emit(LoadedState());
         emit(InitState());
       }
-      if(data == 400){
+      if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!' , 'Неверный телефон или пароль' , backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
+            backgroundColor: Colors.redAccent);
       }
-      if(data == 500){
+      if (data == 500) {
         emit(InitState());
-        Get.snackbar('500' , 'Ошибка сервера' , backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера',
+            backgroundColor: Colors.redAccent);
       }
+    } catch (e) {
+      log(e.toString());
+      // emit(ErrorState(message: 'Ошибка'));
+    }
+  }
 
+  Future<void> lateAuth() async {
+    try {
+      emit(LoadingState());
+      final data = await loginRepository.lateAuth();
+
+      if (data == 200) {
+        emit(LoadedState());
+        emit(InitState());
+      }
+      if (data == 400) {
+        emit(InitState());
+        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
+            backgroundColor: Colors.redAccent);
+      }
+      if (data == 500) {
+        emit(InitState());
+        Get.snackbar('500', 'Ошибка сервера',
+            backgroundColor: Colors.redAccent);
+      }
     } catch (e) {
       log(e.toString());
       // emit(ErrorState(message: 'Ошибка'));

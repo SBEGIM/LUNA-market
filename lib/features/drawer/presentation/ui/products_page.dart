@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
@@ -36,6 +37,7 @@ class ProductsPage extends StatefulWidget {
 
 class _ProductsPageState extends State<ProductsPage> {
   final boxMain = GetStorage().write('rating', false);
+  bool catsVisible = false;
   TextEditingController searchController = TextEditingController();
 
   @override
@@ -55,12 +57,20 @@ class _ProductsPageState extends State<ProductsPage> {
 
   @override
   Widget build(BuildContext context) {
+    GetStorage().listenKey('scrollView', (value) {
+      catsVisible = value;
+      setState(() {
+        catsVisible;
+      });
+    });
+
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         backgroundColor: Colors.white,
         elevation: 0,
+        titleSpacing: 0,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -70,7 +80,7 @@ class _ProductsPageState extends State<ProductsPage> {
         title: Container(
           width: 311,
           height: 40,
-          padding: const EdgeInsets.only(right: 16),
+          margin: const EdgeInsets.only(right: 16),
           decoration: BoxDecoration(
               color: const Color(0xFFF8F8F8),
               borderRadius: BorderRadius.circular(10)),
@@ -123,11 +133,13 @@ class _ProductsPageState extends State<ProductsPage> {
           const SizedBox(
             height: 4,
           ),
-          Container(
-            color: Colors.white,
-            padding: EdgeInsets.only(left: 16),
-            child: const CatsProductPage(),
-          ),
+          (widget.cats.id != 0 && catsVisible == false)
+              ? Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.only(left: 16),
+                  child: const CatsProductPage(),
+                )
+              : Container(),
           const SizedBox(
             height: 1,
           ),
@@ -207,6 +219,8 @@ Widget chip(
 
 Widget chipDate(
   String label,
+  int index,
+  int select,
 ) {
   return Chip(
     labelPadding: const EdgeInsets.all(4.0),
@@ -216,7 +230,8 @@ Widget chipDate(
         color: AppColors.kGray900,
       ),
     ),
-    backgroundColor: const Color(0xFFEBEDF0),
+    backgroundColor:
+        select != index ? const Color(0xFFEBEDF0) : AppColors.kPrimaryColor,
     // elevation: 1.0,
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -264,37 +279,49 @@ class _ProductsState extends State<Products> {
           if (state is productState.LoadedState) {
             return Column(
               children: [
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: 8.0, right: 8, top: 16, bottom: 12),
+                Container(
+                  padding: EdgeInsets.only(left: 16, top: 12, bottom: 8),
+                  alignment: Alignment.centerLeft,
                   child: Text(
                     'Найдено ${state.productModel.length} товаров',
                     style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: Color.fromRGBO(144, 148, 153, 1)),
-                    textAlign: TextAlign.start,
                   ),
                 ),
                 SizedBox(
                   height: 530,
-                  child: ListView.builder(
-                      // physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: state.productModel.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DetailCardProductPage(
-                                        product: state.productModel[index])),
-                              );
-                            },
-                            child: ProductCardWidget(
-                                product: state.productModel[index]));
-                      }),
+                  child: NotificationListener<UserScrollNotification>(
+                    onNotification: (notification) {
+                      if (notification.direction == ScrollDirection.forward) {
+                        GetStorage().write('scrollView', false);
+                      } else if (notification.direction ==
+                          ScrollDirection.reverse) {
+                        GetStorage().write('scrollView', true);
+                      }
+                      return true;
+                    },
+                    child: ListView.builder(
+                        // physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.productModel.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DetailCardProductPage(
+                                              product:
+                                                  state.productModel[index])),
+                                );
+                              },
+                              child: ProductCardWidget(
+                                  product: state.productModel[index]));
+                        }),
+                  ),
                 )
               ],
             );
@@ -320,6 +347,11 @@ class _chipWithDropDownState extends State<chipWithDropDown> {
   String shopName = '';
   String brandName = '';
   RangeValues price = const RangeValues(0, 0);
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

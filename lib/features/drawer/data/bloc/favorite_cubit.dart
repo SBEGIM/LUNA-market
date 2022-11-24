@@ -12,28 +12,23 @@ class FavoriteCubit extends Cubit<FavoriteState> {
 
   FavoriteCubit({required this.favoriteRepository}) : super(InitState());
 
-
-
   Future<void> myFavorites() async {
     try {
       emit(LoadingState());
       final List<ProductModel> data = await favoriteRepository.favorites();
 
       emit(LoadedState(data));
-
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
 
-
-
   Future<void> favorite(id) async {
     try {
       await favoriteRepository.favorite(id);
     } catch (e) {
-      log(e.toString());
+      log('${e.toString()}232');
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }

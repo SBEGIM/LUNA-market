@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
 
 import 'package:haji_market/core/common/constants.dart';
@@ -13,6 +14,14 @@ class CoopRequestPage extends StatefulWidget {
 
 class _CoopRequestPageState extends State<CoopRequestPage> {
   bool isChecked = false;
+
+  TextEditingController iinController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController catController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,15 +52,15 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
             child: ListView(
               shrinkWrap: true,
               // crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'Укажите данные Вашего бизнеса',
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
                       color: AppColors.kGray900),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 FieldsCoopRequest(
@@ -59,35 +68,42 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                   hintText: 'Введите ИИН/БИН',
                   star: false,
                   arrow: false,
+                  controller: iinController,
                 ),
                 FieldsCoopRequest(
-                    titleText: 'Название компании ',
-                    hintText: 'Введите название компании',
-                    star: false,
-                    arrow: false),
+                  titleText: 'Название компании ',
+                  hintText: 'Введите название компании',
+                  star: false,
+                  arrow: false,
+                  controller: nameController,
+                ),
                 FieldsCoopRequest(
                   titleText: 'Основная категория товаров ',
                   hintText: 'Выберите категорию',
                   star: false,
                   arrow: false,
+                  controller: catController,
                 ),
                 FieldsCoopRequest(
                   titleText: 'Контактное имя ',
                   hintText: 'Введите контактное имя',
                   star: false,
                   arrow: false,
+                  controller: userNameController,
                 ),
                 FieldsCoopRequest(
                   titleText: 'Мобильный телефон ',
                   hintText: 'Введите мобильный телефон ',
                   star: false,
                   arrow: false,
+                  controller: phoneController,
                 ),
                 FieldsCoopRequest(
                   titleText: 'Email ',
                   hintText: 'Введите Email',
                   star: false,
                   arrow: false,
+                  controller: emailController,
                 ),
               ],
             ),
@@ -129,10 +145,22 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
         padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
         child: InkWell(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AuthAdminPage()),
-            );
+            if (iinController.text.isNotEmpty &&
+                nameController.text.isNotEmpty &&
+                phoneController.text.isNotEmpty &&
+                emailController.text.isNotEmpty &&
+                userNameController.text.isNotEmpty &&
+                catController.text.isNotEmpty &&
+                isChecked == true) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AuthAdminPage()),
+              );
+            } else {
+              Get.snackbar('Ошибка', 'Заполните все данные *',
+                  backgroundColor: Colors.blueAccent);
+            }
+
             // Navigator.pop(context);
           },
           child: Container(
@@ -161,11 +189,13 @@ class FieldsCoopRequest extends StatelessWidget {
   final String hintText;
   final bool star;
   final bool arrow;
-  const FieldsCoopRequest({
+  TextEditingController? controller;
+  FieldsCoopRequest({
     required this.hintText,
     required this.titleText,
     required this.star,
     required this.arrow,
+    this.controller,
     Key? key,
   }) : super(key: key);
 
@@ -206,6 +236,7 @@ class FieldsCoopRequest extends StatelessWidget {
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
                 keyboardType: TextInputType.phone,
+                controller: controller,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: hintText,

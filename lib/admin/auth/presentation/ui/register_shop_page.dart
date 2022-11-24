@@ -1,32 +1,57 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:haji_market/admin/admin_app/presentation/base_admin.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../features/app/widgets/custom_back_button.dart';
 
 class RegisterShopPage extends StatefulWidget {
-  RegisterShopPage({Key? key}) : super(key: key);
+  final String shopName;
+  RegisterShopPage({required this.shopName, Key? key}) : super(key: key);
 
   @override
   State<RegisterShopPage> createState() => _RegisterShopPageState();
 }
 
 class _RegisterShopPageState extends State<RegisterShopPage> {
+  XFile? _image;
+  final ImagePicker _picker = ImagePicker();
+  bool change = false;
+  TextEditingController shopNameController = TextEditingController();
+
+  Future<void> _getImage() async {
+    final image = change == true
+        ? await _picker.pickImage(source: ImageSource.camera)
+        : await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+  }
+
+  @override
+  void initState() {
+    shopNameController.text = widget.shopName;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 22.0),
-            child: CustomDropButton(
-              onTap: () {},
-            ),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 22.0),
+        //     child: CustomDropButton(
+        //       onTap: () {},
+        //     ),
+        //   ),
+        // ],
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -49,18 +74,48 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
           Center(
             child: Column(
               children: [
-                Container(
-                  height: 120,
-                  width: 120,
-                  color: Colors.white,
-                  child: Stack(
-                    children: [
-                      SvgPicture.asset('assets/icons/border.svg'),
-                      Center(
-                          child: SvgPicture.asset('assets/icons/camera2.svg')
-                      ),
-                    ],
-                  )
+                GestureDetector(
+                  onTap: () {
+                    Get.defaultDialog(
+                        title: "Изменить фото",
+                        middleText: '',
+                        textConfirm: 'Камера',
+                        textCancel: 'Галлерея',
+                        titlePadding: EdgeInsets.only(top: 40),
+                        onConfirm: () {
+                          change = true;
+                          setState(() {
+                            change;
+                          });
+                          _getImage();
+                        },
+                        onCancel: () {
+                          change = false;
+                          setState(() {
+                            change;
+                          });
+                          _getImage();
+                        });
+                  },
+                  child: Container(
+                      height: 120,
+                      width: 120,
+                      color: Colors.white,
+                      child: Stack(
+                        children: [
+                          SvgPicture.asset('assets/icons/border.svg'),
+                          Center(
+                              child: _image != null
+                                  ? CircleAvatar(
+                                      backgroundImage: FileImage(
+                                        File(_image!.path),
+                                      ),
+                                      radius: 34,
+                                      child: Container())
+                                  : SvgPicture.asset(
+                                      'assets/icons/camera2.svg')),
+                        ],
+                      )),
                 ),
                 const SizedBox(
                   height: 16,
@@ -85,20 +140,19 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
                   'assets/icons/shop1.svg',
                   height: 24,
                   width: 24,
-                  color: const Color.fromRGBO(28,189,199,1),
+                  color: const Color.fromRGBO(28, 189, 199, 1),
                 ),
                 minLeadingWidth: 10,
-                title: const TextField(
-                  // controller: phoneControllerAuth,
-                  cursorColor: Color.fromRGBO(31,196,207, 1),
-                  decoration: InputDecoration(
+                title: TextField(
+                  controller: shopNameController,
+                  cursorColor: Color.fromRGBO(31, 196, 207, 1),
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Название магазина',
                     hintStyle: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Color.fromRGBO(170,174,179,1)
-                    ) ,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color.fromRGBO(170, 174, 179, 1)),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                       // borderRadius: BorderRadius.circular(3),
@@ -119,7 +173,7 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
               bottom: MediaQuery.of(context).viewInsets.bottom * 0.01,
             ),
             child: DefaultButton(
-              backgroundColor: AppColors.kPrimaryColor,
+                backgroundColor: AppColors.kPrimaryColor,
                 text: 'Войти',
                 press: () {
                   Navigator.push(

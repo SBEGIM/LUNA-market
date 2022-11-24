@@ -1,17 +1,17 @@
 class TapeModel {
-  TapeModel({
-      int? id, 
-      String? name, 
-      String? catName, 
-      int? price, 
-      String? description, 
-      int? compound, 
-      String? video, 
-      String? image, 
-      Review? review, 
-      bool? inBasket, 
-      bool? inFavorite, 
-      Shop? shop,}){
+  TapeModel(
+      {int? id,
+      String? name,
+      String? catName,
+      int? price,
+      String? description,
+      int? compound,
+      String? video,
+      String? image,
+      bool? inBasket,
+      bool? inFavorite,
+      bool? inSubscribe,
+      Shop? shop}) {
     _id = id;
     _name = name;
     _catName = catName;
@@ -20,11 +20,12 @@ class TapeModel {
     _compound = compound;
     _video = video;
     _image = image;
-    _review = review;
     _inBasket = inBasket;
     _inFavorite = inFavorite;
+    _inSubscribe = inSubscribe;
+
     _shop = shop;
-}
+  }
 
   TapeModel.fromJson(dynamic json) {
     _id = json['id'];
@@ -35,9 +36,9 @@ class TapeModel {
     _compound = json['compound'];
     _video = json['video'];
     _image = json['image'];
-    _review = json['review'] != null ? Review.fromJson(json['review']) : null;
     _inBasket = json['in_basket'];
     _inFavorite = json['in_favorite'];
+    _inSubscribe = json['in_subscribe'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
   }
   int? _id;
@@ -48,9 +49,9 @@ class TapeModel {
   int? _compound;
   String? _video;
   String? _image;
-  Review? _review;
   bool? _inBasket;
   bool? _inFavorite;
+  bool? _inSubscribe;
   Shop? _shop;
 
   int? get id => _id;
@@ -61,9 +62,9 @@ class TapeModel {
   int? get compound => _compound;
   String? get video => _video;
   String? get image => _image;
-  Review? get review => _review;
   bool? get inBasket => _inBasket;
   bool? get inFavorite => _inFavorite;
+  bool? get inSubscribe => _inSubscribe;
   Shop? get shop => _shop;
 
   Map<String, dynamic> toJson() {
@@ -76,35 +77,33 @@ class TapeModel {
     map['compound'] = _compound;
     map['video'] = _video;
     map['image'] = _image;
-    if (_review != null) {
-      map['review'] = _review?.toJson();
-    }
     map['in_basket'] = _inBasket;
     map['in_favorite'] = _inFavorite;
+    map['inSubscribe'] = _inSubscribe;
     if (_shop != null) {
       map['shop'] = _shop?.toJson();
     }
     return map;
   }
-
 }
 
 class Shop {
   Shop({
-      int? id, 
-      String? iin, 
-      int? mainCatId, 
-      String? name, 
-      String? userName, 
-      String? email, 
-      String? phone, 
-      String? password, 
-      String? logo, 
-      String? image, 
-      int? courier, 
-      dynamic token, 
-      String? createdAt, 
-      String? updatedAt,}){
+    int? id,
+    String? iin,
+    int? mainCatId,
+    String? name,
+    String? userName,
+    String? email,
+    String? phone,
+    String? password,
+    String? logo,
+    String? image,
+    int? courier,
+    dynamic token,
+    String? createdAt,
+    String? updatedAt,
+  }) {
     _id = id;
     _iin = iin;
     _mainCatId = mainCatId;
@@ -119,7 +118,7 @@ class Shop {
     _token = token;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
-}
+  }
 
   Shop.fromJson(dynamic json) {
     _id = json['id'];
@@ -185,62 +184,4 @@ class Shop {
     map['updated_at'] = _updatedAt;
     return map;
   }
-
-}
-
-class Review {
-  Review({
-      int? rating, 
-      int? count, 
-      int? , 
-      int? , 
-      int? , 
-      int? , 
-      int? ,}){
-    _rating = rating;
-    _count = count;
-    _ = ;
-    _ = ;
-    _ = ;
-    _ = ;
-    _ = ;
-}
-
-  Review.fromJson(dynamic json) {
-    _rating = json['rating'];
-    _count = json['count'];
-    _ = json['5'];
-    _ = json['4'];
-    _ = json['3'];
-    _ = json['2'];
-    _ = json['1'];
-  }
-  int? _rating;
-  int? _count;
-  int? _;
-  int? _;
-  int? _;
-  int? _;
-  int? _;
-
-  int? get rating => _rating;
-  int? get count => _count;
-  int? get  => _;
-  int? get  => _;
-  int? get  => _;
-  int? get  => _;
-  int? get  => _;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['rating'] = _rating;
-    map['count'] = _count;
-    map['5'] = _;
-    map['4'] = _;
-    map['3'] = _;
-    map['2'] = _;
-    map['1'] = _;
-    return map;
-  }
-
 }

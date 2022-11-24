@@ -1,5 +1,3 @@
-
-
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -14,6 +12,18 @@ class ProductCubit extends Cubit<ProductState> {
   ProductCubit({required this.productRepository}) : super(InitState());
 
   Future<void> products() async {
+    try {
+      emit(LoadingState());
+      final List<ProductModel> data = await productRepository.product();
+
+      emit(LoadedState(data));
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  Future<void> productsMbInteresting() async {
     try {
       emit(LoadingState());
       final List<ProductModel> data = await productRepository.product();

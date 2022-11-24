@@ -6,6 +6,8 @@ class InitState extends ProductAdminState {}
 
 class LoadingState extends ProductAdminState {}
 
+class ChangeState extends ProductAdminState {}
+
 class LoadedState extends ProductAdminState {
   List<AdminProductsModel> productModel;
   LoadedState(this.productModel);

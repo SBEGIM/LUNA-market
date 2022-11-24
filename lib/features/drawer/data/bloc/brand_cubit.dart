@@ -4,23 +4,39 @@ import '../../../home/data/model/Cats.dart';
 import '../repository/BrandRepo.dart';
 import 'brand_state.dart';
 
-
-
 class BrandCubit extends Cubit<BrandState> {
   final BrandsRepository brandRepository;
 
   BrandCubit({required this.brandRepository}) : super(InitState());
+  List<Cats> _brands = [];
 
   Future<void> brands() async {
     try {
       emit(LoadingState());
       final List<Cats> data = await brandRepository.brandApi();
-
+      _brands = data;
       emit(LoadedState(data));
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
+  }
+
+  brandById(String id) async {
+    if (id.isEmpty) return;
+    if (_brands.isEmpty) {
+      await brands();
+      // final List<City> data = await listRepository.cities();
+      // _cities = data;
+    }
+    Cats brand = Cats(id: 0, name: '');
+    for (int i = 0; i < _brands.length; i++) {
+      if (_brands[i].id.toString() == id) {
+        brand = _brands[i];
+      }
+    }
+
+    return brand;
   }
 
   // Future<void> searchCity(String city) async {

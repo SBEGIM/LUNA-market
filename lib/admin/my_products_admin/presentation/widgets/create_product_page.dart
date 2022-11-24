@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/admin/my_products_admin/presentation/widgets/brands_admin_page.dart';
+import 'package:haji_market/admin/my_products_admin/presentation/widgets/colors_admin_page.dart';
+import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caats_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/home/data/model/Cats.dart';
 import '../../../admin_app/presentation/base_admin.dart';
 import '../../../coop_request/presentation/ui/coop_request_page.dart';
 import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/bloc/product_admin_state.dart';
+import 'category_admin_page.dart';
+import 'cats_admin_page.dart';
 
 class CreateProductPage extends StatefulWidget {
   final Cats cat;
@@ -21,17 +27,43 @@ class CreateProductPage extends StatefulWidget {
 }
 
 class _CreateProductPageState extends State<CreateProductPage> {
+  Cats? cats;
+  Cats? subCats;
+  Cats? brands;
+  Cats? colors;
+
   TextEditingController articulController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController compoundController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController countController = TextEditingController();
-  int cat_id = 0;
-  int brand_id = 0;
   TextEditingController heightController = TextEditingController();
   TextEditingController widthController = TextEditingController();
   TextEditingController massaController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+
+  XFile? _image;
+  final ImagePicker _picker = ImagePicker();
+  bool change = false;
+
+  Future<void> _getImage() async {
+    final image = change == true
+        ? await _picker.pickImage(source: ImageSource.camera)
+        : await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+  }
+
+  @override
+  void initState() {
+    cats = widget.cat;
+    subCats = widget.subCat;
+    brands = Cats(id: 0, name: 'Выберите бренд');
+    colors = Cats(id: 0, name: 'Выберите цвет');
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +90,18 @@ class _CreateProductPageState extends State<CreateProductPage> {
               const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
           child: InkWell(
             onTap: () async {
-              await BlocProvider.of<ProductAdminCubit>(context).product(
+              await BlocProvider.of<ProductAdminCubit>(context).store(
                   priceController.text,
                   countController.text,
                   compoundController.text,
-                  cat_id.toString(),
-                  brand_id.toString(),
+                  cats!.id.toString(),
+                  brands!.id.toString(),
                   descriptionController.text,
-                  nameController.text);
+                  nameController.text,
+                  heightController.text,
+                  widthController.text,
+                  massaController.text,
+                  articulController.text);
             },
             child: Container(
                 decoration: BoxDecoration(
@@ -86,212 +122,291 @@ class _CreateProductPageState extends State<CreateProductPage> {
         ),
         body: BlocConsumer<ProductAdminCubit, ProductAdminState>(
             listener: (context, state) {
-          if (state is LoadedState) {
+          if (state is ChangeState) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const BaseAdmin()),
             );
           }
         }, builder: (context, state) {
-          if (state is InitState) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  FieldsProductRequest(
-                    titleText: 'Артикул ',
-                    hintText: 'Введите артикул  ',
-                    star: false,
-                    arrow: false,
-                    controller: articulController,
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                FieldsProductRequest(
+                  titleText: 'Артикул ',
+                  hintText: 'Введите артикул  ',
+                  star: false,
+                  arrow: false,
+                  controller: articulController,
+                ),
+                FieldsProductRequest(
+                  titleText: 'Цена товара ',
+                  hintText: 'Введите цену  ',
+                  star: false,
+                  arrow: false,
+                  controller: priceController,
+                ),
+                FieldsProductRequest(
+                  titleText: 'Скидка при оплате наличными, % ',
+                  hintText: 'Введите размер скидки',
+                  star: true,
+                  arrow: false,
+                  controller: compoundController,
+                ),
+                FieldsProductRequest(
+                  titleText: 'Категория',
+                  hintText: cats!.name ?? 'Выберите категорию',
+                  star: false,
+                  arrow: true,
+                  onPressed: () async {
+                    final data = await Get.to(CatsAdminPage());
+                    if (data != null) {
+                      final Cats cat = data;
+                      setState(() {});
+                      cats = cat;
+                    }
+                  },
+                ),
+                FieldsProductRequest(
+                  titleText: 'Название товара ',
+                  hintText: 'Введите название товара',
+                  star: false,
+                  arrow: false,
+                  controller: nameController,
+                ),
+                FieldsProductRequest(
+                  titleText: 'Наименование бренда ',
+                  hintText: brands!.name.toString(),
+                  star: false,
+                  arrow: true,
+                  onPressed: () async {
+                    final data = await Get.to(BrandsAdminPage());
+                    if (data != null) {
+                      final Cats brand = data;
+                      setState(() {});
+                      brands = brand;
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  'Общие характеристики',
+                  style: TextStyle(
+                      color: AppColors.kGray900,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                FieldsProductRequest(
+                  titleText: 'Тип ',
+                  hintText: subCats!.name.toString(),
+                  star: false,
+                  arrow: true,
+                  onPressed: () async {
+                    final data = await Get.to(SubCatsAdminPage(cats: cats));
+                    if (data != null) {
+                      final Cats cat = data;
+                      setState(() {});
+                      subCats = cat;
+                    }
+                  },
+                ),
+                FieldsProductRequest(
+                  titleText: 'Количество в комплекте ',
+                  hintText: 'Выберите количество',
+                  star: false,
+                  arrow: false,
+                  controller: countController,
+                ),
+                FieldsProductRequest(
+                  titleText: 'Цвет ',
+                  hintText: colors!.name.toString(),
+                  star: true,
+                  arrow: true,
+                  onPressed: () async {
+                    final data = await Get.to(ColorsAdminPage());
+                    if (data != null) {
+                      final Cats cat = data;
+                      setState(() {});
+                      colors = cat;
+                    }
+                  },
+                ),
+                FieldsProductRequest(
+                  titleText: 'Ширина, мм ',
+                  hintText: 'Введите ширину',
+                  star: true,
+                  arrow: false,
+                  controller: widthController,
+                ),
+                FieldsProductRequest(
+                  titleText: 'Высота, мм ',
+                  hintText: 'Введите высоту',
+                  star: true,
+                  arrow: false,
+                  controller: heightController,
+                ),
+                const FieldsProductRequest(
+                  titleText: 'Глубина, мм ',
+                  hintText: 'Введите глубину',
+                  star: true,
+                  arrow: false,
+                ),
+                FieldsProductRequest(
+                  titleText: 'Вес, г ',
+                  hintText: 'Введите вес',
+                  star: true,
+                  arrow: false,
+                  controller: massaController,
+                ),
+                FieldsProductRequest(
+                  titleText: 'Дополнительно ',
+                  hintText: 'Для дополнительной информации',
+                  star: true,
+                  arrow: false,
+                  controller: descriptionController,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  'Изоброжения товара',
+                  style: TextStyle(
+                      color: AppColors.kGray900,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Формат - jpg, png',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                            color: AppColors.kGray900),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            Get.defaultDialog(
+                                title: "Изменить фото",
+                                middleText: '',
+                                textConfirm: 'Камера',
+                                textCancel: 'Галлерея',
+                                titlePadding: EdgeInsets.only(top: 40),
+                                onConfirm: () {
+                                  change = true;
+                                  setState(() {
+                                    change;
+                                  });
+                                  _getImage();
+                                },
+                                onCancel: () {
+                                  change = false;
+                                  setState(() {
+                                    change;
+                                  });
+                                  _getImage();
+                                });
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.camera_alt,
+                                  color: change == false
+                                      ? AppColors.kGray300
+                                      : AppColors.kPrimaryColor,
+                                ),
+                                const SizedBox(width: 10),
+                                const Text(
+                                  'Добавить изображение',
+                                  style: TextStyle(
+                                      color: AppColors.kGray300,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
+                                )
+                              ],
+                            ),
+                          )),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      const Text(
+                        'Минимальный/максимальный размер одной из сторон: от 500 до 2000 пикселей;- Основная фотография должна быть студийного качества на белом фоне без водяных знаков;- Минимальное/максимальное количество фотографий в карточке: от 3 до 5',
+                        style: TextStyle(
+                            color: AppColors.kGray300,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
+                      )
+                    ],
                   ),
-                  FieldsProductRequest(
-                    titleText: 'Цена товара ',
-                    hintText: 'Введите цену  ',
-                    star: false,
-                    arrow: false,
-                    controller: priceController,
-                  ),
-                  FieldsProductRequest(
-                    titleText: 'Скидка при оплате наличными, % ',
-                    hintText: 'Введите размер скидки',
-                    star: true,
-                    arrow: false,
-                    controller: compoundController,
-                  ),
-                  const FieldsProductRequest(
-                    titleText: 'Категория ',
-                    hintText: 'Выберите категорию',
-                    star: false,
-                    arrow: true,
-                  ),
-                  FieldsProductRequest(
-                    titleText: 'Название товара ',
-                    hintText: 'Введите название товара',
-                    star: false,
-                    arrow: false,
-                    controller: nameController,
-                  ),
-                  const FieldsProductRequest(
-                    titleText: 'Наименование бренда ',
-                    hintText: 'Выберите бренд',
-                    star: false,
-                    arrow: true,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    'Общие характеристики',
-                    style: TextStyle(
-                        color: AppColors.kGray900,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const FieldsProductRequest(
-                    titleText: 'Тип ',
-                    hintText: 'Выберите тип',
-                    star: false,
-                    arrow: true,
-                  ),
-                  FieldsProductRequest(
-                    titleText: 'Количество в комплекте ',
-                    hintText: 'Выберите количество',
-                    star: false,
-                    arrow: true,
-                    controller: countController,
-                  ),
-                  const FieldsProductRequest(
-                    titleText: 'Цвет ',
-                    hintText: 'Выберите цвет',
-                    star: true,
-                    arrow: true,
-                  ),
-                  FieldsProductRequest(
-                    titleText: 'Ширина, мм ',
-                    hintText: 'Введите ширину',
-                    star: true,
-                    arrow: false,
-                    controller: widthController,
-                  ),
-                  FieldsProductRequest(
-                    titleText: 'Высота, мм ',
-                    hintText: 'Введите высоту',
-                    star: true,
-                    arrow: false,
-                    controller: heightController,
-                  ),
-                  const FieldsProductRequest(
-                    titleText: 'Глубина, мм ',
-                    hintText: 'Введите глубину',
-                    star: true,
-                    arrow: false,
-                  ),
-                  FieldsProductRequest(
-                    titleText: 'Вес, г ',
-                    hintText: 'Введите вес',
-                    star: true,
-                    arrow: false,
-                    controller: massaController,
-                  ),
-                  FieldsProductRequest(
-                    titleText: 'Дополнительно ',
-                    hintText: 'Для дополнительной информации',
-                    star: true,
-                    arrow: false,
-                    controller: descriptionController,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    'Изоброжения товара',
-                    style: TextStyle(
-                        color: AppColors.kGray900,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Формат - jpg, png',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                              color: AppColors.kGray900),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(
-                                Icons.camera_alt,
-                                color: AppColors.kGray300,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'Добавить изображение',
-                                style: TextStyle(
-                                    color: AppColors.kGray300,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        const Text(
-                          'Минимальный/максимальный размер одной из сторон: от 500 до 2000 пикселей;- Основная фотография должна быть студийного качества на белом фоне без водяных знаков;- Минимальное/максимальное количество фотографий в карточке: от 3 до 5',
-                          style: TextStyle(
-                              color: AppColors.kGray300,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    'Видео товара',
-                    style: TextStyle(
-                        color: AppColors.kGray900,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Формат - jpg, png',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                              color: AppColors.kGray900),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  'Видео товара',
+                  style: TextStyle(
+                      color: AppColors.kGray900,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Формат - jpg, png',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                            color: AppColors.kGray900),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.defaultDialog(
+                              title: "Изменить видео",
+                              middleText: '',
+                              textConfirm: 'Камера',
+                              textCancel: 'Галлерея',
+                              titlePadding: EdgeInsets.only(top: 40),
+                              onConfirm: () {
+                                change = true;
+                                setState(() {
+                                  change;
+                                });
+                                _getImage();
+                              },
+                              onCancel: () {
+                                change = false;
+                                setState(() {
+                                  change;
+                                });
+                                _getImage();
+                              });
+                        },
+                        child: Container(
                           height: 50,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -299,8 +414,12 @@ class _CreateProductPageState extends State<CreateProductPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              SvgPicture.asset('assets/icons/video.svg',
-                                  color: Colors.grey),
+                              SvgPicture.asset(
+                                'assets/icons/video.svg',
+                                color: change == false
+                                    ? AppColors.kGray300
+                                    : AppColors.kPrimaryColor,
+                              ),
                               const SizedBox(width: 10),
                               const Text(
                                 'Добавить видео',
@@ -312,46 +431,35 @@ class _CreateProductPageState extends State<CreateProductPage> {
                             ],
                           ),
                         ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        const Text(
-                          'Разрешение — 1080×1350 px — для горизонтального; 566×1080 px — для вертикального; Расширение — mov, mp4; jpg, png; Размер — 4 ГБ — для видео, 30 МБ — для фото; Длительность — от 3 до 60 секунд.',
-                          style: TextStyle(
-                              color: AppColors.kGray300,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      const Text(
+                        'Разрешение — 1080×1350 px — для горизонтального; 566×1080 px — для вертикального; Расширение — mov, mp4; jpg, png; Размер — 4 ГБ — для видео, 30 МБ — для фото; Длительность — от 3 до 60 секунд.',
+                        style: TextStyle(
+                            color: AppColors.kGray300,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const FieldsProductRequest(
-                    titleText: 'Магазин ',
-                    hintText: 'Магазин',
-                    star: false,
-                    arrow: false,
-                  ),
-                  const SizedBox(
-                    height: 80,
-                  ),
-                ],
-              ),
-            );
-          }
-          if (state is ErrorState) {
-            return Center(
-              child: Text(
-                state.message,
-                style: TextStyle(color: Colors.redAccent),
-              ),
-            );
-          } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const FieldsProductRequest(
+                  titleText: 'Магазин ',
+                  hintText: 'Магазин',
+                  star: false,
+                  arrow: false,
+                ),
+                const SizedBox(
+                  height: 80,
+                ),
+              ],
+            ),
+          );
         }));
   }
 }
@@ -362,13 +470,18 @@ class FieldsProductRequest extends StatefulWidget {
   final bool star;
   final bool arrow;
   final TextEditingController? controller;
+  final Cats? cats;
+  final void Function()? onPressed;
+
   const FieldsProductRequest({
     required this.hintText,
     required this.titleText,
     required this.star,
     required this.arrow,
     this.controller,
+    this.cats,
     Key? key,
+    this.onPressed,
   }) : super(key: key);
 
   @override
@@ -431,11 +544,12 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                     // borderRadius: BorderRadius.circular(3),
                   ),
                   suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: widget.arrow == true
-                          ? SvgPicture.asset('assets/icons/back_menu.svg',
-                              color: Colors.grey)
-                          : SvgPicture.asset('')),
+                    onPressed: widget.onPressed,
+                    icon: widget.arrow == true
+                        ? SvgPicture.asset('assets/icons/back_menu.svg',
+                            color: Colors.grey)
+                        : SvgPicture.asset(''),
+                  ),
                 ),
               ),
             ),

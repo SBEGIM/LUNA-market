@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../tape/presentation/data/models/TapeModel.dart';
 part 'navigation_state.dart';
 part 'navigation_cubit.freezed.dart';
 
@@ -12,6 +14,7 @@ class NavigationCubit extends Cubit<NavigationState> {
     state.when(
       tape: () => emit(const TapeState()),
       home: () => emit(const HomeState()),
+      detailTape: (j) => emit(DetailTapeState(j)),
       favorite: () => emit(const FavoriteState()),
       basket: () => emit(const BasketState()),
       myOrder: () => emit(const MyOrderState()),

@@ -22,6 +22,7 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   bool isButtonEnabled = false;
+  bool _passwordVisible = false;
 
   setIsButtonEnabled(bool value) {
     // log("is button state changed $value");
@@ -29,7 +30,8 @@ class _AuthPageState extends State<AuthPage> {
     setState(() {});
   }
 
-  TextEditingController phoneControllerAuth = MaskedTextController(mask: '+7(000)-000-00-00');
+  TextEditingController phoneControllerAuth =
+      MaskedTextController(mask: '+7(000)-000-00-00');
   TextEditingController passwordControllerAuth = TextEditingController();
 
   @override
@@ -40,7 +42,7 @@ class _AuthPageState extends State<AuthPage> {
         // Navigator.push(
         //   context,
         //   MaterialPageRoute(builder: (context) => const Base()),
-       // );
+        // );
       }
     }, builder: (context, state) {
       if (state is InitState) {
@@ -63,6 +65,14 @@ class _AuthPageState extends State<AuthPage> {
                             height: 24,
                             width: 24,
                           ),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              phoneControllerAuth.clear();
+                            },
+                            child: SvgPicture.asset(
+                              'assets/icons/delete_circle.svg',
+                            ),
+                          ),
                           title: TextField(
                             keyboardType: TextInputType.phone,
                             // inputFormatters: [maskFormatter],
@@ -83,9 +93,6 @@ class _AuthPageState extends State<AuthPage> {
                               ),
                             ),
                           ),
-                          trailing: SvgPicture.asset(
-                            'assets/icons/delete_circle.svg',
-                          ),
                         ),
                         ListTile(
                           leading: SvgPicture.asset(
@@ -93,10 +100,24 @@ class _AuthPageState extends State<AuthPage> {
                             height: 24,
                             width: 24,
                           ),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                            child: Icon(
+                              _passwordVisible
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: const Color.fromRGBO(177, 179, 181, 1),
+                            ),
+                          ),
                           title: TextField(
                             keyboardType: TextInputType.text,
                             // inputFormatters: [maskFormatter],
                             controller: passwordControllerAuth,
+                            obscureText: !_passwordVisible,
                             onChanged: (value) {
                               if (passwordControllerAuth.text.isNotEmpty) {
                                 setIsButtonEnabled(true);
@@ -122,29 +143,29 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                   InkWell(
                     onTap: () {
-                     // if (phoneControllerAuth.text.length == 17){
-                     //   showModalBottomSheet(
-                     //       shape: const RoundedRectangleBorder(
-                     //         borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),
-                     //             topRight: Radius.circular(10.0)),
-                     //       ),
-                     //       context: context,
-                     //       builder: (context) {
-                     //         return ForgotPasswordModalBottom(
-                     //           textEditingController: phoneControllerRegister.text,
-                     //           register: register,
-                     //         );
-                     //       });
-                     // }else{
-                     //   Get.snackbar('Заполните', 'Напишите полный номер' , backgroundColor: Colors.blueAccent);
-                     // }
+                      // if (phoneControllerAuth.text.length == 17){
+                      //   showModalBottomSheet(
+                      //       shape: const RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),
+                      //             topRight: Radius.circular(10.0)),
+                      //       ),
+                      //       context: context,
+                      //       builder: (context) {
+                      //         return ForgotPasswordModalBottom(
+                      //           textEditingController: phoneControllerRegister.text,
+                      //           register: register,
+                      //         );
+                      //       });
+                      // }else{
+                      //   Get.snackbar('Заполните', 'Напишите полный номер' , backgroundColor: Colors.blueAccent);
+                      // }
                       Get.to(const ForgotPasswordPage());
                     },
-                    child: const  Center(
+                    child: const Center(
                       child: Text(
                         'Забыли пароль?',
                         style: TextStyle(
-                            color: AppColors.kPrimaryColor ,
+                            color: AppColors.kPrimaryColor,
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),
@@ -163,22 +184,34 @@ class _AuthPageState extends State<AuthPage> {
                         : const Color(0xFFD6D8DB),
                     text: 'Войти',
                     press: () {
-                      final login = BlocProvider.of<LoginCubit>(context);
-                      /*phoneController.text.length >= 17 ||
-                            passwordController.text.isEmpty
-                        ? Fluttertoast.showToast(
-                            msg: "Логин или пароль пустые", // message
-                            toastLength: Toast.LENGTH_SHORT, // length
-                            gravity: ToastGravity.CENTER, // location
-                            timeInSecForIosWeb: 1 // duration
-                            )
-                        :*/
-                      login.login(phoneControllerAuth.text,
-                          passwordControllerAuth.text);
+                      if (phoneControllerAuth.text.length >= 17 ||
+                          passwordControllerAuth.text.isEmpty) {
+                        final login = BlocProvider.of<LoginCubit>(context);
+                        login.login(phoneControllerAuth.text,
+                            passwordControllerAuth.text);
+                      } else {
+                        Get.snackbar('Ошибка запроса', 'Заполните все данныые',
+                            backgroundColor: Colors.blueAccent);
+                      }
                     },
                     color: Colors.white,
                     width: 343),
               ),
+              GestureDetector(
+                  onTap: () {
+                    final login = BlocProvider.of<LoginCubit>(context);
+                    login.lateAuth();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: const Text(
+                      'Авторизоваться позже',
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: AppColors.kPrimaryColor,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ))
             ],
           ),
         );

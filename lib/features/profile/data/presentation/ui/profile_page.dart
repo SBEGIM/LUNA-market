@@ -36,6 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
       _image = image;
     });
   }
+
   final _box = GetStorage();
 
   @override
@@ -44,22 +45,20 @@ class _ProfilePageState extends State<ProfilePage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
-          leading: Padding(
+        leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
           child: CustomBackButton(onTap: () {
             Navigator.pop(context);
           }),
         ),
         backgroundColor: Colors.white,
-        title: Container(
-          padding:const EdgeInsets.only(left: 100),
-          child: const Text(
-            'Профиль',
-            style: TextStyle(
-                color: AppColors.kGray900,
-                fontSize: 16,
-                fontWeight: FontWeight.w500),
-          ),
+        centerTitle: true,
+        title: const Text(
+          'Профиль',
+          style: TextStyle(
+              color: AppColors.kGray900,
+              fontSize: 16,
+              fontWeight: FontWeight.w500),
         ),
         elevation: 0,
         actions: [
@@ -77,49 +76,49 @@ class _ProfilePageState extends State<ProfilePage> {
               child: ListTile(
                 horizontalTitleGap: 12,
                 leading: GestureDetector(
-                onTap: () {
-                Get.defaultDialog(
-                title: "Изменить фото",
-                middleText: '',
-                textConfirm: 'Камера',
-                textCancel: 'Галлерея',
-                titlePadding: EdgeInsets.only(top: 40),
-                onConfirm: () {
-                change = true;
-                setState(() {
-                change;
-                });
-                _getImage();
-                },
-                onCancel: () {
-                change = false;
-                setState(() {
-                change;
-                });
-                _getImage();
-                });},
+                  onTap: () {
+                    Get.defaultDialog(
+                        title: "Изменить фото",
+                        middleText: '',
+                        textConfirm: 'Камера',
+                        textCancel: 'Галлерея',
+                        titlePadding: EdgeInsets.only(top: 40),
+                        onConfirm: () {
+                          change = true;
+                          setState(() {
+                            change;
+                          });
+                          _getImage();
+                        },
+                        onCancel: () {
+                          change = false;
+                          setState(() {
+                            change;
+                          });
+                          _getImage();
+                        });
+                  },
                   child: _image != null
                       ? CircleAvatar(
-                      backgroundImage: FileImage(
-                        File(_image!.path),
-                      ),
-                      radius: 34,
-                      child: Container())
-                      :    Container(
-                    height: 54,
-                    width: 54,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(34),
-                        image:  DecorationImage(
-                          image: _box.read('avatar') !=
-                              null ? NetworkImage("http://80.87.202.73:8001/storage/${_box.read('avatar')}")
-                              :  AssetImage('assets/icons/profile2.png' ) as ImageProvider,
-                          fit: BoxFit.cover,
-                        )),
-                  ),
-
-
-
+                          backgroundImage: FileImage(
+                            File(_image!.path),
+                          ),
+                          radius: 34,
+                          child: Container())
+                      : Container(
+                          height: 54,
+                          width: 54,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(34),
+                              image: DecorationImage(
+                                image: _box.read('avatar') != null
+                                    ? NetworkImage(
+                                        "http://80.87.202.73:8001/storage/${_box.read('avatar')}")
+                                    : AssetImage('assets/icons/profile2.png')
+                                        as ImageProvider,
+                                fit: BoxFit.cover,
+                              )),
+                        ),
 
                   // CircleAvatar(
                   //   backgroundImage: const AssetImage('assets/images/kana.png'),
@@ -133,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   //           ),
                   //           ) ,
                 ),
-                title:  Row(
+                title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
@@ -144,9 +143,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           fontWeight: FontWeight.w700),
                     ),
                     GestureDetector(
-                        onTap: () => Get.to(EditProfilePage(name: _box.read('name'),)),
-                      child: SvgPicture.asset('assets/icons/back_menu.svg', height:16.5 ,width: 9.5, color: Colors.grey)
-                    )
+                        onTap: () => Get.to(EditProfilePage(
+                              name: _box.read('name'),
+                            )),
+                        child: SvgPicture.asset('assets/icons/back_menu.svg',
+                            height: 16.5, width: 9.5, color: Colors.grey))
                   ],
                 ),
                 subtitle: const Padding(
@@ -218,7 +219,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400),
                           ),
-                          SizedBox(height: 2,),
+                          SizedBox(
+                            height: 2,
+                          ),
                           Text(
                             'Русский',
                             style: TextStyle(
@@ -228,7 +231,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ],
                       ),
-                      SvgPicture.asset('assets/icons/back_menu.svg', height:16.5 ,width: 9.5, color: Colors.grey)
+                      SvgPicture.asset('assets/icons/back_menu.svg',
+                          height: 16.5, width: 9.5, color: Colors.grey)
                     ],
                   ),
                 ),
@@ -325,7 +329,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ],
                         ),
-                        SvgPicture.asset('assets/icons/back_menu.svg', height:16.5 ,width: 9.5, color: Colors.grey)
+                        SvgPicture.asset('assets/icons/back_menu.svg',
+                            height: 16.5, width: 9.5, color: Colors.grey)
                       ],
                     ),
                   ),
@@ -365,12 +370,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: AppColors.kGray400,
                 ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     GetStorage().remove('token');
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ViewAuthRegisterPage()),
+                          builder: (context) =>
+                              const ViewAuthRegisterPage(BackButton: true)),
                     );
                   },
                   child: Container(
@@ -379,19 +385,18 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                       const Text(
+                        const Text(
                           'Выйти',
                           style: TextStyle(
-                              color: Color.fromRGBO(236,72,85,1),
+                              color: Color.fromRGBO(236, 72, 85, 1),
                               fontSize: 16,
                               fontWeight: FontWeight.w400),
                         ),
-                         SvgPicture.asset('assets/icons/logout.svg')
+                        SvgPicture.asset('assets/icons/logout.svg')
                       ],
                     ),
                   ),
                 )
-
               ],
             ),
           )

@@ -16,11 +16,8 @@ class FavoritePage extends StatefulWidget {
 }
 
 class _FavoritePageState extends State<FavoritePage> {
-
-
   @override
   void initState() {
-
     BlocProvider.of<FavoriteCubit>(context).myFavorites();
     super.initState();
   }
@@ -28,74 +25,79 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.kBackgroundColor,
-      appBar: AppBar(
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          // leading: IconButton(
-          //   onPressed: () {
-          //     Navigator.pop(context);
-          //   },
-          //   icon: const Icon(
-          //     Icons.arrow_back_ios,
-          //     color: AppColors.kPrimaryColor,
-          //   ),
-          // ),
-          centerTitle: true,
-          title: const Text(
-            'Избранное',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 16
-            ),
-          )),
-      body: BlocConsumer<FavoriteCubit,FavoriteState>(
-          listener: (context, state) {},
+        backgroundColor: AppColors.kBackgroundColor,
+        appBar: AppBar(
+            iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+            backgroundColor: Colors.white,
+            elevation: 0,
+            // leading: IconButton(
+            //   onPressed: () {
+            //     Navigator.pop(context);
+            //   },
+            //   icon: const Icon(
+            //     Icons.arrow_back_ios,
+            //     color: AppColors.kPrimaryColor,
+            //   ),
+            // ),
+            centerTitle: true,
+            title: const Text(
+              'Избранное',
+              style: TextStyle(color: Colors.black, fontSize: 16),
+            )),
+        body: BlocConsumer<FavoriteCubit, FavoriteState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              if (state is ErrorState) {
+                return Center(
+                  child: Text(
+                    state.message,
+                    style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                  ),
+                );
+              }
+              if (state is LoadingState) {
+                return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.indigoAccent));
+              }
 
-          builder: (context, state) {
-            if (state is ErrorState) {
-              return Center(
-                child: Text(
-                  state.message,
-                  style: TextStyle(fontSize: 20.0, color: Colors.grey),
-                ),
-              );
-            }
-            if (state is LoadingState) {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent)
-              );
-            }
-
-            if (state is LoadedState) {
-              return Column(
-                children: [
-                  // Padding(
-                  //   padding: EdgeInsets.only(left: 8.0, right: 8, top: 16, bottom: 12),
-                  //   child: Text(
-                  //     'Найдено ${state.productModel.length} товаров',
-                  //     style: AppTextStyles.kGray400Text,
-                  //     textAlign: TextAlign.start,
-                  //   ),
-                  // ),
-                  SizedBox(
-                    height: 530,
-                    child: ListView.builder(
-                      // physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: state.productModel.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return FavoriteProductsCardWidget(product: state.productModel[index]);
-                        }),
-                  )
-                ],
-              );
-            }else {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent)
-              );
-            }
-          }));
+              if (state is LoadedState) {
+                return Column(
+                  children: [
+                    // Padding(
+                    //   padding: EdgeInsets.only(left: 8.0, right: 8, top: 16, bottom: 12),
+                    //   child: Text(
+                    //     'Найдено ${state.productModel.length} товаров',
+                    //     style: AppTextStyles.kGray400Text,
+                    //     textAlign: TextAlign.start,
+                    //   ),
+                    // ),
+                    SizedBox(
+                      height: 530,
+                      child: ListView.builder(
+                          // physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: state.productModel.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailCardProductPage(
+                                        product: state.productModel[index])),
+                              ),
+                              child: FavoriteProductsCardWidget(
+                                  product: state.productModel[index]),
+                            );
+                          }),
+                    )
+                  ],
+                );
+              } else {
+                return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.indigoAccent));
+              }
+            }));
   }
 }

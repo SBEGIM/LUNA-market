@@ -26,10 +26,10 @@ class GridOptionsCategory extends StatelessWidget {
       onTap: layout.onTap,
       child: Container(
         height: 80,
+        width: 120,
         decoration: BoxDecoration(
-            color:const Color.fromRGBO(249,249,249,1),
+            color: const Color.fromRGBO(249, 249, 249, 1),
             borderRadius: BorderRadius.circular(10)),
-
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -38,10 +38,11 @@ class GridOptionsCategory extends StatelessWidget {
                 height: 20.05,
                 width: 20.05,
                 decoration: BoxDecoration(
-                    image:  DecorationImage(
-                      image: NetworkImage("http://80.87.202.73:8001/storage/${layout.icon!}"),
-                      fit: BoxFit.cover,
-                    )),
+                    image: DecorationImage(
+                  image: NetworkImage(
+                      "http://80.87.202.73:8001/storage/${layout.icon!}"),
+                  fit: BoxFit.cover,
+                )),
               ),
               const SizedBox(
                 height: 13,

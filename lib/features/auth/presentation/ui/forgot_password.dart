@@ -24,14 +24,10 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  TextEditingController phoneControllerAuth = MaskedTextController(mask: '+7(000)-000-00-00');
+  TextEditingController phoneControllerAuth =
+      MaskedTextController(mask: '+7(000)-000-00-00');
   @override
   Widget build(BuildContext context) {
-
-
-
-
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -48,108 +44,104 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             Navigator.pop(context);
           }),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 22.0),
-            child: CustomDropButton(
-              onTap: () {},
-            ),
-          ),
-        ],
       ),
-      body:  BlocConsumer<SmsCubit, SmsState>(listener: (context, state) {
-    if (state is LoadedState) {
-      showModalBottomSheet(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0)),
-          ),
-          context: context,
-          builder: (context) {
-            return LoginForgotPasswordModalBottom(
-              textEditingController: phoneControllerAuth.text,
-            );
-          });
-    }
-    }, builder: (context, state) {
-      if (state is InitState) {
-       return Container(
-          color: AppColors.kBackgroundColor,
-          child: Padding(
-            padding:
-            const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 45),
-            child: Column(
-              children: [
-                Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: SvgPicture.asset(
-                          'assets/icons/phone.svg',
-                          height: 24,
-                          width: 24,
-                        ),
-                        title: TextField(
-                          keyboardType: TextInputType.phone,
-                          // inputFormatters: [maskFormatter],
-                          controller: phoneControllerAuth,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: '+7(777) 000-00-00',
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                              // borderRadius: BorderRadius.circular(3),
+      body: BlocConsumer<SmsCubit, SmsState>(listener: (context, state) {
+        if (state is LoadedState) {
+          showModalBottomSheet(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0)),
+              ),
+              context: context,
+              builder: (context) {
+                return LoginForgotPasswordModalBottom(
+                  textEditingController: phoneControllerAuth.text,
+                );
+              });
+        }
+      }, builder: (context, state) {
+        if (state is InitState) {
+          return Container(
+            color: AppColors.kBackgroundColor,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 16.0, right: 16, top: 16, bottom: 45),
+              child: Column(
+                children: [
+                  Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        ListTile(
+                            leading: SvgPicture.asset(
+                              'assets/icons/phone.svg',
+                              height: 24,
+                              width: 24,
                             ),
-                          ),
-                        ),
-                        trailing: SvgPicture.asset(
-                          'assets/icons/delete_circle.svg',
-                          height: 15,
-                          width: 15,
-                        ),
-                      ),
-                    ],
+                            title: TextField(
+                              keyboardType: TextInputType.phone,
+                              // inputFormatters: [maskFormatter],
+                              controller: phoneControllerAuth,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: '+7(000) 000-00-00',
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  // borderRadius: BorderRadius.circular(3),
+                                ),
+                              ),
+                            ),
+                            trailing: GestureDetector(
+                              onTap: () {
+                                phoneControllerAuth.clear();
+                              },
+                              child: SvgPicture.asset(
+                                'assets/icons/delete_circle.svg',
+                                height: 15,
+                                width: 15,
+                              ),
+                            )),
+                      ],
+                    ),
                   ),
-                ),
-                const Spacer(),
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom * 0.001,
+                  const Spacer(),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom * 0.001,
+                    ),
+                    child: DefaultButton(
+                        backgroundColor: AppColors.kPrimaryColor,
+                        text: 'Отправить код',
+                        press: () {
+                          if (phoneControllerAuth.text.length >= 17) {
+                            final sms = BlocProvider.of<SmsCubit>(context);
+                            sms.resetSend(phoneControllerAuth.text);
+                          } else {
+                            Get.snackbar('Номер телефона пустой', 'Заполните',
+                                backgroundColor: Colors.blueAccent);
+                          }
+                        },
+                        color: Colors.white,
+                        width: 343),
                   ),
-                  child: DefaultButton(
-                      backgroundColor: AppColors.kPrimaryColor,
-                      text: 'Отправить код',
-                      press: () {
-
-                        if (phoneControllerAuth.text.length >= 17) {
-                          final sms = BlocProvider.of<SmsCubit>(context);
-                          sms.resetSend(phoneControllerAuth.text);
-                        } else {
-                          Get.snackbar('Номер телефона пустой', 'Заполните',
-                              backgroundColor: Colors.blueAccent);
-                        }
-                      },
-                      color: Colors.white,
-                      width: 343),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      }
-      if (state is ErrorState) {
-        return Center(
-          child: Text(
-            state.message,
-            style: TextStyle(color: Colors.redAccent),
-          ),
-        );
-      } else {
-        return const Center(
-            child: CircularProgressIndicator(color: Colors.indigoAccent));
-      }
-    }),
+          );
+        }
+        if (state is ErrorState) {
+          return Center(
+            child: Text(
+              state.message,
+              style: TextStyle(color: Colors.redAccent),
+            ),
+          );
+        } else {
+          return const Center(
+              child: CircularProgressIndicator(color: Colors.indigoAccent));
+        }
+      }),
     );
   }
 }

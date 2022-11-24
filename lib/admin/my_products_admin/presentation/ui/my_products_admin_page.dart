@@ -20,13 +20,17 @@ class MyProductsAdminPage extends StatefulWidget {
 class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
   @override
   void initState() {
-    BlocProvider.of<ProductAdminCubit>(context).products();
+    BlocProvider.of<ProductAdminCubit>(context).products('');
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    bool _visible = false;
+
+    TextEditingController nameController = TextEditingController();
+
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
       body: Column(
@@ -105,7 +109,33 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                         ];
                       },
                     ),
-                    SvgPicture.asset('assets/icons/search.svg'),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      height: 30,
+                      width: 200,
+                      child: TextField(
+                        controller: nameController,
+                        onChanged: (value) {
+                          BlocProvider.of<ProductAdminCubit>(context)
+                              .products(value);
+                        },
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Поиск продуктов',
+                          hintStyle: TextStyle(
+                              color: Color.fromRGBO(194, 197, 200, 1),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            // borderRadius: BorderRadius.circular(3),
+                          ),
+                        ),
+                      ),
+                    ),
                     const SizedBox(width: 10)
                   ],
                 )

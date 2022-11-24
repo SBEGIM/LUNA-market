@@ -1,30 +1,36 @@
 class PopularShops {
   PopularShops({
+    int? id,
     String? name,
-      dynamic logo, 
-      String? image,
+    dynamic logo,
+    String? image,
     int? bonus,
-      bool? credit,}){
+    bool? credit,
+  }) {
+    _id = id;
     _name = name;
     _logo = logo;
     _image = image;
     _bonus = bonus;
     _credit = credit;
-}
+  }
 
   PopularShops.fromJson(dynamic json) {
+    _id = json['id'];
     _name = json['name'];
     _logo = json['logo'];
     _image = json['image'];
     _bonus = json['bonus'];
     _credit = json['credit'];
   }
+  int? _id;
   String? _name;
   dynamic _logo;
   String? _image;
   int? _bonus;
   bool? _credit;
 
+  int? get id => _id;
   String? get name => _name;
   dynamic get logo => _logo;
   String? get image => _image;
@@ -33,6 +39,7 @@ class PopularShops {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    map['id'] = _id;
     map['name'] = _name;
     map['logo'] = _logo;
     map['image'] = _image;
@@ -40,5 +47,4 @@ class PopularShops {
     map['credit'] = _credit;
     return map;
   }
-
 }

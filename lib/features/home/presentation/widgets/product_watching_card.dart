@@ -1,0 +1,315 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/drawer/data/models/product_model.dart';
+import 'package:haji_market/features/home/data/bloc/popular_shops_state.dart';
+
+import '../../../drawer/data/bloc/favorite_cubit.dart';
+
+class ProductWatchingCard extends StatefulWidget {
+  final ProductModel product;
+  const ProductWatchingCard({
+    required this.product,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<ProductWatchingCard> createState() => _ProductWatchingCardState();
+}
+
+class _ProductWatchingCardState extends State<ProductWatchingCard> {
+  credit(int price) {
+    final creditPrice = (price / 3);
+    return creditPrice.toInt();
+  }
+
+  double? procentPrice;
+
+  bool inFavorite = false;
+
+  @override
+  void initState() {
+    inFavorite = widget.product.inFavorite as bool;
+    procentPrice =
+        ((widget.product.price!.toInt() - widget.product.compound!.toInt()) /
+                widget.product.price!.toInt()) *
+            100;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(right: 16.0),
+      decoration: BoxDecoration(
+          color: const Color.fromRGBO(250, 250, 250, 1),
+          borderRadius: BorderRadius.circular(10)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              Container(
+                padding: EdgeInsets.all(4),
+                height: 160,
+                width: 160,
+                child: Image.network(
+                  widget.product.path!.isNotEmpty
+                      ? "http://80.87.202.73:8001/storage/${widget.product.path!.first}"
+                      : '',
+                  height: 160,
+                  width: 160,
+                  alignment: Alignment.center,
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 8, right: 4, bottom: 8, top: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 160,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                color: AppColors.kPrimaryColor,
+                                borderRadius: BorderRadius.circular(6)),
+                            child: const Padding(
+                              padding: EdgeInsets.only(
+                                  left: 8.0, right: 8, top: 4, bottom: 4),
+                              child: Text(
+                                '0·0·12',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
+
+                          GestureDetector(
+                            onTap: () async {
+                              final favorite =
+                                  BlocProvider.of<FavoriteCubit>(context);
+                              await favorite
+                                  .favorite(widget.product.id.toString());
+                              setState(() {
+                                inFavorite = !inFavorite;
+                              });
+                            },
+                            child: SvgPicture.asset(
+                              'assets/icons/heart_fill.svg',
+                              color: inFavorite == true
+                                  ? const Color.fromRGBO(255, 50, 72, 1)
+                                  : Colors.grey,
+                            ),
+                          )
+                          // IconButton(
+                          //     padding: EdgeInsets.zero,
+                          //     onPressed: () async {
+                          //       final favorite =
+                          //           BlocProvider.of<FavoriteCubit>(context);
+                          //       await favorite
+                          //           .favorite(widget.product.id.toString());
+                          //       setState(() {
+                          //         inFavorite = !inFavorite;
+                          //       });
+                          //     },
+                          //     icon: )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(4)),
+                      child: const Padding(
+                        padding: EdgeInsets.only(
+                            left: 4.0, right: 4, top: 4, bottom: 4),
+                        child: Text(
+                          '10% Б',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 66),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(6)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 4.0, right: 4, top: 4, bottom: 4),
+                        child: Text(
+                          '-${procentPrice!.roundToDouble()}%',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${widget.product.name}',
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontSize: 14,
+                      color: AppColors.kGray900,
+                      fontWeight: FontWeight.w400),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                const Text(
+                  'Подкатегория',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.kGray300,
+                      fontWeight: FontWeight.w400),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    RatingBar(
+                      ignoreGestures: true,
+                      initialRating: widget.product.rating!.toDouble(),
+                      unratedColor: const Color(0x30F11712),
+                      itemSize: 12,
+                      // itemPadding:
+                      // const EdgeInsets.symmetric(horizontal: 4.0),
+                      ratingWidget: RatingWidget(
+                        full: const Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                        ),
+                        half: const Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                        ),
+                        empty: const Icon(
+                          Icons.star,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      onRatingUpdate: (double value) {},
+                    ),
+                    Text(
+                      '(${widget.product.count} отзывов)',
+                      style: const TextStyle(
+                          color: AppColors.kGray300,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                (widget.product.compound != 0 ||
+                        widget.product.compound != null)
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 75,
+                            child: Text(
+                              '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ₸ ',
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Color.fromRGBO(255, 50, 72, 1),
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                          Text(
+                            '${widget.product.price} ₸',
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                decoration: TextDecoration.lineThrough,
+                                fontSize: 10,
+                                color: Color(0xFF19191A),
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      )
+                    : Text(
+                        '${widget.product.price} ₸',
+                        textAlign: TextAlign.start,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF19191A),
+                            fontWeight: FontWeight.w700),
+                      ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      decoration: const BoxDecoration(
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.all(Radius.circular(4))),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 4, right: 4, top: 4, bottom: 4),
+                        child: Text(
+                          '${(widget.product.price!.toInt() / 3).toInt()}',
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              fontSize: 10,
+                              color: Color(0xFF19191A),
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    const Text(
+                      'х3',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.kGray300,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

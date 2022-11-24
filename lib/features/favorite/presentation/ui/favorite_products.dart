@@ -10,43 +10,44 @@ import 'package:haji_market/features/drawer/data/models/product_model.dart';
 class FavoriteProductsCardWidget extends StatefulWidget {
   final ProductModel product;
 
-  const FavoriteProductsCardWidget({
-    required this.product,
-    Key? key
-  }) : super(key: key );
+  const FavoriteProductsCardWidget({required this.product, Key? key})
+      : super(key: key);
 
   @override
-  State<FavoriteProductsCardWidget> createState() => _FavoriteProductsCardWidgetState();
+  State<FavoriteProductsCardWidget> createState() =>
+      _FavoriteProductsCardWidgetState();
 }
 
-class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget> {
+class _FavoriteProductsCardWidgetState
+    extends State<FavoriteProductsCardWidget> {
   int count = 0;
   bool isvisible = false;
   bool inFavorite = false;
   int compoundPrice = 0;
   double procentPrice = 0;
 
-
   @override
   void initState() {
     count += widget.product.basketCount ?? 0;
-    if(count > 0){
+    if (count > 0) {
       isvisible = true;
     }
     inFavorite = widget.product.inFavorite ?? false;
-    compoundPrice =  (widget.product.price!.toInt() -  widget.product.compound!.toInt());
-    procentPrice =  ((widget.product.price!.toInt() -  widget.product.compound!.toInt()) / widget.product.price!.toInt()) * 100 ;
+    compoundPrice =
+        (widget.product.price!.toInt() - widget.product.compound!.toInt());
+    procentPrice =
+        ((widget.product.price!.toInt() - widget.product.compound!.toInt()) /
+                widget.product.price!.toInt()) *
+            100;
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return
-      Visibility(
+    return Visibility(
       visible: inFavorite,
-      child:  Padding(
-        padding: const EdgeInsets.all(5),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
         child: Container(
           padding: const EdgeInsets.only(left: 4, top: 4, bottom: 9, right: 1),
           decoration: BoxDecoration(
@@ -64,37 +65,37 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-
-                height:120,
+                height: 120,
                 width: 130,
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Stack(
                   children: [
                     Image.network(
-                        widget.product.path!.isNotEmpty ? "http://80.87.202.73:8001/storage/${widget.product.path!.first}" : '',
-                      ),
+                      widget.product.path!.isNotEmpty
+                          ? "http://80.87.202.73:8001/storage/${widget.product.path!.first}"
+                          : '',
+                    ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 4, right: 4, top: 2),
+                      padding: const EdgeInsets.only(left: 4, right: 4, top: 2),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                          margin: const EdgeInsets.only(top: 2),
+                            margin: const EdgeInsets.only(top: 2),
                             width: 40,
                             height: 13,
                             decoration: BoxDecoration(
                                 color: AppColors.kPrimaryColor,
                                 borderRadius: BorderRadius.circular(4)),
                             child: const Text(
-                                '0·0·12',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                              ),
+                              '0·0·12',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400),
                             ),
+                          ),
                           const SizedBox(
                             height: 4,
                           ),
@@ -104,12 +105,12 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                                 color: Colors.black,
                                 borderRadius: BorderRadius.circular(4)),
                             child: const Padding(
-                              padding:  EdgeInsets.only(
+                              padding: EdgeInsets.only(
                                   left: 4.0, right: 4, top: 2, bottom: 4),
-                              child:  Text(
+                              child: Text(
                                 '10% Б',
                                 textAlign: TextAlign.center,
-                                style:  TextStyle(
+                                style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400),
@@ -121,14 +122,15 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                           ),
                           Container(
                             width: 45,
+                            height: 22,
                             decoration: BoxDecoration(
-                                color:const Color.fromRGBO(255,50,72, 1),
+                                color: const Color.fromRGBO(255, 50, 72, 1),
                                 borderRadius: BorderRadius.circular(4)),
-                            child:  Padding(
-                              padding:const EdgeInsets.only(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
                                   left: 4.0, right: 4, top: 4, bottom: 4),
                               child: Text(
-                                '-${procentPrice.roundToDouble()}%',
+                                '-${procentPrice.toInt()}%',
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     color: Colors.white,
@@ -149,9 +151,10 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: 225,
-                    child:Row(
+                  Container(
+                    width: 215,
+                    padding: EdgeInsets.only(right: 10),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
@@ -162,15 +165,20 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                               fontWeight: FontWeight.w600),
                         ),
                         IconButton(
-                            onPressed: () async{
-                              final favorite =  BlocProvider.of<FavoriteCubit>(context);
-                              await favorite.favorite(widget.product.id.toString());
+                            onPressed: () async {
+                              final favorite =
+                                  BlocProvider.of<FavoriteCubit>(context);
+                              await favorite
+                                  .favorite(widget.product.id.toString());
                               setState(() {
                                 inFavorite = !inFavorite;
                               });
                             },
-                            icon: SvgPicture.asset('assets/icons/heart_fill.svg',
-                              color:  inFavorite == true ?const Color.fromRGBO(255,50,72, 1): Colors.grey,
+                            icon: SvgPicture.asset(
+                              'assets/icons/heart_fill.svg',
+                              color: inFavorite == true
+                                  ? const Color.fromRGBO(255, 50, 72, 1)
+                                  : Colors.grey,
                             ))
                       ],
                     ),
@@ -189,7 +197,8 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                     children: [
                       RatingBar(
                         ignoreGestures: true,
-                        initialRating: double.parse(widget.product.rating.toString()),
+                        initialRating:
+                            double.parse(widget.product.rating.toString()),
                         minRating: 0,
                         maxRating: 5,
                         itemCount: 5,
@@ -226,26 +235,35 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                   const SizedBox(
                     height: 8,
                   ),
-                  Row(
-                    children:  [
-                      Text(
-                        '${compoundPrice}  ₸ ',
-                        style: const TextStyle(
-                            color:  Color.fromRGBO(255,50,72, 1),
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16),
-                      ),
-                      Text(
-                        '${widget.product.price}₸ ',
-                        style: const TextStyle(
-                          color: AppColors.kGray900,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          decoration: TextDecoration.lineThrough,
+                  (compoundPrice != 0 || compoundPrice != null)
+                      ? Row(
+                          children: [
+                            Text(
+                              '${compoundPrice}  ₸ ',
+                              style: const TextStyle(
+                                  color: Color.fromRGBO(255, 50, 72, 1),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16),
+                            ),
+                            Text(
+                              '${widget.product.price}₸ ',
+                              style: const TextStyle(
+                                color: AppColors.kGray900,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Text(
+                          '${widget.product.price}₸ ',
+                          style: const TextStyle(
+                            color: AppColors.kGray900,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(
                     height: 7,
                   ),
@@ -258,139 +276,147 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                           color: const Color(0xFFFFC107),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child:  Text(
+                        child: Text(
                           '${widget.product.price ?? 0 / 12}',
-                          style:const TextStyle(
+                          style: const TextStyle(
                               color: Colors.black, fontWeight: FontWeight.w400),
                         ),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.02,
                       ),
-                      const Text('х3', style: TextStyle(
-                        color: Colors.grey
-                      ),),
+                      const Text(
+                        'х3',
+                        style: TextStyle(color: Colors.grey),
+                      ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.12,
                       ),
                       count < 1
                           ? SizedBox()
                           : Visibility(
-                        visible: isvisible,
-                        child: Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                BlocProvider.of<BasketCubit>(context).basketMinus(widget.product.id.toString() , '1');
-                                setState(() {
-                                  if(count == 0){
-                                    isvisible = false;
-                                  }else
-                                  {
-                                    isvisible = true;
-                                  }
-                                  count -= 1;
-                                });
-                              },
-                              child:  Container(
-                                height: 32,
-                                width: 32,
-                                padding: const EdgeInsets.all(4),
-                                child: SvgPicture.asset(
-                                    count == 1 ?'assets/icons/basket_1.svg' : 'assets/icons/minus.svg',
-                                 width: 3.12,
-                                  height: 15,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.1),
-                                      spreadRadius: 1,
-                                      blurRadius: 1,
-                                      offset: const Offset(0,
-                                          1), // changes position of shadow
+                              visible: isvisible,
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      BlocProvider.of<BasketCubit>(context)
+                                          .basketMinus(
+                                              widget.product.id.toString(),
+                                              '1');
+                                      setState(() {
+                                        if (count == 0) {
+                                          isvisible = false;
+                                        } else {
+                                          isvisible = true;
+                                        }
+                                        count -= 1;
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 32,
+                                      width: 32,
+                                      padding: const EdgeInsets.all(4),
+                                      child: SvgPicture.asset(
+                                        count == 1
+                                            ? 'assets/icons/basket_1.svg'
+                                            : 'assets/icons/minus.svg',
+                                        width: 3.12,
+                                        height: 15,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.1),
+                                            spreadRadius: 1,
+                                            blurRadius: 1,
+                                            offset: const Offset(0,
+                                                1), // changes position of shadow
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 14,
-                            ),
-                            Text('$count'),
-                            const SizedBox(
-                              width: 14,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                BlocProvider.of<BasketCubit>(context).basketAdd(widget.product.id.toString() , '1');
+                                  ),
+                                  const SizedBox(
+                                    width: 14,
+                                  ),
+                                  Text('$count'),
+                                  const SizedBox(
+                                    width: 14,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      BlocProvider.of<BasketCubit>(context)
+                                          .basketAdd(
+                                              widget.product.id.toString(),
+                                              '1');
 
-                                setState(() {
-                                  count += 1;
-                                });
-                              },
-                              child: Container(
-                                height: 32,
-                                width: 32,
-                                padding: const EdgeInsets.all(4),
-                                child: SvgPicture.asset(
-                                    'assets/icons/add_1.svg'),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.1),
-                                      spreadRadius: 1,
-                                      blurRadius: 1,
-                                      offset: const Offset(0,
-                                          1), // changes position of shadow
+                                      setState(() {
+                                        count += 1;
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 32,
+                                      width: 32,
+                                      padding: const EdgeInsets.all(4),
+                                      child: SvgPicture.asset(
+                                          'assets/icons/add_1.svg'),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.1),
+                                            spreadRadius: 1,
+                                            blurRadius: 1,
+                                            offset: const Offset(0,
+                                                1), // changes position of shadow
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
                       count >= 1
                           ? const SizedBox()
                           : InkWell(
-                        onTap: () {
-                          BlocProvider.of<BasketCubit>(context).basketAdd(widget.product.id.toString() , '1');
-                          setState(() {
-                            count += 1;
-                            if(count == 0){
-                              isvisible = false;
-                            }else
-                            {
-                              isvisible = true;
-                            }
-                          });
-                        },
-                        child: Container(
-                          width: 99,
-                          height: 32,
-                          margin:const EdgeInsets.only(left: 14),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF1DC4CF),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: const EdgeInsets.only(
-                              left: 12, right: 12, bottom: 6, top: 6),
-                          child: const Center(
-                            child: Text(
-                              'В корзину',
-                              // textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600),
+                              onTap: () {
+                                BlocProvider.of<BasketCubit>(context).basketAdd(
+                                    widget.product.id.toString(), '1');
+                                setState(() {
+                                  count += 1;
+                                  if (count == 0) {
+                                    isvisible = false;
+                                  } else {
+                                    isvisible = true;
+                                  }
+                                });
+                              },
+                              child: Container(
+                                width: 99,
+                                height: 32,
+                                margin: const EdgeInsets.only(left: 1),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF1DC4CF),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: const EdgeInsets.only(
+                                    left: 12, right: 12, bottom: 6, top: 6),
+                                child: const Center(
+                                  child: Text(
+                                    'В корзину',
+                                    // textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
                     ],
                   )
                 ],

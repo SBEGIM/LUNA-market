@@ -11,6 +11,7 @@ import 'package:haji_market/features/home/presentation/ui/home_page.dart';
 
 import '../../../drawer/data/bloc/basket_cubit.dart';
 import '../../../drawer/data/bloc/basket_state.dart';
+import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
 import '../../../home/presentation/widgets/banner_watceh_recently_widget.dart';
 import '../../data/DTO/basketOrderDto.dart';
 import 'basket_order_page.dart';
@@ -23,22 +24,19 @@ class BasketPage extends StatefulWidget {
 }
 
 class _BasketPageState extends State<BasketPage> {
-
   int count = 0;
   int price = 0;
 
   List<BasketShowModel>? basket = [];
 
-Future<void> basketData()async{
-       basket = await BlocProvider.of<BasketCubit>(context).basketData() ;
-       basket!.forEach((element) {
-          count += element.basketCount!.toInt();
-          price += element.price!.toInt();
-        });
-      setState(() {
-      });
-}
-
+  Future<void> basketData() async {
+    basket = await BlocProvider.of<BasketCubit>(context).basketData();
+    basket!.forEach((element) {
+      count += element.basketCount!.toInt();
+      price += element.price!.toInt();
+    });
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -47,158 +45,160 @@ Future<void> basketData()async{
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              // Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.kPrimaryColor,
-            ),
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            // Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.kPrimaryColor,
           ),
-          actions: [
-            Padding(
-                padding: EdgeInsets.only(right: 22.0),
-                child: SvgPicture.asset('assets/icons/share.svg'))
-          ],
-          title:Container(
-            padding:const EdgeInsets.only(left: 100),
-            child: const Text(
-              'Корзина',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          )),
-      body: BlocConsumer<BasketCubit,BasketState>(
-        listener: (context, state) {},
-
-        builder: (context, state) {
-          if (state is ErrorState) {
-            return Center(
-              child: Text(
-                state.message,
-                style: TextStyle(fontSize: 20.0, color: Colors.grey),
-              ),
-            );
-          }
-          if (state is LoadingState) {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent)
-            );
-          }
-
-          if (state is LoadedState) {
-            return ListView(
-              shrinkWrap: true,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.basketShowModel.length,
-                    // separatorBuilder: (BuildContext context, int index) =>
-                    //     const Divider(),
-                    itemBuilder: (BuildContext context, int index) {
-
-                      return  BasketProductCardWidget(
-                          basketProducts: state.basketShowModel[index],
-                          count: index,
-
-                      );
-                    },
-                  ),
+        ),
+        actions: [
+          Padding(
+              padding: EdgeInsets.only(right: 22.0),
+              child: SvgPicture.asset('assets/icons/share.svg'))
+        ],
+        title: const Text(
+          'Корзина',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+      body: BlocConsumer<BasketCubit, BasketState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            if (state is ErrorState) {
+              return Center(
+                child: Text(
+                  state.message,
+                  style: TextStyle(fontSize: 20.0, color: Colors.grey),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  color: Colors.white,
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Вас могут заинтересовать',
-                        style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: const [
-                          // InterestingProductWidget(),
-                          InterestingProductWidget(),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 80,
-                      )
-                    ],
+              );
+            }
+            if (state is LoadingState) {
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+            }
+
+            if (state is LoadedState) {
+              return ListView(
+                shrinkWrap: true,
+                children: [
+                  Container(
+                    padding:
+                        const EdgeInsets.only(top: 16, left: 16, right: 16),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: state.basketShowModel.length,
+                      // separatorBuilder: (BuildContext context, int index) =>
+                      //     const Divider(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          // onTap: () => Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => DetailCardProductPage(
+                          //           product: state.productModel[index])),
+                          // ),
+                          child: BasketProductCardWidget(
+                            basketProducts: state.basketShowModel[index],
+                            count: index,
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                )
-              ],
-            );
-          }else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent)
-            );
-          }
-        }),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Вас могут заинтересовать',
+                          style: TextStyle(
+                              color: AppColors.kGray900,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: const [
+                            // InterestingProductWidget(),
+                            InterestingProductWidget(),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 80,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              );
+            } else {
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+            }
+          }),
       bottomSheet: Container(
         color: Colors.white,
         padding:
             const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
         child: InkWell(
-          onTap: () {
-            Get.to( BasketOrderPage());
-            // Navigator.pop(context);
-          },
-          child: Container(
-            height: 75,
-            child:   Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            onTap: () {
+              Get.to(BasketOrderPage());
+              // Navigator.pop(context);
+            },
+            child: Container(
+                height: 65,
+                child: Column(
                   children: [
-                  Text('В корзине: ${count} товара'),
-                  Text('Всего: ${price}'),
-                ],),
-                SizedBox(height: 10),
-                Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: AppColors.kPrimaryColor,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('В корзине: ${count} товара'),
+                        Text('Всего: ${price}'),
+                      ],
                     ),
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.all(16),
-                    child: const Text(
-                      'Продолжить',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16),
-                      textAlign: TextAlign.center,
-                    )),
-              ],
-            )
-          )
-        ),
+                    SizedBox(height: 12),
+                    Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: AppColors.kPrimaryColor,
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.all(16),
+                        child: const Text(
+                          'Продолжить',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16),
+                          textAlign: TextAlign.center,
+                        )),
+                  ],
+                ))),
       ),
     );
   }
@@ -219,7 +219,6 @@ class BasketProductCardWidget extends StatefulWidget {
 }
 
 class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
-
   int basketCount = 0;
   int basketPrice = 0;
   bool isVisible = true;
@@ -228,7 +227,6 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
 
   @override
   void initState() {
-
     basketCount = widget.basketProducts.basketCount!.toInt();
     basketPrice = widget.basketProducts.price!.toInt();
 
@@ -250,22 +248,21 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
     //   address: [],
     // ));
 
-   // basketOrder[widget.count] = basketOrderDTO(product: null, basket:  null);
+    // basketOrder[widget.count] = basketOrderDTO(product: null, basket:  null);
     super.initState();
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
-    return  Visibility(
+    return Visibility(
         visible: isVisible,
-        child:  Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.only(left: 4, right: 16, top: 8, bottom: 8),
+              height: 193,
+              padding:
+                  const EdgeInsets.only(left: 4, right: 16, top: 8, bottom: 8),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
@@ -295,13 +292,14 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                         Column(
                           children: [
                             Container(
-                              height: 100,
-                              width: 158,
+                              height: 104,
+                              width: 104,
                               decoration: BoxDecoration(
-                                  image:  DecorationImage(
-                                    image: NetworkImage("http://80.87.202.73:8001/storage/${widget.basketProducts.image!.first}"),
-                                    fit: BoxFit.cover,
-                                  )),
+                                  image: DecorationImage(
+                                image: NetworkImage(
+                                    "http://80.87.202.73:8001/storage/${widget.basketProducts.image!.first}"),
+                                fit: BoxFit.contain,
+                              )),
                             ),
                           ],
                         ),
@@ -313,26 +311,39 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children:  [
-                                  Text(
-                                    '${ (widget.basketProducts.product!.price!.toInt()  - widget.basketProducts.product!.compound!.toInt())} ₸ ',
-                                    style: const TextStyle(
-                                        color: Colors.red,
+                              (widget.basketProducts.product!.compound != 0 ||
+                                      widget.basketProducts.product!.compound !=
+                                          null)
+                                  ? Row(
+                                      children: [
+                                        Text(
+                                          '${(widget.basketProducts.product!.price!.toInt() - widget.basketProducts.product!.compound!.toInt())} ₸ ',
+                                          style: const TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 16),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          '${widget.basketProducts.product!.price} ₸ ',
+                                          style: const TextStyle(
+                                            color: AppColors.kGray900,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Text(
+                                      '${widget.basketProducts.product!.price} ₸ ',
+                                      style: const TextStyle(
+                                        color: AppColors.kGray900,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 16),
-                                  ),
-                                  Text(
-                                    '${widget.basketProducts.product!.price} ₸ ',
-                                    style: const TextStyle(
-                                      color: AppColors.kGray900,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                      decoration: TextDecoration.lineThrough,
+                                        fontSize: 16,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
                               const SizedBox(
                                 height: 8,
                               ),
@@ -349,8 +360,8 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                               ),
                               Text(
                                 '${widget.basketProducts.product!.name}',
-                                style:  const TextStyle(
-                                    fontSize: 12,
+                                style: const TextStyle(
+                                    fontSize: 14,
                                     color: AppColors.kGray900,
                                     fontWeight: FontWeight.w400),
                               ),
@@ -380,26 +391,31 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 35),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           GestureDetector(
-                            onTap:() {
-                              BlocProvider.of<BasketCubit>(context).basketMinus(widget.basketProducts.product!.id.toString(), '1');
+                            onTap: () {
+                              BlocProvider.of<BasketCubit>(context).basketMinus(
+                                  widget.basketProducts.product!.id.toString(),
+                                  '1');
 
-                              basketCount-- ;
-                              basketPrice = (basketPrice - (widget.basketProducts.product!.price!.toInt() - widget.basketProducts.product!.compound!.toInt()));
-                              if(basketCount == 0){
+                              basketCount--;
+                              basketPrice = (basketPrice -
+                                  (widget.basketProducts.product!.price!
+                                          .toInt() -
+                                      widget.basketProducts.product!.compound!
+                                          .toInt()));
+                              if (basketCount == 0) {
                                 isVisible = false;
                               }
 
-                              setState(() {
-                              });
+                              setState(() {});
                             },
-                            child:  Container(
+                            child: Container(
                               height: 32,
                               width: 32,
                               padding: const EdgeInsets.all(4),
@@ -416,16 +432,14 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                   ),
                                 ],
                               ),
-                              child: basketCount == 0 ?  SvgPicture.asset('assets/icons/basket_1.svg' ) :
-                              Text('―' , style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.kPrimaryColor,
-                              ),
-                                textAlign: TextAlign.center,
-
-                              )
-                              ),
+                              child: basketCount == 1
+                                  ? SvgPicture.asset(
+                                      'assets/icons/basket_1.svg')
+                                  : const Icon(
+                                      Icons.remove,
+                                      color: AppColors.kPrimaryColor,
+                                    ),
+                            ),
                           ),
                           const SizedBox(
                             width: 14,
@@ -435,11 +449,17 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                             width: 14,
                           ),
                           GestureDetector(
-                            onTap:(){
-                              BlocProvider.of<BasketCubit>(context).basketAdd(widget.basketProducts.product!.id.toString(), '1');
+                            onTap: () {
+                              BlocProvider.of<BasketCubit>(context).basketAdd(
+                                  widget.basketProducts.product!.id.toString(),
+                                  '1');
                               setState(() {
-                                basketCount++ ;
-                                basketPrice = (basketPrice + (widget.basketProducts.product!.price!.toInt() - widget.basketProducts.product!.compound!.toInt()));
+                                basketCount++;
+                                basketPrice = (basketPrice +
+                                    (widget.basketProducts.product!.price!
+                                            .toInt() -
+                                        widget.basketProducts.product!.compound!
+                                            .toInt()));
                               });
                             },
                             child: Container(
@@ -465,18 +485,18 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                           )
                         ],
                       ),
-
                       GestureDetector(
-                        onTap: (){
-                          BlocProvider.of<BasketCubit>(context).basketMinus(widget.basketProducts.product!.id.toString(), basketCount.toString());
+                        onTap: () {
+                          BlocProvider.of<BasketCubit>(context).basketMinus(
+                              widget.basketProducts.product!.id.toString(),
+                              basketCount.toString());
                           isVisible = false;
 
-                          setState(() {
-                          });
+                          setState(() {});
                         },
                         child: const Text(
                           'Удалить',
-                          style:  TextStyle(
+                          style: TextStyle(
                               color: AppColors.kPrimaryColor,
                               fontSize: 14,
                               fontWeight: FontWeight.w400),
@@ -502,12 +522,12 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                   },
                 ),
               ],
+            ),
+            SizedBox(
+              height: 10,
             )
           ],
-        )
-    );
-
-
+        ));
   }
 
   bool isChecked = false;

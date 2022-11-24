@@ -12,15 +12,39 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
   ProductAdminCubit({required this.productAdminRepository})
       : super(InitState());
 
-  Future<void> product(String price, String count, String compound,
-      String cat_id, String brand_id, String description, String name) async {
+  Future<void> update(
+    String price,
+    String count,
+    String compound,
+    String cat_id,
+    String brand_id,
+    String description,
+    String name,
+    String height,
+    String width,
+    String massa,
+    String product_id,
+    String articul,
+  ) async {
     try {
       emit(LoadingState());
-      final data = await productAdminRepository.product(
-          price, count, compound, cat_id, brand_id, description, name);
+      final data = await productAdminRepository.update(
+          price,
+          count,
+          compound,
+          cat_id,
+          brand_id,
+          description,
+          name,
+          height,
+          width,
+          massa,
+          product_id,
+          articul);
 
       if (data == 200) {
         emit(InitState());
+        emit(ChangeState());
       }
       if (data == 400) {
         emit(InitState());
@@ -38,11 +62,48 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
     }
   }
 
-  Future<void> products() async {
+  Future<void> store(
+      String price,
+      String count,
+      String compound,
+      String cat_id,
+      String brand_id,
+      String description,
+      String name,
+      String height,
+      String width,
+      String massa,
+      String articul) async {
+    try {
+      emit(LoadingState());
+      final data = await productAdminRepository.store(price, count, compound,
+          cat_id, brand_id, description, name, height, width, massa, articul);
+
+      if (data == 200) {
+        emit(InitState());
+        emit(ChangeState());
+      }
+      if (data == 400) {
+        emit(InitState());
+        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
+            backgroundColor: Colors.redAccent);
+      }
+      if (data == 500) {
+        emit(InitState());
+        Get.snackbar('500', 'Ошибка сервера',
+            backgroundColor: Colors.redAccent);
+      }
+    } catch (e) {
+      log(e.toString());
+      // emit(ErrorState(message: 'Ошибка'));
+    }
+  }
+
+  Future<void> products(String? name) async {
     try {
       emit(LoadingState());
       final List<AdminProductsModel> data =
-          await productAdminRepository.products();
+          await productAdminRepository.products(name);
 
       emit(LoadedState(data));
     } catch (e) {

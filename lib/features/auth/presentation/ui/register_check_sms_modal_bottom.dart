@@ -20,7 +20,9 @@ class RegisterSmsCheckModalBottom extends StatefulWidget {
   final String textEditingController;
   final RegisterDTO registerDTO;
   const RegisterSmsCheckModalBottom(
-      {Key? key ,required this.textEditingController, required this.registerDTO})
+      {Key? key,
+      required this.textEditingController,
+      required this.registerDTO})
       : super(key: key);
 
   @override
@@ -29,7 +31,6 @@ class RegisterSmsCheckModalBottom extends StatefulWidget {
 }
 
 class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
-
   late Timer _timer;
   int _start = 60;
 
@@ -37,7 +38,7 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
     const oneSec = const Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
-          (Timer timer) {
+      (Timer timer) {
         if (_start == 0) {
           setState(() {
             timer.cancel();
@@ -69,11 +70,9 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-   return  BlocConsumer<SmsCubit, SmsState>(listener: (context, state) {
+    return BlocConsumer<SmsCubit, SmsState>(listener: (context, state) {
       if (state is ErrorState) {}
       if (state is LoadedState) {
         // Get.to( () => ChangePasswordPage( textEditingController: widget.textEditingController));
@@ -83,8 +82,7 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
         register.register(widget.registerDTO);
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) =>  Base(index: 0)),
+          MaterialPageRoute(builder: (context) => Base(index: 0)),
         );
       }
     }, builder: (context, state) {
@@ -100,7 +98,6 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
               children: [
                 Text(
                   'Введите код подтверждения,\nкоторый был отправлен по номеру\n${widget.textEditingController}',
@@ -108,15 +105,17 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
                 ),
                 GestureDetector(
                   onTap: () => Get.back(),
-                  child:  SvgPicture.asset(
-                    'assets/icons/delete_circle.svg',
-                    height: 24,
-                    width: 24,
+                  child: SvgPicture.asset(
+                    'assets/icons/close.svg',
+                    height: 12,
+                    width: 12,
                   ),
                 )
               ],
             ),
-            const SizedBox(height:40 ,),
+            const SizedBox(
+              height: 40,
+            ),
             SizedBox(
               width: MediaQuery.of(context).size.width,
               child: PinCodeTextField(
@@ -140,7 +139,8 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
                 onCompleted: (value) async {
                   if (value.length == 4) {
                     final sms = BlocProvider.of<SmsCubit>(context);
-                    sms.smsCheck(widget.textEditingController, value.toString());
+                    sms.smsCheck(
+                        widget.textEditingController, value.toString());
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(
@@ -155,22 +155,23 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
                 },
               ),
             ),
-             Text(
+            Text(
               'Вы можете заново отправить код через $_start',
               style: AppTextStyles.timerInReRegTextStyle,
             ),
             const Spacer(),
             DefaultButton(
-                backgroundColor: (_start == 60) ? AppColors.kPrimaryColor : const Color(0xFFD6D8DB),
+                backgroundColor: (_start == 60)
+                    ? AppColors.kPrimaryColor
+                    : const Color(0xFFD6D8DB),
                 text: 'Переотправить код',
-                press: (){
-                  if(_start == 60){
+                press: () {
+                  if (_start == 60) {
                     final sms = BlocProvider.of<SmsCubit>(context);
                     sms.smsResend(widget.textEditingController);
                     startTimer();
                     _start = 59;
                   }
-
                 },
                 color: AppColors.floatingActionButton,
                 width: MediaQuery.of(context).size.width),

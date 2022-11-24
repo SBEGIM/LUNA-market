@@ -31,14 +31,14 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
     return Scaffold(
         backgroundColor: AppColors.kBackgroundColor,
         appBar: AppBar(
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 22.0),
-              child: CustomDropButton(
-                onTap: () {},
-              ),
-            ),
-          ],
+          // actions: [
+          //   Padding(
+          //     padding: const EdgeInsets.only(right: 22.0),
+          //     child: CustomDropButton(
+          //       onTap: () {},
+          //     ),
+          //   ),
+          // ],
           backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
@@ -58,7 +58,9 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
           if (state is LoadedState) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => RegisterShopPage()),
+              MaterialPageRoute(
+                  builder: (context) =>
+                      RegisterShopPage(shopName: nameController.text)),
             );
           }
         }, builder: (context, state) {

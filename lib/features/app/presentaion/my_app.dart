@@ -7,6 +7,7 @@ import 'package:haji_market/admin/auth/data/bloc/login_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/repository/LoginAdminRepo.dart';
 import 'package:haji_market/admin/my_orders_admin/data/bloc/basket_admin_cubit.dart';
 import 'package:haji_market/admin/my_orders_admin/data/repository/basket_admin_repo.dart';
+import 'package:haji_market/admin/my_products_admin/data/repository/ColorAdminRepo.dart';
 import 'package:haji_market/features/app/bloc/navigation_cubit/navigation_cubit.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/auth/data/bloc/login_cubit.dart';
@@ -21,7 +22,12 @@ import 'package:haji_market/features/drawer/data/repository/shops_drawer_repo.da
 import 'package:haji_market/features/home/data/bloc/banners_cubit.dart';
 import 'package:haji_market/features/home/data/repository/CatsRepo.dart';
 import 'package:haji_market/features/home/data/repository/Popular_shops_repo.dart';
+import 'package:haji_market/features/tape/presentation/data/bloc/subs_cubit.dart';
+import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart';
+import 'package:haji_market/features/tape/presentation/data/repository/sub_repo.dart';
+import 'package:haji_market/features/tape/presentation/data/repository/tape_repo.dart';
 
+import '../../../admin/my_products_admin/data/bloc/color_cubit.dart';
 import '../../../admin/my_products_admin/data/bloc/product_admin_cubit.dart';
 import '../../../admin/my_products_admin/data/repository/ProductAdminRepo.dart';
 import '../../auth/data/bloc/register_cubit.dart';
@@ -96,6 +102,12 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
             create: (_) =>
                 BasketAdminCubit(basketRepository: BasketAdminRepository())),
+        BlocProvider(
+            create: (_) => ColorCubit(colorRepository: ColorAdminRepository())),
+        BlocProvider(
+            create: (_) => TapeCubit(tapeRepository: TapeRepository())),
+        BlocProvider(
+            create: (_) => SubsCubit(subsRepository: SubsRepository())),
       ],
       child: GetMaterialApp(
         title: 'Haji Market',
@@ -104,7 +116,7 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
         ),
         home:
-            token != true ? const ViewAuthRegisterPage() : const Base(index: 1),
+            token != true ? const ViewAuthRegisterPage() : const Base(index: 0),
 // const BaseAdmin()
         // const SelectCountryPage()
       ),

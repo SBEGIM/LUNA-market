@@ -7,7 +7,8 @@ import 'package:haji_market/features/auth/presentation/ui/auth_page.dart';
 import 'package:haji_market/features/auth/presentation/ui/register_page.dart';
 
 class ViewAuthRegisterPage extends StatefulWidget {
-  const ViewAuthRegisterPage({Key? key}) : super(key: key);
+  final bool? BackButton;
+  const ViewAuthRegisterPage({this.BackButton, Key? key}) : super(key: key);
 
   @override
   State<ViewAuthRegisterPage> createState() => _ViewAuthRegisterPageState();
@@ -27,16 +28,18 @@ class _ViewAuthRegisterPageState extends State<ViewAuthRegisterPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title:  Text(
+        title: Text(
           segmentValue == 0 ? 'Вход' : 'Регистрация',
           style: AppTextStyles.appBarTextStyle,
         ),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 22.0),
-          child: CustomBackButton(onTap: () {
-            Navigator.pop(context);
-          }),
-        ),
+        leading: widget.BackButton == true
+            ? Padding(
+                padding: const EdgeInsets.only(left: 22.0),
+                child: CustomBackButton(onTap: () {
+                  Navigator.pop(context);
+                }),
+              )
+            : Container(),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Column(
@@ -108,15 +111,15 @@ class _ViewAuthRegisterPageState extends State<ViewAuthRegisterPage> {
             ],
           ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 22.0),
-            child: SvgPicture.asset('assets/icons/cancel.svg'),
-            // child: Ico(
-            //   onTap: () {},
-            // ),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 22.0),
+        //     child: SvgPicture.asset('assets/icons/cancel.svg'),
+        //     // child: Ico(
+        //     //   onTap: () {},
+        //     // ),
+        //   ),
+        // ],
       ),
       body: Container(
         color: AppColors.kBackgroundColor,
