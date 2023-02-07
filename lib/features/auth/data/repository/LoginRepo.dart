@@ -12,6 +12,8 @@ class LoginRepository {
   Future<dynamic> login(String phone, String password) =>
       _loginToApi.login(phone, password);
   Future<dynamic> lateAuth() => _loginToApi.lateAuth();
+  Future<dynamic> edit(String name, String phone, String Avatar) =>
+      _loginToApi.edit(name, phone, Avatar);
 }
 
 class LoginToApi {
@@ -36,6 +38,8 @@ class LoginToApi {
       _box.write('token', data['access_token'].toString());
       _box.write('user_id', data['id'].toString());
       _box.write('name', data['name'].toString());
+      _box.write('avatar', data['avatar'].toString());
+
       // _box.write('card', data['user']['card'].toString());
     }
     return response.statusCode;
@@ -56,5 +60,54 @@ class LoginToApi {
       // _box.write('card', data['user']['card'].toString());
     }
     return response.statusCode;
+  }
+
+  Future<dynamic> edit(String name, String phone, String avatar) async {
+    final String? token = _box.read('token');
+    var replace = '';
+    if (phone != '') {
+      String s = phone;
+      String result = s.substring(2);
+      replace = result.replaceAll(RegExp('[^0-9]'), '');
+    } else {
+      replace = '';
+    }
+
+    final headers = {
+      'Authorization': 'Bearer $token',
+    };
+    final body = {
+      'name': name,
+      'phone': replace,
+    };
+
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseUrl/user/edit'),
+    );
+
+    if (avatar != '') {
+      request.files.add(
+        await http.MultipartFile.fromPath('avatar', avatar),
+      );
+    }
+    request.headers.addAll(headers);
+    request.fields.addAll(body);
+
+    final http.StreamedResponse response = await request.send();
+    final respStr = await response.stream.bytesToString();
+
+    final jsonResponse = jsonDecode(respStr);
+    // print(jsonResponse.toString());
+    if (response.statusCode == 200) {
+      _box.write('token', jsonResponse['access_token'].toString());
+      _box.write('user_id', jsonResponse['id'].toString());
+      _box.write('name', jsonResponse['name'].toString());
+      _box.write('avatar', jsonResponse['avatar'].toString());
+
+      return true;
+    } else {
+      return false;
+    }
   }
 }

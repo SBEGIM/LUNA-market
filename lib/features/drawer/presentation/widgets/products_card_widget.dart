@@ -43,7 +43,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
   Widget build(BuildContext context) {
     return Container(
       height: 151,
-      margin: const EdgeInsets.only(left: 16, top: 8, bottom: 8, right: 16),
+      margin: const EdgeInsets.only(left: 16, top: 7, bottom: 8, right: 16),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           boxShadow: const [
@@ -83,7 +83,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           padding: EdgeInsets.only(
                               left: 8.0, right: 8, top: 4, bottom: 4),
                           child: Text(
-                            '0.0.12',
+                            '0·0·12',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.white,
@@ -123,7 +123,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           padding: const EdgeInsets.only(
                               left: 4.0, right: 4, top: 4, bottom: 4),
                           child: Text(
-                            '-${procentPrice.roundToDouble()}%',
+                            '-${procentPrice.toInt()}%',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 color: Colors.white,
@@ -146,6 +146,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
             children: [
               SizedBox(
                 width: 205,
+                height: 40,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -197,7 +198,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     maxRating: 5,
                     itemCount: 5,
                     // unratedColor: const Color(0x30F11712),
-                    itemSize: 15,
+                    itemSize: 14,
                     unratedColor: Color(0xFFFFC107),
                     // itemPadding:
                     // const EdgeInsets.symmetric(horizontal: 4.0),
@@ -221,7 +222,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     "(${widget.product.count} отзыва)",
                     style: const TextStyle(
                         color: AppColors.kGray300,
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.w400),
                   ),
                 ],
@@ -230,14 +231,40 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 height: 8,
               ),
               (compoundPrice != null || compoundPrice != 0)
-                  ? Row(
+                  ?
+                  // Row(
+                  //     children: [
+                  //       Text(
+                  //         '${compoundPrice}  ₸ ',
+                  //         style: const TextStyle(
+                  //             color: Colors.red,
+                  //             fontWeight: FontWeight.w500,
+                  //             fontSize: 16),
+                  //       ),
+                  //       Text(
+                  //         '${widget.product.price}₸ ',
+                  //         style: const TextStyle(
+                  //           color: AppColors.kGray900,
+                  //           fontWeight: FontWeight.w500,
+                  //           fontSize: 14,
+                  //           decoration: TextDecoration.lineThrough,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   )
+
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          '${compoundPrice}  ₸ ',
-                          style: const TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
+                        SizedBox(
+                          width: 75,
+                          child: Text(
+                            '${compoundPrice} ₸ ',
+                            style: const TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16),
+                          ),
                         ),
                         Text(
                           '${widget.product.price}₸ ',
@@ -262,6 +289,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 height: 7,
               ),
               Container(
+                  height: 32,
                   width: 196,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -269,28 +297,39 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(4),
+                            margin: const EdgeInsets.only(top: 6),
+                            //width: ,
+                            height: 32,
                             decoration: BoxDecoration(
                               color: const Color(0xFFFFC107),
                               borderRadius: BorderRadius.circular(6),
                             ),
+                            alignment: Alignment.center,
                             child: Text(
-                              '${widget.product.price ?? 0 / 3}',
+                              ' ${widget.product.price ?? 0 / 3} ',
                               style: const TextStyle(
                                   color: Colors.black,
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w400),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 4,
                           ),
-                          const Text(
-                            'х3',
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: Color.fromRGBO(197, 200, 204, 1)),
+                          Container(
+                            margin: const EdgeInsets.only(top: 6),
+                            //width: ,
+                            height: 32,
+
+                            alignment: Alignment.center,
+                            child: const Text(
+                              'х3',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color.fromRGBO(197, 200, 204, 1)),
+                            ),
                           ),
                         ],
                       ),
@@ -321,17 +360,6 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                           height: 32,
                                           width: 32,
                                           padding: const EdgeInsets.all(4),
-                                          child: count == 1
-                                              ? SvgPicture.asset(
-                                                  'assets/icons/basket_1.svg',
-                                                  width: 3.12,
-                                                  height: 15,
-                                                )
-                                              : const Icon(
-                                                  Icons.remove,
-                                                  color:
-                                                      AppColors.kPrimaryColor,
-                                                ),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(6),
@@ -347,15 +375,30 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                               ),
                                             ],
                                           ),
+                                          child: count == 1
+                                              ? SvgPicture.asset(
+                                                  'assets/icons/basket_1.svg',
+                                                  width: 3.12,
+                                                  height: 15,
+                                                )
+                                              : const Icon(
+                                                  Icons.remove,
+                                                  color:
+                                                      AppColors.kPrimaryColor,
+                                                ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 14,
+                                      // const SizedBox(
+                                      //   width: 14,
+                                      // ),
+                                      Container(
+                                        width: 28,
+                                        alignment: Alignment.center,
+                                        child: Text('$count'),
                                       ),
-                                      Text('$count'),
-                                      const SizedBox(
-                                        width: 14,
-                                      ),
+                                      // const SizedBox(
+                                      //   width: 14,
+                                      // ),
                                       InkWell(
                                         onTap: () {
                                           BlocProvider.of<BasketCubit>(context)
@@ -397,7 +440,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                 ),
                           count >= 1
                               ? const SizedBox()
-                              : InkWell(
+                              : GestureDetector(
                                   onTap: () {
                                     BlocProvider.of<BasketCubit>(context)
                                         .basketAdd(
@@ -419,15 +462,13 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     alignment: Alignment.center,
-                                    child: const Center(
-                                      child: Text(
-                                        'В корзину',
-                                        // textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600),
-                                      ),
+                                    child: const Text(
+                                      'В корзину',
+                                      // textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ),
                                 ),

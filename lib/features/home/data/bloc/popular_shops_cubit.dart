@@ -27,12 +27,13 @@ class PopularShopsCubit extends Cubit<PopularShopsState> {
   }
 
   searchShops(String name) async {
-    if (name.isEmpty) return _shops;
+    if (name.isNotEmpty) return _shops;
     if (_shops.isEmpty) {
       await popShops();
       // final List<City> data = await listRepository.cities();
       // _cities = data;
     }
+
     List<PopularShops> temp = [];
     for (int i = 0; i < _shops.length; i++) {
       if (_shops[i].name != null &&

@@ -8,6 +8,14 @@ import 'package:haji_market/admin/auth/data/repository/LoginAdminRepo.dart';
 import 'package:haji_market/admin/my_orders_admin/data/bloc/basket_admin_cubit.dart';
 import 'package:haji_market/admin/my_orders_admin/data/repository/basket_admin_repo.dart';
 import 'package:haji_market/admin/my_products_admin/data/repository/ColorAdminRepo.dart';
+import 'package:haji_market/bloger/auth/data/bloc/edit_blogger_cubit.dart';
+import 'package:haji_market/bloger/auth/data/bloc/login_blogger_cubit.dart';
+import 'package:haji_market/bloger/auth/data/repository/LoginBloggerRepo.dart';
+import 'package:haji_market/bloger/auth/data/repository/editBloggerRepo.dart';
+import 'package:haji_market/bloger/my_products_admin/data/bloc/blogger_shop_products_cubit.dart';
+import 'package:haji_market/bloger/my_products_admin/data/models/blogger_shop_products_model.dart';
+import 'package:haji_market/bloger/profile_admin/presentation/data/bloc/profile_statics_blogger_cubit.dart';
+import 'package:haji_market/bloger/profile_admin/presentation/data/bloc/profile_statics_blogger_state.dart';
 import 'package:haji_market/features/app/bloc/navigation_cubit/navigation_cubit.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/auth/data/bloc/login_cubit.dart';
@@ -30,6 +38,14 @@ import 'package:haji_market/features/tape/presentation/data/repository/tape_repo
 import '../../../admin/my_products_admin/data/bloc/color_cubit.dart';
 import '../../../admin/my_products_admin/data/bloc/product_admin_cubit.dart';
 import '../../../admin/my_products_admin/data/repository/ProductAdminRepo.dart';
+import '../../../bloger/my_orders_admin/data/bloc/blogger_video_products_cubit.dart';
+import '../../../bloger/my_orders_admin/data/repository/blogger_video_products_repo.dart';
+import '../../../bloger/my_products_admin/data/bloc/blogger_product_statistics_cubit.dart';
+import '../../../bloger/my_products_admin/data/repository/blogger_products_statistics_repo.dart';
+import '../../../bloger/my_products_admin/data/repository/blogger_shop_products_repo.dart';
+import '../../../bloger/profile_admin/presentation/data/bloc/profile_month_statics_blogger_cubit.dart';
+import '../../../bloger/profile_admin/presentation/data/repository/profile_month_statics_blogger_repo.dart';
+import '../../../bloger/profile_admin/presentation/data/repository/profile_statics_blogger_repo.dart';
 import '../../auth/data/bloc/register_cubit.dart';
 import '../../auth/data/bloc/sms_cubit.dart';
 import '../../auth/data/repository/LoginRepo.dart';
@@ -66,6 +82,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (_) => AdminNavigationCubit()),
         BlocProvider(
             create: (_) => LoginCubit(loginRepository: LoginRepository())),
+        BlocProvider(
+            create: (_) => LoginBloggerCubit(
+                loginBloggerRepository: LoginBloggerRepository())),
         BlocProvider(
             create: (_) => SmsCubit(registerRepository: RegisterRepository())),
         BlocProvider(
@@ -108,6 +127,29 @@ class _MyAppState extends State<MyApp> {
             create: (_) => TapeCubit(tapeRepository: TapeRepository())),
         BlocProvider(
             create: (_) => SubsCubit(subsRepository: SubsRepository())),
+        BlocProvider(
+            create: (_) => ProfileStaticsBloggerCubit(
+                profileStaticsBloggerRepository:
+                    ProfileStaticsBloggerRepository())),
+        BlocProvider(
+            create: (_) => ProfileMonthStaticsBloggerCubit(
+                profileMonthStaticsBloggerRepository:
+                    ProfileMonthStaticsBloggerRepository())),
+        BlocProvider(
+            create: (_) => EditBloggerCubit(
+                editBloggerRepository: EditBloggerRepository())),
+        BlocProvider(
+            create: (_) => BloggerProductStatisticsCubit(
+                bloggerProductStatisticsRepository:
+                    BloggerProductsStatisticsRepository())),
+        BlocProvider(
+            create: (_) => BloggerShopProductsCubit(
+                bloggerShopProductsRepository:
+                    BloggerShopProductsRepository())),
+        BlocProvider(
+            create: (_) => BloggerVideoProductsCubit(
+                bloggerShopProductsRepository:
+                    BloggerVideoProductsRepository())),
       ],
       child: GetMaterialApp(
         title: 'Haji Market',

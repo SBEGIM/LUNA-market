@@ -21,6 +21,7 @@ class BasketOrderPage extends StatefulWidget {
 
 class _BasketOrderPageState extends State<BasketOrderPage> {
   bool isCheckedKaspi = false;
+  bool isCheckedBS = false;
   bool isCheckedCredit = false;
   bool isCredit = false;
   int? selectedIndex = 0;
@@ -122,67 +123,61 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
         if (state is LoadedState) {
           return Column(
             children: [
+              const SizedBox(height: 12),
               Container(
-                  margin: const EdgeInsets.only(top: 12),
-                  padding: const EdgeInsets.only(left: 16, top: 16),
-                  alignment: Alignment.topLeft,
+                  //margin: const EdgeInsets.only(top: 12),
+                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  alignment: Alignment.center,
                   color: Colors.white,
-                  height: 80,
+                  height: 73,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        alignment: Alignment.topLeft,
-                        child: Column(
-                          children: [
-                            const Text(
-                              'Товары',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Товары',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
                             ),
-                            const SizedBox(height: 6),
-                            Text(
-                              '${count} товара',
-                              style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400),
-                            )
-                          ],
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            '${count} товара',
+                            style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400),
+                          )
+                        ],
+                      ),
+                      Text(
+                        "${price} ₸",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: Text(
-                          "${price} ₸",
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      )
                     ],
                   )),
               const SizedBox(
                 height: 1,
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 16, top: 16),
-                  alignment: Alignment.topLeft,
+                  padding: const EdgeInsets.only(left: 16),
+                  alignment: Alignment.center,
                   color: Colors.white,
-                  height: 60,
+                  height: 55,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        child: Text(
-                          'Доставка',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
+                      const Text(
+                        'Доставка',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                       Container(
@@ -201,20 +196,18 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                 height: 1,
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 16, top: 16),
-                  alignment: Alignment.topLeft,
+                  padding: const EdgeInsets.only(left: 16),
+                  alignment: Alignment.center,
                   color: Colors.white,
                   height: 60,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        child: Text(
-                          'Сумма покупки',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
+                      const Text(
+                        'Сумма покупки',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                       Container(
@@ -233,18 +226,64 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                 height: 1,
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 16, top: 16),
-                  alignment: Alignment.topLeft,
+                  alignment: Alignment.center,
                   color: Colors.white,
-                  height: 60,
+                  height: 55,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Checkbox(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4)),
+                            checkColor: Colors.white,
+                            activeColor: AppColors.kPrimaryColor,
+                            value: isCheckedBS,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isCheckedBS = value!;
+                                value == true ? price += 5000 : price -= 5000;
+                              });
+                            },
+                          ),
+                          const Text(
+                            'Безопасная сделка',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(right: 16),
+                        child: const Text(
+                          '5000 ₸',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              const SizedBox(height: 1),
+              Container(
+                  padding: const EdgeInsets.only(left: 5),
+                  alignment: Alignment.center,
+                  color: Colors.white,
+                  height: 73,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
+                        alignment: Alignment.center,
                         child: Row(
                           children: [
                             Container(
-                              padding: EdgeInsets.only(bottom: 18),
+                              // padding: EdgeInsets.only(bottom: 18),
+                              alignment: Alignment.center,
                               child: Switch(
                                 onChanged: toggleSwitch,
                                 value: isSwitched,
@@ -256,9 +295,9 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                                     const Color.fromRGBO(237, 237, 237, 1),
                               ),
                             ),
-                            Container(
-                                child: Column(
-                              children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
                                 Text(
                                   '300 Бонусов',
                                   style: TextStyle(
@@ -275,11 +314,12 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                                   ),
                                 ),
                               ],
-                            )),
+                            )
                           ],
                         ),
                       ),
                       Container(
+                        alignment: Alignment.center,
                         padding: const EdgeInsets.only(right: 16),
                         child: const Text(
                           'Потратить',
@@ -296,20 +336,18 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                 height: 8,
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 16, top: 16),
-                  alignment: Alignment.topLeft,
+                  padding: const EdgeInsets.only(left: 16),
+                  alignment: Alignment.center,
                   color: Colors.white,
-                  height: 60,
+                  height: 55,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        child: Text(
-                          'К оплате',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      const Text(
+                        'К оплате',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       Container(
@@ -328,95 +366,89 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                 height: 1,
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 16, top: 16),
-                  alignment: Alignment.topLeft,
+                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  alignment: Alignment.center,
                   color: Colors.white,
-                  height: 60,
+                  height: 55,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        child: const Text(
-                          'Способы оплаты',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
+                    children: const [
+                      Text(
+                        'Способы оплаты',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: const Text(
-                          'Добавить новую карту',
-                          style: TextStyle(
-                            color: AppColors.kPrimaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
+                      Text(
+                        'Добавить новую карту',
+                        style: TextStyle(
+                          color: AppColors.kPrimaryColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ],
                   )),
+              // const SizedBox(
+              //   height: 1,
+              // ),
+              // Container(
+              //     padding: const EdgeInsets.only(left: 16, top: 16),
+              //     alignment: Alignment.topLeft,
+              //     color: Colors.white,
+              //     height: 60,
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         Container(
+              //             child: Row(
+              //           children: [
+              //             Checkbox(
+              //               shape: RoundedRectangleBorder(
+              //                   borderRadius: BorderRadius.circular(4)),
+              //               checkColor: Colors.white,
+              //               activeColor: AppColors.kPrimaryColor,
+              //               value: isCheckedKaspi,
+              //               onChanged: (bool? value) {
+              //                 setState(() {
+              //                   isCheckedKaspi = value!;
+              //                 });
+              //               },
+              //             ),
+              //             const Text(
+              //               'Kaspi Gold',
+              //               style: TextStyle(
+              //                 fontSize: 16,
+              //                 fontWeight: FontWeight.w400,
+              //               ),
+              //             ),
+              //           ],
+              //         )),
+              //         Container(
+              //           padding: const EdgeInsets.only(right: 16),
+              //           child: Text(
+              //             ' ${isSwitched == true ? (courier + price - bonus) : (courier + price)} ₸',
+              //             style: const TextStyle(
+              //               fontSize: 16,
+              //               fontWeight: FontWeight.w500,
+              //             ),
+              //           ),
+              //         ),
+              //       ],
+              //     )),
               const SizedBox(
                 height: 1,
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 16, top: 16),
-                  alignment: Alignment.topLeft,
-                  color: Colors.white,
-                  height: 60,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          child: Row(
-                        children: [
-                          Checkbox(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4)),
-                            checkColor: Colors.white,
-                            activeColor: AppColors.kPrimaryColor,
-                            value: isCheckedKaspi,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isCheckedKaspi = value!;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Kaspi Gold',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      )),
-                      Container(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: Text(
-                          ' ${isSwitched == true ? (courier + price - bonus) : (courier + price)} ₸',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
-              const SizedBox(
-                height: 1,
-              ),
-              Container(
-                  padding: const EdgeInsets.only(left: 16, top: 16),
-                  alignment: Alignment.topLeft,
+                  // padding: const EdgeInsets.only(left: 16),
+                  alignment: Alignment.center,
                   color: Colors.white,
                   height: 45,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                          child: Row(
+                      Row(
                         children: [
                           Checkbox(
                             shape: RoundedRectangleBorder(
@@ -430,7 +462,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                               });
                             },
                           ),
-                          Text(
+                          const Text(
                             'В рассрочку',
                             style: TextStyle(
                               fontSize: 16,
@@ -438,7 +470,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                             ),
                           ),
                         ],
-                      )),
+                      )
                     ],
                   )),
               Container(
@@ -447,7 +479,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                 color: Colors.white,
                 height: 45,
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.585, // 229,
+                  width: MediaQuery.of(context).size.width * 0.595, // 229,
                   height: 32,
                   child: ListView.builder(
                     itemCount: textInst.length,
@@ -482,22 +514,23 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                           });
                         },
                         child: Container(
-                          margin: EdgeInsets.only(right: 2),
-                          width: 54,
+                          // margin: EdgeInsets.only(right: 2),
+                          width: 58,
+                          alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: selectedIndex2 == index
                                 ? AppColors.kPrimaryColor
                                 : Colors.white,
                             border: Border.all(
                               color: AppColors.kPrimaryColor,
-                              width: 1,
+                              width: 0.4,
                             ),
-                            borderRadius: BorderRadius.circular(3),
+                            borderRadius: BorderRadius.circular(0),
                           ),
-                          padding: const EdgeInsets.only(
-                            top: 8,
-                            bottom: 8,
-                          ),
+                          // padding: const EdgeInsets.only(
+                          //   top: 8,
+                          //   bottom: 8,
+                          // ),
                           child: Text(
                             textInst[index],
                             textAlign: TextAlign.center,

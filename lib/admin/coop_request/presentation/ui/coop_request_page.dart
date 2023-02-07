@@ -5,6 +5,9 @@ import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
 
 import 'package:haji_market/core/common/constants.dart';
 
+import '../../../../features/home/data/model/Cats.dart';
+import '../../../my_products_admin/presentation/widgets/cats_admin_page.dart';
+
 class CoopRequestPage extends StatefulWidget {
   CoopRequestPage({Key? key}) : super(key: key);
 
@@ -14,6 +17,7 @@ class CoopRequestPage extends StatefulWidget {
 
 class _CoopRequestPageState extends State<CoopRequestPage> {
   bool isChecked = false;
+  Cats cats = Cats(id: 0, name: 'Выберите категорию');
 
   TextEditingController iinController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -23,25 +27,30 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
   TextEditingController emailController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.kBackgroundColor,
-      appBar: AppBar(
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: const Text(
-            'Заявка на сотрудничество',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          )),
+      // appBar: AppBar(
+      //     iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+      //     backgroundColor: Colors.white,
+      //     elevation: 0,
+      //     centerTitle: true,
+      //     title: const Text(
+      //       'Заявка на сотрудничество',
+      //       style: TextStyle(
+      //         color: Colors.black,
+      //         fontSize: 16,
+      //         fontWeight: FontWeight.w500,
+      //       ),
+      //     )),
       body: ListView(
-        physics: const NeverScrollableScrollPhysics(),
+        // physics:  NeverScrollableScrollPhysics(),
         children: [
           const SizedBox(
             height: 10,
@@ -79,10 +88,20 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                 ),
                 FieldsCoopRequest(
                   titleText: 'Основная категория товаров ',
-                  hintText: 'Выберите категорию',
+                  hintText: cats.name.toString(),
                   star: false,
-                  arrow: false,
-                  controller: catController,
+                  arrow: true,
+                  // controller: catController,
+                  onPressed: () async {
+                    final data = await Get.to(CatsAdminPage());
+                    if (data != null) {
+                      final Cats cat = data;
+
+                      setState(() {});
+                      catController.text = cat.id.toString();
+                      cats = cat;
+                    }
+                  },
                 ),
                 FieldsCoopRequest(
                   titleText: 'Контактное имя ',
@@ -108,12 +127,15 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.only(left: 4),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Checkbox(
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                alignment: Alignment.topLeft,
+                child: Checkbox(
+                  visualDensity:
+                      const VisualDensity(horizontal: 0, vertical: 0),
                   checkColor: Colors.white,
                   // fillColor: MaterialStateProperty.resolveWith(Colors.),
                   value: isChecked,
@@ -123,62 +145,88 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                     });
                   },
                 ),
-                const SizedBox(width: 5),
-                const Flexible(
-                    child: Text(
-                  'Я согласен на обработку персональных данных',
-                  style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400),
-                )),
-                const SizedBox(
-                  height: 50,
-                )
-              ],
-            ),
-          )
+              ),
+              Container(
+                alignment: Alignment.bottomLeft,
+                child: RichText(
+                  textAlign: TextAlign.left,
+                  text: const TextSpan(
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "Я согласен на обработку персональных \n",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w400),
+                      ),
+                      TextSpan(
+                        text: "данных и ",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      TextSpan(
+                        text: "с условиями \n",
+                        style: TextStyle(
+                            fontSize: 16, color: AppColors.kPrimaryColor),
+                      ),
+                      TextSpan(
+                        text: "Пользовательского соглашения",
+                        style: TextStyle(
+                            fontSize: 16, color: AppColors.kPrimaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
       bottomSheet: Container(
         color: Colors.white,
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
         child: InkWell(
-          onTap: () {
-            if (iinController.text.isNotEmpty &&
-                nameController.text.isNotEmpty &&
-                phoneController.text.isNotEmpty &&
-                emailController.text.isNotEmpty &&
-                userNameController.text.isNotEmpty &&
-                catController.text.isNotEmpty &&
-                isChecked == true) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AuthAdminPage()),
-              );
-            } else {
-              Get.snackbar('Ошибка', 'Заполните все данные *',
-                  backgroundColor: Colors.blueAccent);
-            }
+            onTap: () {
+              if (iinController.text.isNotEmpty &&
+                  nameController.text.isNotEmpty &&
+                  phoneController.text.isNotEmpty &&
+                  emailController.text.isNotEmpty &&
+                  userNameController.text.isNotEmpty &&
+                  catController.text.isNotEmpty &&
+                  isChecked == true) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AuthAdminPage()),
+                );
+              } else {
+                Get.snackbar('Ошибка', 'Заполните все данные *',
+                    backgroundColor: Colors.blueAccent);
+              }
 
-            // Navigator.pop(context);
-          },
-          child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.kPrimaryColor,
-              ),
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(16),
-              child: const Text(
-                'Продолжить',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
-                textAlign: TextAlign.center,
-              )),
-        ),
+              // Navigator.pop(context);
+            },
+            child: SizedBox(
+                height: 80,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 12),
+                    Container(
+                        height: 46,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: AppColors.kPrimaryColor,
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        // padding: const EdgeInsets.only(left: 16, right: 16),
+                        child: const Text(
+                          'Продолжить',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16),
+                          textAlign: TextAlign.center,
+                        )),
+                  ],
+                ))),
       ),
     );
   }
@@ -189,6 +237,8 @@ class FieldsCoopRequest extends StatelessWidget {
   final String hintText;
   final bool star;
   final bool arrow;
+  final void Function()? onPressed;
+
   TextEditingController? controller;
   FieldsCoopRequest({
     required this.hintText,
@@ -196,6 +246,7 @@ class FieldsCoopRequest extends StatelessWidget {
     required this.star,
     required this.arrow,
     this.controller,
+    this.onPressed,
     Key? key,
   }) : super(key: key);
 
@@ -230,29 +281,37 @@ class FieldsCoopRequest extends StatelessWidget {
             height: 4,
           ),
           Container(
+            height: 47,
+            padding: EdgeInsets.only(left: 12),
+            alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(10)),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 14.0),
-              child: TextField(
-                keyboardType: TextInputType.phone,
-                controller: controller,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: hintText,
-                  hintStyle: const TextStyle(
-                      color: Color.fromRGBO(194, 197, 200, 1),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
-                  enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    // borderRadius: BorderRadius.circular(3),
-                  ),
-                  suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset('assets/icons/back_menu.svg ',
-                          color: Colors.grey)),
+            child: TextField(
+              keyboardType: TextInputType.text,
+              controller: controller,
+              textAlign: TextAlign.left,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: hintText,
+                hintStyle: const TextStyle(
+                    color: Color.fromRGBO(194, 197, 200, 1),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+                enabledBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  // borderRadius: BorderRadius.circular(3),
                 ),
+                suffixIcon: IconButton(
+                  onPressed: onPressed,
+                  icon: arrow == true
+                      ? SvgPicture.asset('assets/icons/back_menu.svg',
+                          color: Colors.grey)
+                      : SvgPicture.asset(''),
+                ),
+                // suffixIcon: IconButton(
+                //     onPressed: () {},
+                //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',
+                //         color: Colors.grey)),
               ),
             ),
           ),

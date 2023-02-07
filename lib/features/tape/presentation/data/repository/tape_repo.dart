@@ -22,6 +22,17 @@ class TapeApi {
   Future<List<TapeModel>> tapes(inSub, inFav, search) async {
     final String? token = _box.read('token');
 
+    final queryParameters = {
+      'subscribes': '$inSub',
+      'favorite': '$inFav',
+      'search': '$search',
+    };
+    // final uri =
+    //     Uri.https('80.87.202.73:8001', '/api/shop/tape', queryParameters);
+
+    // final response =
+    //     await http.get(uri, headers: {"Authorization": "Bearer $token"});
+
     final response = await http.get(
         Uri.parse(
             '$baseUrl/shop/tape?subscribes=$inSub&favorite=$inFav&search=$search'),

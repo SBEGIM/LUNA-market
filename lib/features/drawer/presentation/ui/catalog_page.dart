@@ -5,6 +5,7 @@ import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/under_catalog_page.dart';
 import 'package:haji_market/features/home/data/model/Cats.dart';
+import 'package:http/retry.dart';
 
 import '../../../home/data/bloc/cats_cubit.dart';
 import '../../../home/data/bloc/cats_state.dart';
@@ -67,7 +68,7 @@ class _CatalogPageState extends State<CatalogPage> {
                 hintText: 'Поиск',
                 hintStyle: TextStyle(
                   color: AppColors.kGray300,
-                  fontSize: 18,
+                  fontSize: 16,
                 ),
                 border: InputBorder.none,
               ),
@@ -93,14 +94,20 @@ class _CatalogPageState extends State<CatalogPage> {
             }
 
             if (state is LoadedState) {
-              return ListView.builder(
-                itemCount: state.cats.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      if (index == 0) const SizedBox(height: 5),
-                      InkWell(
+              return Container(
+                margin: const EdgeInsets.only(top: 12, left: 15, right: 15),
+                child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.65,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10),
+                    itemCount: state.cats.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
                         onTap: () {
                           Navigator.push(
                             context,
@@ -111,17 +118,46 @@ class _CatalogPageState extends State<CatalogPage> {
                         },
                         child: CatalogListTile(
                           title: '${state.cats[index].name}',
+                          credit: state.cats[index].credit!,
+                          bonus: '${state.cats[index].bonus}',
                           url:
-                              "http://80.87.202.73:8001/storage/${state.cats[index].icon!}",
+                              "http://80.87.202.73:8001/storage/${state.cats[index].image!}",
                         ),
-                      ),
-                      const Divider(
-                        color: AppColors.kGray400,
-                      ),
-                    ],
-                  );
-                },
+                      );
+                    }),
               );
+
+              // ListView.builder(
+              //   itemCount: state.cats.length,
+              //   itemBuilder: (context, index) {
+              //     return
+              // return Column(
+              //   mainAxisSize: MainAxisSize.max,
+              //   children: [
+              // if (index == 0) const SizedBox(height: 5),
+              // InkWell(
+              //   onTap: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) =>
+              //               UnderCatalogPage(cats: state.cats[index])),
+              //     );
+              //   },
+              //   child:
+              //     CatalogListTile(
+              //   title: '${state.cats[index].name}',
+              //   url:
+              //       "http://80.87.202.73:8001/storage/${state.cats[index].icon!}",
+              // );
+
+              //   const Divider(
+              //     color: AppColors.kGray400,
+              //   ),
+              // ],
+              // );
+              //},
+              // );
             } else {
               return const Center(
                   child: CircularProgressIndicator(color: Colors.indigoAccent));
@@ -134,30 +170,131 @@ class _CatalogPageState extends State<CatalogPage> {
 class CatalogListTile extends StatelessWidget {
   final String title;
   final String url;
+  final String bonus;
+  final int credit;
+
   const CatalogListTile({
     required this.url,
     required this.title,
+    required this.bonus,
+    required this.credit,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Container(
-        height: 20.05,
-        width: 20.05,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-          image: NetworkImage("${url}"),
-          fit: BoxFit.cover,
-        )),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: const Color(0xffF9F9F),
       ),
-      title: Text(
-        title,
-        style: AppTextStyles.catalogTextStyle,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 12, left: 10),
+                alignment: Alignment.center,
+                height: 90,
+                width: 90,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                          url,
+                        ),
+                        fit: BoxFit.contain),
+                    color: const Color(0xFFF0F5F5)),
+                // child: Image.network(
+                //   "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
+                //   width: 70,
+                // ),
+              ),
+              // Container(
+              //   height: 90,
+              //   width: 90,
+              //   decoration: BoxDecoration(
+              //       borderRadius:
+              //           BorderRadius.circular(8),
+              //       image: DecorationImage(
+              //         image: NetworkImage(
+              //             "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}"),
+              //         fit: BoxFit.cover,
+              //       )),
+              // ),
+              if (credit == 1)
+                Container(
+                  width: 46,
+                  height: 22,
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(31, 196, 207, 1),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  margin: const EdgeInsets.only(top: 80, left: 4),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    "0·0·12",
+                    style: AppTextStyles.bannerTextStyle,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              Container(
+                width: 46,
+                height: 22,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                margin: const EdgeInsets.only(top: 105, left: 4),
+                alignment: Alignment.center,
+                child: Text(
+                  "10% Б",
+                  style: AppTextStyles.bannerTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 130, left: 4),
+                alignment: Alignment.center,
+                child: Text(title, style: AppTextStyles.categoryTextStyle),
+              ),
+            ],
+          ),
+
+          // Center(
+          //   child: Image.asset(
+          //
+          //   ),
+          // ),
+          // const SizedBox(
+          //   height: 8,
+          // ),
+          // Text(state.popularShops[index].name!,
+          //     style: AppTextStyles.categoryTextStyle),
+          // Flexible(
+          //     child:
+        ],
       ),
-      trailing:
-          SvgPicture.asset('assets/icons/back_menu.svg', height: 12, width: 16),
     );
+
+    // ListTile(
+    //   horizontalTitleGap: 0,
+    //   leading: Container(
+    //     height: 20.05,
+    //     width: 20.05,
+    //     decoration: BoxDecoration(
+    //         image: DecorationImage(
+    //       image: NetworkImage("${url}"),
+    //       fit: BoxFit.cover,
+    //     )),
+    //   ),
+    //   title: Text(
+    //     title,
+    //     style: AppTextStyles.catalogTextStyle,
+    //   ),
+    //   trailing:
+    //       SvgPicture.asset('assets/icons/back_menu.svg', height: 12, width: 16),
+    // );
   }
 }

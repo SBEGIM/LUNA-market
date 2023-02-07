@@ -19,6 +19,9 @@ class AuthAdminPage extends StatefulWidget {
 class _AuthAdminPageState extends State<AuthAdminPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool _passwordVisible = false;
+  bool __visibleIconView = false;
+  bool isButtonEnabled = false;
 
   @override
   void initState() {
@@ -77,10 +80,16 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
                     child: Column(
                       children: [
                         ListTile(
-                          leading: SvgPicture.asset(
-                            'assets/icons/login.svg',
-                            height: 17.8,
-                            width: 17.8,
+                          horizontalTitleGap: 0,
+                          leading: Column(
+                            children: [
+                              const SizedBox(height: 18),
+                              SvgPicture.asset(
+                                'assets/icons/login.svg',
+                                height: 22,
+                                width: 22,
+                              ),
+                            ],
                           ),
                           title: TextField(
                             controller: nameController,
@@ -93,13 +102,9 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
                               ),
                             ),
                           ),
-                          // trailing: SvgPicture.asset(
-                          //   'assets/icons/delete_circle.svg',
-                          //   height: 24,
-                          //   width: 24,
-                          // ),
                         ),
                         ListTile(
+                          horizontalTitleGap: 0,
                           leading: SvgPicture.asset(
                             'assets/icons/password.svg',
                             height: 24,
@@ -108,6 +113,8 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
                           title: TextField(
                             controller: passwordController,
                             keyboardType: TextInputType.text,
+                            obscureText: !_passwordVisible,
+
                             // inputFormatters: [maskFormatter],
                             // controller: phoneControllerAuth,
                             decoration: const InputDecoration(
@@ -118,6 +125,34 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
                                 // borderRadius: BorderRadius.circular(3),
                               ),
                             ),
+                            onChanged: (value) {
+                              passwordController.text.length == 0
+                                  ? __visibleIconView = false
+                                  : __visibleIconView = true;
+                              if (passwordController.text.isNotEmpty) {
+                                isButtonEnabled = true;
+                                setState(() {});
+                              } else {
+                                isButtonEnabled = false;
+                                setState(() {});
+                              }
+                            },
+                          ),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                            child: __visibleIconView == true
+                                ? Icon(
+                                    _passwordVisible
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color:
+                                        const Color.fromRGBO(177, 179, 181, 1),
+                                  )
+                                : const SizedBox(width: 5),
                           ),
                         ),
                       ],

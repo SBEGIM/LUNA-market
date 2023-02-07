@@ -99,11 +99,11 @@ class _ProductsPageState extends State<ProductsPage> {
               hintText: 'Поиск',
               hintStyle: TextStyle(
                 color: AppColors.kGray300,
-                fontSize: 18,
+                fontSize: 16,
               ),
               border: InputBorder.none,
             ),
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
             ),
           ),
@@ -118,25 +118,27 @@ class _ProductsPageState extends State<ProductsPage> {
         // shrinkWrap: false,
         // physics: NeverScrollableScrollPhysics(),
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            color: AppColors.kBackgroundColor,
-            padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
-            child: Text(
-              '${widget.cats.name}',
-              style: const TextStyle(
-                  color: AppColors.kGray900,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
+          widget.cats.name != ''
+              ? Container(
+                  width: MediaQuery.of(context).size.width,
+                  color: AppColors.kBackgroundColor,
+                  padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                  child: Text(
+                    '${widget.cats.name}',
+                    style: const TextStyle(
+                        color: AppColors.kGray900,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600),
+                  ),
+                )
+              : Container(),
           const SizedBox(
             height: 4,
           ),
           (widget.cats.id != 0 && catsVisible == false)
               ? Container(
                   color: Colors.white,
-                  padding: EdgeInsets.only(left: 16),
+                  padding: const EdgeInsets.only(left: 16),
                   child: const CatsProductPage(),
                 )
               : Container(),
@@ -280,7 +282,7 @@ class _ProductsState extends State<Products> {
             return Column(
               children: [
                 Container(
-                  padding: EdgeInsets.only(left: 16, top: 12, bottom: 8),
+                  padding: EdgeInsets.only(left: 16, top: 11, bottom: 8),
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Найдено ${state.productModel.length} товаров',
@@ -377,9 +379,9 @@ class _chipWithDropDownState extends State<chipWithDropDown> {
                 isDismissible: true,
                 builder: (context) {
                   return DraggableScrollableSheet(
-                    initialChildSize: 0.35, //set this as you want
-                    maxChildSize: 0.35, //set this as you want
-                    minChildSize: 0.35, //set this as you want
+                    initialChildSize: 0.30, //set this as you want
+                    maxChildSize: 0.30, //set this as you want
+                    minChildSize: 0.30, //set this as you want
                     builder: (context, scrollController) {
                       return const PriceBottomSheet(
                         productId: 1,
@@ -469,7 +471,7 @@ class _chipWithDropDownState extends State<chipWithDropDown> {
         }
       },
       child: Chip(
-        labelPadding: const EdgeInsets.only(left: 8.0, right: 8.0),
+        //labelPadding: const EdgeInsets.only(left: 6.0, right: 0.0),
         label: Row(
           children: [
             if (widget.label == 'Высокий рейтинг' && rating == true)
@@ -511,7 +513,7 @@ class _chipWithDropDownState extends State<chipWithDropDown> {
               const Icon(
                 Icons.close,
                 color: AppColors.kGray400,
-                size: 10,
+                size: 16,
               )
             else
               const Icon(
@@ -525,7 +527,7 @@ class _chipWithDropDownState extends State<chipWithDropDown> {
         shape: const RoundedRectangleBorder(
             side: BorderSide(color: AppColors.kGray2), //the outline color
             borderRadius: BorderRadius.all(Radius.circular(10))),
-        padding: const EdgeInsets.all(6.0),
+        padding: const EdgeInsets.all(0),
       ),
     );
   }
@@ -567,9 +569,9 @@ class _CatsProductPageState extends State<CatsProductPage> {
                           setState(() {
                             subCatName = '';
                           });
-                          GetStorage().remove('subCatId');
+                          GetStorage().remove('CatId');
                         } else {
-                          GetStorage().write('subCatId', state.cats[index].id);
+                          GetStorage().write('CatId', state.cats[index].id);
 
                           setState(() {
                             subCatName = state.cats[index].name.toString();
@@ -579,20 +581,24 @@ class _CatsProductPageState extends State<CatsProductPage> {
                             .products();
                       },
                       child: Container(
+                        height: 28,
                         padding: const EdgeInsets.only(right: 10),
                         child: Chip(
-                          labelPadding: const EdgeInsets.all(4.0),
+                          //labelPadding: const EdgeInsets.all(0.0),
+
                           label: Text(
                             state.cats[index].name.toString(),
                             style: const TextStyle(
-                              color: Colors.white,
-                            ),
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400),
                           ),
                           backgroundColor:
                               state.cats[index].name.toString() == subCatName
                                   ? AppColors.kPrimaryColor
                                   : AppColors.steelGray,
                           elevation: 1.0,
+
                           shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(10),
@@ -600,7 +606,7 @@ class _CatsProductPageState extends State<CatsProductPage> {
                                   topLeft: Radius.circular(10),
                                   bottomLeft: Radius.circular(10))),
                           // shadowColor: Colors.grey[60],
-                          padding: const EdgeInsets.all(6.0),
+                          //padding: const EdgeInsets.all(4.0),
                         ),
                       ),
                     );
@@ -686,9 +692,9 @@ class _PriceBottomSheetState extends State<PriceBottomSheet> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 40,
-                    ),
+                    // const SizedBox(
+                    //   height: 20,
+                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -720,25 +726,32 @@ class _PriceBottomSheetState extends State<PriceBottomSheet> {
                         ),
                       ],
                     ),
-                    RangeSlider(
-                        divisions: 50,
-                        activeColor: AppColors.kPrimaryColor,
-                        inactiveColor: AppColors.kGray300,
-                        min: 1,
-                        max: 100000,
-                        values: values,
-                        onChanged: (value) {
-                          setState(() {
-                            values = value;
-                            GetStorage().write('priceFilter', value);
-                          });
-                        }),
+                    Container(
+                      padding: EdgeInsets.zero,
+                      child: RangeSlider(
+                          divisions: 60,
+                          activeColor: AppColors.kPrimaryColor,
+                          inactiveColor: AppColors.kGray300,
+                          min: 1,
+                          max: 100000,
+                          values: values,
+                          onChanged: (value) {
+                            setState(() {
+                              values = value;
+                              GetStorage().write('priceFilter', value);
+                            });
+                          }),
+                    ),
+
                     Container(
                       color: Colors.white,
                       padding: const EdgeInsets.only(
-                          left: 16, right: 16, top: 16, bottom: 26),
+                          left: 0, right: 0, top: 16, bottom: 26),
                       child: InkWell(
                         onTap: () {
+                          BlocProvider.of<productCubit.ProductCubit>(context)
+                              .products();
+
                           Navigator.pop(context);
                         },
                         child: Container(
@@ -782,13 +795,13 @@ class BrandBottomSheet extends StatefulWidget {
 }
 
 class _BrandBottomSheetState extends State<BrandBottomSheet> {
-  int _selectedIndexSort = -1;
+  List<int> _selectedListSort = [];
 
   @override
   void initState() {
-    if (GetStorage().read('selectedIndexSort') != null) {
-      _selectedIndexSort = GetStorage().read('selectedIndexSort');
-    }
+    // if (GetStorage().read('selectedIndexSort') != null) {
+    //   _selectedIndexSort = GetStorage().read('selectedIndexSort');
+    // }
     super.initState();
   }
 
@@ -826,54 +839,74 @@ class _BrandBottomSheetState extends State<BrandBottomSheet> {
                         shrinkWrap: true,
                         itemCount: state.cats.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                              onTap: () {
-                                if (_selectedIndexSort == index) {
-                                  GetStorage().remove('brandFilter');
-                                  GetStorage().remove('brandFilterId');
-                                  GetStorage().remove('selectedIndexSort');
+                          return Container(
+                            height: 40,
+                            child: InkWell(
+                                onTap: () {
+                                  // if (_selectedIndexSort == index) {
+                                  //   GetStorage().remove('brandFilter');
+                                  //   GetStorage().remove('brandFilterId');
+                                  //   GetStorage().remove('selectedIndexSort');
 
-                                  _selectedIndexSort = -1;
-                                } else {
-                                  GetStorage().write('brandFilter',
-                                      state.cats[index].name.toString());
-                                  GetStorage().write(
-                                      'brandFilterId', state.cats[index].id);
-                                  GetStorage()
-                                      .write('selectedIndexSort', index);
+                                  //   _selectedIndexSort = -1;
+                                  // } else {
+                                  //   GetStorage().write('brandFilter',
+                                  //       state.cats[index].name.toString());
+                                  //   GetStorage().write(
+                                  //       'brandFilterId', state.cats[index].id);
+                                  //   GetStorage()
+                                  //       .write('selectedIndexSort', index);
+
+                                  if (_selectedListSort
+                                      .contains(state.cats[index].id as int)) {
+                                    _selectedListSort
+                                        .remove(state.cats[index].id as int);
+                                  } else {
+                                    _selectedListSort
+                                        .add(state.cats[index].id as int);
+                                  }
+
+                                  GetStorage().write('brandFilterId',
+                                      _selectedListSort.toString());
+
                                   setState(() {
                                     // устанавливаем индекс выделенного элемента
-                                    _selectedIndexSort = index;
+                                    // _selectedIndexSort = index;
                                   });
-                                }
-                                Get.back();
-                                BlocProvider.of<productCubit.ProductCubit>(
-                                        context)
-                                    .products();
-                              },
-                              child: ListTile(
-                                selected: index == _selectedIndexSort,
-                                leading: Text(
-                                  state.cats[index].name.toString(),
-                                  style: AppTextStyles.appBarTextStyle,
-                                ),
-                                trailing: _selectedIndexSort == index
-                                    ? SvgPicture.asset(
-                                        'assets/icons/check_circle.svg',
-                                      )
-                                    : SvgPicture.asset(
-                                        'assets/icons/check_circle_no_selected.svg',
-                                      ),
-                              ));
+
+                                  //  Get.back();
+                                  // BlocProvider.of<productCubit.ProductCubit>(
+                                  //         context)
+                                  //     .products();
+                                },
+                                child: ListTile(
+                                  selected: _selectedListSort
+                                      .contains(state.cats[index].id),
+                                  leading: Text(
+                                    state.cats[index].name.toString(),
+                                    style: AppTextStyles.appBarTextStyle,
+                                  ),
+                                  trailing: _selectedListSort
+                                          .contains(state.cats[index].id)
+                                      ? SvgPicture.asset(
+                                          'assets/icons/check_circle.svg',
+                                        )
+                                      : SvgPicture.asset(
+                                          'assets/icons/check_circle_no_selected.svg',
+                                        ),
+                                )),
+                          );
                         },
                       ),
                     ),
                     Container(
                       color: Colors.white,
                       padding: const EdgeInsets.only(
-                          left: 16, right: 16, top: 16, bottom: 26),
+                          left: 0, right: 0, top: 16, bottom: 26),
                       child: InkWell(
                         onTap: () {
+                          BlocProvider.of<productCubit.ProductCubit>(context)
+                              .products();
                           Navigator.pop(context);
                         },
                         child: Container(
@@ -916,13 +949,15 @@ class ShopBottomSheet extends StatefulWidget {
 }
 
 class _ShopBottomSheetState extends State<ShopBottomSheet> {
-  int _selectedIndexSort = -1;
+  //int _selectedIndexSort = -1;
+
+  List<int> _selectedListSort = [];
 
   @override
   void initState() {
-    if (GetStorage().read('shopSelectedIndexSort') != null) {
-      _selectedIndexSort = GetStorage().read('shopSelectedIndexSort');
-    }
+    // if (GetStorage().read('shopSelectedIndexSort') != null) {
+    //   _selectedIndexSort = GetStorage().read('shopSelectedIndexSort');
+    // }
 
     super.initState();
   }
@@ -966,56 +1001,80 @@ class _ShopBottomSheetState extends State<ShopBottomSheet> {
                         shrinkWrap: true,
                         itemCount: state.shopsDrawer.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                              onTap: () {
-                                if (_selectedIndexSort == index) {
-                                  GetStorage().remove('shopFilter');
-                                  GetStorage().remove('shopFilterId');
-                                  GetStorage().remove('shopSelectedIndexSort');
+                          return Container(
+                            height: 40,
+                            child: InkWell(
+                                onTap: () {
+                                  // if (_selectedListSort == index) {
+                                  //   GetStorage().remove('shopFilter');
+                                  //   GetStorage().remove('shopFilterId');
+                                  //   GetStorage()
+                                  //       .remove('shopSelectedIndexSort');
 
-                                  setState(() {
-                                    _selectedIndexSort = -1;
-                                  });
-                                } else {
-                                  GetStorage().write('shopFilter',
-                                      state.shopsDrawer[index].name.toString());
+                                  //   setState(() {
+                                  //     _selectedIndexSort = -1;
+                                  //   });
+                                  // } else {
+                                  //   GetStorage().write(
+                                  //       'shopFilter',
+                                  //       state.shopsDrawer[index].name
+                                  //           .toString());
+                                  //   GetStorage().write('shopFilterId',
+                                  //       state.shopsDrawer[index].id);
+                                  //   GetStorage()
+                                  //       .write('shopSelectedIndexSort', index);
+
+                                  //   setState(() {
+                                  //     _selectedIndexSort = index;
+                                  //   });
+                                  // }
+
+                                  // Get.back();
+
+                                  if (_selectedListSort
+                                      .contains(state.shopsDrawer[index].id)) {
+                                    _selectedListSort
+                                        .remove(state.shopsDrawer[index].id);
+                                  } else {
+                                    _selectedListSort.add(
+                                        state.shopsDrawer[index].id as int);
+                                  }
+
                                   GetStorage().write('shopFilterId',
-                                      state.shopsDrawer[index].id);
-                                  GetStorage()
-                                      .write('shopSelectedIndexSort', index);
+                                      _selectedListSort.toString());
 
-                                  setState(() {
-                                    _selectedIndexSort = index;
-                                  });
-                                }
-                                BlocProvider.of<productCubit.ProductCubit>(
-                                        context)
-                                    .products();
-                                Get.back();
-                              },
-                              child: ListTile(
-                                selected: index == _selectedIndexSort,
-                                leading: Text(
-                                  state.shopsDrawer[index].name.toString(),
-                                  style: AppTextStyles.appBarTextStyle,
-                                ),
-                                trailing: _selectedIndexSort == index
-                                    ? SvgPicture.asset(
-                                        'assets/icons/check_circle.svg',
-                                      )
-                                    : SvgPicture.asset(
-                                        'assets/icons/check_circle_no_selected.svg',
-                                      ),
-                              ));
+                                  setState(() {});
+
+                                  // print(GetStorage().read('shopFilterId'));
+                                },
+                                child: ListTile(
+                                  selected: _selectedListSort
+                                      .contains(state.shopsDrawer[index].id),
+                                  leading: Text(
+                                    state.shopsDrawer[index].name.toString(),
+                                    style: AppTextStyles.appBarTextStyle,
+                                  ),
+                                  trailing: _selectedListSort
+                                          .contains(state.shopsDrawer[index].id)
+                                      ? SvgPicture.asset(
+                                          'assets/icons/check_circle.svg',
+                                        )
+                                      : SvgPicture.asset(
+                                          'assets/icons/check_circle_no_selected.svg',
+                                        ),
+                                )),
+                          );
                         },
                       ),
                     ),
                     Container(
                       color: Colors.white,
                       padding: const EdgeInsets.only(
-                          left: 16, right: 16, top: 16, bottom: 26),
+                          left: 0, right: 0, top: 16, bottom: 26),
                       child: InkWell(
                         onTap: () {
+                          BlocProvider.of<productCubit.ProductCubit>(context)
+                              .products();
                           Navigator.pop(context);
                         },
                         child: Container(

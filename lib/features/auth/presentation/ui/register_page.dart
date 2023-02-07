@@ -9,7 +9,6 @@ import 'package:haji_market/features/auth/presentation/widgets/default_button.da
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/features/home/presentation/ui/home_page.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-
 import '../../../app/widgets/scroll_wrapper.dart';
 import '../../data/DTO/register.dart';
 import '../../data/bloc/sms_cubit.dart';
@@ -38,6 +37,12 @@ class _RegisterPageState extends State<RegisterPage> {
       TextEditingController();
 
   bool _passwordVisible = true;
+
+  bool _visibleIconClearName = false;
+  bool _visibleIconClearPhone = false;
+
+  bool _visibleIconView = false;
+  bool _visibleIconViewRepeat = false;
 
   setIsButtonEnabled(bool value) {
     // log("is button state changed $value");
@@ -86,6 +91,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Column(
                   children: [
                     ListTile(
+                      horizontalTitleGap: 5,
                       leading: SvgPicture.asset(
                         'assets/icons/user.svg',
                         height: 24,
@@ -93,11 +99,15 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       trailing: GestureDetector(
                         onTap: () {
+                          _visibleIconClearName = false;
                           nameControllerRegister.clear();
+                          setState(() {});
                         },
-                        child: SvgPicture.asset(
-                          'assets/icons/delete_circle.svg',
-                        ),
+                        child: _visibleIconClearName == true
+                            ? SvgPicture.asset(
+                                'assets/icons/delete_circle.svg',
+                              )
+                            : const SizedBox(width: 5),
                       ),
                       title: TextField(
                         focusNode: myFocusNodeName,
@@ -111,6 +121,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         onChanged: (value) {
+                          _visibleIconClearName = true;
                           if (nameControllerRegister.text.isNotEmpty) {
                             setIsButtonEnabled(true);
                           } else {
@@ -125,6 +136,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       // ),
                     ),
                     ListTile(
+                      horizontalTitleGap: 5,
                       leading: SvgPicture.asset(
                         'assets/icons/phone.svg',
                         height: 24,
@@ -144,6 +156,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         onChanged: (value) {
+                          _visibleIconClearPhone = true;
+
                           if (phoneControllerRegister.text.length == 17) {
                             setIsButtonEnabled(true);
                           } else {
@@ -153,14 +167,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       trailing: GestureDetector(
                         onTap: () {
+                          _visibleIconClearPhone = false;
                           phoneControllerRegister.clear();
+                          setState(() {});
                         },
-                        child: SvgPicture.asset(
-                          'assets/icons/delete_circle.svg',
-                        ),
+                        child: _visibleIconClearPhone == true
+                            ? SvgPicture.asset(
+                                'assets/icons/delete_circle.svg',
+                              )
+                            : const SizedBox(width: 5),
                       ),
                     ),
                     ListTile(
+                      horizontalTitleGap: 5,
                       leading: SvgPicture.asset(
                         'assets/icons/password.svg',
                         height: 24,
@@ -174,6 +193,12 @@ class _RegisterPageState extends State<RegisterPage> {
                           border: InputBorder.none,
                           hintText: 'Пароль',
                         ),
+                        onChanged: (value) {
+                          passwordControllerRegister.text.length.toInt() == 0
+                              ? _visibleIconView = false
+                              : _visibleIconView = true;
+                          setState(() {});
+                        },
                       ),
                       trailing: GestureDetector(
                         onTap: () {
@@ -181,15 +206,18 @@ class _RegisterPageState extends State<RegisterPage> {
                             _passwordVisible = !_passwordVisible;
                           });
                         },
-                        child: Icon(
-                          _passwordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: const Color.fromRGBO(177, 179, 181, 1),
-                        ),
+                        child: _visibleIconView == true
+                            ? Icon(
+                                _passwordVisible
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: const Color.fromRGBO(177, 179, 181, 1),
+                              )
+                            : const SizedBox(width: 5),
                       ),
                     ),
                     ListTile(
+                      horizontalTitleGap: 5,
                       leading: SvgPicture.asset(
                         'assets/icons/password.svg',
                         height: 24,
@@ -208,6 +236,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         onChanged: (value) {
+                          repePasswordControllerRegister.text.length == 0
+                              ? _visibleIconViewRepeat = false
+                              : _visibleIconViewRepeat = true;
                           if (passwordControllerRegister.text ==
                               repePasswordControllerRegister.text) {
                             setIsButtonEnabled(true);
@@ -222,12 +253,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             _passwordVisible = !_passwordVisible;
                           });
                         },
-                        child: Icon(
-                          _passwordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: const Color.fromRGBO(177, 179, 181, 1),
-                        ),
+                        child: _visibleIconViewRepeat == true
+                            ? Icon(
+                                _passwordVisible
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: const Color.fromRGBO(177, 179, 181, 1),
+                              )
+                            : const SizedBox(width: 5),
                       ),
                     ),
                   ],
@@ -238,20 +271,50 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               Center(
                 child: Row(
-                  children: const [
+                  children: [
                     SizedBox(
                       width: 10,
                     ),
                     Flexible(
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        '*Регистрируясь, вы соглашаетесь с пользовательским соглашением',
+                        child: RichText(
+                      text: const TextSpan(
                         style: TextStyle(
-                            color: AppColors.kGray900,
+                            color: Colors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
+                        children: <TextSpan>[
+                          TextSpan(text: 'Нажимая «Зарегистрироваться», Вы '),
+                          TextSpan(text: 'принимаете '),
+                          TextSpan(
+                            text: 'Пользовательское \n соглашение',
+                            style: TextStyle(
+                                color: AppColors.kPrimaryColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          TextSpan(
+                              text:
+                                  ' и даете согласие на \n обработку персональных данных'),
+                          TextSpan(text: 'в соответствии с Политикой'),
+                          TextSpan(
+                            text: ' Политикой',
+                            style: TextStyle(
+                                color: AppColors.kPrimaryColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
                       ),
-                    ),
+                    ))
+
+                    // Text(
+                    //   textAlign: TextAlign.center,
+                    //   'Нажимая «Зарегистрироваться», Вы принимаете Пользовательское \n соглашение и даете согласие на \n обработку персональных данных в соответствии с Политикой',
+                    //   style: TextStyle(
+                    //       color: AppColors.kGray900,
+                    //       fontSize: 16,
+                    //       fontWeight: FontWeight.w400),
+                    // ),
                   ],
                 ),
               ),
@@ -282,11 +345,11 @@ class _RegisterPageState extends State<RegisterPage> {
                           final sms = BlocProvider.of<SmsCubit>(context);
                           sms.smsSend(phoneControllerRegister.text);
                         } else {
-                          Get.snackbar('Ошибка запросы', 'Пароли не совпадают!',
+                          Get.snackbar('Ошибка запроса', 'Пароли не совпадают!',
                               backgroundColor: Colors.blueAccent);
                         }
                       } else {
-                        Get.snackbar('Ошибка запросы', 'Заполните данные!',
+                        Get.snackbar('Ошибка запроса', 'Заполните данные!',
                             backgroundColor: Colors.blueAccent);
                       }
 

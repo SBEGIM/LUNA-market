@@ -11,8 +11,12 @@ import 'package:haji_market/features/home/presentation/ui/home_page.dart';
 
 import '../../../drawer/data/bloc/basket_cubit.dart';
 import '../../../drawer/data/bloc/basket_state.dart';
+import '../../../drawer/data/bloc/product_cubit.dart' as productCubit;
+import '../../../drawer/data/bloc/product_state.dart' as productState;
 import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
 import '../../../home/presentation/widgets/banner_watceh_recently_widget.dart';
+import '../../../home/presentation/widgets/product_mb_interesting_card.dart';
+import '../../../home/presentation/widgets/product_watching_card.dart';
 import '../../data/DTO/basketOrderDto.dart';
 import 'basket_order_page.dart';
 
@@ -142,18 +146,63 @@ class _BasketPageState extends State<BasketPage> {
                         const SizedBox(
                           height: 10,
                         ),
-                        Row(
-                          children: const [
-                            // InterestingProductWidget(),
-                            InterestingProductWidget(),
-                          ],
-                        ),
+                        BlocConsumer<productCubit.ProductCubit,
+                                productState.ProductState>(
+                            listener: (context, state) {},
+                            builder: (context, state) {
+                              if (state is productState.ErrorState) {
+                                return Center(
+                                  child: Text(
+                                    state.message,
+                                    style: TextStyle(
+                                        fontSize: 20.0, color: Colors.grey),
+                                  ),
+                                );
+                              }
+                              if (state is productState.LoadingState) {
+                                return const Center(
+                                    child: CircularProgressIndicator(
+                                        color: Colors.indigoAccent));
+                              }
+
+                              if (state is productState.LoadedState) {
+                                return SizedBox(
+                                    height: 286,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: state.productModel.length,
+                                      itemBuilder: (context, index) {
+                                        return GestureDetector(
+                                          onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailCardProductPage(
+                                                        product:
+                                                            state.productModel[
+                                                                index])),
+                                          ),
+                                          child: ProductMbInterestingCard(
+                                            product: state.productModel[index],
+                                          ),
+                                        );
+                                      },
+                                    ));
+                              } else {
+                                return const Center(
+                                    child: CircularProgressIndicator(
+                                        color: Colors.indigoAccent));
+                              }
+                            }),
                         const SizedBox(
                           height: 80,
                         )
                       ],
                     ),
-                  )
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
                 ],
               );
             } else {
@@ -163,32 +212,41 @@ class _BasketPageState extends State<BasketPage> {
           }),
       bottomSheet: Container(
         color: Colors.white,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
         child: InkWell(
             onTap: () {
               Get.to(BasketOrderPage());
               // Navigator.pop(context);
             },
-            child: Container(
-                height: 65,
+            child: SizedBox(
+                height: 80,
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('В корзине: ${count} товара'),
-                        Text('Всего: ${price}'),
+                        Text(
+                          'В корзине: ${count} товара',
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          'Всего: ${price}',
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
                       ],
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     Container(
+                        height: 46,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: AppColors.kPrimaryColor,
                         ),
                         width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.all(16),
+                        alignment: Alignment.center,
+                        // padding: const EdgeInsets.only(left: 16, right: 16),
                         child: const Text(
                           'Продолжить',
                           style: TextStyle(
@@ -391,7 +449,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 35),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -523,7 +581,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             )
           ],

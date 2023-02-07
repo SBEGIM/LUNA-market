@@ -9,6 +9,7 @@ import 'package:haji_market/admin/my_products_admin/presentation/ui/my_products_
 import 'package:haji_market/admin/tape_admin/presentation/ui/tape_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 
+import '../../chat/presentation/chat_admin_page.dart';
 import '../../profile_admin/presentation/ui/admin_profile_page.dart';
 
 class BaseAdmin extends StatefulWidget {
@@ -25,6 +26,12 @@ int basePageIndex1 = 0;
 class _BaseAdminState extends State<BaseAdmin> {
   @override
   void initState() {
+    if (widget.index == 0) {
+      BlocProvider.of<AdminNavigationCubit>(context)
+          .getNavBarItemAdmin(const AdminNavigationState.tapeAdmin());
+
+      basePageIndex1 = 0;
+    }
     // if (widget.index != null) {
     //   basePageIndex = widget.index!;
 
@@ -63,9 +70,14 @@ class _BaseAdminState extends State<BaseAdmin> {
                 case 2:
                   BlocProvider.of<AdminNavigationCubit>(context)
                       .getNavBarItemAdmin(
-                          const AdminNavigationState.myOrderAdmin());
+                          const AdminNavigationState.chatAdmin());
                   break;
                 case 3:
+                  BlocProvider.of<AdminNavigationCubit>(context)
+                      .getNavBarItemAdmin(
+                          const AdminNavigationState.myOrderAdmin());
+                  break;
+                case 4:
                   BlocProvider.of<AdminNavigationCubit>(context)
                       .getNavBarItemAdmin(const AdminNavigationState.profile());
                   break;
@@ -80,6 +92,7 @@ class _BaseAdminState extends State<BaseAdmin> {
             elevation: 4,
             showSelectedLabels: true,
             showUnselectedLabels: true,
+            type: BottomNavigationBarType.fixed,
             items: [
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -87,18 +100,9 @@ class _BaseAdminState extends State<BaseAdmin> {
                   color: AppColors.kGray200,
                 ),
                 label: 'Лента',
-                activeIcon: ClipOval(
-                  child: Material(
-                    color: Colors.white, // Button color
-                    child: SizedBox(
-                      width: 42,
-                      height: 42,
-                      child: SvgPicture.asset(
-                        'assets/icons/tape.svg',
-                        color: AppColors.kPrimaryColor,
-                      ),
-                    ),
-                  ),
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/tape.svg',
+                  color: AppColors.kPrimaryColor,
                 ),
               ),
               BottomNavigationBarItem(
@@ -107,18 +111,20 @@ class _BaseAdminState extends State<BaseAdmin> {
                   color: AppColors.kGray200,
                 ),
                 label: 'Мои товары',
-                activeIcon: ClipOval(
-                  child: Material(
-                    color: Colors.white, // Button color
-                    child: SizedBox(
-                      width: 42,
-                      height: 42,
-                      child: SvgPicture.asset(
-                        'assets/icons/date.svg',
-                        color: AppColors.kPrimaryColor,
-                      ),
-                    ),
-                  ),
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/date.svg',
+                  color: AppColors.kPrimaryColor,
+                ),
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  'assets/icons/chat_2.svg',
+                  color: AppColors.kGray200,
+                ),
+                label: 'Чат',
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/chat_2.svg',
+                  color: AppColors.kPrimaryColor,
                 ),
               ),
               BottomNavigationBarItem(
@@ -127,18 +133,9 @@ class _BaseAdminState extends State<BaseAdmin> {
                   color: AppColors.kGray200,
                 ),
                 label: 'Заказы',
-                activeIcon: ClipOval(
-                  child: Material(
-                    color: Colors.white, // Button color
-                    child: SizedBox(
-                      width: 42,
-                      height: 42,
-                      child: SvgPicture.asset(
-                        'assets/icons/docs.svg',
-                        color: AppColors.kPrimaryColor,
-                      ),
-                    ),
-                  ),
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/docs.svg',
+                  color: AppColors.kPrimaryColor,
                 ),
               ),
               BottomNavigationBarItem(
@@ -147,18 +144,9 @@ class _BaseAdminState extends State<BaseAdmin> {
                   color: AppColors.kGray200,
                 ),
                 label: 'Профиль',
-                activeIcon: ClipOval(
-                  child: Material(
-                    color: Colors.white, // Button color
-                    child: SizedBox(
-                      width: 42,
-                      height: 42,
-                      child: SvgPicture.asset(
-                        'assets/icons/account.svg',
-                        color: AppColors.kPrimaryColor,
-                      ),
-                    ),
-                  ),
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/account.svg',
+                  color: AppColors.kPrimaryColor,
                 ),
               ),
             ],
@@ -173,6 +161,8 @@ class _BaseAdminState extends State<BaseAdmin> {
             return const MyProductsAdminPage();
           } else if (state is MyOrderAdminState) {
             return MyOrdersAdminPage();
+          } else if (state is ChatAdminState) {
+            return const ChatAdminPage();
           } else if (state is ProfileState) {
             return ProfileAdminPage();
           } else if (state is AdminAuthState) {

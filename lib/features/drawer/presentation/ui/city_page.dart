@@ -38,15 +38,19 @@ class _CityPageState extends State<CityPage> {
         shrinkWrap: true,
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
-            height: 50,
+            margin: const EdgeInsets.only(top: 16, left: 16, bottom: 8),
+            height: 23,
             child: const Text(
               'A',
-              style:  TextStyle(
+              style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: AppColors.kGray900),
             ),
+          ),
+          Container(
+            height: 8,
+            color: Colors.white,
           ),
           Container(
             color: Colors.white,
@@ -64,25 +68,32 @@ class _CityPageState extends State<CityPage> {
                         _selectedIndex = index;
                       });
                     },
-                    child: ListTile(
-                      selected: index == _selectedIndex,
-                      leading: const Text(
-                        'Аксай',
-                        style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                    child: SizedBox(
+                      height: 47,
+                      child: ListTile(
+                        selected: index == _selectedIndex,
+                        leading: const Text(
+                          'Аксай',
+                          style: TextStyle(
+                              color: AppColors.kGray900,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400),
+                        ),
+
+                        trailing: _selectedIndex == index
+                            ? SvgPicture.asset('assets/icons/check_circle.svg')
+                            : const SizedBox(),
+
+                        // title: Text("List item $index"));
                       ),
-
-                      trailing: _selectedIndex == index
-                          ? SvgPicture.asset('assets/icons/check_circle.svg')
-                          : const SizedBox(),
-
-                      // title: Text("List item $index"));
                     ),
                   );
                 }),
-          )
+          ),
+          Container(
+            height: 10,
+            color: Colors.white,
+          ),
         ],
       ),
     );

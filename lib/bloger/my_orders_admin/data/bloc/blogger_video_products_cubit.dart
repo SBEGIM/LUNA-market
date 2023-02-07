@@ -1,0 +1,26 @@
+import 'dart:developer';
+import 'package:bloc/bloc.dart';
+import 'package:haji_market/bloger/my_orders_admin/data/bloc/blogger_video_products_state.dart';
+
+import '../../../my_products_admin/data/models/blogger_shop_products_model.dart';
+import '../repository/blogger_video_products_repo.dart';
+
+class BloggerVideoProductsCubit extends Cubit<BloggerVideoProductsState> {
+  final BloggerVideoProductsRepository bloggerShopProductsRepository;
+
+  BloggerVideoProductsCubit({required this.bloggerShopProductsRepository})
+      : super(InitState());
+
+  Future<void> products(String? name, int shop_id) async {
+    try {
+      emit(LoadingState());
+      final List<BloggerShopProductModel> data =
+          await bloggerShopProductsRepository.products(name, shop_id);
+
+      emit(LoadedState(data));
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+}

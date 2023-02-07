@@ -8,9 +8,8 @@ import 'package:timeline_tile/timeline_tile.dart';
 class MyOrderStatusPage extends StatefulWidget {
   final BasketOrderModel basketOrder;
 
-  const MyOrderStatusPage({
-    required this.basketOrder,
-    Key? key}) : super(key: key);
+  const MyOrderStatusPage({required this.basketOrder, Key? key})
+      : super(key: key);
 
   @override
   State<MyOrderStatusPage> createState() => _MyOrderStatusPageState();
@@ -26,12 +25,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
           backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
-          title:  Text(
+          title: Text(
             '№ ${widget.basketOrder.id}',
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 16
-            ),
+            style: const TextStyle(color: Colors.black, fontSize: 16),
           )),
       body: ListView(
         children: [
@@ -69,6 +65,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         height: 10,
                       ),
                       TimelineTile(
+                        isFirst: true,
                         indicatorStyle: IndicatorStyle(
                           color: AppColors.kPrimaryColor,
                           iconStyle: IconStyle(
@@ -85,13 +82,19 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               left: 8.0, top: 10, bottom: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children:  [
-                              const Text('Заказ оплачен'),
+                            children: [
+                              const Text(
+                                'Заказ оплачен',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
+                              ),
                               Text(
                                 '${widget.basketOrder.date}',
                                 style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 17,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
                                   color: AppColors.kGray300,
                                 ),
                               ),
@@ -100,6 +103,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         ),
                       ),
                       TimelineTile(
+                        isLast: true,
                         indicatorStyle: IndicatorStyle(
                           color: Colors.grey,
                           iconStyle: IconStyle(
@@ -117,12 +121,18 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const [
-                              Text('Заказ оплачен'),
+                              Text(
+                                'Доставка',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
+                              ),
                               Text(
                                 '11 июля',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 17,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
                                   color: AppColors.kGray300,
                                 ),
                               ),
@@ -134,30 +144,38 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         height: 10,
                       ),
                       const Divider(
+                        height: 1,
                         color: AppColors.kGray500,
                       ),
-                      InkWell(
-                        onTap: (){
+                      Container(
+                        padding: const EdgeInsets.only(top: 8.5),
+                        alignment: Alignment.center,
+                        child: InkWell(
+                          onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) =>  CancelOrderWidget()),
+                              MaterialPageRoute(
+                                  builder: (context) => CancelOrderWidget()),
                             );
-                            },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text(
-                              'Отменить заказ',
-                              style: TextStyle(
-                                  color: AppColors.kPrimaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              color: AppColors.kPrimaryColor,
-                            )
-                          ],
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //crossAxisAlignment: CrossAxisAlignment.center,
+                            children: const [
+                              Text(
+                                'Отменить заказ',
+                                style: TextStyle(
+                                    color: AppColors.kPrimaryColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: AppColors.kPrimaryColor,
+                                size: 20,
+                              )
+                            ],
+                          ),
                         ),
                       )
                     ],
@@ -165,8 +183,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 16, right: 16, top: 10),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
                 child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -175,9 +192,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const  Text(
+                        const Text(
                           'Продовец',
-                          style:  TextStyle(
+                          style: TextStyle(
                               color: AppColors.kPrimaryColor,
                               fontSize: 12,
                               fontWeight: FontWeight.w400),
@@ -187,17 +204,38 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         ),
                         Row(
                           children: [
-                            SvgPicture.asset(
-                              'assets/icons/phone.svg',
+                            Container(
+                              height: 54,
+                              width: 54,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(34),
+                                  image: const DecorationImage(
+                                    image: NetworkImage(
+                                        "http://80.87.202.73:8001/storage/shops/1.png"),
+                                    fit: BoxFit.cover,
+                                  )),
                             ),
                             const SizedBox(width: 13),
-                             Text('+7${widget.basketOrder.product!.first.shopPhone}',
-                               style: const TextStyle(
-                                 color: Colors.black,
-                                 fontSize: 16,
-                                 fontWeight: FontWeight.w400
-                               ),
-                             )
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${widget.basketOrder.product!.first.shopName}',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  '+7${widget.basketOrder.product!.first.shopPhone}',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            )
                           ],
                         )
                       ],
@@ -226,15 +264,14 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         Row(
                           children: [
                             SvgPicture.asset(
-                              'assets/icons/user.svg',
+                              'assets/icons/location.svg',
                             ),
                             const SizedBox(width: 13),
-                             Text('${widget.basketOrder.product!.first.address}',
-                             style:const TextStyle(
-                               fontSize: 16,
-                               fontWeight: FontWeight.w400
-                             ),
-                             )
+                            Text(
+                              '${widget.basketOrder.product!.first.address}',
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w400),
+                            )
                           ],
                         )
                       ],
@@ -242,7 +279,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 12),
-                child:Image.network(
+                child: Image.network(
                   "http://80.87.202.73:8001/storage/${widget.basketOrder.product!.first.path!.first.toString()}",
                   width: 120,
                   height: 120,
@@ -251,10 +288,10 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
               Container(
                 color: Colors.white,
                 child: Column(
-                  children:  [
+                  children: [
                     Container(
                       height: 55,
-                      child:ListTile(
+                      child: ListTile(
                         title: const Text(
                           'Товар',
                           style: TextStyle(
@@ -266,17 +303,17 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           '${widget.basketOrder.product!.first.productName}',
                           style: const TextStyle(
                               color: AppColors.kGray300,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400),
                         ),
-                        trailing: Text('${widget.basketOrder.summa} ₸ ',
-                          style:const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
+                        trailing: Text(
+                          '${widget.basketOrder.summa} ₸ ',
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
                         ),
                       ),
                     ),
-                  const  Divider(
+                    const Divider(
                       color: AppColors.kGray400,
                     ),
                     Container(
@@ -285,22 +322,21 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            padding:const EdgeInsets.only(left: 16),
+                            padding: const EdgeInsets.only(left: 16),
                             child: const Text('Доставка'),
                           ),
                           Container(
-                            padding:const EdgeInsets.only(right: 16),
-                            child:    Text('${widget.basketOrder.product!.first.shopCourier!.toInt()} ₸ ',
-                              style:const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
+                            padding: const EdgeInsets.only(right: 16),
+                            child: Text(
+                              '${widget.basketOrder.product!.first.shopCourier!.toInt()} ₸ ',
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500),
                             ),
                           )
                         ],
                       ),
                     ),
-
-                  const  Divider(
+                    const Divider(
                       color: AppColors.kGray400,
                     ),
                     Container(
@@ -309,25 +345,27 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            padding:const EdgeInsets.only(left: 16),
-                            child:   const Text('К оплате' ,
+                            padding: const EdgeInsets.only(left: 16),
+                            child: const Text(
+                              'К оплате',
                               style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
+                                  fontSize: 16, fontWeight: FontWeight.w500),
                             ),
                           ),
                           Container(
-                            padding:const EdgeInsets.only(right: 16),
-                            child:     Text('${widget.basketOrder.summa!.toInt() + widget.basketOrder.product!.first.shopCourier!.toInt()} ₸ ',
-                              style:const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
+                            padding: const EdgeInsets.only(right: 16),
+                            child: Text(
+                              '${widget.basketOrder.summa!.toInt() + widget.basketOrder.product!.first.shopCourier!.toInt()} ₸ ',
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500),
                             ),
                           )
                         ],
                       ),
                     ),
-                    SizedBox(height: 5,)
+                    SizedBox(
+                      height: 5,
+                    )
                   ],
                 ),
               )

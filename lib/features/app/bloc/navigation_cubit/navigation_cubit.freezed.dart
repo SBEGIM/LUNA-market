@@ -20,7 +20,7 @@ mixin _$NavigationState {
   TResult when<TResult extends Object?>({
     required TResult Function() home,
     required TResult Function() tape,
-    required TResult Function(int index) detailTape,
+    required TResult Function(int index, String name) detailTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -31,7 +31,7 @@ mixin _$NavigationState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -42,7 +42,7 @@ mixin _$NavigationState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -146,7 +146,7 @@ class _$HomeState implements HomeState {
   TResult when<TResult extends Object?>({
     required TResult Function() home,
     required TResult Function() tape,
-    required TResult Function(int index) detailTape,
+    required TResult Function(int index, String name) detailTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -160,7 +160,7 @@ class _$HomeState implements HomeState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -174,7 +174,7 @@ class _$HomeState implements HomeState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -281,7 +281,7 @@ class _$TapeState implements TapeState {
   TResult when<TResult extends Object?>({
     required TResult Function() home,
     required TResult Function() tape,
-    required TResult Function(int index) detailTape,
+    required TResult Function(int index, String name) detailTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -295,7 +295,7 @@ class _$TapeState implements TapeState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -309,7 +309,7 @@ class _$TapeState implements TapeState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -378,7 +378,7 @@ abstract class _$$DetailTapeStateCopyWith<$Res> {
   factory _$$DetailTapeStateCopyWith(
           _$DetailTapeState value, $Res Function(_$DetailTapeState) then) =
       __$$DetailTapeStateCopyWithImpl<$Res>;
-  $Res call({int index});
+  $Res call({int index, String name});
 }
 
 /// @nodoc
@@ -395,12 +395,17 @@ class __$$DetailTapeStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? index = freezed,
+    Object? name = freezed,
   }) {
     return _then(_$DetailTapeState(
       index == freezed
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
               as int,
+      name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -408,14 +413,16 @@ class __$$DetailTapeStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DetailTapeState implements DetailTapeState {
-  _$DetailTapeState(this.index);
+  _$DetailTapeState(this.index, this.name);
 
   @override
   final int index;
+  @override
+  final String name;
 
   @override
   String toString() {
-    return 'NavigationState.detailTape(index: $index)';
+    return 'NavigationState.detailTape(index: $index, name: $name)';
   }
 
   @override
@@ -423,12 +430,15 @@ class _$DetailTapeState implements DetailTapeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DetailTapeState &&
-            const DeepCollectionEquality().equals(other.index, index));
+            const DeepCollectionEquality().equals(other.index, index) &&
+            const DeepCollectionEquality().equals(other.name, name));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(index));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(index),
+      const DeepCollectionEquality().hash(name));
 
   @JsonKey(ignore: true)
   @override
@@ -440,13 +450,13 @@ class _$DetailTapeState implements DetailTapeState {
   TResult when<TResult extends Object?>({
     required TResult Function() home,
     required TResult Function() tape,
-    required TResult Function(int index) detailTape,
+    required TResult Function(int index, String name) detailTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
     required TResult Function() auth,
   }) {
-    return detailTape(index);
+    return detailTape(index, name);
   }
 
   @override
@@ -454,13 +464,13 @@ class _$DetailTapeState implements DetailTapeState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
     TResult Function()? auth,
   }) {
-    return detailTape?.call(index);
+    return detailTape?.call(index, name);
   }
 
   @override
@@ -468,7 +478,7 @@ class _$DetailTapeState implements DetailTapeState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -476,7 +486,7 @@ class _$DetailTapeState implements DetailTapeState {
     required TResult orElse(),
   }) {
     if (detailTape != null) {
-      return detailTape(index);
+      return detailTape(index, name);
     }
     return orElse();
   }
@@ -529,9 +539,11 @@ class _$DetailTapeState implements DetailTapeState {
 }
 
 abstract class DetailTapeState implements NavigationState {
-  factory DetailTapeState(final int index) = _$DetailTapeState;
+  factory DetailTapeState(final int index, final String name) =
+      _$DetailTapeState;
 
   int get index;
+  String get name;
   @JsonKey(ignore: true)
   _$$DetailTapeStateCopyWith<_$DetailTapeState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -580,7 +592,7 @@ class _$FavoriteState implements FavoriteState {
   TResult when<TResult extends Object?>({
     required TResult Function() home,
     required TResult Function() tape,
-    required TResult Function(int index) detailTape,
+    required TResult Function(int index, String name) detailTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -594,7 +606,7 @@ class _$FavoriteState implements FavoriteState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -608,7 +620,7 @@ class _$FavoriteState implements FavoriteState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -715,7 +727,7 @@ class _$BasketState implements BasketState {
   TResult when<TResult extends Object?>({
     required TResult Function() home,
     required TResult Function() tape,
-    required TResult Function(int index) detailTape,
+    required TResult Function(int index, String name) detailTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -729,7 +741,7 @@ class _$BasketState implements BasketState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -743,7 +755,7 @@ class _$BasketState implements BasketState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -850,7 +862,7 @@ class _$MyOrderState implements MyOrderState {
   TResult when<TResult extends Object?>({
     required TResult Function() home,
     required TResult Function() tape,
-    required TResult Function(int index) detailTape,
+    required TResult Function(int index, String name) detailTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -864,7 +876,7 @@ class _$MyOrderState implements MyOrderState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -878,7 +890,7 @@ class _$MyOrderState implements MyOrderState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -985,7 +997,7 @@ class _$AuthState implements AuthState {
   TResult when<TResult extends Object?>({
     required TResult Function() home,
     required TResult Function() tape,
-    required TResult Function(int index) detailTape,
+    required TResult Function(int index, String name) detailTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -999,7 +1011,7 @@ class _$AuthState implements AuthState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -1013,7 +1025,7 @@ class _$AuthState implements AuthState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? home,
     TResult Function()? tape,
-    TResult Function(int index)? detailTape,
+    TResult Function(int index, String name)? detailTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,

@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../../core/common/constants.dart';
+import '../../../app/widgets/custom_back_button.dart';
 
 class CountryWidget extends StatefulWidget {
   const CountryWidget({Key? key}) : super(key: key);
@@ -20,6 +21,12 @@ class _CountryWidgetState extends State<CountryWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 22.0),
+          child: CustomBackButton(onTap: () {
+            Navigator.pop(context);
+          }),
+        ),
         elevation: 0,
         title: const Text(
           'Выберите страну',

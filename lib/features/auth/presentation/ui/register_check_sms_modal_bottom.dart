@@ -73,17 +73,12 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SmsCubit, SmsState>(listener: (context, state) {
-      if (state is ErrorState) {}
       if (state is LoadedState) {
         // Get.to( () => ChangePasswordPage( textEditingController: widget.textEditingController));
         FocusScope.of(context).requestFocus(FocusNode());
 
         final register = BlocProvider.of<RegisterCubit>(context);
         register.register(widget.registerDTO);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Base(index: 0)),
-        );
       }
     }, builder: (context, state) {
       if (state is LoadingState) {

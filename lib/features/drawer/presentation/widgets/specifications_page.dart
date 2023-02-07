@@ -29,12 +29,13 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
           'Характеристики',
           style: TextStyle(
               color: AppColors.kGray900,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
               fontSize: 18),
         ),
       ),
       body: Column(
         children: [
+          const Divider(height: 1),
           Container(
             color: Colors.white,
             padding: const EdgeInsets.all(16),
@@ -201,7 +202,8 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                     color: AppColors.kGray400,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16, bottom: 16, top: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

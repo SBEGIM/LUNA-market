@@ -5,6 +5,7 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
+import 'package:haji_market/features/chat/presentation/chat_page.dart';
 import 'package:haji_market/features/home/data/model/Cats.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/subs_cubit.dart';
 import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dart';
@@ -16,10 +17,13 @@ import '../../../drawer/data/bloc/favorite_cubit.dart' as favCubit;
 import '../../../drawer/presentation/ui/products_page.dart';
 import '../data/bloc/tape_cubit.dart' as tapeCubit;
 import '../data/bloc/tape_state.dart' as tapeState;
+import '../widgets/anim_search_widget.dart';
 
 class DetailTapeCardPage extends StatefulWidget {
   final int? index;
-  DetailTapeCardPage({required this.index, Key? key}) : super(key: key);
+  final String? shop_name;
+  DetailTapeCardPage({required this.index, required this.shop_name, Key? key})
+      : super(key: key);
 
   @override
   State<DetailTapeCardPage> createState() => _DetailTapeCardPageState();
@@ -28,6 +32,8 @@ class DetailTapeCardPage extends StatefulWidget {
 class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
   PageController controller = PageController();
   String? title;
+  final TextEditingController searchController = TextEditingController();
+  bool visible = true;
 
   procentPrice(price, compound) {
     var pp = (((price!.toInt() - compound!.toInt()) / price!.toInt()) * 100)
@@ -45,97 +51,166 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFFD9D9D9),
+        extendBodyBehindAppBar: true,
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: const Color(0xFFD9D9D9),
-          elevation: 0,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: CustomBackButton(onTap: () {
-              BlocProvider.of<navCubit.NavigationCubit>(context)
-                  .emit(const navCubit.TapeState());
-            }),
-          ),
-          actions: const [
-            Padding(
-              padding: EdgeInsets.only(right: 22.0),
-              child: Icon(
-                Icons.search,
-              ),
-            )
-          ],
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              PopupMenuButton(
-                color: const Color.fromRGBO(230, 231, 232, 1),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                position: PopupMenuPosition.under,
-                offset: const Offset(0, 25),
-                itemBuilder: (BuildContext bc) {
-                  return [
-                    PopupMenuItem(
-                      onTap: () {
-                        title = 'Подписки';
-                        BlocProvider.of<tapeCubit.TapeCubit>(context)
-                            .tapes(true, false, null);
-                        setState(() {});
-                      },
-                      value: 0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "Подписки",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          SvgPicture.asset('assets/icons/lenta1.svg'),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      onTap: () {
-                        BlocProvider.of<tapeCubit.TapeCubit>(context)
-                            .tapes(false, true, null);
+            iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            // excludeHeaderSemantics: true,
 
-                        title = 'Избранное';
-                        setState(() {});
-                      },
-                      value: 1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Избранное"),
-                          SvgPicture.asset('assets/icons/lenta2.svg'),
-                        ],
-                      ),
+            leading: visible == true
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: CustomBackButton(onTap: () {
+                      BlocProvider.of<navCubit.NavigationCubit>(context)
+                          .emit(const navCubit.TapeState());
+                    }),
+                  )
+                : null,
+            // actions: [
+
+            // AnimSearchBar(
+            //   helpText: 'Поиск..',
+            //   onChanged: (String? value) {
+            //     BlocProvider.of<tapeCubit.TapeCubit>(context)
+            //         .tapes(false, false, searchController.text);
+            //   },
+            //   style: const TextStyle(
+            //       fontSize: 14,
+            //       fontWeight: FontWeight.w400,
+            //       color: Color.fromRGBO(153, 162, 173, 1)),
+            //   textController: searchController,
+            //   onSuffixTap: () {
+            //     searchController.clear();
+            //   },
+            //   onArrowTap: () {
+            //     visible = !visible;
+            //     // print(visible.toString());
+            //     setState(() {
+            //       visible;
+            //     });
+            //     searchController.clear();
+            //   },
+            //   width: MediaQuery.of(context).size.width,
+            // ),
+            //    ],
+            centerTitle: true,
+            title: visible == true
+                ? Container(
+                    //alignment: Alignment.center,
+                    // padding: EdgeInsets.only(left: 20),
+                    //margin: EdgeInsets.only(top: 20, bottom: 10, left: 20),
+                    // height: 16,
+                    // width: 200,
+
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 100),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${widget.shop_name}',
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.only(
+                              top: 5, bottom: 5, right: 5, left: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              width: 0.3,
+                            ),
+                          ),
+                          child: Text(
+                            'Подписаться',
+                            style: TextStyle(
+                                color: AppColors.kPrimaryColor, fontSize: 12),
+                          ),
+                        ),
+                      ],
                     ),
-                  ];
-                },
-                child: Row(
-                  children: [
-                    Text(
-                      '${title}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(width: 5),
-                    Image.asset(
-                      'assets/icons/down.png',
-                      height: 16.5,
-                      width: 9.5,
-                    )
-                  ],
-                ), // Icon(Icons.done,color: AppColors.kPrimaryColor,size: 16,)
-              ),
-            ],
-          ),
-        ),
+                  )
+                : null
+            // ? Row(
+            //     mainAxisSize: MainAxisSize.min,
+            //     children: [
+            //       PopupMenuButton(
+            //         color: const Color.fromRGBO(230, 231, 232, 1),
+            //         shape: const RoundedRectangleBorder(
+            //             borderRadius:
+            //                 BorderRadius.all(Radius.circular(15.0))),
+            //         position: PopupMenuPosition.under,
+            //         offset: const Offset(0, 25),
+            //         itemBuilder: (BuildContext bc) {
+            //           return [
+            //             PopupMenuItem(
+            //               onTap: () {
+            //                 title = 'Подписки';
+            //                 BlocProvider.of<tapeCubit.TapeCubit>(context)
+            //                     .tapes(true, false, null);
+            //                 setState(() {});
+            //               },
+            //               value: 0,
+            //               child: Row(
+            //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //                 children: [
+            //                   const Text(
+            //                     "Подписки",
+            //                     style: TextStyle(color: Colors.black),
+            //                   ),
+            //                   SvgPicture.asset('assets/icons/lenta1.svg'),
+            //                 ],
+            //               ),
+            //             ),
+            //             PopupMenuItem(
+            //               onTap: () {
+            //                 BlocProvider.of<tapeCubit.TapeCubit>(context)
+            //                     .tapes(false, true, null);
+
+            //                 title = 'Избранное';
+            //                 setState(() {});
+            //               },
+            //               value: 1,
+            //               child: Row(
+            //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //                 children: [
+            //                   const Text("Избранное"),
+            //                   SvgPicture.asset('assets/icons/lenta2.svg'),
+            //                 ],
+            //               ),
+            //             ),
+            //           ];
+            //         },
+            //         child: Row(
+            //           children: [
+            //             Text(
+            //               '${title}',
+            //               textAlign: TextAlign.center,
+            //               style: const TextStyle(
+            //                   color: AppColors.kGray900,
+            //                   fontSize: 16,
+            //                   fontWeight: FontWeight.w500),
+            //             ),
+            //             const SizedBox(width: 5),
+            //             Image.asset(
+            //               'assets/icons/down.png',
+            //               height: 16.5,
+            //               width: 9.5,
+            //             )
+            //           ],
+            //         ), // Icon(Icons.done,color: AppColors.kPrimaryColor,size: 16,)
+            //       ),
+            //     ],
+            //   )
+            // : null,
+            ),
         body: BlocConsumer<tapeCubit.TapeCubit, tapeState.TapeState>(
             listener: (context, state) {},
             builder: (context, state) {
@@ -176,288 +251,317 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                         Container(
                           margin: const EdgeInsets.only(left: 16, right: 16),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Positioned(
-                                top: 381,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              Container(
+                                width: 49,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFFF3347),
+                                    borderRadius: BorderRadius.circular(6)),
+                                margin: const EdgeInsets.only(top: 24),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '-${procentPrice(state.tapeModel[index].price, state.tapeModel[index].compound)}%',
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        width: 61,
+                                        height: 28,
+                                        decoration: BoxDecoration(
+                                            color: AppColors.kPrimaryColor,
+                                            borderRadius:
+                                                BorderRadius.circular(6)),
+                                        margin: const EdgeInsets.only(top: 370),
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          '0·0·12',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            borderRadius:
+                                                BorderRadius.circular(6)),
+                                        // padding: const EdgeInsets.only(
+                                        //     left: 4, right: 4, bottom: 2, top: 2),
+                                        width: 56,
+                                        height: 28,
+                                        margin: const EdgeInsets.only(top: 4),
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          '10% Б',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 370),
+                                    child: Column(
+                                      children: [
+                                        inBaskets(
+                                          tape: state.tapeModel[index],
+                                          index: index,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        inFavorites(
+                                          tape: state.tapeModel[index],
+                                          index: index,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        SvgPicture.asset(
+                                          'assets/icons/share.svg',
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(
+                                height: 14,
+                              ),
+                              SizedBox(
+                                width: 358,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
-                                      width: 49,
-                                      height: 28,
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xFFFF3347),
-                                          borderRadius:
-                                              BorderRadius.circular(6)),
-                                      margin: const EdgeInsets.only(top: 24),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '-${procentPrice(state.tapeModel[index].price, state.tapeModel[index].compound)}%',
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 61,
-                                      height: 28,
-                                      decoration: BoxDecoration(
-                                          color: AppColors.kPrimaryColor,
-                                          borderRadius:
-                                              BorderRadius.circular(6)),
-                                      margin: const EdgeInsets.only(top: 381),
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        '0·0·12',
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius:
-                                              BorderRadius.circular(6)),
-                                      // padding: const EdgeInsets.only(
-                                      //     left: 4, right: 4, bottom: 2, top: 2),
-                                      width: 56,
-                                      height: 28,
-                                      margin: const EdgeInsets.only(top: 4),
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        '10% Б',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 32,
-                                    ),
-                                    SizedBox(
-                                      width: 358,
+                                    GestureDetector(
+                                      onTap: (() {
+                                        Get.to(ProductsPage(
+                                          cats: Cats(id: 0, name: ''),
+                                        ));
+                                        GetStorage().write('shopFilterId', 1);
+                                      }),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Row(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                child: Image.network(
-                                                  'http://80.87.202.73:8001/storage/${state.tapeModel[index].shop!.image}',
-                                                  height: 30.6,
-                                                  width: 30.6,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text(
-                                                '${state.tapeModel[index].shop!.name}',
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              )
-                                            ],
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            child: Image.network(
+                                              'http://80.87.202.73:8001/storage/${state.tapeModel[index].shop!.image}',
+                                              height: 30.6,
+                                              width: 30.6,
+                                            ),
                                           ),
-                                          Row(
-                                            children: [
-                                              inSubs(
-                                                tape: state.tapeModel[index],
-                                                index: index,
-                                              ),
-                                              // SvgPicture.asset(
-                                              //   'assets/icons/notification.svg',
-                                              //   color: Colors.white,
-                                              // ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Get.to(ProductsPage(
-                                                    cats: Cats(id: 0, name: ''),
-                                                  ));
-                                                  GetStorage()
-                                                      .write('shopFilterId', 1);
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.white),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8)),
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8,
-                                                          right: 8,
-                                                          top: 4,
-                                                          bottom: 4),
-                                                  child: const Text(
-                                                    'Перейти в магазин',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                ),
-                                              )
-                                            ],
+                                          const SizedBox(
+                                            width: 8,
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 7.4,
-                                    ),
-                                    SizedBox(
-                                      width: 358,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
                                           Text(
-                                            '${state.tapeModel[index].name}',
+                                            '${state.tapeModel[index].shop!.name}',
                                             style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          ),
-                                          Row(
-                                            children: [
-                                              inBaskets(
-                                                tape: state.tapeModel[index],
-                                                index: index,
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              inFavorites(
-                                                tape: state.tapeModel[index],
-                                                index: index,
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              SvgPicture.asset(
-                                                'assets/icons/share.svg',
                                                 color: Colors.white,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    Text(
-                                      'Артикул: ${state.tapeModel[index].id}',
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    SizedBox(
-                                      width: 358,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt())} ₸ ',
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text(
-                                                '${state.tapeModel[index].price} ₸ ',
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
-                                                    decoration: TextDecoration
-                                                        .lineThrough),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                'в рассрочку',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                              const SizedBox(
-                                                width: 4,
-                                              ),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      4,
-                                                    ),
-                                                    color: const Color(
-                                                      0x30FFFFFF,
-                                                    )),
-                                                padding: const EdgeInsets.only(
-                                                  left: 8,
-                                                  right: 8,
-                                                  top: 4,
-                                                  bottom: 4,
-                                                ),
-                                                child: Text(
-                                                  '${((state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt()).toInt() / 3).toInt()}',
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 4,
-                                              ),
-                                              const Text(
-                                                'х3',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              )
-                                            ],
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500),
                                           )
                                         ],
                                       ),
-                                    )
+                                    ),
+                                    Row(
+                                      children: [
+                                        inSubs(
+                                          tape: state.tapeModel[index],
+                                          index: index,
+                                        ),
+                                        // SvgPicture.asset(
+                                        //   'assets/icons/notification.svg',
+                                        //   color: Colors.white,
+                                        // ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Get.to(() => ChatPage());
+                                            // Get.to(ProductsPage(
+                                            //   cats: Cats(id: 0, name: ''),
+                                            // ));
+                                            // GetStorage()
+                                            //     .write('shopFilterId', 1);
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.white),
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
+                                            padding: const EdgeInsets.only(
+                                                left: 8,
+                                                right: 8,
+                                                top: 4,
+                                                bottom: 4),
+                                            child: const Text(
+                                              'Написать',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
+                              const SizedBox(
+                                height: 7.4,
+                              ),
+                              SizedBox(
+                                width: 358,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Text(
+                                      '${state.tapeModel[index].name}',
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white),
+                                    ),
+                                    // Row(
+                                    //   children: [
+                                    //     inBaskets(
+                                    //       tape: state.tapeModel[index],
+                                    //       index: index,
+                                    //     ),
+                                    //     const SizedBox(
+                                    //       width: 8,
+                                    //     ),
+                                    //     inFavorites(
+                                    //       tape: state.tapeModel[index],
+                                    //       index: index,
+                                    //     ),
+                                    //     const SizedBox(
+                                    //       width: 8,
+                                    //     ),
+                                    //     SvgPicture.asset(
+                                    //       'assets/icons/share.svg',
+                                    //       color: Colors.white,
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 14,
+                              ),
+                              // Text(
+                              //   'Артикул: ${state.tapeModel[index].id}',
+                              //   style: const TextStyle(
+                              //       fontSize: 12,
+                              //       fontWeight: FontWeight.w500,
+                              //       color: Colors.white),
+                              // ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              SizedBox(
+                                width: 358,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt())} ₸ ',
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text(
+                                          '${state.tapeModel[index].price} ₸ ',
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              decoration:
+                                                  TextDecoration.lineThrough),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          'в рассрочку',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                4,
+                                              ),
+                                              color: const Color(
+                                                0x30FFFFFF,
+                                              )),
+                                          padding: const EdgeInsets.only(
+                                            left: 8,
+                                            right: 8,
+                                            top: 4,
+                                            bottom: 4,
+                                          ),
+                                          child: Text(
+                                            '${((state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt()).toInt() / 3).toInt()}',
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        const Text(
+                                          'х3',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )
                             ],
                           ),
                         )

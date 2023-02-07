@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/admin/my_products_admin/data/bloc/color_cubit.dart';
+import 'package:haji_market/admin/my_products_admin/data/bloc/color_state.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/brands_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/colors_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caats_admin_page.dart';
@@ -11,6 +15,8 @@ import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/home/data/model/Cats.dart';
 import '../../../admin_app/presentation/base_admin.dart';
 import '../../../coop_request/presentation/ui/coop_request_page.dart';
+import '../../data/DTO/color_count_dto.dart';
+import '../../data/DTO/optom_price_dto.dart';
 import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/bloc/product_admin_state.dart';
 import 'category_admin_page.dart';
@@ -41,10 +47,47 @@ class _CreateProductPageState extends State<CreateProductPage> {
   TextEditingController widthController = TextEditingController();
   TextEditingController massaController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController colorCountController = TextEditingController();
+  TextEditingController optomPriceController = TextEditingController();
 
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
   bool change = false;
+
+  String colorName = '';
+  List<colorCountDto> colorCount = [];
+  List<Cats>? mockSizeAdds = [];
+
+  List<optomPriceDto> optomCount = [];
+
+  List<Cats>? mockSizes = [];
+
+  bool isSwitched = false;
+  bool isSwitchedBs = false;
+
+  void toggleSwitch(bool value) {
+    if (isSwitched == false) {
+      setState(() {
+        isSwitched = true;
+      });
+    } else {
+      setState(() {
+        isSwitched = false;
+      });
+    }
+  }
+
+  void toggleSwitchBs(bool value) {
+    if (isSwitchedBs == false) {
+      setState(() {
+        isSwitchedBs = true;
+      });
+    } else {
+      setState(() {
+        isSwitchedBs = false;
+      });
+    }
+  }
 
   Future<void> _getImage() async {
     final image = change == true
@@ -55,13 +98,17 @@ class _CreateProductPageState extends State<CreateProductPage> {
     });
   }
 
+  void _colorsArray() async {
+    mockSizes = await BlocProvider.of<ColorCubit>(context).brands();
+  }
+
   @override
   void initState() {
     cats = widget.cat;
     subCats = widget.subCat;
     brands = Cats(id: 0, name: 'Выберите бренд');
     colors = Cats(id: 0, name: 'Выберите цвет');
-
+    _colorsArray();
     super.initState();
   }
 
@@ -238,6 +285,208 @@ class _CreateProductPageState extends State<CreateProductPage> {
                     }
                   },
                 ),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Введите размер и количество',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
+                            width: 102,
+                            height: 38,
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    colorName == '' ? 'Цвет' : colorName,
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  PopupMenuButton(
+                                    onSelected: (value) {
+                                      mockSizeAdds!.add(value as Cats);
+                                      colorName = value.name!;
+
+                                      setState(() {});
+
+                                      // mockSizeAdds!.forEach((element) {
+                                      //   return print(element.name);
+                                      // });
+                                    },
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(15.0),
+                                      ),
+                                    ),
+                                    icon: SvgPicture.asset(
+                                        'assets/icons/dropdown.svg'),
+                                    position: PopupMenuPosition.under,
+                                    offset: const Offset(0, 0),
+                                    itemBuilder: (
+                                      BuildContext bc,
+                                    ) {
+                                      return mockSizes!.map<PopupMenuItem>((e) {
+                                        return PopupMenuItem(
+                                          value: e,
+                                          child: Text(
+                                            e.name!,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        );
+                                      }).toList();
+                                    },
+                                  )
+
+                                  // SvgPicture.asset(
+                                  //     'assets/icons/dropdown.svg')
+                                ]),
+                          ),
+                          Container(
+                            //alignment: Alignment.topCenter,
+                            padding: EdgeInsets.only(bottom: 6),
+                            margin: EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
+                            width: 102,
+                            height: 38,
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              controller: colorCountController,
+                              keyboardType: TextInputType.text,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Введите количество',
+                                hintStyle: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  // borderRadius: BorderRadius.circular(3),
+                                ),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              print('ok');
+                              Cats? countColorLast = mockSizeAdds!.last;
+
+                              bool exists = false;
+                              colorCount.forEach((element) {
+                                if (element.name == countColorLast.name) {
+                                  exists = true;
+                                  setState(() {});
+                                }
+                                return print(element.color_id);
+                              });
+
+                              if (!exists) {
+                                colorCount.add(colorCountDto(
+                                    color_id: countColorLast.id.toString(),
+                                    name: countColorLast.name.toString(),
+                                    count: colorCountController.text));
+
+                                setState(() {});
+                              } else {
+                                // Get.to(() => {});
+                                Get.snackbar(
+                                    'Ошибка', 'Вы уже добавили этот цвет!',
+                                    backgroundColor: Colors.redAccent);
+                              }
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  color: AppColors.kPrimaryColor,
+                                  borderRadius: BorderRadius.circular(8)),
+                              alignment: Alignment.center,
+                              width: 102,
+                              height: 38,
+                              child: const Text(
+                                '+',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  height: 60 * colorCount.length.toDouble(),
+                  child: ListView.builder(
+                      itemCount: colorCount.length,
+                      itemBuilder: ((context, index) {
+                        return Row(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.only(right: 10, top: 15),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8)),
+                              width: 102,
+                              height: 38,
+                              child: Text(
+                                colorCount[index].name,
+                                style: const TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.only(right: 10, top: 15),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8)),
+                              width: 102,
+                              height: 38,
+                              child: Text(
+                                colorCount[index].count,
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: (() {
+                                colorCount.removeAt(index);
+                                setState(() {});
+                              }),
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                    right: 10, top: 15, left: 10),
+                                decoration: BoxDecoration(
+                                    // color: AppColors.kPrimaryColor,
+                                    borderRadius: BorderRadius.circular(8)),
+                                alignment: Alignment.center,
+                                width: 102,
+                                height: 38,
+                                child: SvgPicture.asset(
+                                    'assets/icons/basket_1.svg'),
+                              ),
+                            )
+                          ],
+                        );
+                      })),
+                ),
                 FieldsProductRequest(
                   titleText: 'Ширина, мм ',
                   hintText: 'Введите ширину',
@@ -271,6 +520,246 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   star: true,
                   arrow: false,
                   controller: descriptionController,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8)),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Предзаказ,если нет в наличии',
+                        style: TextStyle(
+                            color: AppColors.kPrimaryColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      Switch(
+                        onChanged: toggleSwitchBs,
+                        value: isSwitchedBs,
+                        activeColor: AppColors.kPrimaryColor,
+                        activeTrackColor: AppColors.kPrimaryColor,
+                        inactiveThumbColor:
+                            const Color.fromRGBO(245, 245, 245, 1),
+                        inactiveTrackColor:
+                            const Color.fromRGBO(237, 237, 237, 1),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Оптом',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Container(
+                            //alignment: Alignment.topCenter,
+                            padding: EdgeInsets.only(bottom: 6),
+                            margin: EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
+                            width: 102,
+                            height: 38,
+                            child: TextField(
+                              onChanged: (value) {
+                                setState(() {});
+                              },
+                              textAlign: TextAlign.center,
+                              controller: optomPriceController,
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Количество',
+                                hintStyle: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  // borderRadius: BorderRadius.circular(3),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
+                            width: 102,
+                            height: 38,
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Text(
+                                '${optomPriceController.text.isEmpty ? 0 : (int.tryParse(optomPriceController.text)!.toInt() * 4)} тг',
+                                style: const TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              if (optomPriceController.text.isNotEmpty) {
+                                bool exists = false;
+
+                                optomPriceDto? optomCountLast;
+                                // if (optomCount.isNotEmpty) {
+
+                                optomCountLast = optomCount.isNotEmpty
+                                    ? optomCount.last
+                                    : null;
+                                optomCount.forEach((element) {
+                                  if (element.count ==
+                                      optomPriceController.text) {
+                                    exists = true;
+                                    setState(() {});
+                                  }
+                                  return print(element.count);
+                                });
+                                //   }
+
+                                if (!exists) {
+                                  optomCount.add(optomPriceDto(
+                                      price: (int.tryParse(optomPriceController
+                                                      .text)!
+                                                  .toInt() *
+                                              4)
+                                          .toString(),
+                                      count: optomPriceController.text));
+
+                                  setState(() {});
+                                } else {
+                                  // Get.to(() => {});
+                                  Get.snackbar('Ошибка', 'Данные уже имеется!',
+                                      backgroundColor: Colors.redAccent);
+                                }
+                              } else {
+                                Get.snackbar('Ошибка', 'Нет данных!',
+                                    backgroundColor: Colors.redAccent);
+                              }
+                            },
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  color: AppColors.kPrimaryColor,
+                                  borderRadius: BorderRadius.circular(8)),
+                              alignment: Alignment.center,
+                              width: 102,
+                              height: 38,
+                              child: const Text(
+                                '+',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 60 * optomCount.length.toDouble(),
+                  child: ListView.builder(
+                      itemCount: optomCount.length,
+                      itemBuilder: ((context, index) {
+                        return Row(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.only(right: 10, top: 15),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8)),
+                              width: 102,
+                              height: 38,
+                              child: Text(
+                                optomCount[index].count,
+                                style: const TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.only(right: 10, top: 15),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8)),
+                              width: 102,
+                              height: 38,
+                              child: Text(
+                                '${(int.tryParse(optomCount[index].count)!.toInt() * 4)} тг',
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: (() {
+                                optomCount.removeAt(index);
+                                setState(() {});
+                              }),
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                    right: 10, top: 15, left: 10),
+                                decoration: BoxDecoration(
+                                    // color: AppColors.kPrimaryColor,
+                                    borderRadius: BorderRadius.circular(8)),
+                                alignment: Alignment.center,
+                                width: 102,
+                                height: 38,
+                                child: SvgPicture.asset(
+                                    'assets/icons/basket_1.svg'),
+                              ),
+                            )
+                          ],
+                        );
+                      })),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8)),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          SvgPicture.asset('assets/icons/bs4.svg'),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          const Text('Безопасная сделка'),
+                        ],
+                      ),
+                      Switch(
+                        onChanged: toggleSwitch,
+                        value: isSwitched,
+                        activeColor: AppColors.kPrimaryColor,
+                        activeTrackColor: AppColors.kPrimaryColor,
+                        inactiveThumbColor:
+                            const Color.fromRGBO(245, 245, 245, 1),
+                        inactiveTrackColor:
+                            const Color.fromRGBO(237, 237, 237, 1),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 10,

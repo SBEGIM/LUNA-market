@@ -177,7 +177,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                           gridDelegate:
                               const SliverGridDelegateWithMaxCrossAxisExtent(
                                   maxCrossAxisExtent: 175,
-                                  childAspectRatio: 2 / 3,
+                                  childAspectRatio: 2 / 3.2,
                                   crossAxisSpacing: 8,
                                   mainAxisSpacing: 16),
                           itemCount: state.productModel.length,

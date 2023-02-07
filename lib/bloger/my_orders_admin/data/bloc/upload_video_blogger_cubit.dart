@@ -1,0 +1,29 @@
+import 'dart:developer';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:haji_market/bloger/my_orders_admin/data/bloc/upload_video_blogger_state.dart';
+
+import '../repository/upload_video_blogger_repo.dart';
+
+class UploadVideoBLoggerCubit extends Cubit<UploadVideoBloggerCubitState> {
+  final UploadVideoBloggerCubitRepository uploadVideoBloggerCubitRepository;
+
+  UploadVideoBLoggerCubit({required this.uploadVideoBloggerCubitRepository})
+      : super(InitState());
+
+  Future<void> upload(video, product_id) async {
+    try {
+      emit(LoadingState());
+      final data =
+          await uploadVideoBloggerCubitRepository.upload(video, product_id);
+      if (data == 200) {
+        emit(LoadedOrderState());
+      } else {
+        emit(ErrorState(message: 'Ошибка загрузки'));
+      }
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+}

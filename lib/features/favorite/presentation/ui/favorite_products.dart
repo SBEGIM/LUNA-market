@@ -81,26 +81,27 @@ class _FavoriteProductsCardWidgetState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin: const EdgeInsets.only(top: 2),
-                            width: 40,
-                            height: 13,
                             decoration: BoxDecoration(
                                 color: AppColors.kPrimaryColor,
                                 borderRadius: BorderRadius.circular(4)),
-                            child: const Text(
-                              '0·0·12',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400),
+                            child: const Padding(
+                              padding: EdgeInsets.only(
+                                  left: 8.0, right: 8, top: 4, bottom: 4),
+                              child: Text(
+                                '0·0·12',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400),
+                              ),
                             ),
                           ),
                           const SizedBox(
                             height: 4,
                           ),
                           Container(
-                            width: 55,
+                            width: 50,
                             decoration: BoxDecoration(
                                 color: Colors.black,
                                 borderRadius: BorderRadius.circular(4)),
@@ -121,7 +122,7 @@ class _FavoriteProductsCardWidgetState
                             height: 18,
                           ),
                           Container(
-                            width: 45,
+                            width: 40,
                             height: 22,
                             decoration: BoxDecoration(
                                 color: const Color.fromRGBO(255, 50, 72, 1),
@@ -152,7 +153,7 @@ class _FavoriteProductsCardWidgetState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 215,
+                    width: 213,
                     padding: EdgeInsets.only(right: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -235,15 +236,41 @@ class _FavoriteProductsCardWidgetState
                   const SizedBox(
                     height: 8,
                   ),
-                  (compoundPrice != 0 || compoundPrice != null)
-                      ? Row(
+                  (compoundPrice != null || compoundPrice != 0)
+                      ?
+                      // Row(
+                      //     children: [
+                      //       Text(
+                      //         '${compoundPrice}  ₸ ',
+                      //         style: const TextStyle(
+                      //             color: Colors.red,
+                      //             fontWeight: FontWeight.w500,
+                      //             fontSize: 16),
+                      //       ),
+                      //       Text(
+                      //         '${widget.product.price}₸ ',
+                      //         style: const TextStyle(
+                      //           color: AppColors.kGray900,
+                      //           fontWeight: FontWeight.w500,
+                      //           fontSize: 14,
+                      //           decoration: TextDecoration.lineThrough,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   )
+
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
-                              '${compoundPrice}  ₸ ',
-                              style: const TextStyle(
-                                  color: Color.fromRGBO(255, 50, 72, 1),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16),
+                            SizedBox(
+                              width: 75,
+                              child: Text(
+                                '${compoundPrice} ₸ ',
+                                style: const TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16),
+                              ),
                             ),
                             Text(
                               '${widget.product.price}₸ ',
@@ -260,165 +287,360 @@ class _FavoriteProductsCardWidgetState
                           '${widget.product.price}₸ ',
                           style: const TextStyle(
                             color: AppColors.kGray900,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w500,
                             fontSize: 14,
                           ),
                         ),
                   const SizedBox(
                     height: 7,
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFFC107),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          '${widget.product.price ?? 0 / 12}',
-                          style: const TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.02,
-                      ),
-                      const Text(
-                        'х3',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.12,
-                      ),
-                      count < 1
-                          ? SizedBox()
-                          : Visibility(
-                              visible: isvisible,
-                              child: Row(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      BlocProvider.of<BasketCubit>(context)
-                                          .basketMinus(
-                                              widget.product.id.toString(),
-                                              '1');
-                                      setState(() {
-                                        if (count == 0) {
-                                          isvisible = false;
-                                        } else {
-                                          isvisible = true;
-                                        }
-                                        count -= 1;
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 32,
-                                      width: 32,
-                                      padding: const EdgeInsets.all(4),
-                                      child: SvgPicture.asset(
-                                        count == 1
-                                            ? 'assets/icons/basket_1.svg'
-                                            : 'assets/icons/minus.svg',
-                                        width: 3.12,
-                                        height: 15,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(6),
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.1),
-                                            spreadRadius: 1,
-                                            blurRadius: 1,
-                                            offset: const Offset(0,
-                                                1), // changes position of shadow
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 14,
-                                  ),
-                                  Text('$count'),
-                                  const SizedBox(
-                                    width: 14,
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      BlocProvider.of<BasketCubit>(context)
-                                          .basketAdd(
-                                              widget.product.id.toString(),
-                                              '1');
 
-                                      setState(() {
-                                        count += 1;
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 32,
-                                      width: 32,
-                                      padding: const EdgeInsets.all(4),
-                                      child: SvgPicture.asset(
-                                          'assets/icons/add_1.svg'),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(6),
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.1),
-                                            spreadRadius: 1,
-                                            blurRadius: 1,
-                                            offset: const Offset(0,
-                                                1), // changes position of shadow
+                  Container(
+                      height: 32,
+                      width: 196,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(top: 6),
+                                //width: ,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFFFC107),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  ' ${widget.product.price ?? 0 / 3} ',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 4,
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(top: 6),
+                                //width: ,
+                                height: 32,
+
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  'х3',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color.fromRGBO(197, 200, 204, 1)),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              count < 1
+                                  ? SizedBox()
+                                  : Visibility(
+                                      visible: isvisible,
+                                      child: Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              BlocProvider.of<BasketCubit>(
+                                                      context)
+                                                  .basketMinus(
+                                                      widget.product.id
+                                                          .toString(),
+                                                      '1');
+                                              setState(() {
+                                                if (count == 0) {
+                                                  isvisible = false;
+                                                } else {
+                                                  isvisible = true;
+                                                }
+                                                count -= 1;
+                                              });
+                                            },
+                                            child: Container(
+                                              height: 32,
+                                              width: 32,
+                                              padding: const EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                                color: Colors.white,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.1),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 1,
+                                                    offset: const Offset(0,
+                                                        1), // changes position of shadow
+                                                  ),
+                                                ],
+                                              ),
+                                              child: count == 1
+                                                  ? SvgPicture.asset(
+                                                      'assets/icons/basket_1.svg',
+                                                      width: 3.12,
+                                                      height: 15,
+                                                    )
+                                                  : const Icon(
+                                                      Icons.remove,
+                                                      color: AppColors
+                                                          .kPrimaryColor,
+                                                    ),
+                                            ),
+                                          ),
+                                          // const SizedBox(
+                                          //   width: 14,
+                                          // ),
+                                          Container(
+                                            width: 28,
+                                            alignment: Alignment.center,
+                                            child: Text('$count'),
+                                          ),
+                                          // const SizedBox(
+                                          //   width: 14,
+                                          // ),
+                                          InkWell(
+                                            onTap: () {
+                                              BlocProvider.of<BasketCubit>(
+                                                      context)
+                                                  .basketAdd(
+                                                      widget.product.id
+                                                          .toString(),
+                                                      '1');
+
+                                              setState(() {
+                                                count += 1;
+                                              });
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.all(4),
+                                              // child: SvgPicture.asset(
+                                              //     'assets/icons/add_1.svg'),
+                                              child: const Icon(
+                                                Icons.add,
+                                                color: AppColors.kPrimaryColor,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Colors.white,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.1),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 1,
+                                                    offset: const Offset(0,
+                                                        1), // changes position of shadow
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                      count >= 1
-                          ? const SizedBox()
-                          : InkWell(
-                              onTap: () {
-                                BlocProvider.of<BasketCubit>(context).basketAdd(
-                                    widget.product.id.toString(), '1');
-                                setState(() {
-                                  count += 1;
-                                  if (count == 0) {
-                                    isvisible = false;
-                                  } else {
-                                    isvisible = true;
-                                  }
-                                });
-                              },
-                              child: Container(
-                                width: 99,
-                                height: 32,
-                                margin: const EdgeInsets.only(left: 1),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF1DC4CF),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                padding: const EdgeInsets.only(
-                                    left: 12, right: 12, bottom: 6, top: 6),
-                                child: const Center(
-                                  child: Text(
-                                    'В корзину',
-                                    // textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ),
-                            ),
-                    ],
-                  )
+                              count >= 1
+                                  ? const SizedBox()
+                                  : GestureDetector(
+                                      onTap: () {
+                                        BlocProvider.of<BasketCubit>(context)
+                                            .basketAdd(
+                                                widget.product.id.toString(),
+                                                '1');
+                                        setState(() {
+                                          count += 1;
+                                          if (count == 0) {
+                                            isvisible = false;
+                                          } else {
+                                            isvisible = true;
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 99,
+                                        height: 32,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF1DC4CF),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          'В корзину',
+                                          // textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    ),
+                            ],
+                          )
+                        ],
+                      )),
+                  // Row(
+                  //   mainAxisSize: MainAxisSize.min,
+                  //   children: [
+                  //     Container(
+                  //       padding: const EdgeInsets.all(4),
+                  //       decoration: BoxDecoration(
+                  //         color: const Color(0xFFFFC107),
+                  //         borderRadius: BorderRadius.circular(8),
+                  //       ),
+                  //       child: Text(
+                  //         '${widget.product.price ?? 0 / 12}',
+                  //         style: const TextStyle(
+                  //             color: Colors.black, fontWeight: FontWeight.w400),
+                  //       ),
+                  //     ),
+                  //     SizedBox(
+                  //       width: MediaQuery.of(context).size.width * 0.02,
+                  //     ),
+                  //     const Text(
+                  //       'х3',
+                  //       style: TextStyle(color: Colors.grey),
+                  //     ),
+                  //     SizedBox(
+                  //       width: MediaQuery.of(context).size.width * 0.12,
+                  //     ),
+                  //     count < 1
+                  //         ? SizedBox()
+                  //         : Visibility(
+                  //             visible: isvisible,
+                  //             child: Row(
+                  //               children: [
+                  //                 InkWell(
+                  //                   onTap: () {
+                  //                     BlocProvider.of<BasketCubit>(context)
+                  //                         .basketMinus(
+                  //                             widget.product.id.toString(),
+                  //                             '1');
+                  //                     setState(() {
+                  //                       if (count == 0) {
+                  //                         isvisible = false;
+                  //                       } else {
+                  //                         isvisible = true;
+                  //                       }
+                  //                       count -= 1;
+                  //                     });
+                  //                   },
+                  //                   child: Container(
+                  //                     height: 32,
+                  //                     width: 32,
+                  //                     padding: const EdgeInsets.all(4),
+                  //                     child: SvgPicture.asset(
+                  //                       count == 1
+                  //                           ? 'assets/icons/basket_1.svg'
+                  //                           : 'assets/icons/minus.svg',
+                  //                       width: 3.12,
+                  //                       height: 15,
+                  //                     ),
+                  //                     decoration: BoxDecoration(
+                  //                       borderRadius: BorderRadius.circular(6),
+                  //                       color: Colors.white,
+                  //                       boxShadow: [
+                  //                         BoxShadow(
+                  //                           color: Colors.grey.withOpacity(0.1),
+                  //                           spreadRadius: 1,
+                  //                           blurRadius: 1,
+                  //                           offset: const Offset(0,
+                  //                               1), // changes position of shadow
+                  //                         ),
+                  //                       ],
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //                 const SizedBox(
+                  //                   width: 14,
+                  //                 ),
+                  //                 Text('$count'),
+                  //                 const SizedBox(
+                  //                   width: 14,
+                  //                 ),
+                  //                 InkWell(
+                  //                   onTap: () {
+                  //                     BlocProvider.of<BasketCubit>(context)
+                  //                         .basketAdd(
+                  //                             widget.product.id.toString(),
+                  //                             '1');
+
+                  //                     setState(() {
+                  //                       count += 1;
+                  //                     });
+                  //                   },
+                  //                   child: Container(
+                  //                     height: 32,
+                  //                     width: 32,
+                  //                     padding: const EdgeInsets.all(4),
+                  //                     child: SvgPicture.asset(
+                  //                         'assets/icons/add_1.svg'),
+                  //                     decoration: BoxDecoration(
+                  //                       borderRadius: BorderRadius.circular(6),
+                  //                       color: Colors.white,
+                  //                       boxShadow: [
+                  //                         BoxShadow(
+                  //                           color: Colors.grey.withOpacity(0.1),
+                  //                           spreadRadius: 1,
+                  //                           blurRadius: 1,
+                  //                           offset: const Offset(0,
+                  //                               1), // changes position of shadow
+                  //                         ),
+                  //                       ],
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //     count >= 1
+                  //         ? const SizedBox()
+                  //         : InkWell(
+                  //             onTap: () {
+                  //               BlocProvider.of<BasketCubit>(context).basketAdd(
+                  //                   widget.product.id.toString(), '1');
+                  //               setState(() {
+                  //                 count += 1;
+                  //                 if (count == 0) {
+                  //                   isvisible = false;
+                  //                 } else {
+                  //                   isvisible = true;
+                  //                 }
+                  //               });
+                  //             },
+                  //             child: Container(
+                  //               width: 99,
+                  //               height: 32,
+                  //               margin: const EdgeInsets.only(left: 1),
+                  //               decoration: BoxDecoration(
+                  //                 color: const Color(0xFF1DC4CF),
+                  //                 borderRadius: BorderRadius.circular(10),
+                  //               ),
+                  //               padding: const EdgeInsets.only(
+                  //                   left: 12, right: 12, bottom: 6, top: 6),
+                  //               child: const Center(
+                  //                 child: Text(
+                  //                   'В корзину',
+                  //                   // textAlign: TextAlign.center,
+                  //                   style: TextStyle(
+                  //                       color: Colors.white,
+                  //                       fontWeight: FontWeight.w600),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //   ],
+                  // )
                 ],
               )
             ],

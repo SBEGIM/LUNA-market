@@ -8,10 +8,14 @@ import 'package:haji_market/features/basket/presentation/ui/basket_order_page.da
 import 'package:haji_market/features/drawer/data/bloc/basket_cubit.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/detailed_store_page.dart';
+import 'package:haji_market/features/drawer/presentation/widgets/product_imags_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/specifications_page.dart';
 import '../../../home/presentation/widgets/banner_watceh_recently_widget.dart';
+import '../../../home/presentation/widgets/product_mb_interesting_card.dart';
+import '../../../home/presentation/widgets/product_watching_card.dart';
 import '../../data/bloc/favorite_cubit.dart';
 import '../../data/bloc/product_cubit.dart';
+import '../../data/bloc/product_state.dart';
 
 class DetailCardProductPage extends StatefulWidget {
   final ProductModel product;
@@ -23,13 +27,20 @@ class DetailCardProductPage extends StatefulWidget {
 }
 
 class _DetailCardProductPageState extends State<DetailCardProductPage> {
+  int count = 0;
+  bool isvisible = false;
+
   int? selectedIndex = 0;
   int? selectedIndex2 = 0;
+  int? selectedIndexMonth = 3;
+
   int? selectedIndex3 = -1;
+  int? selectedIndex4 = -1;
+
   double procentPrice = 0;
   int compoundPrice = 0;
 
-  bool isvisible = false;
+  //bool isvisible = false;
   bool inFavorite = false;
   List textDescrp = [
     'Все товары APPLE',
@@ -48,6 +59,15 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
     'x20',
     'x30',
     'x40',
+  ];
+
+  List size = [
+    'XS',
+    'S',
+    'M',
+    'L',
+    'XL',
+    'XXL',
   ];
 
   @override
@@ -90,13 +110,13 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   Icons.ios_share,
                   color: AppColors.kPrimaryColor,
                 ),
-                SizedBox(
-                  width: 10,
-                ),
-                Icon(
-                  Icons.search,
-                  color: AppColors.kPrimaryColor,
-                ),
+                // SizedBox(
+                //   width: 10,
+                // ),
+                // Icon(
+                //   Icons.search,
+                //   color: AppColors.kPrimaryColor,
+                // ),
               ],
             ),
           ),
@@ -128,7 +148,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   padding:
                       EdgeInsets.only(left: 8.0, right: 8, top: 4, bottom: 4),
                   child: Text(
-                    '0.0.12',
+                    '0·0·12',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.white,
@@ -143,7 +163,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(4)),
                   child: Image.asset(
-                    'assets/icons/bs.png',
+                    'assets/icons/bs2.png',
+                    height: 36,
+                    width: 36,
                   )),
               Container(
                 margin: const EdgeInsets.only(
@@ -173,7 +195,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   padding: const EdgeInsets.only(
                       left: 4.0, right: 4, top: 4, bottom: 4),
                   child: Text(
-                    '-${procentPrice.roundToDouble()}%',
+                    '-${procentPrice.toInt()}%',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         color: Colors.white,
@@ -183,20 +205,47 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 ),
               ),
               Container(
-                  margin: const EdgeInsets.only(
-                      left: 335.0, right: 4, top: 260, bottom: 4),
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(4)),
-                  child: SvgPicture.asset(
-                    'assets/icons/fullscreen 1.svg',
-                  )),
+                height: 6,
+                //  alignment: Alignment.r,
+                margin: const EdgeInsets.only(
+                    left: 154.0, right: 20, top: 260, bottom: 4),
+                child: Center(
+                  child: ListView.builder(
+                    itemCount: widget.product.path!.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: ((context, index) {
+                      return Container(
+                        margin: EdgeInsets.only(left: 16),
+                        //  height: 1,
+                        width: 6,
+                        decoration: BoxDecoration(
+                            color: AppColors.kPrimaryColor,
+                            borderRadius: BorderRadius.circular(100)),
+                      );
+                    }),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: (() {
+                  Get.to(() => ProductImages(images: widget.product.path!));
+                }),
+                child: Container(
+                    margin: const EdgeInsets.only(
+                        left: 335.0, right: 4, top: 260, bottom: 4),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(4)),
+                    child: SvgPicture.asset(
+                      'assets/icons/fullscreen 1.svg',
+                    )),
+              ),
             ],
           ),
           const SizedBox(
             height: 8,
           ),
           Container(
-            padding: const EdgeInsets.only(right: 16, left: 16, top: 16),
+            padding: const EdgeInsets.only(right: 16, left: 16, top: 0),
             color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,8 +272,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           BlocProvider.of<ProductCubit>(context).products();
                         },
                         icon: SvgPicture.asset(
-                          'assets/icons/favorite_product_show.svg',
-                          color: inFavorite == true ? Colors.red : Colors.grey,
+                          inFavorite == true
+                              ? 'assets/icons/favorite_product_show.svg'
+                              : 'assets/icons/heart_fill.svg',
+                          color: Colors.red,
                         ))
                   ],
                 ),
@@ -235,7 +286,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   'Артикул: ${widget.product.id}',
                   style: const TextStyle(
                       color: AppColors.kGray300,
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(
@@ -248,7 +299,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       initialRating:
                           double.parse(widget.product.rating.toString()),
                       unratedColor: const Color(0x30F11712),
-                      itemSize: 15,
+                      itemSize: 12,
                       // itemPadding:
                       // const EdgeInsets.symmetric(horizontal: 4.0),
                       ratingWidget: RatingWidget(
@@ -271,7 +322,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       '(${widget.product.count} отзывов)',
                       style: const TextStyle(
                           color: AppColors.kGray300,
-                          fontSize: 14,
+                          fontSize: 12,
                           fontWeight: FontWeight.w400),
                     ),
                   ],
@@ -282,24 +333,67 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 (widget.product.compound != 0 ||
                         widget.product.compound != null)
                     ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ₸',
-                            style: const TextStyle(
-                                color: Colors.red,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
+                          Row(
+                            children: [
+                              Text(
+                                '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ₸',
+                                style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                '${widget.product.price!.toInt()} ₸',
+                                style: const TextStyle(
+                                    decoration: TextDecoration.lineThrough,
+                                    color: AppColors.kGray900,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            '${widget.product.price!.toInt()} ₸',
-                            style: const TextStyle(
-                                decoration: TextDecoration.lineThrough,
-                                color: AppColors.kGray900,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
+                          Row(
+                            children: [
+                              const Text(
+                                'в рассрочку',
+                                style: TextStyle(
+                                    color: AppColors.kGray200,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              const SizedBox(
+                                width: 4,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFFFD54F),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  '${(widget.product.price!.toInt() / 3).roundToDouble()}',
+                                  style: const TextStyle(
+                                      color: AppColors.kGray900,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 4,
+                              ),
+                              const Text(
+                                'x3',
+                                style: TextStyle(
+                                    color: AppColors.kGray200,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
+                              )
+                            ],
                           ),
                         ],
                       )
@@ -312,50 +406,51 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             color: Color(0xFF19191A),
                             fontWeight: FontWeight.w700),
                       ),
+                // const SizedBox(
+                //   height: 8,
+                // ),
+                // Row(
+                //   children: [
+                //     const Text(
+                //       'в рассрочку',
+                //       style: TextStyle(
+                //           color: AppColors.kGray200,
+                //           fontSize: 14,
+                //           fontWeight: FontWeight.w400),
+                //     ),
+                //     const SizedBox(
+                //       width: 4,
+                //     ),
+                //     Container(
+                //       padding: const EdgeInsets.all(8),
+                //       decoration: BoxDecoration(
+                //         color: Color(0xFFFFD54F),
+                //         borderRadius: BorderRadius.circular(8),
+                //       ),
+                //       child: Text(
+                //         '${(widget.product.price!.toInt() / 3).roundToDouble()}',
+                //         style: const TextStyle(
+                //             color: AppColors.kGray900,
+                //             fontSize: 14,
+                //             fontWeight: FontWeight.w500),
+                //       ),
+                //     ),
+                //     const SizedBox(
+                //       width: 4,
+                //     ),
+                //     const Text(
+                //       'x3',
+                //       style: TextStyle(
+                //           color: AppColors.kGray200,
+                //           fontSize: 14,
+                //           fontWeight: FontWeight.w400),
+                //     )
+                //   ],
+                // ),
                 const SizedBox(
                   height: 8,
                 ),
-                Row(
-                  children: [
-                    const Text(
-                      'в рассрочку',
-                      style: TextStyle(
-                          color: AppColors.kGray200,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFFFD54F),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        '${(widget.product.price!.toInt() / 3).roundToDouble()}',
-                        style: const TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    const Text(
-                      'x3',
-                      style: TextStyle(
-                          color: AppColors.kGray200,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
+
                 Container(
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.all(8),
@@ -370,24 +465,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  children: const [
-                    Icon(
-                      Icons.card_giftcard_outlined,
-                      color: AppColors.kPrimaryColor,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Подарим бонусы до 15%',
-                      style: TextStyle(
-                          color: AppColors.kPrimaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ],
-                ),
+                Container(
+                    padding: EdgeInsets.zero,
+                    child: Image.asset('assets/icons/optom_banner.png')),
+
                 const SizedBox(height: 13),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -396,12 +477,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       'Оптом',
                       style: TextStyle(
                         fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.585, // 229,
-                      height: 32,
+                      height: 28,
                       child: ListView.builder(
                         itemCount: bloc.length,
                         shrinkWrap: true,
@@ -430,10 +511,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                         : Colors.white,
                                   ),
                                 ),
-                                padding: const EdgeInsets.only(
-                                  top: 8,
-                                  bottom: 8,
-                                ),
+                                // padding: const EdgeInsets.only(
+                                //   top: 8,
+                                //   bottom: 8,
+                                // ),
+                                alignment: Alignment.center,
                                 child: Text(
                                   bloc[index],
                                   textAlign: TextAlign.center,
@@ -452,6 +534,345 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 14),
+                Container(
+                  height: 14,
+                  child: Row(children: const [
+                    Text(
+                      '95 000 ',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                    ),
+                    Text(
+                      'x10',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey),
+                    ),
+                    Text(' = 950 000',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey)),
+                  ]),
+                ),
+
+                Container(
+                  alignment: Alignment.topRight,
+                  padding: const EdgeInsets.only(right: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          // BlocProvider.of<BasketCubit>(context)
+                          //     .basketMinus(
+                          //         widget.product.id.toString(), '1');
+                          setState(() {
+                            if (count != 0) {
+                              count -= 1;
+                            }
+                          });
+                        },
+                        child: Container(
+                          height: 32,
+                          width: 32,
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 1,
+                                offset: const Offset(
+                                    0, 1), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.remove,
+                            color: AppColors.kPrimaryColor,
+                          ),
+                        ),
+                      ),
+                      // const SizedBox(
+                      //   width: 14,
+                      // ),
+                      Container(
+                        width: 28,
+                        alignment: Alignment.center,
+                        child: Text('$count'),
+                      ),
+                      // const SizedBox(
+                      //   width: 14,
+                      // ),
+                      InkWell(
+                        onTap: () {
+                          // BlocProvider.of<BasketCubit>(context)
+                          //     .basketAdd(
+                          //         widget.product.id.toString(), '1');
+
+                          setState(() {
+                            count += 1;
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          // child: SvgPicture.asset(
+                          //     'assets/icons/add_1.svg'),
+                          child: const Icon(
+                            Icons.add,
+                            color: AppColors.kPrimaryColor,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 1,
+                                offset: const Offset(
+                                    0, 1), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Row(
+                //   children: [
+                // count < 1
+                //     ? SizedBox()
+                //:
+                // count >= 1
+                //     ? const SizedBox()
+                //     : GestureDetector(
+                //         onTap: () {
+                //           // BlocProvider.of<BasketCubit>(context)
+                //           //     .basketAdd(widget.product.id.toString(), '1');
+                //           setState(() {
+                //             count += 1;
+                //             if (count == 0) {
+                //               isvisible = false;
+                //             } else {
+                //               isvisible = true;
+                //             }
+                //           });
+                //         },
+                //         child: Container(
+                //           width: 99,
+                //           height: 32,
+                //           decoration: BoxDecoration(
+                //             color: const Color(0xFF1DC4CF),
+                //             borderRadius: BorderRadius.circular(10),
+                //           ),
+                //           alignment: Alignment.center,
+                //           child: const Text(
+                //             'В корзину',
+                //             // textAlign: TextAlign.center,
+                //             style: TextStyle(
+                //                 fontSize: 14,
+                //                 color: Colors.white,
+                //                 fontWeight: FontWeight.w600),
+                //           ),
+                //         ),
+                //       ),
+                //   ],
+                // ),
+
+                const SizedBox(height: 14),
+
+                Row(
+                  children: const [
+                    Icon(
+                      Icons.card_giftcard_outlined,
+                      color: AppColors.kPrimaryColor,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Экономия 50 000тг',
+                      style: TextStyle(
+                          color: AppColors.kPrimaryColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  //padding: const EdgeInsets.all(16),
+                  // color: Colors.grey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'В рассрочку',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 14),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width *
+                                0.585, // 229,
+                            height: 32,
+                            child: ListView.builder(
+                              itemCount: textInst.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    if (index == 0) {
+                                      selectedIndexMonth = 3;
+                                    } else if (index == 1) {
+                                      selectedIndexMonth = 6;
+                                    } else if (index == 2) {
+                                      selectedIndexMonth = 12;
+                                    } else if (index == 3) {
+                                      selectedIndexMonth = 24;
+                                    } else {
+                                      selectedIndexMonth = 3;
+                                    }
+
+                                    setState(() {
+                                      selectedIndex2 = index;
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 4.0),
+                                    child: Container(
+                                      width: 54,
+                                      decoration: BoxDecoration(
+                                        color: selectedIndex2 == index
+                                            ? Color(0xFFFFD54F)
+                                            : Colors.white,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      padding: const EdgeInsets.only(
+                                        top: 8,
+                                        bottom: 8,
+                                      ),
+                                      child: Text(
+                                        textInst[index],
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            color: AppColors.kGray900,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: 55,
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFFFD54F),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              '${(widget.product.price!.toInt() / selectedIndexMonth!.toInt()).toInt()}',
+                              style: const TextStyle(
+                                  color: AppColors.kGray900,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          Text(
+                            ' x$selectedIndexMonth',
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Container(height: 8),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                const Text(
+                  'Выберите Размер',
+                  style: TextStyle(
+                      color: AppColors.kGray900,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.585, // 229,
+                  height: 28,
+                  child: ListView.builder(
+                    itemCount: size.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedIndex4 = index;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 4.0),
+                          child: Container(
+                            width: 54,
+                            decoration: BoxDecoration(
+                              color: selectedIndex4 == index
+                                  ? Colors.black
+                                  : const Color.fromRGBO(235, 237, 240, 1),
+                              borderRadius: BorderRadius.circular(8),
+                              // border: Border.all(
+                              //   width: 1,
+                              //   color: selectedIndex3 != index
+                              //       ? AppColors.kPrimaryColor
+                              //       : Colors.white,
+                              // ),
+                            ),
+                            // padding: const EdgeInsets.only(
+                            //   top: 8,
+                            //   bottom: 8,
+                            // ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              size[index],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: selectedIndex4 == index
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -463,7 +884,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 12,
                 ),
                 // for (var item in imgList)
                 Container(
@@ -502,102 +923,118 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               ],
             ),
           ),
+          // const SizedBox(height: 8),
+          // Container(
+          //   padding: const EdgeInsets.all(16),
+          //   color: Colors.white,
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+          //           const Text(
+          //             'В рассрочку',
+          //             style:
+          //                 TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+          //           ),
+          //           SizedBox(
+          //             width: MediaQuery.of(context).size.width * 0.585, // 229,
+          //             height: 32,
+          //             child: ListView.builder(
+          //               itemCount: textInst.length,
+          //               shrinkWrap: true,
+          //               physics: const NeverScrollableScrollPhysics(),
+          //               scrollDirection: Axis.horizontal,
+          //               itemBuilder: (context, index) {
+          //                 return InkWell(
+          //                   onTap: () {
+          //                     if (index == 0) {
+          //                       selectedIndexMonth = 3;
+          //                     } else if (index == 1) {
+          //                       selectedIndexMonth = 6;
+          //                     } else if (index == 2) {
+          //                       selectedIndexMonth = 12;
+          //                     } else if (index == 3) {
+          //                       selectedIndexMonth = 24;
+          //                     } else {
+          //                       selectedIndexMonth = 3;
+          //                     }
+
+          //                     setState(() {
+          //                       selectedIndex2 = index;
+          //                     });
+          //                   },
+          //                   child: Padding(
+          //                     padding: const EdgeInsets.only(right: 4.0),
+          //                     child: Container(
+          //                       width: 54,
+          //                       decoration: BoxDecoration(
+          //                         color: selectedIndex2 == index
+          //                             ? Color(0xFFFFD54F)
+          //                             : Colors.white,
+          //                         borderRadius: BorderRadius.circular(8),
+          //                       ),
+          //                       padding: const EdgeInsets.only(
+          //                         top: 8,
+          //                         bottom: 8,
+          //                       ),
+          //                       child: Text(
+          //                         textInst[index],
+          //                         textAlign: TextAlign.center,
+          //                         style: const TextStyle(
+          //                             color: AppColors.kGray900,
+          //                             fontSize: 14,
+          //                             fontWeight: FontWeight.w400),
+          //                       ),
+          //                     ),
+          //                   ),
+          //                 );
+          //               },
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //       Row(
+          //         children: [
+          //           Container(
+          //             width: 55,
+          //             padding: const EdgeInsets.all(8),
+          //             decoration: BoxDecoration(
+          //               color: Color(0xFFFFD54F),
+          //               borderRadius: BorderRadius.circular(8),
+          //             ),
+          //             alignment: Alignment.center,
+          //             child: Text(
+          //               '${(widget.product.price!.toInt() / selectedIndexMonth!.toInt()).toInt()}',
+          //               style: const TextStyle(
+          //                   color: AppColors.kGray900,
+          //                   fontSize: 14,
+          //                   fontWeight: FontWeight.w500),
+          //             ),
+          //           ),
+          //           Text(
+          //             ' x$selectedIndexMonth',
+          //             style: const TextStyle(
+          //                 fontSize: 14, fontWeight: FontWeight.w400),
+          //           ),
+          //         ],
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          //const SizedBox(height: 8),
           Container(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Продавцы',
-                  style: TextStyle(
-                    color: AppColors.kGray900,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('В рассрочку'),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.585, // 229,
-                      height: 32,
-                      child: ListView.builder(
-                        itemCount: textInst.length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              setState(() {
-                                selectedIndex2 = index;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 4.0),
-                              child: Container(
-                                width: 54,
-                                decoration: BoxDecoration(
-                                  color: selectedIndex2 == index
-                                      ? Color(0xFFFFD54F)
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: const EdgeInsets.only(
-                                  top: 8,
-                                  bottom: 8,
-                                ),
-                                child: Text(
-                                  textInst[index],
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      color: AppColors.kGray900,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    // Row(
-                    //   // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    //   children: const [
-                    //     Rasrochka(
-                    //       num: '3 мес',
-                    //       color: Colors.yellow,
-                    //     ),
-                    //     SizedBox(
-                    //       width: 4,
-                    //     ),
-                    //     Rasrochka(
-                    //       num: '6 мес',
-                    //       color: Colors.white,
-                    //     ),
-                    //     SizedBox(
-                    //       width: 4,
-                    //     ),
-                    //     Rasrochka(
-                    //       num: '9 мес',
-                    //       color: Colors.white,
-                    //     ),
-                    //     SizedBox(
-                    //       width: 4,
-                    //     ),
-                    //     Rasrochka(
-                    //       num: '12 мес',
-                    //       color: Colors.white,
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
-                )
-              ],
+            padding: EdgeInsets.only(top: 16, left: 16),
+            color: Colors.white,
+            alignment: Alignment.centerLeft,
+            child: const Text(
+              'Продавцы',
+              style: TextStyle(
+                color: AppColors.kGray900,
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+              ),
             ),
           ),
           Container(
@@ -609,149 +1046,209 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 shrinkWrap: true,
                 itemCount: widget.product.shops!.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      // mainAxisAlignment: ,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '${widget.product.shops![index].shop!.name}',
-                              style: const TextStyle(
-                                  color: AppColors.kGray900,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  '(${widget.product.shop!.id} отзывов)',
-                                  style: const TextStyle(
-                                      color: AppColors.kGray300,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                RatingBar(
-                                  ignoreGestures: true,
-                                  initialRating: 2,
-                                  unratedColor: const Color(0x30F11712),
-                                  itemSize: 15,
-                                  // itemPadding:
-                                  // const EdgeInsets.symmetric(horizontal: 4.0),
-                                  ratingWidget: RatingWidget(
-                                    full: const Icon(
-                                      Icons.star,
-                                      color: Color(0xFFFFD54F),
-                                    ),
-                                    half: const Icon(
-                                      Icons.star,
-                                      color: Colors.grey,
-                                    ),
-                                    empty: const Icon(
-                                      Icons.star,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  onRatingUpdate: (double value) {},
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '${widget.product.price} ₸',
-                              style: const TextStyle(
-                                  color: AppColors.kGray900,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFFFD54F),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(
-                                    '${(widget.product.price!.toInt() / 3).round()}',
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailStorePage(
+                                shop: widget.product.shops![index] as Shops)),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // mainAxisAlignment: ,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${widget.product.shops![index].shop!.name}',
+                                style: const TextStyle(
+                                    color: AppColors.kGray900,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    '(${widget.product.shop!.id} отзывов)',
                                     style: const TextStyle(
+                                        color: AppColors.kGray300,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  RatingBar(
+                                    ignoreGestures: true,
+                                    initialRating: 2,
+                                    unratedColor: const Color(0x30F11712),
+                                    itemSize: 14,
+                                    // itemPadding:
+                                    // const EdgeInsets.symmetric(horizontal: 4.0),
+                                    ratingWidget: RatingWidget(
+                                      full: const Icon(
+                                        Icons.star,
+                                        color: Color(0xFFFFD54F),
+                                      ),
+                                      half: const Icon(
+                                        Icons.star,
+                                        color: Colors.grey,
+                                      ),
+                                      empty: const Icon(
+                                        Icons.star,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    onRatingUpdate: (double value) {},
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${widget.product.price} ₸',
+                                style: const TextStyle(
+                                    color: AppColors.kGray900,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 22,
+                                    width: 48,
+                                    //padding: const EdgeInsets.all(8),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFFFD54F),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      '${(widget.product.price!.toInt() / 3).round()}',
+                                      style: const TextStyle(
+                                          color: AppColors.kGray900,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  const Text(
+                                    'х3 мес',
+                                    style: TextStyle(
+                                        color: AppColors.kGray200,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                    text: const TextSpan(
+                                      text: "Доставка ",
+                                      style: TextStyle(
+                                          color: AppColors.kGray900,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: 'завтра, ',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w700,
+                                            // decoration: TextDecoration.underline,
+                                            // decorationColor: Colors.red,
+                                            decorationStyle:
+                                                TextDecorationStyle.wavy,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: 'бесплатно',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  //  const Text(
+                                  //     'Доставка завтра, бесплатно \n',
+                                  //     style: TextStyle(
+                                  //         color: AppColors.kGray900,
+                                  //         fontSize: 14,
+                                  //         fontWeight: FontWeight.w400),
+                                  //   ),
+                                  const Text(
+                                    'Самовывоз: завтра',
+                                    style: TextStyle(
                                         color: AppColors.kGray900,
                                         fontSize: 14,
-                                        fontWeight: FontWeight.w500),
+                                        fontWeight: FontWeight.w400),
+                                  )
+                                ],
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  BlocProvider.of<BasketCubit>(context)
+                                      .basketAdd(
+                                          widget
+                                              .product.shops![index].productId,
+                                          '1');
+                                  setState(() {
+                                    isvisible = true;
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFF1DC4CF),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  padding: const EdgeInsets.only(
+                                      top: 8, bottom: 8, left: 16, right: 16),
+                                  child: const Text(
+                                    'Выбрать',
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 4,
-                                ),
-                                const Text(
-                                  'х3 мес',
-                                  style: TextStyle(
-                                      color: AppColors.kGray200,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text(
-                                  'Доставка завтра, бесплатно',
-                                  style: TextStyle(
-                                      color: AppColors.kGray900,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                Text(
-                                  'Самовывоз: завтра',
-                                  style: TextStyle(
-                                      color: AppColors.kGray900,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
-                                )
-                              ],
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DetailStorePage()),
-                                );
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: const Color(0xFF1DC4CF),
-                                    borderRadius: BorderRadius.circular(10)),
-                                padding: const EdgeInsets.only(
-                                    top: 8, bottom: 8, left: 16, right: 16),
-                                child: const Text(
-                                  'Выбрать',
-                                  style: TextStyle(color: Colors.white),
-                                ),
                               ),
+                            ],
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 12),
+                            width: 130,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Безрпасная сделка',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.kPrimaryColor,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                SvgPicture.asset(
+                                  'assets/icons/carbon_security.svg',
+                                )
+                              ],
                             ),
-                          ],
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -789,6 +1286,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   ),
                 ),
                 const Divider(
+                  height: 0,
                   color: AppColors.kGray400,
                 ),
                 Padding(
@@ -815,7 +1313,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         Icon(
                           Icons.arrow_forward_ios,
                           color: AppColors.kPrimaryColor,
-                          size: 16,
+                          size: 14,
                         )
                       ],
                     ),
@@ -828,36 +1326,36 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             height: 10,
           ),
           Container(
-              padding: const EdgeInsets.all(16),
+              height: 170,
               color: Colors.white,
               child: ListView.separated(
                 shrinkWrap: true,
                 itemCount: textDescrp.length,
                 physics: const NeverScrollableScrollPhysics(),
                 separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(),
+                    const Divider(height: 0),
                 itemBuilder: (BuildContext context, int index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            textDescrp[index],
-                            style: const TextStyle(
-                                color: AppColors.kGray900,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                      const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                        color: AppColors.kGray400,
-                      )
-                    ],
+                  return Container(
+                    padding:
+                        const EdgeInsets.only(left: 14, top: 14, right: 14),
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          textDescrp[index],
+                          style: const TextStyle(
+                              color: AppColors.kGray900,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 14,
+                          color: AppColors.kGray400,
+                        )
+                      ],
+                    ),
                   );
                 },
               )),
@@ -880,14 +1378,52 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(children: const <Widget>[
-                      BannerWatcehRecently(),
-                      BannerWatcehRecently(),
-                      BannerWatcehRecently(),
-                      BannerWatcehRecently(),
-                    ])),
+                BlocConsumer<ProductCubit, ProductState>(
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      if (state is ErrorState) {
+                        return Center(
+                          child: Text(
+                            state.message,
+                            style:
+                                TextStyle(fontSize: 20.0, color: Colors.grey),
+                          ),
+                        );
+                      }
+                      if (state is LoadingState) {
+                        return const Center(
+                            child: CircularProgressIndicator(
+                                color: Colors.indigoAccent));
+                      }
+
+                      if (state is LoadedState) {
+                        return SizedBox(
+                            height: 286,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.productModel.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailCardProductPage(
+                                                product:
+                                                    state.productModel[index])),
+                                  ),
+                                  child: ProductMbInterestingCard(
+                                    product: state.productModel[index],
+                                  ),
+                                );
+                              },
+                            ));
+                      } else {
+                        return const Center(
+                            child: CircularProgressIndicator(
+                                color: Colors.indigoAccent));
+                      }
+                    }),
               ],
             ),
           ),
@@ -901,7 +1437,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'С этим товаром пакупают',
+                  'С этим товаром покупают',
                   style: TextStyle(
                       color: AppColors.kGray900,
                       fontSize: 16,
@@ -910,19 +1446,64 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(children: const <Widget>[
-                      BannerWatcehRecently(),
-                      BannerWatcehRecently(),
-                      BannerWatcehRecently(),
-                      BannerWatcehRecently(),
-                    ])),
+                BlocConsumer<ProductCubit, ProductState>(
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      if (state is ErrorState) {
+                        return Center(
+                          child: Text(
+                            state.message,
+                            style:
+                                TextStyle(fontSize: 20.0, color: Colors.grey),
+                          ),
+                        );
+                      }
+                      if (state is LoadingState) {
+                        return const Center(
+                            child: CircularProgressIndicator(
+                                color: Colors.indigoAccent));
+                      }
+
+                      if (state is LoadedState) {
+                        return Container(
+                            height: 608,
+                            child: GridView.builder(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 1.6,
+                                      crossAxisSpacing: 20,
+                                      mainAxisSpacing: 2),
+                              itemCount: 4,
+                              itemBuilder: (BuildContext ctx, index) {
+                                return GestureDetector(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailCardProductPage(
+                                                product:
+                                                    state.productModel[index])),
+                                  ),
+                                  child: ProductWatchingCard(
+                                    product: state.productModel[index],
+                                  ),
+                                );
+                              },
+                            ));
+                      } else {
+                        return const Center(
+                            child: CircularProgressIndicator(
+                                color: Colors.indigoAccent));
+                      }
+                    }),
               ],
             ),
           ),
           const SizedBox(
-            height: 90,
+            height: 70,
           ),
         ],
       ),
@@ -976,7 +1557,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               },
               child: Container(
                   height: 46,
-                  width: 168,
+                  width: 175,
                   // width: MediaQuery.of(context).size.width * 0.490,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -1003,44 +1584,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             )),
             )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class Rasrochka extends StatelessWidget {
-  final String num;
-  final Color color;
-  const Rasrochka({
-    Key? key,
-    required this.color,
-    required this.num,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 4.0),
-      child: Container(
-        width: 54,
-
-        // height: 0,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        padding: const EdgeInsets.only(
-          top: 8,
-          bottom: 8,
-        ),
-        child: Text(
-          num,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 14,
-              fontWeight: FontWeight.w400),
         ),
       ),
     );

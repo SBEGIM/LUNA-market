@@ -34,6 +34,8 @@ class _SearchProductPageState extends State<SearchProductPage> {
           iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
           backgroundColor: Colors.white,
           elevation: 0,
+          centerTitle: false,
+          titleSpacing: 0,
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -101,19 +103,19 @@ class _SearchProductPageState extends State<SearchProductPage> {
 
             if (state is LoadedState) {
               return ListView(shrinkWrap: true, children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  color: AppColors.kBackgroundColor,
-                  padding: const EdgeInsets.only(
-                      left: 16, right: 16, top: 8, bottom: 8),
-                  child: const Text(
-                    'Поиск продуктов',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.kGray900),
-                  ),
-                ),
+                // Container(
+                //   width: MediaQuery.of(context).size.width,
+                //   color: AppColors.kBackgroundColor,
+                //   padding: const EdgeInsets.only(
+                //       left: 16, right: 16, top: 8, bottom: 8),
+                //   child: const Text(
+                //     'Поиск продуктов',
+                //     style: TextStyle(
+                //         fontSize: 16,
+                //         fontWeight: FontWeight.w500,
+                //         color: AppColors.kGray900),
+                //   ),
+                // ),
                 ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -129,6 +131,14 @@ class _SearchProductPageState extends State<SearchProductPage> {
                                 //       builder: (context) => ProductsPage(
                                 //           cats: state.productModel[index])),
                                 // );
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          DetailCardProductPage(
+                                              product:
+                                                  state.productModel[index]),
+                                    ));
                               },
                               child: UnderCatalogListTile(
                                 title:
@@ -172,18 +182,7 @@ class UnderCatalogListTile extends StatelessWidget {
             title,
             style: AppTextStyles.chanheLangTextStyle,
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        DetailCardProductPage(product: product),
-                  ));
-            },
-            child: SvgPicture.asset('assets/icons/back_menu.svg',
-                width: 12, height: 16),
-          )
+          SvgPicture.asset('assets/icons/back_menu.svg', width: 12, height: 16),
         ],
       ),
     );

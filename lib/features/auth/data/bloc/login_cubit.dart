@@ -61,4 +61,14 @@ class LoginCubit extends Cubit<LoginState> {
       // emit(ErrorState(message: 'Ошибка'));
     }
   }
+
+  Future<void> edit(String name, String phone, String avatar) async {
+    try {
+      emit(LoadingState());
+      await loginRepository.edit(name, phone, avatar);
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: e.toString()));
+    }
+  }
 }

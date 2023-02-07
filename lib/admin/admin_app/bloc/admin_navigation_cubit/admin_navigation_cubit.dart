@@ -14,6 +14,7 @@ class AdminNavigationCubit extends Cubit<AdminNavigationState> {
       tapeAdmin: () => emit(const TapeAdminState()),
       homeAdmin: () => emit(const HomeAdminState()),
       myOrderAdmin: () => emit(const MyOrderAdminState()),
+      chatAdmin: () => emit(const ChatAdminState()),
       profile: () => emit(const ProfileState()),
       adminAuth: () => emit(const AdminAuthState()),
     );

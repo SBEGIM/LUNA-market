@@ -22,70 +22,102 @@ class GridOptionsPopular extends StatelessWidget {
   const GridOptionsPopular({Key? key, this.layout}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Stack(
-          children: [
-            Container(
-              height: 80,
-              width: 115,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        "http://80.87.202.73:8001/storage/${layout!.image!}"),
-                    fit: BoxFit.cover,
-                  )),
-            ),
-            if (layout!.credit == 1)
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: const Color(0xffF9F9F),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 12, left: 10),
+                alignment: Alignment.center,
+                height: 90,
+                width: 90,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                          "http://80.87.202.73:8001/storage/${layout!.image!}",
+                        ),
+                        fit: BoxFit.contain),
+                    color: const Color(0xFFF0F5F5)),
+                // child: Image.network(
+                //   "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
+                //   width: 70,
+                // ),
+              ),
+              // Container(
+              //   height: 154,
+              //   width: 108,
+              //   decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(8),
+              //       image: DecorationImage(
+              //         image: NetworkImage(
+              //             "http://80.87.202.73:8001/storage/${layout!.image!}"),
+              //         fit: BoxFit.cover,
+              //       )),
+
+              //   // child: CircleAvatar(),
+              // ),
+              if (layout!.credit == 1)
+                Container(
+                  width: 46,
+                  height: 22,
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(31, 196, 207, 1),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  margin: const EdgeInsets.only(top: 80, left: 4),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    "0·0·12",
+                    style: AppTextStyles.bannerTextStyle,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               Container(
                 width: 46,
                 height: 22,
                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(31, 196, 207, 1),
+                  color: Colors.black,
                   borderRadius: BorderRadius.circular(6),
                 ),
-                margin: const EdgeInsets.only(top: 8, left: 4),
+                margin: const EdgeInsets.only(top: 105, left: 4),
                 alignment: Alignment.center,
-                child: const Text(
-                  "0·0·12",
+                child: Text(
+                  "${layout!.bonus.toString()}% Б",
                   style: AppTextStyles.bannerTextStyle,
                   textAlign: TextAlign.center,
                 ),
               ),
-            Container(
-              width: 46,
-              height: 22,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(6),
+              Container(
+                margin: const EdgeInsets.only(top: 130, left: 4),
+                alignment: Alignment.center,
+                child: Text(
+                  layout!.title!,
+                  style: AppTextStyles.categoryTextStyle,
+                  textAlign: TextAlign.center,
+                ),
               ),
-              margin: layout!.credit == 1
-                  ? const EdgeInsets.only(top: 34, left: 4)
-                  : const EdgeInsets.only(top: 8, left: 4),
-              alignment: Alignment.center,
-              child: Text(
-                "${layout!.bonus.toString()}% Б",
-                style: AppTextStyles.bannerTextStyle,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
+            ],
+          ),
 
-        // Center(
-        //   child: Image.asset(
-        //
-        //   ),
-        // ),
-        const SizedBox(
-          height: 8,
-        ),
-        Text(layout!.title!, style: AppTextStyles.categoryTextStyle),
-        // Flexible(
-        //     child:
-      ],
+          // Center(
+          //   child: Image.asset(
+          //
+          //   ),
+          // ),
+          // const SizedBox(
+          //   height: 8,
+          // ),
+          // Flexible(
+          //     child:
+        ],
+      ),
     );
   }
 }

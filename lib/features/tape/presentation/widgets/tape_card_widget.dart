@@ -18,49 +18,56 @@ class TapeCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Image.network(
-            // 'assets/images/tape.png',
-            "http://80.87.202.73:8001/storage/${tape.image}"),
-        InkWell(
-          onTap: () {
-            BlocProvider.of<NavigationCubit>(context)
-                .emit(DetailTapeState(index));
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => const Base(
-            //             index: 4,
-            //           )),
-            // );
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(right: 8.0, top: 8),
-            child: Align(
-                alignment: Alignment.topRight,
-                child: SvgPicture.asset('assets/icons/play.svg')),
-          ),
-        ),
-        Container(
-          alignment: Alignment.center,
-          margin: const EdgeInsets.only(top: 225),
-          decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.5),
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(0),
-              topRight: Radius.circular(0),
-              bottomLeft: Radius.circular(8),
-              bottomRight: Radius.circular(8),
+    return SizedBox(
+      width: double.infinity,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.network(
+              // 'assets/images/tape.png',
+              "http://80.87.202.73:8001/storage/${tape.image}",
+              fit: BoxFit.cover,
             ),
           ),
-          child: Text(
-            '${tape.shop!.name}',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 12),
+          InkWell(
+            onTap: () {
+              BlocProvider.of<NavigationCubit>(context)
+                  .emit(DetailTapeState(index, tape.shop!.name!));
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //       builder: (context) => const Base(
+              //             index: 4,
+              //           )),
+              // );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 8.0, top: 8),
+              child: Align(
+                  alignment: Alignment.topRight,
+                  child: SvgPicture.asset('assets/icons/play.svg')),
+            ),
           ),
-        ),
-      ],
+          // Container(
+          //   alignment: Alignment.center,
+          //   margin: const EdgeInsets.only(top: 225),
+          //   decoration: BoxDecoration(
+          //     color: Colors.grey.withOpacity(0.5),
+          //     borderRadius: const BorderRadius.only(
+          //       topLeft: Radius.circular(0),
+          //       topRight: Radius.circular(0),
+          //       bottomLeft: Radius.circular(8),
+          //       bottomRight: Radius.circular(8),
+          //     ),
+          //   ),
+          //   child: Text(
+          //     '${tape.shop!.name}',
+          //     textAlign: TextAlign.center,
+          //     style: TextStyle(color: Colors.white, fontSize: 12),
+          //   ),
+          // ),
+        ],
+      ),
     );
   }
 }

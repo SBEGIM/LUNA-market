@@ -26,6 +26,9 @@ class ForgotPasswordPage extends StatefulWidget {
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   TextEditingController phoneControllerAuth =
       MaskedTextController(mask: '+7(000)-000-00-00');
+
+  bool _visibleIconView = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,6 +77,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     child: Column(
                       children: [
                         ListTile(
+                            horizontalTitleGap: 5,
                             leading: SvgPicture.asset(
                               'assets/icons/phone.svg',
                               height: 24,
@@ -91,16 +95,26 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   // borderRadius: BorderRadius.circular(3),
                                 ),
                               ),
+                              onChanged: (value) {
+                                phoneControllerAuth.text.length.toInt() != 0
+                                    ? _visibleIconView = true
+                                    : _visibleIconView = false;
+                                setState(() {});
+                              },
                             ),
                             trailing: GestureDetector(
                               onTap: () {
                                 phoneControllerAuth.clear();
+                                _visibleIconView = false;
+                                setState(() {});
                               },
-                              child: SvgPicture.asset(
-                                'assets/icons/delete_circle.svg',
-                                height: 15,
-                                width: 15,
-                              ),
+                              child: _visibleIconView == true
+                                  ? SvgPicture.asset(
+                                      'assets/icons/delete_circle.svg',
+                                      height: 15,
+                                      width: 15,
+                                    )
+                                  : const SizedBox(width: 5),
                             )),
                       ],
                     ),

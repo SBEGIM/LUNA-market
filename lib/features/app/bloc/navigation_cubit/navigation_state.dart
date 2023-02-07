@@ -4,7 +4,7 @@ part of 'navigation_cubit.dart';
 abstract class NavigationState with _$NavigationState {
   const factory NavigationState.home() = HomeState;
   const factory NavigationState.tape() = TapeState;
-  factory NavigationState.detailTape(int index) = DetailTapeState;
+  factory NavigationState.detailTape(int index, String name) = DetailTapeState;
   const factory NavigationState.favorite() = FavoriteState;
   const factory NavigationState.basket() = BasketState;
   const factory NavigationState.myOrder() = MyOrderState;

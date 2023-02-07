@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 mixin AppColors {
   static const Color kBackgroundColor = Color(0xFFF1F1F1);
   static const Color kPrimaryColor = Color(0xFF1DC4CF);
+  static const Color kBlueColor = Color.fromRGBO(129, 222, 232, 1);
   static const Color kPinkColor = Color(0xffEE46BC);
   static const Color kLightBlackColor = Color(0xff1F1F1F);
   static const Color kGray = Color(0xffF9FAFB);
@@ -65,9 +66,9 @@ mixin AppTextStyles {
     fontWeight: FontWeight.w400,
   );
   static const chanheLangTextStyle = TextStyle(
-    fontSize: 17,
+    fontSize: 16,
     color: AppColors.kGray900,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
   );
   static const drawer1TextStyle = TextStyle(
     fontSize: 16,
@@ -84,14 +85,14 @@ mixin AppTextStyles {
     color: AppColors.kPrimaryColor,
     fontWeight: FontWeight.w500,
   );
-    static const kcolorPartnerTextStyle = TextStyle(
+  static const kcolorPartnerTextStyle = TextStyle(
     fontSize: 16,
     color: AppColors.kPrimaryColor,
     fontWeight: FontWeight.w400,
   );
 
   static const categoryTextStyle = TextStyle(
-    fontSize: 15,
+    fontSize: 12,
     color: AppColors.kGray900,
     fontWeight: FontWeight.w500,
   );

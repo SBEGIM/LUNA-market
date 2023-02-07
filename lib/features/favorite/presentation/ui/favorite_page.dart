@@ -62,37 +62,21 @@ class _FavoritePageState extends State<FavoritePage> {
               }
 
               if (state is LoadedState) {
-                return Column(
-                  children: [
-                    // Padding(
-                    //   padding: EdgeInsets.only(left: 8.0, right: 8, top: 16, bottom: 12),
-                    //   child: Text(
-                    //     'Найдено ${state.productModel.length} товаров',
-                    //     style: AppTextStyles.kGray400Text,
-                    //     textAlign: TextAlign.start,
-                    //   ),
-                    // ),
-                    SizedBox(
-                      height: 530,
-                      child: ListView.builder(
-                          // physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: state.productModel.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DetailCardProductPage(
-                                        product: state.productModel[index])),
-                              ),
-                              child: FavoriteProductsCardWidget(
-                                  product: state.productModel[index]),
-                            );
-                          }),
-                    )
-                  ],
-                );
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: state.productModel.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailCardProductPage(
+                                  product: state.productModel[index])),
+                        ),
+                        child: FavoriteProductsCardWidget(
+                            product: state.productModel[index]),
+                      );
+                    });
               } else {
                 return const Center(
                     child:

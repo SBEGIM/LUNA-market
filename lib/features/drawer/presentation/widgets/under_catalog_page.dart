@@ -72,7 +72,7 @@ class _UnderCatalogPageState extends State<UnderCatalogPage> {
                 hintText: 'Поиск',
                 hintStyle: TextStyle(
                   color: AppColors.kGray300,
-                  fontSize: 18,
+                  fontSize: 16,
                 ),
                 border: InputBorder.none,
               ),
@@ -108,7 +108,7 @@ class _UnderCatalogPageState extends State<UnderCatalogPage> {
                     '${widget.cats.name}',
                     style: const TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w400,
                         color: AppColors.kGray900),
                   ),
                 ),
@@ -182,7 +182,7 @@ class UnderCatalogListTile extends StatelessWidget {
             title,
             style: AppTextStyles.chanheLangTextStyle,
           ),
-          SvgPicture.asset('assets/icons/back_menu.svg', width: 12, height: 16),
+          SvgPicture.asset('assets/icons/back_menu.svg', width: 12, height: 14),
         ],
       ),
     );

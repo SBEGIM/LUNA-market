@@ -1,3 +1,6 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "dart.flutterShowEmulators": "always",
+    "dart.devToolsLocation": "beside",
+    "dart.checkForSdkUpdates": true
 }

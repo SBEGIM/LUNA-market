@@ -11,12 +11,13 @@ class ColorCubit extends Cubit<ColorState> {
 
   List<Cats> _colors = [];
 
-  Future<void> brands() async {
+  Future<List<Cats>?> brands() async {
     try {
       emit(LoadingState());
       final List<Cats> data = await colorRepository.get();
       _colors = data;
       emit(LoadedState(data));
+      return _colors;
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));

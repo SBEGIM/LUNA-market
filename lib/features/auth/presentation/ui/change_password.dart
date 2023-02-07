@@ -13,27 +13,31 @@ import 'package:haji_market/features/home/presentation/ui/home_page.dart';
 import '../../data/bloc/sms_cubit.dart';
 
 class ChangePasswordPage extends StatefulWidget {
-
   final String textEditingController;
-  const ChangePasswordPage({Key? key ,required this.textEditingController,})
-: super(key: key);
+  const ChangePasswordPage({
+    Key? key,
+    required this.textEditingController,
+  }) : super(key: key);
 
   @override
   State<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
-
   TextEditingController passwordNew = TextEditingController();
   TextEditingController passwordRepeat = TextEditingController();
 
- void test(){
-   log("11 ${widget.textEditingController}");
- }
+  bool _visibleIconView = false;
+  bool _visibleIconViewRepeat = false;
+  bool _passwordVisible = false;
+
+  void test() {
+    log("11 ${widget.textEditingController}");
+  }
 
   @override
   void initState() {
-     test();
+    test();
     super.initState();
   }
 
@@ -56,18 +60,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             Navigator.pop(context);
           }),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 22.0),
-            child: CustomDropButton(
-              onTap: () {},
-            ),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 22.0),
+        //     child: CustomDropButton(
+        //       onTap: () {},
+        //     ),
+        //   ),
+        // ],
       ),
       body: BlocConsumer<SmsCubit, SmsState>(listener: (context, state) {
         if (state is ResetSuccessState) {
-          Get.offAll(() => new  ViewAuthRegisterPage());
+          Get.offAll(() => new ViewAuthRegisterPage());
           // Navigator.push(
           //   context,
           //   MaterialPageRoute(builder: (context) => const Base()),
@@ -78,8 +82,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           return Container(
             color: AppColors.kBackgroundColor,
             child: Padding(
-              padding:
-              const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 45),
+              padding: const EdgeInsets.only(
+                  left: 16.0, right: 16, top: 16, bottom: 45),
               child: Column(
                 children: [
                   Container(
@@ -87,31 +91,55 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     child: Column(
                       children: [
                         ListTile(
+                          horizontalTitleGap: 0,
                           leading: SvgPicture.asset(
                             'assets/icons/password.svg',
                             height: 24,
                             width: 24,
                           ),
-                          title:  TextField(
+                          title: TextField(
                             // inputFormatters: [maskFormatter],
                             controller: passwordNew,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
-                              hintText: ' Пароль',
+                              hintText: 'Новый пароль',
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white),
                                 // borderRadius: BorderRadius.circular(3),
                               ),
                             ),
+                            onChanged: (value) {
+                              passwordNew.text.length.toInt() == 0
+                                  ? _visibleIconView = false
+                                  : _visibleIconView = true;
+                              setState(() {});
+                            },
+                          ),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                            child: _visibleIconView == true
+                                ? Icon(
+                                    _passwordVisible
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color:
+                                        const Color.fromRGBO(177, 179, 181, 1),
+                                  )
+                                : const SizedBox(width: 5),
                           ),
                         ),
                         ListTile(
+                          horizontalTitleGap: 0,
                           leading: SvgPicture.asset(
                             'assets/icons/password.svg',
                             height: 24,
                             width: 24,
                           ),
-                          title:  TextField(
+                          title: TextField(
                             // inputFormatters: [maskFormatter],
                             controller: passwordRepeat,
                             decoration: const InputDecoration(
@@ -122,6 +150,28 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                 // borderRadius: BorderRadius.circular(3),
                               ),
                             ),
+                            onChanged: (value) {
+                              passwordRepeat.text.length.toInt() == 0
+                                  ? _visibleIconViewRepeat = false
+                                  : _visibleIconViewRepeat = true;
+                              setState(() {});
+                            },
+                          ),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                            child: _visibleIconViewRepeat == true
+                                ? Icon(
+                                    _passwordVisible
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color:
+                                        const Color.fromRGBO(177, 179, 181, 1),
+                                  )
+                                : const SizedBox(width: 5),
                           ),
                         ),
                       ],
@@ -131,13 +181,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     height: 16,
                   ),
                   const Center(
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      'Для смены пароля введите новый пароль, а затем подтвердите',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400),
+                    child: SizedBox(
+                      width: 300,
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        'Для смены пароля введите новый пароль, а затем подтвердите',
+                        style: TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
                     ),
                   ),
                   const Spacer(),
@@ -152,7 +205,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           log(widget.textEditingController);
                           log('1111');
                           final sms = BlocProvider.of<SmsCubit>(context);
-                          sms.passwordReset(widget.textEditingController,passwordRepeat.text);
+                          sms.passwordReset(widget.textEditingController,
+                              passwordRepeat.text);
                         },
                         color: Colors.white,
                         width: 343),

@@ -46,7 +46,7 @@ class _BonusPageState extends State<BonusPage> {
       body: Column(
         children: [
           const SizedBox(
-            height: 10,
+            height: 8,
           ),
           Container(
             padding: const EdgeInsets.all(16),
@@ -112,7 +112,7 @@ class _BonusPageState extends State<BonusPage> {
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 16,
           ),
           InkWell(
             onTap: () {
@@ -148,7 +148,7 @@ class _BonusPageState extends State<BonusPage> {
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 8,
           ),
           InkWell(
             onTap: () {

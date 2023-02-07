@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_orders_admin/data/models/basket_admin_order_model.dart';
 import 'package:haji_market/core/common/constants.dart';
@@ -10,7 +9,7 @@ import '../../data/bloc/basket_admin_cubit.dart';
 
 class DetailMyOrdersPage extends StatefulWidget {
   final BasketAdminOrderModel basket;
-  DetailMyOrdersPage({required this.basket, Key? key}) : super(key: key);
+  const DetailMyOrdersPage({required this.basket, Key? key}) : super(key: key);
 
   @override
   State<DetailMyOrdersPage> createState() => _DetailMyOrdersPageState();

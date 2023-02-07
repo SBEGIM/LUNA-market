@@ -1,21 +1,24 @@
+import 'package:haji_market/features/tape/presentation/ui/detail_tape_card_page.dart';
+
 class ProductModel {
   ProductModel({
-      int? id,
-      String? name,
-      int? price,
-      int? compound,
-      String? description,
-      String? sizeTitle,
-      List<String>? size,
-      List<String>? color,
-      List<String>? path,
-      Shop? shop,
-      int? rating,
-      int? count,
-      bool? inBasket,
-      int? basketCount,
-      bool? inFavorite,
-      List<Shops>? shops,}){
+    int? id,
+    String? name,
+    int? price,
+    int? compound,
+    String? description,
+    String? sizeTitle,
+    List<String>? size,
+    List<String>? color,
+    List<String>? path,
+    Shop? shop,
+    int? rating,
+    int? count,
+    bool? inBasket,
+    int? basketCount,
+    bool? inFavorite,
+    List<Shops>? shops,
+  }) {
     _id = id;
     _name = name;
     _price = price;
@@ -26,13 +29,13 @@ class ProductModel {
     _color = color;
     _path = path;
     _shop = shop;
-    _rating= rating;
+    _rating = rating;
     _count = count;
     _inBasket = inBasket;
     _basketCount = basketCount;
     _inFavorite = inFavorite;
     _shops = shops;
-}
+  }
 
   ProductModel.fromJson(dynamic json) {
     _id = json['id'];
@@ -115,37 +118,42 @@ class ProductModel {
     }
     return map;
   }
-
 }
 
 class Shops {
   Shops({
-      Shop? shop,
-      int? productId,
-      String? sizeTitle,
-      List<String>? size,
-      List<String>? color,}){
+    Shop? shop,
+    int? productId,
+    String? sizeTitle,
+    bool? inSubs,
+    List<String>? size,
+    List<String>? color,
+  }) {
     _shop = shop;
+    _inSubs = inSubs;
     _productId = productId;
     _sizeTitle = sizeTitle;
     _size = size;
     _color = color;
-}
+  }
 
   Shops.fromJson(dynamic json) {
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
+    _inSubs = json['in_subscribes'];
     _productId = json['product_id'];
     _sizeTitle = json['size_title'];
     _size = json['size'] != null ? json['size'].cast<String>() : [];
     _color = json['color'] != null ? json['color'].cast<String>() : [];
   }
   Shop? _shop;
+  bool? _inSubs;
   int? _productId;
   String? _sizeTitle;
   List<String>? _size;
   List<String>? _color;
 
   Shop? get shop => _shop;
+  bool? get inSubs => _inSubs;
   int? get productId => _productId;
   String? get sizeTitle => _sizeTitle;
   List<String>? get size => _size;
@@ -156,30 +164,31 @@ class Shops {
     if (_shop != null) {
       map['shop'] = _shop!.toJson();
     }
+    map['product_id'] = _inSubs;
     map['product_id'] = _productId;
     map['size_title'] = _sizeTitle;
     map['size'] = _size;
     map['color'] = _color;
     return map;
   }
-
 }
 
-class Shop  {
+class Shop {
   Shop({
-      int? id,
-      String? name,
-      String? logo,
-      String? image,
-      String? createdAt,
-      String? updatedAt,}){
+    int? id,
+    String? name,
+    String? logo,
+    String? image,
+    String? createdAt,
+    String? updatedAt,
+  }) {
     _id = id;
     _name = name;
     _logo = logo;
     _image = image;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
-}
+  }
 
   Shop.fromJson(dynamic json) {
     _id = json['id'];
@@ -213,6 +222,4 @@ class Shop  {
     map['updated_at'] = _updatedAt;
     return map;
   }
-
 }
-

@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
@@ -31,9 +34,14 @@ class _SortingPageState extends State<SortingPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        centerTitle: true,
         leading: InkWell(
           onTap: () {
-            Get.back(result:sort[_selectedIndexSort]);
+            final _select = _selectedIndexSort == -1
+                ? 'Не выбрано'
+                : sort[_selectedIndexSort];
+
+            Get.back(result: _select);
           },
           child: const Icon(
             Icons.arrow_back_ios,
@@ -48,38 +56,55 @@ class _SortingPageState extends State<SortingPage> {
               fontWeight: FontWeight.w500),
         ),
       ),
-      body: Container(
-        color: Colors.white,
-        child: ListView.separated(
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
+      body: SizedBox(
+        height: 275,
+        child: ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: sort.length,
           itemBuilder: (BuildContext context, int index) {
-            return InkWell(
-                onTap: () {
-                  setState(() {
-                    // устанавливаем индекс выделенного элемента
-                    _selectedIndexSort = index;
-                  });
-                  BlocProvider.of<ProductCubit>(context).products();
-
-                },
-                child: ListTile(
-                  selected: index == _selectedIndexSort,
-                  leading:  Text(
-                  sort[index],
-                    style: AppTextStyles.appBarTextStyle,
-                  ),
-                  trailing: _selectedIndexSort == index
-                      ? SvgPicture.asset(
-                          'assets/icons/check_circle.svg',
-                        )
-                      : SvgPicture.asset(
-                          'assets/icons/check_circle_no_selected.svg',
-                        ),
-                ));
+            return Column(
+              children: [
+                index == 0
+                    ? const Divider(
+                        height: 0.3,
+                        color: Color.fromRGBO(196, 200, 204, 1),
+                      )
+                    : Container(),
+                Container(
+                  color: Colors.white,
+                  height: 55,
+                  child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          // устанавливаем индекс выделенного элемента
+                          _selectedIndexSort = index;
+                        });
+                        BlocProvider.of<ProductCubit>(context).products();
+                      },
+                      child: ListTile(
+                        selected: index == _selectedIndexSort,
+                        leading: Text(sort[index],
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: AppColors.kLightBlackColor,
+                              fontWeight: FontWeight.w400,
+                            )),
+                        trailing: _selectedIndexSort == index
+                            ? SvgPicture.asset(
+                                'assets/icons/check_circle.svg',
+                              )
+                            : SvgPicture.asset(
+                                'assets/icons/check_circle_no_selected.svg',
+                              ),
+                      )),
+                ),
+                const Divider(
+                  height: 0,
+                  color: Color.fromRGBO(196, 200, 204, 1),
+                ),
+              ],
+            );
           },
         ),
       ),
@@ -87,9 +112,13 @@ class _SortingPageState extends State<SortingPage> {
         color: Colors.white,
         padding:
             const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
-        child: InkWell(
+        child: GestureDetector(
           onTap: () {
-            Get.back(result:sort[_selectedIndexSort]);
+            final _select = _selectedIndexSort == -1
+                ? 'Не выбрано'
+                : sort[_selectedIndexSort];
+
+            Get.back(result: _select);
           },
           child: Container(
               decoration: BoxDecoration(

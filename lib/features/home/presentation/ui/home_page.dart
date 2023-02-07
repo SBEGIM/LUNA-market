@@ -65,14 +65,14 @@ class _HomePageState extends State<HomePage> {
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          // onPressed: widget.drawerCallback,
-          onPressed: () {
-            widget.globalKey!.currentState!.openDrawer();
-          },
-          icon: SvgPicture.asset('assets/icons/menu.svg'),
-          color: AppColors.kPrimaryColor,
-        ),
+        // leading: IconButton(
+        //   // onPressed: widget.drawerCallback,
+        //   onPressed: () {
+        //     widget.globalKey!.currentState!.openDrawer();
+        //   },
+        //   icon: SvgPicture.asset('assets/icons/menu.svg'),
+        //   color: AppColors.kPrimaryColor,
+        // ),
         actions: [
           Padding(
               padding: const EdgeInsets.only(right: 22.0),
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: SvgPicture.asset('assets/icons/search.svg')))
         ],
-        titleSpacing: 0,
+        titleSpacing: 16,
         title: const Text(
           'Luna market',
           style: AppTextStyles.appBarTextStylea,
@@ -410,7 +410,7 @@ class _PopularCatsHompageState extends State<PopularCatsHompage> {
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3,
-                                childAspectRatio: 2 / 2,
+                                childAspectRatio: 0.65,
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10),
                         itemCount:
@@ -456,7 +456,7 @@ class _PopularCatsHompageState extends State<PopularCatsHompage> {
                           Icon(
                             Icons.arrow_forward_ios,
                             color: AppColors.kPrimaryColor,
-                            size: 16,
+                            size: 14,
                           )
                         ],
                       ),
@@ -755,7 +755,7 @@ class _PopularShopsState extends State<PopularShops> {
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3,
-                                childAspectRatio: 2 / 2,
+                                childAspectRatio: 0.65,
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10),
                         itemCount: state.popularShops.length,
@@ -773,77 +773,113 @@ class _PopularShopsState extends State<PopularShops> {
                                 GetStorage()
                                     .write('shopSelectedIndexSort', index);
                               },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        height: 80,
-                                        width: 115,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            image: DecorationImage(
-                                              image: NetworkImage(
-                                                  "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}"),
-                                              fit: BoxFit.cover,
-                                            )),
-                                      ),
-                                      if (state.popularShops[index].credit ==
-                                          true)
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: const Color(0xffF9F9F),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Stack(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              top: 12, left: 10),
+                                          alignment: Alignment.center,
+                                          height: 90,
+                                          width: 90,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                    "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
+                                                  ),
+                                                  fit: BoxFit.fitWidth),
+                                              color: const Color(0xFFF0F5F5)),
+                                          // child: Image.network(
+                                          //   "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
+                                          //   width: 70,
+                                          // ),
+                                        ),
+                                        // Container(
+                                        //   height: 90,
+                                        //   width: 90,
+                                        //   decoration: BoxDecoration(
+                                        //       borderRadius:
+                                        //           BorderRadius.circular(8),
+                                        //       image: DecorationImage(
+                                        //         image: NetworkImage(
+                                        //             "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}"),
+                                        //         fit: BoxFit.cover,
+                                        //       )),
+                                        // ),
+                                        if (state.popularShops[index].credit ==
+                                            true)
+                                          Container(
+                                            width: 46,
+                                            height: 22,
+                                            decoration: BoxDecoration(
+                                              color: const Color.fromRGBO(
+                                                  31, 196, 207, 1),
+                                              borderRadius:
+                                                  BorderRadius.circular(6),
+                                            ),
+                                            margin: const EdgeInsets.only(
+                                                top: 80, left: 4),
+                                            alignment: Alignment.center,
+                                            child: const Text(
+                                              "0·0·12",
+                                              style:
+                                                  AppTextStyles.bannerTextStyle,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
                                         Container(
                                           width: 46,
                                           height: 22,
                                           decoration: BoxDecoration(
-                                            color: const Color.fromRGBO(
-                                                31, 196, 207, 1),
+                                            color: Colors.black,
                                             borderRadius:
                                                 BorderRadius.circular(6),
                                           ),
                                           margin: const EdgeInsets.only(
-                                              top: 8, left: 4),
+                                              top: 105, left: 4),
                                           alignment: Alignment.center,
-                                          child: const Text(
-                                            "0·0·12",
+                                          child: Text(
+                                            "${state.popularShops[index].bonus.toString()}% Б",
                                             style:
                                                 AppTextStyles.bannerTextStyle,
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
-                                      Container(
-                                        width: 46,
-                                        height: 22,
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius:
-                                              BorderRadius.circular(6),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              top: 130, left: 4),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                              state.popularShops[index].name!,
+                                              style: AppTextStyles
+                                                  .categoryTextStyle),
                                         ),
-                                        margin: const EdgeInsets.only(
-                                            top: 34, left: 4),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "${state.popularShops[index].bonus.toString()}% Б",
-                                          style: AppTextStyles.bannerTextStyle,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                      ],
+                                    ),
 
-                                  // Center(
-                                  //   child: Image.asset(
-                                  //
-                                  //   ),
-                                  // ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  Text(state.popularShops[index].name!,
-                                      style: AppTextStyles.categoryTextStyle),
-                                  // Flexible(
-                                  //     child:
-                                ],
+                                    // Center(
+                                    //   child: Image.asset(
+                                    //
+                                    //   ),
+                                    // ),
+                                    // const SizedBox(
+                                    //   height: 8,
+                                    // ),
+                                    // Text(state.popularShops[index].name!,
+                                    //     style: AppTextStyles.categoryTextStyle),
+                                    // Flexible(
+                                    //     child:
+                                  ],
+                                ),
                               )); // );
                         }),
                     const SizedBox(

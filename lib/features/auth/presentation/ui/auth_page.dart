@@ -23,6 +23,8 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   bool isButtonEnabled = false;
   bool _passwordVisible = false;
+  bool _visibleIconClear = false;
+  bool __visibleIconView = false;
 
   setIsButtonEnabled(bool value) {
     // log("is button state changed $value");
@@ -60,6 +62,7 @@ class _AuthPageState extends State<AuthPage> {
                     child: Column(
                       children: [
                         ListTile(
+                          horizontalTitleGap: 5,
                           leading: SvgPicture.asset(
                             'assets/icons/phone.svg',
                             height: 24,
@@ -67,17 +70,26 @@ class _AuthPageState extends State<AuthPage> {
                           ),
                           trailing: GestureDetector(
                             onTap: () {
+                              _visibleIconClear = false;
                               phoneControllerAuth.clear();
+                              setState(() {
+                                _visibleIconClear;
+                              });
                             },
-                            child: SvgPicture.asset(
-                              'assets/icons/delete_circle.svg',
-                            ),
+                            child: _visibleIconClear == true
+                                ? SvgPicture.asset(
+                                    'assets/icons/delete_circle.svg',
+                                  )
+                                : const SizedBox(
+                                    width: 5,
+                                  ),
                           ),
                           title: TextField(
                             keyboardType: TextInputType.phone,
                             // inputFormatters: [maskFormatter],
                             controller: phoneControllerAuth,
                             onChanged: (value) {
+                              _visibleIconClear = true;
                               if (phoneControllerAuth.text.length == 17) {
                                 setIsButtonEnabled(true);
                               } else {
@@ -95,6 +107,7 @@ class _AuthPageState extends State<AuthPage> {
                           ),
                         ),
                         ListTile(
+                          horizontalTitleGap: 5,
                           leading: SvgPicture.asset(
                             'assets/icons/password.svg',
                             height: 24,
@@ -106,12 +119,15 @@ class _AuthPageState extends State<AuthPage> {
                                 _passwordVisible = !_passwordVisible;
                               });
                             },
-                            child: Icon(
-                              _passwordVisible
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: const Color.fromRGBO(177, 179, 181, 1),
-                            ),
+                            child: __visibleIconView == true
+                                ? Icon(
+                                    _passwordVisible
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color:
+                                        const Color.fromRGBO(177, 179, 181, 1),
+                                  )
+                                : const SizedBox(width: 5),
                           ),
                           title: TextField(
                             keyboardType: TextInputType.text,
@@ -119,6 +135,9 @@ class _AuthPageState extends State<AuthPage> {
                             controller: passwordControllerAuth,
                             obscureText: !_passwordVisible,
                             onChanged: (value) {
+                              passwordControllerAuth.text.length == 0
+                                  ? __visibleIconView = false
+                                  : __visibleIconView = true;
                               if (passwordControllerAuth.text.isNotEmpty) {
                                 setIsButtonEnabled(true);
                               } else {

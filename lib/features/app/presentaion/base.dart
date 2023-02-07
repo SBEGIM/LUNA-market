@@ -28,6 +28,8 @@ int basePageIndex = 0;
 class _BaseState extends State<Base> {
   Future<void> init() async {}
 
+  bool backGroundColor = true;
+
   @override
   void initState() {
     if (widget.index != null) {
@@ -54,8 +56,10 @@ class _BaseState extends State<Base> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
+      backgroundColor: basePageIndex != 0 ? Colors.white : null,
       key: _key,
+      extendBody: true,
       drawer: const DrawerHome(),
       bottomNavigationBar: BlocBuilder<NavigationCubit, NavigationState>(
         builder: (context, state) {
@@ -95,6 +99,8 @@ class _BaseState extends State<Base> {
             elevation: 4,
             showSelectedLabels: true,
             showUnselectedLabels: true,
+            backgroundColor:
+                basePageIndex == 0 ? Colors.transparent : Colors.white,
             type: BottomNavigationBarType.fixed,
             items: [
               BottomNavigationBarItem(
@@ -143,12 +149,12 @@ class _BaseState extends State<Base> {
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  'assets/icons/my_orders.svg',
+                  'assets/icons/ionMenu.svg',
                   color: AppColors.kGray200,
                 ),
-                label: 'Мои заказы',
+                label: 'Меню',
                 activeIcon: SvgPicture.asset(
-                  'assets/icons/my_orders.svg',
+                  'assets/icons/ionMenu.svg',
                   color: AppColors.kPrimaryColor,
                 ),
               ),
@@ -165,13 +171,17 @@ class _BaseState extends State<Base> {
               globalKey: _key,
             );
           } else if (state is DetailTapeState) {
-            return DetailTapeCardPage(index: state.index ?? 1);
+            return DetailTapeCardPage(
+              index: state.index,
+              shop_name: state.name,
+            );
           } else if (state is FavoriteState) {
             return FavoritePage();
           } else if (state is BasketState) {
             return const BasketPage();
           } else if (state is MyOrderState) {
-            return const MyOrderPage();
+            // return const MyOrderPage();]
+            return const DrawerHome();
           } else if (state is AuthState) {
             return const ViewAuthRegisterPage();
           }

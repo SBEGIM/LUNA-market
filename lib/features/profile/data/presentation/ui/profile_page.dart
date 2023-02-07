@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
@@ -11,8 +12,10 @@ import 'package:haji_market/features/profile/data/presentation/ui/edit_profile_p
 import 'package:haji_market/features/profile/data/presentation/ui/my_bank_card_page.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../auth/data/bloc/login_cubit.dart';
 import '../../../../auth/presentation/ui/auth_page.dart';
 import '../../../../auth/presentation/ui/view_auth_register_page.dart';
+import '../widgets/language_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key? key}) : super(key: key);
@@ -32,9 +35,13 @@ class _ProfilePageState extends State<ProfilePage> {
     final image = change == true
         ? await _picker.pickImage(source: ImageSource.camera)
         : await _picker.pickImage(source: ImageSource.gallery);
+
     setState(() {
       _image = image;
     });
+    final edit = BlocProvider.of<LoginCubit>(context);
+    await edit.edit(_box.read('name') ?? '', _box.read('phone') ?? '',
+        _image != null ? _image!.path : "");
   }
 
   final _box = GetStorage();
@@ -73,92 +80,100 @@ class _ProfilePageState extends State<ProfilePage> {
           SizedBox(
             height: 98,
             child: Center(
-              child: ListTile(
-                horizontalTitleGap: 12,
-                leading: GestureDetector(
-                  onTap: () {
-                    Get.defaultDialog(
-                        title: "Изменить фото",
-                        middleText: '',
-                        textConfirm: 'Камера',
-                        textCancel: 'Галлерея',
-                        titlePadding: EdgeInsets.only(top: 40),
-                        onConfirm: () {
-                          change = true;
-                          setState(() {
-                            change;
-                          });
-                          _getImage();
-                        },
-                        onCancel: () {
-                          change = false;
-                          setState(() {
-                            change;
-                          });
-                          _getImage();
-                        });
-                  },
-                  child: _image != null
-                      ? CircleAvatar(
-                          backgroundImage: FileImage(
-                            File(_image!.path),
-                          ),
-                          radius: 34,
-                          child: Container())
-                      : Container(
-                          height: 54,
-                          width: 54,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(34),
-                              image: DecorationImage(
-                                image: _box.read('avatar') != null
-                                    ? NetworkImage(
-                                        "http://80.87.202.73:8001/storage/${_box.read('avatar')}")
-                                    : AssetImage('assets/icons/profile2.png')
-                                        as ImageProvider,
+              child: Container(
+                alignment: Alignment.center,
+                child: ListTile(
+                  horizontalTitleGap: 12,
+                  leading: GestureDetector(
+                    onTap: () {
+                      if (_image == null) {
+                        Get.defaultDialog(
+                            title: "Изменить фото",
+                            middleText: '',
+                            textConfirm: 'Камера',
+                            textCancel: 'Галлерея',
+                            titlePadding: EdgeInsets.only(top: 40),
+                            onConfirm: () {
+                              change = true;
+                              setState(() {
+                                change;
+                              });
+                              _getImage();
+                            },
+                            onCancel: () {
+                              change = false;
+                              setState(() {
+                                change;
+                              });
+                              _getImage();
+                            });
+                      }
+                    },
+                    child: _image != null
+                        ? CircleAvatar(
+                            backgroundImage: FileImage(
+                              File(_image!.path),
+                            ),
+                            radius: 34,
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: SvgPicture.asset(
+                                'assets/icons/camera.svg',
                                 fit: BoxFit.cover,
-                              )),
-                        ),
-
-                  // CircleAvatar(
-                  //   backgroundImage: const AssetImage('assets/images/kana.png'),
-                  //   radius: 34,
-                  //   child: Align(
-                  //           alignment: Alignment.bottomRight,
-                  //           child: SvgPicture.asset(
-                  //           'assets/icons/camera.svg',
-                  //           fit: BoxFit.cover,
-                  //           ),
-                  //           ),
-                  //           ) ,
-                ),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      _box.read('name'),
-                      style: const TextStyle(
-                          color: AppColors.kGray700,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700),
-                    ),
-                    GestureDetector(
-                        onTap: () => Get.to(EditProfilePage(
-                              name: _box.read('name'),
-                            )),
-                        child: SvgPicture.asset('assets/icons/back_menu.svg',
-                            height: 16.5, width: 9.5, color: Colors.grey))
-                  ],
-                ),
-                subtitle: const Padding(
-                  padding: EdgeInsets.only(top: 8.0),
-                  child: Text(
-                    'Алматы',
-                    style: TextStyle(
-                        color: AppColors.kGray400,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            height: 54,
+                            width: 54,
+                            decoration: _box.read('avatar') != null
+                                ? BoxDecoration(
+                                    borderRadius: BorderRadius.circular(34),
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          "http://80.87.202.73:8001/storage/${_box.read('avatar')}"),
+                                      fit: BoxFit.cover,
+                                    ))
+                                : null,
+                            child: _box.read('avatar') == null
+                                ? CircleAvatar(
+                                    backgroundImage: const AssetImage(
+                                        'assets/icons/profile2.png'),
+                                    radius: 34,
+                                    child: Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: SvgPicture.asset(
+                                        'assets/icons/camera.svg',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  )
+                                : const SizedBox(),
+                          ),
                   ),
+                  title: Text(
+                    _box.read('name'),
+                    style: const TextStyle(
+                        color: AppColors.kGray700,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  subtitle: const Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      'Алматы',
+                      style: TextStyle(
+                          color: AppColors.kGray400,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14),
+                    ),
+                  ),
+                  trailing: GestureDetector(
+                      onTap: () => Get.to(EditProfilePage(
+                            name: _box.read('name'),
+                          )),
+                      child: SvgPicture.asset('assets/icons/back_menu.svg',
+                          height: 16.5, width: 9.5, color: Colors.grey)),
                 ),
               ),
             ),
@@ -167,42 +182,42 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Colors.white,
             child: Column(
               children: [
-                Container(
-                  padding: const EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    top: 10.5,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Пуш уведомления',
-                        style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      Transform.scale(
-                        scale: 0.8,
-                        child: CupertinoSwitch(
-                          value: isSwitchedPush,
-                          onChanged: (value) {
-                            setState(() {
-                              isSwitchedPush = value;
-                              // print(isSwitched);
-                            });
-                          },
-                          trackColor: Colors.grey.shade200,
-                          activeColor: AppColors.kPrimaryColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Divider(
-                  color: AppColors.kGray400,
-                ),
+                // Container(
+                //   padding: const EdgeInsets.only(
+                //     left: 16,
+                //     right: 16,
+                //     top: 10.5,
+                //   ),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       const Text(
+                //         'Пуш уведомления',
+                //         style: TextStyle(
+                //             color: AppColors.kGray900,
+                //             fontSize: 16,
+                //             fontWeight: FontWeight.w400),
+                //       ),
+                //       Transform.scale(
+                //         scale: 0.8,
+                //         child: CupertinoSwitch(
+                //           value: isSwitchedPush,
+                //           onChanged: (value) {
+                //             setState(() {
+                //               isSwitchedPush = value;
+                //               // print(isSwitched);
+                //             });
+                //           },
+                //           trackColor: Colors.grey.shade200,
+                //           activeColor: AppColors.kPrimaryColor,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // const Divider(
+                //   color: AppColors.kGray400,
+                // ),
                 Container(
                   padding: const EdgeInsets.only(
                       left: 16, right: 16, top: 14, bottom: 14),
@@ -211,18 +226,23 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Язык приложения',
-                            style: TextStyle(
-                                color: AppColors.kGray900,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(LanguageWidget());
+                            },
+                            child: const Text(
+                              'Язык приложения',
+                              style: TextStyle(
+                                  color: AppColors.kGray900,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                            ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 2,
                           ),
-                          Text(
+                          const Text(
                             'Русский',
                             style: TextStyle(
                                 color: AppColors.kGray300,
@@ -236,41 +256,41 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-                const Divider(
-                  color: AppColors.kGray400,
-                ),
-                Container(
-                  padding: const EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Вход с Touch ID',
-                        style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      Transform.scale(
-                        scale: 0.8,
-                        child: CupertinoSwitch(
-                          value: isSwitchedTouch,
-                          onChanged: (value) {
-                            setState(() {
-                              isSwitchedTouch = value;
-                              // print(isSwitched);
-                            });
-                          },
-                          trackColor: Colors.grey.shade200,
-                          activeColor: AppColors.kPrimaryColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // const Divider(
+                //   color: AppColors.kGray400,
+                // ),
+                // Container(
+                //   padding: const EdgeInsets.only(
+                //     left: 16,
+                //     right: 16,
+                //   ),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       const Text(
+                //         'Вход с Touch ID',
+                //         style: TextStyle(
+                //             color: AppColors.kGray900,
+                //             fontSize: 16,
+                //             fontWeight: FontWeight.w400),
+                //       ),
+                //       Transform.scale(
+                //         scale: 0.8,
+                //         child: CupertinoSwitch(
+                //           value: isSwitchedTouch,
+                //           onChanged: (value) {
+                //             setState(() {
+                //               isSwitchedTouch = value;
+                //               // print(isSwitched);
+                //             });
+                //           },
+                //           trackColor: Colors.grey.shade200,
+                //           activeColor: AppColors.kPrimaryColor,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 // const Divider(
                 //   color: AppColors.kGray400,
                 // ),
@@ -303,72 +323,72 @@ class _ProfilePageState extends State<ProfilePage> {
                 const Divider(
                   color: AppColors.kGray400,
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MyBankCardPage()),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        left: 16, right: 16, top: 10, bottom: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              'Мои карты',
-                              style: TextStyle(
-                                  color: AppColors.kGray900,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                        SvgPicture.asset('assets/icons/back_menu.svg',
-                            height: 16.5, width: 9.5, color: Colors.grey)
-                      ],
-                    ),
-                  ),
-                ),
-                const Divider(
-                  color: AppColors.kGray400,
-                ),
-                Container(
-                  padding: const EdgeInsets.only(
-                      left: 16, right: 16, top: 10, bottom: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Мои бонусы',
-                            style: TextStyle(
-                                color: AppColors.kGray900,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                      const Text(
-                        '987 ₸ ',
-                        style: TextStyle(
-                            color: AppColors.kGray300,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                ),
-                const Divider(
-                  color: AppColors.kGray400,
-                ),
+                // InkWell(
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) => const MyBankCardPage()),
+                //     );
+                //   },
+                //   child: Container(
+                //     padding: const EdgeInsets.only(
+                //         left: 16, right: 16, top: 10, bottom: 10),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //         Column(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: const [
+                //             Text(
+                //               'Мои карты',
+                //               style: TextStyle(
+                //                   color: AppColors.kGray900,
+                //                   fontSize: 16,
+                //                   fontWeight: FontWeight.w400),
+                //             ),
+                //           ],
+                //         ),
+                //         SvgPicture.asset('assets/icons/back_menu.svg',
+                //             height: 16.5, width: 9.5, color: Colors.grey)
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // const Divider(
+                //   color: AppColors.kGray400,
+                // ),
+                // Container(
+                //   padding: const EdgeInsets.only(
+                //       left: 16, right: 16, top: 10, bottom: 10),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: const [
+                //           Text(
+                //             'Мои бонусы',
+                //             style: TextStyle(
+                //                 color: AppColors.kGray900,
+                //                 fontSize: 16,
+                //                 fontWeight: FontWeight.w400),
+                //           ),
+                //         ],
+                //       ),
+                //       const Text(
+                //         '987 ₸ ',
+                //         style: TextStyle(
+                //             color: AppColors.kGray300,
+                //             fontSize: 12,
+                //             fontWeight: FontWeight.w400),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // const Divider(
+                //   color: AppColors.kGray400,
+                // ),
                 GestureDetector(
                   onTap: () {
                     GetStorage().remove('token');

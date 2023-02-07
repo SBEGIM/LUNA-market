@@ -210,7 +210,7 @@ class InterestingProductWidget extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -1,7 +1,9 @@
-import 'package:anim_search_bar/anim_search_bar.dart';
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
@@ -9,6 +11,7 @@ import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart
 import 'package:haji_market/features/tape/presentation/widgets/tape_card_widget.dart';
 
 import '../data/bloc/tape_state.dart';
+import '../widgets/anim_search_widget.dart';
 
 class TapePage extends StatefulWidget {
   TapePage({Key? key}) : super(key: key);
@@ -21,9 +24,14 @@ class _TapePageState extends State<TapePage> {
   String? title;
   final TextEditingController searchController = TextEditingController();
   bool visible = true;
+
+  int random(int min, int max) {
+    return min + Random().nextInt(max - min);
+  }
+
   @override
   void initState() {
-    BlocProvider.of<TapeCubit>(context).tapes(false, false, null);
+    BlocProvider.of<TapeCubit>(context).tapes(false, false, '');
     title = 'Лента';
     super.initState();
   }
@@ -45,9 +53,9 @@ class _TapePageState extends State<TapePage> {
           actions: [
             AnimSearchBar(
               helpText: 'Поиск..',
-              Onchaged: () {
+              onChanged: (String? value) {
                 BlocProvider.of<TapeCubit>(context)
-                    .tapes(true, false, searchController.text);
+                    .tapes(false, false, searchController.text);
               },
               style: const TextStyle(
                   fontSize: 14,
@@ -140,8 +148,8 @@ class _TapePageState extends State<TapePage> {
                           const SizedBox(width: 5),
                           Image.asset(
                             'assets/icons/down.png',
-                            height: 16.5,
-                            width: 9.5,
+                            //height: 16.5,
+                            // width: 16.5,
                           )
                         ],
                       ), // Icon(Icons.done,color: AppColors.kPrimaryColor,size: 16,)
@@ -168,23 +176,137 @@ class _TapePageState extends State<TapePage> {
               }
 
               if (state is LoadedState) {
-                return GridView.builder(
-                  padding: const EdgeInsets.all(1),
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 150,
-                    childAspectRatio: 1 / 2,
-                    mainAxisSpacing: 3,
-                    crossAxisSpacing: 3,
+                return GridView.custom(
+                  gridDelegate: SliverQuiltedGridDelegate(
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 4,
+                    crossAxisSpacing: 4,
+                    repeatPattern: QuiltedGridRepeatPattern.inverted,
+                    pattern: [
+                      QuiltedGridTile(2, 2),
+                      QuiltedGridTile(1, 1),
+                      QuiltedGridTile(1, 1),
+                      QuiltedGridTile(1, 2),
+                    ],
                   ),
-                  itemCount: state.tapeModel.length,
-                  // children: const [],
-                  itemBuilder: (context, index) {
-                    return TapeCardWidget(
-                      tape: state.tapeModel[index],
+                  childrenDelegate: SliverChildBuilderDelegate(
+                    childCount: state.tapeModel.length,
+                    (context, index) =>
+
+                        // Image.network(
+                        //   "http://80.87.202.73:8001/storage/${state.tapeModel[index].image}",
+                        //   fit: BoxFit.fitWidth,
+                        // ),
+                        TapeCardWidget(
                       index: index,
-                    );
-                  },
+                      tape: state.tapeModel[index],
+                    ),
+                  ),
                 );
+                // StaggeredGrid.count(
+                //     crossAxisCount: 3,
+                //     mainAxisSpacing: 3,
+                //     crossAxisSpacing: 3,
+
+                //     children: [
+                //       StaggeredGridTile.count(
+                //         crossAxisCellCount: 1,
+                //         mainAxisCellCount: 1,
+                //         child: TapeCardWidget(
+                //           tape: state.tapeModel[0],
+                //           index: 0,
+                //         ),
+                //       ),
+                //       StaggeredGridTile.count(
+                //         crossAxisCellCount: 1,
+                //         mainAxisCellCount: 1,
+                //         child: TapeCardWidget(
+                //           tape: state.tapeModel[1],
+                //           index: 1,
+                //         ),
+                //       ),
+                //       StaggeredGridTile.count(
+                //         crossAxisCellCount: 1,
+                //         mainAxisCellCount: 2,
+                //         child: TapeCardWidget(
+                //           tape: state.tapeModel[2],
+                //           index: 2,
+                //         ),
+                //       ),
+                //       StaggeredGridTile.count(
+                //         crossAxisCellCount: 1,
+                //         mainAxisCellCount: 1,
+                //         child: TapeCardWidget(
+                //           tape: state.tapeModel[2],
+                //           index: 2,
+                //         ),
+                //       ),
+                //       StaggeredGridTile.count(
+                //         crossAxisCellCount: 1,
+                //         mainAxisCellCount: 2,
+                //         child: TapeCardWidget(
+                //           tape: state.tapeModel[2],
+                //           index: 2,
+                //         ),
+                //       ),
+                //     ]
+                //     // state.tapeModel
+                //     //     .map((e) => StaggeredGridTile.count(
+                //     //           crossAxisCellCount: random(1, 4),
+                //     //           mainAxisCellCount: random(1, 4),
+                //     //           child: TapeCardWidget(
+                //     //             tape: e,
+                //     //             index: e.id ?? 1,
+                //     //           ),
+                //     //         ))
+                //     //     .toList(),
+                //     );
+
+                // return MasonryGridView.count(
+                //   crossAxisCount: 3,
+                //   mainAxisSpacing: 3,
+                //   crossAxisSpacing: 3,
+                //   itemCount: state.tapeModel.length,
+                //   itemBuilder: (context, index) {
+                //     return TapeCardWidget(
+                //       tape: state.tapeModel[index],
+                //       index: index,
+                //     );
+                //   },
+                // );
+
+                // return MasonryGridView.count(
+                //     crossAxisCount: 3,
+                //     mainAxisSpacing: 3,
+                //     crossAxisSpacing: 3,
+                //     itemCount: state.tapeModel.length,
+                //     itemBuilder: (context, index) {
+                //       return TapeCardWidget(
+                //         tape: state.tapeModel[index],
+                //         index: index,
+                //       );
+                //     });
+
+                //   },
+                // );
+
+                // GridView.builder(
+                //   padding: const EdgeInsets.all(1),
+                //   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                //     maxCrossAxisExtent: 150,
+                //     childAspectRatio: 1 / 2,
+                //     mainAxisSpacing: 3,
+                //     crossAxisSpacing: 3,
+                //   ),
+                //   itemCount: state.tapeModel.length,
+                //   // children: const [],
+                //   itemBuilder: (context, index) {
+                //     return TapeCardWidget(
+                //       tape: state.tapeModel[index],
+                //       index: index,
+                //     );
+                //   },
+                // );
               } else {
                 return const Center(
                     child:

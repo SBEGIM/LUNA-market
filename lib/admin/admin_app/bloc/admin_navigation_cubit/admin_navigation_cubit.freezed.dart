@@ -22,6 +22,7 @@ mixin _$AdminNavigationState {
     required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
+    required TResult Function() chatAdmin,
     required TResult Function() adminAuth,
   }) =>
       throw _privateConstructorUsedError;
@@ -31,6 +32,7 @@ mixin _$AdminNavigationState {
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
+    TResult Function()? chatAdmin,
     TResult Function()? adminAuth,
   }) =>
       throw _privateConstructorUsedError;
@@ -40,6 +42,7 @@ mixin _$AdminNavigationState {
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
+    TResult Function()? chatAdmin,
     TResult Function()? adminAuth,
     required TResult orElse(),
   }) =>
@@ -50,6 +53,7 @@ mixin _$AdminNavigationState {
     required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
+    required TResult Function(ChatAdminState value) chatAdmin,
     required TResult Function(AdminAuthState value) adminAuth,
   }) =>
       throw _privateConstructorUsedError;
@@ -59,6 +63,7 @@ mixin _$AdminNavigationState {
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
     TResult Function(AdminAuthState value)? adminAuth,
   }) =>
       throw _privateConstructorUsedError;
@@ -68,6 +73,7 @@ mixin _$AdminNavigationState {
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
     TResult Function(AdminAuthState value)? adminAuth,
     required TResult orElse(),
   }) =>
@@ -136,6 +142,7 @@ class _$TapeAdminState implements TapeAdminState {
     required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
+    required TResult Function() chatAdmin,
     required TResult Function() adminAuth,
   }) {
     return tapeAdmin();
@@ -148,6 +155,7 @@ class _$TapeAdminState implements TapeAdminState {
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
+    TResult Function()? chatAdmin,
     TResult Function()? adminAuth,
   }) {
     return tapeAdmin?.call();
@@ -160,6 +168,7 @@ class _$TapeAdminState implements TapeAdminState {
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
+    TResult Function()? chatAdmin,
     TResult Function()? adminAuth,
     required TResult orElse(),
   }) {
@@ -176,6 +185,7 @@ class _$TapeAdminState implements TapeAdminState {
     required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
+    required TResult Function(ChatAdminState value) chatAdmin,
     required TResult Function(AdminAuthState value) adminAuth,
   }) {
     return tapeAdmin(this);
@@ -188,6 +198,7 @@ class _$TapeAdminState implements TapeAdminState {
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
     TResult Function(AdminAuthState value)? adminAuth,
   }) {
     return tapeAdmin?.call(this);
@@ -200,6 +211,7 @@ class _$TapeAdminState implements TapeAdminState {
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
     TResult Function(AdminAuthState value)? adminAuth,
     required TResult orElse(),
   }) {
@@ -259,6 +271,7 @@ class _$HomeAdminState implements HomeAdminState {
     required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
+    required TResult Function() chatAdmin,
     required TResult Function() adminAuth,
   }) {
     return homeAdmin();
@@ -271,6 +284,7 @@ class _$HomeAdminState implements HomeAdminState {
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
+    TResult Function()? chatAdmin,
     TResult Function()? adminAuth,
   }) {
     return homeAdmin?.call();
@@ -283,6 +297,7 @@ class _$HomeAdminState implements HomeAdminState {
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
+    TResult Function()? chatAdmin,
     TResult Function()? adminAuth,
     required TResult orElse(),
   }) {
@@ -299,6 +314,7 @@ class _$HomeAdminState implements HomeAdminState {
     required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
+    required TResult Function(ChatAdminState value) chatAdmin,
     required TResult Function(AdminAuthState value) adminAuth,
   }) {
     return homeAdmin(this);
@@ -311,6 +327,7 @@ class _$HomeAdminState implements HomeAdminState {
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
     TResult Function(AdminAuthState value)? adminAuth,
   }) {
     return homeAdmin?.call(this);
@@ -323,6 +340,7 @@ class _$HomeAdminState implements HomeAdminState {
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
     TResult Function(AdminAuthState value)? adminAuth,
     required TResult orElse(),
   }) {
@@ -382,6 +400,7 @@ class _$MyOrderAdminState implements MyOrderAdminState {
     required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
+    required TResult Function() chatAdmin,
     required TResult Function() adminAuth,
   }) {
     return myOrderAdmin();
@@ -394,6 +413,7 @@ class _$MyOrderAdminState implements MyOrderAdminState {
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
+    TResult Function()? chatAdmin,
     TResult Function()? adminAuth,
   }) {
     return myOrderAdmin?.call();
@@ -406,6 +426,7 @@ class _$MyOrderAdminState implements MyOrderAdminState {
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
+    TResult Function()? chatAdmin,
     TResult Function()? adminAuth,
     required TResult orElse(),
   }) {
@@ -422,6 +443,7 @@ class _$MyOrderAdminState implements MyOrderAdminState {
     required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
+    required TResult Function(ChatAdminState value) chatAdmin,
     required TResult Function(AdminAuthState value) adminAuth,
   }) {
     return myOrderAdmin(this);
@@ -434,6 +456,7 @@ class _$MyOrderAdminState implements MyOrderAdminState {
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
     TResult Function(AdminAuthState value)? adminAuth,
   }) {
     return myOrderAdmin?.call(this);
@@ -446,6 +469,7 @@ class _$MyOrderAdminState implements MyOrderAdminState {
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
     TResult Function(AdminAuthState value)? adminAuth,
     required TResult orElse(),
   }) {
@@ -505,6 +529,7 @@ class _$ProfileState implements ProfileState {
     required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
+    required TResult Function() chatAdmin,
     required TResult Function() adminAuth,
   }) {
     return profile();
@@ -517,6 +542,7 @@ class _$ProfileState implements ProfileState {
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
+    TResult Function()? chatAdmin,
     TResult Function()? adminAuth,
   }) {
     return profile?.call();
@@ -529,6 +555,7 @@ class _$ProfileState implements ProfileState {
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
+    TResult Function()? chatAdmin,
     TResult Function()? adminAuth,
     required TResult orElse(),
   }) {
@@ -545,6 +572,7 @@ class _$ProfileState implements ProfileState {
     required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
+    required TResult Function(ChatAdminState value) chatAdmin,
     required TResult Function(AdminAuthState value) adminAuth,
   }) {
     return profile(this);
@@ -557,6 +585,7 @@ class _$ProfileState implements ProfileState {
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
     TResult Function(AdminAuthState value)? adminAuth,
   }) {
     return profile?.call(this);
@@ -569,6 +598,7 @@ class _$ProfileState implements ProfileState {
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
     TResult Function(AdminAuthState value)? adminAuth,
     required TResult orElse(),
   }) {
@@ -581,6 +611,135 @@ class _$ProfileState implements ProfileState {
 
 abstract class ProfileState implements AdminNavigationState {
   const factory ProfileState() = _$ProfileState;
+}
+
+/// @nodoc
+abstract class _$$ChatAdminStateCopyWith<$Res> {
+  factory _$$ChatAdminStateCopyWith(
+          _$ChatAdminState value, $Res Function(_$ChatAdminState) then) =
+      __$$ChatAdminStateCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$ChatAdminStateCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res>
+    implements _$$ChatAdminStateCopyWith<$Res> {
+  __$$ChatAdminStateCopyWithImpl(
+      _$ChatAdminState _value, $Res Function(_$ChatAdminState) _then)
+      : super(_value, (v) => _then(v as _$ChatAdminState));
+
+  @override
+  _$ChatAdminState get _value => super._value as _$ChatAdminState;
+}
+
+/// @nodoc
+
+class _$ChatAdminState implements ChatAdminState {
+  const _$ChatAdminState();
+
+  @override
+  String toString() {
+    return 'AdminNavigationState.chatAdmin()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$ChatAdminState);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() tapeAdmin,
+    required TResult Function() homeAdmin,
+    required TResult Function() myOrderAdmin,
+    required TResult Function() profile,
+    required TResult Function() chatAdmin,
+    required TResult Function() adminAuth,
+  }) {
+    return chatAdmin();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
+    TResult Function()? myOrderAdmin,
+    TResult Function()? profile,
+    TResult Function()? chatAdmin,
+    TResult Function()? adminAuth,
+  }) {
+    return chatAdmin?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? tapeAdmin,
+    TResult Function()? homeAdmin,
+    TResult Function()? myOrderAdmin,
+    TResult Function()? profile,
+    TResult Function()? chatAdmin,
+    TResult Function()? adminAuth,
+    required TResult orElse(),
+  }) {
+    if (chatAdmin != null) {
+      return chatAdmin();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(HomeAdminState value) homeAdmin,
+    required TResult Function(MyOrderAdminState value) myOrderAdmin,
+    required TResult Function(ProfileState value) profile,
+    required TResult Function(ChatAdminState value) chatAdmin,
+    required TResult Function(AdminAuthState value) adminAuth,
+  }) {
+    return chatAdmin(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
+    TResult Function(MyOrderAdminState value)? myOrderAdmin,
+    TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
+    TResult Function(AdminAuthState value)? adminAuth,
+  }) {
+    return chatAdmin?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
+    TResult Function(MyOrderAdminState value)? myOrderAdmin,
+    TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
+    TResult Function(AdminAuthState value)? adminAuth,
+    required TResult orElse(),
+  }) {
+    if (chatAdmin != null) {
+      return chatAdmin(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ChatAdminState implements AdminNavigationState {
+  const factory ChatAdminState() = _$ChatAdminState;
 }
 
 /// @nodoc
@@ -628,6 +787,7 @@ class _$AdminAuthState implements AdminAuthState {
     required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
+    required TResult Function() chatAdmin,
     required TResult Function() adminAuth,
   }) {
     return adminAuth();
@@ -640,6 +800,7 @@ class _$AdminAuthState implements AdminAuthState {
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
+    TResult Function()? chatAdmin,
     TResult Function()? adminAuth,
   }) {
     return adminAuth?.call();
@@ -652,6 +813,7 @@ class _$AdminAuthState implements AdminAuthState {
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
+    TResult Function()? chatAdmin,
     TResult Function()? adminAuth,
     required TResult orElse(),
   }) {
@@ -668,6 +830,7 @@ class _$AdminAuthState implements AdminAuthState {
     required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
+    required TResult Function(ChatAdminState value) chatAdmin,
     required TResult Function(AdminAuthState value) adminAuth,
   }) {
     return adminAuth(this);
@@ -680,6 +843,7 @@ class _$AdminAuthState implements AdminAuthState {
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
     TResult Function(AdminAuthState value)? adminAuth,
   }) {
     return adminAuth?.call(this);
@@ -692,6 +856,7 @@ class _$AdminAuthState implements AdminAuthState {
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
     TResult Function(AdminAuthState value)? adminAuth,
     required TResult orElse(),
   }) {
