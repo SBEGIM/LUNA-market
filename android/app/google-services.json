@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "563124245115",
+    "project_id": "lunamarket-4e6fb",
+    "storage_bucket": "lunamarket-4e6fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563124245115:android:ca857549820bd04c8d88de",
+        "android_client_info": {
+          "package_name": "com.thousand.haji_market"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "563124245115-8qdscuub3b1k9fgdhobbah9n9i4lr41o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkrPqKpiHlXtgakOzEoeIC47PWTFOOWcg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "563124245115-8qdscuub3b1k9fgdhobbah9n9i4lr41o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "563124245115-2em2pir362j1e4iuojtrueoot0ro3pcp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.thousand.lunaMarket",
+                "app_store_id": "1643464703"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
