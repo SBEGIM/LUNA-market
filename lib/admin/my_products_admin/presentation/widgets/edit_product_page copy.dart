@@ -10,10 +10,8 @@ import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart';
 import 'package:haji_market/features/home/data/bloc/cats_cubit.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
-import '../../../../features/drawer/data/models/product_model.dart';
 import '../../../../features/home/data/model/Cats.dart';
 import '../../../admin_app/presentation/base_admin.dart';
-import '../../../coop_request/presentation/ui/coop_request_page.dart';
 import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/bloc/product_admin_state.dart';
 import '../../data/models/admin_products_model.dart';
@@ -23,7 +21,7 @@ import 'colors_admin_page.dart';
 
 class EditProductPage extends StatefulWidget {
   final AdminProductsModel product;
-  EditProductPage({required this.product, Key? key}) : super(key: key);
+  const EditProductPage({required this.product, Key? key}) : super(key: key);
 
   @override
   State<EditProductPage> createState() => _EditProductPageState();
@@ -139,7 +137,8 @@ class _EditProductPageState extends State<EditProductPage> {
                   widthController.text,
                   massaController.text,
                   widget.product.id.toString(),
-                  articulController.text);
+                  articulController.text,
+                  '');
             },
             child: Container(
                 decoration: BoxDecoration(
@@ -199,7 +198,7 @@ class _EditProductPageState extends State<EditProductPage> {
                   star: false,
                   arrow: true,
                   onPressed: () async {
-                    final data = await Get.to(CatsAdminPage());
+                    final data = await Get.to(const CatsAdminPage());
                     if (data != null) {
                       final Cats cat = data;
                       setState(() {});
@@ -220,7 +219,7 @@ class _EditProductPageState extends State<EditProductPage> {
                   star: false,
                   arrow: true,
                   onPressed: () async {
-                    final data = await Get.to(BrandsAdminPage());
+                    final data = await Get.to(const BrandsAdminPage());
                     if (data != null) {
                       final Cats brand = data;
                       setState(() {});
@@ -268,7 +267,7 @@ class _EditProductPageState extends State<EditProductPage> {
                   star: true,
                   arrow: true,
                   onPressed: () async {
-                    final data = await Get.to(ColorsAdminPage());
+                    final data = await Get.to(const ColorsAdminPage());
                     if (data != null) {
                       final Cats cat = data;
                       setState(() {});
@@ -342,7 +341,7 @@ class _EditProductPageState extends State<EditProductPage> {
                                 middleText: '',
                                 textConfirm: 'Камера',
                                 textCancel: 'Галлерея',
-                                titlePadding: EdgeInsets.only(top: 40),
+                                titlePadding: const EdgeInsets.only(top: 40),
                                 onConfirm: () {
                                   change = true;
                                   setState(() {
@@ -428,7 +427,7 @@ class _EditProductPageState extends State<EditProductPage> {
                               middleText: '',
                               textConfirm: 'Камера',
                               textCancel: 'Галлерея',
-                              titlePadding: EdgeInsets.only(top: 40),
+                              titlePadding: const EdgeInsets.only(top: 40),
                               onConfirm: () {
                                 change = true;
                                 setState(() {

@@ -6,11 +6,15 @@ import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/basket/presentation/ui/basket_order_page.dart';
 import 'package:haji_market/features/drawer/data/bloc/basket_cubit.dart';
+import 'package:haji_market/features/drawer/data/bloc/review_cubit.dart'
+    as reviewProductCubit;
+import 'package:haji_market/features/drawer/data/bloc/review_state.dart'
+    as reviewProductState;
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/detailed_store_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/product_imags_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/specifications_page.dart';
-import '../../../home/presentation/widgets/banner_watceh_recently_widget.dart';
+import '../../../basket/presentation/ui/basket_order_address_page.dart';
 import '../../../home/presentation/widgets/product_mb_interesting_card.dart';
 import '../../../home/presentation/widgets/product_watching_card.dart';
 import '../../data/bloc/favorite_cubit.dart';
@@ -50,15 +54,15 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
   List textInst = [
     '3 мес',
     '6 мес',
+    '9 мес',
     '12 мес',
-    '24 мес',
   ];
 
   List bloc = [
-    'x10',
-    'x20',
-    'x30',
-    'x40',
+    10,
+    20,
+    30,
+    40,
   ];
 
   List size = [
@@ -69,6 +73,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
     'XL',
     'XXL',
   ];
+
+  int? rating = 0;
+
+  TextEditingController _commentController = TextEditingController();
 
   @override
   void initState() {
@@ -82,6 +90,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
         ((widget.product.price!.toInt() - widget.product.compound!.toInt()) /
                 widget.product.price!.toInt()) *
             100;
+
+    BlocProvider.of<reviewProductCubit.ReviewCubit>(context).reviews();
+
     super.initState();
   }
 
@@ -215,7 +226,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: ((context, index) {
                       return Container(
-                        margin: EdgeInsets.only(left: 16),
+                        margin: const EdgeInsets.only(left: 16),
                         //  height: 1,
                         width: 6,
                         decoration: BoxDecoration(
@@ -372,7 +383,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFFFD54F),
+                                  color: const Color(0xFFFFD54F),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
@@ -465,6 +476,137 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 const SizedBox(
                   height: 10,
                 ),
+                Stack(children: [
+                  Container(
+                    transform: Matrix4.translationValues(-16.0, 0.0, 00.0),
+                    height: 8,
+                    color: const Color(0xFFf1f1f1),
+                  ),
+                  Container(
+                    transform: Matrix4.translationValues(16.0, 0.0, 00.0),
+                    height: 8,
+                    color: const Color(0xFFf1f1f1),
+                  ),
+                ]),
+                const SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  //padding: const EdgeInsets.all(16),
+                  // color: Colors.grey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'В рассрочку',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 14),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width *
+                                0.585, // 229,
+                            height: 32,
+                            child: ListView.builder(
+                              itemCount: textInst.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    if (index == 0) {
+                                      selectedIndexMonth = 3;
+                                    } else if (index == 1) {
+                                      selectedIndexMonth = 6;
+                                    } else if (index == 2) {
+                                      selectedIndexMonth = 12;
+                                    } else if (index == 3) {
+                                      selectedIndexMonth = 24;
+                                    } else {
+                                      selectedIndexMonth = 3;
+                                    }
+
+                                    setState(() {
+                                      selectedIndex2 = index;
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 4.0),
+                                    child: Container(
+                                      width: 54,
+                                      decoration: BoxDecoration(
+                                        color: selectedIndex2 == index
+                                            ? const Color(0xFFFFD54F)
+                                            : Colors.white,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      padding: const EdgeInsets.only(
+                                        top: 8,
+                                        bottom: 8,
+                                      ),
+                                      child: Text(
+                                        textInst[index],
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            color: AppColors.kGray900,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: 55,
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFFD54F),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              '${widget.product.price!.toInt() ~/ selectedIndexMonth!.toInt()}',
+                              style: const TextStyle(
+                                  color: AppColors.kGray900,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          Text(
+                            ' x$selectedIndexMonth',
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Stack(children: [
+                  Container(
+                    transform: Matrix4.translationValues(-16.0, 0.0, 00.0),
+                    height: 8,
+                    color: const Color(0xFFf1f1f1),
+                  ),
+                  Container(
+                    transform: Matrix4.translationValues(16.0, 0.0, 00.0),
+                    height: 8,
+                    color: const Color(0xFFf1f1f1),
+                  ),
+                ]),
+                const SizedBox(
+                  height: 16,
+                ),
                 Container(
                     padding: EdgeInsets.zero,
                     child: Image.asset('assets/icons/optom_banner.png')),
@@ -517,7 +659,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 // ),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  bloc[index],
+                                  'x${bloc[index]}',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: selectedIndex3 == index
@@ -535,23 +677,31 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   ],
                 ),
                 const SizedBox(height: 14),
-                Container(
+                SizedBox(
                   height: 14,
-                  child: Row(children: const [
+                  child: Row(children: [
                     Text(
-                      '95 000 ',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                      '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ',
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      'x10',
-                      style: TextStyle(
+                      'x${selectedIndex3 != -1 ? bloc[selectedIndex3!] : 0}',
+                      style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           color: Colors.grey),
                     ),
-                    Text(' = 950 000',
-                        style: TextStyle(
+                    Text(
+                      ' x${count != -1 ? count : 0}',
+                      style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey),
+                    ),
+                    Text(
+                        ' = ${(widget.product.price!.toInt() - widget.product.compound!.toInt()) * (selectedIndex3 != -1 ? bloc[selectedIndex3!] : 1) * count}',
+                        style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
                             color: Colors.grey)),
@@ -621,12 +771,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         },
                         child: Container(
                           padding: const EdgeInsets.all(4),
-                          // child: SvgPicture.asset(
-                          //     'assets/icons/add_1.svg'),
-                          child: const Icon(
-                            Icons.add,
-                            color: AppColors.kPrimaryColor,
-                          ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.white,
@@ -639,6 +783,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                     0, 1), // changes position of shadow
                               ),
                             ],
+                          ),
+                          // child: SvgPicture.asset(
+                          //     'assets/icons/add_1.svg'),
+                          child: const Icon(
+                            Icons.add,
+                            color: AppColors.kPrimaryColor,
                           ),
                         ),
                       ),
@@ -689,17 +839,17 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 const SizedBox(height: 14),
 
                 Row(
-                  children: const [
-                    Icon(
+                  children: [
+                    const Icon(
                       Icons.card_giftcard_outlined,
                       color: AppColors.kPrimaryColor,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Text(
-                      'Экономия 50 000тг',
-                      style: TextStyle(
+                      'Экономия ${(widget.product.price!.toInt() - widget.product.compound!.toInt()) * (selectedIndex3 != -1 ? bloc[selectedIndex3!] : 1) * count + count != 0 ? ((widget.product.price!.toInt() - widget.product.compound!.toInt()) * count / 10) : 0}  тг',
+                      style: const TextStyle(
                           color: AppColors.kPrimaryColor,
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
@@ -707,107 +857,107 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Container(
-                  //padding: const EdgeInsets.all(16),
-                  // color: Colors.grey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'В рассрочку',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 14),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width *
-                                0.585, // 229,
-                            height: 32,
-                            child: ListView.builder(
-                              itemCount: textInst.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () {
-                                    if (index == 0) {
-                                      selectedIndexMonth = 3;
-                                    } else if (index == 1) {
-                                      selectedIndexMonth = 6;
-                                    } else if (index == 2) {
-                                      selectedIndexMonth = 12;
-                                    } else if (index == 3) {
-                                      selectedIndexMonth = 24;
-                                    } else {
-                                      selectedIndexMonth = 3;
-                                    }
+                // Container(
+                //   //padding: const EdgeInsets.all(16),
+                //   // color: Colors.grey,
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Row(
+                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //         children: [
+                //           const Text(
+                //             'В рассрочку',
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.w600, fontSize: 14),
+                //           ),
+                //           SizedBox(
+                //             width: MediaQuery.of(context).size.width *
+                //                 0.585, // 229,
+                //             height: 32,
+                //             child: ListView.builder(
+                //               itemCount: textInst.length,
+                //               shrinkWrap: true,
+                //               physics: const NeverScrollableScrollPhysics(),
+                //               scrollDirection: Axis.horizontal,
+                //               itemBuilder: (context, index) {
+                //                 return InkWell(
+                //                   onTap: () {
+                //                     if (index == 0) {
+                //                       selectedIndexMonth = 3;
+                //                     } else if (index == 1) {
+                //                       selectedIndexMonth = 6;
+                //                     } else if (index == 2) {
+                //                       selectedIndexMonth = 12;
+                //                     } else if (index == 3) {
+                //                       selectedIndexMonth = 24;
+                //                     } else {
+                //                       selectedIndexMonth = 3;
+                //                     }
 
-                                    setState(() {
-                                      selectedIndex2 = index;
-                                    });
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(right: 4.0),
-                                    child: Container(
-                                      width: 54,
-                                      decoration: BoxDecoration(
-                                        color: selectedIndex2 == index
-                                            ? Color(0xFFFFD54F)
-                                            : Colors.white,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      padding: const EdgeInsets.only(
-                                        top: 8,
-                                        bottom: 8,
-                                      ),
-                                      child: Text(
-                                        textInst[index],
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                            color: AppColors.kGray900,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            width: 55,
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFFD54F),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              '${(widget.product.price!.toInt() / selectedIndexMonth!.toInt()).toInt()}',
-                              style: const TextStyle(
-                                  color: AppColors.kGray900,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          Text(
-                            ' x$selectedIndexMonth',
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Container(height: 8),
+                //                     setState(() {
+                //                       selectedIndex2 = index;
+                //                     });
+                //                   },
+                //                   child: Padding(
+                //                     padding: const EdgeInsets.only(right: 4.0),
+                //                     child: Container(
+                //                       width: 54,
+                //                       decoration: BoxDecoration(
+                //                         color: selectedIndex2 == index
+                //                             ? const Color(0xFFFFD54F)
+                //                             : Colors.white,
+                //                         borderRadius: BorderRadius.circular(8),
+                //                       ),
+                //                       padding: const EdgeInsets.only(
+                //                         top: 8,
+                //                         bottom: 8,
+                //                       ),
+                //                       child: Text(
+                //                         textInst[index],
+                //                         textAlign: TextAlign.center,
+                //                         style: const TextStyle(
+                //                             color: AppColors.kGray900,
+                //                             fontSize: 14,
+                //                             fontWeight: FontWeight.w400),
+                //                       ),
+                //                     ),
+                //                   ),
+                //                 );
+                //               },
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //       Row(
+                //         children: [
+                //           Container(
+                //             width: 55,
+                //             padding: const EdgeInsets.all(8),
+                //             decoration: BoxDecoration(
+                //               color: const Color(0xFFFFD54F),
+                //               borderRadius: BorderRadius.circular(8),
+                //             ),
+                //             alignment: Alignment.center,
+                //             child: Text(
+                //               '${widget.product.price!.toInt() ~/ selectedIndexMonth!.toInt()}',
+                //               style: const TextStyle(
+                //                   color: AppColors.kGray900,
+                //                   fontSize: 14,
+                //                   fontWeight: FontWeight.w500),
+                //             ),
+                //           ),
+                //           Text(
+                //             ' x$selectedIndexMonth',
+                //             style: const TextStyle(
+                //                 fontSize: 14, fontWeight: FontWeight.w400),
+                //           ),
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // const SizedBox(height: 8),
                 // const SizedBox(
                 //   height: 20,
                 // ),
@@ -1025,7 +1175,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           // ),
           //const SizedBox(height: 8),
           Container(
-            padding: EdgeInsets.only(top: 16, left: 16),
+            padding: const EdgeInsets.only(top: 16, left: 16),
             color: Colors.white,
             alignment: Alignment.centerLeft,
             child: const Text(
@@ -1052,7 +1202,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => DetailStorePage(
-                                shop: widget.product.shops![index] as Shops)),
+                                shop: widget.product.shops![index])),
                       );
                     },
                     child: Padding(
@@ -1229,7 +1379,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             ],
                           ),
                           Container(
-                            padding: EdgeInsets.only(top: 12),
+                            padding: const EdgeInsets.only(top: 12),
                             width: 130,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1296,7 +1446,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SpecificationsPage()),
+                            builder: (context) => const SpecificationsPage()),
                       );
                       // SpecificationsPage
                     },
@@ -1325,6 +1475,395 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           const SizedBox(
             height: 10,
           ),
+          Container(
+              color: Colors.white,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text(
+                          'Отзывы',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w700),
+                        ),
+                        Text(
+                          'Читать все',
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.kPrimaryColor),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    //  height: 300,
+                    alignment: Alignment.centerLeft,
+                    child: Stack(
+                      //mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(top: 10),
+                          child: RichText(
+                            text: TextSpan(
+                              //  style: DefaultTextStyle.of(context).style,
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: "${widget.product.rating}",
+                                  style: const TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black),
+                                ),
+                                const TextSpan(
+                                  text: " из 5",
+                                  style: TextStyle(
+                                      color: AppColors.kGray300,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 65,
+                          margin: const EdgeInsets.only(top: 0, left: 108),
+                          child: ListView.builder(
+                              itemCount: 5,
+                              // scrollDirection: Axis.vertical,
+                              reverse: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Row(
+                                  children: [
+                                    RatingBar.builder(
+                                      initialRating: index.toDouble(),
+                                      minRating: 1,
+                                      itemSize: 13,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      itemPadding: const EdgeInsets.symmetric(
+                                          horizontal: 0.0),
+                                      itemBuilder: (context, _) => const Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      onRatingUpdate: (rating) {
+                                        print(rating);
+                                      },
+                                    ),
+                                    Stack(
+                                      children: [
+                                        Container(
+                                            height: 4,
+                                            width: 186,
+                                            color: const Color(0xffe5f1ff)),
+                                        Container(
+                                            height: 4,
+                                            width: index.toDouble() * 10,
+                                            color: const Color(0xffFFC107))
+                                      ],
+                                    )
+                                  ],
+                                );
+                              }),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 55),
+                          child: Text(
+                            '${widget.product.rating} отзывов',
+                            style: const TextStyle(
+                                color: AppColors.kGray300,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  BlocConsumer<reviewProductCubit.ReviewCubit,
+                          reviewProductState.ReviewState>(
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        if (state is reviewProductState.ErrorState) {
+                          return Center(
+                            child: Text(
+                              state.message,
+                              style: const TextStyle(
+                                  fontSize: 20.0, color: Colors.grey),
+                            ),
+                          );
+                        }
+                        if (state is reviewProductState.LoadingState) {
+                          return const Center(
+                              child: CircularProgressIndicator(
+                                  color: Colors.indigoAccent));
+                        }
+
+                        if (state is reviewProductState.LoadedState) {
+                          return Container(
+                              height: state.reviewModel.length != 0
+                                  ? (100 * state.reviewModel.length.toDouble())
+                                  : 20,
+                              padding: const EdgeInsets.all(16),
+                              child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                itemCount: state.reviewModel.length,
+                                itemBuilder: (context, index) {
+                                  return Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '${state.reviewModel[index].user!.name}',
+                                              style: const TextStyle(
+                                                  color: AppColors.kGray900,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            RatingBar.builder(
+                                              initialRating: state
+                                                  .reviewModel[index].rating!
+                                                  .toDouble(),
+                                              minRating: 1,
+                                              itemSize: 15,
+                                              direction: Axis.horizontal,
+                                              allowHalfRating: false,
+                                              itemCount: 5,
+                                              ignoreGestures: true,
+                                              itemPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 0.0),
+                                              itemBuilder: (context, _) =>
+                                                  const Icon(
+                                                Icons.star,
+                                                color: Colors.amber,
+                                              ),
+                                              onRatingUpdate: (value) {
+                                                rating = value.toInt();
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          '${state.reviewModel[index].date}',
+                                          style: const TextStyle(
+                                              color: AppColors.kGray300,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12),
+                                        ),
+                                        const SizedBox(
+                                          height: 4,
+                                        ),
+                                        Text(
+                                          '${state.reviewModel[index].text}',
+                                          maxLines: 4,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 14.0,
+                                              color: Colors.black),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        //   Flexible(
+                                        //       child: Text(
+                                        //           'The Dropbox HQ in San Francisco is one of the best designed & most comfortable offices I have ever witnessed. Great stuff! If you happen to visit SanFran, dont miss the chance to witness it yourself. ',style: TextStyle(color: Colors.black),))
+                                        // ],
+                                      ],
+                                    ),
+                                  );
+                                  ;
+                                },
+                              ));
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator(
+                                  color: Colors.indigoAccent));
+                        }
+                      }),
+                  // Container(
+                  //   padding: const EdgeInsets.all(16),
+                  //   child: ListView.builder(
+                  //     itemCount: 2,
+                  //     shrinkWrap: true,
+                  //     physics: const NeverScrollableScrollPhysics(),
+                  //     // separatorBuilder: (BuildContext context, int index) => const Divider(),
+                  //     itemBuilder: (BuildContext context, int index) {
+                  //       return Expanded(
+                  //         child: Column(
+                  //           crossAxisAlignment: CrossAxisAlignment.start,
+                  //           children: [
+                  //             Row(
+                  //               mainAxisAlignment:
+                  //                   MainAxisAlignment.spaceBetween,
+                  //               children: [
+                  //                 const Text(
+                  //                   'Ronald Richards',
+                  //                   style: TextStyle(
+                  //                       color: AppColors.kGray900,
+                  //                       fontSize: 16,
+                  //                       fontWeight: FontWeight.w500),
+                  //                 ),
+                  //                 RatingBar(
+                  //                   ignoreGestures: true,
+                  //                   initialRating: 2,
+                  //                   unratedColor: const Color(0x30F11712),
+                  //                   itemSize: 15,
+                  //                   // itemPadding:
+                  //                   // const EdgeInsets.symmetric(horizontal: 4.0),
+                  //                   ratingWidget: RatingWidget(
+                  //                     full: const Icon(
+                  //                       Icons.star,
+                  //                       color: Color(0xFFFFC107),
+                  //                     ),
+                  //                     half: const Icon(
+                  //                       Icons.star,
+                  //                       color: Color(0xFFFFC107),
+                  //                     ),
+                  //                     empty: const Icon(
+                  //                       Icons.star,
+                  //                       color: Color(0xFFFFC107),
+                  //                     ),
+                  //                   ),
+                  //                   onRatingUpdate: (double value) {},
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //             const SizedBox(
+                  //               height: 10,
+                  //             ),
+                  //             const Text(
+                  //               '14 мая 2021г.',
+                  //               style: TextStyle(
+                  //                   color: AppColors.kGray300,
+                  //                   fontWeight: FontWeight.w500,
+                  //                   fontSize: 12),
+                  //             ),
+                  //             const SizedBox(
+                  //               height: 4,
+                  //             ),
+                  //             const Text(
+                  //               'Here is some long text that I am expecting will go off of the screen.',
+                  //               style: TextStyle(
+                  //                   fontWeight: FontWeight.w400,
+                  //                   fontSize: 14.0,
+                  //                   color: Colors.black),
+                  //             ),
+                  //             const SizedBox(
+                  //               height: 10,
+                  //             ),
+                  //             //   Flexible(
+                  //             //       child: Text(
+                  //             //           'The Dropbox HQ in San Francisco is one of the best designed & most comfortable offices I have ever witnessed. Great stuff! If you happen to visit SanFran, dont miss the chance to witness it yourself. ',style: TextStyle(color: Colors.black),))
+                  //             // ],
+                  //           ],
+                  //         ),
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
+                ],
+              )),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            padding: const EdgeInsets.all(16),
+            color: Colors.white,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Оставьте отзыв',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                    textAlign: TextAlign.start,
+                  ),
+                  RatingBar.builder(
+                    initialRating: 0,
+                    minRating: 1,
+                    itemSize: 15,
+                    direction: Axis.horizontal,
+                    allowHalfRating: false,
+                    itemCount: 5,
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
+                    itemBuilder: (context, _) => const Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (value) {
+                      rating = value.toInt();
+                    },
+                  ),
+                ],
+              ),
+              TextFormField(
+                controller: _commentController,
+                maxLines: 5,
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
+                    hintText: 'Напишите отзывь', border: InputBorder.none),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  await BlocProvider.of<reviewProductCubit.ReviewCubit>(context)
+                      .reviewStore(
+                          _commentController.text, rating.toString(), '28');
+                  _commentController.clear();
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 39,
+                  width: 209,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(width: 0.2),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black,
+                        offset: Offset(
+                          0.2,
+                          0.2,
+                        ), //Offset
+                        blurRadius: 0.1,
+                        spreadRadius: 0.1,
+                      ), //BoxShadow
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: Offset(0.0, 0.0),
+                        blurRadius: 0.0,
+                        spreadRadius: 0.0,
+                      ), //BoxShadow
+                    ],
+                  ),
+                  child: const Text(
+                    'Оставить свой отзыв',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ),
+            ]),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+
           Container(
               height: 170,
               color: Colors.white,
@@ -1385,8 +1924,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         return Center(
                           child: Text(
                             state.message,
-                            style:
-                                TextStyle(fontSize: 20.0, color: Colors.grey),
+                            style: const TextStyle(
+                                fontSize: 20.0, color: Colors.grey),
                           ),
                         );
                       }
@@ -1453,8 +1992,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         return Center(
                           child: Text(
                             state.message,
-                            style:
-                                TextStyle(fontSize: 20.0, color: Colors.grey),
+                            style: const TextStyle(
+                                fontSize: 20.0, color: Colors.grey),
                           ),
                         );
                       }
@@ -1465,7 +2004,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       }
 
                       if (state is LoadedState) {
-                        return Container(
+                        return SizedBox(
                             height: 608,
                             child: GridView.builder(
                               scrollDirection: Axis.horizontal,
@@ -1522,7 +2061,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   isvisible = true;
                 });
                 BlocProvider.of<ProductCubit>(context).products();
-                Get.to(() => BasketOrderPage());
+
+                Get.to(BasketOrderAddressPage());
+
+                //Get.to(() => const BasketOrderPa!ge());
               },
               child: Container(
                   height: 46,

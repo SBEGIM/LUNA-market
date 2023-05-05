@@ -20,7 +20,7 @@ class PunktsWidget extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) =>
             const Divider(height: 1),
         itemBuilder: (BuildContext context, int index) {
-          return Container(
+          return SizedBox(
             height: 70,
             child: ListTile(
               //minLeadingWidth: 23,

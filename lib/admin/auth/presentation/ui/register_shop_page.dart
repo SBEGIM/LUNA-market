@@ -12,7 +12,7 @@ import '../../../../features/app/widgets/custom_back_button.dart';
 
 class RegisterShopPage extends StatefulWidget {
   final String shopName;
-  RegisterShopPage({required this.shopName, Key? key}) : super(key: key);
+  const RegisterShopPage({required this.shopName, Key? key}) : super(key: key);
 
   @override
   State<RegisterShopPage> createState() => _RegisterShopPageState();
@@ -81,7 +81,7 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
                         middleText: '',
                         textConfirm: 'Камера',
                         textCancel: 'Галлерея',
-                        titlePadding: EdgeInsets.only(top: 40),
+                        titlePadding: const EdgeInsets.only(top: 40),
                         onConfirm: () {
                           change = true;
                           setState(() {
@@ -145,7 +145,7 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
                 minLeadingWidth: 10,
                 title: TextField(
                   controller: shopNameController,
-                  cursorColor: Color.fromRGBO(31, 196, 207, 1),
+                  cursorColor: const Color.fromRGBO(31, 196, 207, 1),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Название магазина',

@@ -16,5 +16,5 @@ class LoadedState extends ProductAdminState {
 class ErrorState extends ProductAdminState {
   String message;
 
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 }

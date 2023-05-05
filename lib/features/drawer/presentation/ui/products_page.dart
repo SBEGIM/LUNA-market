@@ -1,11 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart'
     as productCubit;
 import 'package:haji_market/features/drawer/data/bloc/product_state.dart'
@@ -23,13 +23,18 @@ import 'package:haji_market/features/drawer/presentation/widgets/filter_page.dar
 import 'package:haji_market/features/drawer/presentation/widgets/products_card_widget.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../home/data/model/Cats.dart';
+import '../../../home/presentation/widgets/product_watching_card.dart';
 import '../../data/bloc/brand_cubit.dart' as brandCubit;
 import 'package:haji_market/features/drawer/data/bloc/brand_state.dart'
     as brandState;
 
+import '../widgets/product_ad_card.dart';
+
 class ProductsPage extends StatefulWidget {
   final Cats cats;
-  const ProductsPage({required this.cats, Key? key}) : super(key: key);
+  String? shopId;
+
+  ProductsPage({required this.cats, this.shopId, Key? key}) : super(key: key);
 
   @override
   State<ProductsPage> createState() => _ProductsPageState();
@@ -40,30 +45,51 @@ class _ProductsPageState extends State<ProductsPage> {
   bool catsVisible = false;
   TextEditingController searchController = TextEditingController();
 
+  update() {
+    setState(() {});
+  }
+
+  visible() {
+    GetStorage().listenKey('scrollView', (value) async {
+      catsVisible = value;
+      update();
+    });
+  }
+
   @override
   void initState() {
-    GetStorage().remove('catId');
+    if (widget.cats.id == 0) {
+      GetStorage().remove('CatId');
+      GetStorage().remove('catId');
+    }
+
     GetStorage().remove('priceFilter');
     GetStorage().remove('brandFilterId');
     GetStorage().remove('subCatId');
-    GetStorage().remove('shopFilterId');
+    GetStorage().remove('search');
+
+    GetStorage().remove('sub_cat_id');
+    GetStorage().remove('subCatFilterId');
+    if (widget.shopId == null) {
+      GetStorage().remove('shopFilterId');
+    }
     GetStorage().remove('ratingFilter');
     GetStorage().remove('rating');
     BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context).shopsDrawer();
     BlocProvider.of<brandCubit.BrandCubit>(context).brands();
+    visible();
 
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    GetStorage().listenKey('scrollView', (value) {
-      catsVisible = value;
-      setState(() {
-        catsVisible;
-      });
-    });
+  void dispose() {
+    GetStorage().remove('scrollView');
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
@@ -146,11 +172,11 @@ class _ProductsPageState extends State<ProductsPage> {
             height: 1,
           ),
           Container(
-            padding: EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(left: 16),
             color: Colors.white,
             child: Stack(
               children: [
-                Container(
+                SizedBox(
                   width: 335,
                   child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -160,11 +186,13 @@ class _ProductsPageState extends State<ProductsPage> {
                         child: Wrap(
                           spacing: 6,
                           runSpacing: 6,
-                          children: const [
-                            chipWithDropDown(label: 'Цена'),
-                            chipWithDropDown(label: 'Бренд'),
-                            chipWithDropDown(label: 'Продавцы'),
-                            chipWithDropDown(label: 'Высокий рейтинг'),
+                          children: [
+                            const chipWithDropDown(label: 'Цена'),
+                            const chipWithDropDown(label: 'Бренд'),
+                            widget.shopId == null
+                                ? const chipWithDropDown(label: 'Продавцы')
+                                : Container(),
+                            const chipWithDropDown(label: 'Высокий рейтинг'),
                           ],
                         ),
                       )),
@@ -189,7 +217,61 @@ class _ProductsPageState extends State<ProductsPage> {
               ],
             ),
           ),
-          const Products(),
+
+          (widget.cats.id == 1 && catsVisible == false)
+              ? BlocConsumer<productCubit.ProductCubit,
+                      productState.ProductState>(
+                  listener: (context, state) {},
+                  builder: (context, state) {
+                    if (state is productState.ErrorState) {
+                      return Center(
+                        child: Text(
+                          state.message,
+                          style: const TextStyle(
+                              fontSize: 20.0, color: Colors.grey),
+                        ),
+                      );
+                    }
+                    if (state is productState.LoadingState) {
+                      return const Center(
+                          child: CircularProgressIndicator(
+                              color: Colors.indigoAccent));
+                    }
+
+                    if (state is productState.LoadedState) {
+                      return SizedBox(
+                          height: 250,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: state.productModel.length < 4
+                                ? state.productModel.length
+                                : 4,
+                            itemBuilder: (BuildContext ctx, index) {
+                              return GestureDetector(
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DetailCardProductPage(
+                                              product:
+                                                  state.productModel[index])),
+                                ),
+                                child: ProductAdCard(
+                                  product: state.productModel[index],
+                                ),
+                              );
+                            },
+                          ));
+                    } else {
+                      return const Center(
+                          child: CircularProgressIndicator(
+                              color: Colors.indigoAccent));
+                    }
+                  })
+              : Container(),
+          SizedBox(height: 20),
+          Expanded(child: const Products()),
 
           // ProductCardWidget()
         ],
@@ -269,7 +351,7 @@ class _ProductsState extends State<Products> {
             return Center(
               child: Text(
                 state.message,
-                style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
               ),
             );
           }
@@ -282,7 +364,7 @@ class _ProductsState extends State<Products> {
             return Column(
               children: [
                 Container(
-                  padding: EdgeInsets.only(left: 16, top: 11, bottom: 8),
+                  padding: const EdgeInsets.only(left: 16, top: 11, bottom: 8),
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Найдено ${state.productModel.length} товаров',
@@ -292,15 +374,30 @@ class _ProductsState extends State<Products> {
                         color: Color.fromRGBO(144, 148, 153, 1)),
                   ),
                 ),
-                SizedBox(
-                  height: 530,
+                Expanded(
+                  //height: MediaQuery.of(context).size.height * 0.7,
                   child: NotificationListener<UserScrollNotification>(
                     onNotification: (notification) {
-                      if (notification.direction == ScrollDirection.forward) {
-                        GetStorage().write('scrollView', false);
+                      if (notification.metrics.pixels ==
+                          notification.metrics.minScrollExtent) {
+                        Future.delayed(const Duration(milliseconds: 100), () {})
+                            .then((s) {
+                          // print(
+                          //     ' okForward ${notification.metrics.minScrollExtent} ');
+
+                          GetStorage().write('scrollView', false);
+                        });
+
+                        // GetStorage().write('scrollView', false);
                       } else if (notification.direction ==
                           ScrollDirection.reverse) {
-                        GetStorage().write('scrollView', true);
+                        Future.delayed(const Duration(milliseconds: 200), () {})
+                            .then((s) {
+                          // print(
+                          //     ' okForward ${notification.metrics.minScrollExtent} ');
+
+                          GetStorage().write('scrollView', true);
+                        });
                       }
                       return true;
                     },
@@ -399,7 +496,6 @@ class _chipWithDropDownState extends State<chipWithDropDown> {
                 brandName = value ?? 'Бренд';
                 setState(() {});
               });
-
               await showModalBottomSheet(
                 context: context,
                 backgroundColor: Colors.transparent,
@@ -551,7 +647,7 @@ class _CatsProductPageState extends State<CatsProductPage> {
             return Center(
               child: Text(
                 state.message,
-                style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
               ),
             );
           }
@@ -569,9 +665,9 @@ class _CatsProductPageState extends State<CatsProductPage> {
                           setState(() {
                             subCatName = '';
                           });
-                          GetStorage().remove('CatId');
+                          GetStorage().remove('subCatId');
                         } else {
-                          GetStorage().write('CatId', state.cats[index].id);
+                          GetStorage().write('subCatId', state.cats[index].id);
 
                           setState(() {
                             subCatName = state.cats[index].name.toString();
@@ -648,7 +744,7 @@ class _PriceBottomSheetState extends State<PriceBottomSheet> {
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20), topRight: Radius.circular(20)),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       child: ListView(children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -657,7 +753,7 @@ class _PriceBottomSheetState extends State<PriceBottomSheet> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.only(left: 20),
+                  padding: const EdgeInsets.only(left: 20),
                   child: const Text(
                     'Цена',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
@@ -795,7 +891,7 @@ class BrandBottomSheet extends StatefulWidget {
 }
 
 class _BrandBottomSheetState extends State<BrandBottomSheet> {
-  List<int> _selectedListSort = [];
+  final List<int> _selectedListSort = [];
 
   @override
   void initState() {
@@ -814,7 +910,7 @@ class _BrandBottomSheetState extends State<BrandBottomSheet> {
             return Center(
               child: Text(
                 state.message,
-                style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
               ),
             );
           }
@@ -839,7 +935,7 @@ class _BrandBottomSheetState extends State<BrandBottomSheet> {
                         shrinkWrap: true,
                         itemCount: state.cats.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Container(
+                          return SizedBox(
                             height: 40,
                             child: InkWell(
                                 onTap: () {
@@ -951,7 +1047,7 @@ class ShopBottomSheet extends StatefulWidget {
 class _ShopBottomSheetState extends State<ShopBottomSheet> {
   //int _selectedIndexSort = -1;
 
-  List<int> _selectedListSort = [];
+  final List<int> _selectedListSort = [];
 
   @override
   void initState() {
@@ -972,7 +1068,7 @@ class _ShopBottomSheetState extends State<ShopBottomSheet> {
             return Center(
               child: Text(
                 state.message,
-                style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
               ),
             );
           }
@@ -989,7 +1085,8 @@ class _ShopBottomSheetState extends State<ShopBottomSheet> {
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20)),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 child: Column(
                   children: [
                     Container(
@@ -1001,7 +1098,7 @@ class _ShopBottomSheetState extends State<ShopBottomSheet> {
                         shrinkWrap: true,
                         itemCount: state.shopsDrawer.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Container(
+                          return SizedBox(
                             height: 40,
                             child: InkWell(
                                 onTap: () {

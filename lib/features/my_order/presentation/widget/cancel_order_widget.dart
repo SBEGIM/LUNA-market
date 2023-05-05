@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/drawer/data/bloc/basket_cubit.dart';
 
 class CancelOrderWidget extends StatefulWidget {
-  CancelOrderWidget({Key? key}) : super(key: key);
+  String id;
+
+  CancelOrderWidget({required this.id, Key? key}) : super(key: key);
 
   @override
   State<CancelOrderWidget> createState() => _CancelOrderWidgetState();
@@ -12,6 +16,13 @@ class CancelOrderWidget extends StatefulWidget {
 
 class _CancelOrderWidgetState extends State<CancelOrderWidget> {
   int selectIndex = -1;
+
+  List<String> cancel = [
+    'Не устрайвает сроки',
+    'Товара нет в наличи',
+    'Продовец попросил отменить',
+    'Другое'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -51,15 +62,39 @@ class _CancelOrderWidgetState extends State<CancelOrderWidget> {
                 children: [
                   GestureDetector(
                     onTap: () {
+                      selectIndex = 0;
+                      setState(() {});
+                    },
+                    child: SizedBox(
+                      height: 50,
+                      child: ListTile(
+                        title: Text(
+                          cancel[0],
+                          style: const TextStyle(
+                              color: AppColors.kGray900,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        trailing: selectIndex == 0
+                            ? const Icon(
+                                Icons.done,
+                                color: AppColors.kPrimaryColor,
+                              )
+                            : null,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
                       selectIndex = 1;
                       setState(() {});
                     },
                     child: SizedBox(
                       height: 50,
                       child: ListTile(
-                        title: const Text(
-                          'Не устрайвает сроки',
-                          style: TextStyle(
+                        title: Text(
+                          cancel[1],
+                          style: const TextStyle(
                               color: AppColors.kGray900,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
@@ -81,9 +116,9 @@ class _CancelOrderWidgetState extends State<CancelOrderWidget> {
                     child: SizedBox(
                       height: 50,
                       child: ListTile(
-                        title: const Text(
-                          'Товара нет в наличи',
-                          style: TextStyle(
+                        title: Text(
+                          cancel[2],
+                          style: const TextStyle(
                               color: AppColors.kGray900,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
@@ -105,38 +140,14 @@ class _CancelOrderWidgetState extends State<CancelOrderWidget> {
                     child: SizedBox(
                       height: 50,
                       child: ListTile(
-                        title: const Text(
-                          'Продовец попросил отменить',
-                          style: TextStyle(
+                        title: Text(
+                          cancel[3],
+                          style: const TextStyle(
                               color: AppColors.kGray900,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
                         ),
                         trailing: selectIndex == 3
-                            ? const Icon(
-                                Icons.done,
-                                color: AppColors.kPrimaryColor,
-                              )
-                            : null,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      selectIndex = 4;
-                      setState(() {});
-                    },
-                    child: SizedBox(
-                      height: 50,
-                      child: ListTile(
-                        title: const Text(
-                          'Другое',
-                          style: TextStyle(
-                              color: AppColors.kGray900,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        trailing: selectIndex == 4
                             ? const Icon(
                                 Icons.done,
                                 color: AppColors.kPrimaryColor,
@@ -156,7 +167,9 @@ class _CancelOrderWidgetState extends State<CancelOrderWidget> {
         padding:
             const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
         child: InkWell(
-          onTap: () {
+          onTap: () async {
+            await BlocProvider.of<BasketCubit>(context)
+                .basketStatusUpdate(widget.id, 'cancel', cancel[selectIndex]);
             Navigator.pop(context);
           },
           child: Container(

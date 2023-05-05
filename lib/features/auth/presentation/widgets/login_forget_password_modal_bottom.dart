@@ -4,15 +4,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/auth/presentation/ui/change_password.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import '../../data/DTO/register.dart';
-import '../../data/bloc/register_cubit.dart';
 import '../../data/bloc/sms_cubit.dart';
 import '../../data/bloc/sms_state.dart';
 
@@ -33,7 +29,7 @@ class _LoginForgotPasswordModalBottom extends State<LoginForgotPasswordModalBott
   int _start = 60;
 
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
+    const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
           (Timer timer) {

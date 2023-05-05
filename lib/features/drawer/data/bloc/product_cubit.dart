@@ -18,7 +18,7 @@ class ProductCubit extends Cubit<ProductState> {
 
       emit(LoadedState(data));
     } catch (e) {
-      log(e.toString());
+      log(e.toString() + 'ProductCubit products');
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }

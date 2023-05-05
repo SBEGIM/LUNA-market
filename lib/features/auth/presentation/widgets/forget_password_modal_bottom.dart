@@ -6,7 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
-import 'package:haji_market/features/auth/presentation/ui/change_password.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -33,7 +32,7 @@ class _ForgotPasswordModalBottomState extends State<ForgotPasswordModalBottom> {
   int _start = 60;
 
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
+    const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
           (Timer timer) {
@@ -78,7 +77,7 @@ class _ForgotPasswordModalBottomState extends State<ForgotPasswordModalBottom> {
         FocusScope.of(context).requestFocus(FocusNode());
         final register = BlocProvider.of<RegisterCubit>(context);
         register.register(widget.register);
-        Get.to(Base());
+        Get.to(const Base());
       }
     }, builder: (context, state) {
       if (state is LoadingState) {

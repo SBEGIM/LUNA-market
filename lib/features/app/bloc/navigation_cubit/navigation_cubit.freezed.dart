@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'navigation_cubit.dart';
 
@@ -25,17 +25,19 @@ mixin _$NavigationState {
     required TResult Function() basket,
     required TResult Function() myOrder,
     required TResult Function() auth,
+    required TResult Function() notAuth,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? home,
-    TResult Function()? tape,
-    TResult Function(int index, String name)? detailTape,
-    TResult Function()? favorite,
-    TResult Function()? basket,
-    TResult Function()? myOrder,
-    TResult Function()? auth,
+    TResult? Function()? home,
+    TResult? Function()? tape,
+    TResult? Function(int index, String name)? detailTape,
+    TResult? Function()? favorite,
+    TResult? Function()? basket,
+    TResult? Function()? myOrder,
+    TResult? Function()? auth,
+    TResult? Function()? notAuth,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -47,6 +49,7 @@ mixin _$NavigationState {
     TResult Function()? basket,
     TResult Function()? myOrder,
     TResult Function()? auth,
+    TResult Function()? notAuth,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -59,17 +62,19 @@ mixin _$NavigationState {
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
     required TResult Function(AuthState value) auth,
+    required TResult Function(NotAuthState value) notAuth,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeState value)? home,
-    TResult Function(TapeState value)? tape,
-    TResult Function(DetailTapeState value)? detailTape,
-    TResult Function(FavoriteState value)? favorite,
-    TResult Function(BasketState value)? basket,
-    TResult Function(MyOrderState value)? myOrder,
-    TResult Function(AuthState value)? auth,
+    TResult? Function(HomeState value)? home,
+    TResult? Function(TapeState value)? tape,
+    TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(FavoriteState value)? favorite,
+    TResult? Function(BasketState value)? basket,
+    TResult? Function(MyOrderState value)? myOrder,
+    TResult? Function(AuthState value)? auth,
+    TResult? Function(NotAuthState value)? notAuth,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -81,6 +86,7 @@ mixin _$NavigationState {
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
     TResult Function(AuthState value)? auth,
+    TResult Function(NotAuthState value)? notAuth,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -90,17 +96,18 @@ mixin _$NavigationState {
 abstract class $NavigationStateCopyWith<$Res> {
   factory $NavigationStateCopyWith(
           NavigationState value, $Res Function(NavigationState) then) =
-      _$NavigationStateCopyWithImpl<$Res>;
+      _$NavigationStateCopyWithImpl<$Res, NavigationState>;
 }
 
 /// @nodoc
-class _$NavigationStateCopyWithImpl<$Res>
+class _$NavigationStateCopyWithImpl<$Res, $Val extends NavigationState>
     implements $NavigationStateCopyWith<$Res> {
   _$NavigationStateCopyWithImpl(this._value, this._then);
 
-  final NavigationState _value;
   // ignore: unused_field
-  final $Res Function(NavigationState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 }
 
 /// @nodoc
@@ -112,14 +119,11 @@ abstract class _$$HomeStateCopyWith<$Res> {
 
 /// @nodoc
 class __$$HomeStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$HomeState>
     implements _$$HomeStateCopyWith<$Res> {
   __$$HomeStateCopyWithImpl(
       _$HomeState _value, $Res Function(_$HomeState) _then)
-      : super(_value, (v) => _then(v as _$HomeState));
-
-  @override
-  _$HomeState get _value => super._value as _$HomeState;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -151,6 +155,7 @@ class _$HomeState implements HomeState {
     required TResult Function() basket,
     required TResult Function() myOrder,
     required TResult Function() auth,
+    required TResult Function() notAuth,
   }) {
     return home();
   }
@@ -158,13 +163,14 @@ class _$HomeState implements HomeState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? home,
-    TResult Function()? tape,
-    TResult Function(int index, String name)? detailTape,
-    TResult Function()? favorite,
-    TResult Function()? basket,
-    TResult Function()? myOrder,
-    TResult Function()? auth,
+    TResult? Function()? home,
+    TResult? Function()? tape,
+    TResult? Function(int index, String name)? detailTape,
+    TResult? Function()? favorite,
+    TResult? Function()? basket,
+    TResult? Function()? myOrder,
+    TResult? Function()? auth,
+    TResult? Function()? notAuth,
   }) {
     return home?.call();
   }
@@ -179,6 +185,7 @@ class _$HomeState implements HomeState {
     TResult Function()? basket,
     TResult Function()? myOrder,
     TResult Function()? auth,
+    TResult Function()? notAuth,
     required TResult orElse(),
   }) {
     if (home != null) {
@@ -197,6 +204,7 @@ class _$HomeState implements HomeState {
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
     required TResult Function(AuthState value) auth,
+    required TResult Function(NotAuthState value) notAuth,
   }) {
     return home(this);
   }
@@ -204,13 +212,14 @@ class _$HomeState implements HomeState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeState value)? home,
-    TResult Function(TapeState value)? tape,
-    TResult Function(DetailTapeState value)? detailTape,
-    TResult Function(FavoriteState value)? favorite,
-    TResult Function(BasketState value)? basket,
-    TResult Function(MyOrderState value)? myOrder,
-    TResult Function(AuthState value)? auth,
+    TResult? Function(HomeState value)? home,
+    TResult? Function(TapeState value)? tape,
+    TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(FavoriteState value)? favorite,
+    TResult? Function(BasketState value)? basket,
+    TResult? Function(MyOrderState value)? myOrder,
+    TResult? Function(AuthState value)? auth,
+    TResult? Function(NotAuthState value)? notAuth,
   }) {
     return home?.call(this);
   }
@@ -225,6 +234,7 @@ class _$HomeState implements HomeState {
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
     TResult Function(AuthState value)? auth,
+    TResult Function(NotAuthState value)? notAuth,
     required TResult orElse(),
   }) {
     if (home != null) {
@@ -247,14 +257,11 @@ abstract class _$$TapeStateCopyWith<$Res> {
 
 /// @nodoc
 class __$$TapeStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$TapeState>
     implements _$$TapeStateCopyWith<$Res> {
   __$$TapeStateCopyWithImpl(
       _$TapeState _value, $Res Function(_$TapeState) _then)
-      : super(_value, (v) => _then(v as _$TapeState));
-
-  @override
-  _$TapeState get _value => super._value as _$TapeState;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -286,6 +293,7 @@ class _$TapeState implements TapeState {
     required TResult Function() basket,
     required TResult Function() myOrder,
     required TResult Function() auth,
+    required TResult Function() notAuth,
   }) {
     return tape();
   }
@@ -293,13 +301,14 @@ class _$TapeState implements TapeState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? home,
-    TResult Function()? tape,
-    TResult Function(int index, String name)? detailTape,
-    TResult Function()? favorite,
-    TResult Function()? basket,
-    TResult Function()? myOrder,
-    TResult Function()? auth,
+    TResult? Function()? home,
+    TResult? Function()? tape,
+    TResult? Function(int index, String name)? detailTape,
+    TResult? Function()? favorite,
+    TResult? Function()? basket,
+    TResult? Function()? myOrder,
+    TResult? Function()? auth,
+    TResult? Function()? notAuth,
   }) {
     return tape?.call();
   }
@@ -314,6 +323,7 @@ class _$TapeState implements TapeState {
     TResult Function()? basket,
     TResult Function()? myOrder,
     TResult Function()? auth,
+    TResult Function()? notAuth,
     required TResult orElse(),
   }) {
     if (tape != null) {
@@ -332,6 +342,7 @@ class _$TapeState implements TapeState {
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
     required TResult Function(AuthState value) auth,
+    required TResult Function(NotAuthState value) notAuth,
   }) {
     return tape(this);
   }
@@ -339,13 +350,14 @@ class _$TapeState implements TapeState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeState value)? home,
-    TResult Function(TapeState value)? tape,
-    TResult Function(DetailTapeState value)? detailTape,
-    TResult Function(FavoriteState value)? favorite,
-    TResult Function(BasketState value)? basket,
-    TResult Function(MyOrderState value)? myOrder,
-    TResult Function(AuthState value)? auth,
+    TResult? Function(HomeState value)? home,
+    TResult? Function(TapeState value)? tape,
+    TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(FavoriteState value)? favorite,
+    TResult? Function(BasketState value)? basket,
+    TResult? Function(MyOrderState value)? myOrder,
+    TResult? Function(AuthState value)? auth,
+    TResult? Function(NotAuthState value)? notAuth,
   }) {
     return tape?.call(this);
   }
@@ -360,6 +372,7 @@ class _$TapeState implements TapeState {
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
     TResult Function(AuthState value)? auth,
+    TResult Function(NotAuthState value)? notAuth,
     required TResult orElse(),
   }) {
     if (tape != null) {
@@ -378,31 +391,30 @@ abstract class _$$DetailTapeStateCopyWith<$Res> {
   factory _$$DetailTapeStateCopyWith(
           _$DetailTapeState value, $Res Function(_$DetailTapeState) then) =
       __$$DetailTapeStateCopyWithImpl<$Res>;
+  @useResult
   $Res call({int index, String name});
 }
 
 /// @nodoc
 class __$$DetailTapeStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$DetailTapeState>
     implements _$$DetailTapeStateCopyWith<$Res> {
   __$$DetailTapeStateCopyWithImpl(
       _$DetailTapeState _value, $Res Function(_$DetailTapeState) _then)
-      : super(_value, (v) => _then(v as _$DetailTapeState));
+      : super(_value, _then);
 
-  @override
-  _$DetailTapeState get _value => super._value as _$DetailTapeState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? index = freezed,
-    Object? name = freezed,
+    Object? index = null,
+    Object? name = null,
   }) {
     return _then(_$DetailTapeState(
-      index == freezed
+      null == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
               as int,
-      name == freezed
+      null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
@@ -430,18 +442,16 @@ class _$DetailTapeState implements DetailTapeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DetailTapeState &&
-            const DeepCollectionEquality().equals(other.index, index) &&
-            const DeepCollectionEquality().equals(other.name, name));
+            (identical(other.index, index) || other.index == index) &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(index),
-      const DeepCollectionEquality().hash(name));
+  int get hashCode => Object.hash(runtimeType, index, name);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$DetailTapeStateCopyWith<_$DetailTapeState> get copyWith =>
       __$$DetailTapeStateCopyWithImpl<_$DetailTapeState>(this, _$identity);
 
@@ -455,6 +465,7 @@ class _$DetailTapeState implements DetailTapeState {
     required TResult Function() basket,
     required TResult Function() myOrder,
     required TResult Function() auth,
+    required TResult Function() notAuth,
   }) {
     return detailTape(index, name);
   }
@@ -462,13 +473,14 @@ class _$DetailTapeState implements DetailTapeState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? home,
-    TResult Function()? tape,
-    TResult Function(int index, String name)? detailTape,
-    TResult Function()? favorite,
-    TResult Function()? basket,
-    TResult Function()? myOrder,
-    TResult Function()? auth,
+    TResult? Function()? home,
+    TResult? Function()? tape,
+    TResult? Function(int index, String name)? detailTape,
+    TResult? Function()? favorite,
+    TResult? Function()? basket,
+    TResult? Function()? myOrder,
+    TResult? Function()? auth,
+    TResult? Function()? notAuth,
   }) {
     return detailTape?.call(index, name);
   }
@@ -483,6 +495,7 @@ class _$DetailTapeState implements DetailTapeState {
     TResult Function()? basket,
     TResult Function()? myOrder,
     TResult Function()? auth,
+    TResult Function()? notAuth,
     required TResult orElse(),
   }) {
     if (detailTape != null) {
@@ -501,6 +514,7 @@ class _$DetailTapeState implements DetailTapeState {
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
     required TResult Function(AuthState value) auth,
+    required TResult Function(NotAuthState value) notAuth,
   }) {
     return detailTape(this);
   }
@@ -508,13 +522,14 @@ class _$DetailTapeState implements DetailTapeState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeState value)? home,
-    TResult Function(TapeState value)? tape,
-    TResult Function(DetailTapeState value)? detailTape,
-    TResult Function(FavoriteState value)? favorite,
-    TResult Function(BasketState value)? basket,
-    TResult Function(MyOrderState value)? myOrder,
-    TResult Function(AuthState value)? auth,
+    TResult? Function(HomeState value)? home,
+    TResult? Function(TapeState value)? tape,
+    TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(FavoriteState value)? favorite,
+    TResult? Function(BasketState value)? basket,
+    TResult? Function(MyOrderState value)? myOrder,
+    TResult? Function(AuthState value)? auth,
+    TResult? Function(NotAuthState value)? notAuth,
   }) {
     return detailTape?.call(this);
   }
@@ -529,6 +544,7 @@ class _$DetailTapeState implements DetailTapeState {
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
     TResult Function(AuthState value)? auth,
+    TResult Function(NotAuthState value)? notAuth,
     required TResult orElse(),
   }) {
     if (detailTape != null) {
@@ -558,14 +574,11 @@ abstract class _$$FavoriteStateCopyWith<$Res> {
 
 /// @nodoc
 class __$$FavoriteStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$FavoriteState>
     implements _$$FavoriteStateCopyWith<$Res> {
   __$$FavoriteStateCopyWithImpl(
       _$FavoriteState _value, $Res Function(_$FavoriteState) _then)
-      : super(_value, (v) => _then(v as _$FavoriteState));
-
-  @override
-  _$FavoriteState get _value => super._value as _$FavoriteState;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -597,6 +610,7 @@ class _$FavoriteState implements FavoriteState {
     required TResult Function() basket,
     required TResult Function() myOrder,
     required TResult Function() auth,
+    required TResult Function() notAuth,
   }) {
     return favorite();
   }
@@ -604,13 +618,14 @@ class _$FavoriteState implements FavoriteState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? home,
-    TResult Function()? tape,
-    TResult Function(int index, String name)? detailTape,
-    TResult Function()? favorite,
-    TResult Function()? basket,
-    TResult Function()? myOrder,
-    TResult Function()? auth,
+    TResult? Function()? home,
+    TResult? Function()? tape,
+    TResult? Function(int index, String name)? detailTape,
+    TResult? Function()? favorite,
+    TResult? Function()? basket,
+    TResult? Function()? myOrder,
+    TResult? Function()? auth,
+    TResult? Function()? notAuth,
   }) {
     return favorite?.call();
   }
@@ -625,6 +640,7 @@ class _$FavoriteState implements FavoriteState {
     TResult Function()? basket,
     TResult Function()? myOrder,
     TResult Function()? auth,
+    TResult Function()? notAuth,
     required TResult orElse(),
   }) {
     if (favorite != null) {
@@ -643,6 +659,7 @@ class _$FavoriteState implements FavoriteState {
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
     required TResult Function(AuthState value) auth,
+    required TResult Function(NotAuthState value) notAuth,
   }) {
     return favorite(this);
   }
@@ -650,13 +667,14 @@ class _$FavoriteState implements FavoriteState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeState value)? home,
-    TResult Function(TapeState value)? tape,
-    TResult Function(DetailTapeState value)? detailTape,
-    TResult Function(FavoriteState value)? favorite,
-    TResult Function(BasketState value)? basket,
-    TResult Function(MyOrderState value)? myOrder,
-    TResult Function(AuthState value)? auth,
+    TResult? Function(HomeState value)? home,
+    TResult? Function(TapeState value)? tape,
+    TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(FavoriteState value)? favorite,
+    TResult? Function(BasketState value)? basket,
+    TResult? Function(MyOrderState value)? myOrder,
+    TResult? Function(AuthState value)? auth,
+    TResult? Function(NotAuthState value)? notAuth,
   }) {
     return favorite?.call(this);
   }
@@ -671,6 +689,7 @@ class _$FavoriteState implements FavoriteState {
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
     TResult Function(AuthState value)? auth,
+    TResult Function(NotAuthState value)? notAuth,
     required TResult orElse(),
   }) {
     if (favorite != null) {
@@ -693,14 +712,11 @@ abstract class _$$BasketStateCopyWith<$Res> {
 
 /// @nodoc
 class __$$BasketStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$BasketState>
     implements _$$BasketStateCopyWith<$Res> {
   __$$BasketStateCopyWithImpl(
       _$BasketState _value, $Res Function(_$BasketState) _then)
-      : super(_value, (v) => _then(v as _$BasketState));
-
-  @override
-  _$BasketState get _value => super._value as _$BasketState;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -732,6 +748,7 @@ class _$BasketState implements BasketState {
     required TResult Function() basket,
     required TResult Function() myOrder,
     required TResult Function() auth,
+    required TResult Function() notAuth,
   }) {
     return basket();
   }
@@ -739,13 +756,14 @@ class _$BasketState implements BasketState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? home,
-    TResult Function()? tape,
-    TResult Function(int index, String name)? detailTape,
-    TResult Function()? favorite,
-    TResult Function()? basket,
-    TResult Function()? myOrder,
-    TResult Function()? auth,
+    TResult? Function()? home,
+    TResult? Function()? tape,
+    TResult? Function(int index, String name)? detailTape,
+    TResult? Function()? favorite,
+    TResult? Function()? basket,
+    TResult? Function()? myOrder,
+    TResult? Function()? auth,
+    TResult? Function()? notAuth,
   }) {
     return basket?.call();
   }
@@ -760,6 +778,7 @@ class _$BasketState implements BasketState {
     TResult Function()? basket,
     TResult Function()? myOrder,
     TResult Function()? auth,
+    TResult Function()? notAuth,
     required TResult orElse(),
   }) {
     if (basket != null) {
@@ -778,6 +797,7 @@ class _$BasketState implements BasketState {
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
     required TResult Function(AuthState value) auth,
+    required TResult Function(NotAuthState value) notAuth,
   }) {
     return basket(this);
   }
@@ -785,13 +805,14 @@ class _$BasketState implements BasketState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeState value)? home,
-    TResult Function(TapeState value)? tape,
-    TResult Function(DetailTapeState value)? detailTape,
-    TResult Function(FavoriteState value)? favorite,
-    TResult Function(BasketState value)? basket,
-    TResult Function(MyOrderState value)? myOrder,
-    TResult Function(AuthState value)? auth,
+    TResult? Function(HomeState value)? home,
+    TResult? Function(TapeState value)? tape,
+    TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(FavoriteState value)? favorite,
+    TResult? Function(BasketState value)? basket,
+    TResult? Function(MyOrderState value)? myOrder,
+    TResult? Function(AuthState value)? auth,
+    TResult? Function(NotAuthState value)? notAuth,
   }) {
     return basket?.call(this);
   }
@@ -806,6 +827,7 @@ class _$BasketState implements BasketState {
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
     TResult Function(AuthState value)? auth,
+    TResult Function(NotAuthState value)? notAuth,
     required TResult orElse(),
   }) {
     if (basket != null) {
@@ -828,14 +850,11 @@ abstract class _$$MyOrderStateCopyWith<$Res> {
 
 /// @nodoc
 class __$$MyOrderStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$MyOrderState>
     implements _$$MyOrderStateCopyWith<$Res> {
   __$$MyOrderStateCopyWithImpl(
       _$MyOrderState _value, $Res Function(_$MyOrderState) _then)
-      : super(_value, (v) => _then(v as _$MyOrderState));
-
-  @override
-  _$MyOrderState get _value => super._value as _$MyOrderState;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -867,6 +886,7 @@ class _$MyOrderState implements MyOrderState {
     required TResult Function() basket,
     required TResult Function() myOrder,
     required TResult Function() auth,
+    required TResult Function() notAuth,
   }) {
     return myOrder();
   }
@@ -874,13 +894,14 @@ class _$MyOrderState implements MyOrderState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? home,
-    TResult Function()? tape,
-    TResult Function(int index, String name)? detailTape,
-    TResult Function()? favorite,
-    TResult Function()? basket,
-    TResult Function()? myOrder,
-    TResult Function()? auth,
+    TResult? Function()? home,
+    TResult? Function()? tape,
+    TResult? Function(int index, String name)? detailTape,
+    TResult? Function()? favorite,
+    TResult? Function()? basket,
+    TResult? Function()? myOrder,
+    TResult? Function()? auth,
+    TResult? Function()? notAuth,
   }) {
     return myOrder?.call();
   }
@@ -895,6 +916,7 @@ class _$MyOrderState implements MyOrderState {
     TResult Function()? basket,
     TResult Function()? myOrder,
     TResult Function()? auth,
+    TResult Function()? notAuth,
     required TResult orElse(),
   }) {
     if (myOrder != null) {
@@ -913,6 +935,7 @@ class _$MyOrderState implements MyOrderState {
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
     required TResult Function(AuthState value) auth,
+    required TResult Function(NotAuthState value) notAuth,
   }) {
     return myOrder(this);
   }
@@ -920,13 +943,14 @@ class _$MyOrderState implements MyOrderState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeState value)? home,
-    TResult Function(TapeState value)? tape,
-    TResult Function(DetailTapeState value)? detailTape,
-    TResult Function(FavoriteState value)? favorite,
-    TResult Function(BasketState value)? basket,
-    TResult Function(MyOrderState value)? myOrder,
-    TResult Function(AuthState value)? auth,
+    TResult? Function(HomeState value)? home,
+    TResult? Function(TapeState value)? tape,
+    TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(FavoriteState value)? favorite,
+    TResult? Function(BasketState value)? basket,
+    TResult? Function(MyOrderState value)? myOrder,
+    TResult? Function(AuthState value)? auth,
+    TResult? Function(NotAuthState value)? notAuth,
   }) {
     return myOrder?.call(this);
   }
@@ -941,6 +965,7 @@ class _$MyOrderState implements MyOrderState {
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
     TResult Function(AuthState value)? auth,
+    TResult Function(NotAuthState value)? notAuth,
     required TResult orElse(),
   }) {
     if (myOrder != null) {
@@ -963,14 +988,11 @@ abstract class _$$AuthStateCopyWith<$Res> {
 
 /// @nodoc
 class __$$AuthStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$AuthState>
     implements _$$AuthStateCopyWith<$Res> {
   __$$AuthStateCopyWithImpl(
       _$AuthState _value, $Res Function(_$AuthState) _then)
-      : super(_value, (v) => _then(v as _$AuthState));
-
-  @override
-  _$AuthState get _value => super._value as _$AuthState;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -1002,6 +1024,7 @@ class _$AuthState implements AuthState {
     required TResult Function() basket,
     required TResult Function() myOrder,
     required TResult Function() auth,
+    required TResult Function() notAuth,
   }) {
     return auth();
   }
@@ -1009,13 +1032,14 @@ class _$AuthState implements AuthState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? home,
-    TResult Function()? tape,
-    TResult Function(int index, String name)? detailTape,
-    TResult Function()? favorite,
-    TResult Function()? basket,
-    TResult Function()? myOrder,
-    TResult Function()? auth,
+    TResult? Function()? home,
+    TResult? Function()? tape,
+    TResult? Function(int index, String name)? detailTape,
+    TResult? Function()? favorite,
+    TResult? Function()? basket,
+    TResult? Function()? myOrder,
+    TResult? Function()? auth,
+    TResult? Function()? notAuth,
   }) {
     return auth?.call();
   }
@@ -1030,6 +1054,7 @@ class _$AuthState implements AuthState {
     TResult Function()? basket,
     TResult Function()? myOrder,
     TResult Function()? auth,
+    TResult Function()? notAuth,
     required TResult orElse(),
   }) {
     if (auth != null) {
@@ -1048,6 +1073,7 @@ class _$AuthState implements AuthState {
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
     required TResult Function(AuthState value) auth,
+    required TResult Function(NotAuthState value) notAuth,
   }) {
     return auth(this);
   }
@@ -1055,13 +1081,14 @@ class _$AuthState implements AuthState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(HomeState value)? home,
-    TResult Function(TapeState value)? tape,
-    TResult Function(DetailTapeState value)? detailTape,
-    TResult Function(FavoriteState value)? favorite,
-    TResult Function(BasketState value)? basket,
-    TResult Function(MyOrderState value)? myOrder,
-    TResult Function(AuthState value)? auth,
+    TResult? Function(HomeState value)? home,
+    TResult? Function(TapeState value)? tape,
+    TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(FavoriteState value)? favorite,
+    TResult? Function(BasketState value)? basket,
+    TResult? Function(MyOrderState value)? myOrder,
+    TResult? Function(AuthState value)? auth,
+    TResult? Function(NotAuthState value)? notAuth,
   }) {
     return auth?.call(this);
   }
@@ -1076,6 +1103,7 @@ class _$AuthState implements AuthState {
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
     TResult Function(AuthState value)? auth,
+    TResult Function(NotAuthState value)? notAuth,
     required TResult orElse(),
   }) {
     if (auth != null) {
@@ -1087,4 +1115,142 @@ class _$AuthState implements AuthState {
 
 abstract class AuthState implements NavigationState {
   const factory AuthState() = _$AuthState;
+}
+
+/// @nodoc
+abstract class _$$NotAuthStateCopyWith<$Res> {
+  factory _$$NotAuthStateCopyWith(
+          _$NotAuthState value, $Res Function(_$NotAuthState) then) =
+      __$$NotAuthStateCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$NotAuthStateCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$NotAuthState>
+    implements _$$NotAuthStateCopyWith<$Res> {
+  __$$NotAuthStateCopyWithImpl(
+      _$NotAuthState _value, $Res Function(_$NotAuthState) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$NotAuthState implements NotAuthState {
+  const _$NotAuthState();
+
+  @override
+  String toString() {
+    return 'NavigationState.notAuth()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$NotAuthState);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() home,
+    required TResult Function() tape,
+    required TResult Function(int index, String name) detailTape,
+    required TResult Function() favorite,
+    required TResult Function() basket,
+    required TResult Function() myOrder,
+    required TResult Function() auth,
+    required TResult Function() notAuth,
+  }) {
+    return notAuth();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? home,
+    TResult? Function()? tape,
+    TResult? Function(int index, String name)? detailTape,
+    TResult? Function()? favorite,
+    TResult? Function()? basket,
+    TResult? Function()? myOrder,
+    TResult? Function()? auth,
+    TResult? Function()? notAuth,
+  }) {
+    return notAuth?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? home,
+    TResult Function()? tape,
+    TResult Function(int index, String name)? detailTape,
+    TResult Function()? favorite,
+    TResult Function()? basket,
+    TResult Function()? myOrder,
+    TResult Function()? auth,
+    TResult Function()? notAuth,
+    required TResult orElse(),
+  }) {
+    if (notAuth != null) {
+      return notAuth();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(HomeState value) home,
+    required TResult Function(TapeState value) tape,
+    required TResult Function(DetailTapeState value) detailTape,
+    required TResult Function(FavoriteState value) favorite,
+    required TResult Function(BasketState value) basket,
+    required TResult Function(MyOrderState value) myOrder,
+    required TResult Function(AuthState value) auth,
+    required TResult Function(NotAuthState value) notAuth,
+  }) {
+    return notAuth(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(HomeState value)? home,
+    TResult? Function(TapeState value)? tape,
+    TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(FavoriteState value)? favorite,
+    TResult? Function(BasketState value)? basket,
+    TResult? Function(MyOrderState value)? myOrder,
+    TResult? Function(AuthState value)? auth,
+    TResult? Function(NotAuthState value)? notAuth,
+  }) {
+    return notAuth?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(HomeState value)? home,
+    TResult Function(TapeState value)? tape,
+    TResult Function(DetailTapeState value)? detailTape,
+    TResult Function(FavoriteState value)? favorite,
+    TResult Function(BasketState value)? basket,
+    TResult Function(MyOrderState value)? myOrder,
+    TResult Function(AuthState value)? auth,
+    TResult Function(NotAuthState value)? notAuth,
+    required TResult orElse(),
+  }) {
+    if (notAuth != null) {
+      return notAuth(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NotAuthState implements NavigationState {
+  const factory NotAuthState() = _$NotAuthState;
 }

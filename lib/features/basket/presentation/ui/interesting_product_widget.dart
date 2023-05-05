@@ -44,7 +44,7 @@ class InterestingProductWidget extends StatelessWidget {
                             child: const Padding(
                               padding: EdgeInsets.only(
                                   left: 8.0, right: 8, top: 4, bottom: 4),
-                              child: const Text(
+                              child: Text(
                                 '0.0.12',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(

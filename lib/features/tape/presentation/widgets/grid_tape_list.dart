@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:haji_market/core/common/constants.dart';
 
 class GridTapeListCategory {
   String? title;

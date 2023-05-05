@@ -12,7 +12,7 @@ import '../../../../features/home/data/bloc/cats_state.dart';
 import '../../../../features/home/data/model/Cats.dart';
 
 class CategoryAdminPage extends StatefulWidget {
-  CategoryAdminPage({Key? key}) : super(key: key);
+  const CategoryAdminPage({Key? key}) : super(key: key);
 
   @override
   State<CategoryAdminPage> createState() => _CategoryAdminPageState();
@@ -28,6 +28,7 @@ class _CategoryAdminPageState extends State<CategoryAdminPage> {
 
 
 
+  @override
   void initState() {
     BlocProvider.of<CatsCubit>(context).cats();
     super.initState();
@@ -64,7 +65,7 @@ class _CategoryAdminPageState extends State<CategoryAdminPage> {
                         return Center(
                           child: Text(
                             state.message,
-                            style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                            style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                           ),
                         );
                       }
@@ -139,7 +140,7 @@ class _CategoryAdminPageState extends State<CategoryAdminPage> {
                                         return Center(
                                           child: Text(
                                             state.message,
-                                            style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                                            style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                                           ),
                                         );
                                       }
@@ -173,7 +174,7 @@ class _CategoryAdminPageState extends State<CategoryAdminPage> {
                                                       left: 50.0, top: 0,bottom: 0,right: 17.5
                                                     ),
                                                     child: ListTile(
-                                                      contentPadding: EdgeInsets.only(top: 0,),
+                                                      contentPadding: const EdgeInsets.only(top: 0,),
                                                       selected: index == _selectedIndex2,
                                                       // leading: SvgPicture.asset('assets/temp/kaz.svg'),
                                                       title: Text(

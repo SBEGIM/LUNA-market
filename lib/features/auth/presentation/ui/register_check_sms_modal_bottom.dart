@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/app/presentaion/base.dart';
-import 'package:haji_market/features/auth/presentation/ui/change_password.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -35,7 +32,7 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
   int _start = 60;
 
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
+    const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
@@ -76,7 +73,6 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
       if (state is LoadedState) {
         // Get.to( () => ChangePasswordPage( textEditingController: widget.textEditingController));
         FocusScope.of(context).requestFocus(FocusNode());
-
         final register = BlocProvider.of<RegisterCubit>(context);
         register.register(widget.registerDTO);
       }
@@ -151,8 +147,9 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
               ),
             ),
             Text(
-              'Вы можете заново отправить код через $_start',
+              'Вы можете заново отправить код через 00:$_start',
               style: AppTextStyles.timerInReRegTextStyle,
+              textAlign: TextAlign.center,
             ),
             const Spacer(),
             DefaultButton(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:haji_market/core/common/constants.dart';
-import '../../../../admin/my_products_admin/presentation/ui/banner_watch_recently_admin_page.dart';
 import '../../../../features/tape/presentation/widgets/anim_search_widget.dart';
 import '../../data/bloc/blogger_video_products_cubit.dart';
 import '../../data/bloc/blogger_video_products_state.dart';
@@ -26,7 +25,7 @@ class _MyProductsBloggerPageState extends State<MyProductsBloggerPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool _visible = false;
+    bool visible0 = false;
     String? title;
     final TextEditingController searchController = TextEditingController();
     bool visible = true;
@@ -66,7 +65,7 @@ class _MyProductsBloggerPageState extends State<MyProductsBloggerPage> {
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
-        title: Text(
+        title: const Text(
           'Мои видео обзоры',
           style: TextStyle(color: Colors.black),
         ),
@@ -85,7 +84,7 @@ class _MyProductsBloggerPageState extends State<MyProductsBloggerPage> {
                   return Center(
                     child: Text(
                       state.message,
-                      style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                      style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                     ),
                   );
                 }

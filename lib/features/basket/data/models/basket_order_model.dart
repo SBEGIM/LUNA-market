@@ -1,18 +1,23 @@
 class BasketOrderModel {
   BasketOrderModel({
-      int? id, 
-      List<Product>? product, 
-      int? summa, 
-      String? status, 
-      String? date, 
-      String? returnDate,}){
+    int? id,
+    List<Product>? product,
+    int? summa,
+    String? status,
+    String? date,
+    String? updated_at,
+    String? comment,
+    String? returnDate,
+  }) {
     _id = id;
     _product = product;
     _summa = summa;
     _status = status;
     _date = date;
+    _updated_at = updated_at;
+    _comment = comment;
     _returnDate = returnDate;
-}
+  }
 
   BasketOrderModel.fromJson(dynamic json) {
     _id = json['id'];
@@ -25,6 +30,8 @@ class BasketOrderModel {
     _summa = json['summa'];
     _status = json['status'];
     _date = json['date'];
+    _updated_at = json['updated_at'];
+    _comment = json['comment'];
     _returnDate = json['return_date'];
   }
   int? _id;
@@ -32,6 +39,8 @@ class BasketOrderModel {
   int? _summa;
   String? _status;
   String? _date;
+  String? _updated_at;
+  String? _comment;
   String? _returnDate;
 
   int? get id => _id;
@@ -39,6 +48,8 @@ class BasketOrderModel {
   int? get summa => _summa;
   String? get status => _status;
   String? get date => _date;
+  String? get updated_at => _updated_at;
+  String? get comment => _comment;
   String? get returnDate => _returnDate;
 
   Map<String, dynamic> toJson() {
@@ -50,29 +61,33 @@ class BasketOrderModel {
     map['summa'] = _summa;
     map['status'] = _status;
     map['date'] = _date;
+    map['updated_at'] = _updated_at;
+    map['comment'] = _comment;
     map['return_date'] = _returnDate;
     return map;
   }
-
 }
 
 class Product {
   Product({
-      int? id, 
-      String? shopName, 
-      int? shopCourier,
-      String? shopPhone,
-      String? productName,
-      List<String>? path, 
-      int? count, 
-      int? price, 
-      String? status,
-      String? address,
-      String? shopSchedule,}){
+    int? id,
+    String? shopName,
+    int? shopCourier,
+    String? shopCityName,
+    String? shopPhone,
+    String? productName,
+    List<String>? path,
+    int? count,
+    int? price,
+    String? status,
+    String? address,
+    String? shopSchedule,
+  }) {
     _id = id;
     _shopName = shopName;
     _shopCourier = shopCourier;
     _shopPhone = shopPhone;
+    _shopCityName = shopCityName;
     _productName = productName;
     _path = path;
     _count = count;
@@ -80,14 +95,15 @@ class Product {
     _status = status;
     _address = address;
     _shopSchedule = shopSchedule;
-}
+  }
 
   Product.fromJson(dynamic json) {
     _id = json['id'];
     _shopName = json['shop_name'];
-    _shopPhone= json['shop_phone'];
-    _shopCourier= json['shop_courier'];
+    _shopPhone = json['shop_phone'];
+    _shopCourier = json['shop_courier'];
     _productName = json['product_name'];
+    _shopCityName = json['shop_city_name'];
     _path = json['path'] != null ? json['path'].cast<String>() : [];
     _count = json['count'];
     _price = json['price'];
@@ -98,6 +114,7 @@ class Product {
   int? _id;
   String? _shopName;
   int? _shopCourier;
+  String? _shopCityName;
   String? _shopPhone;
   String? _productName;
   List<String>? _path;
@@ -109,6 +126,7 @@ class Product {
 
   int? get id => _id;
   String? get shopName => _shopName;
+  String? get shopCityName => _shopCityName;
   int? get shopCourier => _shopCourier;
   String? get shopPhone => _shopPhone;
   String? get productName => _productName;
@@ -123,6 +141,7 @@ class Product {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['shop_name'] = _shopName;
+    map['shopCityName'] = _shopCityName;
     map['shop_phone'] = _shopPhone;
     map['shop_courier'] = _shopCourier;
     map['product_name'] = _productName;
@@ -134,5 +153,4 @@ class Product {
     map['shop_schedule'] = _shopSchedule;
     return map;
   }
-
 }

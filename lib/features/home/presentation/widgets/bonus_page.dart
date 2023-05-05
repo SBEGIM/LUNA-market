@@ -63,14 +63,14 @@ class _BonusPageState extends State<BonusPage> {
                           borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
                             image: NetworkImage(
-                                "http://80.87.202.73:8001/storage/${widget.image}"),
+                                "http://185.116.193.73/storage/${widget.image}"),
                             fit: BoxFit.cover,
                           )),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 16.0, top: 60),
+                      padding: const EdgeInsets.only(left: 16.0, top: 60),
                       child: Text(
-                        '${widget.name}',
+                        widget.name,
                         style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -99,7 +99,7 @@ class _BonusPageState extends State<BonusPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 16.0, top: 160),
                       child: Text(
-                        '${widget.date}',
+                        widget.date,
                         style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -118,7 +118,8 @@ class _BonusPageState extends State<BonusPage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => BonusDetailPage()),
+                MaterialPageRoute(
+                    builder: (context) => const BonusDetailPage()),
               );
             },
             child: Container(
@@ -126,7 +127,7 @@ class _BonusPageState extends State<BonusPage> {
               color: Colors.white,
               child: const ListTile(
                 title: Text(
-                  'Магазины на Haji market',
+                  'Магазины на LUNA market',
                   style: TextStyle(
                       color: AppColors.kGray900,
                       fontSize: 16,
@@ -134,7 +135,7 @@ class _BonusPageState extends State<BonusPage> {
                 ),
                 contentPadding: EdgeInsets.fromLTRB(12, 0, 12, 12),
                 subtitle: Text(
-                  'Выбирайте товары в магазинах города',
+                  'Выбирайте товары и покупайте онлайн',
                   style: TextStyle(
                       color: AppColors.kGray300,
                       fontSize: 12,
@@ -150,34 +151,38 @@ class _BonusPageState extends State<BonusPage> {
           const SizedBox(
             height: 8,
           ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => BonusDetailPage()),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              color: Colors.white,
-              child: const ListTile(
-                title: Text(
-                  'Магазины вашего города',
-                  style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
-                ),
-                subtitle: Text(
-                  'Выбирайте товары и покупайте онлайн',
-                  style: TextStyle(
-                      color: AppColors.kGray300,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400),
-                ),
-                trailing: Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
+          Container(
+            height: 77,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const BonusDetailPage()),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
+                color: Colors.white,
+                child: const ListTile(
+                  title: Text(
+                    'Магазины вашего города',
+                    style: TextStyle(
+                        color: AppColors.kGray900,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  subtitle: Text(
+                    'Выбирайте товары в магазинах города и оплачивайте в рассрочку',
+                    style: TextStyle(
+                        color: AppColors.kGray300,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                  ),
                 ),
               ),
             ),

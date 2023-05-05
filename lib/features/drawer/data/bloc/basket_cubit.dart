@@ -12,29 +12,26 @@ class BasketCubit extends Cubit<BasketState> {
 
   BasketCubit({required this.basketRepository}) : super(InitState());
 
-  Future<void> basketAdd(product_id , count) async {
+  Future<void> basketAdd(productId, count) async {
     try {
-      final data = await basketRepository.basketAdd(product_id , count);
-      if(data != 200){
-        Get.snackbar('Ошибка', 'Товар не добавлен' , backgroundColor: Colors.redAccent);
+      final data = await basketRepository.basketAdd(productId, count);
+      if (data != 200) {
+        Get.snackbar('Ошибка', 'Товар не добавлен',
+            backgroundColor: Colors.redAccent);
       }
-
-
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
 
-
-  Future<void> basketMinus(product_id , count) async {
+  Future<void> basketMinus(productId, count) async {
     try {
-      final data = await basketRepository.basketMinus(product_id , count);
-      if(data != 200){
-        Get.snackbar('Ошибка', 'Товар не убрань' , backgroundColor: Colors.redAccent);
+      final data = await basketRepository.basketMinus(productId, count);
+      if (data != 200) {
+        Get.snackbar('Ошибка', 'Товар не убрань',
+            backgroundColor: Colors.redAccent);
       }
-
-
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
@@ -43,66 +40,96 @@ class BasketCubit extends Cubit<BasketState> {
 
   Future<void> basketShow() async {
     try {
-
       emit(LoadingState());
       final List<BasketShowModel> data = await basketRepository.basketShow();
-
-      emit(LoadedState(data));
-
+      if (data.length == 0) {
+        emit(NoDataState());
+      } else {
+        emit(LoadedState(data));
+      }
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
-
-
 
   Future<List<BasketShowModel>?> basketData() async {
     try {
-
       emit(LoadingState());
       final List<BasketShowModel> data = await basketRepository.basketShow();
-      return data ;
-
+      return data;
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
+    return null;
   }
 
-
-  Future <void> basketOrder(List<int> id) async {
+  Future<void> basketOrder(List<int> id) async {
     try {
-
       final data = await basketRepository.basketOrder(id);
-      if(data == 200){
-        Get.snackbar('Успешно', 'Заказ оформлен' , backgroundColor: Colors.blueAccent);
-      }else{
-        Get.snackbar('Ошибка', 'Заказ не оформлен' , backgroundColor: Colors.redAccent);
+      if (data == 200) {
+        Get.snackbar('Успешно', 'Заказ оформлен',
+            backgroundColor: Colors.blueAccent);
+      } else {
+        Get.snackbar('Ошибка', 'Заказ не оформлен',
+            backgroundColor: Colors.redAccent);
       }
       emit(OrderState());
-
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
-
 
   Future<void> basketOrderShow() async {
     try {
-
       emit(LoadingState());
-      final List<BasketOrderModel> data = await basketRepository.basketOrderShow();
+      final List<BasketOrderModel> data =
+          await basketRepository.basketOrderShow();
 
       emit(LoadedOrderState(data));
-
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
 
+  Future<int> basketCount(int count) async {
+    return count;
+  }
 
+  Future<int> basketPrice(int price) async {
+    return price;
+  }
 
+  Future<String?> payment() async {
+    try {
+      final data = await basketRepository.payment();
+      // if (data == 200) {
+      //   Get.snackbar('Успешно', 'Заказ оформлен',
+      //       backgroundColor: Colors.blueAccent);
+      // } else {
+      //   Get.snackbar('Ошибка', 'Заказ не оформлен',
+      //       backgroundColor: Colors.redAccent);
+      // }
+      // emit(OrderState());
+      return data;
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  Future<int?> basketStatusUpdate(
+      String id, String status, String? text) async {
+    try {
+      final data = await basketRepository.status(id, status, text);
+
+      return 1;
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
 }

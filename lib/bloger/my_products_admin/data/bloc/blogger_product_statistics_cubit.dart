@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:haji_market/bloger/my_products_admin/data/bloc/blogger_product_statistics_state.dart';
 import 'package:haji_market/bloger/my_products_admin/data/models/blogger_product_statistics_model.dart';
-import '../../../../features/home/data/model/Cats.dart';
 import '../repository/blogger_products_statistics_repo.dart';
 
 class BloggerProductStatisticsCubit

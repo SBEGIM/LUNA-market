@@ -1,7 +1,5 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:haji_market/bloger/profile_admin/presentation/data/bloc/profile_statics_blogger_state.dart';
 
 import '../model/profile_statics_blogger_model.dart';

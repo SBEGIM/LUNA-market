@@ -22,9 +22,9 @@ class BasketAdminCubit extends Cubit<BasketAdminState> {
     }
   }
 
-  Future<void> basketStatus(String status, String id, product_id) async {
+  Future<void> basketStatus(String status, String id, productId) async {
     try {
-      await basketRepository.basketStatus(status, id, product_id);
+      await basketRepository.basketStatus(status, id, productId);
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));

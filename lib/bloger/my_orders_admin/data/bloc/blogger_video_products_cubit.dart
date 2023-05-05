@@ -11,11 +11,11 @@ class BloggerVideoProductsCubit extends Cubit<BloggerVideoProductsState> {
   BloggerVideoProductsCubit({required this.bloggerShopProductsRepository})
       : super(InitState());
 
-  Future<void> products(String? name, int shop_id) async {
+  Future<void> products(String? name, int shopId) async {
     try {
       emit(LoadingState());
       final List<BloggerShopProductModel> data =
-          await bloggerShopProductsRepository.products(name, shop_id);
+          await bloggerShopProductsRepository.products(name, shopId);
 
       emit(LoadedState(data));
     } catch (e) {

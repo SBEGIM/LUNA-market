@@ -12,5 +12,5 @@ class LoadedOrderState extends UploadVideoBloggerCubitState {}
 
 class ErrorState extends UploadVideoBloggerCubitState {
   String message;
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 }

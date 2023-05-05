@@ -4,19 +4,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../../core/common/constants.dart';
-import '../../data/bloc/product_cubit.dart';
 import '../../data/bloc/shops_drawer_cubit.dart';
 import '../../data/bloc/shops_drawer_state.dart';
 
 class ShopsFiltrPage extends StatefulWidget {
-  ShopsFiltrPage({Key? key}) : super(key: key);
+  const ShopsFiltrPage({Key? key}) : super(key: key);
 
   @override
   State<ShopsFiltrPage> createState() => _ShopsFiltrPageState();
 }
 
 class _ShopsFiltrPageState extends State<ShopsFiltrPage> {
-  List<int> _selectedListSort = [];
+  final List<int> _selectedListSort = [];
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +66,12 @@ class _ShopsFiltrPageState extends State<ShopsFiltrPage> {
                 return Center(
                   child: Text(
                     state.message,
-                    style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                   ),
                 );
               }
               if (state is LoadedState) {
-                return Container(
+                return SizedBox(
                   height: 225,
                   child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),

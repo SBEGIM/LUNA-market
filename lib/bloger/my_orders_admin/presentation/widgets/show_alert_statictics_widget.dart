@@ -1,12 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/edit_product_page%20copy.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/statistics_page.dart';
 
-import '../../../../admin/my_products_admin/data/models/admin_products_model.dart';
 import '../../../../core/common/constants.dart';
-import '../../../../features/drawer/data/models/product_model.dart';
 import '../../../my_products_admin/data/models/blogger_shop_products_model.dart';
 import '../../../my_products_admin/presentation/widgets/statistics_page.dart';
 import '../ui/upload_product_video.dart';

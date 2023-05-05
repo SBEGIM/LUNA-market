@@ -1,15 +1,15 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:io';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../DTO/register_blogger_dto.dart';
 
-const baseUrl = 'http://80.87.202.73:8001/api';
+const baseUrl = 'http://185.116.193.73/api';
 
 class LoginBloggerRepository {
-  LoginToApi _loginToApi = LoginToApi();
+  final LoginToApi _loginToApi = LoginToApi();
 
   Future<dynamic> login(String phone, String password) =>
       _loginToApi.login(phone, password);
@@ -22,6 +22,13 @@ class LoginToApi {
   final _box = GetStorage();
 
   Future<dynamic> login(String phone, String password) async {
+    String deviceToken = _box.read('device_token');
+    String? deviceType;
+    if (Platform.isIOS == true) {
+      deviceType = 'ios';
+    } else {
+      deviceType = 'android';
+    }
     String s = phone;
 
     String result = s.substring(2);
@@ -30,6 +37,8 @@ class LoginToApi {
         await http.post(Uri.parse('$baseUrl/blogger/login'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'password': password,
+      'device_token': deviceToken,
+      'device_type': deviceType
     });
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -45,6 +54,13 @@ class LoginToApi {
 
   Future<dynamic> register(RegisterBloggerDTO register) async {
     String s = register.phone;
+    String deviceToken = _box.read('device_token');
+    String? deviceType;
+    if (Platform.isIOS == true) {
+      deviceType = 'ios';
+    } else {
+      deviceType = 'android';
+    }
 
     String result = s.substring(2);
 
@@ -52,9 +68,12 @@ class LoginToApi {
         await http.post(Uri.parse('$baseUrl/blogger/register'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'password': register.password,
+      'iin': register.iin,
       'nick_name': register.nick_name,
       'email': register.email,
       'social_network': register.social_network,
+      'device_token': deviceToken,
+      'device_type': deviceType
     });
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);

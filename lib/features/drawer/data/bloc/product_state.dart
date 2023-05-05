@@ -17,7 +17,7 @@ class LoadedState extends ProductState{
 
 class ErrorState extends ProductState{
   String message;
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 
 }
 

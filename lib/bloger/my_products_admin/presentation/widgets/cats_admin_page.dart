@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/create_product_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart'
     as subCatCubit;
-import 'package:haji_market/features/drawer/data/bloc/sub_cats_state.dart'
-    as subCatState;
 
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/home/data/bloc/cats_cubit.dart';
@@ -15,7 +12,7 @@ import '../../../../features/home/data/bloc/cats_state.dart';
 import '../../../../features/home/data/model/Cats.dart';
 
 class CatsAdminPage extends StatefulWidget {
-  CatsAdminPage({Key? key}) : super(key: key);
+  const CatsAdminPage({Key? key}) : super(key: key);
 
   @override
   State<CatsAdminPage> createState() => _CatsAdminPageState();
@@ -23,10 +20,11 @@ class CatsAdminPage extends StatefulWidget {
 
 class _CatsAdminPageState extends State<CatsAdminPage> {
   int _selectedIndex = -1;
-  int _selectedIndex2 = -1;
+  final int _selectedIndex2 = -1;
   Cats? _subCat;
   Cats? _cat;
 
+  @override
   void initState() {
     BlocProvider.of<CatsCubit>(context).cats();
     super.initState();
@@ -63,7 +61,7 @@ class _CatsAdminPageState extends State<CatsAdminPage> {
                     return Center(
                       child: Text(
                         state.message,
-                        style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                        style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                       ),
                     );
                   }

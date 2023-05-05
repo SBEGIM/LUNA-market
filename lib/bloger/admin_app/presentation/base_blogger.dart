@@ -4,15 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/admin/admin_app/bloc/admin_navigation_cubit/admin_navigation_cubit.dart';
 import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
-import 'package:haji_market/admin/my_orders_admin/presentation/ui/my_orders_admin_page.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/ui/my_products_admin_page.dart';
-import 'package:haji_market/admin/tape_admin/presentation/ui/tape_admin_page.dart';
-import 'package:haji_market/bloger/my_products_admin/presentation/ui/shop_products_page.dart';
 import 'package:haji_market/core/common/constants.dart';
-import '../../my_orders_admin/presentation/ui/banner_watch_recently_blogger_page.dart';
 import '../../my_orders_admin/presentation/ui/my_products_blogger_page.dart';
-import '../../my_products_admin/presentation/ui/product_detail.dart';
-import '../../my_products_admin/presentation/ui/products_video_page.dart';
 import '../../profile_admin/presentation/ui/blogger_profile_page.dart';
 import '../../shops/BlogShopsPage.dart';
 
@@ -128,13 +121,13 @@ class _BaseBloggerState extends State<BaseBlogger> {
       body: BlocBuilder<AdminNavigationCubit, AdminNavigationState>(
         builder: (context, state) {
           if (state is TapeAdminState) {
-            return BlogShopsPage();
+            return const BlogShopsPage();
           } else if (state is MyOrderAdminState) {
             return const MyProductsBloggerPage();
           } else if (state is ProfileState) {
-            return ProfileBloggerPage();
+            return const ProfileBloggerPage();
           } else if (state is AdminAuthState) {
-            return AuthAdminPage();
+            return const AuthAdminPage();
           }
           return Container();
         },

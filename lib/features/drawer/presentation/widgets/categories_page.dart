@@ -15,7 +15,7 @@ import 'package:haji_market/features/drawer/data/bloc/sub_cats_state.dart'
     as subCatState;
 
 class CategoriesPage extends StatefulWidget {
-  CategoriesPage({Key? key}) : super(key: key);
+  const CategoriesPage({Key? key}) : super(key: key);
 
   @override
   State<CategoriesPage> createState() => _CategoriesPageState();
@@ -27,8 +27,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Cats? _subCat;
   Cats? _cat;
 
-  List<int> _selectedListIndex2 = [];
+  final List<int> _selectedListIndex2 = [];
 
+  @override
   void initState() {
     BlocProvider.of<CatsCubit>(context).cats();
     super.initState();
@@ -65,7 +66,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     return Center(
                       child: Text(
                         state.message,
-                        style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                        style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                       ),
                     );
                   }
@@ -140,7 +141,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                           return Center(
                                             child: Text(
                                               state.message,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 20.0,
                                                   color: Colors.grey),
                                             ),
@@ -199,7 +200,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                                               right: 17.5),
                                                       child: ListTile(
                                                         contentPadding:
-                                                            EdgeInsets.only(
+                                                            const EdgeInsets.only(
                                                           top: 0,
                                                         ),
                                                         selected:

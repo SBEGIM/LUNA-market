@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../../core/common/constants.dart';
@@ -17,6 +17,8 @@ class _CountryWidgetState extends State<CountryWidget> {
   int index = 0;
   final _box = GetStorage();
 
+  List<String> country = ['', 'Казахстан', 'Россия', 'Украина', 'Беларусь'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +26,8 @@ class _CountryWidgetState extends State<CountryWidget> {
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
           child: CustomBackButton(onTap: () {
-            Navigator.pop(context);
+            // Navigator.pop(context);
+            Get.back(result: country[index]);
           }),
         ),
         elevation: 0,
@@ -50,7 +53,7 @@ class _CountryWidgetState extends State<CountryWidget> {
           },
           child: Container(
             color: Colors.white,
-            padding: EdgeInsets.only(left: 13, right: 13, top: 20),
+            padding: const EdgeInsets.only(left: 13, right: 13, top: 20),
             width: MediaQuery.of(context).size.width,
             child: Row(
               children: [
@@ -62,7 +65,7 @@ class _CountryWidgetState extends State<CountryWidget> {
                 const SizedBox(
                   width: 20,
                 ),
-                Container(
+                SizedBox(
                     width: 280,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,7 +98,7 @@ class _CountryWidgetState extends State<CountryWidget> {
           },
           child: Container(
             color: Colors.white,
-            padding: EdgeInsets.only(left: 13, right: 13, top: 20),
+            padding: const EdgeInsets.only(left: 13, right: 13, top: 20),
             width: MediaQuery.of(context).size.width,
             child: Row(
               children: [
@@ -107,7 +110,7 @@ class _CountryWidgetState extends State<CountryWidget> {
                 const SizedBox(
                   width: 20,
                 ),
-                Container(
+                SizedBox(
                     width: 280,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -140,7 +143,7 @@ class _CountryWidgetState extends State<CountryWidget> {
           },
           child: Container(
             color: Colors.white,
-            padding: EdgeInsets.only(left: 13, right: 13, top: 20),
+            padding: const EdgeInsets.only(left: 13, right: 13, top: 20),
             width: MediaQuery.of(context).size.width,
             child: Row(
               children: [
@@ -152,7 +155,7 @@ class _CountryWidgetState extends State<CountryWidget> {
                 const SizedBox(
                   width: 20,
                 ),
-                Container(
+                SizedBox(
                     width: 280,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,7 +187,8 @@ class _CountryWidgetState extends State<CountryWidget> {
             });
           },
           child: Container(
-            padding: EdgeInsets.only(left: 13, right: 13, top: 20, bottom: 20),
+            padding:
+                const EdgeInsets.only(left: 13, right: 13, top: 20, bottom: 20),
             color: Colors.white,
             width: MediaQuery.of(context).size.width,
             child: Row(
@@ -197,7 +201,7 @@ class _CountryWidgetState extends State<CountryWidget> {
                 const SizedBox(
                   width: 20,
                 ),
-                Container(
+                SizedBox(
                     width: 280,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

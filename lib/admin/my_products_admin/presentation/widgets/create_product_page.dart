@@ -1,31 +1,27 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/color_cubit.dart';
-import 'package:haji_market/admin/my_products_admin/data/bloc/color_state.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/brands_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/colors_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caats_admin_page.dart';
+import 'package:haji_market/blogger_ad.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/home/data/model/Cats.dart';
 import '../../../admin_app/presentation/base_admin.dart';
-import '../../../coop_request/presentation/ui/coop_request_page.dart';
 import '../../data/DTO/color_count_dto.dart';
 import '../../data/DTO/optom_price_dto.dart';
 import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/bloc/product_admin_state.dart';
-import 'category_admin_page.dart';
 import 'cats_admin_page.dart';
 
 class CreateProductPage extends StatefulWidget {
   final Cats cat;
   final Cats subCat;
-  CreateProductPage({required this.cat, required this.subCat, Key? key})
+  const CreateProductPage({required this.cat, required this.subCat, Key? key})
       : super(key: key);
 
   @override
@@ -49,12 +45,18 @@ class _CreateProductPageState extends State<CreateProductPage> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController colorCountController = TextEditingController();
   TextEditingController optomPriceController = TextEditingController();
+  TextEditingController pointsController = TextEditingController();
+  TextEditingController pointsBloggerController = TextEditingController();
+  TextEditingController feeController = TextEditingController();
 
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
   bool change = false;
 
   String colorName = '';
+
+  String currencyName = 'Выберите валюту';
+
   List<colorCountDto> colorCount = [];
   List<Cats>? mockSizeAdds = [];
 
@@ -148,7 +150,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   heightController.text,
                   widthController.text,
                   massaController.text,
-                  articulController.text);
+                  articulController.text,
+                  currencyName);
             },
             child: Container(
                 decoration: BoxDecoration(
@@ -188,6 +191,109 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   arrow: false,
                   controller: articulController,
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0, bottom: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: const [
+                          Text(
+                            'Валюта',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                                color: AppColors.kGray900),
+                          ),
+                          Text(
+                            '*',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                                color: Colors.red),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 14.0),
+                          child: TextField(
+                            // controller: ,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: currencyName,
+                                hintStyle: const TextStyle(
+                                    color: Color.fromRGBO(194, 197, 200, 1),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                                enabledBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  // borderRadius: BorderRadius.circular(3),
+                                ),
+                                // suffixIcon: IconButton(
+                                //   onPressed: widget.onPressed,
+                                //   icon: widget.arrow == true
+                                //       ? SvgPicture.asset('assets/icons/back_menu.svg',
+                                //           color: Colors.grey)
+                                //       : SvgPicture.asset(''),
+                                // ),
+                                suffixIcon: PopupMenuButton(
+                                  onSelected: (value) {
+                                    currencyName = value;
+
+                                    setState(() {});
+
+                                    // mockSizeAdds!.forEach((element) {
+                                    //   return print(element.name);
+                                    // });
+                                  },
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(15.0),
+                                    ),
+                                  ),
+                                  icon: SvgPicture.asset(
+                                      'assets/icons/dropdown.svg'),
+                                  position: PopupMenuPosition.under,
+                                  offset: const Offset(0, 0),
+                                  itemBuilder: (
+                                    BuildContext bc,
+                                  ) {
+                                    return const [
+                                      PopupMenuItem(
+                                        value: 'KZT',
+                                        child: Text(
+                                          'KZT',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 'RUB',
+                                        child: Text(
+                                          'RUB',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ];
+                                  },
+                                )),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 FieldsProductRequest(
                   titleText: 'Цена товара ',
                   hintText: 'Введите цену  ',
@@ -203,12 +309,58 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   controller: compoundController,
                 ),
                 FieldsProductRequest(
+                  titleText: 'Накопительные баллы ,% ',
+                  hintText: 'Введите размер балла',
+                  star: true,
+                  arrow: false,
+                  controller: pointsController,
+                ),
+
+                GestureDetector(
+                  onTap: () {
+                    Get.to(const BloggerAd());
+                  },
+                  child: Container(
+                    child: RichText(
+                      textAlign: TextAlign.left,
+                      text: const TextSpan(
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text:
+                                "Предлагая вознаграждение блогеру, вы принимаете условия ",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.grey),
+                          ),
+                          TextSpan(
+                            text:
+                                "Типового договора на оказание рекламных услуг\n",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.kPrimaryColor),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                FieldsProductRequest(
+                  titleText: 'Вознаграждение блогеру ,% ',
+                  hintText: 'Введите вознаграждение ',
+                  star: true,
+                  arrow: false,
+                  controller: pointsBloggerController,
+                ),
+                FieldsProductRequest(
                   titleText: 'Категория',
                   hintText: cats!.name ?? 'Выберите категорию',
                   star: false,
                   arrow: true,
                   onPressed: () async {
-                    final data = await Get.to(CatsAdminPage());
+                    final data = await Get.to(const CatsAdminPage());
                     if (data != null) {
                       final Cats cat = data;
                       setState(() {});
@@ -229,7 +381,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   star: false,
                   arrow: true,
                   onPressed: () async {
-                    final data = await Get.to(BrandsAdminPage());
+                    final data = await Get.to(const BrandsAdminPage());
                     if (data != null) {
                       final Cats brand = data;
                       setState(() {});
@@ -277,7 +429,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   star: true,
                   arrow: true,
                   onPressed: () async {
-                    final data = await Get.to(ColorsAdminPage());
+                    final data = await Get.to(const ColorsAdminPage());
                     if (data != null) {
                       final Cats cat = data;
                       setState(() {});
@@ -359,8 +511,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
                           ),
                           Container(
                             //alignment: Alignment.topCenter,
-                            padding: EdgeInsets.only(bottom: 6),
-                            margin: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(bottom: 6),
+                            margin: const EdgeInsets.only(right: 10),
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(8)),
@@ -384,17 +536,16 @@ class _CreateProductPageState extends State<CreateProductPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              print('ok');
                               Cats? countColorLast = mockSizeAdds!.last;
 
                               bool exists = false;
-                              colorCount.forEach((element) {
+                              for (var element in colorCount) {
                                 if (element.name == countColorLast.name) {
                                   exists = true;
                                   setState(() {});
                                 }
-                                return print(element.color_id);
-                              });
+                                continue;
+                              }
 
                               if (!exists) {
                                 colorCount.add(colorCountDto(
@@ -411,7 +562,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               }
                             },
                             child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               decoration: BoxDecoration(
                                   color: AppColors.kPrimaryColor,
                                   borderRadius: BorderRadius.circular(8)),
@@ -430,7 +582,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                     ],
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 60 * colorCount.length.toDouble(),
                   child: ListView.builder(
                       itemCount: colorCount.length,
@@ -461,7 +613,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               height: 38,
                               child: Text(
                                 colorCount[index].count,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.w400),
                               ),
                             ),
@@ -550,6 +702,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 28),
                 Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -564,8 +717,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
                         children: [
                           Container(
                             //alignment: Alignment.topCenter,
-                            padding: EdgeInsets.only(bottom: 6),
-                            margin: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(bottom: 6),
+                            margin: const EdgeInsets.only(right: 10),
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(8)),
@@ -619,14 +772,14 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                 optomCountLast = optomCount.isNotEmpty
                                     ? optomCount.last
                                     : null;
-                                optomCount.forEach((element) {
+                                for (var element in optomCount) {
                                   if (element.count ==
                                       optomPriceController.text) {
                                     exists = true;
                                     setState(() {});
                                   }
-                                  return print(element.count);
-                                });
+                                  continue;
+                                }
                                 //   }
 
                                 if (!exists) {
@@ -701,7 +854,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               height: 38,
                               child: Text(
                                 '${(int.tryParse(optomCount[index].count)!.toInt() * 4)} тг',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.w400),
                               ),
                             ),
@@ -793,7 +946,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                 middleText: '',
                                 textConfirm: 'Камера',
                                 textCancel: 'Галлерея',
-                                titlePadding: EdgeInsets.only(top: 40),
+                                titlePadding: const EdgeInsets.only(top: 40),
                                 onConfirm: () {
                                   change = true;
                                   setState(() {
@@ -879,7 +1032,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               middleText: '',
                               textConfirm: 'Камера',
                               textCancel: 'Галлерея',
-                              titlePadding: EdgeInsets.only(top: 40),
+                              titlePadding: const EdgeInsets.only(top: 40),
                               onConfirm: () {
                                 change = true;
                                 setState(() {
@@ -935,14 +1088,14 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
-                const FieldsProductRequest(
-                  titleText: 'Магазин ',
-                  hintText: 'Магазин',
-                  star: false,
-                  arrow: false,
-                ),
+                // const FieldsProductRequest(
+                //   titleText: 'Магазин ',
+                //   hintText: 'Магазин',
+                //   star: false,
+                //   arrow: false,
+                // ),
                 const SizedBox(
                   height: 80,
                 ),

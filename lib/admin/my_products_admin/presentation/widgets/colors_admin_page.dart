@@ -3,14 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/color_cubit.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/create_product_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/home/data/model/Cats.dart';
 import '../../data/bloc/color_state.dart';
 
 class ColorsAdminPage extends StatefulWidget {
-  ColorsAdminPage({Key? key}) : super(key: key);
+  const ColorsAdminPage({Key? key}) : super(key: key);
 
   @override
   State<ColorsAdminPage> createState() => _ColorsAdminPageState();
@@ -20,6 +19,7 @@ class _ColorsAdminPageState extends State<ColorsAdminPage> {
   int _selectedIndex = -1;
   Cats? _cat;
 
+  @override
   void initState() {
     BlocProvider.of<ColorCubit>(context).brands();
     super.initState();
@@ -56,7 +56,7 @@ class _ColorsAdminPageState extends State<ColorsAdminPage> {
                     return Center(
                       child: Text(
                         state.message,
-                        style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                        style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                       ),
                     );
                   }

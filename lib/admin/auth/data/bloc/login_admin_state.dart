@@ -9,5 +9,5 @@ class LoadedState extends LoginAdminState {}
 class ErrorState extends LoginAdminState {
   String message;
 
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 }

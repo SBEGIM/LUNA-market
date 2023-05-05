@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'admin_navigation_cubit.dart';
 
@@ -27,11 +27,11 @@ mixin _$AdminNavigationState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? tapeAdmin,
-    TResult Function()? homeAdmin,
-    TResult Function()? myOrderAdmin,
-    TResult Function()? profile,
-    TResult Function()? adminAuth,
+    TResult? Function()? tapeAdmin,
+    TResult? Function()? homeAdmin,
+    TResult? Function()? myOrderAdmin,
+    TResult? Function()? profile,
+    TResult? Function()? adminAuth,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -55,11 +55,11 @@ mixin _$AdminNavigationState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(TapeAdminState value)? tapeAdmin,
-    TResult Function(HomeAdminState value)? homeAdmin,
-    TResult Function(MyOrderAdminState value)? myOrderAdmin,
-    TResult Function(ProfileState value)? profile,
-    TResult Function(AdminAuthState value)? adminAuth,
+    TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(HomeAdminState value)? homeAdmin,
+    TResult? Function(MyOrderAdminState value)? myOrderAdmin,
+    TResult? Function(ProfileState value)? profile,
+    TResult? Function(AdminAuthState value)? adminAuth,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -78,17 +78,19 @@ mixin _$AdminNavigationState {
 abstract class $AdminNavigationStateCopyWith<$Res> {
   factory $AdminNavigationStateCopyWith(AdminNavigationState value,
           $Res Function(AdminNavigationState) then) =
-      _$AdminNavigationStateCopyWithImpl<$Res>;
+      _$AdminNavigationStateCopyWithImpl<$Res, AdminNavigationState>;
 }
 
 /// @nodoc
-class _$AdminNavigationStateCopyWithImpl<$Res>
+class _$AdminNavigationStateCopyWithImpl<$Res,
+        $Val extends AdminNavigationState>
     implements $AdminNavigationStateCopyWith<$Res> {
   _$AdminNavigationStateCopyWithImpl(this._value, this._then);
 
-  final AdminNavigationState _value;
   // ignore: unused_field
-  final $Res Function(AdminNavigationState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 }
 
 /// @nodoc
@@ -100,14 +102,11 @@ abstract class _$$TapeAdminStateCopyWith<$Res> {
 
 /// @nodoc
 class __$$TapeAdminStateCopyWithImpl<$Res>
-    extends _$AdminNavigationStateCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res, _$TapeAdminState>
     implements _$$TapeAdminStateCopyWith<$Res> {
   __$$TapeAdminStateCopyWithImpl(
       _$TapeAdminState _value, $Res Function(_$TapeAdminState) _then)
-      : super(_value, (v) => _then(v as _$TapeAdminState));
-
-  @override
-  _$TapeAdminState get _value => super._value as _$TapeAdminState;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -144,11 +143,11 @@ class _$TapeAdminState implements TapeAdminState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? tapeAdmin,
-    TResult Function()? homeAdmin,
-    TResult Function()? myOrderAdmin,
-    TResult Function()? profile,
-    TResult Function()? adminAuth,
+    TResult? Function()? tapeAdmin,
+    TResult? Function()? homeAdmin,
+    TResult? Function()? myOrderAdmin,
+    TResult? Function()? profile,
+    TResult? Function()? adminAuth,
   }) {
     return tapeAdmin?.call();
   }
@@ -184,11 +183,11 @@ class _$TapeAdminState implements TapeAdminState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(TapeAdminState value)? tapeAdmin,
-    TResult Function(HomeAdminState value)? homeAdmin,
-    TResult Function(MyOrderAdminState value)? myOrderAdmin,
-    TResult Function(ProfileState value)? profile,
-    TResult Function(AdminAuthState value)? adminAuth,
+    TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(HomeAdminState value)? homeAdmin,
+    TResult? Function(MyOrderAdminState value)? myOrderAdmin,
+    TResult? Function(ProfileState value)? profile,
+    TResult? Function(AdminAuthState value)? adminAuth,
   }) {
     return tapeAdmin?.call(this);
   }
@@ -223,14 +222,11 @@ abstract class _$$HomeAdminStateCopyWith<$Res> {
 
 /// @nodoc
 class __$$HomeAdminStateCopyWithImpl<$Res>
-    extends _$AdminNavigationStateCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res, _$HomeAdminState>
     implements _$$HomeAdminStateCopyWith<$Res> {
   __$$HomeAdminStateCopyWithImpl(
       _$HomeAdminState _value, $Res Function(_$HomeAdminState) _then)
-      : super(_value, (v) => _then(v as _$HomeAdminState));
-
-  @override
-  _$HomeAdminState get _value => super._value as _$HomeAdminState;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -267,11 +263,11 @@ class _$HomeAdminState implements HomeAdminState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? tapeAdmin,
-    TResult Function()? homeAdmin,
-    TResult Function()? myOrderAdmin,
-    TResult Function()? profile,
-    TResult Function()? adminAuth,
+    TResult? Function()? tapeAdmin,
+    TResult? Function()? homeAdmin,
+    TResult? Function()? myOrderAdmin,
+    TResult? Function()? profile,
+    TResult? Function()? adminAuth,
   }) {
     return homeAdmin?.call();
   }
@@ -307,11 +303,11 @@ class _$HomeAdminState implements HomeAdminState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(TapeAdminState value)? tapeAdmin,
-    TResult Function(HomeAdminState value)? homeAdmin,
-    TResult Function(MyOrderAdminState value)? myOrderAdmin,
-    TResult Function(ProfileState value)? profile,
-    TResult Function(AdminAuthState value)? adminAuth,
+    TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(HomeAdminState value)? homeAdmin,
+    TResult? Function(MyOrderAdminState value)? myOrderAdmin,
+    TResult? Function(ProfileState value)? profile,
+    TResult? Function(AdminAuthState value)? adminAuth,
   }) {
     return homeAdmin?.call(this);
   }
@@ -346,14 +342,11 @@ abstract class _$$MyOrderAdminStateCopyWith<$Res> {
 
 /// @nodoc
 class __$$MyOrderAdminStateCopyWithImpl<$Res>
-    extends _$AdminNavigationStateCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res, _$MyOrderAdminState>
     implements _$$MyOrderAdminStateCopyWith<$Res> {
   __$$MyOrderAdminStateCopyWithImpl(
       _$MyOrderAdminState _value, $Res Function(_$MyOrderAdminState) _then)
-      : super(_value, (v) => _then(v as _$MyOrderAdminState));
-
-  @override
-  _$MyOrderAdminState get _value => super._value as _$MyOrderAdminState;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -390,11 +383,11 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? tapeAdmin,
-    TResult Function()? homeAdmin,
-    TResult Function()? myOrderAdmin,
-    TResult Function()? profile,
-    TResult Function()? adminAuth,
+    TResult? Function()? tapeAdmin,
+    TResult? Function()? homeAdmin,
+    TResult? Function()? myOrderAdmin,
+    TResult? Function()? profile,
+    TResult? Function()? adminAuth,
   }) {
     return myOrderAdmin?.call();
   }
@@ -430,11 +423,11 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(TapeAdminState value)? tapeAdmin,
-    TResult Function(HomeAdminState value)? homeAdmin,
-    TResult Function(MyOrderAdminState value)? myOrderAdmin,
-    TResult Function(ProfileState value)? profile,
-    TResult Function(AdminAuthState value)? adminAuth,
+    TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(HomeAdminState value)? homeAdmin,
+    TResult? Function(MyOrderAdminState value)? myOrderAdmin,
+    TResult? Function(ProfileState value)? profile,
+    TResult? Function(AdminAuthState value)? adminAuth,
   }) {
     return myOrderAdmin?.call(this);
   }
@@ -469,14 +462,11 @@ abstract class _$$ProfileStateCopyWith<$Res> {
 
 /// @nodoc
 class __$$ProfileStateCopyWithImpl<$Res>
-    extends _$AdminNavigationStateCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res, _$ProfileState>
     implements _$$ProfileStateCopyWith<$Res> {
   __$$ProfileStateCopyWithImpl(
       _$ProfileState _value, $Res Function(_$ProfileState) _then)
-      : super(_value, (v) => _then(v as _$ProfileState));
-
-  @override
-  _$ProfileState get _value => super._value as _$ProfileState;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -513,11 +503,11 @@ class _$ProfileState implements ProfileState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? tapeAdmin,
-    TResult Function()? homeAdmin,
-    TResult Function()? myOrderAdmin,
-    TResult Function()? profile,
-    TResult Function()? adminAuth,
+    TResult? Function()? tapeAdmin,
+    TResult? Function()? homeAdmin,
+    TResult? Function()? myOrderAdmin,
+    TResult? Function()? profile,
+    TResult? Function()? adminAuth,
   }) {
     return profile?.call();
   }
@@ -553,11 +543,11 @@ class _$ProfileState implements ProfileState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(TapeAdminState value)? tapeAdmin,
-    TResult Function(HomeAdminState value)? homeAdmin,
-    TResult Function(MyOrderAdminState value)? myOrderAdmin,
-    TResult Function(ProfileState value)? profile,
-    TResult Function(AdminAuthState value)? adminAuth,
+    TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(HomeAdminState value)? homeAdmin,
+    TResult? Function(MyOrderAdminState value)? myOrderAdmin,
+    TResult? Function(ProfileState value)? profile,
+    TResult? Function(AdminAuthState value)? adminAuth,
   }) {
     return profile?.call(this);
   }
@@ -592,14 +582,11 @@ abstract class _$$AdminAuthStateCopyWith<$Res> {
 
 /// @nodoc
 class __$$AdminAuthStateCopyWithImpl<$Res>
-    extends _$AdminNavigationStateCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res, _$AdminAuthState>
     implements _$$AdminAuthStateCopyWith<$Res> {
   __$$AdminAuthStateCopyWithImpl(
       _$AdminAuthState _value, $Res Function(_$AdminAuthState) _then)
-      : super(_value, (v) => _then(v as _$AdminAuthState));
-
-  @override
-  _$AdminAuthState get _value => super._value as _$AdminAuthState;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -636,11 +623,11 @@ class _$AdminAuthState implements AdminAuthState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? tapeAdmin,
-    TResult Function()? homeAdmin,
-    TResult Function()? myOrderAdmin,
-    TResult Function()? profile,
-    TResult Function()? adminAuth,
+    TResult? Function()? tapeAdmin,
+    TResult? Function()? homeAdmin,
+    TResult? Function()? myOrderAdmin,
+    TResult? Function()? profile,
+    TResult? Function()? adminAuth,
   }) {
     return adminAuth?.call();
   }
@@ -676,11 +663,11 @@ class _$AdminAuthState implements AdminAuthState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(TapeAdminState value)? tapeAdmin,
-    TResult Function(HomeAdminState value)? homeAdmin,
-    TResult Function(MyOrderAdminState value)? myOrderAdmin,
-    TResult Function(ProfileState value)? profile,
-    TResult Function(AdminAuthState value)? adminAuth,
+    TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(HomeAdminState value)? homeAdmin,
+    TResult? Function(MyOrderAdminState value)? myOrderAdmin,
+    TResult? Function(ProfileState value)? profile,
+    TResult? Function(AdminAuthState value)? adminAuth,
   }) {
     return adminAuth?.call(this);
   }

@@ -13,5 +13,5 @@ class LoadedState extends BloggerProductStatisticsState {
 
 class ErrorState extends BloggerProductStatisticsState {
   String message;
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 }

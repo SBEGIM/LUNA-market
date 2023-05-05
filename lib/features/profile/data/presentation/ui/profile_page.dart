@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,16 +8,14 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/profile/data/presentation/ui/edit_profile_page.dart';
-import 'package:haji_market/features/profile/data/presentation/ui/my_bank_card_page.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../auth/data/bloc/login_cubit.dart';
-import '../../../../auth/presentation/ui/auth_page.dart';
 import '../../../../auth/presentation/ui/view_auth_register_page.dart';
 import '../widgets/language_widget.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -40,8 +37,20 @@ class _ProfilePageState extends State<ProfilePage> {
       _image = image;
     });
     final edit = BlocProvider.of<LoginCubit>(context);
-    await edit.edit(_box.read('name') ?? '', _box.read('phone') ?? '',
-        _image != null ? _image!.path : "");
+    await edit.edit(
+        _box.read('name') ?? '',
+        _box.read('phone') ?? '',
+        _image != null ? _image!.path : "",
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '');
   }
 
   final _box = GetStorage();
@@ -92,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             middleText: '',
                             textConfirm: 'Камера',
                             textCancel: 'Галлерея',
-                            titlePadding: EdgeInsets.only(top: 40),
+                            titlePadding: const EdgeInsets.only(top: 40),
                             onConfirm: () {
                               change = true;
                               setState(() {
@@ -131,7 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     borderRadius: BorderRadius.circular(34),
                                     image: DecorationImage(
                                       image: NetworkImage(
-                                          "http://80.87.202.73:8001/storage/${_box.read('avatar')}"),
+                                          "http://185.116.193.73/storage/${_box.read('avatar')}"),
                                       fit: BoxFit.cover,
                                     ))
                                 : null,
@@ -171,6 +180,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   trailing: GestureDetector(
                       onTap: () => Get.to(EditProfilePage(
                             name: _box.read('name'),
+                            phone: _box.read('phone'),
+                            gender: _box.read('gender'),
+                            birthday: _box.read('birthday'),
+                            country: _box.read('country'),
+                            city: _box.read('city'),
+                            street: _box.read('street'),
+                            home: _box.read('home'),
+                            porch: _box.read('porch'),
+                            floor: _box.read('floor'),
+                            room: _box.read('room'),
+                            email: _box.read('email'),
                           )),
                       child: SvgPicture.asset('assets/icons/back_menu.svg',
                           height: 16.5, width: 9.5, color: Colors.grey)),
@@ -229,7 +249,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Get.to(LanguageWidget());
+                              Get.to(const LanguageWidget());
                             },
                             child: const Text(
                               'Язык приложения',

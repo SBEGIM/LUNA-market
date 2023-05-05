@@ -1,20 +1,19 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/auth/presentation/ui/register_check_sms_modal_bottom.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:haji_market/features/home/presentation/ui/home_page.dart';
+import 'package:haji_market/oferta.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import '../../../../politic.dart';
 import '../../../app/widgets/scroll_wrapper.dart';
 import '../../data/DTO/register.dart';
 import '../../data/bloc/sms_cubit.dart';
 import '../../data/bloc/sms_state.dart';
-import '../widgets/forget_password_modal_bottom.dart';
-import '../widgets/login_forget_password_modal_bottom.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -25,7 +24,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   RegisterDTO register =
-      RegisterDTO(name: 'null', phone: 'null', password: 'null');
+      const RegisterDTO(name: 'null', phone: 'null', password: 'null');
   final maskFormatter = MaskTextInputFormatter(mask: '+#(###)-###-##-##');
   bool isChecked = false;
   bool isButtonEnabled = false;
@@ -56,6 +55,10 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SmsCubit, SmsState>(listener: (context, state) {
+      if (state is InitState) {
+        FocusScope.of(context).requestFocus(FocusNode());
+        //   Navigator.pop(context);
+      }
       if (state is LoadedState) {
         showModalBottomSheet(
             shape: const RoundedRectangleBorder(
@@ -160,6 +163,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                           if (phoneControllerRegister.text.length == 17) {
                             setIsButtonEnabled(true);
+                            FocusScope.of(context).requestFocus(FocusNode());
                           } else {
                             setIsButtonEnabled(false);
                           }
@@ -236,7 +240,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         onChanged: (value) {
-                          repePasswordControllerRegister.text.length == 0
+                          repePasswordControllerRegister.text.isEmpty
                               ? _visibleIconViewRepeat = false
                               : _visibleIconViewRepeat = true;
                           if (passwordControllerRegister.text ==
@@ -272,33 +276,39 @@ class _RegisterPageState extends State<RegisterPage> {
               Center(
                 child: Row(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Flexible(
                         child: RichText(
-                      text: const TextSpan(
-                        style: TextStyle(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        style: const TextStyle(
                             color: Colors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
                         children: <TextSpan>[
-                          TextSpan(text: 'Нажимая «Зарегистрироваться», Вы '),
-                          TextSpan(text: 'принимаете '),
+                          const TextSpan(
+                              text: 'Нажимая «Зарегистрироваться», Вы '),
+                          const TextSpan(text: 'принимаете '),
                           TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => Get.to(const Oferta()),
                             text: 'Пользовательское \n соглашение',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: AppColors.kPrimaryColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400),
                           ),
-                          TextSpan(
+                          const TextSpan(
                               text:
                                   ' и даете согласие на \n обработку персональных данных'),
-                          TextSpan(text: 'в соответствии с Политикой'),
+                          const TextSpan(text: 'в соответствии с '),
                           TextSpan(
-                            text: ' Политикой',
-                            style: TextStyle(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => Get.to(const Politic()),
+                            text: 'Политикой Конфиденциальности',
+                            style: const TextStyle(
                                 color: AppColors.kPrimaryColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400),

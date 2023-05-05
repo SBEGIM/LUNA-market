@@ -11,11 +11,11 @@ class UploadVideoBLoggerCubit extends Cubit<UploadVideoBloggerCubitState> {
   UploadVideoBLoggerCubit({required this.uploadVideoBloggerCubitRepository})
       : super(InitState());
 
-  Future<void> upload(video, product_id) async {
+  Future<void> upload(video, productId) async {
     try {
       emit(LoadingState());
       final data =
-          await uploadVideoBloggerCubitRepository.upload(video, product_id);
+          await uploadVideoBloggerCubitRepository.upload(video, productId);
       if (data == 200) {
         emit(LoadedOrderState());
       } else {

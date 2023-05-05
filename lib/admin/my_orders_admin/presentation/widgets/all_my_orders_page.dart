@@ -8,7 +8,7 @@ import '../../data/bloc/basket_admin_cubit.dart';
 import '../../data/bloc/basket_admin_state.dart';
 
 class AllMyOrdersPage extends StatefulWidget {
-  AllMyOrdersPage({Key? key}) : super(key: key);
+  const AllMyOrdersPage({Key? key}) : super(key: key);
 
   @override
   State<AllMyOrdersPage> createState() => _AllMyOrdersPageState();
@@ -85,7 +85,7 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                 return Center(
                   child: Text(
                     state.message,
-                    style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                   ),
                 );
               }
@@ -246,9 +246,9 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                       'assets/icons/user.svg',
                                       color: AppColors.kGray400,
                                     ),
-                                    const Text(
-                                      'Улан шотейулы',
-                                      style: TextStyle(
+                                    Text(
+                                      ' ${state.basketOrderModel[index].user!.name}',
+                                      style: const TextStyle(
                                           color: AppColors.kGray500,
                                           fontSize: 12,
                                           fontWeight: FontWeight.w500),
@@ -260,11 +260,11 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
-                                      color: Color(0x104BB34B),
+                                      color: const Color(0x104BB34B),
                                       borderRadius: BorderRadius.circular(4)),
                                   padding: const EdgeInsets.all(5),
                                   child: Text(
-                                    '${status}',
+                                    status,
                                     style: const TextStyle(
                                         color: Color(0xFF4BB34B),
                                         fontSize: 12,

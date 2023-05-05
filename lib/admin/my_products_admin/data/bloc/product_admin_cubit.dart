@@ -16,15 +16,16 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
     String price,
     String count,
     String compound,
-    String cat_id,
-    String brand_id,
+    String catId,
+    String brandId,
     String description,
     String name,
     String height,
     String width,
     String massa,
-    String product_id,
+    String productId,
     String articul,
+    String currency,
   ) async {
     try {
       emit(LoadingState());
@@ -32,15 +33,16 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
           price,
           count,
           compound,
-          cat_id,
-          brand_id,
+          catId,
+          brandId,
           description,
           name,
           height,
           width,
           massa,
-          product_id,
-          articul);
+          productId,
+          articul,
+          currency);
 
       if (data == 200) {
         emit(InitState());
@@ -63,21 +65,34 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
   }
 
   Future<void> store(
-      String price,
-      String count,
-      String compound,
-      String cat_id,
-      String brand_id,
-      String description,
-      String name,
-      String height,
-      String width,
-      String massa,
-      String articul) async {
+    String price,
+    String count,
+    String compound,
+    String catId,
+    String brandId,
+    String description,
+    String name,
+    String height,
+    String width,
+    String massa,
+    String articul,
+    String currency,
+  ) async {
     try {
       emit(LoadingState());
-      final data = await productAdminRepository.store(price, count, compound,
-          cat_id, brand_id, description, name, height, width, massa, articul);
+      final data = await productAdminRepository.store(
+          price,
+          count,
+          compound,
+          catId,
+          brandId,
+          description,
+          name,
+          height,
+          width,
+          massa,
+          articul,
+          currency);
 
       if (data == 200) {
         emit(InitState());

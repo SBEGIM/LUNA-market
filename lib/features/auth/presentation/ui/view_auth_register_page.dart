@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/app/widgets/custom_switch_button.dart';

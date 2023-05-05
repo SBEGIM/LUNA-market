@@ -25,7 +25,7 @@ class GridOptionsPopular extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0xffF9F9F),
+        color: const Color(0x0fff9f9f),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +41,7 @@ class GridOptionsPopular extends StatelessWidget {
                     borderRadius: BorderRadius.circular(50),
                     image: DecorationImage(
                         image: NetworkImage(
-                          "http://80.87.202.73:8001/storage/${layout!.image!}",
+                          "http://185.116.193.73/storage/${layout!.icon ?? ''}",
                         ),
                         fit: BoxFit.contain),
                     color: const Color(0xFFF0F5F5)),
@@ -79,21 +79,21 @@ class GridOptionsPopular extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-              Container(
-                width: 46,
-                height: 22,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                margin: const EdgeInsets.only(top: 105, left: 4),
-                alignment: Alignment.center,
-                child: Text(
-                  "${layout!.bonus.toString()}% Б",
-                  style: AppTextStyles.bannerTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              // Container(
+              //   width: 46,
+              //   height: 22,
+              //   decoration: BoxDecoration(
+              //     color: Colors.black,
+              //     borderRadius: BorderRadius.circular(6),
+              //   ),
+              //   margin: const EdgeInsets.only(top: 105, left: 4),
+              //   alignment: Alignment.center,
+              //   child: Text(
+              //     "${layout!.bonus.toString()}% Б",
+              //     style: AppTextStyles.bannerTextStyle,
+              //     textAlign: TextAlign.center,
+              //   ),
+              // ),
               Container(
                 margin: const EdgeInsets.only(top: 130, left: 4),
                 alignment: Alignment.center,

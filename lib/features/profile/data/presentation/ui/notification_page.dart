@@ -4,7 +4,7 @@ import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 
 class NotificationPage extends StatefulWidget {
-  NotificationPage({Key? key}) : super(key: key);
+  const NotificationPage({Key? key}) : super(key: key);
 
   @override
   State<NotificationPage> createState() => _NotificationPageState();

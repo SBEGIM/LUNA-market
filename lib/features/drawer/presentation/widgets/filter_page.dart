@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/categories_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/shops_filtr_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/sorting_page.dart';
-import 'package:haji_market/features/drawer/presentation/widgets/stores_sellers_page.dart';
 
 import '../../data/bloc/brand_cubit.dart';
 import '../../data/bloc/brand_state.dart';
@@ -15,8 +12,6 @@ import '../../data/bloc/product_cubit.dart' as productCubit;
 import '../../data/bloc/product_state.dart' as productState;
 import '../../data/bloc/shops_drawer_cubit.dart' as shopsCubit;
 import '../../data/bloc/shops_drawer_state.dart' as shopsState;
-import '../ui/products_page.dart';
-import '../ui/shops_page.dart';
 import 'brands_page.dart';
 
 class FilterPage extends StatefulWidget {
@@ -28,12 +23,12 @@ class FilterPage extends StatefulWidget {
 
 class _FilterPageState extends State<FilterPage> {
   RangeValues values = const RangeValues(1, 1000000);
-  RangeLabels labels = RangeLabels('1', "1000000");
+  RangeLabels labels = const RangeLabels('1', "1000000");
   TextEditingController priceStartController = TextEditingController();
   TextEditingController priceEndController = TextEditingController();
   bool isSwitched = false;
-  List<int> _selectListBrand = [];
-  List<int> _selectListShop = [];
+  final List<int> _selectListBrand = [];
+  final List<int> _selectListShop = [];
   String subCatName = 'Не выбрано';
   String sortName = 'Не выбрано';
   int count = 0;
@@ -84,7 +79,7 @@ class _FilterPageState extends State<FilterPage> {
                 return Center(
                   child: Text(
                     state.message,
-                    style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                   ),
                 );
               }
@@ -135,16 +130,14 @@ class _FilterPageState extends State<FilterPage> {
                             // const Divider(
                             //   color: AppColors.kGray200,
                             // ),
-                            Container(
+                            SizedBox(
                               height: 71,
                               child: InkWell(
                                 onTap: () async {
-                                  final data = await Get.to(() => SortingPage())
+                                  final data = await Get.to(() => const SortingPage())
                                       as String;
-                                  if (data != null) {
-                                    sortName = data;
-                                    setState(() {});
-                                  }
+                                  sortName = data;
+                                  setState(() {});
                                 },
                                 child: ListTile(
                                     title: const Text(
@@ -172,12 +165,12 @@ class _FilterPageState extends State<FilterPage> {
                               height: 0,
                               color: AppColors.kGray200,
                             ),
-                            Container(
+                            SizedBox(
                               height: 71,
                               child: InkWell(
                                 onTap: () async {
                                   final data =
-                                      await Get.to(() => CategoriesPage())
+                                      await Get.to(() => const CategoriesPage())
                                           as String;
 
                                   if (data != '') {
@@ -327,7 +320,7 @@ class _FilterPageState extends State<FilterPage> {
                                   return Center(
                                     child: Text(
                                       state.message,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 20.0, color: Colors.grey),
                                     ),
                                   );
@@ -348,7 +341,7 @@ class _FilterPageState extends State<FilterPage> {
                                       itemBuilder: (BuildContext ctx, index) {
                                         return Container(
                                           child: chipBrand(
-                                              '${state.cats[index].name.toString()}',
+                                              state.cats[index].name.toString(),
                                               index),
                                         );
                                       });
@@ -363,7 +356,7 @@ class _FilterPageState extends State<FilterPage> {
                           ),
                           GestureDetector(
                             onTap: (() {
-                              Get.to(() => BrandsPage());
+                              Get.to(() => const BrandsPage());
                             }),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -441,7 +434,7 @@ class _FilterPageState extends State<FilterPage> {
                                   return Center(
                                     child: Text(
                                       state.message,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 20.0, color: Colors.grey),
                                     ),
                                   );
@@ -462,7 +455,7 @@ class _FilterPageState extends State<FilterPage> {
                                       itemBuilder: (BuildContext ctx, index) {
                                         return Container(
                                             child: chipShops(
-                                                '${state.shopsDrawer[index].name.toString()}',
+                                                state.shopsDrawer[index].name.toString(),
                                                 index));
                                       });
                                 } else {
@@ -479,7 +472,7 @@ class _FilterPageState extends State<FilterPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ShopsFiltrPage()),
+                                    builder: (context) => const ShopsFiltrPage()),
                               );
                             },
                             child: Row(
@@ -529,7 +522,7 @@ class _FilterPageState extends State<FilterPage> {
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.all(16),
                   child: Text(
-                    'Показать ${count} товара',
+                    'Показать $count товара',
                     style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,

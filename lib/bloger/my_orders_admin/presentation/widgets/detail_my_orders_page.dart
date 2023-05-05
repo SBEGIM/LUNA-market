@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_orders_admin/data/models/basket_admin_order_model.dart';
 import 'package:haji_market/core/common/constants.dart';
@@ -10,7 +9,7 @@ import '../../data/bloc/basket_admin_cubit.dart';
 
 class DetailMyOrdersPage extends StatefulWidget {
   final BasketAdminOrderModel basket;
-  DetailMyOrdersPage({required this.basket, Key? key}) : super(key: key);
+  const DetailMyOrdersPage({required this.basket, Key? key}) : super(key: key);
 
   @override
   State<DetailMyOrdersPage> createState() => _DetailMyOrdersPageState();
@@ -137,7 +136,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       child: ListTile(
                         leading: Image.network(
                           widget.basket.product![index].path!.first.isNotEmpty
-                              ? "http://80.87.202.73:8001/storage/${widget.basket.product![index].path!.first}"
+                              ? "http://185.116.193.73/storage/${widget.basket.product![index].path!.first}"
                               : '',
                           fit: BoxFit.cover,
                           height: 104,
@@ -223,7 +222,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                     Container(
                       decoration: const BoxDecoration(color: AppColors.kGray1),
                       padding: const EdgeInsets.all(8),
-                      child: Text('${status}'),
+                      child: Text(status),
                     )
                   ],
                 ),
@@ -460,7 +459,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       13,
                     ),
                     child: Text(
-                      '${buttonText}',
+                      buttonText,
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
@@ -487,7 +486,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       13,
                     ),
                     child: Text(
-                      '${buttonSecondText}',
+                      buttonSecondText,
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,

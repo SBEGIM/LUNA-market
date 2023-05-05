@@ -8,11 +8,11 @@ class LoadingState extends ProfileMonthStaticsBloggerState {}
 
 class LoadedState extends ProfileMonthStaticsBloggerState {
   List<ProfileMonthStatics> loadedProfile;
-  LoadedState({required this.loadedProfile}) : assert(loadedProfile != null);
+  LoadedState({required this.loadedProfile});
 }
 
 class ErrorState extends ProfileMonthStaticsBloggerState {
   String message;
 
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 }

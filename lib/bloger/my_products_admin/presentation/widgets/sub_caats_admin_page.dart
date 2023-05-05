@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/create_product_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 
 import '../../../../features/app/widgets/custom_back_button.dart';
@@ -20,9 +19,10 @@ class SubCatsAdminPage extends StatefulWidget {
 
 class _SubCatsAdminPageState extends State<SubCatsAdminPage> {
   int _selectedIndex = -1;
-  int _selectedIndex2 = -1;
+  final int _selectedIndex2 = -1;
   Cats? _cat;
 
+  @override
   void initState() {
     BlocProvider.of<SubCatsCubit>(context).subCats(widget.cats!.id);
     super.initState();
@@ -59,7 +59,7 @@ class _SubCatsAdminPageState extends State<SubCatsAdminPage> {
                     return Center(
                       child: Text(
                         state.message,
-                        style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                        style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                       ),
                     );
                   }

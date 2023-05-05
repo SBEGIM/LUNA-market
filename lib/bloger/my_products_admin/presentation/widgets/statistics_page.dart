@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/bloger/my_products_admin/data/bloc/blogger_product_statistics_state.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
 
-import '../../../../admin/my_products_admin/data/models/admin_products_model.dart';
 import '../../../../core/common/constants.dart';
 import '../../data/bloc/blogger_product_statistics_cubit.dart';
 import '../../data/models/blogger_shop_products_model.dart';
@@ -88,22 +87,22 @@ class _StatisticsBloggerPagetate extends State<StatisticsBloggerPage> {
                               Text(
                                 '${widget.product.name}',
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: AppColors.kGray900,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Text(
                                 'Артикул: ${widget.product.id}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: AppColors.kGray900,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               // Text(

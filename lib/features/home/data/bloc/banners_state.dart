@@ -15,7 +15,7 @@ class LoadedState extends BannersState{
 
 class ErrorState extends BannersState{
   String message;
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 
 }
 

@@ -9,5 +9,5 @@ class LoadedState extends EditBloggerState {}
 class ErrorState extends EditBloggerState {
   String message;
 
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 }

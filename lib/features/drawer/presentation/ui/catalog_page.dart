@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/under_catalog_page.dart';
-import 'package:haji_market/features/home/data/model/Cats.dart';
-import 'package:http/retry.dart';
 
 import '../../../home/data/bloc/cats_cubit.dart';
 import '../../../home/data/bloc/cats_state.dart';
 
 class CatalogPage extends StatefulWidget {
-  CatalogPage({Key? key}) : super(key: key);
+  const CatalogPage({Key? key}) : super(key: key);
 
   @override
   State<CatalogPage> createState() => _CatalogPageState();
@@ -84,7 +81,7 @@ class _CatalogPageState extends State<CatalogPage> {
               return Center(
                 child: Text(
                   state.message,
-                  style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                 ),
               );
             }
@@ -121,7 +118,7 @@ class _CatalogPageState extends State<CatalogPage> {
                           credit: state.cats[index].credit!,
                           bonus: '${state.cats[index].bonus}',
                           url:
-                              "http://80.87.202.73:8001/storage/${state.cats[index].image!}",
+                              "http://185.116.193.73/storage/${state.cats[index].image!}",
                         ),
                       );
                     }),
@@ -186,7 +183,7 @@ class CatalogListTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0xffF9F9F),
+        color: const Color(0x0f9f9f9),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +245,7 @@ class CatalogListTile extends StatelessWidget {
                 ),
                 margin: const EdgeInsets.only(top: 105, left: 4),
                 alignment: Alignment.center,
-                child: Text(
+                child: const Text(
                   "10% Б",
                   style: AppTextStyles.bannerTextStyle,
                   textAlign: TextAlign.center,

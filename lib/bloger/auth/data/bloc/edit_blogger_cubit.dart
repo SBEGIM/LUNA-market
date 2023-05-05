@@ -2,8 +2,6 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../DTO/register_blogger_dto.dart';
-import '../repository/LoginBloggerRepo.dart';
 import '../repository/editBloggerRepo.dart';
 import 'edit_blogger_statet.dart';
 

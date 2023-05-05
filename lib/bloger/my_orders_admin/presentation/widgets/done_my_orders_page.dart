@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DoneMyOrdersPage extends StatefulWidget {
-  DoneMyOrdersPage({Key? key}) : super(key: key);
+  const DoneMyOrdersPage({Key? key}) : super(key: key);
 
   @override
   State<DoneMyOrdersPage> createState() => _DoneMyOrdersPageState();

@@ -6,6 +6,8 @@ class InitState extends TapeState {}
 
 class LoadingState extends TapeState {}
 
+class NoDataState extends TapeState {}
+
 class LoadedState extends TapeState {
   List<TapeModel> tapeModel;
   LoadedState(this.tapeModel);
@@ -13,5 +15,5 @@ class LoadedState extends TapeState {
 
 class ErrorState extends TapeState {
   String message;
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 }

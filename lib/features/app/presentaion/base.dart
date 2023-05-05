@@ -8,8 +8,6 @@ import 'package:haji_market/features/basket/presentation/ui/basket_page.dart';
 import 'package:haji_market/features/drawer/presentation/ui/drawer_home.dart';
 import 'package:haji_market/features/favorite/presentation/ui/favorite_page.dart';
 import 'package:haji_market/features/home/presentation/ui/home_page.dart';
-import 'package:haji_market/features/my_order/presentation/ui/my_order_page.dart';
-import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dart';
 import 'package:haji_market/features/tape/presentation/ui/tape_page.dart';
 
 import '../../tape/presentation/ui/detail_tape_card_page.dart';
@@ -42,6 +40,10 @@ class _BaseState extends State<Base> {
         BlocProvider.of<NavigationCubit>(context)
             .getNavBarItem(const NavigationState.home());
       }
+      if (basePageIndex == 3) {
+        BlocProvider.of<NavigationCubit>(context)
+            .getNavBarItem(const NavigationState.basket());
+      }
 
       // } else if (basePageIndex == 3) {
       //   BlocProvider.of<NavigationCubit>(context)
@@ -56,11 +58,12 @@ class _BaseState extends State<Base> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       backgroundColor: basePageIndex != 0 ? Colors.white : null,
       key: _key,
       extendBody: true,
-      drawer: const DrawerHome(),
+      // drawer: const DrawerHome(),
+      // drawer: Container(),
       bottomNavigationBar: BlocBuilder<NavigationCubit, NavigationState>(
         builder: (context, state) {
           return BottomNavigationBar(
@@ -165,7 +168,7 @@ class _BaseState extends State<Base> {
       body: BlocBuilder<NavigationCubit, NavigationState>(
         builder: (context, state) {
           if (state is TapeState) {
-            return TapePage();
+            return const TapePage();
           } else if (state is HomeState) {
             return HomePage(
               globalKey: _key,
@@ -176,13 +179,15 @@ class _BaseState extends State<Base> {
               shop_name: state.name,
             );
           } else if (state is FavoriteState) {
-            return FavoritePage();
+            return const FavoritePage();
           } else if (state is BasketState) {
             return const BasketPage();
           } else if (state is MyOrderState) {
             // return const MyOrderPage();]
             return const DrawerHome();
           } else if (state is AuthState) {
+            return const ViewAuthRegisterPage();
+          } else if (state is NotAuthState) {
             return const ViewAuthRegisterPage();
           }
           return Container();

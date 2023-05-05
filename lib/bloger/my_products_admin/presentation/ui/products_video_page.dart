@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:haji_market/bloger/my_products_admin/data/models/blogger_shop_products_model.dart';
 import 'package:haji_market/core/common/constants.dart';
 
-import '../../../../admin/my_products_admin/data/models/admin_products_model.dart';
-import '../../../../features/drawer/data/models/product_model.dart';
-
 class ProductVideo extends StatelessWidget {
   final BloggerShopProductModel product;
   const ProductVideo({
@@ -24,10 +21,10 @@ class ProductVideo extends StatelessWidget {
           Stack(
             children: [
               Container(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: Image.network(
                   product.path!.path != null
-                      ? "http://80.87.202.73:8001/storage/${product.path!.path}"
+                      ? "http://185.116.193.73/storage/${product.path!.path}"
                       : '',
                   fit: BoxFit.cover,
                   height: 160,

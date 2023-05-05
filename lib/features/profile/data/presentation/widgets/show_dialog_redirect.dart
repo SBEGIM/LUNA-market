@@ -9,7 +9,7 @@ Future<dynamic> showDialogRegirect(BuildContext context) async {
     builder: (BuildContext context) => CupertinoActionSheet(
       actions: <Widget>[
         CupertinoActionSheetAction(
-          child: Text(
+          child: const Text(
             'Редактировать',
             style: TextStyle(color: Colors.black),
           ),
@@ -18,7 +18,7 @@ Future<dynamic> showDialogRegirect(BuildContext context) async {
           },
         ),
         CupertinoActionSheetAction(
-          child: Text(
+          child: const Text(
             'Удалить',
             style: TextStyle(color: Colors.red),
           ),
@@ -28,9 +28,9 @@ Future<dynamic> showDialogRegirect(BuildContext context) async {
         ),
       ],
       cancelButton: CupertinoActionSheetAction(
-        child: Text(
+        child: const Text(
           'Отменить',
-          style: const TextStyle(
+          style: TextStyle(
             color: AppColors.kPrimaryColor,
           ),
         ),

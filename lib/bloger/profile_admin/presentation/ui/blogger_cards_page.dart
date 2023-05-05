@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:haji_market/features/profile/data/presentation/ui/new_bank_card_page.dart';
-import 'package:haji_market/features/profile/data/presentation/widgets/show_dialog_redirect.dart';
+import 'package:get/route_manager.dart';
+import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 
 import '../../../../../core/common/constants.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
+import 'blogger_new_card_page.dart';
 
 class BloggerCardPage extends StatefulWidget {
   const BloggerCardPage({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class _BloggerCardPageState extends State<BloggerCardPage> {
         ),
         backgroundColor: Colors.white,
         title: const Text(
-          'Способы оплаты',
+          'Мои карты',
           style: TextStyle(
               color: AppColors.kGray900,
               fontSize: 16,
@@ -117,6 +117,31 @@ class _BloggerCardPageState extends State<BloggerCardPage> {
             ),
           ),
         ],
+      ),
+      bottomSheet: Container(
+        color: Colors.transparent,
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
+        child: InkWell(
+          onTap: () {
+            Get.to(BloggerNewCardPage());
+          },
+          child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: AppColors.kPrimaryColor,
+              ),
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.all(16),
+              child: const Text(
+                'Добавить способы оплаты',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16),
+                textAlign: TextAlign.center,
+              )),
+        ),
       ),
     );
   }

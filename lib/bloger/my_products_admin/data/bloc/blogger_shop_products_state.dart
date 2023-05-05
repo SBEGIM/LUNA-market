@@ -16,5 +16,5 @@ class LoadedState extends BloggerShopProductsState {
 class ErrorState extends BloggerShopProductsState {
   String message;
 
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 }

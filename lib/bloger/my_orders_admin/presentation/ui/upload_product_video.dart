@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -11,7 +9,7 @@ import '../../../../core/common/constants.dart';
 
 class UpdateProductVideoPage extends StatefulWidget {
   final int product_id;
-  UpdateProductVideoPage({required this.product_id, super.key});
+  const UpdateProductVideoPage({required this.product_id, super.key});
 
   @override
   State<UpdateProductVideoPage> createState() => _UpdateProductVideoPageState();
@@ -87,7 +85,7 @@ class _UpdateProductVideoPageState extends State<UpdateProductVideoPage> {
                       middleText: '',
                       textConfirm: 'Камера',
                       textCancel: 'Галлерея',
-                      titlePadding: EdgeInsets.only(top: 40),
+                      titlePadding: const EdgeInsets.only(top: 40),
                       onConfirm: () {
                         change = true;
                         setState(() {
@@ -121,7 +119,7 @@ class _UpdateProductVideoPageState extends State<UpdateProductVideoPage> {
                             ? AppColors.kPrimaryColor
                             : Colors.grey,
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       const Text(
                         'Добавить видео',
                         style: TextStyle(

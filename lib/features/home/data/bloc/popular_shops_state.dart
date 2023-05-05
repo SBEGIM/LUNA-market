@@ -16,7 +16,7 @@ class LoadedState extends PopularShopsState{
 
 class ErrorState extends PopularShopsState{
   String message;
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 
 }
 

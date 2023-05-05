@@ -1,22 +1,33 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/profile_admin/presentation/widgets/about_shop_admin_page.dart';
+import 'package:haji_market/admin/profile_admin/presentation/widgets/statistics_admin_show_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 
+import '../../../../bloger/auth/presentation/ui/login_admin_page.dart';
+import '../../../auth/presentation/ui/view_auth_register_page.dart';
+import '../../data/bloc/profile_statics_admin_cubit.dart';
+import '../../data/bloc/profile_statics_admin_state.dart';
 import '../widgets/reqirect_profile_page.dart';
 
 class ProfileAdminPage extends StatefulWidget {
-  ProfileAdminPage({Key? key}) : super(key: key);
+  const ProfileAdminPage({Key? key}) : super(key: key);
 
   @override
   State<ProfileAdminPage> createState() => _ProfileAdminPageState();
 }
 
 class _ProfileAdminPageState extends State<ProfileAdminPage> {
+  @override
+  void initState() {
+    BlocProvider.of<ProfileStaticsAdminCubit>(context).statics();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +55,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
         ),
         actions: [
           Padding(
-              padding: EdgeInsets.only(right: 16.0),
+              padding: const EdgeInsets.only(right: 16.0),
               child: SvgPicture.asset('assets/icons/notification.svg'))
         ],
       ),
@@ -53,19 +64,23 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
           ListTile(
             horizontalTitleGap: 12,
             leading: CircleAvatar(
-              backgroundImage: const AssetImage('assets/images/kana.png'),
-              radius: 34,
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: SvgPicture.asset(
-                  'assets/icons/camera.svg',
-                  fit: BoxFit.cover,
-                ),
+              backgroundColor: Colors.white,
+              backgroundImage: NetworkImage(
+                "http://185.116.193.73/storage/${GetStorage().read('seller_image')}",
               ),
+              radius: 34,
+
+              // child: Align(
+              //   alignment: Alignment.bottomRight,
+              //   child: SvgPicture.asset(
+              //     'assets/icons/camera.svg',
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
             ),
-            title: const Text(
-              'Маржан Жумадилова',
-              style: TextStyle(
+            title: Text(
+              '${GetStorage().read('seller_name')}',
+              style: const TextStyle(
                   fontWeight: FontWeight.w700,
                   color: AppColors.kGray900,
                   fontSize: 16),
@@ -75,7 +90,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ReqirectProfilePage()),
+                      builder: (context) => const ReqirectProfilePage()),
                 );
               },
               child: const Text(
@@ -87,6 +102,99 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
               ),
             ),
           ),
+          const SizedBox(
+            height: 8,
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.center,
+            width: 500,
+            height: 76,
+            child: BlocConsumer<ProfileStaticsAdminCubit,
+                ProfileStaticsAdminState>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                if (state is LoadedState) {
+                  return Container(
+                    padding: const EdgeInsets.only(top: 16, left: 16),
+                    alignment: Alignment.center,
+                    //  height: 76,
+                    // width: 343,
+                    decoration: BoxDecoration(
+                      color: AppColors.kPrimaryColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                state.loadedProfile.videoReview.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const Text(
+                                'Видео обзоров',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 40),
+                          Column(
+                            children: [
+                              Text(
+                                state.loadedProfile.subscribers.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const Text(
+                                'Подписчиков',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 40),
+                          Column(
+                            children: [
+                              Text(
+                                state.loadedProfile.sales.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const Text(
+                                'Продаж',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        ]),
+                  );
+                } else {
+                  return const Center(
+                      child: CircularProgressIndicator(
+                          color: Colors.indigoAccent));
+                }
+              },
+            ),
+          ),
+
           // ListTile(
           //     leading: ClipOval(
           //       child: SizedBox(
@@ -122,6 +230,82 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
           //         fontWeight: FontWeight.w400),
           //   ),
           //     )),
+
+          // const Divider(
+          //   color: AppColors.kGray400,
+          // ),
+          const SizedBox(height: 12),
+
+          // ListTile(
+          //     leading: ClipOval(
+          //       child: SizedBox(
+          //         height: 60,
+          //         width: 60,
+          //         child: Image.asset(
+          //           'assets/images/wireles.png',
+          //           fit: BoxFit.cover,
+          //         ),
+          //       ),
+          //     ),
+          //     title: const Text(
+          //       'Маржан Жумадилова',
+          //       style: TextStyle(
+          //         fontWeight: FontWeight.w400,
+          //         color: AppColors.kGray900,
+          //         fontSize: 15,
+          //       ),
+          //     ),
+          // subtitle: InkWell(
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) => ReqirectProfilePage()),
+          //     );
+          //   },
+          //   child: const Text(
+          //     'Редактирование',
+          //     style: TextStyle(
+          //         color: AppColors.kPrimaryColor,
+          //         fontSize: 14,
+          //         fontWeight: FontWeight.w400),
+          //   ),
+          //     )),
+
+          const Divider(
+            color: AppColors.kGray400,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const StatisticsAdminShowPage()),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 15.0, bottom: 15, right: 15, left: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    'Мой заработок',
+                    style: TextStyle(
+                        color: AppColors.kGray900,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                    color: AppColors.kGray300,
+                  )
+                ],
+              ),
+            ),
+          ),
+
           const Divider(
             color: AppColors.kGray400,
           ),
@@ -153,7 +337,8 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AbouShopAdminPage()),
+                MaterialPageRoute(
+                    builder: (context) => const AbouShopAdminPage()),
               );
             },
             child: Padding(
@@ -182,12 +367,15 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
             color: AppColors.kGray400,
           ),
           GestureDetector(
-            onTap: (){
-              GetStorage().remove('token');
+            onTap: () {
+              GetStorage().remove('seller_token');
+              GetStorage().remove('seller_id');
+              GetStorage().remove('seller_name');
+              GetStorage().remove('seller_image');
+
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const ViewAuthRegisterPage()),
+                MaterialPageRoute(builder: (context) => const AdminAuthPage()),
               );
             },
             child: Container(

@@ -4,7 +4,6 @@ import 'package:haji_market/admin/my_products_admin/presentation/widgets/statist
 import 'package:haji_market/bloger/my_products_admin/presentation/widgets/edit_product_page%20copy.dart';
 
 import '../../../../core/common/constants.dart';
-import '../../../../features/drawer/data/models/product_model.dart';
 import '../../data/models/blogger_shop_products_model.dart';
 
 Future<dynamic> showAlertStaticticsWidget(
@@ -36,7 +35,7 @@ Future<dynamic> showAlertStaticticsWidget(
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => StatisticsPage()),
+              MaterialPageRoute(builder: (context) => const StatisticsPage()),
             );
           },
         ),

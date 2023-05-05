@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:haji_market/core/common/constants.dart';
 
 class StoresSellersPage extends StatefulWidget {
-  StoresSellersPage({Key? key}) : super(key: key);
+  const StoresSellersPage({Key? key}) : super(key: key);
 
   @override
   State<StoresSellersPage> createState() => _StoresSellersPageState();

@@ -51,7 +51,7 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                 height: 8,
               ),
               Image.network(
-                "http://80.87.202.73:8001/storage/${widget.basketOrder.product!.first.path!.first.toString()}",
+                "http://185.116.193.73/storage/${widget.basketOrder.product!.first.path!.first.toString()}",
                 height: 80,
                 width: 80,
               ),

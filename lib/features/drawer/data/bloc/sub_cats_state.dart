@@ -16,7 +16,7 @@ class LoadedState extends SubCatsState{
 
 class ErrorState extends SubCatsState{
   String message;
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 
 }
 

@@ -199,7 +199,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     itemCount: 5,
                     // unratedColor: const Color(0x30F11712),
                     itemSize: 14,
-                    unratedColor: Color(0xFFFFC107),
+                    unratedColor: const Color(0xFFFFC107),
                     // itemPadding:
                     // const EdgeInsets.symmetric(horizontal: 4.0),
                     ratingWidget: RatingWidget(
@@ -259,7 +259,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                         SizedBox(
                           width: 75,
                           child: Text(
-                            '${compoundPrice} ₸ ',
+                            '$compoundPrice ₸ ',
                             style: const TextStyle(
                                 color: Colors.red,
                                 fontWeight: FontWeight.w500,
@@ -288,7 +288,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
               const SizedBox(
                 height: 7,
               ),
-              Container(
+              SizedBox(
                   height: 32,
                   width: 196,
                   child: Row(
@@ -336,7 +336,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       Row(
                         children: [
                           count < 1
-                              ? SizedBox()
+                              ? const SizedBox()
                               : Visibility(
                                   visible: isvisible,
                                   child: Row(
@@ -412,12 +412,6 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                         },
                                         child: Container(
                                           padding: const EdgeInsets.all(4),
-                                          // child: SvgPicture.asset(
-                                          //     'assets/icons/add_1.svg'),
-                                          child: const Icon(
-                                            Icons.add,
-                                            color: AppColors.kPrimaryColor,
-                                          ),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(10),
@@ -432,6 +426,12 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                                     1), // changes position of shadow
                                               ),
                                             ],
+                                          ),
+                                          // child: SvgPicture.asset(
+                                          //     'assets/icons/add_1.svg'),
+                                          child: const Icon(
+                                            Icons.add,
+                                            color: AppColors.kPrimaryColor,
                                           ),
                                         ),
                                       ),

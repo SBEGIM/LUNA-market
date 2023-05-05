@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 
@@ -22,7 +21,7 @@ class BannerWatcehRecently extends StatelessWidget {
             Stack(
               children: [
                 Container(
-                  padding: EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(4),
                   height: 144,
                   width: 144,
                   child:   Image.asset(
@@ -47,7 +46,7 @@ class BannerWatcehRecently extends StatelessWidget {
                             child: const Padding(
                               padding: EdgeInsets.only(
                                   left: 8.0, right: 8, top: 4, bottom: 4),
-                              child: const Text(
+                              child: Text(
                                 '0·0·12',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(

@@ -7,8 +7,6 @@ import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/auth/presentation/ui/forgot_password.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:haji_market/features/home/presentation/ui/home_page.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../../data/bloc/login_cubit.dart';
 import '../../data/bloc/login_state.dart';
@@ -40,7 +38,7 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginState>(listener: (context, state) {
       if (state is LoadedState) {
-        Get.to(() => const Base(index: 0));
+        Get.off(() => const Base(index: 0));
         // Navigator.push(
         //   context,
         //   MaterialPageRoute(builder: (context) => const Base()),
@@ -85,12 +83,15 @@ class _AuthPageState extends State<AuthPage> {
                                   ),
                           ),
                           title: TextField(
-                            keyboardType: TextInputType.phone,
+                            keyboardType: TextInputType.number,
                             // inputFormatters: [maskFormatter],
                             controller: phoneControllerAuth,
                             onChanged: (value) {
                               _visibleIconClear = true;
                               if (phoneControllerAuth.text.length == 17) {
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
+
                                 setIsButtonEnabled(true);
                               } else {
                                 setIsButtonEnabled(false);
@@ -135,7 +136,7 @@ class _AuthPageState extends State<AuthPage> {
                             controller: passwordControllerAuth,
                             obscureText: !_passwordVisible,
                             onChanged: (value) {
-                              passwordControllerAuth.text.length == 0
+                              passwordControllerAuth.text.isEmpty
                                   ? __visibleIconView = false
                                   : __visibleIconView = true;
                               if (passwordControllerAuth.text.isNotEmpty) {
@@ -239,7 +240,7 @@ class _AuthPageState extends State<AuthPage> {
         return Center(
           child: Text(
             state.message,
-            style: TextStyle(color: Colors.redAccent),
+            style: const TextStyle(color: Colors.redAccent),
           ),
         );
       } else {

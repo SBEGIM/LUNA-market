@@ -4,7 +4,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
-import 'package:haji_market/features/home/data/bloc/popular_shops_state.dart';
 
 import '../../../drawer/data/bloc/favorite_cubit.dart';
 
@@ -52,12 +51,12 @@ class _ProductWatchingCardState extends State<ProductWatchingCard> {
           Stack(
             children: [
               Container(
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 height: 160,
                 width: 160,
                 child: Image.network(
                   widget.product.path!.isNotEmpty
-                      ? "http://80.87.202.73:8001/storage/${widget.product.path!.first}"
+                      ? "http://185.116.193.73/storage/${widget.product.path!.first}"
                       : '',
                   height: 160,
                   width: 160,
@@ -283,7 +282,7 @@ class _ProductWatchingCardState extends State<ProductWatchingCard> {
                         padding: const EdgeInsets.only(
                             left: 4, right: 4, top: 4, bottom: 4),
                         child: Text(
-                          '${(widget.product.price!.toInt() / 3).toInt()}',
+                          '${widget.product.price!.toInt() ~/ 3}',
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                               fontSize: 10,

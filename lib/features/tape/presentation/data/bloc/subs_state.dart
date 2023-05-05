@@ -1,4 +1,3 @@
-import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dart';
 
 abstract class SubsState {}
 
@@ -10,5 +9,5 @@ class LoadedState extends SubsState {}
 
 class ErrorState extends SubsState {
   String message;
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 }

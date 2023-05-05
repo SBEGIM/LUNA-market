@@ -4,7 +4,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
-import 'package:haji_market/features/home/data/bloc/popular_shops_state.dart';
 
 import '../../../drawer/data/bloc/favorite_cubit.dart';
 
@@ -54,12 +53,12 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
           Stack(
             children: [
               Container(
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 height: 160,
                 width: 144,
                 child: Image.network(
                   widget.product.path!.isNotEmpty
-                      ? "http://80.87.202.73:8001/storage/${widget.product.path!.first}"
+                      ? "http://185.116.193.73/storage/${widget.product.path!.first}"
                       : '',
                   height: 160,
                   width: 160,
@@ -195,7 +194,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                       fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(
-                  height: 8,
+                  height: 3,
                 ),
                 Row(
                   children: [
@@ -232,7 +231,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                   ],
                 ),
                 const SizedBox(
-                  height: 8,
+                  height: 6,
                 ),
                 (widget.product.compound != 0 ||
                         widget.product.compound != null)
@@ -278,20 +277,19 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
+                      height: 16,
+                      alignment: Alignment.center,
                       decoration: const BoxDecoration(
                           color: Colors.amber,
                           borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 4, right: 4, top: 4, bottom: 4),
-                        child: Text(
-                          '${(widget.product.price!.toInt() / 3).toInt()}',
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontSize: 10,
-                              color: Color(0xFF19191A),
-                              fontWeight: FontWeight.w500),
-                        ),
+                      child: Text(
+                        '${widget.product.price!.toInt() ~/ 3}',
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            fontSize: 10,
+                            color: Color(0xFF19191A),
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                     const SizedBox(

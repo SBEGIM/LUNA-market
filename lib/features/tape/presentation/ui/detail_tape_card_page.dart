@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,12 +18,12 @@ import '../../../drawer/data/bloc/favorite_cubit.dart' as favCubit;
 import '../../../drawer/presentation/ui/products_page.dart';
 import '../data/bloc/tape_cubit.dart' as tapeCubit;
 import '../data/bloc/tape_state.dart' as tapeState;
-import '../widgets/anim_search_widget.dart';
 
 class DetailTapeCardPage extends StatefulWidget {
   final int? index;
   final String? shop_name;
-  DetailTapeCardPage({required this.index, required this.shop_name, Key? key})
+  const DetailTapeCardPage(
+      {required this.index, required this.shop_name, Key? key})
       : super(key: key);
 
   @override
@@ -35,6 +36,8 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
   final TextEditingController searchController = TextEditingController();
   bool visible = true;
 
+  bool inSub = false;
+
   procentPrice(price, compound) {
     var pp = (((price!.toInt() - compound!.toInt()) / price!.toInt()) * 100)
         as double;
@@ -45,6 +48,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
   void initState() {
     controller = PageController(initialPage: widget.index!);
     title = 'Лента';
+    GetStorage().write('title_tape', 'Отписаться');
     super.initState();
   }
 
@@ -68,74 +72,48 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                     }),
                   )
                 : null,
-            // actions: [
+            toolbarHeight: 26,
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  if (GetStorage().read('title_tape').toString() ==
+                      'Отписаться') {
+                    GetStorage().write('title_tape', 'Подписаться');
+                  } else {
+                    GetStorage().write('title_tape', 'Отписаться');
+                  }
 
-            // AnimSearchBar(
-            //   helpText: 'Поиск..',
-            //   onChanged: (String? value) {
-            //     BlocProvider.of<tapeCubit.TapeCubit>(context)
-            //         .tapes(false, false, searchController.text);
-            //   },
-            //   style: const TextStyle(
-            //       fontSize: 14,
-            //       fontWeight: FontWeight.w400,
-            //       color: Color.fromRGBO(153, 162, 173, 1)),
-            //   textController: searchController,
-            //   onSuffixTap: () {
-            //     searchController.clear();
-            //   },
-            //   onArrowTap: () {
-            //     visible = !visible;
-            //     // print(visible.toString());
-            //     setState(() {
-            //       visible;
-            //     });
-            //     searchController.clear();
-            //   },
-            //   width: MediaQuery.of(context).size.width,
-            // ),
-            //    ],
+                  // inSub = !inSub;
+                  setState(() {});
+                  // print('okkkwwww');
+                },
+                child: Container(
+                  height: 26,
+                  width: 98,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      width: 0.3,
+                      color: AppColors.kPrimaryColor,
+                    ),
+                  ),
+                  child: Text(
+                    GetStorage().read('title_tape').toString(),
+                    style: const TextStyle(
+                        color: AppColors.kPrimaryColor, fontSize: 12),
+                  ),
+                ),
+              ),
+            ],
             centerTitle: true,
             title: visible == true
-                ? Container(
-                    //alignment: Alignment.center,
-                    // padding: EdgeInsets.only(left: 20),
-                    //margin: EdgeInsets.only(top: 20, bottom: 10, left: 20),
-                    // height: 16,
-                    // width: 200,
-
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 100),
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '${widget.shop_name}',
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.only(
-                              top: 5, bottom: 5, right: 5, left: 5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              width: 0.3,
-                            ),
-                          ),
-                          child: Text(
-                            'Подписаться',
-                            style: TextStyle(
-                                color: AppColors.kPrimaryColor, fontSize: 12),
-                          ),
-                        ),
-                      ],
-                    ),
+                ? Text(
+                    '${widget.shop_name}',
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
                   )
                 : null
             // ? Row(
@@ -218,7 +196,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                 return Center(
                   child: Text(
                     state.message,
-                    style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                   ),
                 );
               }
@@ -259,7 +237,10 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 decoration: BoxDecoration(
                                     color: const Color(0xFFFF3347),
                                     borderRadius: BorderRadius.circular(6)),
-                                margin: const EdgeInsets.only(top: 24),
+                                margin: EdgeInsets.only(
+                                  top:
+                                      MediaQuery.of(context).size.height * 0.15,
+                                ),
                                 alignment: Alignment.center,
                                 child: Text(
                                   '-${procentPrice(state.tapeModel[index].price, state.tapeModel[index].compound)}%',
@@ -314,9 +295,19 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                     ],
                                   ),
                                   Container(
-                                    margin: const EdgeInsets.only(top: 370),
+                                    margin: EdgeInsets.only(
+                                        top:
+                                            MediaQuery.of(context).size.height *
+                                                0.36),
                                     child: Column(
                                       children: [
+                                        inReport(
+                                          tape: state.tapeModel[index],
+                                          index: index,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
                                         inBaskets(
                                           tape: state.tapeModel[index],
                                           index: index,
@@ -333,6 +324,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         ),
                                         SvgPicture.asset(
                                           'assets/icons/share.svg',
+                                          height: 30,
                                           color: Colors.white,
                                         ),
                                       ],
@@ -346,16 +338,25 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                               ),
                               SizedBox(
                                 width: 358,
+                                height: 30,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     GestureDetector(
                                       onTap: (() {
+                                        final List<int> _selectedListSort = [];
+
+                                        _selectedListSort.add(
+                                            state.tapeModel[index].shop!.id!);
+                                        GetStorage().write('shopFilterId',
+                                            _selectedListSort.toString());
                                         Get.to(ProductsPage(
                                           cats: Cats(id: 0, name: ''),
+                                          shopId: state
+                                              .tapeModel[index].shop!.id
+                                              .toString(),
                                         ));
-                                        GetStorage().write('shopFilterId', 1);
                                       }),
                                       child: Row(
                                         children: [
@@ -363,7 +364,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                             child: Image.network(
-                                              'http://80.87.202.73:8001/storage/${state.tapeModel[index].shop!.image}',
+                                              'http://185.116.193.73/storage/${state.tapeModel[index].shop!.image}',
                                               height: 30.6,
                                               width: 30.6,
                                             ),
@@ -396,7 +397,10 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            Get.to(() => ChatPage());
+                                            // Get.off(ChatPage);
+                                            GetStorage()
+                                                .write('video_stop', true);
+                                            Get.to(() => new ChatPage());
                                             // Get.to(ProductsPage(
                                             //   cats: Cats(id: 0, name: ''),
                                             // ));
@@ -404,16 +408,19 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             //     .write('shopFilterId', 1);
                                           },
                                           child: Container(
+                                            height: 30,
+                                            width: 108,
                                             decoration: BoxDecoration(
                                                 border: Border.all(
                                                     color: Colors.white),
                                                 borderRadius:
                                                     BorderRadius.circular(8)),
-                                            padding: const EdgeInsets.only(
-                                                left: 8,
-                                                right: 8,
-                                                top: 4,
-                                                bottom: 4),
+                                            // padding: const EdgeInsets.only(
+                                            //     left: 8,
+                                            //     right: 8,
+                                            //     top: 4,
+                                            //     bottom: 4),
+                                            alignment: Alignment.center,
                                             child: const Text(
                                               'Написать',
                                               style: TextStyle(
@@ -540,7 +547,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             bottom: 4,
                                           ),
                                           child: Text(
-                                            '${((state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt()).toInt() / 3).toInt()}',
+                                            '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt()).toInt() ~/ 3}',
                                             style: const TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 12,
@@ -593,7 +600,7 @@ class _VideosState extends State<Videos> {
   @override
   void initState() {
     _controller = VideoPlayerController.network(
-        'http://80.87.202.73:8001/storage/${widget.tape.video}')
+        'http://185.116.193.73/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.play();
         setState(() {});
@@ -604,12 +611,21 @@ class _VideosState extends State<Videos> {
 
       setState(() {});
     });
+
+    GetStorage().listenKey('video_stop', (value) {
+      if (value == true) {
+        _controller!.pause();
+      }
+    });
     super.initState();
   }
 
   @override
   void dispose() {
+    _controller!.pause();
+
     _controller!.dispose();
+
     super.dispose();
   }
 
@@ -630,8 +646,14 @@ class _VideosState extends State<Videos> {
                     child: Stack(
                       children: [
                         VideoPlayer(_controller!),
-                        VideoProgressIndicator(_controller!,
-                            allowScrubbing: true),
+                        Container(
+                          alignment: Alignment.bottomCenter,
+                          padding: EdgeInsets.only(
+                              bottom:
+                                  MediaQuery.of(context).size.height * 0.11),
+                          child: VideoProgressIndicator(_controller!,
+                              allowScrubbing: true),
+                        ),
                         icon
                             ? Center(
                                 child: SvgPicture.asset(
@@ -641,7 +663,8 @@ class _VideosState extends State<Videos> {
                             : Container(),
                       ],
                     ))))
-        : const CircularProgressIndicator(color: Colors.indigoAccent);
+        : const Center(
+            child: CircularProgressIndicator(color: Colors.blueAccent));
   }
 }
 
@@ -676,7 +699,8 @@ class _inSubsState extends State<inSubs> {
             widget.index,
             !inSub!,
             widget.tape.inBasket,
-            widget.tape.inFavorite);
+            widget.tape.inFavorite,
+            widget.tape.inReport);
 
         setState(() {
           inSub = !inSub!;
@@ -723,7 +747,8 @@ class _inFavoritesState extends State<inFavorites> {
             widget.index,
             widget.tape.inSubscribe,
             widget.tape.inBasket,
-            !inFavorite!);
+            !inFavorite!,
+            widget.tape.inReport);
 
         inFavorite = !inFavorite!;
 
@@ -733,6 +758,7 @@ class _inFavoritesState extends State<inFavorites> {
         inFavorite == true
             ? 'assets/icons/heart_fill.svg'
             : 'assets/icons/heart_outline.svg',
+        height: 30,
         color: inFavorite == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
       ),
     );
@@ -768,12 +794,12 @@ class _inBasketsState extends State<inBaskets> {
                 .basketMinus(widget.tape.id.toString(), '1');
 
         BlocProvider.of<tapeCubit.TapeCubit>(context).update(
-          widget.tape,
-          widget.index,
-          widget.tape.inSubscribe,
-          !inBasket!,
-          widget.tape.inFavorite,
-        );
+            widget.tape,
+            widget.index,
+            widget.tape.inSubscribe,
+            !inBasket!,
+            widget.tape.inFavorite,
+            widget.tape.inReport);
         setState(() {
           inBasket = !inBasket!;
         });
@@ -782,8 +808,148 @@ class _inBasketsState extends State<inBaskets> {
         inBasket != true
             ? 'assets/icons/shop_cart.svg'
             : 'assets/icons/shop_cart_white.svg',
+        height: 30,
         //  color: inBasket == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
       ),
     );
   }
+}
+
+class inReport extends StatefulWidget {
+  final TapeModel tape;
+  final int index;
+  const inReport({required this.tape, required this.index, super.key});
+
+  @override
+  State<inReport> createState() => _inReportState();
+}
+
+class _inReportState extends State<inReport> {
+  bool? inReport;
+
+  @override
+  void initState() {
+    inReport = widget.tape.inBasket;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        // inReport == false
+        //     ? BlocProvider.of<basCubit.BasketCubit>(context)
+        //         .basketAdd(widget.tape.id.toString(), '1')
+        //     : BlocProvider.of<basCubit.BasketCubit>(context)
+        //         .basketMinus(widget.tape.id.toString(), '1');
+
+        showAlertTapeWidget(context);
+
+        BlocProvider.of<tapeCubit.TapeCubit>(context).update(
+          widget.tape,
+          widget.index,
+          widget.tape.inSubscribe,
+          widget.tape.inBasket,
+          widget.tape.inFavorite,
+          !inReport!,
+        );
+        setState(() {
+          inReport = !inReport!;
+        });
+      },
+      child: SvgPicture.asset(
+        'assets/icons/report.svg',
+        color: inReport != true ? AppColors.kPrimaryColor : null,
+        height: 30,
+        //  color: inBasket == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
+      ),
+    );
+  }
+}
+
+Future<dynamic> showAlertTapeWidget(BuildContext context) async {
+  return showCupertinoModalPopup(
+    context: context,
+    builder: (BuildContext context) => CupertinoActionSheet(
+      actions: <Widget>[
+        CupertinoActionSheetAction(
+          child: const Text(
+            'Жестокое обращение с детьми',
+            style: TextStyle(color: Colors.black),
+          ),
+          onPressed: () {
+            Navigator.pop(context, 'Two');
+            Get.snackbar('Report Success', "Жестокое обращение с детьми",
+                backgroundColor: AppColors.kPrimaryColor);
+          },
+        ),
+        CupertinoActionSheetAction(
+          child: const Text(
+            'Спам',
+            style: TextStyle(color: Colors.black),
+          ),
+          onPressed: () {
+            Navigator.pop(context, 'Two');
+            Get.snackbar('Report Success', "Спам",
+                backgroundColor: AppColors.kPrimaryColor);
+          },
+        ),
+        CupertinoActionSheetAction(
+          child: const Text(
+            'Вредные или опасные действия',
+            style: TextStyle(color: Colors.black),
+          ),
+          onPressed: () {
+            Navigator.pop(context, 'Two');
+            Get.snackbar('Report Success', "Вредные или опасные действия",
+                backgroundColor: AppColors.kPrimaryColor);
+          },
+        ),
+        CupertinoActionSheetAction(
+          child: const Text(
+            'Жестокое или отталкивающее содержание',
+            style: TextStyle(color: Colors.black),
+          ),
+          onPressed: () {
+            Navigator.pop(context, 'Two');
+            Get.snackbar(
+                'Report Success', "Жестокое или отталкивающее содержание",
+                backgroundColor: AppColors.kPrimaryColor);
+          },
+        ),
+        CupertinoActionSheetAction(
+          child: const Text(
+            'Дискриминационные высказывание и оскорбления',
+            style: TextStyle(color: Colors.black),
+          ),
+          onPressed: () {
+            Navigator.pop(context, 'Two');
+            Get.snackbar('Report Success',
+                "Дискриминационные высказывание и оскорбления",
+                backgroundColor: AppColors.kPrimaryColor);
+          },
+        ),
+        // CupertinoActionSheetAction(
+        //   child: const Text(
+        //     'Пожаловаться',
+        //     style: TextStyle(color: Colors.red),
+        //   ),
+        //   onPressed: () {
+        //     Navigator.pop(context, 'Two');
+        //   },
+        // ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: const Text(
+          'Отмена',
+          style: TextStyle(
+            color: AppColors.kPrimaryColor,
+          ),
+        ),
+        onPressed: () {
+          Navigator.pop(context, 'Cancel');
+        },
+      ),
+    ),
+  );
 }

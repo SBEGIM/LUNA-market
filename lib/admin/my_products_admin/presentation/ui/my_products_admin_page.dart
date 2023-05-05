@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:haji_market/admin/my_products_admin/data/models/menu_items_data.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/ui/banner_watch_recently_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/category_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/show_alert_statictics_widget.dart';
@@ -27,7 +26,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool _visible = false;
+    bool visible = false;
 
     TextEditingController nameController = TextEditingController();
 
@@ -63,7 +62,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => CategoryAdminPage()),
+                                builder: (context) => const CategoryAdminPage()),
                           );
                         }
                       },
@@ -153,7 +152,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                   return Center(
                     child: Text(
                       state.message,
-                      style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                      style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                     ),
                   );
                 }

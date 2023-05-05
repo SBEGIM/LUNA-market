@@ -5,11 +5,10 @@ import 'package:haji_market/admin/auth/data/bloc/login_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/bloc/login_admin_state.dart';
 import 'package:haji_market/admin/auth/presentation/ui/register_shop_page.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 
 class LoginAdminPage extends StatefulWidget {
-  LoginAdminPage({Key? key}) : super(key: key);
+  const LoginAdminPage({Key? key}) : super(key: key);
 
   @override
   State<LoginAdminPage> createState() => _LoginAdminPageState();
@@ -125,7 +124,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
                               ),
                             ),
                             onChanged: (value) {
-                              passwordController.text.length == 0
+                              passwordController.text.isEmpty
                                   ? __visibleIconView = false
                                   : __visibleIconView = true;
                               if (passwordController.text.isNotEmpty) {
@@ -205,7 +204,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
             return Center(
               child: Text(
                 state.message,
-                style: TextStyle(color: Colors.redAccent),
+                style: const TextStyle(color: Colors.redAccent),
               ),
             );
           } else {

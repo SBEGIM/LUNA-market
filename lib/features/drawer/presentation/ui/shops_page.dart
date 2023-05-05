@@ -4,14 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
-import 'package:haji_market/features/drawer/presentation/widgets/under_catalog_page.dart';
 import 'package:haji_market/features/home/data/model/Cats.dart';
 
 import '../../../home/data/bloc/popular_shops_cubit.dart';
 import '../../../home/data/bloc/popular_shops_state.dart';
 
 class ShopsPage extends StatefulWidget {
-  ShopsPage({Key? key}) : super(key: key);
+  const ShopsPage({Key? key}) : super(key: key);
 
   @override
   State<ShopsPage> createState() => _ShopsPageState();
@@ -66,7 +65,7 @@ class _ShopsPageState extends State<ShopsPage> {
                 ),
                 border: InputBorder.none,
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
               )),
         ),
@@ -78,7 +77,7 @@ class _ShopsPageState extends State<ShopsPage> {
               return Center(
                 child: Text(
                   state.message,
-                  style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                 ),
               );
             }
@@ -115,7 +114,7 @@ class _ShopsPageState extends State<ShopsPage> {
                           credit: state.popularShops[index].credit!,
                           bonus: '${state.popularShops[index].bonus}',
                           url:
-                              "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
+                              "http://185.116.193.73/storage/${state.popularShops[index].image!}",
                         ),
                       );
                     }),
@@ -170,7 +169,7 @@ class ShopsListTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0xffF9F9F),
+        color: const Color(0x0f9f9f9),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,7 +231,7 @@ class ShopsListTile extends StatelessWidget {
                 ),
                 margin: const EdgeInsets.only(top: 105, left: 4),
                 alignment: Alignment.center,
-                child: Text(
+                child: const Text(
                   "10% Б",
                   style: AppTextStyles.bannerTextStyle,
                   textAlign: TextAlign.center,

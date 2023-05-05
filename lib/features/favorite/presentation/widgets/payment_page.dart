@@ -3,7 +3,7 @@ import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/favorite/presentation/widgets/installMentWidget.dart';
 
 class PaymentPage extends StatefulWidget {
-  PaymentPage({Key? key}) : super(key: key);
+  const PaymentPage({Key? key}) : super(key: key);
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -174,7 +174,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         ),
                         const Text(
                           '1 278 987 ₸ ',
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: AppColors.kPrimaryColor,
                               fontSize: 16,
                               fontWeight: FontWeight.w400),

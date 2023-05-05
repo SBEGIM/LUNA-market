@@ -3,17 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
-import 'package:haji_market/features/home/presentation/ui/home_page.dart';
 
+import '../../../../contract_of_sale.dart';
 import '../../../../core/common/constants.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
 import '../../../app/presentaion/base.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart';
 import '../../../drawer/data/bloc/basket_state.dart';
-import '../../data/DTO/basketOrderDto.dart';
+import '../../../drawer/presentation/widgets/credit_info_detail_page.dart';
+import '../widgets/payment_webview_widget.dart';
+import 'basket_order_address_page.dart';
 
 class BasketOrderPage extends StatefulWidget {
-  BasketOrderPage({Key? key}) : super(key: key);
+  const BasketOrderPage({Key? key}) : super(key: key);
 
   @override
   _BasketOrderPageState createState() => _BasketOrderPageState();
@@ -22,7 +24,11 @@ class BasketOrderPage extends StatefulWidget {
 class _BasketOrderPageState extends State<BasketOrderPage> {
   bool isCheckedKaspi = false;
   bool isCheckedBS = false;
+  bool isCheckedTinkoff = false;
+  bool isCheckedPart = false;
+  bool isCheckedHalal = false;
   bool isCheckedCredit = false;
+  bool isCheckedPolitic = false;
   bool isCredit = false;
   int? selectedIndex = 0;
   int? selectedIndex2 = 0;
@@ -30,8 +36,8 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
   List textInst = [
     '3 мес',
     '6 мес',
+    '9 мес',
     '12 мес',
-    '24 мес',
   ];
 
   int price = 0;
@@ -55,12 +61,12 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
   }
 
   Future<void> basket(List<BasketShowModel>? basketShowModel) async {
-    basketShowModel!.forEach((element) {
+    for (var element in basketShowModel!) {
       id.add(element.basketId!.toInt());
       count += element.basketCount!.toInt();
       price += element.price!.toInt();
       courier += element.priceCourier!.toInt();
-    });
+    }
   }
 
   Future<void> basketData() async {
@@ -115,471 +121,638 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
           return Center(
             child: Text(
               state.message,
-              style: TextStyle(fontSize: 20.0, color: Colors.grey),
+              style: const TextStyle(fontSize: 20.0, color: Colors.grey),
             ),
           );
         }
 
         if (state is LoadedState) {
-          return Column(
-            children: [
-              const SizedBox(height: 12),
-              Container(
-                  //margin: const EdgeInsets.only(top: 12),
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  height: 73,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Товары',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            '${count} товара',
-                            style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400),
-                          )
-                        ],
-                      ),
-                      Text(
-                        "${price} ₸",
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  )),
-              const SizedBox(
-                height: 1,
-              ),
-              Container(
-                  padding: const EdgeInsets.only(left: 16),
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  height: 55,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Доставка',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: Text(
-                          '${courier} ₸',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      )
-                    ],
-                  )),
-              const SizedBox(
-                height: 1,
-              ),
-              Container(
-                  padding: const EdgeInsets.only(left: 16),
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  height: 60,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Сумма покупки',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: Text(
-                          ' ${courier + price} ₸',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
-              const SizedBox(
-                height: 1,
-              ),
-              Container(
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  height: 55,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Checkbox(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4)),
-                            checkColor: Colors.white,
-                            activeColor: AppColors.kPrimaryColor,
-                            value: isCheckedBS,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isCheckedBS = value!;
-                                value == true ? price += 5000 : price -= 5000;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Безопасная сделка',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: const Text(
-                          '5000 ₸',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
-              const SizedBox(height: 1),
-              Container(
-                  padding: const EdgeInsets.only(left: 5),
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  height: 73,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        child: Row(
+          return ListView(children: [
+            Column(
+              children: [
+                const SizedBox(height: 12),
+                Container(
+                    //margin: const EdgeInsets.only(top: 12),
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    height: 73,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              // padding: EdgeInsets.only(bottom: 18),
-                              alignment: Alignment.center,
-                              child: Switch(
-                                onChanged: toggleSwitch,
-                                value: isSwitched,
-                                activeColor: AppColors.kPrimaryColor,
-                                activeTrackColor: AppColors.kPrimaryColor,
-                                inactiveThumbColor:
-                                    const Color.fromRGBO(245, 245, 245, 1),
-                                inactiveTrackColor:
-                                    const Color.fromRGBO(237, 237, 237, 1),
+                            const Text(
+                              'Товары',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text(
-                                  '300 Бонусов',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                Text(
-                                  'Накоплено',
-                                  style: TextStyle(
-                                    color: AppColors.steelGray,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
+                            const SizedBox(height: 6),
+                            Text(
+                              '$count товара',
+                              style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400),
                             )
                           ],
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.only(right: 16),
-                        child: const Text(
-                          'Потратить',
+                        Text(
+                          "$price ₸",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    )),
+                const SizedBox(
+                  height: 1,
+                ),
+                Container(
+                    padding: const EdgeInsets.only(left: 16),
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Доставка',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: Text(
+                            '$courier ₸',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        )
+                      ],
+                    )),
+                const SizedBox(
+                  height: 1,
+                ),
+                Container(
+                    padding: const EdgeInsets.only(left: 16),
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Сумма покупки',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: Text(
+                            ' ${courier + price} ₸',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+                const SizedBox(
+                  height: 1,
+                ),
+                Container(
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4)),
+                              checkColor: Colors.white,
+                              activeColor: AppColors.kPrimaryColor,
+                              value: isCheckedBS,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isCheckedBS = value!;
+                                  value == true ? price += 5000 : price -= 5000;
+                                });
+                              },
+                            ),
+                            const Text(
+                              'Безопасная сделка',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: const Text(
+                            '5000 ₸',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+                const SizedBox(height: 1),
+                Container(
+                    padding: const EdgeInsets.only(left: 5),
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    height: 73,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          child: Row(
+                            children: [
+                              Container(
+                                // padding: EdgeInsets.only(bottom: 18),
+                                alignment: Alignment.center,
+                                child: Switch(
+                                  onChanged: toggleSwitch,
+                                  value: isSwitched,
+                                  activeColor: AppColors.kPrimaryColor,
+                                  activeTrackColor: AppColors.kPrimaryColor,
+                                  inactiveThumbColor:
+                                      const Color.fromRGBO(245, 245, 245, 1),
+                                  inactiveTrackColor:
+                                      const Color.fromRGBO(237, 237, 237, 1),
+                                ),
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text(
+                                    '300 Бонусов',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Накоплено',
+                                    style: TextStyle(
+                                      color: AppColors.steelGray,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.only(right: 16),
+                          child: const Text(
+                            'Потратить',
+                            style: TextStyle(
+                              color: AppColors.kPrimaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+                const SizedBox(
+                  height: 8,
+                ),
+                Container(
+                    padding: const EdgeInsets.only(left: 16),
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'К оплате',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: Text(
+                            ' ${isSwitched == true ? (courier + price - bonus) : (courier + price)} ₸',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+                const SizedBox(
+                  height: 1,
+                ),
+                Container(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text(
+                          'Способы оплаты',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          'Добавить новую карту',
                           style: TextStyle(
                             color: AppColors.kPrimaryColor,
                             fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
-                      ),
-                    ],
-                  )),
-              const SizedBox(
-                height: 8,
-              ),
-              Container(
-                  padding: const EdgeInsets.only(left: 16),
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  height: 55,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'К оплате',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: Text(
-                          ' ${isSwitched == true ? (courier + price - bonus) : (courier + price)} ₸',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
-              const SizedBox(
-                height: 1,
-              ),
-              Container(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  height: 55,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Способы оплаты',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Text(
-                        'Добавить новую карту',
-                        style: TextStyle(
-                          color: AppColors.kPrimaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  )),
-              // const SizedBox(
-              //   height: 1,
-              // ),
-              // Container(
-              //     padding: const EdgeInsets.only(left: 16, top: 16),
-              //     alignment: Alignment.topLeft,
-              //     color: Colors.white,
-              //     height: 60,
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //         Container(
-              //             child: Row(
-              //           children: [
-              //             Checkbox(
-              //               shape: RoundedRectangleBorder(
-              //                   borderRadius: BorderRadius.circular(4)),
-              //               checkColor: Colors.white,
-              //               activeColor: AppColors.kPrimaryColor,
-              //               value: isCheckedKaspi,
-              //               onChanged: (bool? value) {
-              //                 setState(() {
-              //                   isCheckedKaspi = value!;
-              //                 });
-              //               },
-              //             ),
-              //             const Text(
-              //               'Kaspi Gold',
-              //               style: TextStyle(
-              //                 fontSize: 16,
-              //                 fontWeight: FontWeight.w400,
-              //               ),
-              //             ),
-              //           ],
-              //         )),
-              //         Container(
-              //           padding: const EdgeInsets.only(right: 16),
-              //           child: Text(
-              //             ' ${isSwitched == true ? (courier + price - bonus) : (courier + price)} ₸',
-              //             style: const TextStyle(
-              //               fontSize: 16,
-              //               fontWeight: FontWeight.w500,
-              //             ),
-              //           ),
-              //         ),
-              //       ],
-              //     )),
-              const SizedBox(
-                height: 1,
-              ),
-              Container(
-                  // padding: const EdgeInsets.only(left: 16),
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  height: 45,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Checkbox(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4)),
-                            checkColor: Colors.white,
-                            activeColor: AppColors.kPrimaryColor,
-                            value: isCheckedCredit,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isCheckedCredit = value!;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'В рассрочку',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
+                      ],
+                    )),
+                // const SizedBox(
+                //   height: 1,
+                // ),
+                // Container(
+                //     padding: const EdgeInsets.only(left: 16, top: 16),
+                //     alignment: Alignment.topLeft,
+                //     color: Colors.white,
+                //     height: 60,
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //         Container(
+                //             child: Row(
+                //           children: [
+                //             Checkbox(
+                //               shape: RoundedRectangleBorder(
+                //                   borderRadius: BorderRadius.circular(4)),
+                //               checkColor: Colors.white,
+                //               activeColor: AppColors.kPrimaryColor,
+                //               value: isCheckedKaspi,
+                //               onChanged: (bool? value) {
+                //                 setState(() {
+                //                   isCheckedKaspi = value!;
+                //                 });
+                //               },
+                //             ),
+                //             const Text(
+                //               'Kaspi Gold',
+                //               style: TextStyle(
+                //                 fontSize: 16,
+                //                 fontWeight: FontWeight.w400,
+                //               ),
+                //             ),
+                //           ],
+                //         )),
+                //         Container(
+                //           padding: const EdgeInsets.only(right: 16),
+                //           child: Text(
+                //             ' ${isSwitched == true ? (courier + price - bonus) : (courier + price)} ₸',
+                //             style: const TextStyle(
+                //               fontSize: 16,
+                //               fontWeight: FontWeight.w500,
+                //             ),
+                //           ),
+                //         ),
+                //       ],
+                //     )),
+                const SizedBox(
+                  height: 1,
+                ),
+                // Container(
+                //     // padding: const EdgeInsets.only(left: 16),
+                //     alignment: Alignment.center,
+                //     color: Colors.white,
+                //     height: 45,
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //         Row(
+                //           children: [
+                //             Checkbox(
+                //               shape: RoundedRectangleBorder(
+                //                   borderRadius: BorderRadius.circular(4)),
+                //               checkColor: Colors.white,
+                //               activeColor: AppColors.kPrimaryColor,
+                //               value: isCheckedCredit,
+                //               onChanged: (bool? value) {
+                //                 setState(() {
+                //                   isCheckedCredit = value!;
+                //                 });
+                //               },
+                //             ),
+                //             const Text(
+                //               'В рассрочку',
+                //               style: TextStyle(
+                //                 fontSize: 16,
+                //                 fontWeight: FontWeight.w400,
+                //               ),
+                //             ),
+                //           ],
+                //         )
+                //       ],
+                //     )),
+                // Container(
+                //   padding: const EdgeInsets.only(left: 44, top: 14),
+                //   alignment: Alignment.topLeft,
+                //   color: Colors.white,
+                //   height: 45,
+                //   child: SizedBox(
+                //     width: MediaQuery.of(context).size.width * 0.595, // 229,
+                //     height: 32,
+                //     child: ListView.builder(
+                //       itemCount: textInst.length,
+                //       shrinkWrap: true,
+                //       physics: const NeverScrollableScrollPhysics(),
+                //       scrollDirection: Axis.horizontal,
+                //       itemBuilder: (context, index) {
+                //         return InkWell(
+                //           onTap: () {
+                //             setState(() {
+                //               if (index == 0) {
+                //                 setState(() {
+                //                   creditMonth = 3;
+                //                 });
+                //               }
+                //               if (index == 1) {
+                //                 setState(() {
+                //                   creditMonth = 6;
+                //                 });
+                //               }
+                //               if (index == 2) {
+                //                 setState(() {
+                //                   creditMonth = 12;
+                //                 });
+                //               }
+                //               if (index == 3) {
+                //                 setState(() {
+                //                   creditMonth = 24;
+                //                 });
+                //               }
+                //               selectedIndex2 = index;
+                //             });
+                //           },
+                //           child: Container(
+                //             // margin: EdgeInsets.only(right: 2),
+                //             width: 58,
+                //             alignment: Alignment.center,
+                //             decoration: BoxDecoration(
+                //               color: selectedIndex2 == index
+                //                   ? AppColors.kPrimaryColor
+                //                   : Colors.white,
+                //               border: Border.all(
+                //                 color: AppColors.kPrimaryColor,
+                //                 width: 0.4,
+                //               ),
+                //               borderRadius: BorderRadius.circular(0),
+                //             ),
+                //             // padding: const EdgeInsets.only(
+                //             //   top: 8,
+                //             //   bottom: 8,
+                //             // ),
+                //             child: Text(
+                //               textInst[index],
+                //               textAlign: TextAlign.center,
+                //               style: TextStyle(
+                //                   color: selectedIndex2 == index
+                //                       ? Colors.white
+                //                       : AppColors.kGray900,
+                //                   fontSize: 14,
+                //                   fontWeight: FontWeight.w400),
+                //             ),
+                //           ),
+                //         );
+                //       },
+                //     ),
+                //   ),
+                // ),
+                // Container(
+                //     padding: const EdgeInsets.only(left: 44, top: 14),
+                //     alignment: Alignment.topLeft,
+                //     color: Colors.white,
+                //     child: Row(
+                //       children: [
+                //         const Text('Платеж в месяц: '),
+                //         Container(
+                //           height: 28,
+                //           decoration: BoxDecoration(
+                //             color: AppColors.kYellowLight,
+                //             borderRadius: BorderRadius.circular(3),
+                //           ),
+                //           alignment: Alignment.center,
+                //           child: Text(
+                //             ' ${isSwitched == true ? ((courier + price - bonus) / (isCheckedCredit == true ? creditMonth : 1)).toInt() : ((courier + price) / (isCheckedCredit == true ? creditMonth : 1)).toInt()}',
+                //             style: const TextStyle(
+                //               fontSize: 14,
+                //               fontWeight: FontWeight.w500,
+                //             ),
+                //           ),
+                //         ),
+                //       ],
+                //     )),
+                // Container(
+                //   color: Colors.white,
+                //   height: 10,
+                // ),
+                //const SizedBox(height: 1),
+                Container(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/icons/tinkoff2.png',
+                              height: 34,
+                              width: 34,
                             ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Рассрочка Тинькофф',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Checkbox(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4)),
+                          checkColor: Colors.white,
+                          activeColor: AppColors.kPrimaryColor,
+                          value: isCheckedTinkoff,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isCheckedTinkoff = value!;
+                              isCheckedPart = false;
+                              isCheckedHalal = false;
+                            });
+                          },
+                        ),
+                      ],
+                    )),
+                const SizedBox(height: 1),
+
+                Container(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/icons/part.png',
+                              height: 34,
+                              width: 34,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Долями',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Checkbox(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4)),
+                          checkColor: Colors.white,
+                          activeColor: AppColors.kPrimaryColor,
+                          value: isCheckedPart,
+                          onChanged: (bool? value) {
+                            Get.snackbar('Нет доступа',
+                                'данная оплата пока недоступно...',
+                                backgroundColor: Colors.orangeAccent);
+
+                            // setState(() {
+                            //   isCheckedTinkoff = false;
+                            //   isCheckedPart = value!;
+                            //   isCheckedHalal = false;
+                            // });
+                          },
+                        ),
+                      ],
+                    )),
+                const SizedBox(height: 1),
+                Container(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/appIcon.png',
+                              height: 34,
+                              width: 34,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Рассрочка Halal',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Checkbox(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4)),
+                          checkColor: Colors.white,
+                          activeColor: AppColors.kPrimaryColor,
+                          value: isCheckedHalal,
+                          onChanged: (bool? value) {
+                            // Get.snackbar('Нет доступа',
+                            //     'данная оплата пока недоступно...',
+                            //     backgroundColor: Colors.orangeAccent);
+
+                            setState(() {
+                              isCheckedTinkoff = false;
+                              isCheckedPart = false;
+                              isCheckedHalal = value!;
+                            });
+                          },
+                        ),
+                      ],
+                    )),
+
+                const SizedBox(height: 1),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(const ContractOfSale());
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 8, left: 16),
+                    alignment: Alignment.centerLeft,
+                    child: RichText(
+                      textAlign: TextAlign.left,
+                      text: const TextSpan(
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text:
+                                "Нажимая «Оформить заказ», вы принимаете\nусловия ",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w400),
+                          ),
+                          TextSpan(
+                            text: "Типового договора купли-продажи\n",
+                            style: TextStyle(
+                                fontSize: 16, color: AppColors.kPrimaryColor),
                           ),
                         ],
-                      )
-                    ],
-                  )),
-              Container(
-                padding: const EdgeInsets.only(left: 44, top: 14),
-                alignment: Alignment.topLeft,
-                color: Colors.white,
-                height: 45,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.595, // 229,
-                  height: 32,
-                  child: ListView.builder(
-                    itemCount: textInst.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          setState(() {
-                            if (index == 0) {
-                              setState(() {
-                                creditMonth = 3;
-                              });
-                            }
-                            if (index == 1) {
-                              setState(() {
-                                creditMonth = 6;
-                              });
-                            }
-                            if (index == 2) {
-                              setState(() {
-                                creditMonth = 12;
-                              });
-                            }
-                            if (index == 3) {
-                              setState(() {
-                                creditMonth = 24;
-                              });
-                            }
-                            selectedIndex2 = index;
-                          });
-                        },
-                        child: Container(
-                          // margin: EdgeInsets.only(right: 2),
-                          width: 58,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: selectedIndex2 == index
-                                ? AppColors.kPrimaryColor
-                                : Colors.white,
-                            border: Border.all(
-                              color: AppColors.kPrimaryColor,
-                              width: 0.4,
-                            ),
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                          // padding: const EdgeInsets.only(
-                          //   top: 8,
-                          //   bottom: 8,
-                          // ),
-                          child: Text(
-                            textInst[index],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: selectedIndex2 == index
-                                    ? Colors.white
-                                    : AppColors.kGray900,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      );
-                    },
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                  padding: const EdgeInsets.only(left: 44, top: 14),
-                  alignment: Alignment.topLeft,
-                  color: Colors.white,
-                  child: Row(
-                    children: [
-                      const Text('Платеж в месяц: '),
-                      Container(
-                        height: 28,
-                        decoration: BoxDecoration(
-                          color: AppColors.kYellowLight,
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          ' ${isSwitched == true ? (courier + price - bonus) / (isCheckedCredit == true ? creditMonth : 1) : (courier + price) / (isCheckedCredit == true ? creditMonth : 1)}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
-              Container(
-                color: Colors.white,
-                height: 10,
-              ),
-              const SizedBox(
-                height: 57,
-              ),
-            ],
-          );
+                const SizedBox(
+                  height: 57,
+                ),
+              ],
+            ),
+          ]);
         } else {
           return const Center(
               child: CircularProgressIndicator(color: Colors.indigoAccent));
@@ -590,8 +763,17 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
         padding:
             const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
         child: InkWell(
-          onTap: () {
-            BlocProvider.of<BasketCubit>(context).basketOrder(id);
+          onTap: () async {
+            if (isCheckedHalal == true) {
+              Get.to(CreditInfoDetailPage(
+                title: 'Рассрочка Halal',
+              ));
+            } else {
+              final data =
+                  await BlocProvider.of<BasketCubit>(context).payment();
+              Get.to(() => PaymentWebviewWigdet(url: data!));
+            }
+
             // Navigator.pop(context);
           },
           child: Container(

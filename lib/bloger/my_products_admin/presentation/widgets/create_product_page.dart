@@ -1,28 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/product_admin_cubit.dart';
-import 'package:haji_market/admin/my_products_admin/data/bloc/product_admin_state.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/brands_admin_page.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/colors_admin_page.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caats_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../../admin/admin_app/presentation/base_admin.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/home/data/model/Cats.dart';
-import '../../../admin_app/presentation/base_blogger.dart';
-import '../../../coop_request/presentation/ui/coop_request_page.dart';
-import '../../data/bloc/blogger_shop_products_cubit.dart';
-import '../../data/bloc/blogger_shop_products_state.dart';
-import 'category_admin_page.dart';
-import 'cats_admin_page.dart';
 
 class CreateProductPage extends StatefulWidget {
   final Cats cat;
   final Cats subCat;
-  CreateProductPage({required this.cat, required this.subCat, Key? key})
+  const CreateProductPage({required this.cat, required this.subCat, Key? key})
       : super(key: key);
 
   @override
@@ -94,17 +82,19 @@ class _CreateProductPageState extends State<CreateProductPage> {
           child: InkWell(
             onTap: () async {
               await BlocProvider.of<ProductAdminCubit>(context).store(
-                  priceController.text,
-                  countController.text,
-                  compoundController.text,
-                  cats!.id.toString(),
-                  brands!.id.toString(),
-                  descriptionController.text,
-                  nameController.text,
-                  heightController.text,
-                  widthController.text,
-                  massaController.text,
-                  articulController.text);
+                priceController.text,
+                countController.text,
+                compoundController.text,
+                cats!.id.toString(),
+                brands!.id.toString(),
+                descriptionController.text,
+                nameController.text,
+                heightController.text,
+                widthController.text,
+                massaController.text,
+                articulController.text,
+                'currency',
+              );
             },
             child: Container(
                 decoration: BoxDecoration(

@@ -2,13 +2,16 @@ class BasketAdminOrderModel {
   BasketAdminOrderModel({
     int? id,
     List<Product>? product,
+    User? user,
     int? summa,
     String? status,
     String? date,
+    String? comment,
     String? returnDate,
   }) {
     _id = id;
     _product = product;
+    _user = user!;
     _summa = summa;
     _status = status;
     _date = date;
@@ -23,23 +26,29 @@ class BasketAdminOrderModel {
         _product?.add(Product.fromJson(v));
       });
     }
+    _user = json['user'] != null ? User.fromJson(json['user']) : null;
     _summa = json['summa'];
     _status = json['status'];
     _date = json['date'];
+    _comment = json['comment'];
     _returnDate = json['return_date'];
   }
   int? _id;
   List<Product>? _product;
+  User? _user;
   int? _summa;
   String? _status;
   String? _date;
+  String? _comment;
   String? _returnDate;
 
   int? get id => _id;
   List<Product>? get product => _product;
+  User? get user => _user;
   int? get summa => _summa;
   String? get status => _status;
   String? get date => _date;
+  String? get comment => _comment;
   String? get returnDate => _returnDate;
 
   Map<String, dynamic> toJson() {
@@ -48,9 +57,13 @@ class BasketAdminOrderModel {
     if (_product != null) {
       map['product'] = _product?.map((v) => v.toJson()).toList();
     }
+    if (_user != null) {
+      map['user'] = _user?.toJson();
+    }
     map['summa'] = _summa;
     map['status'] = _status;
     map['date'] = _date;
+    map['comment'] = _comment;
     map['return_date'] = _returnDate;
     return map;
   }
@@ -133,6 +146,82 @@ class Product {
     map['status'] = _status;
     map['address'] = _address;
     map['shop_schedule'] = _shopSchedule;
+    return map;
+  }
+}
+
+class User {
+  User({
+    int? id,
+    String? name,
+    int? phone,
+    String? avatar,
+    String? city,
+    String? street,
+    String? home,
+    String? porch,
+    String? floor,
+    String? room,
+  }) {
+    _id = id;
+    _name = name;
+    _phone = phone;
+    _avatar = avatar;
+    _city = city;
+    _street = street;
+    _home = home;
+    _porch = porch;
+    _floor = floor;
+    _room = room;
+  }
+
+  User.fromJson(dynamic json) {
+    _id = json['id'];
+    _name = json['name'];
+    _phone = json['phone'];
+    _avatar = json['avatar'];
+    _city = json['city'];
+    _street = json['street'];
+    _home = json['home'];
+    _porch = json['porch'];
+    _floor = json['floor'];
+    _room = json['room'];
+  }
+  int? _id;
+  String? _name;
+  int? _phone;
+  String? _avatar;
+  String? _city;
+  String? _street;
+  String? _home;
+  String? _porch;
+  String? _floor;
+  String? _room;
+
+  int? get id => _id;
+  String? get name => _name;
+  int? get phone => _phone;
+  String? get avatar => _avatar;
+  String? get city => _city;
+  String? get street => _street;
+  String? get home => _home;
+  String? get porch => _porch;
+  String? get floor => _floor;
+  String? get room => _room;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['name'] = _name;
+    map['phone'] = _phone;
+    map['avatar'] = avatar;
+    map['city'] = city;
+    map['street'] = street;
+    map['home'] = _home;
+    map['porch'] = _porch;
+    map['floor'] = _floor;
+    map['room'] = _room;
+
     return map;
   }
 }

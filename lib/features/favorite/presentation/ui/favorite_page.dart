@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/data/bloc/favorite_cubit.dart';
-import 'package:haji_market/features/favorite/presentation/widgets/delivery_page.dart';
 import '../../../drawer/data/bloc/favorite_state.dart';
 import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
-import '../../../drawer/presentation/widgets/products_card_widget.dart';
 import 'favorite_products.dart';
 
 class FavoritePage extends StatefulWidget {
-  FavoritePage({Key? key}) : super(key: key);
+  const FavoritePage({Key? key}) : super(key: key);
 
   @override
   State<FavoritePage> createState() => _FavoritePageState();
@@ -51,7 +49,7 @@ class _FavoritePageState extends State<FavoritePage> {
                 return Center(
                   child: Text(
                     state.message,
-                    style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                   ),
                 );
               }
@@ -59,6 +57,34 @@ class _FavoritePageState extends State<FavoritePage> {
                 return const Center(
                     child:
                         CircularProgressIndicator(color: Colors.indigoAccent));
+              }
+              if (state is NoDataState) {
+                return Container(
+                  width: MediaQuery.of(context).size.height,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Container(
+                          margin: EdgeInsets.only(top: 146),
+                          child: Image.asset('assets/icons/no_data.png')),
+                      const Text(
+                        'В избранном нет товаров',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
+                        textAlign: TextAlign.center,
+                      ),
+                      const Text(
+                        'Для выбора вещей перейдите в маркет',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff717171)),
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
+                );
               }
 
               if (state is LoadedState) {

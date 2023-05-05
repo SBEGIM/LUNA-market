@@ -4,22 +4,23 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/drawer/data/bloc/sub_cats_state.dart';
 import 'package:haji_market/features/drawer/presentation/ui/catalog_page.dart';
-import 'package:haji_market/features/drawer/presentation/widgets/products_card_widget.dart';
-import 'package:haji_market/features/home/data/bloc/banners_cubit.dart';
-import 'package:haji_market/features/home/data/bloc/banners_state.dart';
+import 'package:haji_market/features/home/data/bloc/banners_cubit.dart'
+    as bannerCubit;
+import 'package:haji_market/features/home/data/bloc/banners_state.dart'
+    as bannerState;
 import 'package:haji_market/features/home/data/model/Cats.dart';
-import 'package:haji_market/features/home/presentation/widgets/banner_watceh_recently_widget.dart';
 import 'package:haji_market/features/home/presentation/widgets/bonus_page.dart';
 import 'package:haji_market/features/home/presentation/widgets/gridLayout_popular.dart';
-import 'package:haji_market/features/home/presentation/widgets/gridLayout_popular_shop.dart';
 import 'package:haji_market/features/home/presentation/widgets/gridlayout_categor.dart';
 import 'package:haji_market/features/home/presentation/widgets/product_mb_interesting_card.dart';
-import 'package:haji_market/features/home/presentation/widgets/stocks_page.dart';
 import 'package:haji_market/features/home/presentation/widgets/user_agreement_page.dart';
 
 import '../../../drawer/data/bloc/product_cubit.dart' as productCubit;
 import '../../../drawer/data/bloc/product_state.dart' as productState;
+import '../../../drawer/data/bloc/sub_cats_cubit.dart' as subCatCubit;
+import '../../../drawer/data/bloc/sub_cats_state.dart' as subCatState;
 import '../../../drawer/presentation/ui/products_page.dart';
 import '../../../drawer/presentation/ui/shops_page.dart';
 import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
@@ -47,8 +48,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    BlocProvider.of<BannersCubit>(context).banners();
+    BlocProvider.of<bannerCubit.BannersCubit>(context).banners();
     BlocProvider.of<catCubit.CatsCubit>(context).cats();
+    BlocProvider.of<subCatCubit.SubCatsCubit>(context).subCats(0);
     BlocProvider.of<popShopsCubit.PopularShopsCubit>(context).popShops();
     BlocProvider.of<productCubit.ProductCubit>(context).products();
 
@@ -78,13 +80,13 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.only(right: 22.0),
               child: GestureDetector(
                   onTap: () {
-                    Get.to(SearchProductPage());
+                    Get.to(const SearchProductPage());
                   },
                   child: SvgPicture.asset('assets/icons/search.svg')))
         ],
         titleSpacing: 16,
         title: const Text(
-          'Luna market',
+          'LUNA market',
           style: AppTextStyles.appBarTextStylea,
         ),
       ),
@@ -132,8 +134,8 @@ class _HomePageState extends State<HomePage> {
                           return Center(
                             child: Text(
                               state.message,
-                              style:
-                                  TextStyle(fontSize: 20.0, color: Colors.grey),
+                              style: const TextStyle(
+                                  fontSize: 20.0, color: Colors.grey),
                             ),
                           );
                         }
@@ -214,8 +216,8 @@ class _HomePageState extends State<HomePage> {
                           return Center(
                             child: Text(
                               state.message,
-                              style:
-                                  TextStyle(fontSize: 20.0, color: Colors.grey),
+                              style: const TextStyle(
+                                  fontSize: 20.0, color: Colors.grey),
                             ),
                           );
                         }
@@ -226,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                         }
 
                         if (state is productState.LoadedState) {
-                          return Container(
+                          return SizedBox(
                               height: 608,
                               child: GridView.builder(
                                 scrollDirection: Axis.horizontal,
@@ -370,23 +372,23 @@ class PopularCatsHompage extends StatefulWidget {
 class _PopularCatsHompageState extends State<PopularCatsHompage> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<catCubit.CatsCubit, catState.CatsState>(
+    return BlocConsumer<subCatCubit.SubCatsCubit, subCatState.SubCatsState>(
         listener: (context, state) {},
         builder: (context, state) {
-          if (state is catState.ErrorState) {
+          if (state is subCatState.ErrorState) {
             return Center(
               child: Text(
                 state.message,
-                style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
               ),
             );
           }
-          if (state is catState.LoadingState) {
+          if (state is subCatState.LoadingState) {
             return const Center(
                 child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
 
-          if (state is catState.LoadedState) {
+          if (state is subCatState.LoadedState) {
             return Container(
               color: Colors.white,
               child: Padding(
@@ -418,19 +420,28 @@ class _PopularCatsHompageState extends State<PopularCatsHompage> {
                         itemBuilder: (BuildContext ctx, index) {
                           return InkWell(
                             onTap: () {
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) => UnderCatalogPage(
+                              //           cats: state.cats[index])),
+                              // );
+
+                              GetStorage().write('CatId', state.cats[index].id);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => UnderCatalogPage(
-                                        cats: state.cats[index])),
+                                    builder: (context) =>
+                                        ProductsPage(cats: state.cats[index])),
                               );
                             },
                             child: GridOptionsPopular(
                               layout: GridLayoutPopular(
                                 title: state.cats[index].name,
                                 image: state.cats[index].image,
-                                bonus: state.cats[index].bonus,
-                                credit: state.cats[index].credit,
+                                icon: state.cats[index].icon,
+                                bonus: state.cats[index].bonus ?? 0,
+                                credit: state.cats[index].credit ?? 0,
                               ),
                             ),
                           );
@@ -443,7 +454,7 @@ class _PopularCatsHompageState extends State<PopularCatsHompage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CatalogPage()),
+                              builder: (context) => const CatalogPage()),
                         );
                       },
                       child: Row(
@@ -493,7 +504,7 @@ class _CatsHomePageState extends State<CatsHomePage> {
             return Center(
               child: Text(
                 state.message,
-                style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
               ),
             );
           }
@@ -520,15 +531,15 @@ class _CatsHomePageState extends State<CatsHomePage> {
                       height: 16,
                     ),
                     SizedBox(
-                      height: 192,
+                      height: 280,
                       child: GridView.builder(
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
-                                  childAspectRatio: 0.8,
-                                  crossAxisSpacing: 8,
+                                  childAspectRatio: 0.95,
+                                  crossAxisSpacing: 10,
                                   mainAxisSpacing: 8),
                           itemCount: state.cats.length,
                           itemBuilder: (BuildContext ctx, index) {
@@ -536,14 +547,22 @@ class _CatsHomePageState extends State<CatsHomePage> {
                               layout: GridLayoutCategory(
                                 title: state.cats[index].name,
                                 onTap: () {
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) => UnderCatalogPage(
+                                  //           cats: state.cats[index])),
+                                  // );
+
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => UnderCatalogPage(
-                                            cats: state.cats[index])),
+                                        builder: (context) =>
+                                            const CatalogPage()),
                                   );
                                 },
                                 icon: state.cats[index].icon.toString(),
+                                image: state.cats[index].image.toString(),
                               ),
                             );
                           }),
@@ -570,23 +589,23 @@ class Banners extends StatefulWidget {
 class _BannersState extends State<Banners> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<BannersCubit, BannersState>(
+    return BlocConsumer<bannerCubit.BannersCubit, bannerState.BannersState>(
         listener: (context, state) {},
         builder: (context, state) {
-          if (state is ErrorState) {
+          if (state is bannerState.ErrorState) {
             return Center(
               child: Text(
                 state.message,
-                style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
               ),
             );
           }
-          if (state is LoadingState) {
+          if (state is bannerState.LoadingState) {
             return const Center(
                 child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
 
-          if (state is LoadedState) {
+          if (state is bannerState.LoadedState) {
             //  return Container(
             //    height: 100,
             // width: 100,
@@ -657,8 +676,8 @@ class BannerImage extends StatelessWidget {
                   width: 158,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(
-                          "http://80.87.202.73:8001/storage/${image}"),
+                      image:
+                          NetworkImage("http://185.116.193.73/storage/$image"),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(8),
@@ -689,8 +708,9 @@ class BannerImage extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 8,
+              height: 7,
             ),
+            //8
             Text(date,
                 style: const TextStyle(
                   fontSize: 12,
@@ -722,7 +742,7 @@ class _PopularShopsState extends State<PopularShops> {
             return Center(
               child: Text(
                 state.message,
-                style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
               ),
             );
           }
@@ -740,7 +760,7 @@ class _PopularShopsState extends State<PopularShops> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Популярные магазины',
+                      'Популярные магазины и бренды',
                       style: TextStyle(
                           color: AppColors.kGray900,
                           fontSize: 16,
@@ -776,7 +796,7 @@ class _PopularShopsState extends State<PopularShops> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: const Color(0xffF9F9F),
+                                  color: const Color(0x0fff9f9f),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -793,9 +813,17 @@ class _PopularShopsState extends State<PopularShops> {
                                               borderRadius:
                                                   BorderRadius.circular(50),
                                               image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
-                                                  ),
+                                                  image: state
+                                                              .popularShops[
+                                                                  index]
+                                                              .image !=
+                                                          null
+                                                      ? NetworkImage(
+                                                          "http://185.116.193.73/storage/${state.popularShops[index].image!}",
+                                                        )
+                                                      : const AssetImage(
+                                                              'assets/icons/appIcon.png')
+                                                          as ImageProvider,
                                                   fit: BoxFit.fitWidth),
                                               color: const Color(0xFFF0F5F5)),
                                           // child: Image.network(
@@ -894,7 +922,7 @@ class _PopularShopsState extends State<PopularShops> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Get.to(ShopsPage());
+                            Get.to(const ShopsPage());
                           },
                           child: const Icon(
                             Icons.arrow_forward_ios,
@@ -916,6 +944,5 @@ class _PopularShopsState extends State<PopularShops> {
                 child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
         });
-    ;
   }
 }

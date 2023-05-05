@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="52px" height="130px" viewBox="0 0 52 130" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>29DAA2AE-2E61-41E9-83EF-743A9B8A81AD</title>
+    <defs>
+        <rect id="path-1" x="23" y="42" width="3" height="24" rx="1.5"></rect>
+        <filter x="-100.0%" y="-12.5%" width="300.0%" height="125.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.15 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <circle id="path-3" cx="24" cy="24" r="24"></circle>
+        <filter x="-7.3%" y="-5.2%" width="114.6%" height="114.6%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.16 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="00.-Компоненты:-Пикер-адреса-на-карте" transform="translate(-162.000000, -299.000000)">
+            <g id="Group-4" transform="translate(162.000000, 299.000000)">
+                <rect id="sizer" x="0" y="0" width="52" height="130"></rect>
+                <g id="icon-pin" transform="translate(2.000000, 1.000000)">
+                    <g id="Rectangle">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="#086A53" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    </g>
+                    <g id="Oval">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                        <use fill="#009471" fill-rule="evenodd" xlink:href="#path-3"></use>
+                    </g>
+                    <circle id="Oval" fill="#FEFFFE" cx="24" cy="24" r="8"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

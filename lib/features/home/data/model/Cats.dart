@@ -7,7 +7,8 @@ class Cats {
     int? bonus,
     int? credit,
     dynamic createdAt,
-    dynamic updatedAt,}){
+    dynamic updatedAt,
+  }) {
     _id = id;
     _name = name;
     _icon = icon;
@@ -58,5 +59,4 @@ class Cats {
     map['updated_at'] = _updatedAt;
     return map;
   }
-
 }

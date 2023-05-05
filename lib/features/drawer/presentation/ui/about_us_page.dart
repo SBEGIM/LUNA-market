@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 
 class AboutUsPage extends StatefulWidget {
-  AboutUsPage({Key? key}) : super(key: key);
+  const AboutUsPage({Key? key}) : super(key: key);
 
   @override
   State<AboutUsPage> createState() => _AboutUsPageState();
@@ -59,7 +59,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 children: const [
                   Flexible(
                     child: (Text(
-                      'ТОП-10 Лучших Маркетплейсов Казахстана. Маркетплейс для Физических, Самозанятых и Юридических Лиц. Выставить Свои Товары на Маркетплейс Казахстана. Продвижение Вашего Бизнеса. Реклама Товаров. Раскрутка Новых Брендов. Бизнес Проект Компании ТОО Маркетплейс.',
+                      'LUNA market-это лучшее мобильное приложение для покупки и продажи товаров,с видео обзорами от Блогеров  , Маркетплейс для Физических,Самозанятых и Юридических Лиц .Возможность Продвижения Вашего Бизнеса,Реклама товаров, Раскрутка новых Брендов с эксклюзивной программой для Блогеров',
                       style: TextStyle(
                           color: AppColors.kGray900,
                           fontSize: 16,
@@ -88,14 +88,15 @@ class _AboutUsPageState extends State<AboutUsPage> {
                   height: 8,
                 ),
                 Container(
-                  height: 200,
+                  // height: 150,
                   color: AppColors.kBackgroundColor,
+                  child: Image.asset('assets/images/map.png'),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
                 const Text(
-                  'г. Алматы, ул. Шевченко 90(БЦ Каратал), офис 108',
+                  'Россия Чеченская республика, Грозный.',
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -130,7 +131,43 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       width: 8,
                     ),
                     const Text(
-                      'hajimarken@gmail.com',
+                      'Lunamarket@inbox.ru',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.kPrimaryColor),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset('assets/icons/mail.svg'),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    const Text(
+                      'https://t.me/LUNAmarketAdmin',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.kPrimaryColor),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset('assets/icons/mail.svg'),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    const Text(
+                      'thousand@gmail.com',
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -182,6 +219,17 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       width: 16,
                     ),
                     SvgPicture.asset('assets/icons/telegram.svg'),
+
+                    //https://t.me/LUNAmarketAdmin
+
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    SvgPicture.asset(
+                      'assets/icons/youtube.svg',
+                      height: 34,
+                      width: 34,
+                    ),
                   ],
                 )
               ],

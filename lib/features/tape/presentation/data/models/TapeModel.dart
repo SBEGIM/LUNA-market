@@ -9,6 +9,7 @@ class TapeModel {
       String? video,
       String? image,
       bool? inBasket,
+      bool? inReport,
       bool? inFavorite,
       bool? inSubscribe,
       Shop? shop}) {
@@ -21,6 +22,7 @@ class TapeModel {
     _video = video;
     _image = image;
     _inBasket = inBasket;
+    _inReport = inReport;
     _inFavorite = inFavorite;
     _inSubscribe = inSubscribe;
 
@@ -37,6 +39,7 @@ class TapeModel {
     _video = json['video'];
     _image = json['image'];
     _inBasket = json['in_basket'];
+    _inReport = json['in_report'];
     _inFavorite = json['in_favorite'];
     _inSubscribe = json['in_subscribe'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
@@ -50,6 +53,7 @@ class TapeModel {
   String? _video;
   String? _image;
   bool? _inBasket;
+  bool? _inReport;
   bool? _inFavorite;
   bool? _inSubscribe;
   Shop? _shop;
@@ -63,6 +67,7 @@ class TapeModel {
   String? get video => _video;
   String? get image => _image;
   bool? get inBasket => _inBasket;
+  bool? get inReport => _inReport;
   bool? get inFavorite => _inFavorite;
   bool? get inSubscribe => _inSubscribe;
   Shop? get shop => _shop;
@@ -78,6 +83,7 @@ class TapeModel {
     map['video'] = _video;
     map['image'] = _image;
     map['in_basket'] = _inBasket;
+    map['in_report'] = _inReport;
     map['in_favorite'] = _inFavorite;
     map['inSubscribe'] = _inSubscribe;
     if (_shop != null) {

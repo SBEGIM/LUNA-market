@@ -1,15 +1,12 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
-import '../DTO/register_blogger_dto.dart';
-
-const baseUrl = 'http://80.87.202.73:8001/api';
+const baseUrl = 'http://185.116.193.73/api';
 
 class EditBloggerRepository {
-  EditToApi _editToApi = EditToApi();
+  final EditToApi _editToApi = EditToApi();
 
   Future<dynamic> edit(String name, String phone, String password, avatar) =>
       _editToApi.edit(name, phone, password, avatar);

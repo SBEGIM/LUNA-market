@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../blogger_ad.dart';
 import '../../core/common/constants.dart';
 import '../../features/home/data/bloc/popular_shops_cubit.dart';
 import '../../features/home/data/bloc/popular_shops_state.dart';
@@ -39,7 +38,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
         centerTitle: false,
         titleSpacing: 16,
         title: const Text(
-          'HAJI-MARKET',
+          'LUNA-MARKET',
           style: TextStyle(
               color: Colors.black, fontSize: 20, fontWeight: FontWeight.w700),
         ),
@@ -94,14 +93,45 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
-            child: const Text(
-              'При продаже каждого рекламированного товара блогером % от каждой стоимости товара будет перечисляться на счет блогера',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey),
+          // Container(
+          //   margin: const EdgeInsets.symmetric(horizontal: 16),
+          //   child: const Text(
+          //     'При продаже каждого рекламированного товара блогером % от каждой стоимости товара будет перечисляться на счет блогера. Размещая рекламные материалы, вы принимаете условия',
+          //     style: TextStyle(
+          //         fontSize: 12,
+          //         fontWeight: FontWeight.w400,
+          //         color: Colors.grey),
+          //   ),
+          // ),
+          GestureDetector(
+            onTap: () {
+              Get.to(const BloggerAd());
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              child: RichText(
+                textAlign: TextAlign.left,
+                text: const TextSpan(
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text:
+                          "При продаже каждого рекламированного товара блогером % от каждой стоимости товара будет перечисляться на счет блогера. Размещая рекламные материалы, вы принимаете условия ",
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey),
+                    ),
+                    TextSpan(
+                      text: "Типового договора на оказание рекламных услуг\n",
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.kPrimaryColor),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 10),
@@ -112,7 +142,8 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                   return Center(
                     child: Text(
                       state.message,
-                      style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                      style:
+                          const TextStyle(fontSize: 20.0, color: Colors.grey),
                     ),
                   );
                 }
@@ -124,7 +155,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
 
                 if (state is LoadedState) {
                   return GridView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       gridDelegate:
@@ -149,7 +180,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               // margin: EdgeInsets.only(right: 5, left: 5),
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   right: 3, left: 16, top: 12, bottom: 16),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,22 +195,24 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                                             borderRadius:
                                                 BorderRadius.circular(50),
                                             image: DecorationImage(
-                                                image: NetworkImage(
-                                                  "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
-                                                ),
+                                                image: state.popularShops[index]
+                                                            .image !=
+                                                        null
+                                                    ? NetworkImage(
+                                                        "http://185.116.193.73/storage/${state.popularShops[index].image!}",
+                                                      )
+                                                    : const AssetImage(
+                                                            'assets/icons/profile2.png')
+                                                        as ImageProvider,
                                                 fit: BoxFit.fitWidth),
                                             color: const Color(0xFFF0F5F5)),
-                                        // child: Image.network(
-                                        //   "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
-                                        //   width: 70,
-                                        // ),
                                       ),
                                       Container(
                                         margin: const EdgeInsets.only(
-                                            top: 88, left: 4),
+                                            top: 84, left: 4),
                                         alignment: Alignment.center,
-                                        height: 24,
-                                        width: 24,
+                                        height: 28,
+                                        width: 28,
                                         //  padding: EdgeInsets.only(top: 40),
                                         decoration: const BoxDecoration(
                                           image: DecorationImage(

@@ -7,7 +7,7 @@ import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/app/widgets/custom_switch_button.dart';
 
 class MyOrdersAdminPage extends StatefulWidget {
-  MyOrdersAdminPage({Key? key}) : super(key: key);
+  const MyOrdersAdminPage({Key? key}) : super(key: key);
 
   @override
   State<MyOrdersAdminPage> createState() => _MyOrdersAdminPageState();
@@ -103,7 +103,7 @@ class _MyOrdersAdminPageState extends State<MyOrdersAdminPage> {
           color: AppColors.kBackgroundColor,
           child: IndexedStack(
             index: segmentValue,
-            children: [
+            children: const [
               AllMyOrdersPage(),
               DoneMyOrdersPage(),
             ],

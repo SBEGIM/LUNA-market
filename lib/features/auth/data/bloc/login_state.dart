@@ -12,7 +12,7 @@ class LoadedState extends LoginState{}
 class ErrorState extends LoginState{
   String message;
 
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 
 }
 

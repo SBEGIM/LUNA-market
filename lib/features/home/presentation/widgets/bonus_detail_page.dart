@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 
 class BonusDetailPage extends StatefulWidget {
-  BonusDetailPage({Key? key}) : super(key: key);
+  const BonusDetailPage({Key? key}) : super(key: key);
 
   @override
   State<BonusDetailPage> createState() => _BonusDetailPageState();
@@ -45,7 +45,7 @@ class _BonusDetailPageState extends State<BonusDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Padding(
-                  padding: const EdgeInsets.only(left: 16.0, bottom: 16),
+                  padding: EdgeInsets.only(left: 16.0, bottom: 16),
                   child: Text(
                     'Дарим 5% бонусов в магазинах Вашего города',
                     style: TextStyle(

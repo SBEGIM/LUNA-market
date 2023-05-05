@@ -109,6 +109,7 @@ mixin AppTextStyles {
   static const appBarTextStylea = TextStyle(
     fontSize: 20,
     color: AppColors.kGray900,
+    fontFamily: 'Nunito',
     fontWeight: FontWeight.w700,
   );
 

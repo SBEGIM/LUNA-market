@@ -6,17 +6,16 @@ import 'package:get/route_manager.dart';
 import '../../../../core/common/constants.dart';
 import '../../data/bloc/brand_cubit.dart';
 import '../../data/bloc/brand_state.dart';
-import '../../data/bloc/product_cubit.dart';
 
 class BrandsPage extends StatefulWidget {
-  BrandsPage({Key? key}) : super(key: key);
+  const BrandsPage({Key? key}) : super(key: key);
 
   @override
   State<BrandsPage> createState() => _BrandsPageState();
 }
 
 class _BrandsPageState extends State<BrandsPage> {
-  List<int> _selectedListSort = [];
+  final List<int> _selectedListSort = [];
   String subCatName = '';
 
   @override
@@ -68,12 +67,12 @@ class _BrandsPageState extends State<BrandsPage> {
                 return Center(
                   child: Text(
                     state.message,
-                    style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                   ),
                 );
               }
               if (state is LoadedState) {
-                return Container(
+                return SizedBox(
                   height: 225,
                   child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),

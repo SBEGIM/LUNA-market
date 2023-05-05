@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
 
-import '../../../../admin/my_products_admin/data/models/admin_products_model.dart';
 import '../../../../core/common/constants.dart';
 import '../../../profile_admin/presentation/data/bloc/profile_month_statics_blogger_cubit.dart';
 import '../../../profile_admin/presentation/data/bloc/profile_month_statics_blogger_state.dart';
@@ -30,9 +29,9 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
     'Ноябрь',
     'Декабрь',
   ];
-
+  int year = 2023;
   int _selectIndex = -1;
-  int _SelectSecondIndex = -1;
+  final int _SelectSecondIndex = -1;
   int _summBonus = 0;
 
   incrementSumm(int Bonus) {
@@ -63,6 +62,60 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
       body: ListView(shrinkWrap: true, children: [
         const SizedBox(
           height: 10,
+        ),
+        Container(
+          // color: Colors.white,
+          padding: const EdgeInsets.all(16),
+
+          child: Row(
+            children: [
+              const Text(
+                'Год',
+                style: TextStyle(
+                    color: AppColors.kGray900,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+              ),
+              const SizedBox(
+                width: 15,
+              ),
+              GestureDetector(
+                onTap: () {
+                  year--;
+                  setState(() {});
+                },
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                  size: 15.0,
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                '$year',
+                style: TextStyle(
+                    color: AppColors.kGray900,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              GestureDetector(
+                onTap: () {
+                  year++;
+                  setState(() {});
+                },
+                child: Icon(
+                  Icons.arrow_forward,
+                  color: Colors.black,
+                  size: 15.0,
+                ),
+              ),
+            ],
+          ),
         ),
         Container(
           // color: Colors.white,
@@ -142,7 +195,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
               listener: (context, state) {},
               builder: (context, state) {
                 if (state is LoadedState) {
-                  return Container(
+                  return SizedBox(
                     height: MediaQuery.of(context).size.height / 2.3,
                     child: ListView.builder(
                         scrollDirection: Axis.vertical,
@@ -166,7 +219,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                                   borderRadius: BorderRadius.circular(10)),
                               child: Row(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                       height: 60,
                                       width: 60,
                                       child:
@@ -182,22 +235,22 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                                         state.loadedProfile[index].name
                                             .toString(),
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: AppColors.kGray900,
                                             fontSize: 10,
                                             fontWeight: FontWeight.w400),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 5,
                                       ),
-                                      Text(
+                                      const Text(
                                         'Магазин: Sulpak',
                                         style: TextStyle(
                                             color: AppColors.kGray900,
                                             fontSize: 10,
                                             fontWeight: FontWeight.w400),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 5,
                                       ),
 
@@ -207,26 +260,26 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                                           Text(
                                             state.loadedProfile[index].price
                                                 .toString(),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.w400),
                                           ),
-                                          SizedBox(width: 45),
+                                          const SizedBox(width: 45),
                                           Text(
                                               'x${state.loadedProfile[index].count.toString()}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400)),
-                                          SizedBox(width: 45),
+                                          const SizedBox(width: 45),
                                           Text(
                                               '${state.loadedProfile[index].bonusPercent.toString()} %',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400)),
-                                          SizedBox(width: 45),
+                                          const SizedBox(width: 45),
                                           Text(
                                               '${state.loadedProfile[index].bonus.toString()}тг',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400)),
                                         ],
@@ -256,19 +309,19 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
 
             Container(
               height: 36,
-              padding: EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(6)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Мой заработок',
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   ),
-                  Text('${_summBonus} тг',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
+                  Text('$_summBonus тг',
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w400)),
                 ],
               ),
             )

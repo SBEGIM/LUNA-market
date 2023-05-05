@@ -4,10 +4,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/features/auth/data/DTO/register.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = 'http://80.87.202.73:8001/api';
+const baseUrl = 'http://185.116.193.73/api';
 
 class RegisterBloggerRepository {
-  RegisterToApi _registerToApi = RegisterToApi();
+  final RegisterToApi _registerToApi = RegisterToApi();
 
   Future<dynamic> register(RegisterDTO register) =>
       _registerToApi.register(register);
@@ -25,7 +25,7 @@ class RegisterToApi {
   final _box = GetStorage();
 
   Future<dynamic> register(RegisterDTO register) async {
-    final device_token = _box.read('device_token');
+    final deviceToken = _box.read('device_token');
 
     String s = register.phone;
     String result = s.substring(2);
@@ -39,7 +39,7 @@ class RegisterToApi {
       'name': register.name,
       'password': register.password,
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
-      'device_token': device_token.toString(),
+      'device_token': deviceToken.toString(),
       'device_type': 'android',
     };
 
@@ -117,7 +117,7 @@ class RegisterToApi {
   }
 
   Future<dynamic> passwordReset(String phone, String password) async {
-    print("111 ${phone}");
+    print("111 $phone");
     String s = phone;
     String result = s.substring(2);
 

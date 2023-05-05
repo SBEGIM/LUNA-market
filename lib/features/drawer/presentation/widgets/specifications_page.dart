@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:haji_market/core/common/constants.dart';
 
 class SpecificationsPage extends StatefulWidget {
-  SpecificationsPage({Key? key}) : super(key: key);
+  const SpecificationsPage({Key? key}) : super(key: key);
 
   @override
   State<SpecificationsPage> createState() => _SpecificationsPageState();
@@ -59,7 +59,7 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                       width: MediaQuery.of(context).size.width * 0.33,
                       child: const Text(
                         'Назначение',
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.kGray400,
                             fontSize: 15,
                             fontWeight: FontWeight.w400),
@@ -70,7 +70,7 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                     ),
                     const Text(
                       'Обычные',
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.kGray1000,
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
@@ -87,7 +87,7 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                       width: MediaQuery.of(context).size.width * 0.33,
                       child: const Text(
                         'Тип конструкции ',
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.kGray400,
                             fontSize: 15,
                             fontWeight: FontWeight.w400),
@@ -98,7 +98,7 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                     ),
                     const Text(
                       'Полноразмерные',
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.kGray1000,
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
@@ -115,7 +115,7 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                       width: MediaQuery.of(context).size.width * 0.33,
                       child: const Text(
                         'Тип крепления',
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: AppColors.kGray400,
                             fontSize: 15,
                             fontWeight: FontWeight.w400),
@@ -126,7 +126,7 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                     ),
                     const Text(
                       'С оголовьем',
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.kGray1000,
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
@@ -154,7 +154,7 @@ class _SpecificationsPageState extends State<SpecificationsPage> {
                     ),
                     const Text(
                       '20 - 20',
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: AppColors.kGray1000,
                           fontSize: 14,
                           fontWeight: FontWeight.w400),

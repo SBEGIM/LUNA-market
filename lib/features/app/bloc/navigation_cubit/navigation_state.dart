@@ -9,4 +9,5 @@ abstract class NavigationState with _$NavigationState {
   const factory NavigationState.basket() = BasketState;
   const factory NavigationState.myOrder() = MyOrderState;
   const factory NavigationState.auth() = AuthState;
+  const factory NavigationState.notAuth() = NotAuthState;
 }

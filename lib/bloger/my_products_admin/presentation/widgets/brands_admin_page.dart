@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/create_product_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/drawer/data/bloc/brand_cubit.dart';
@@ -10,7 +9,7 @@ import '../../../../features/drawer/data/bloc/brand_state.dart';
 import '../../../../features/home/data/model/Cats.dart';
 
 class BrandsAdminPage extends StatefulWidget {
-  BrandsAdminPage({Key? key}) : super(key: key);
+  const BrandsAdminPage({Key? key}) : super(key: key);
 
   @override
   State<BrandsAdminPage> createState() => _BrandsAdminPageState();
@@ -20,6 +19,7 @@ class _BrandsAdminPageState extends State<BrandsAdminPage> {
   int _selectedIndex = -1;
   Cats? _cat;
 
+  @override
   void initState() {
     BlocProvider.of<BrandCubit>(context).brands();
     super.initState();
@@ -56,7 +56,7 @@ class _BrandsAdminPageState extends State<BrandsAdminPage> {
                     return Center(
                       child: Text(
                         state.message,
-                        style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                        style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                       ),
                     );
                   }

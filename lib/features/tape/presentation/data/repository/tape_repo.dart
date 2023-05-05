@@ -1,16 +1,12 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/features/drawer/data/models/product_model.dart';
-import 'package:haji_market/features/home/data/model/PopularShops.dart';
 import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = 'http://80.87.202.73:8001/api';
+const baseUrl = 'http://185.116.193.73/api';
 
 class TapeRepository {
-  TapeApi _tapeApi = TapeApi();
+  final TapeApi _tapeApi = TapeApi();
 
   Future<List<TapeModel>> tapes(inSub, inFav, search) =>
       _tapeApi.tapes(inSub, inFav, search);
@@ -22,11 +18,11 @@ class TapeApi {
   Future<List<TapeModel>> tapes(inSub, inFav, search) async {
     final String? token = _box.read('token');
 
-    final queryParameters = {
-      'subscribes': '$inSub',
-      'favorite': '$inFav',
-      'search': '$search',
-    };
+    // final queryParameters = {
+    //   'subscribes': '$inSub',
+    //   'favorite': '$inFav',
+    //   'search': '$search',
+    // };
     // final uri =
     //     Uri.https('80.87.202.73:8001', '/api/shop/tape', queryParameters);
 

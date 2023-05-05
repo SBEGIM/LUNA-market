@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/bloger/my_products_admin/data/bloc/blogger_shop_products_state.dart';
-import 'package:haji_market/bloger/my_products_admin/data/models/blogger_shop_products_model.dart';
 import 'package:haji_market/bloger/my_products_admin/presentation/ui/product_detail.dart';
 import 'package:haji_market/bloger/my_products_admin/presentation/ui/products_video_page.dart';
 import 'package:haji_market/bloger/my_products_admin/presentation/ui/upload_product_video.dart';
-import '../../../../admin/my_products_admin/presentation/widgets/category_admin_page.dart';
-import '../../../../admin/my_products_admin/presentation/widgets/show_alert_statictics_widget.dart';
 import '../../../../core/common/constants.dart';
 import '../../../../features/tape/presentation/widgets/anim_search_widget.dart';
 import '../../data/bloc/blogger_shop_products_cubit.dart';
@@ -34,7 +30,7 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool _visible = false;
+    bool visible0 = false;
     String? title;
     final TextEditingController searchController = TextEditingController();
     bool visible = true;
@@ -77,7 +73,7 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
         // automaticallyImplyLeading: false,
         title: Text(
           widget.title,
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ),
       ),
       body: Column(
@@ -85,7 +81,7 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
         children: [
           Container(
             height: 30,
-            margin: EdgeInsets.only(left: 16, bottom: 12),
+            margin: const EdgeInsets.only(left: 16, bottom: 12),
             alignment: Alignment.bottomLeft,
             color: AppColors.kBackgroundColor,
             child: const Text('Выберите товар',
@@ -101,7 +97,8 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                   return Center(
                     child: Text(
                       state.message,
-                      style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                      style:
+                          const TextStyle(fontSize: 20.0, color: Colors.grey),
                     ),
                   );
                 }
@@ -133,8 +130,9 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                             return Stack(
                               children: [
                                 GestureDetector(
-                                  onTap: (() => Get.to(
-                                      () => const UploadProductVideoPage())),
+                                  onTap: (() => Get.to(() =>
+                                      UploadProductVideoPage(
+                                          id: state.productModel[index].id!))),
                                   child: title == 'Мои видео обзоры'
                                       ? ProductDetail(
                                           product: state.productModel[index])

@@ -38,7 +38,7 @@ class ProductReviewPage extends StatelessWidget {
           onTap: () {
              Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) =>  PaymentPage()),
+    MaterialPageRoute(builder: (context) =>  const PaymentPage()),
   );
             // Navigator.pop(context);
           },
@@ -72,7 +72,7 @@ class ProductReviewPage extends StatelessWidget {
               children: [
                 const Text(
                   'Отзывы',
-                  style: const TextStyle(color: AppColors.kGray900),
+                  style: TextStyle(color: AppColors.kGray900),
                 ),
                 const SizedBox(
                   height: 10,
@@ -156,7 +156,7 @@ class ProductReviewPage extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text(
+                    const Text(
                       'Оцените товар ',
                       style: TextStyle(color: AppColors.kGray900),
                     ),
@@ -181,7 +181,7 @@ class ProductReviewPage extends StatelessWidget {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       'Напишите отзыв',
                       style: TextStyle(color: AppColors.kGray300),

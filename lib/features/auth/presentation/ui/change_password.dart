@@ -8,7 +8,6 @@ import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/auth/data/bloc/sms_state.dart';
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
-import 'package:haji_market/features/home/presentation/ui/home_page.dart';
 
 import '../../data/bloc/sms_cubit.dart';
 
@@ -71,7 +70,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       ),
       body: BlocConsumer<SmsCubit, SmsState>(listener: (context, state) {
         if (state is ResetSuccessState) {
-          Get.offAll(() => new ViewAuthRegisterPage());
+          Get.offAll(() => const ViewAuthRegisterPage());
           // Navigator.push(
           //   context,
           //   MaterialPageRoute(builder: (context) => const Base()),
@@ -220,7 +219,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           return Center(
             child: Text(
               state.message,
-              style: TextStyle(color: Colors.redAccent),
+              style: const TextStyle(color: Colors.redAccent),
             ),
           );
         } else {

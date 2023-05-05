@@ -1,165 +1,257 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:haji_market/core/common/constants.dart';
-import 'package:web_socket_channel/html.dart';
+import 'package:get/get.dart';
+import 'package:haji_market/features/chat/data/cubit/chat_cubit.dart';
+import 'package:haji_market/features/chat/data/cubit/chat_state.dart';
+import 'package:haji_market/features/chat/presentation/message.dart';
+import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:web_socket_channel/io.dart';
+
+import '../../../core/common/constants.dart';
 
 class ChatPage extends StatefulWidget {
-  ChatPage({super.key});
-
-  // WebSocketChannel channel =
-  //     HtmlWebSocketChannel.connect("ws://188.120.254.202:1995/?user_id=268");
+  const ChatPage({super.key});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
   TextEditingController searchController = TextEditingController();
 
   TextEditingController _chatTextController = TextEditingController();
 
+  parseDate(date) {
+    final dateTimeString = date;
+    final dateTime = DateTime.parse(dateTimeString);
+
+    //  final format = DateFormat('dd HH:mm');
+    final clockString = DateFormat('H:mm / yy-M-dd').format(dateTime);
+    return clockString;
+  }
+
+  Future<void> onRefresh() async {
+    await BlocProvider.of<ChatCubit>(context).chat();
+    await Future.delayed(Duration(milliseconds: 1000));
+    if (mounted) {
+      setState(() {});
+    }
+    _refreshController.refreshCompleted();
+  }
+
+  Future<void> onLoading() async {
+    await BlocProvider.of<ChatCubit>(context).pagination();
+    await Future.delayed(Duration(milliseconds: 2000));
+
+    _refreshController.loadComplete();
+  }
+
+  @override
+  void initState() {
+    BlocProvider.of<ChatCubit>(context).chat();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        elevation: 0,
-        title: const Text(
-          'Сообщение',
-          style: TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
-        ),
-      ),
-      body: Column(children: [
-        Container(
-          height: 46,
-          margin: const EdgeInsets.only(top: 20),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          alignment: Alignment.center,
-          child: TextField(
-            keyboardType: TextInputType.text,
-            controller: searchController,
-            textAlign: TextAlign.center,
-            onChanged: ((value) {
-              setState(() {});
-            }),
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(width: 1)),
-
-              prefixIcon: searchController.text.isEmpty
-                  ? Transform.translate(
-                      offset: const Offset(85, 0),
-                      child: const Icon(
-                        Icons.search,
-                        color: Colors.grey,
-                      ),
-                    )
-                  : null,
-              hintText: 'Поиск клиентов',
-              hintStyle: const TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(width: 0.3, color: Colors.grey)),
-              // suffixIcon: IconButton(
-              //     onPressed: () {},
-              //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',
-              //         color: Colors.grey)),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          elevation: 0,
+          leading: GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: AppColors.kPrimaryColor,
             ),
           ),
-        ),
-        const SizedBox(height: 16),
-        // StreamBuilder(
-        //     stream: widget.channel.stream,
-        //     builder: (context, snapshot) {
-        //       print('${snapshot.hasData} ');
-        //       return Container(
-        //           width: 300,
-        //           height: 100,
-        //           child: Text(snapshot.hasData ? '${snapshot.data}' : ''));
-        //     }),
-        const SizedBox(height: 16),
-        Container(
-          height: 500,
-          child: ListView.builder(
-            itemCount: 4,
-            itemBuilder: ((context, index) {
-              return Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    height: 100,
-                    width: 345,
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage:
-                              const AssetImage('assets/images/kana.png'),
-                          radius: 34,
-                          child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: SvgPicture.asset(
-                              'assets/icons/camera.svg',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(top: 20.5),
-                              width: 224,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text(
-                                    'Дания',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  Text(
-                                    'Сегодня',
-                                    style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(top: 20.5),
-                              width: 224,
-                              child: const Text(
-                                'Вы: Заказ стоит на месте',
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              );
-            }),
+          title: const Text(
+            'Сообщение',
+            style: TextStyle(
+                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
           ),
         ),
-      ]),
-    );
+        body: BlocConsumer<ChatCubit, ChatState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              if (state is ErrorState) {
+                return Center(
+                  child: Text(
+                    state.message,
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                  ),
+                );
+              }
+
+              if (state is LoadedState) {
+                return ListView(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    // mainAxisSize: MainAxisSize.min,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 36,
+                        margin: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        alignment: Alignment.centerLeft,
+                        child: TextField(
+                          textAlign: TextAlign.left,
+                          textAlignVertical: TextAlignVertical.bottom,
+                          keyboardType: TextInputType.text,
+                          controller: searchController,
+                          onChanged: ((value) {
+                            setState(() {});
+                          }),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: const BorderSide(width: 1)),
+
+                            prefixIcon: searchController.text.isEmpty
+                                ? Transform.translate(
+                                    offset: const Offset(5, 0),
+                                    child: const Icon(
+                                      Icons.search,
+                                      color: Colors.grey,
+                                    ),
+                                  )
+                                : null,
+                            hintText: 'Поиск',
+                            hintStyle: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: const BorderSide(
+                                    width: 0.3, color: Colors.grey)),
+                            // suffixIcon: IconButton(
+                            //     onPressed: () {},
+                            //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',
+                            //         color: Colors.grey)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Container(
+                        height: 600,
+                        child: SmartRefresher(
+                          controller: _refreshController,
+                          enablePullDown: false,
+                          enablePullUp: true,
+                          onLoading: () {
+                            onLoading();
+                          },
+                          onRefresh: () {
+                            onRefresh();
+                          },
+                          child: ListView.builder(
+                            itemCount: state.chat.length,
+                            itemBuilder: ((context, index) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => Get.to(Message(
+                                      name: state.chat[index].name!,
+                                      avatar: state.chat[index].avatar,
+                                    )),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16),
+                                      height: 80,
+                                      //  width: 400,
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundImage: state
+                                                        .chat[index].avatar !=
+                                                    null
+                                                ? NetworkImage(
+                                                    'http://185.116.193.73/storage/${state.chat[index].avatar}')
+                                                : null,
+                                            backgroundColor: Colors.grey,
+                                            radius: 30,
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                padding: const EdgeInsets.only(
+                                                    top: 20.5),
+                                                width: 275,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      '${state.chat[index].name}',
+                                                      style: const TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    Text(
+                                                      ' ${parseDate(state.chat[index].createdAt)}',
+                                                      style: const TextStyle(
+                                                          color: Colors.grey,
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: const EdgeInsets.only(
+                                                    top: 20.5, left: 0),
+                                                // alignment: Alignment.bottomLeft,
+                                                width: 275,
+                                                child: Text(
+                                                  '${state.chat[index].lastMessage != null ? state.chat[index].lastMessage!.text : ''}',
+                                                  style: const TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                  maxLines: 1,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  if (state.chat.length - 1 != index)
+                                    const Divider(
+                                      height: 0,
+                                      color: AppColors.kGray400,
+                                    )
+                                ],
+                              );
+                            }),
+                          ),
+                        ),
+                      ),
+                    ]);
+              } else {
+                return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.indigoAccent));
+              }
+            }));
   }
 }

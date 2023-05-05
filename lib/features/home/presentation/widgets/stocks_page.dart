@@ -5,7 +5,7 @@ import 'package:haji_market/features/home/presentation/widgets/bonus_page.dart';
 import '../../../drawer/presentation/ui/drawer_home.dart';
 
 class StocksPage extends StatefulWidget {
-  StocksPage({Key? key}) : super(key: key);
+  const StocksPage({Key? key}) : super(key: key);
 
   @override
   State<StocksPage> createState() => _StocksPageState();

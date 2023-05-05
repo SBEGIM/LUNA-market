@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
@@ -57,7 +56,7 @@ class _LanguageWidgetState extends State<LanguageWidget> {
           },
           child: Container(
             color: Colors.white,
-            padding: EdgeInsets.only(left: 13, right: 13, top: 20),
+            padding: const EdgeInsets.only(left: 13, right: 13, top: 20),
             width: MediaQuery.of(context).size.width,
             child: Row(
               children: [
@@ -69,7 +68,7 @@ class _LanguageWidgetState extends State<LanguageWidget> {
                 const SizedBox(
                   width: 20,
                 ),
-                Container(
+                SizedBox(
                     width: 280,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,7 +101,7 @@ class _LanguageWidgetState extends State<LanguageWidget> {
           },
           child: Container(
             color: Colors.white,
-            padding: EdgeInsets.only(left: 13, right: 13, top: 20),
+            padding: const EdgeInsets.only(left: 13, right: 13, top: 20),
             width: MediaQuery.of(context).size.width,
             child: Row(
               children: [
@@ -114,7 +113,7 @@ class _LanguageWidgetState extends State<LanguageWidget> {
                 const SizedBox(
                   width: 20,
                 ),
-                Container(
+                SizedBox(
                     width: 280,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -5,7 +5,7 @@ import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 
 class NewBankCardPage extends StatefulWidget {
-  NewBankCardPage({Key? key}) : super(key: key);
+  const NewBankCardPage({Key? key}) : super(key: key);
 
   @override
   State<NewBankCardPage> createState() => _NewBankCardPageState();

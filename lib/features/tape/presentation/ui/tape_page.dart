@@ -1,27 +1,28 @@
 import 'dart:math';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart';
 import 'package:haji_market/features/tape/presentation/widgets/tape_card_widget.dart';
 
+import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
 import '../data/bloc/tape_state.dart';
 import '../widgets/anim_search_widget.dart';
 
 class TapePage extends StatefulWidget {
-  TapePage({Key? key}) : super(key: key);
+  const TapePage({Key? key}) : super(key: key);
 
   @override
   State<TapePage> createState() => _TapePageState();
 }
 
 class _TapePageState extends State<TapePage> {
-  String? title;
+  String title = 'Лента';
   final TextEditingController searchController = TextEditingController();
   bool visible = true;
 
@@ -32,7 +33,6 @@ class _TapePageState extends State<TapePage> {
   @override
   void initState() {
     BlocProvider.of<TapeCubit>(context).tapes(false, false, '');
-    title = 'Лента';
     super.initState();
   }
 
@@ -40,27 +40,46 @@ class _TapePageState extends State<TapePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+          iconTheme: title != 'Лента'
+              ? const IconThemeData(color: AppColors.kWhite)
+              : null,
           backgroundColor: Colors.white,
           elevation: 0,
-          // leading:  GestureDetector(
-          //   onTap: () => Get.back(),
-          //   child: const Icon(
-          //     Icons.arrow_back_ios,
-          //     color: AppColors.kPrimaryColor,
-          //   ),
-          // ),
+          leading: title != 'Лента'
+              ? GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => new Base(index: 0)),
+                    );
+                    // BlocProvider.of<navCubit.NavigationCubit>(context)
+                    //     .getNavBarItem(const navCubit.NavigationState.tape());
+                    title = 'Лента';
+                    BlocProvider.of<TapeCubit>(context).tapes(false, false, '');
+
+                    setState(() {});
+                    // print(title);
+                  },
+                  child: const Icon(
+                    Icons.arrow_back_ios,
+                    color: AppColors.kPrimaryColor,
+                  ),
+                )
+              : null,
           actions: [
             AnimSearchBar(
               helpText: 'Поиск..',
+              color: AppColors.kPrimaryColor,
               onChanged: (String? value) {
                 BlocProvider.of<TapeCubit>(context)
                     .tapes(false, false, searchController.text);
+                setState(() {});
               },
               style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(153, 162, 173, 1)),
+                  color: Colors.white),
               textController: searchController,
               onSuffixTap: () {
                 searchController.clear();
@@ -102,6 +121,7 @@ class _TapePageState extends State<TapePage> {
                               title = 'Подписки';
                               BlocProvider.of<TapeCubit>(context)
                                   .tapes(true, false, null);
+
                               setState(() {});
                             },
                             value: 0,
@@ -138,7 +158,7 @@ class _TapePageState extends State<TapePage> {
                       child: Row(
                         children: [
                           Text(
-                            '${title}',
+                            '$title',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 color: AppColors.kGray900,
@@ -146,8 +166,8 @@ class _TapePageState extends State<TapePage> {
                                 fontWeight: FontWeight.w500),
                           ),
                           const SizedBox(width: 5),
-                          Image.asset(
-                            'assets/icons/down.png',
+                          SvgPicture.asset(
+                            'assets/icons/drop_down2.svg',
                             //height: 16.5,
                             // width: 16.5,
                           )
@@ -165,7 +185,7 @@ class _TapePageState extends State<TapePage> {
                 return Center(
                   child: Text(
                     state.message,
-                    style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                   ),
                 );
               }
@@ -174,35 +194,75 @@ class _TapePageState extends State<TapePage> {
                     child:
                         CircularProgressIndicator(color: Colors.indigoAccent));
               }
-
-              if (state is LoadedState) {
-                return GridView.custom(
-                  gridDelegate: SliverQuiltedGridDelegate(
-                    crossAxisCount: 4,
-                    mainAxisSpacing: 4,
-                    crossAxisSpacing: 4,
-                    repeatPattern: QuiltedGridRepeatPattern.inverted,
-                    pattern: [
-                      QuiltedGridTile(2, 2),
-                      QuiltedGridTile(1, 1),
-                      QuiltedGridTile(1, 1),
-                      QuiltedGridTile(1, 2),
+              if (state is NoDataState) {
+                return Container(
+                  width: MediaQuery.of(context).size.height,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Container(
+                          margin: EdgeInsets.only(top: 146),
+                          child: Image.asset('assets/icons/no_data.png')),
+                      const Text(
+                        'В ленте нет данных',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
+                        textAlign: TextAlign.center,
+                      ),
+                      const Text(
+                        'По вашему запросу ничего не найдено',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff717171)),
+                        textAlign: TextAlign.center,
+                      )
                     ],
                   ),
-                  childrenDelegate: SliverChildBuilderDelegate(
-                    childCount: state.tapeModel.length,
-                    (context, index) =>
-
-                        // Image.network(
-                        //   "http://80.87.202.73:8001/storage/${state.tapeModel[index].image}",
-                        //   fit: BoxFit.fitWidth,
-                        // ),
-                        TapeCardWidget(
-                      index: index,
-                      tape: state.tapeModel[index],
-                    ),
-                  ),
                 );
+              }
+
+              if (state is LoadedState) {
+                // return GridView.custom(
+                //   gridDelegate: SliverQuiltedGridDelegate(
+                //     crossAxisCount: 3,
+                //     mainAxisSpacing: 4,
+                //     crossAxisSpacing: 4,
+                //     repeatPattern: QuiltedGridRepeatPattern.inverted,
+                //     pattern: [
+                //       // const QuiltedGridTile(4, 2),
+                //       // const QuiltedGridTile(2, 1),
+                //       // const QuiltedGridTile(2, 1),
+                //       // const QuiltedGridTile(2, 1),
+                //       // const QuiltedGridTile(2, 1),
+                //       // const QuiltedGridTile(2, 1),
+                //       // const QuiltedGridTile(4, 2),
+                //       // const QuiltedGridTile(2, 1),
+                //       // const QuiltedGridTile(2, 1),
+                //       // const QuiltedGridTile(2, 1),
+                //       // const QuiltedGridTile(2, 1),
+                //       // const QuiltedGridTile(2, 1),
+                //       const QuiltedGridTile(1, 1),
+                //       const QuiltedGridTile(1, 1),
+                //       const QuiltedGridTile(1, 1),
+                //       const QuiltedGridTile(1, 1),
+                //     ],
+                //   ),
+                //   childrenDelegate: SliverChildBuilderDelegate(
+                //     childCount: state.tapeModel.length,
+                //     (context, index) =>
+
+                //         // Image.network(
+                //         //   "http://80.87.202.73:8001/storage/${state.tapeModel[index].image}",
+                //         //   fit: BoxFit.fitWidth,
+                //         // ),
+                //         TapeCardWidget(
+                //       index: index,
+                //       tape: state.tapeModel[index],
+                //     ),
+                //   ),
+                // );
                 // StaggeredGrid.count(
                 //     crossAxisCount: 3,
                 //     mainAxisSpacing: 3,
@@ -290,23 +350,29 @@ class _TapePageState extends State<TapePage> {
                 //   },
                 // );
 
-                // GridView.builder(
-                //   padding: const EdgeInsets.all(1),
-                //   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                //     maxCrossAxisExtent: 150,
-                //     childAspectRatio: 1 / 2,
-                //     mainAxisSpacing: 3,
-                //     crossAxisSpacing: 3,
-                //   ),
-                //   itemCount: state.tapeModel.length,
-                //   // children: const [],
-                //   itemBuilder: (context, index) {
-                //     return TapeCardWidget(
-                //       tape: state.tapeModel[index],
-                //       index: index,
-                //     );
-                //   },
-                // );
+                return GridView.builder(
+                  padding: const EdgeInsets.all(1),
+
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 150,
+                    childAspectRatio: 1 / 2,
+                    mainAxisSpacing: 3,
+                    crossAxisSpacing: 3,
+                  ),
+                  itemCount: state.tapeModel.length,
+                  // children: const [],
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.grey),
+                      child: TapeCardWidget(
+                        tape: state.tapeModel[index],
+                        index: index,
+                      ),
+                    );
+                  },
+                );
               } else {
                 return const Center(
                     child:

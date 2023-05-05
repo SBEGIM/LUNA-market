@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../tape/presentation/data/models/TapeModel.dart';
 part 'navigation_state.dart';
 part 'navigation_cubit.freezed.dart';
 
@@ -19,6 +18,7 @@ class NavigationCubit extends Cubit<NavigationState> {
       basket: () => emit(const BasketState()),
       myOrder: () => emit(const MyOrderState()),
       auth: () => emit(const AuthState()),
+      notAuth: () => emit(const NotAuthState()),
     );
   }
 }

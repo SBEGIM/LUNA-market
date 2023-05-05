@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/edit_product_page%20copy.dart';
+import 'package:haji_market/admin/my_products_admin/presentation/widgets/show_alert_add_widget.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/statistics_page.dart';
 
 import '../../../../core/common/constants.dart';
-import '../../../../features/drawer/data/models/product_model.dart';
 import '../../data/models/admin_products_model.dart';
 
 Future<dynamic> showAlertStaticticsWidget(
@@ -36,8 +36,17 @@ Future<dynamic> showAlertStaticticsWidget(
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => StatisticsPage()),
+              MaterialPageRoute(builder: (context) => const StatisticsPage()),
             );
+          },
+        ),
+        CupertinoActionSheetAction(
+          child: const Text(
+            'Рекламировать товар',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+          ),
+          onPressed: () {
+            showAlertAddWidget(context, product);
           },
         ),
         CupertinoActionSheetAction(

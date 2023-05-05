@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_orders_admin/data/models/basket_admin_order_model.dart';
+import 'package:haji_market/admin/my_orders_admin/presentation/widgets/delivery_note_widget.dart';
 import 'package:haji_market/core/common/constants.dart';
-
+import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
+import '../../../../features/my_order/presentation/widget/delivery_note_widget.dart';
 import '../../data/bloc/basket_admin_cubit.dart';
 
 class DetailMyOrdersPage extends StatefulWidget {
@@ -56,8 +58,8 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
           status = 'Клиент отменил заказ';
           postStatus = 'end';
           postSecondStatus = 'end';
-          buttonText = 'Клиент отменил заказ';
-          buttonSecondText = 'Клиент отменил заказ';
+          buttonText = 'Завершить';
+          buttonSecondText = 'Завершить';
         }
         break;
       case 'rejected':
@@ -136,7 +138,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       child: ListTile(
                         leading: Image.network(
                           widget.basket.product![index].path!.first.isNotEmpty
-                              ? "http://80.87.202.73:8001/storage/${widget.basket.product![index].path!.first}"
+                              ? "http://185.116.193.73/storage/${widget.basket.product![index].path!.first}"
                               : '',
                           fit: BoxFit.cover,
                           height: 104,
@@ -222,7 +224,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                     Container(
                       decoration: const BoxDecoration(color: AppColors.kGray1),
                       padding: const EdgeInsets.all(8),
-                      child: Text('${status}'),
+                      child: Text(status),
                     )
                   ],
                 ),
@@ -410,17 +412,26 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                 ),
                 Row(
                   children: [
-                    Image.asset(
-                      'assets/images/kana.png',
-                      height: 40,
-                      width: 40,
+                    Container(
+                      height: 64,
+                      width: 64,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(31),
+                          image: DecorationImage(
+                            image: (widget.basket.user!.avatar != null)
+                                ? NetworkImage(
+                                    "http://185.116.193.73/storage/${widget.basket.user!.avatar}")
+                                : const AssetImage('assets/icons/profile2.png')
+                                    as ImageProvider,
+                            fit: BoxFit.cover,
+                          )),
                     ),
                     const SizedBox(
                       width: 20,
                     ),
-                    const Text(
-                      'Қанат Тұрғанбай',
-                      style: TextStyle(
+                    Text(
+                      '${widget.basket.user!.name}',
+                      style: const TextStyle(
                           color: AppColors.kGray700,
                           fontSize: 16,
                           fontWeight: FontWeight.w500),
@@ -428,6 +439,40 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   ],
                 )
               ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              print('qweqweqewq');
+              Get.to(DeliveryNoteAdmin(
+                  basketOrder: widget.basket as BasketAdminOrderModel));
+            },
+            child: SizedBox(
+              height: 35,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.only(left: 16),
+                    child: const Text(
+                      'Скачать накладную',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.kPrimaryColor,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  const Icon(
+                    Icons.download,
+                    color: AppColors.kPrimaryColor,
+                  )
+                ],
+              ),
             ),
           ),
           const SizedBox(
@@ -459,7 +504,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       13,
                     ),
                     child: Text(
-                      '${buttonText}',
+                      buttonText,
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
@@ -486,7 +531,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       13,
                     ),
                     child: Text(
-                      '${buttonSecondText}',
+                      buttonSecondText,
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,

@@ -17,7 +17,7 @@ class LoadedState extends CatsState{
 
 class ErrorState extends CatsState{
   String message;
-  ErrorState({required this.message}) : assert(message != null);
+  ErrorState({required this.message});
 
 }
 

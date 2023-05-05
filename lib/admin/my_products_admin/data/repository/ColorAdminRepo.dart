@@ -1,16 +1,14 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../features/home/data/model/Cats.dart';
-import '../models/admin_products_model.dart';
 
-const baseUrl = 'http://80.87.202.73:8001/api';
+const baseUrl = 'http://185.116.193.73/api';
 
 class ColorAdminRepository {
-  ColorToApi _colorToApi = ColorToApi();
+  final ColorToApi _colorToApi = ColorToApi();
 
   Future<List<Cats>> get() => _colorToApi.get();
 }

@@ -12,10 +12,10 @@ class SubCatsCubit extends Cubit<SubCatsState> {
   SubCatsCubit({required this.subCatRepository}) : super(InitState());
   List<Cats> _subCats = [];
 
-  Future<void> subCats(sub_cat_id) async {
+  Future<void> subCats(subCatId) async {
     try {
       emit(LoadingState());
-      final List<Cats> data = await subCatRepository.subCatApi(sub_cat_id);
+      final List<Cats> data = await subCatRepository.subCatApi(subCatId);
       _subCats = data;
 
       emit(LoadedState(data));
@@ -29,10 +29,10 @@ class SubCatsCubit extends Cubit<SubCatsState> {
     emit(LoadedState(_subCats));
   }
 
-  Future<void> searchSubCats(String cats, sub_cat_id) async {
+  Future<void> searchSubCats(String cats, subCatId) async {
     if (cats.isEmpty) return;
     if (_subCats.isEmpty) {
-      await subCats(sub_cat_id);
+      await subCats(subCatId);
     }
     List<Cats> temp = [];
     for (int i = 0; i < _subCats.length; i++) {
@@ -44,10 +44,10 @@ class SubCatsCubit extends Cubit<SubCatsState> {
     emit(LoadedState(temp));
   }
 
-  subCatById(String id, String cat_id) async {
+  subCatById(String id, String catId) async {
     if (id.isEmpty) return;
     if (_subCats.isEmpty) {
-      await subCats(cat_id);
+      await subCats(catId);
       // final List<City> data = await listRepository.cities();
       // _cities = data;
     }

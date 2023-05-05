@@ -1,15 +1,14 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/profile_month_blogger_statics.dart';
 
-const baseUrl = 'http://80.87.202.73:8001/api';
+const baseUrl = 'http://185.116.193.73/api';
 
 class ProfileMonthStaticsBloggerRepository {
-  ProfileMonthStaticsBloggerToApi _profileMonthStaticsBloggerToApinToApi =
+  final ProfileMonthStaticsBloggerToApi _profileMonthStaticsBloggerToApinToApi =
       ProfileMonthStaticsBloggerToApi();
 
   Future<dynamic> statics() => _profileMonthStaticsBloggerToApinToApi.statics();

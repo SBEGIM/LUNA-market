@@ -156,17 +156,17 @@ class _BaseAdminState extends State<BaseAdmin> {
       body: BlocBuilder<AdminNavigationCubit, AdminNavigationState>(
         builder: (context, state) {
           if (state is TapeAdminState) {
-            return TapeAdminPage();
+            return const TapeAdminPage();
           } else if (state is HomeAdminState) {
             return const MyProductsAdminPage();
           } else if (state is MyOrderAdminState) {
-            return MyOrdersAdminPage();
+            return const MyOrdersAdminPage();
           } else if (state is ChatAdminState) {
             return const ChatAdminPage();
           } else if (state is ProfileState) {
-            return ProfileAdminPage();
+            return const ProfileAdminPage();
           } else if (state is AdminAuthState) {
-            return AuthAdminPage();
+            return const AuthAdminPage();
           }
           return Container();
         },

@@ -17,6 +17,7 @@ class CatsCubit extends Cubit<CatsState> {
       emit(LoadingState());
       final List<Cats> data = await listRepository.cats();
       _cats = data;
+
       emit(LoadedState(data));
     } catch (e) {
       log(e.toString());

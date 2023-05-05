@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 
 class AbouShopAdminPage extends StatefulWidget {
-  AbouShopAdminPage({Key? key}) : super(key: key);
+  const AbouShopAdminPage({Key? key}) : super(key: key);
 
   @override
   State<AbouShopAdminPage> createState() => _AbouShopAdminPageState();

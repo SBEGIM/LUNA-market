@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/common/constants.dart';
+import '../../data/bloc/blogger_tape_upload_cubit.dart';
 
 class UploadProductVideoPage extends StatefulWidget {
-  const UploadProductVideoPage({super.key});
+  int id;
+
+  UploadProductVideoPage({required this.id, super.key});
 
   @override
   State<UploadProductVideoPage> createState() => _UploadProductVideoPageState();
@@ -19,10 +21,10 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
   final ImagePicker _picker = ImagePicker();
   bool change = false;
 
-  Future<void> _getImage() async {
+  Future<void> _getVideo() async {
     final image = change == true
-        ? await _picker.pickImage(source: ImageSource.camera)
-        : await _picker.pickImage(source: ImageSource.gallery);
+        ? await _picker.pickVideo(source: ImageSource.camera)
+        : await _picker.pickVideo(source: ImageSource.gallery);
 
     setState(() {
       _image = image;
@@ -84,20 +86,20 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                       middleText: '',
                       textConfirm: 'Камера',
                       textCancel: 'Галлерея',
-                      titlePadding: EdgeInsets.only(top: 40),
+                      titlePadding: const EdgeInsets.only(top: 40),
                       onConfirm: () {
                         change = true;
                         setState(() {
                           change;
                         });
-                        _getImage();
+                        _getVideo();
                       },
                       onCancel: () {
                         change = false;
                         setState(() {
                           change;
                         });
-                        _getImage();
+                        _getVideo();
                       });
                 }
               },
@@ -118,7 +120,7 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                             ? AppColors.kPrimaryColor
                             : Colors.grey,
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       const Text(
                         'Добавить видео',
                         style: TextStyle(
@@ -144,8 +146,11 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
         color: Colors.white,
         padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
         child: InkWell(
-            onTap: () {
-              // Get.to(BasketOrderPage());
+            onTap: () async {
+              if (_image != null) {
+                BlocProvider.of<BloggerTapeUploadCubit>(context)
+                    .uploadVideo(widget.id.toString(), _image!.path);
+              }
               Navigator.pop(context);
             },
             child: SizedBox(

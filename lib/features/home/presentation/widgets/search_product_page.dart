@@ -5,13 +5,11 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
-import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
 import '../../../drawer/data/bloc/product_state.dart';
 import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
-import '../../../home/data/model/Cats.dart';
 
 class SearchProductPage extends StatefulWidget {
-  SearchProductPage({Key? key}) : super(key: key);
+  const SearchProductPage({Key? key}) : super(key: key);
 
   @override
   State<SearchProductPage> createState() => _SearchProductPageState();
@@ -80,7 +78,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
                 ),
                 border: InputBorder.none,
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
               ),
             ),
@@ -92,7 +90,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
               return Center(
                 child: Text(
                   state.message,
-                  style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                 ),
               );
             }
@@ -118,7 +116,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
                 // ),
                 ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: state.productModel.length,
                     itemBuilder: (context, index) {
                       return Column(
@@ -174,7 +172,7 @@ class UnderCatalogListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 47,
-      padding: EdgeInsets.only(left: 16, right: 18),
+      padding: const EdgeInsets.only(left: 16, right: 18),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

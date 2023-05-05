@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/my_order/presentation/widget/my_order_card_widget.dart';
-import 'package:haji_market/features/my_order/presentation/widget/my_order_status_page.dart';
-import 'package:haji_market/features/profile/data/presentation/widgets/show_dialog_redirect.dart';
 import 'package:haji_market/features/my_order/presentation/widget/show_filter_dialog.dart';
 
 import '../../../drawer/data/bloc/basket_cubit.dart';
@@ -34,16 +33,15 @@ class _MyOrderPageState extends State<MyOrderPage> {
           iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
           backgroundColor: Colors.white,
           elevation: 0,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: InkWell(
-                  onTap: () {
-                    showFilterDialog(context);
-                  },
-                  child: SvgPicture.asset('assets/icons/filter.svg')),
-            )
-          ],
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: AppColors.kPrimaryColor,
+            ),
+          ),
           centerTitle: true,
           title: const Text(
             'История заказов',
@@ -57,7 +55,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
               return Center(
                 child: Text(
                   state.message,
-                  style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                 ),
               );
             }

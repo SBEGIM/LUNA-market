@@ -1,11 +1,6 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
-import '../../../../features/basket/data/models/basket_show_model.dart';
 import '../models/basket_admin_order_model.dart';
-import '../models/basket_admin_show_model.dart';
 import '../repository/basket_admin_repo.dart';
 import 'basket_admin_state.dart';
 
@@ -27,9 +22,9 @@ class BasketAdminCubit extends Cubit<BasketAdminState> {
     }
   }
 
-  Future<void> basketStatus(String status, String id, product_id) async {
+  Future<void> basketStatus(String status, String id, productId) async {
     try {
-      await basketRepository.basketStatus(status, id, product_id);
+      await basketRepository.basketStatus(status, id, productId);
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));

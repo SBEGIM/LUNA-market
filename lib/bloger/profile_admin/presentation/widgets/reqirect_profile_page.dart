@@ -12,7 +12,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../../auth/data/bloc/edit_blogger_statet.dart';
 
 class ReqirectProfilePage extends StatefulWidget {
-  ReqirectProfilePage({Key? key}) : super(key: key);
+  const ReqirectProfilePage({Key? key}) : super(key: key);
 
   @override
   State<ReqirectProfilePage> createState() => _ReqirectProfilePageState();
@@ -65,7 +65,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
       body: BlocConsumer<EditBloggerCubit, EditBloggerState>(
           listener: (context, state) {
         if (state is LoadedState) {
-          Get.to(() => ProfileBloggerPage());
+          Get.to(() => const ProfileBloggerPage());
         }
       }, builder: (context, state) {
         if (state is InitState) {
@@ -84,7 +84,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           middleText: '',
                           textConfirm: 'Камера',
                           textCancel: 'Галлерея',
-                          titlePadding: EdgeInsets.only(top: 40),
+                          titlePadding: const EdgeInsets.only(top: 40),
                           onConfirm: () {
                             change = true;
                             setState(() {
@@ -109,7 +109,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                         image: DecorationImage(
                           image: _box.read('blogger_avatar') != null
                               ? NetworkImage(
-                                  "http://80.87.202.73:8001/storage/${_box.read('blogger_avatar')}")
+                                  "http://185.116.193.73/storage/${_box.read('blogger_avatar')}")
                               : const AssetImage('assets/icons/profile2.png')
                                   as ImageProvider,
                           fit: BoxFit.cover,
@@ -131,7 +131,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                 color: AppColors.kGray700,
               ),
               Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
                     const Text(
@@ -200,7 +200,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                               width: 24,
                             ),
                             title: TextField(
-                              keyboardType: TextInputType.phone,
+                              keyboardType: TextInputType.text,
                               // inputFormatters: [maskFormatter],
                               controller: passwordController,
                               decoration: const InputDecoration(
@@ -220,7 +220,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                               width: 24,
                             ),
                             title: TextField(
-                              keyboardType: TextInputType.phone,
+                              keyboardType: TextInputType.text,
                               // inputFormatters: [maskFormatter],
                               controller: reapatPasswordController,
                               decoration: const InputDecoration(

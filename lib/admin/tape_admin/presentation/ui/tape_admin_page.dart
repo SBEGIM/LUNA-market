@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/admin/tape_admin/presentation/ui/widgets/show_alert_tape_widget.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/home/presentation/widgets/gridlayout_categor.dart';
 
 // import '../widgets/grid_tape_list.dart';
 
 class TapeAdminPage extends StatefulWidget {
-  TapeAdminPage({Key? key}) : super(key: key);
+  const TapeAdminPage({Key? key}) : super(key: key);
 
   @override
   State<TapeAdminPage> createState() => _TapeAdminPageState();
@@ -17,7 +15,7 @@ class _TapeAdminPageState extends State<TapeAdminPage> {
   final List<Map> myProducts =
       List.generate(6, (index) => {"id": index, "name": "Product "}).toList();
 
-  int _value = 1;
+  final int _value = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

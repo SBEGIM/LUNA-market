@@ -3,14 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/bloger/admin_app/presentation/base_blogger.dart';
-import 'package:haji_market/bloger/shops/BlogShopsPage.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/auth/presentation/ui/forgot_password.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:haji_market/features/home/presentation/ui/home_page.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../../data/bloc/login_blogger_cubit.dart';
 import '../../data/bloc/login_blogger_state.dart';
@@ -45,7 +41,7 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
       if (state is LoadedState) {
         // Get.to(() => ());
 
-        Get.to(() => BaseBlogger(
+        Get.to(() => const BaseBlogger(
               index: 0,
             ));
 
@@ -143,7 +139,7 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                             controller: passwordControllerAuth,
                             obscureText: !_passwordVisible,
                             onChanged: (value) {
-                              passwordControllerAuth.text.length == 0
+                              passwordControllerAuth.text.isEmpty
                                   ? __visibleIconView = false
                                   : __visibleIconView = true;
                               if (passwordControllerAuth.text.isNotEmpty) {
@@ -233,7 +229,7 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
         return Center(
           child: Text(
             state.message,
-            style: TextStyle(color: Colors.redAccent),
+            style: const TextStyle(color: Colors.redAccent),
           ),
         );
       } else {

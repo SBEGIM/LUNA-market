@@ -72,7 +72,7 @@ class _FavoriteProductsCardWidgetState
                   children: [
                     Image.network(
                       widget.product.path!.isNotEmpty
-                          ? "http://80.87.202.73:8001/storage/${widget.product.path!.first}"
+                          ? "http://185.116.193.73/storage/${widget.product.path!.first}"
                           : '',
                     ),
                     Padding(
@@ -154,7 +154,7 @@ class _FavoriteProductsCardWidgetState
                 children: [
                   Container(
                     width: 213,
-                    padding: EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.only(right: 6),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -205,7 +205,7 @@ class _FavoriteProductsCardWidgetState
                         itemCount: 5,
                         // unratedColor: const Color(0x30F11712),
                         itemSize: 15,
-                        unratedColor: Color(0xFFFFC107),
+                        unratedColor: const Color(0xFFFFC107),
                         // itemPadding:
                         // const EdgeInsets.symmetric(horizontal: 4.0),
                         ratingWidget: RatingWidget(
@@ -265,7 +265,7 @@ class _FavoriteProductsCardWidgetState
                             SizedBox(
                               width: 75,
                               child: Text(
-                                '${compoundPrice} ₸ ',
+                                '$compoundPrice ₸ ',
                                 style: const TextStyle(
                                     color: Colors.red,
                                     fontWeight: FontWeight.w500,
@@ -295,9 +295,9 @@ class _FavoriteProductsCardWidgetState
                     height: 7,
                   ),
 
-                  Container(
+                  SizedBox(
                       height: 32,
-                      width: 196,
+                      width: 202, //196
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -343,7 +343,7 @@ class _FavoriteProductsCardWidgetState
                           Row(
                             children: [
                               count < 1
-                                  ? SizedBox()
+                                  ? const SizedBox()
                                   : Visibility(
                                       visible: isvisible,
                                       child: Row(
@@ -423,12 +423,6 @@ class _FavoriteProductsCardWidgetState
                                             },
                                             child: Container(
                                               padding: const EdgeInsets.all(4),
-                                              // child: SvgPicture.asset(
-                                              //     'assets/icons/add_1.svg'),
-                                              child: const Icon(
-                                                Icons.add,
-                                                color: AppColors.kPrimaryColor,
-                                              ),
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
@@ -443,6 +437,12 @@ class _FavoriteProductsCardWidgetState
                                                         1), // changes position of shadow
                                                   ),
                                                 ],
+                                              ),
+                                              // child: SvgPicture.asset(
+                                              //     'assets/icons/add_1.svg'),
+                                              child: const Icon(
+                                                Icons.add,
+                                                color: AppColors.kPrimaryColor,
                                               ),
                                             ),
                                           ),

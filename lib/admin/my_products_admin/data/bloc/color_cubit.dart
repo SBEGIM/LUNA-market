@@ -22,6 +22,7 @@ class ColorCubit extends Cubit<ColorState> {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
+    return null;
   }
 
   ColorById(

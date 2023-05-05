@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 
 class CityPage extends StatefulWidget {
-  CityPage({Key? key}) : super(key: key);
+  const CityPage({Key? key}) : super(key: key);
 
   @override
   State<CityPage> createState() => _CityPageState();
@@ -29,7 +30,8 @@ class _CityPageState extends State<CityPage> {
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
           child: CustomBackButton(onTap: () {
-            Navigator.pop(context);
+            // Navigator.pop(context);
+            Get.back(result: 'Аксай');
           }),
         ),
         elevation: 0,

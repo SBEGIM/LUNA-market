@@ -1,18 +1,13 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
-import 'package:haji_market/features/home/data/model/PopularShops.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/shops_drawer_model.dart';
-
-const baseUrl = 'http://80.87.202.73:8001/api';
+const baseUrl = 'http://185.116.193.73/api';
 
 class ProductRepository {
-  ProductApi _productApi = ProductApi();
+  final ProductApi _productApi = ProductApi();
 
   Future<List<ProductModel>> product() => _productApi.product();
 }
@@ -106,11 +101,11 @@ class ProductApi {
     }
 
     Map<String, dynamic> body = {
-      "rating": "${rating}",
-      "cat_id": "${CatId}",
-      "search": "${search}",
-      "min_price": "${price_start}",
-      "max_price": "${price_end}",
+      "rating": "$rating",
+      "cat_id": "$CatId",
+      "search": search,
+      "min_price": "$price_start",
+      "max_price": "$price_end",
     };
 
     queryParams.addAll(body);

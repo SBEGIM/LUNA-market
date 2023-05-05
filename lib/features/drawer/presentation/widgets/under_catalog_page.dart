@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/sub_cats_state.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
-import 'package:haji_market/features/home/data/bloc/cats_cubit.dart';
 
 import '../../../home/data/model/Cats.dart';
 
 class UnderCatalogPage extends StatefulWidget {
   final Cats cats;
-  UnderCatalogPage({required this.cats, Key? key}) : super(key: key);
+  const UnderCatalogPage({required this.cats, Key? key}) : super(key: key);
 
   @override
   State<UnderCatalogPage> createState() => _UnderCatalogPageState();
@@ -47,7 +47,7 @@ class _UnderCatalogPageState extends State<UnderCatalogPage> {
           title: Container(
             width: 311,
             height: 40,
-            margin: EdgeInsets.only(right: 16),
+            margin: const EdgeInsets.only(right: 16),
             decoration: BoxDecoration(
                 color: const Color(0xFFF8F8F8),
                 borderRadius: BorderRadius.circular(10)),
@@ -88,7 +88,7 @@ class _UnderCatalogPageState extends State<UnderCatalogPage> {
               return Center(
                 child: Text(
                   state.message,
-                  style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                 ),
               );
             }
@@ -115,6 +115,7 @@ class _UnderCatalogPageState extends State<UnderCatalogPage> {
                 const SizedBox(height: 5),
                 InkWell(
                     onTap: () {
+                      GetStorage().write('CatId', widget.cats.id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -130,13 +131,15 @@ class _UnderCatalogPageState extends State<UnderCatalogPage> {
                 ),
                 ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: state.cats.length,
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
                           InkWell(
                               onTap: () {
+                                GetStorage()
+                                    .write('CatId', state.cats[index].id);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -174,7 +177,7 @@ class UnderCatalogListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 47,
-      padding: EdgeInsets.only(left: 16, right: 18),
+      padding: const EdgeInsets.only(left: 16, right: 18),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

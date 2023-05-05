@@ -4,24 +4,24 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import '../models/blogger_shop_products_model.dart';
 
-const baseUrl = 'http://80.87.202.73:8001/api';
+const baseUrl = 'http://185.116.193.73/api';
 
 class BloggerShopProductsRepository {
-  ProductToApi _productToApi = ProductToApi();
+  final ProductToApi _productToApi = ProductToApi();
 
-  Future<List<BloggerShopProductModel>> products(String? name, shop_id) =>
-      _productToApi.products(name, shop_id);
+  Future<List<BloggerShopProductModel>> products(String? name, shopId) =>
+      _productToApi.products(name, shopId);
 }
 
 class ProductToApi {
   final _box = GetStorage();
 
   Future<List<BloggerShopProductModel>> products(
-      String? name, int shop_id) async {
+      String? name, int shopId) async {
     try {
       final String? token = _box.read('token');
       final response = await http.get(
-          Uri.parse('$baseUrl/seller/products?shop_id=$shop_id&name=$name'),
+          Uri.parse('$baseUrl/seller/products?shop_id=$shopId&name=$name'),
           headers: {"Authorization": "Bearer $token"});
 
       final data = jsonDecode(response.body);

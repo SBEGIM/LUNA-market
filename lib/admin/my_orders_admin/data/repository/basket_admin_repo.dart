@@ -5,16 +5,16 @@ import 'package:http/http.dart' as http;
 
 import '../models/basket_admin_order_model.dart';
 
-const baseUrl = 'http://80.87.202.73:8001/api';
+const baseUrl = 'http://185.116.193.73/api';
 
 class BasketAdminRepository {
-  Basket _basket = Basket();
+  final Basket _basket = Basket();
 
   Future<List<BasketAdminOrderModel>> basketOrderShow() =>
       _basket.basketOrderShow();
 
-  Future<void> basketStatus(String status, id, product_id) =>
-      _basket.basketStatus(status, id, product_id);
+  Future<void> basketStatus(String status, id, productId) =>
+      _basket.basketStatus(status, id, productId);
 }
 
 class Basket {
@@ -34,12 +34,12 @@ class Basket {
         .toList();
   }
 
-  Future<void> basketStatus(String status, id, product_id) async {
+  Future<void> basketStatus(String status, id, productId) async {
     final String? token = _box.read('token');
 
     final response = await http.post(Uri.parse("$baseUrl/basket/status"),
         headers: {"Authorization": "Bearer $token"},
-        body: {'status': status, 'id': id, 'product_id': product_id});
+        body: {'status': status, 'id': id, 'product_id': productId});
 
     return;
   }

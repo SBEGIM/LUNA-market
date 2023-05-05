@@ -1,5 +1,3 @@
-import 'package:haji_market/features/tape/presentation/ui/detail_tape_card_page.dart';
-
 class ProductModel {
   ProductModel({
     int? id,
@@ -220,6 +218,64 @@ class Shop {
     map['image'] = _image;
     map['created_at'] = _createdAt;
     map['updated_at'] = _updatedAt;
+    return map;
+  }
+}
+
+class Review {
+  Review({
+    int? first,
+    int? second,
+    int? three,
+    int? four,
+    int? five,
+    int? rating,
+    int? count,
+  }) {
+    _first = first;
+    _second = second;
+    _three = three;
+    _four = four;
+    _five = five;
+    _rating = rating;
+    _count = count;
+  }
+
+  Review.fromJson(dynamic json) {
+    _first = json['1'];
+    _second = json['2'];
+    _three = json['3'];
+    _four = json['4'];
+    _five = json['5'];
+    _rating = json['rating'];
+    _count = json['count'];
+  }
+  int? _first;
+  int? _second;
+  int? _three;
+  int? _four;
+  int? _five;
+  int? _rating;
+  int? _count;
+
+  int? get first => _first;
+  int? get second => _second;
+  int? get three => _three;
+  int? get four => _four;
+  int? get five => _five;
+  int? get rating => _rating;
+  int? get count => _count;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['1'] = _first;
+    map['2'] = _second;
+    map['3'] = _three;
+    map['4'] = _four;
+    map['5'] = _five;
+    map['rating'] = _rating;
+    map['count'] = _count;
+
     return map;
   }
 }

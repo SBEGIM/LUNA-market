@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
@@ -6,10 +7,12 @@ import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 
 import '../../../../features/home/data/model/Cats.dart';
+import '../../../../oferta.dart';
+import '../../../../politic.dart';
 import '../../../my_products_admin/presentation/widgets/cats_admin_page.dart';
 
 class CoopRequestPage extends StatefulWidget {
-  CoopRequestPage({Key? key}) : super(key: key);
+  const CoopRequestPage({Key? key}) : super(key: key);
 
   @override
   State<CoopRequestPage> createState() => _CoopRequestPageState();
@@ -21,6 +24,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
 
   TextEditingController iinController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController checkController = TextEditingController();
   TextEditingController catController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -34,7 +38,8 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
+
       backgroundColor: AppColors.kBackgroundColor,
       // appBar: AppBar(
       //     iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
@@ -49,136 +54,164 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
       //         fontWeight: FontWeight.w500,
       //       ),
       //     )),
-      body: ListView(
-        // physics:  NeverScrollableScrollPhysics(),
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
-            child: ListView(
-              shrinkWrap: true,
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Укажите данные Вашего бизнеса',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                      color: AppColors.kGray900),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                FieldsCoopRequest(
-                  titleText: 'ИИН/БИН ',
-                  hintText: 'Введите ИИН/БИН',
-                  star: false,
-                  arrow: false,
-                  controller: iinController,
-                ),
-                FieldsCoopRequest(
-                  titleText: 'Название компании ',
-                  hintText: 'Введите название компании',
-                  star: false,
-                  arrow: false,
-                  controller: nameController,
-                ),
-                FieldsCoopRequest(
-                  titleText: 'Основная категория товаров ',
-                  hintText: cats.name.toString(),
-                  star: false,
-                  arrow: true,
-                  // controller: catController,
-                  onPressed: () async {
-                    final data = await Get.to(CatsAdminPage());
-                    if (data != null) {
-                      final Cats cat = data;
+      body: Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: ListView(
+          // physics:  NeverScrollableScrollPhysics(),
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 16, bottom: 8),
+              child: ListView(
+                shrinkWrap: true,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Укажите данные Вашего бизнеса',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                        color: AppColors.kGray900),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  FieldsCoopRequest(
+                    titleText: 'ИИН/БИН ',
+                    hintText: 'Введите ИИН/БИН',
+                    star: false,
+                    arrow: false,
+                    controller: iinController,
+                  ),
+                  FieldsCoopRequest(
+                    titleText: 'Название компании или физ лицо ',
+                    hintText: 'Введите название компании',
+                    star: false,
+                    arrow: false,
+                    controller: nameController,
+                  ),
+                  FieldsCoopRequest(
+                    titleText: 'Счёт',
+                    hintText: 'Введите счёт',
+                    star: false,
+                    arrow: false,
+                    controller: checkController,
+                  ),
+                  FieldsCoopRequest(
+                    titleText: 'Основная категория товаров ',
+                    hintText: cats.name.toString(),
+                    star: false,
+                    arrow: true,
+                    // controller: catController,
+                    onPressed: () async {
+                      final data = await Get.to(const CatsAdminPage());
+                      if (data != null) {
+                        final Cats cat = data;
 
-                      setState(() {});
-                      catController.text = cat.id.toString();
-                      cats = cat;
-                    }
-                  },
+                        setState(() {});
+                        catController.text = cat.id.toString();
+                        cats = cat;
+                      }
+                    },
+                  ),
+                  FieldsCoopRequest(
+                    titleText: 'Контактное имя ',
+                    hintText: 'Введите контактное имя',
+                    star: false,
+                    arrow: false,
+                    controller: userNameController,
+                  ),
+                  FieldsCoopRequest(
+                    titleText: 'Мобильный телефон ',
+                    hintText: 'Введите мобильный телефон ',
+                    star: false,
+                    arrow: false,
+                    controller: phoneController,
+                  ),
+                  FieldsCoopRequest(
+                    titleText: 'Email ',
+                    hintText: 'Введите Email',
+                    star: false,
+                    arrow: false,
+                    controller: emailController,
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: Checkbox(
+                    visualDensity:
+                        const VisualDensity(horizontal: 0, vertical: 0),
+                    checkColor: Colors.white,
+                    // fillColor: MaterialStateProperty.resolveWith(Colors.),
+                    value: isChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked = value!;
+                      });
+                    },
+                  ),
                 ),
-                FieldsCoopRequest(
-                  titleText: 'Контактное имя ',
-                  hintText: 'Введите контактное имя',
-                  star: false,
-                  arrow: false,
-                  controller: userNameController,
-                ),
-                FieldsCoopRequest(
-                  titleText: 'Мобильный телефон ',
-                  hintText: 'Введите мобильный телефон ',
-                  star: false,
-                  arrow: false,
-                  controller: phoneController,
-                ),
-                FieldsCoopRequest(
-                  titleText: 'Email ',
-                  hintText: 'Введите Email',
-                  star: false,
-                  arrow: false,
-                  controller: emailController,
+                Container(
+                  alignment: Alignment.bottomLeft,
+                  child: RichText(
+                    textAlign: TextAlign.left,
+                    text: TextSpan(
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        const TextSpan(
+                          text: "принимаю ",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w400),
+                        ),
+                        TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => Get.to(const Oferta()),
+                          text: 'Пользовательское \nсоглашение ',
+                          style: const TextStyle(
+                              color: AppColors.kPrimaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        const TextSpan(
+                          text: "и даю согласие  на  \nперсональных ",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w400),
+                        ),
+                        const TextSpan(
+                          text: "обработку соответсвии \nс ",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w400),
+                        ),
+                        TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => Get.to(const Politic()),
+                          text: 'Политикой  Конфиденциальности',
+                          style: const TextStyle(
+                              color: AppColors.kPrimaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                alignment: Alignment.topLeft,
-                child: Checkbox(
-                  visualDensity:
-                      const VisualDensity(horizontal: 0, vertical: 0),
-                  checkColor: Colors.white,
-                  // fillColor: MaterialStateProperty.resolveWith(Colors.),
-                  value: isChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      isChecked = value!;
-                    });
-                  },
-                ),
-              ),
-              Container(
-                alignment: Alignment.bottomLeft,
-                child: RichText(
-                  textAlign: TextAlign.left,
-                  text: const TextSpan(
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: "Я согласен на обработку персональных \n",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w400),
-                      ),
-                      TextSpan(
-                        text: "данных и ",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      TextSpan(
-                        text: "с условиями \n",
-                        style: TextStyle(
-                            fontSize: 16, color: AppColors.kPrimaryColor),
-                      ),
-                      TextSpan(
-                        text: "Пользовательского соглашения",
-                        style: TextStyle(
-                            fontSize: 16, color: AppColors.kPrimaryColor),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+            const SizedBox(
+              height: 60,
+            ),
+          ],
+        ),
       ),
       bottomSheet: Container(
         color: Colors.white,
@@ -191,10 +224,12 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                   emailController.text.isNotEmpty &&
                   userNameController.text.isNotEmpty &&
                   catController.text.isNotEmpty &&
+                  checkController.text.isNotEmpty &&
                   isChecked == true) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AuthAdminPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const AuthAdminPage()),
                 );
               } else {
                 Get.snackbar('Ошибка', 'Заполните все данные *',
@@ -229,6 +264,8 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                 ))),
       ),
     );
+
+    //  bottomSheet: );
   }
 }
 
@@ -282,7 +319,7 @@ class FieldsCoopRequest extends StatelessWidget {
           ),
           Container(
             height: 47,
-            padding: EdgeInsets.only(left: 12),
+            padding: const EdgeInsets.only(left: 12),
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(10)),

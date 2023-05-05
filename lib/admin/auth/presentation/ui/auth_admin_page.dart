@@ -10,7 +10,7 @@ import '../../data/bloc/login_admin_cubit.dart';
 import '../../data/bloc/login_admin_state.dart';
 
 class AuthAdminPage extends StatefulWidget {
-  AuthAdminPage({Key? key}) : super(key: key);
+  const AuthAdminPage({Key? key}) : super(key: key);
 
   @override
   State<AuthAdminPage> createState() => _AuthAdminPageState();
@@ -126,7 +126,7 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
                               ),
                             ),
                             onChanged: (value) {
-                              passwordController.text.length == 0
+                              passwordController.text.isEmpty
                                   ? __visibleIconView = false
                                   : __visibleIconView = true;
                               if (passwordController.text.isNotEmpty) {
@@ -206,7 +206,7 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
             return Center(
               child: Text(
                 state.message,
-                style: TextStyle(color: Colors.redAccent),
+                style: const TextStyle(color: Colors.redAccent),
               ),
             );
           } else {

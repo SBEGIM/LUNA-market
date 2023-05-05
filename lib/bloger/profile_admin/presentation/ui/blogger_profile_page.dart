@@ -17,7 +17,7 @@ import '../widgets/reqirect_profile_page.dart';
 import 'blogger_cards_page.dart';
 
 class ProfileBloggerPage extends StatefulWidget {
-  ProfileBloggerPage({Key? key}) : super(key: key);
+  const ProfileBloggerPage({Key? key}) : super(key: key);
 
   @override
   State<ProfileBloggerPage> createState() => _ProfileBloggerPageState();
@@ -53,17 +53,18 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
         // ),
         centerTitle: true,
         title: const Text(
-          'Профиль продавца',
+          'Профиль блогера',
           style: TextStyle(
               color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
         ),
-        actions: [
-          Padding(
-              padding: EdgeInsets.only(right: 16.0),
-              child: SvgPicture.asset('assets/icons/notification.svg'))
-        ],
+        // actions: [
+        //   Padding(
+        //       padding: const EdgeInsets.only(right: 16.0),
+        //       child: SvgPicture.asset('assets/icons/notification.svg'))
+        // ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
             horizontalTitleGap: 12,
@@ -75,7 +76,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                   image: DecorationImage(
                     image: _box.read('blogger_avatar') != null
                         ? NetworkImage(
-                            "http://80.87.202.73:8001/storage/${_box.read('blogger_avatar')}")
+                            "http://185.116.193.73/storage/${_box.read('blogger_avatar')}")
                         : const AssetImage('assets/icons/profile2.png')
                             as ImageProvider,
                     fit: BoxFit.cover,
@@ -83,7 +84,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
             ),
             title: Text(
               _box.read('blogger_name'),
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.w700,
                   color: AppColors.kGray900,
                   fontSize: 16),
@@ -93,7 +94,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ReqirectProfilePage()),
+                      builder: (context) => const ReqirectProfilePage()),
                 );
               },
               child: const Text(
@@ -105,90 +106,97 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
-
-          BlocConsumer<ProfileStaticsBloggerCubit, ProfileStaticsBloggerState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              if (state is LoadedState) {
-                return Container(
-                  padding: EdgeInsets.only(top: 16, left: 16),
-                  alignment: Alignment.bottomLeft,
-                  height: 76,
-                  width: 343,
-                  decoration: BoxDecoration(
-                    color: AppColors.kPrimaryColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.start,
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              state.loadedProfile.videoReview.toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              'Видео обзоров',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: 30),
-                        Column(
-                          children: [
-                            Text(
-                              state.loadedProfile.subscribers.toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              'Подписчиков',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: 30),
-                        Column(
-                          children: [
-                            Text(
-                              state.loadedProfile.sales.toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              'Продаж',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ]),
-                );
-              } else {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
-              }
-            },
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.center,
+            width: 500,
+            height: 76,
+            child: BlocConsumer<ProfileStaticsBloggerCubit,
+                ProfileStaticsBloggerState>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                if (state is LoadedState) {
+                  return Container(
+                    padding: const EdgeInsets.only(top: 16, left: 16),
+                    alignment: Alignment.center,
+                    //  height: 76,
+                    // width: 343,
+                    decoration: BoxDecoration(
+                      color: AppColors.kPrimaryColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                state.loadedProfile.videoReview.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const Text(
+                                'Видео обзоров',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 40),
+                          Column(
+                            children: [
+                              Text(
+                                state.loadedProfile.subscribers.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const Text(
+                                'Подписчиков',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 40),
+                          Column(
+                            children: [
+                              Text(
+                                state.loadedProfile.sales.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const Text(
+                                'Продаж',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        ]),
+                  );
+                } else {
+                  return const Center(
+                      child: CircularProgressIndicator(
+                          color: Colors.indigoAccent));
+                }
+              },
+            ),
           ),
 
           // ListTile(
@@ -230,14 +238,14 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
           // const Divider(
           //   color: AppColors.kGray400,
           // ),
-          SizedBox(height: 8),
+          const SizedBox(height: 12),
 
           InkWell(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => StatisticsBloggerShowPage()),
+                    builder: (context) => const StatisticsBloggerShowPage()),
               );
             },
             child: Padding(
@@ -269,7 +277,8 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => BloggerCardPage()),
+                MaterialPageRoute(
+                    builder: (context) => const BloggerCardPage()),
               );
             },
             child: Padding(
@@ -348,7 +357,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                       Text(
                         'Выйти',
                         style: TextStyle(
-                            color: Color(0xffFF3347C),
+                            color: Color(0xffff3347c),
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
                       ),

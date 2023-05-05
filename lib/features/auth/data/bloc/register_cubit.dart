@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:haji_market/features/auth/data/bloc/register_state.dart';
 import '../../../app/presentaion/base.dart';
 import '../DTO/register.dart';
@@ -19,10 +18,8 @@ class RegisterCubit extends Cubit<RegisterState> {
       emit(LoadingState());
       final data = await registerRepository.register(register);
       if (data == 200) {
-        emit(LoadedState());
-        Get.to(() => const Base(index: 0));
-
-        emit(InitState());
+        // emit(InitState());
+        Get.offAll(() => const Base(index: 0));
       }
       if (data == 400) {
         emit(InitState());

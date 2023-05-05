@@ -5,14 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
-import 'package:haji_market/features/auth/data/DTO/register.dart';
 import 'package:haji_market/features/auth/data/bloc/sms_state.dart';
 
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
-import 'package:haji_market/features/auth/presentation/widgets/forget_password_modal_bottom.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-import '../../data/bloc/login_cubit.dart';
 import '../../data/bloc/sms_cubit.dart';
 import '../widgets/login_forget_password_modal_bottom.dart';
 
@@ -89,7 +85,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               controller: phoneControllerAuth,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
-                                hintText: '+7(000) 000-00-00',
+                                hintText: 'Номер телефона',
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white),
                                   // borderRadius: BorderRadius.circular(3),
@@ -148,7 +144,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           return Center(
             child: Text(
               state.message,
-              style: TextStyle(color: Colors.redAccent),
+              style: const TextStyle(color: Colors.redAccent),
             ),
           );
         } else {

@@ -8,26 +8,33 @@ import '../repository/tape_repo.dart';
 
 class TapeCubit extends Cubit<TapeState> {
   final TapeRepository tapeRepository;
-  List<TapeModel>? data;
+  List<TapeModel> array = [];
 
   TapeCubit({required this.tapeRepository}) : super(InitState());
   Future<void> tapes(bool? inSub, bool? inFav, String? search) async {
     try {
       emit(LoadingState());
-      data = await tapeRepository.tapes(inSub, inFav, search);
-
-      emit(LoadedState(data!));
+      final data = await tapeRepository.tapes(inSub, inFav, search);
+      if (data.isEmpty) {
+        emit(NoDataState());
+      } else {
+        emit(LoadedState(data));
+        data.forEach((element) {
+          array.add(element);
+        });
+      }
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
 
-  update(TapeModel tape, int index, bool? inSub, bool? inBas, bool? inFav) {
+  update(TapeModel tape, int index, bool? inSub, bool? inBas, bool? inFav,
+      bool? inReport) {
     // data!.removeAt(index);
 
     try {
-      final TapeModel tape_model = TapeModel(
+      final TapeModel tapeModel = TapeModel(
           id: tape.id,
           name: tape.name,
           catName: tape.catName,
@@ -37,14 +44,17 @@ class TapeCubit extends Cubit<TapeState> {
           video: tape.video,
           image: tape.image,
           inBasket: inBas ?? tape.inBasket,
+          inReport: inReport ?? tape.inReport,
           inFavorite: inFav ?? tape.inFavorite,
           inSubscribe: inSub ?? tape.inSubscribe,
           shop: tape.shop);
 
       // data!.removeAt(index);
       //data!.u(index);
-      data![index] = tape_model;
-      emit(LoadedState(data!));
+
+      array[index] = tapeModel;
+
+      // emit(LoadedState(data!));
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));

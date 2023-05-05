@@ -6,42 +6,45 @@ import 'package:http/http.dart' as http;
 
 import '../models/admin_products_model.dart';
 
-const baseUrl = 'http://80.87.202.73:8001/api';
+const baseUrl = 'http://185.116.193.73/api';
 
 class ProductAdminRepository {
-  ProductToApi _productToApi = ProductToApi();
+  final ProductToApi _productToApi = ProductToApi();
 
   Future<dynamic> store(
-          String price,
-          String count,
-          String compound,
-          String cat_id,
-          String brand_id,
-          String description,
-          String name,
-          String height,
-          String width,
-          String massa,
-          String articul) =>
-      _productToApi.store(price, count, compound, cat_id, brand_id, description,
-          name, height, width, massa, articul);
-
-  Future<dynamic> update(
     String price,
     String count,
     String compound,
-    String cat_id,
-    String brand_id,
+    String catId,
+    String brandId,
     String description,
     String name,
     String height,
     String width,
     String massa,
-    String product_id,
     String articul,
+    String currency,
   ) =>
-      _productToApi.update(price, count, compound, cat_id, brand_id,
-          description, name, height, width, massa, product_id, articul);
+      _productToApi.store(price, count, compound, catId, brandId, description,
+          name, height, width, massa, articul, currency);
+
+  Future<dynamic> update(
+    String price,
+    String count,
+    String compound,
+    String catId,
+    String brandId,
+    String description,
+    String name,
+    String height,
+    String width,
+    String massa,
+    String productId,
+    String articul,
+    String currency,
+  ) =>
+      _productToApi.update(price, count, compound, catId, brandId, description,
+          name, height, width, massa, productId, articul, currency);
 
   Future<List<AdminProductsModel>> products(String? name) =>
       _productToApi.products(name);
@@ -54,14 +57,15 @@ class ProductToApi {
     String price,
     String count,
     String compound,
-    String cat_id,
-    String brand_id,
+    String catId,
+    String brandId,
     String description,
     String name,
     String height,
     String width,
     String massa,
     String articul,
+    String currency,
   ) async {
     final response =
         await http.post(Uri.parse('$baseUrl/seller/product/store'), body: {
@@ -78,6 +82,7 @@ class ProductToApi {
       'width': width,
       'massa': massa,
       'articul': articul,
+      'currency': currency,
     });
 
     return response.statusCode;
@@ -87,15 +92,16 @@ class ProductToApi {
     String price,
     String count,
     String compound,
-    String cat_id,
-    String brand_id,
+    String catId,
+    String brandId,
     String description,
     String name,
     String height,
     String width,
     String massa,
-    String product_id,
+    String productId,
     String articul,
+    String currency,
   ) async {
     final response =
         await http.post(Uri.parse('$baseUrl/seller/product/update'), body: {
@@ -111,8 +117,9 @@ class ProductToApi {
       'height': height,
       'width': width,
       'massa': massa,
-      'product_id': product_id,
+      'product_id': productId,
       'articul': articul,
+      'currency': currency,
     });
 
     return response.statusCode;
@@ -120,11 +127,11 @@ class ProductToApi {
 
   Future<List<AdminProductsModel>> products(String? name) async {
     try {
-      final seller_id = _box.read('seller_id');
+      final sellerId = _box.read('seller_id');
       final String? token = _box.read('token');
 
       final response = await http.get(
-          Uri.parse('$baseUrl/seller/products?shop_id=$seller_id&name=$name'),
+          Uri.parse('$baseUrl/seller/products?shop_id=$sellerId&name=$name'),
           headers: {"Authorization": "Bearer $token"});
 
       final data = jsonDecode(response.body);

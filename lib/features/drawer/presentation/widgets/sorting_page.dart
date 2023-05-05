@@ -1,7 +1,5 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
@@ -10,7 +8,7 @@ import 'package:haji_market/core/common/constants.dart';
 import '../../data/bloc/product_cubit.dart';
 
 class SortingPage extends StatefulWidget {
-  SortingPage({Key? key}) : super(key: key);
+  const SortingPage({Key? key}) : super(key: key);
 
   @override
   State<SortingPage> createState() => _SortingPageState();
@@ -37,11 +35,11 @@ class _SortingPageState extends State<SortingPage> {
         centerTitle: true,
         leading: InkWell(
           onTap: () {
-            final _select = _selectedIndexSort == -1
+            final select = _selectedIndexSort == -1
                 ? 'Не выбрано'
                 : sort[_selectedIndexSort];
 
-            Get.back(result: _select);
+            Get.back(result: select);
           },
           child: const Icon(
             Icons.arrow_back_ios,
@@ -114,11 +112,11 @@ class _SortingPageState extends State<SortingPage> {
             const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
         child: GestureDetector(
           onTap: () {
-            final _select = _selectedIndexSort == -1
+            final select = _selectedIndexSort == -1
                 ? 'Не выбрано'
                 : sort[_selectedIndexSort];
 
-            Get.back(result: _select);
+            Get.back(result: select);
           },
           child: Container(
               decoration: BoxDecoration(

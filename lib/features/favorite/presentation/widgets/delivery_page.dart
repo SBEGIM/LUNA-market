@@ -4,7 +4,7 @@ import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/favorite/presentation/widgets/product_review_page.dart';
 
 class DeliveryPage extends StatefulWidget {
-  DeliveryPage({Key? key}) : super(key: key);
+  const DeliveryPage({Key? key}) : super(key: key);
 
   @override
   State<DeliveryPage> createState() => _DeliveryPageState();
