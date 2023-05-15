@@ -24,27 +24,30 @@ class ProductAdminRepository {
     String massa,
     String articul,
     String currency,
+    String? image,
   ) =>
       _productToApi.store(price, count, compound, catId, brandId, description,
-          name, height, width, massa, articul, currency);
+          name, height, width, massa, articul, currency, image);
 
   Future<dynamic> update(
-    String price,
-    String count,
-    String compound,
-    String catId,
-    String brandId,
-    String description,
-    String name,
-    String height,
-    String width,
-    String massa,
-    String productId,
-    String articul,
-    String currency,
-  ) =>
+          String price,
+          String count,
+          String compound,
+          String catId,
+          String brandId,
+          String description,
+          String name,
+          String height,
+          String width,
+          String massa,
+          String productId,
+          String articul,
+          String currency,
+          String? image) =>
       _productToApi.update(price, count, compound, catId, brandId, description,
-          name, height, width, massa, productId, articul, currency);
+          name, height, width, massa, productId, articul, currency, image);
+
+  Future<dynamic> delete(String id) => _productToApi.delete(id);
 
   Future<List<AdminProductsModel>> products(String? name) =>
       _productToApi.products(name);
@@ -54,23 +57,25 @@ class ProductToApi {
   final _box = GetStorage();
 
   Future<dynamic> store(
-    String price,
-    String count,
-    String compound,
-    String catId,
-    String brandId,
-    String description,
-    String name,
-    String height,
-    String width,
-    String massa,
-    String articul,
-    String currency,
-  ) async {
-    final response =
-        await http.post(Uri.parse('$baseUrl/seller/product/store'), body: {
-      'shop_id': _box.read('seller_id'),
-      'token': _box.read('seller_token'),
+      String price,
+      String count,
+      String compound,
+      String catId,
+      String brandId,
+      String description,
+      String name,
+      String height,
+      String width,
+      String massa,
+      String articul,
+      String currency,
+      String? image) async {
+    final sellerId = _box.read('seller_id');
+    final token = _box.read('seller_token');
+
+    final body = {
+      'shop_id': sellerId.toString(),
+      'token': token.toString(),
       'name': name,
       'price': price,
       'count': count,
@@ -83,30 +88,48 @@ class ProductToApi {
       'massa': massa,
       'articul': articul,
       'currency': currency,
-    });
+    };
+
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseUrl/seller/product/store'),
+    );
+
+    if (image != '') {
+      request.files.add(
+        await http.MultipartFile.fromPath('image', image!),
+      );
+    }
+    request.fields.addAll(body);
+
+    final http.StreamedResponse response = await request.send();
+    final respStr = await response.stream.bytesToString();
 
     return response.statusCode;
   }
 
   Future<dynamic> update(
-    String price,
-    String count,
-    String compound,
-    String catId,
-    String brandId,
-    String description,
-    String name,
-    String height,
-    String width,
-    String massa,
-    String productId,
-    String articul,
-    String currency,
-  ) async {
-    final response =
-        await http.post(Uri.parse('$baseUrl/seller/product/update'), body: {
-      'shop_id': _box.read('seller_id'),
-      'token': _box.read('seller_token'),
+      String price,
+      String count,
+      String compound,
+      String catId,
+      String brandId,
+      String description,
+      String name,
+      String height,
+      String width,
+      String massa,
+      String productId,
+      String articul,
+      String currency,
+      String? image) async {
+    final sellerId = _box.read('seller_id');
+    final token = _box.read('seller_token');
+
+    final body = {
+      'shop_id': sellerId.toString(),
+      'token': token.toString(),
+      'product_id': productId,
       'name': name,
       'price': price,
       'count': count,
@@ -117,9 +140,34 @@ class ProductToApi {
       'height': height,
       'width': width,
       'massa': massa,
-      'product_id': productId,
       'articul': articul,
       'currency': currency,
+    };
+
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseUrl/seller/product/update'),
+    );
+
+    if (image != '') {
+      request.files.add(
+        await http.MultipartFile.fromPath('image', image!),
+      );
+    }
+    request.fields.addAll(body);
+
+    final http.StreamedResponse response = await request.send();
+    final respStr = await response.stream.bytesToString();
+    log(response.statusCode.toString() + 'we');
+    return response.statusCode;
+  }
+
+  Future<dynamic> delete(String productId) async {
+    final response =
+        await http.post(Uri.parse('$baseUrl/seller/product/delete'), body: {
+      'shop_id': _box.read('seller_id'),
+      'token': _box.read('seller_token'),
+      'product_id': productId,
     });
 
     return response.statusCode;

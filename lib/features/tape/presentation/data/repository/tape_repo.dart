@@ -15,7 +15,8 @@ class TapeRepository {
 class TapeApi {
   final _box = GetStorage();
 
-  Future<List<TapeModel>> tapes(inSub, inFav, search) async {
+  Future<List<TapeModel>> tapes(
+      bool? inSub, bool? inFav, String? search) async {
     final String? token = _box.read('token');
 
     // final queryParameters = {

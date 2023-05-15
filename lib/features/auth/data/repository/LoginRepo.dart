@@ -37,7 +37,7 @@ class LoginToApi {
     String s = phone;
 
     // final device_token = _box.read('device_token');
-    String deviceToken = _box.read('device_token');
+    final deviceToken = _box.read('device_token');
     String? deviceType;
     if (Platform.isIOS == true) {
       deviceType = 'ios';
@@ -112,6 +112,9 @@ class LoginToApi {
     String email,
   ) async {
     final String? token = _box.read('token');
+
+    final cityId = _box.read('user_city_id');
+
     var replace = '';
     if (phone != '') {
       String s = phone;
@@ -137,6 +140,7 @@ class LoginToApi {
       'floor': floor,
       'room': room,
       'email': email,
+      'city_id': cityId.toString(),
     };
 
     final request = http.MultipartRequest(

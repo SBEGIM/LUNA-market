@@ -9,6 +9,7 @@ class TapeModel {
       String? video,
       String? image,
       bool? inBasket,
+      int? chatId,
       bool? inReport,
       bool? inFavorite,
       bool? inSubscribe,
@@ -22,6 +23,7 @@ class TapeModel {
     _video = video;
     _image = image;
     _inBasket = inBasket;
+    _chatId = chatId;
     _inReport = inReport;
     _inFavorite = inFavorite;
     _inSubscribe = inSubscribe;
@@ -39,6 +41,7 @@ class TapeModel {
     _video = json['video'];
     _image = json['image'];
     _inBasket = json['in_basket'];
+    _chatId = json['chat_id'];
     _inReport = json['in_report'];
     _inFavorite = json['in_favorite'];
     _inSubscribe = json['in_subscribe'];
@@ -53,6 +56,7 @@ class TapeModel {
   String? _video;
   String? _image;
   bool? _inBasket;
+  int? _chatId;
   bool? _inReport;
   bool? _inFavorite;
   bool? _inSubscribe;
@@ -67,6 +71,7 @@ class TapeModel {
   String? get video => _video;
   String? get image => _image;
   bool? get inBasket => _inBasket;
+  int? get chatId => _chatId;
   bool? get inReport => _inReport;
   bool? get inFavorite => _inFavorite;
   bool? get inSubscribe => _inSubscribe;
@@ -83,6 +88,7 @@ class TapeModel {
     map['video'] = _video;
     map['image'] = _image;
     map['in_basket'] = _inBasket;
+    map['chat_id'] = _chatId;
     map['in_report'] = _inReport;
     map['in_favorite'] = _inFavorite;
     map['inSubscribe'] = _inSubscribe;

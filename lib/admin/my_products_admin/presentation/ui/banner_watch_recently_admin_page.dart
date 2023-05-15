@@ -132,7 +132,7 @@ class BannerWatcehRecentlyAdminPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            '${product.price}',
+                            '${(product.price! / 3).toInt()}',
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w500,

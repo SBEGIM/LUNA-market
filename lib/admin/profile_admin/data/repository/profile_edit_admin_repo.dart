@@ -52,7 +52,8 @@ class ProfileEditAdminToApi {
 
     final body = {
       'token': token,
-      'new_name': name ?? '',
+      'new_name': shopName ?? '',
+      'user_name': name ?? '',
       'phone': phone ?? '',
       'email': email ?? '',
       'password_new': password_new ?? '',
@@ -72,7 +73,7 @@ class ProfileEditAdminToApi {
 
     if (logo != '') {
       request.files.add(
-        await http.MultipartFile.fromPath('logo', logo!),
+        await http.MultipartFile.fromPath('image', logo!),
       );
     }
     request.fields.addAll(body);
@@ -94,7 +95,6 @@ class ProfileEditAdminToApi {
     _box.write('seller_street', data['street'].toString());
     _box.write('seller_iin', data['iin'].toString());
     _box.write('seller_check', data['check'].toString());
-
-    // _box.write('card', data['user']['card'].toString());
+    _box.write('seller_userName', data['user_name'].toString());
   }
 }

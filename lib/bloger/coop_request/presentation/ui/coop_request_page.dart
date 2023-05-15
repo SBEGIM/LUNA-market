@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
@@ -8,6 +9,7 @@ import 'package:haji_market/bloger/auth/data/bloc/login_blogger_state.dart';
 import 'package:haji_market/core/common/constants.dart';
 import '../../../../offer_for_the_seller.dart';
 import '../../../auth/data/DTO/register_blogger_dto.dart';
+import '../../../auth/presentation/ui/view_auth_register_page.dart';
 
 class BlogRequestPage extends StatefulWidget {
   const BlogRequestPage({Key? key}) : super(key: key);
@@ -22,7 +24,8 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController iinController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController phoneController =
+      MaskedTextController(mask: '+7(000)-000-00-00');
   TextEditingController emailController = TextEditingController();
   TextEditingController socialNetworkController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -59,83 +62,72 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
             child: CircularProgressIndicator(color: Colors.indigoAccent),
           );
         }
-        return Padding(
+        return Container(
           padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
           child: ListView(
-            // physics:  NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const Text(
+                'Укажите данные ип или физ.лица',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: AppColors.kGray900),
+              ),
               const SizedBox(
                 height: 10,
               ),
-              Container(
-                padding: const EdgeInsets.only(
-                    left: 16, right: 16, top: 16, bottom: 8),
-                child: ListView(
-                  shrinkWrap: true,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Укажите данные ип или физ.лица',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
-                          color: AppColors.kGray900),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    FieldsCoopRequest(
-                      titleText: 'Иин',
-                      hintText: 'Введите иин',
-                      star: false,
-                      arrow: false,
-                      controller: nameController,
-                    ),
-                    FieldsCoopRequest(
-                      titleText: 'Никнейм блогера',
-                      hintText: 'Введите никнейм блогера',
-                      star: false,
-                      arrow: false,
-                      controller: nameController,
-                    ),
-                    FieldsCoopRequest(
-                      titleText: 'ФИО',
-                      hintText: 'Введите ФИО',
-                      star: false,
-                      arrow: false,
-                      controller: userNameController,
-                    ),
-                    FieldsCoopRequest(
-                      titleText: 'Ссылка на соц сеть',
-                      hintText: 'Введите ссылку на соц сеть',
-                      star: false,
-                      arrow: false,
-                      controller: socialNetworkController,
-                    ),
-                    FieldsCoopRequest(
-                      titleText: 'Мобильный телефон ',
-                      hintText: 'Введите мобильный телефон ',
-                      star: false,
-                      arrow: false,
-                      controller: phoneController,
-                    ),
-                    FieldsCoopRequest(
-                      titleText: 'Email ',
-                      hintText: 'Введите Email',
-                      star: false,
-                      arrow: false,
-                      controller: emailController,
-                    ),
-                    FieldsCoopRequest(
-                      titleText: 'Пароль ',
-                      hintText: 'Введите пароль',
-                      star: false,
-                      arrow: false,
-                      controller: passwordController,
-                    ),
-                  ],
-                ),
+              FieldsCoopRequest(
+                titleText: 'Иин',
+                hintText: 'Введите иин',
+                star: false,
+                arrow: false,
+                controller: iinController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Никнейм блогера',
+                hintText: 'Введите никнейм блогера',
+                star: false,
+                arrow: false,
+                controller: nameController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'ФИО',
+                hintText: 'Введите ФИО',
+                star: false,
+                arrow: false,
+                controller: userNameController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Ссылка на соц сеть',
+                hintText: 'Введите ссылку на соц сеть',
+                star: false,
+                arrow: false,
+                controller: socialNetworkController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Мобильный телефон ',
+                hintText: 'Введите мобильный телефон ',
+                star: false,
+                arrow: false,
+                number: true,
+                controller: phoneController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Email ',
+                hintText: 'Введите Email',
+                star: false,
+                arrow: false,
+                controller: emailController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Пароль ',
+                hintText: 'Введите пароль',
+                star: false,
+                arrow: false,
+                controller: passwordController,
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
@@ -184,7 +176,7 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 60)
+              const SizedBox(height: 100)
             ],
           ),
         );
@@ -193,7 +185,7 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
         color: Colors.white,
         padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
         child: InkWell(
-            onTap: () {
+            onTap: () async {
               if (socialNetworkController.text.isNotEmpty &&
                   iinController.text.isNotEmpty &&
                   nameController.text.isNotEmpty &&
@@ -213,11 +205,12 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
 
                 final register = BlocProvider.of<LoginBloggerCubit>(context);
 
-                register.register(data);
+                await register.register(data);
 
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AuthAdminPage()),
+                  MaterialPageRoute(
+                      builder: (context) => BlogAuthRegisterPage()),
                 );
               } else {
                 Get.snackbar('Ошибка', 'Заполните все данные *',
@@ -262,6 +255,8 @@ class FieldsCoopRequest extends StatelessWidget {
   final String hintText;
   final bool star;
   final bool arrow;
+  final bool? number;
+
   final void Function()? onPressed;
 
   TextEditingController? controller;
@@ -272,6 +267,7 @@ class FieldsCoopRequest extends StatelessWidget {
     required this.arrow,
     this.controller,
     this.onPressed,
+    this.number,
     Key? key,
   }) : super(key: key);
 
@@ -312,7 +308,8 @@ class FieldsCoopRequest extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: TextField(
-              keyboardType: TextInputType.text,
+              keyboardType:
+                  number == true ? TextInputType.number : TextInputType.text,
               controller: controller,
               textAlign: TextAlign.left,
               decoration: InputDecoration(

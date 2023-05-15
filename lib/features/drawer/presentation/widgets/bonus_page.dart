@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/home/data/bloc/popular_shops_cubit.dart';
@@ -16,9 +17,21 @@ class BonusUserPage extends StatefulWidget {
 class _BonusUserPageState extends State<BonusUserPage> {
   int _selectedIndex = -1;
 
+  String currency = 'руб';
+
   @override
   void initState() {
     BlocProvider.of<PopularShopsCubit>(context).popShops();
+
+    final appLang = GetStorage().read('app_lang');
+    if (appLang != null) {
+      if (appLang == 'kz') {
+        currency = 'тг';
+      } else {
+        currency = 'руб';
+      }
+    }
+
     super.initState();
   }
 
@@ -111,12 +124,12 @@ class _BonusUserPageState extends State<BonusUserPage> {
                                         clipper: TrapeziumClipper(),
                                         child: Container(
                                           height: 16,
-                                          width: 38,
+                                          width: 46,
                                           alignment: Alignment.center,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                               color: AppColors.kPrimaryColor),
                                           child: Text(
-                                            '${state.popularShops[index].bonus}%',
+                                            '${state.popularShops[index].bonus} $currency',
                                             style: const TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500),

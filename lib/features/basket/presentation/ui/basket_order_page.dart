@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../contract_of_sale.dart';
 import '../../../../core/common/constants.dart';
@@ -44,6 +45,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
   int courier = 0;
   int bonus = 300;
   int count = 0;
+  String? productNames;
 
   List<int> id = [];
 
@@ -66,6 +68,8 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
       count += element.basketCount!.toInt();
       price += element.price!.toInt();
       courier += element.priceCourier!.toInt();
+      productNames =
+          "${productNames != null ? "${productNames} ," : ''} ${element.product!.name}";
     }
   }
 
@@ -103,7 +107,11 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
           actions: [
             Padding(
                 padding: const EdgeInsets.only(right: 22.0),
-                child: SvgPicture.asset('assets/icons/share.svg'))
+                child: GestureDetector(
+                    onTap: () async {
+                      await Share.share('${productNames}');
+                    },
+                    child: SvgPicture.asset('assets/icons/share.svg')))
           ],
           title: const Text(
             'Оплата',

@@ -10,9 +10,10 @@ import 'package:haji_market/features/chat/presentation/chat_page.dart';
 import 'package:haji_market/features/home/data/model/Cats.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/subs_cubit.dart';
 import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
-
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
+import '../../../chat/presentation/message.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart' as basCubit;
 import '../../../drawer/data/bloc/favorite_cubit.dart' as favCubit;
 import '../../../drawer/presentation/ui/products_page.dart';
@@ -322,10 +323,16 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         const SizedBox(
                                           height: 15,
                                         ),
-                                        SvgPicture.asset(
-                                          'assets/icons/share.svg',
-                                          height: 30,
-                                          color: Colors.white,
+                                        GestureDetector(
+                                          onTap: () async {
+                                            await Share.share(
+                                                "https://lunamarket.info/?index\u003d${widget.index}&shop_name\u003d${widget.shop_name}");
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/icons/share.svg',
+                                            height: 30,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -400,7 +407,22 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             // Get.off(ChatPage);
                                             GetStorage()
                                                 .write('video_stop', true);
-                                            Get.to(() => new ChatPage());
+
+                                            if (state.tapeModel[index].chatId ==
+                                                null) {
+                                              Get.to(Message(
+                                                  userId: state.tapeModel[index]
+                                                      .shop!.id,
+                                                  name: state.tapeModel[index]
+                                                      .shop!.name,
+                                                  avatar: state.tapeModel[index]
+                                                      .shop!.image,
+                                                  chatId: state.tapeModel[index]
+                                                      .chatId));
+                                            } else {
+                                              Get.to(() => const ChatPage());
+                                            }
+
                                             // Get.to(ProductsPage(
                                             //   cats: Cats(id: 0, name: ''),
                                             // ));
@@ -597,6 +619,8 @@ class _VideosState extends State<Videos> {
   VideoPlayerController? _controller;
   bool icon = true;
 
+  Function? videoStop;
+
   @override
   void initState() {
     _controller = VideoPlayerController.network(
@@ -612,7 +636,7 @@ class _VideosState extends State<Videos> {
       setState(() {});
     });
 
-    GetStorage().listenKey('video_stop', (value) {
+    videoStop = GetStorage().listenKey('video_stop', (value) {
       if (value == true) {
         _controller!.pause();
       }
@@ -622,10 +646,8 @@ class _VideosState extends State<Videos> {
 
   @override
   void dispose() {
-    _controller!.pause();
-
     _controller!.dispose();
-
+    videoStop!.call();
     super.dispose();
   }
 

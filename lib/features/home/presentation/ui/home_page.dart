@@ -23,6 +23,7 @@ import '../../../drawer/data/bloc/sub_cats_cubit.dart' as subCatCubit;
 import '../../../drawer/data/bloc/sub_cats_state.dart' as subCatState;
 import '../../../drawer/presentation/ui/products_page.dart';
 import '../../../drawer/presentation/ui/shops_page.dart';
+import '../../../drawer/presentation/ui/sub_catalog_page.dart';
 import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
 import '../../../drawer/presentation/widgets/under_catalog_page.dart';
 import '../../data/bloc/cats_cubit.dart' as catCubit;
@@ -557,8 +558,8 @@ class _CatsHomePageState extends State<CatsHomePage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            const CatalogPage()),
+                                        builder: (context) => SubCatalogPage(
+                                            cats: state.cats[index])),
                                   );
                                 },
                                 icon: state.cats[index].icon.toString(),

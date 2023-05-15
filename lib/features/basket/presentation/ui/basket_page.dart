@@ -5,6 +5,7 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../drawer/data/bloc/basket_cubit.dart';
 import '../../../drawer/data/bloc/basket_state.dart';
@@ -26,6 +27,7 @@ class BasketPage extends StatefulWidget {
 class _BasketPageState extends State<BasketPage> {
   int count = 0;
   int price = 0;
+  String? productNames;
 
   bool bootSheet = false;
 
@@ -36,6 +38,8 @@ class _BasketPageState extends State<BasketPage> {
     for (var element in basket!) {
       count += element.basketCount!.toInt();
       price += element.price!.toInt();
+      productNames =
+          "${productNames != null ? "${productNames} ," : ''}  https://lunamarket.info/?product_id\u003d${element.product!.id}";
     }
 
     GetStorage().write('bottomCount', count);
@@ -56,23 +60,32 @@ class _BasketPageState extends State<BasketPage> {
     setState(() {});
   }
 
+  Function? bottomPrice;
+  Function? bottomCount;
+
   @override
   void initState() {
+    basketData();
     BlocProvider.of<BasketCubit>(context).basketShow();
     BlocProvider.of<productCubit.ProductCubit>(context).products();
-
-    basketData();
+    bottomPrice = GetStorage().listenKey('bottomPrice', (value) {
+      basketPrice(value);
+    });
+    bottomCount = GetStorage().listenKey('bottomCount', (value) {
+      basketCount(value);
+    });
     super.initState();
   }
 
   @override
+  void dispose() {
+    bottomPrice!.call();
+    bottomCount!.call();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    GetStorage().listenKey('bottomPrice', (value) {
-      basketPrice(value);
-    });
-    GetStorage().listenKey('bottomCount', (value) {
-      basketCount(value);
-    });
     return Scaffold(
         backgroundColor: AppColors.kBackgroundColor,
         appBar: AppBar(
@@ -92,7 +105,11 @@ class _BasketPageState extends State<BasketPage> {
           actions: [
             Padding(
                 padding: const EdgeInsets.only(right: 22.0),
-                child: SvgPicture.asset('assets/icons/share.svg'))
+                child: GestureDetector(
+                    onTap: () async {
+                      await Share.share('${productNames}');
+                    },
+                    child: SvgPicture.asset('assets/icons/share.svg')))
           ],
           title: const Text(
             'Корзина',

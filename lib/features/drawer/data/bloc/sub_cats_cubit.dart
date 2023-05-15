@@ -15,8 +15,13 @@ class SubCatsCubit extends Cubit<SubCatsState> {
   Future<void> subCats(subCatId) async {
     try {
       emit(LoadingState());
+
       final List<Cats> data = await subCatRepository.subCatApi(subCatId);
+
       _subCats = data;
+
+      _subCats.insert(
+          0, Cats(id: subCatId, name: "Все категорий", icon: 'cats/book.png'));
 
       emit(LoadedState(data));
     } catch (e) {
@@ -44,12 +49,10 @@ class SubCatsCubit extends Cubit<SubCatsState> {
     emit(LoadedState(temp));
   }
 
-  subCatById(String id, String catId) async {
-    if (id.isEmpty) return;
+  Future<Cats> subCatById(String id, String catId) async {
+    if (id.isEmpty) return Cats(id: 0, name: '');
     if (_subCats.isEmpty) {
       await subCats(catId);
-      // final List<City> data = await listRepository.cities();
-      // _cities = data;
     }
     Cats cat = Cats(id: 0, name: 'Выберите тип');
     for (int i = 0; i < _subCats.length; i++) {
@@ -60,22 +63,4 @@ class SubCatsCubit extends Cubit<SubCatsState> {
 
     return cat;
   }
-
-  // Future<void> searchCity(String city) async {
-  //   if(city.isEmpty) return;
-  //   if(_cities.isEmpty) {
-  //     await cities();
-  //     // final List<City> data = await listRepository.cities();
-  //     // _cities = data;
-  //   }
-  //   List<City> temp = [];
-  //   Set<String> citiesSet = {};
-  //   for(int i = 0 ; i < _cities.length; i++) {
-  //     if(_cities[i].name != null && _cities[i].name!.contains(city)) {
-  //       temp.add(_cities[i]);
-  //       citiesSet.add(_cities[i].name.toString());
-  //     }
-  //   }
-  //   emit(LoadedState(temp, citiesSet, ''));
-  // }
 }

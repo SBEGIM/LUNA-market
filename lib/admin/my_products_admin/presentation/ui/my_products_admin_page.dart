@@ -62,7 +62,8 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const CategoryAdminPage()),
+                                builder: (context) =>
+                                    const CategoryAdminPage()),
                           );
                         }
                       },
@@ -88,23 +89,23 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                                           'assets/icons/lenta1.svg'),
                                     ],
                                   ),
-                                  const SizedBox(height: 4),
-                                  const Divider(),
+                                  // const SizedBox(height: 4),
+                                  //  const Divider(),
                                 ],
                               )),
-                          PopupMenuItem(
-                            height: 20,
-                            value: 1,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text("Добавить видео"),
-                                SvgPicture.asset('assets/icons/video.svg'),
-                              ],
-                            ),
-                          ),
-                          PopupMenuItem(
-                              height: 5, value: 1, child: Container()),
+                          // PopupMenuItem(
+                          //   height: 20,
+                          //   value: 1,
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       const Text("Добавить видео"),
+                          //       SvgPicture.asset('assets/icons/video.svg'),
+                          //     ],
+                          //   ),
+                          // ),
+                          // PopupMenuItem(
+                          //     height: 5, value: 1, child: Container()),
                         ];
                       },
                     ),
@@ -152,7 +153,8 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                   return Center(
                     child: Text(
                       state.message,
-                      style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                      style:
+                          const TextStyle(fontSize: 20.0, color: Colors.grey),
                     ),
                   );
                 }
@@ -174,8 +176,9 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                           padding: const EdgeInsets.only(
                               top: 16, left: 0, right: 0, bottom: 0),
                           gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 175,
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  //  maxCrossAxisExtent: 175,
                                   childAspectRatio: 2 / 3.2,
                                   crossAxisSpacing: 8,
                                   mainAxisSpacing: 16),
@@ -190,8 +193,8 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                                       borderRadius: BorderRadius.circular(10)),
                                 ),
                                 InkWell(
-                                  onTap: () {
-                                    showAlertStaticticsWidget(
+                                  onTap: () async {
+                                    await showAlertStaticticsWidget(
                                         context, state.productModel[index]);
                                   },
                                   child: Container(

@@ -15,23 +15,20 @@ const _tag = 'messageRepository';
 class MessageAdminRepository {
   final Message _message = Message();
 
-  Future<List<MessageAdminDto>> messageList(int page) =>
-      _message.messageList(page);
+  Future<List<MessageAdminDto>> messageList(int page, int chatId) =>
+      _message.messageList(page, chatId);
 }
 
 class Message {
   final _box = GetStorage();
 
-  Future<List<MessageAdminDto>> messageList(int page) async {
+  Future<List<MessageAdminDto>> messageList(int page, int chatId) async {
     try {
       final String? token = _box.read('token');
 
       final response = await http.get(
-          Uri.parse("$baseUrl/chat/message?page=$page&chat_id=1"),
-          headers: {
-            "Authorization":
-                "Bearer 173|NhSdjW7Lu8DWqtSqGB4XAgwbnDXeXuhLYHdteW25"
-          });
+          Uri.parse("$baseUrl/chat/message?page=$page&chat_id=$chatId"),
+          headers: {"Authorization": "Bearer $token"});
 
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 

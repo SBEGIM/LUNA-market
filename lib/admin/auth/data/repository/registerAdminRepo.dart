@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/features/auth/data/DTO/register.dart';
 import 'package:http/http.dart' as http;
+
+import '../DTO/register_admin_dto.dart';
 
 const baseUrl = 'http://185.116.193.73/api';
 
 class RegisterAdminRepository {
   final RegisterToApi _registerToApi = RegisterToApi();
 
-  Future<dynamic> register(RegisterDTO register) =>
+  Future<dynamic> register(RegisterAdminDTO register) =>
       _registerToApi.register(register);
   Future<dynamic> smsSend(String phone) => _registerToApi.smsSend(phone);
   Future<dynamic> smsCheck(String phone, String code) =>
@@ -25,27 +26,30 @@ class RegisterAdminRepository {
 class RegisterToApi {
   final _box = GetStorage();
 
-  Future<dynamic> register(RegisterDTO register) async {
+  Future<dynamic> register(RegisterAdminDTO register) async {
     final deviceToken = _box.read('device_token');
-    String? deviceType;
 
+    String s = register.phone;
+    String result = s.substring(2);
+
+    final String? token = _box.read('seller_token');
+    String? deviceType;
     if (Platform.isIOS == true) {
       deviceType = 'ios';
     } else {
       deviceType = 'android';
     }
 
-    String s = register.phone;
-    String result = s.substring(2);
-
-    final String? token = _box.read('token');
-
     final headers = {
       'Authorization': 'Bearer $token',
     };
     final body = {
       'name': register.name,
+      'user_name': register.userName,
+      'iin': register.iin,
+      'email': register.email,
       'password': register.password,
+      'check': register.check,
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'device_token': deviceToken.toString(),
       'device_type': deviceType,
@@ -53,7 +57,7 @@ class RegisterToApi {
 
     final request = http.MultipartRequest(
       'POST',
-      Uri.parse('$baseUrl/user/register'),
+      Uri.parse('$baseUrl/seller/register'),
     );
 
     // if(register.avatar != ''){
@@ -67,9 +71,9 @@ class RegisterToApi {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(respStr);
-      _box.write('token', data['access_token'].toString());
-      _box.write('user_id', data['user']['id'].toString());
-      _box.write('card', data['user']['card'].toString());
+      // _box.write('token', data['access_token'].toString());
+      // _box.write('seller_id', data['user']['id'].toString());
+      // _box.write('seller_card', data['user']['card'].toString());
     }
     return response.statusCode;
   }
@@ -79,7 +83,7 @@ class RegisterToApi {
     String result = s.substring(2);
 
     final response =
-        await http.post(Uri.parse('$baseUrl/user/register/send-code'), body: {
+        await http.post(Uri.parse('$baseUrl/seller/register/send-code'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
     });
 
@@ -91,7 +95,7 @@ class RegisterToApi {
     String result = s.substring(2);
 
     final response =
-        await http.post(Uri.parse('$baseUrl/user/register/check'), body: {
+        await http.post(Uri.parse('$baseUrl/seller/register/check'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'code': code,
     });
@@ -104,7 +108,7 @@ class RegisterToApi {
     String result = s.substring(2);
 
     final response = await http
-        .post(Uri.parse('$baseUrl/user/password/reset/send-code'), body: {
+        .post(Uri.parse('$baseUrl/seller/password/reset/send-code'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
     });
 
@@ -116,7 +120,7 @@ class RegisterToApi {
     String result = s.substring(2);
 
     final response = await http
-        .post(Uri.parse('$baseUrl/user/password/reset/check-code'), body: {
+        .post(Uri.parse('$baseUrl/seller/password/reset/check-code'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'code': code,
     });
@@ -125,12 +129,11 @@ class RegisterToApi {
   }
 
   Future<dynamic> passwordReset(String phone, String password) async {
-    print("111 $phone");
     String s = phone;
     String result = s.substring(2);
 
     final response =
-        await http.post(Uri.parse('$baseUrl/user/password/reset'), body: {
+        await http.post(Uri.parse('$baseUrl/seller/password/reset'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'password': password,
     });

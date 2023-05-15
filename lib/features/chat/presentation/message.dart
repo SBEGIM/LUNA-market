@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/features/chat/data/DTO/DTO/message_dto.dart';
@@ -15,14 +16,20 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-
 import '../data/DTO/DTO/messageDto.dart';
 
 class Message extends StatefulWidget {
   String? name;
+  int? userId;
   String? avatar;
+  int? chatId;
 
-  Message({required this.name, required this.avatar, super.key});
+  Message(
+      {required this.userId,
+      this.name,
+      required this.avatar,
+      this.chatId,
+      super.key});
 
   @override
   State<Message> createState() => _MessageState();
@@ -55,7 +62,7 @@ class _MessageState extends State<Message> {
       'text': null,
       'path': data,
       'type': 'image',
-      'to': 64
+      'to': widget.userId
     });
 
     channel.sink.add(text);
@@ -71,7 +78,7 @@ class _MessageState extends State<Message> {
       String text = jsonEncode({
         'action': 'message',
         'text': '${_chatTextController.text.toString()}',
-        'to': 64
+        'to': widget.userId
       });
 
       channel.sink.add(text);
@@ -83,6 +90,7 @@ class _MessageState extends State<Message> {
   }
 
   messageDTO? messageText;
+  String myId = GetStorage().read('user_id');
   ScrollController _scrollController = new ScrollController();
 
   bool ready = false;
@@ -101,7 +109,8 @@ class _MessageState extends State<Message> {
   // }
 
   Future<void> onLoading() async {
-    await BlocProvider.of<MessageCubit>(context).paginationMessage();
+    await BlocProvider.of<MessageCubit>(context)
+        .paginationMessage(widget.chatId!);
     await Future.delayed(const Duration(milliseconds: 2000));
     _refreshController.loadComplete();
   }
@@ -118,8 +127,9 @@ class _MessageState extends State<Message> {
 
   @override
   void initState() {
-    BlocProvider.of<MessageCubit>(context).getMessage();
-    channel = IOWebSocketChannel.connect("ws://185.116.193.73:1995/?user_id=8");
+    BlocProvider.of<MessageCubit>(context).getMessage(widget.chatId ?? 0);
+    channel =
+        IOWebSocketChannel.connect("ws://185.116.193.73:1995/?user_id=$myId");
 
     channel.ready.then((value) {
       ready = true;
@@ -241,7 +251,7 @@ class _MessageState extends State<Message> {
                               ),
                             ),
                             itemBuilder: (context, dynamic element) => Align(
-                              alignment: element.userId != 8
+                              alignment: element.userId != int.parse(myId)
                                   ? Alignment.centerLeft
                                   : Alignment.centerRight,
                               child: Card(
@@ -249,7 +259,7 @@ class _MessageState extends State<Message> {
                                     borderRadius: BorderRadius.circular(12)),
                                 margin: const EdgeInsets.only(
                                     top: 4, bottom: 4, left: 16, right: 16),
-                                color: element.userId == 8
+                                color: element.userId == int.parse(myId)
                                     ? Colors.white
                                     : AppColors.kPrimaryColor,
                                 child: element.type == 'message'
@@ -258,7 +268,8 @@ class _MessageState extends State<Message> {
                                         child: Text(
                                           element.text ?? '2',
                                           style: TextStyle(
-                                              color: element.userId == 8
+                                              color: element.userId ==
+                                                      int.parse(myId)
                                                   ? Colors.black
                                                   : Colors.white),
                                         ))

@@ -53,39 +53,48 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
 
   @override
   void initState() {
-    if (_box.read('seller_name') != null) {
+    if (_box.read('seller_name') != null &&
+        _box.read('seller_name') != 'null') {
       shopNameController.text = _box.read('seller_name') ?? '11';
     }
-    if (_box.read('seller_phone') != null) {
+    if (_box.read('seller_phone') != null &&
+        _box.read('seller_phone') != 'null') {
       phoneController.text = _box.read('seller_phone') ?? '22';
     }
 
-    if (_box.read('seller_email') != null) {
+    if (_box.read('seller_email') != null &&
+        _box.read('seller_email') != 'null') {
       emailController.text = _box.read('seller_email') ?? '33';
     }
-    print(_box.read('seller_country'));
-    //_box.write('seller_country', 'kz');
 
-    countryController.text = _box.read('seller_country');
+    if (_box.read('seller_country') != null &&
+        _box.read('seller_country') != 'null') {
+      cityController.text = _box.read('seller_country') ?? '55';
+    }
 
-    // if (_box.read('seller_country')) {
-    //   countryController.text = _box.read('seller_country').toString() ?? '44';
-    // }
-
-    if (_box.read('seller_city') != null) {
+    if (_box.read('seller_city') != null &&
+        _box.read('seller_city') != 'null') {
       cityController.text = _box.read('seller_city') ?? '55';
     }
 
-    if (_box.read('seller_home') != null) {
+    if (_box.read('seller_userName') != null &&
+        _box.read('seller_userName') != 'null') {
+      nameController.text = _box.read('seller_userName') ?? '55';
+    }
+
+    if (_box.read('seller_home') != null &&
+        _box.read('seller_home') != 'null') {
       homeController.text = _box.read('seller_home') ?? '66';
     }
-    if (_box.read('seller_street') != null) {
+    if (_box.read('seller_street') != null &&
+        _box.read('seller_street') != 'null') {
       streetController.text = _box.read('seller_street') ?? '77';
     }
-    if (_box.read('seller_iin') != null) {
+    if (_box.read('seller_iin') != null && _box.read('seller_iin') != 'null') {
       iinController.text = _box.read('seller_iin') ?? '88';
     }
-    if (_box.read('seller_check') != null) {
+    if (_box.read('seller_check') != null &&
+        _box.read('seller_check') != 'null') {
       checkController.text = _box.read('seller_check') ?? '99';
     }
 
@@ -176,7 +185,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
             color: AppColors.kGray700,
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
                 const Text(
@@ -190,10 +199,14 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                   height: 10,
                 ),
                 Container(
+                  //  height: MediaQuery.of(context).size.height * 0.5,
+
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
+                    // scrollDirection: Axis.vertical,
+                    // shrinkWrap: false,
                     children: [
                       ListTile(
                         leading: Image.asset(
@@ -474,6 +487,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           ),
                         ),
                       ),
+                      const SizedBox(height: 100),
                     ],
                   ),
                 ),

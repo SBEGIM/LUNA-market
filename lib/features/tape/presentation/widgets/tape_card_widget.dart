@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,10 +29,19 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
     _controller = VideoPlayerController.network(
         'http://185.116.193.73/storage/${widget.tape.video}')
       ..initialize().then((_) {
+        // sleep(const Duration(milliseconds: 0));
         _controller!.pause();
+        //sleep(const Duration(milliseconds: 2));
+
         setState(() {});
       });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller!.dispose();
+    super.dispose();
   }
 
   @override

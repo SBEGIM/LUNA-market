@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,22 +40,18 @@ class ProductsPage extends StatefulWidget {
 
 class _ProductsPageState extends State<ProductsPage> {
   final boxMain = GetStorage().write('rating', false);
-  bool catsVisible = false;
+  bool? catsVisible = false;
   TextEditingController searchController = TextEditingController();
 
-  update() {
-    setState(() {});
-  }
-
-  visible() {
-    GetStorage().listenKey('scrollView', (value) async {
-      catsVisible = value;
-      update();
-    });
-  }
+  Function? scrollView;
 
   @override
   void initState() {
+    scrollView = GetStorage().listenKey('scrollView', (value) async {
+      catsVisible = value;
+      setState(() {});
+    });
+
     if (widget.cats.id == 0) {
       GetStorage().remove('CatId');
       GetStorage().remove('catId');
@@ -77,13 +71,13 @@ class _ProductsPageState extends State<ProductsPage> {
     GetStorage().remove('rating');
     BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context).shopsDrawer();
     BlocProvider.of<brandCubit.BrandCubit>(context).brands();
-    visible();
 
     super.initState();
   }
 
   @override
   void dispose() {
+    scrollView!.call();
     GetStorage().remove('scrollView');
     super.dispose();
   }
@@ -208,7 +202,8 @@ class _ProductsPageState extends State<ProductsPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const FilterPage()),
+                              builder: (context) =>
+                                  FilterPage(shopId: widget.shopId)),
                         );
                       },
                     ),
@@ -270,8 +265,8 @@ class _ProductsPageState extends State<ProductsPage> {
                     }
                   })
               : Container(),
-          SizedBox(height: 20),
-          Expanded(child: const Products()),
+          const SizedBox(height: 20),
+          const Expanded(child: Products()),
 
           // ProductCardWidget()
         ],

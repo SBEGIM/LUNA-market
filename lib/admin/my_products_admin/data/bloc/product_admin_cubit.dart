@@ -13,36 +13,38 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       : super(InitState());
 
   Future<void> update(
-    String price,
-    String count,
-    String compound,
-    String catId,
-    String brandId,
-    String description,
-    String name,
-    String height,
-    String width,
-    String massa,
-    String productId,
-    String articul,
-    String currency,
-  ) async {
+      String price,
+      String count,
+      String compound,
+      String catId,
+      String brandId,
+      String description,
+      String name,
+      String height,
+      String width,
+      String massa,
+      String productId,
+      String articul,
+      String currency,
+      String? image) async {
     try {
       emit(LoadingState());
       final data = await productAdminRepository.update(
-          price,
-          count,
-          compound,
-          catId,
-          brandId,
-          description,
-          name,
-          height,
-          width,
-          massa,
-          productId,
-          articul,
-          currency);
+        price,
+        count,
+        compound,
+        catId,
+        brandId,
+        description,
+        name,
+        height,
+        width,
+        massa,
+        productId,
+        articul,
+        currency,
+        image,
+      );
 
       if (data == 200) {
         emit(InitState());
@@ -77,6 +79,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
     String massa,
     String articul,
     String currency,
+    String? image,
   ) async {
     try {
       emit(LoadingState());
@@ -92,7 +95,8 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
           width,
           massa,
           articul,
-          currency);
+          currency,
+          image);
 
       if (data == 200) {
         emit(InitState());
@@ -125,5 +129,24 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
+  }
+
+  Future<void> delete(String productId) async {
+    emit(LoadingState());
+
+    final data = await productAdminRepository.delete(productId);
+
+    if (data == 200) {
+      emit(InitState());
+      emit(ChangeState());
+    }
+
+    if (data == 500) {
+      emit(InitState());
+      Get.snackbar('Ошибка удаление', 'У продукта есть заказы',
+          backgroundColor: Colors.redAccent);
+    }
+
+    return data;
   }
 }

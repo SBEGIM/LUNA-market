@@ -15,19 +15,20 @@ const _tag = 'messageRepository';
 class MessageRepository {
   final Message _message = Message();
 
-  Future<List<MessageDto>> messageList(int page) => _message.messageList(page);
+  Future<List<MessageDto>> messageList(int page, int chatId) =>
+      _message.messageList(page, chatId);
   Future<String> imageStore(String avatar) => _message.imageStore(avatar);
 }
 
 class Message {
   final _box = GetStorage();
 
-  Future<List<MessageDto>> messageList(int page) async {
+  Future<List<MessageDto>> messageList(int page, int chatId) async {
     try {
       final String? token = _box.read('token');
 
       final response = await http.get(
-          Uri.parse("$baseUrl/chat/message?page=$page&chat_id=1"),
+          Uri.parse("$baseUrl/chat/message?page=$page&chat_id=$chatId"),
           headers: {
             "Authorization":
                 "Bearer 204|qjptPdGTnA87ADzbexEk0TTUzKYHzk8Yq8FrUcHC"

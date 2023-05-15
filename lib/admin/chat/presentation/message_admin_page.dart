@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/features/chat/data/DTO/DTO/message_dto.dart';
@@ -21,7 +22,11 @@ import '../data/cubit/message_admin_cubit.dart';
 import '../data/cubit/message_admin_state.dart';
 
 class MessageAdmin extends StatefulWidget {
-  const MessageAdmin({super.key});
+  int? chatId;
+  int? userId;
+  String? userName;
+
+  MessageAdmin({this.chatId, this.userId, this.userName, super.key});
 
   @override
   State<MessageAdmin> createState() => _MessageAdminState();
@@ -54,7 +59,7 @@ class _MessageAdminState extends State<MessageAdmin> {
       'text': null,
       'path': data,
       'type': 'image',
-      'to': 8
+      'to': widget.userId
     });
 
     channel.sink.add(text);
@@ -70,7 +75,7 @@ class _MessageAdminState extends State<MessageAdmin> {
       String text = jsonEncode({
         'action': 'message',
         'text': '${_chatTextController.text.toString()}',
-        'to': 8
+        'to': widget.userId
       });
 
       channel.sink.add(text);
@@ -81,7 +86,7 @@ class _MessageAdminState extends State<MessageAdmin> {
 
   messageDTO? messageText;
   ScrollController _scrollController = new ScrollController();
-
+  String sellerId = GetStorage().read('seller_id');
   bool ready = false;
 
   final GroupedItemScrollController itemScrollController =
@@ -98,7 +103,8 @@ class _MessageAdminState extends State<MessageAdmin> {
   // }
 
   Future<void> onLoading() async {
-    await BlocProvider.of<MessageAdminCubit>(context).paginationMessage();
+    await BlocProvider.of<MessageAdminCubit>(context)
+        .paginationMessage(widget.chatId!);
     await Future.delayed(Duration(milliseconds: 2000));
     _refreshController.loadComplete();
   }
@@ -115,9 +121,9 @@ class _MessageAdminState extends State<MessageAdmin> {
 
   @override
   void initState() {
-    BlocProvider.of<MessageAdminCubit>(context).getMessage();
-    channel =
-        IOWebSocketChannel.connect("ws://185.116.193.73:1995/?user_id=64");
+    BlocProvider.of<MessageAdminCubit>(context).getMessage(widget.chatId!);
+    channel = IOWebSocketChannel.connect(
+        "ws://185.116.193.73:1995/?user_id=$sellerId");
 
     channel.ready.then((value) {
       ready = true;
@@ -141,6 +147,7 @@ class _MessageAdminState extends State<MessageAdmin> {
       }
     });
 
+    print(sellerId);
     super.initState();
   }
 
@@ -159,9 +166,9 @@ class _MessageAdminState extends State<MessageAdmin> {
               color: AppColors.kPrimaryColor,
             ),
           ),
-          title: const Text(
-            'Чат',
-            style: TextStyle(color: Colors.black),
+          title: Text(
+            widget.userName ?? 'Чат',
+            style: const TextStyle(color: Colors.black),
           ),
         ),
         body: BlocConsumer<MessageAdminCubit, MessageAdminState>(
@@ -223,16 +230,17 @@ class _MessageAdminState extends State<MessageAdmin> {
                                 ),
                                 itemBuilder: (context, dynamic element) =>
                                     Align(
-                                  alignment: element.userId != 64
-                                      ? Alignment.centerLeft
-                                      : Alignment.centerRight,
+                                  alignment:
+                                      element.userId != int.parse(sellerId)
+                                          ? Alignment.centerLeft
+                                          : Alignment.centerRight,
                                   child: Card(
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(12)),
                                     margin: const EdgeInsets.only(
                                         top: 4, bottom: 4, left: 16, right: 16),
-                                    color: element.userId == 64
+                                    color: element.userId == int.parse(sellerId)
                                         ? Colors.white
                                         : AppColors.kPrimaryColor,
                                     child: element.type == 'message'
@@ -241,7 +249,8 @@ class _MessageAdminState extends State<MessageAdmin> {
                                             child: Text(
                                               element.text ?? '2',
                                               style: TextStyle(
-                                                  color: element.userId == 64
+                                                  color: element.userId ==
+                                                          int.parse(sellerId)
                                                       ? Colors.black
                                                       : Colors.white),
                                             ),

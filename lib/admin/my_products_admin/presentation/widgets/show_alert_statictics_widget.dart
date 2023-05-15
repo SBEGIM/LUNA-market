@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/edit_product_page%20copy.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:haji_market/admin/my_products_admin/data/bloc/product_admin_cubit.dart';
+import 'package:haji_market/admin/my_products_admin/presentation/widgets/edit_product_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/show_alert_add_widget.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/statistics_page.dart';
 
@@ -54,7 +58,9 @@ Future<dynamic> showAlertStaticticsWidget(
             'Удалить',
             style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500),
           ),
-          onPressed: () {
+          onPressed: () async {
+            await BlocProvider.of<ProductAdminCubit>(context)
+                .delete(product.id.toString());
             Navigator.pop(context, 'Two');
           },
         ),

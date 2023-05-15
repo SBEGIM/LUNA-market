@@ -162,8 +162,10 @@ class _ChatPageState extends State<ChatPage> {
                                 children: [
                                   GestureDetector(
                                     onTap: () => Get.to(Message(
+                                      userId: state.chat[index].userId,
                                       name: state.chat[index].name!,
                                       avatar: state.chat[index].avatar,
+                                      chatId: state.chat[index].chatId,
                                     )),
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
@@ -179,7 +181,8 @@ class _ChatPageState extends State<ChatPage> {
                                                 ? NetworkImage(
                                                     'http://185.116.193.73/storage/${state.chat[index].avatar}')
                                                 : null,
-                                            backgroundColor: Colors.grey,
+                                            backgroundColor:
+                                                Colors.grey.withOpacity(0.3),
                                             radius: 30,
                                           ),
                                           const SizedBox(width: 12),
@@ -236,9 +239,12 @@ class _ChatPageState extends State<ChatPage> {
                                     ),
                                   ),
                                   if (state.chat.length - 1 != index)
-                                    const Divider(
-                                      height: 0,
-                                      color: AppColors.kGray400,
+                                    Container(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: const Divider(
+                                        height: 5,
+                                        color: AppColors.kGray400,
+                                      ),
                                     )
                                 ],
                               );

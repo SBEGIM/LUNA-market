@@ -5,6 +5,7 @@ import 'package:get/route_manager.dart';
 
 import '../../../../core/common/constants.dart';
 import '../../data/bloc/brand_cubit.dart';
+import '../../data/bloc/city_cubit.dart';
 import '../../data/bloc/brand_state.dart';
 
 class BrandsPage extends StatefulWidget {

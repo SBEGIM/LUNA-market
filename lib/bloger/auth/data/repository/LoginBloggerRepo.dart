@@ -22,7 +22,7 @@ class LoginToApi {
   final _box = GetStorage();
 
   Future<dynamic> login(String phone, String password) async {
-    String deviceToken = _box.read('device_token');
+    final deviceToken = _box.read('device_token');
     String? deviceType;
     if (Platform.isIOS == true) {
       deviceType = 'ios';
@@ -37,7 +37,7 @@ class LoginToApi {
         await http.post(Uri.parse('$baseUrl/blogger/login'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'password': password,
-      'device_token': deviceToken,
+      'device_token': deviceToken.toString(),
       'device_type': deviceType
     });
     if (response.statusCode == 200) {
@@ -54,7 +54,8 @@ class LoginToApi {
 
   Future<dynamic> register(RegisterBloggerDTO register) async {
     String s = register.phone;
-    String deviceToken = _box.read('device_token');
+    final deviceToken = _box.read('device_token');
+
     String? deviceType;
     if (Platform.isIOS == true) {
       deviceType = 'ios';
@@ -67,12 +68,13 @@ class LoginToApi {
     final response =
         await http.post(Uri.parse('$baseUrl/blogger/register'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
+      'name': register.name,
       'password': register.password,
       'iin': register.iin,
       'nick_name': register.nick_name,
       'email': register.email,
       'social_network': register.social_network,
-      'device_token': deviceToken,
+      'device_token': deviceToken.toString(),
       'device_type': deviceType
     });
     if (response.statusCode == 200) {

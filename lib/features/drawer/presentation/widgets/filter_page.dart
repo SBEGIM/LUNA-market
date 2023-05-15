@@ -5,8 +5,8 @@ import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/categories_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/shops_filtr_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/sorting_page.dart';
-
 import '../../data/bloc/brand_cubit.dart';
+import '../../data/bloc/city_cubit.dart';
 import '../../data/bloc/brand_state.dart';
 import '../../data/bloc/product_cubit.dart' as productCubit;
 import '../../data/bloc/product_state.dart' as productState;
@@ -15,7 +15,8 @@ import '../../data/bloc/shops_drawer_state.dart' as shopsState;
 import 'brands_page.dart';
 
 class FilterPage extends StatefulWidget {
-  const FilterPage({Key? key}) : super(key: key);
+  String? shopId;
+  FilterPage({this.shopId, Key? key}) : super(key: key);
 
   @override
   State<FilterPage> createState() => _FilterPageState();
@@ -134,8 +135,9 @@ class _FilterPageState extends State<FilterPage> {
                               height: 71,
                               child: InkWell(
                                 onTap: () async {
-                                  final data = await Get.to(() => const SortingPage())
-                                      as String;
+                                  final data =
+                                      await Get.to(() => const SortingPage())
+                                          as String;
                                   sortName = data;
                                   setState(() {});
                                 },
@@ -187,7 +189,7 @@ class _FilterPageState extends State<FilterPage> {
                                           fontWeight: FontWeight.w400),
                                     ),
                                     subtitle: Text(
-                                      subCatName.toString() ?? 'Не выбрано',
+                                      subCatName,
                                       style: const TextStyle(
                                           color: AppColors.kGray300,
                                           fontWeight: FontWeight.w400,
@@ -411,90 +413,94 @@ class _FilterPageState extends State<FilterPage> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.only(
-                          left: 13, right: 8, bottom: 13, top: 13),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Продавцы',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w400),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          BlocConsumer<shopsCubit.ShopsDrawerCubit,
-                                  shopsState.ShopsDrawerState>(
-                              listener: (context, state) {},
-                              builder: (context, state) {
-                                if (state is shopsState.ErrorState) {
-                                  return Center(
-                                    child: Text(
-                                      state.message,
-                                      style: const TextStyle(
-                                          fontSize: 20.0, color: Colors.grey),
-                                    ),
-                                  );
-                                }
-                                if (state is shopsState.LoadedState) {
-                                  return GridView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 5,
-                                              childAspectRatio: 1.3,
-                                              crossAxisSpacing: 4,
-                                              mainAxisSpacing: 1),
-                                      itemCount: state.shopsDrawer.length,
-                                      itemBuilder: (BuildContext ctx, index) {
-                                        return Container(
-                                            child: chipShops(
-                                                state.shopsDrawer[index].name.toString(),
-                                                index));
-                                      });
-                                } else {
-                                  return const Center(
-                                      child: CircularProgressIndicator(
-                                          color: Colors.indigoAccent));
-                                }
-                              }),
-                          const Divider(
-                            color: AppColors.kGray200,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const ShopsFiltrPage()),
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text(
-                                  'Показать все',
-                                  style: TextStyle(
-                                      color: AppColors.kPrimaryColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: AppColors.kGray300,
-                                )
-                              ],
+                    if (widget.shopId == null)
+                      Container(
+                        color: Colors.white,
+                        padding: const EdgeInsets.only(
+                            left: 13, right: 8, bottom: 13, top: 13),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Продавцы',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w400),
                             ),
-                          )
-                        ],
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            BlocConsumer<shopsCubit.ShopsDrawerCubit,
+                                    shopsState.ShopsDrawerState>(
+                                listener: (context, state) {},
+                                builder: (context, state) {
+                                  if (state is shopsState.ErrorState) {
+                                    return Center(
+                                      child: Text(
+                                        state.message,
+                                        style: const TextStyle(
+                                            fontSize: 20.0, color: Colors.grey),
+                                      ),
+                                    );
+                                  }
+                                  if (state is shopsState.LoadedState) {
+                                    return GridView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 5,
+                                                childAspectRatio: 1.3,
+                                                crossAxisSpacing: 4,
+                                                mainAxisSpacing: 1),
+                                        itemCount: state.shopsDrawer.length,
+                                        itemBuilder: (BuildContext ctx, index) {
+                                          return Container(
+                                              child: chipShops(
+                                                  state.shopsDrawer[index].name
+                                                      .toString(),
+                                                  index));
+                                        });
+                                  } else {
+                                    return const Center(
+                                        child: CircularProgressIndicator(
+                                            color: Colors.indigoAccent));
+                                  }
+                                }),
+                            const Divider(
+                              color: AppColors.kGray200,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ShopsFiltrPage()),
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  Text(
+                                    'Показать все',
+                                    style: TextStyle(
+                                        color: AppColors.kPrimaryColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: AppColors.kGray300,
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
                     const SizedBox(
                       height: 60,
                     ),

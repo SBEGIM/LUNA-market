@@ -17,7 +17,7 @@ class LoginToApi {
   final _box = GetStorage();
 
   Future<dynamic> login(String name, String password) async {
-    String deviceToken = _box.read('device_token');
+    final deviceToken = _box.read('device_token');
     String? deviceType;
     if (Platform.isIOS == true) {
       deviceType = 'ios';
@@ -37,8 +37,15 @@ class LoginToApi {
       _box.write('seller_id', data['id'].toString());
       _box.write('seller_name', data['name'].toString());
       _box.write('seller_image', data['image'].toString());
-
-      // _box.write('card', data['user']['card'].toString());
+      _box.write('seller_phone', data['phone'].toString());
+      _box.write('seller_email', data['email'].toString());
+      _box.write('seller_country', data['country'].toString());
+      _box.write('seller_city', data['city'].toString());
+      _box.write('seller_home', data['home'].toString());
+      _box.write('seller_street', data['street'].toString());
+      _box.write('seller_iin', data['iin'].toString());
+      _box.write('seller_check', data['check'].toString());
+      _box.write('seller_userName', data['user_name'].toString());
     }
     return response.statusCode;
   }

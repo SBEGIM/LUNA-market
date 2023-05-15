@@ -5,8 +5,14 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:haji_market/admin/auth/data/bloc/register_admin_cubit.dart';
+import 'package:haji_market/admin/auth/data/bloc/sms_admin_cubit.dart';
+import 'package:haji_market/admin/auth/data/repository/registerAdminRepo.dart';
+import 'package:haji_market/admin/tape_admin/data/repository/tape_admin_repo.dart';
 import 'package:haji_market/features/drawer/data/bloc/respublic_cubit.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
+import 'package:haji_market/features/drawer/data/repository/CityRepo.dart';
+import 'package:haji_market/features/drawer/data/repository/CountryRepo.dart';
 import 'package:haji_market/features/drawer/data/repository/respublic_repo.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -37,7 +43,7 @@ import 'package:haji_market/features/basket/data/repository/CdekOfficeRepo.dart'
 import 'package:haji_market/features/chat/data/cubit/chat_cubit.dart';
 import 'package:haji_market/features/chat/data/repository/chat_repo.dart';
 import 'package:haji_market/features/chat/data/repository/message_repo.dart';
-import 'package:haji_market/features/drawer/data/bloc/brand_cubit.dart';
+import 'package:haji_market/features/drawer/data/bloc/city_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/credit_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/favorite_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/review_cubit.dart';
@@ -68,6 +74,7 @@ import '../../../admin/profile_admin/data/bloc/profile_edit_admin_cubit.dart';
 import '../../../admin/profile_admin/data/bloc/profile_statics_admin_cubit.dart';
 import '../../../admin/profile_admin/data/repository/profile_edit_admin_repo.dart';
 import '../../../admin/profile_admin/data/repository/profile_month_statics_admin_repo.dart';
+import '../../../admin/tape_admin/data/cubit/tape_admin_cubit.dart';
 import '../../../bloger/my_orders_admin/data/bloc/blogger_video_products_cubit.dart';
 import '../../../bloger/my_orders_admin/data/bloc/upload_video_blogger_cubit.dart';
 import '../../../bloger/my_orders_admin/data/repository/blogger_video_products_repo.dart';
@@ -88,6 +95,8 @@ import '../../auth/data/repository/registerRepo.dart';
 import '../../auth/presentation/ui/view_auth_register_page.dart';
 import '../../chat/data/cubit/message_cubit.dart';
 import '../../drawer/data/bloc/basket_cubit.dart';
+import '../../drawer/data/bloc/brand_cubit.dart';
+import '../../drawer/data/bloc/country_cubit.dart';
 import '../../drawer/data/bloc/product_cubit.dart';
 import '../../drawer/data/bloc/sub_cats_cubit.dart';
 import '../../drawer/data/repository/product_repo.dart';
@@ -151,6 +160,9 @@ class _MyAppState extends State<MyApp> {
       print('${initialLink} deeplink');
 
       if (initialLink != null) {
+        // print(bloggerId + '222');
+        // print(productId + 'wwww');
+
         String bloggerId = Uri.parse(initialLink.toString())
             .queryParameters['blogger_id']
             .toString();
@@ -158,14 +170,30 @@ class _MyAppState extends State<MyApp> {
             .queryParameters['product_id']
             .toString();
 
-        GetStorage().write('deep_blogger_id', bloggerId);
-        GetStorage().write('deep_product_id', productId);
+        String shopName = Uri.parse(initialLink.toString())
+            .queryParameters['shop_name']
+            .toString();
+        String index = Uri.parse(initialLink.toString())
+            .queryParameters['index']
+            .toString();
 
-        // print(bloggerId + '222');
-        // print(productId + 'wwww');
+        print("blogger ${bloggerId}");
+        print("productId ${productId}");
+        print("shopName ${shopName}");
+        print("index ${index}");
 
-        if (initialLink != null) {
+        if (productId != '' && productId != null) {
+          print('wwww Success product');
+
+          GetStorage().write('deep_blogger_id', bloggerId);
+          GetStorage().write('deep_product_id', productId);
           getProductById(productId);
+        }
+        if (shopName != '' && shopName != null) {
+          print('wwww Success');
+
+          BlocProvider.of<NavigationCubit>(context)
+              .emit(DetailTapeState(int.parse(index), shopName));
         }
       }
     } on PlatformException {}
@@ -175,19 +203,35 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initUniLinkss() async {
     _sub = linkStream.listen((String? link) async {
-      String bloggerId =
-          Uri.parse(link.toString()).queryParameters['blogger_id'].toString();
-      String productId =
-          Uri.parse(link.toString()).queryParameters['product_id'].toString();
-
-      GetStorage().write('deep_blogger_id', bloggerId);
-      GetStorage().write('deep_product_id', productId);
-
-      // print(bloggerId + '222');
-      // print(productId + 'wwww');
-
       if (link != null) {
-        getProductById(productId);
+        String bloggerId =
+            Uri.parse(link.toString()).queryParameters['blogger_id'].toString();
+        String productId =
+            Uri.parse(link.toString()).queryParameters['product_id'].toString();
+
+        String shopName =
+            Uri.parse(link.toString()).queryParameters['shop_name'].toString();
+        String index =
+            Uri.parse(link.toString()).queryParameters['index'].toString();
+
+        print("blogger ${bloggerId}");
+        print("productId ${productId}");
+        print("shopName ${shopName}");
+        print("index ${index}");
+
+        if (productId != '' && productId != null) {
+          print('wwww Success product');
+
+          GetStorage().write('deep_blogger_id', bloggerId);
+          GetStorage().write('deep_product_id', productId);
+          getProductById(productId);
+        }
+        if (shopName != '' && shopName != null) {
+          print('wwww Success');
+
+          BlocProvider.of<NavigationCubit>(context)
+              .emit(DetailTapeState(int.parse(index), shopName));
+        }
       }
     }, onError: (err) {});
   }
@@ -372,6 +416,31 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (_) => ProfileEditAdminCubit(
             profileEditAdminRepository: ProfileEditAdminRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => RegisterAdminCubit(
+            registerAdminRepository: RegisterAdminRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => SmsAdminCubit(
+            registerRepository: RegisterAdminRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => TapeAdminCubit(
+            tapeRepository: TapeAdminRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => CityCubit(
+            cityRepository: CityRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => CountryCubit(
+            countryRepository: CountryRepository(),
           ),
         ),
       ],

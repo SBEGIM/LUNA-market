@@ -24,7 +24,9 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
   Future<void> _getVideo() async {
     final image = change == true
         ? await _picker.pickVideo(source: ImageSource.camera)
-        : await _picker.pickVideo(source: ImageSource.gallery);
+        : await _picker.pickVideo(
+            source: ImageSource.gallery,
+            maxDuration: const Duration(minutes: 2));
 
     setState(() {
       _image = image;

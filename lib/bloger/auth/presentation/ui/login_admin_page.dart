@@ -7,6 +7,8 @@ import 'package:haji_market/admin/auth/presentation/ui/register_shop_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 
+import 'forgot_admin_password.dart';
+
 class LoginAdminPage extends StatefulWidget {
   const LoginAdminPage({Key? key}) : super(key: key);
 
@@ -162,10 +164,12 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    //                  Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => const ForgotPasswordPage()),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const ForgotPasswordAdminPage()),
+                    );
                   },
                   child: const Center(
                     child: Text(

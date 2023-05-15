@@ -35,7 +35,16 @@ class _DrawerHomeState extends State<DrawerHome> {
   void initState() {
     _box.read('avatar');
 
-    print("avatar  ${_box.read('avatar')} ");
+    final lang = GetStorage().read('app_lang');
+
+    if (lang != null) {
+      if (lang == 'kz') {
+        selected = true;
+      } else {
+        selected = false;
+      }
+    }
+
     super.initState();
   }
 
@@ -675,6 +684,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                 children: [
                   InkWell(
                     onTap: () {
+                      GetStorage().write('app_lang', 'kz');
                       selected = true;
                       setState(() {});
                     },
@@ -707,6 +717,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                   ),
                   InkWell(
                     onTap: () {
+                      GetStorage().write('app_lang', 'ru');
                       selected = false;
                       setState(() {});
                     },

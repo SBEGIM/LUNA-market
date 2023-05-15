@@ -1,7 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/admin/auth/data/DTO/register_admin_dto.dart';
+import 'package:haji_market/admin/auth/data/bloc/register_admin_cubit.dart';
 import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
 
 import 'package:haji_market/core/common/constants.dart';
@@ -29,6 +32,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
   TextEditingController userNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -54,93 +58,87 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
       //         fontWeight: FontWeight.w500,
       //       ),
       //     )),
-      body: Padding(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      body: Container(
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
         child: ListView(
-          // physics:  NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              'Укажите данные Вашего бизнеса',
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  color: AppColors.kGray900),
+            ),
             const SizedBox(
               height: 10,
             ),
-            Container(
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, top: 16, bottom: 8),
-              child: ListView(
-                shrinkWrap: true,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Укажите данные Вашего бизнеса',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                        color: AppColors.kGray900),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  FieldsCoopRequest(
-                    titleText: 'ИИН/БИН ',
-                    hintText: 'Введите ИИН/БИН',
-                    star: false,
-                    arrow: false,
-                    controller: iinController,
-                  ),
-                  FieldsCoopRequest(
-                    titleText: 'Название компании или физ лицо ',
-                    hintText: 'Введите название компании',
-                    star: false,
-                    arrow: false,
-                    controller: nameController,
-                  ),
-                  FieldsCoopRequest(
-                    titleText: 'Счёт',
-                    hintText: 'Введите счёт',
-                    star: false,
-                    arrow: false,
-                    controller: checkController,
-                  ),
-                  FieldsCoopRequest(
-                    titleText: 'Основная категория товаров ',
-                    hintText: cats.name.toString(),
-                    star: false,
-                    arrow: true,
-                    // controller: catController,
-                    onPressed: () async {
-                      final data = await Get.to(const CatsAdminPage());
-                      if (data != null) {
-                        final Cats cat = data;
+            FieldsCoopRequest(
+              titleText: 'ИИН/БИН ',
+              hintText: 'Введите ИИН/БИН',
+              star: false,
+              arrow: false,
+              controller: iinController,
+            ),
+            FieldsCoopRequest(
+              titleText: 'Название компании или физ лицо ',
+              hintText: 'Введите название компании',
+              star: false,
+              arrow: false,
+              controller: nameController,
+            ),
+            FieldsCoopRequest(
+              titleText: 'Счёт',
+              hintText: 'Введите счёт',
+              star: false,
+              arrow: false,
+              controller: checkController,
+            ),
+            FieldsCoopRequest(
+              titleText: 'Основная категория товаров ',
+              hintText: cats.name.toString(),
+              star: false,
+              arrow: true,
+              // controller: catController,
+              onPressed: () async {
+                final data = await Get.to(const CatsAdminPage());
+                if (data != null) {
+                  final Cats cat = data;
 
-                        setState(() {});
-                        catController.text = cat.id.toString();
-                        cats = cat;
-                      }
-                    },
-                  ),
-                  FieldsCoopRequest(
-                    titleText: 'Контактное имя ',
-                    hintText: 'Введите контактное имя',
-                    star: false,
-                    arrow: false,
-                    controller: userNameController,
-                  ),
-                  FieldsCoopRequest(
-                    titleText: 'Мобильный телефон ',
-                    hintText: 'Введите мобильный телефон ',
-                    star: false,
-                    arrow: false,
-                    controller: phoneController,
-                  ),
-                  FieldsCoopRequest(
-                    titleText: 'Email ',
-                    hintText: 'Введите Email',
-                    star: false,
-                    arrow: false,
-                    controller: emailController,
-                  ),
-                ],
-              ),
+                  setState(() {});
+                  catController.text = cat.id.toString();
+                  cats = cat;
+                }
+              },
+            ),
+            FieldsCoopRequest(
+              titleText: 'Контактное имя ',
+              hintText: 'Введите контактное имя',
+              star: false,
+              arrow: false,
+              controller: userNameController,
+            ),
+            FieldsCoopRequest(
+              titleText: 'Мобильный телефон ',
+              hintText: 'Введите мобильный телефон ',
+              star: false,
+              arrow: false,
+              controller: phoneController,
+            ),
+            FieldsCoopRequest(
+              titleText: 'Email ',
+              hintText: 'Введите Email',
+              star: false,
+              arrow: false,
+              controller: emailController,
+            ),
+            FieldsCoopRequest(
+              titleText: 'Пароль ',
+              hintText: 'Введите пароль',
+              star: false,
+              arrow: false,
+              controller: passwordController,
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -208,16 +206,17 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
               ],
             ),
             const SizedBox(
-              height: 60,
-            ),
+              height: 100,
+            )
           ],
         ),
       ),
+
       bottomSheet: Container(
         color: Colors.white,
         padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
         child: InkWell(
-            onTap: () {
+            onTap: () async {
               if (iinController.text.isNotEmpty &&
                   nameController.text.isNotEmpty &&
                   phoneController.text.isNotEmpty &&
@@ -226,11 +225,26 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                   catController.text.isNotEmpty &&
                   checkController.text.isNotEmpty &&
                   isChecked == true) {
+                final RegisterAdminDTO registerDto = RegisterAdminDTO(
+                    catName: catController.text,
+                    name: nameController.text,
+                    email: emailController.text,
+                    phone: phoneController.text,
+                    password: passwordController.text,
+                    iin: iinController.text,
+                    userName: userNameController.text,
+                    check: checkController.text);
+
+                await BlocProvider.of<RegisterAdminCubit>(context)
+                    .register(registerDto);
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const AuthAdminPage()),
                 );
+                Get.snackbar('Успешно', 'Заявка отправлено',
+                    backgroundColor: Colors.blueAccent);
               } else {
                 Get.snackbar('Ошибка', 'Заполните все данные *',
                     backgroundColor: Colors.blueAccent);

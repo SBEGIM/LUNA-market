@@ -23,12 +23,11 @@ class Chat {
 
   Future<List<ChatAdminModel>> chatList(int page) async {
     try {
-      final String? token = _box.read('token');
+      final String? token = _box.read('seller_token');
 
-      final response = await http
-          .get(Uri.parse("$baseUrl/chat?page=$page"), headers: {
-        "Authorization": "Bearer 173|NhSdjW7Lu8DWqtSqGB4XAgwbnDXeXuhLYHdteW25"
-      });
+      final response = await http.get(
+          Uri.parse("$baseUrl/chat/shop?page=$page"),
+          headers: {"Authorization": "Bearer $token"});
 
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 

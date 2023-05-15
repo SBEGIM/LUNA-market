@@ -298,7 +298,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                                color: Colors.orange,
+                                color: Colors.grey.withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(6)),
                             child: const Padding(
                               padding: EdgeInsets.only(
@@ -307,7 +307,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                                 'РЕКЛАМА',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.grey,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400),
                               ),

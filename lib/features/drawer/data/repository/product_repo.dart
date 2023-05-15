@@ -29,9 +29,9 @@ class ProductApi {
   List<dynamic> subCatIds = [];
 
   Future<List<ProductModel>> product() async {
-    if (_box.read('shopFilterId') != null) {
-      shopId = GetStorage().read('shopFilterId');
-    }
+    // if (_box.read('shopFilterId') != null) {
+    //   shopId = GetStorage().read('shopFilterId');
+    // }
     _box.listen(() {
       if (_box.read('priceFilter') != null) {
         price = GetStorage().read('priceFilter');
@@ -67,6 +67,9 @@ class ProductApi {
         CatId = 0;
       }
       if (_box.read('shopFilterId') != null) {
+        print('oooowww');
+        print('2222');
+
         shopId = GetStorage().read('shopFilterId');
         shopIds.clear();
         var ab = json.decode(shopId).cast<int>().toList();

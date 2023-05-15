@@ -7,7 +7,6 @@ import 'package:haji_market/features/chat/presentation/message.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:web_socket_channel/io.dart';
-
 import '../../../core/common/constants.dart';
 import '../data/cubit/chat_admin_cubit.dart';
 import '../data/cubit/chat_admin_state.dart';
@@ -161,7 +160,10 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   GestureDetector(
-                                    onTap: () => Get.to(MessageAdmin()),
+                                    onTap: () => Get.to(MessageAdmin(
+                                        chatId: state.chat[index].chatId,
+                                        userId: state.chat[index].userId,
+                                        userName: state.chat[index].name)),
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 16),

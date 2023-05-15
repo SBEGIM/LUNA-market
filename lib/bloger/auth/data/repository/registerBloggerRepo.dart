@@ -117,7 +117,6 @@ class RegisterToApi {
   }
 
   Future<dynamic> passwordReset(String phone, String password) async {
-    print("111 $phone");
     String s = phone;
     String result = s.substring(2);
 
