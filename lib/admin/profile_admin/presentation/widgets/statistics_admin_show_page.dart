@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/profile_admin/data/bloc/profile_month_statics_admin_cubit.dart';
 import 'package:haji_market/admin/profile_admin/data/bloc/profile_month_statics_admin_state.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
@@ -34,14 +37,28 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
   final int _SelectSecondIndex = -1;
   int _summBonus = 0;
 
-  incrementSumm(int Bonus) {
-    _summBonus += Bonus;
+  Function? summPrice;
+
+  incrementSumm(List<int> bonuses) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      bonuses.forEach((element) {
+        _summBonus += element;
+      });
+      setState(() {});
+    });
   }
 
   @override
   void initState() {
-    BlocProvider.of<ProfileMonthStaticsAdminCubit>(context).statics();
+    BlocProvider.of<ProfileMonthStaticsAdminCubit>(context).statics(year, 1);
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -84,7 +101,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                   year--;
                   setState(() {});
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.arrow_back,
                   color: Colors.black,
                   size: 15.0,
@@ -95,7 +112,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
               ),
               Text(
                 '$year',
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.kGray900,
                     fontWeight: FontWeight.w700,
                     fontSize: 16),
@@ -108,7 +125,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                   year++;
                   setState(() {});
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.arrow_forward,
                   color: Colors.black,
                   size: 15.0,
@@ -139,12 +156,16 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                   return GestureDetector(
                     onTap: () {
                       _selectIndex = index;
-                      BlocProvider.of<ProfileMonthStaticsAdminCubit>(context)
-                          .statics();
-
+                      _summBonus = 0;
                       setState(() {
+                        _summBonus;
                         _selectIndex;
                       });
+                      BlocProvider.of<ProfileMonthStaticsAdminCubit>(context)
+                          .statics(
+                        year,
+                        _selectIndex + 1,
+                      );
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(
@@ -192,7 +213,13 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
 
             BlocConsumer<ProfileMonthStaticsAdminCubit,
                 ProfileMonthStaticsAdminState>(
-              listener: (context, state) {},
+              listener: (context, state) {
+                // if (state is LoadedState) {}
+                if (state is LoadedState) {
+                  incrementSumm(
+                      state.loadedProfile.map((e) => e.price ?? 1).toList());
+                }
+              },
               builder: (context, state) {
                 if (state is LoadedState) {
                   return SizedBox(
@@ -201,12 +228,6 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                         scrollDirection: Axis.vertical,
                         itemCount: state.loadedProfile.length,
                         itemBuilder: (context, index) {
-                          incrementSumm(
-                              state.loadedProfile[index].bonus!.toInt());
-                          // setState(() {
-                          //   _summBonus;
-                          // });
-
                           return Container(
                             height: 80,
                             width: 343,
@@ -243,9 +264,9 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      const Text(
-                                        'Магазин: Sulpak',
-                                        style: TextStyle(
+                                      Text(
+                                        'Магазин: ${GetStorage().read('seller_name')} ',
+                                        style: const TextStyle(
                                             color: AppColors.kGray900,
                                             fontSize: 10,
                                             fontWeight: FontWeight.w400),
@@ -272,13 +293,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                                                   fontWeight: FontWeight.w400)),
                                           const SizedBox(width: 45),
                                           Text(
-                                              '${state.loadedProfile[index].bonusPercent.toString()} %',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400)),
-                                          const SizedBox(width: 45),
-                                          Text(
-                                              '${state.loadedProfile[index].bonus.toString()}тг',
+                                              '${state.loadedProfile[index].price.toString()} тг',
                                               style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400)),

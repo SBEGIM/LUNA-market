@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/admin/admin_app/presentation/base_admin.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentWebviewWigdet extends StatefulWidget {
   String url;
-  PaymentWebviewWigdet({required this.url, super.key});
+  String? role;
+
+  PaymentWebviewWigdet({required this.url, this.role, super.key});
 
   @override
   State<PaymentWebviewWigdet> createState() => _PaymentWebviewWigdetState();
@@ -61,7 +64,11 @@ class _PaymentWebviewWigdetState extends State<PaymentWebviewWigdet> {
               ),
               onPressed: () {
                 //  Navigator.pop(context);
-                Get.to(const Base(index: 1));
+                if (widget.role == 'shop') {
+                  Get.to(const BaseAdmin(index: 1));
+                } else {
+                  Get.to(const Base(index: 1));
+                }
               }),
         ),
         body: WebViewWidget(

@@ -9,11 +9,13 @@ import 'package:haji_market/admin/auth/data/bloc/register_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/bloc/sms_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/repository/registerAdminRepo.dart';
 import 'package:haji_market/admin/tape_admin/data/repository/tape_admin_repo.dart';
+import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/respublic_cubit.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:haji_market/features/drawer/data/repository/CityRepo.dart';
 import 'package:haji_market/features/drawer/data/repository/CountryRepo.dart';
 import 'package:haji_market/features/drawer/data/repository/respublic_repo.dart';
+import 'package:haji_market/features/tape/presentation/ui/detail_tape_card_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -99,6 +101,7 @@ import '../../drawer/data/bloc/brand_cubit.dart';
 import '../../drawer/data/bloc/country_cubit.dart';
 import '../../drawer/data/bloc/product_cubit.dart';
 import '../../drawer/data/bloc/sub_cats_cubit.dart';
+import '../../drawer/data/repository/product_ad_repo.dart';
 import '../../drawer/data/repository/product_repo.dart';
 import '../../drawer/data/repository/review_product_repo.dart';
 import '../../drawer/presentation/widgets/detail_card_product_page.dart';
@@ -157,7 +160,7 @@ class _MyAppState extends State<MyApp> {
     try {
       final initialLink = await getInitialLink();
 
-      print('${initialLink} deeplink');
+      print('$initialLink deeplink');
 
       if (initialLink != null) {
         // print(bloggerId + '222');
@@ -177,21 +180,14 @@ class _MyAppState extends State<MyApp> {
             .queryParameters['index']
             .toString();
 
-        print("blogger ${bloggerId}");
-        print("productId ${productId}");
-        print("shopName ${shopName}");
-        print("index ${index}");
-
-        if (productId != '' && productId != null) {
+        if (productId != '' && productId != 'null') {
           print('wwww Success product');
 
           GetStorage().write('deep_blogger_id', bloggerId);
           GetStorage().write('deep_product_id', productId);
           getProductById(productId);
         }
-        if (shopName != '' && shopName != null) {
-          print('wwww Success');
-
+        if (shopName != '' && shopName != 'null') {
           BlocProvider.of<NavigationCubit>(context)
               .emit(DetailTapeState(int.parse(index), shopName));
         }
@@ -205,29 +201,31 @@ class _MyAppState extends State<MyApp> {
     _sub = linkStream.listen((String? link) async {
       if (link != null) {
         String bloggerId =
-            Uri.parse(link.toString()).queryParameters['blogger_id'].toString();
+            Uri.parse(link).queryParameters['blogger_id'].toString();
         String productId =
-            Uri.parse(link.toString()).queryParameters['product_id'].toString();
-
+            Uri.parse(link).queryParameters['product_id'].toString();
         String shopName =
-            Uri.parse(link.toString()).queryParameters['shop_name'].toString();
-        String index =
-            Uri.parse(link.toString()).queryParameters['index'].toString();
+            Uri.parse(link).queryParameters['shop_name'].toString();
+        String index = Uri.parse(link).queryParameters['index'].toString();
 
-        print("blogger ${bloggerId}");
-        print("productId ${productId}");
-        print("shopName ${shopName}");
-        print("index ${index}");
-
-        if (productId != '' && productId != null) {
-          print('wwww Success product');
-
+        if (productId != '' && productId != 'null') {
           GetStorage().write('deep_blogger_id', bloggerId);
           GetStorage().write('deep_product_id', productId);
+
           getProductById(productId);
         }
-        if (shopName != '' && shopName != null) {
-          print('wwww Success');
+
+        if (shopName != '' && shopName != 'null') {
+          // BlocProvider.of<NavigationCubit>(context)
+          //     .getNavBarItem(NavigationState.tape())
+          //     .whenComplete(
+          //   () {
+          //     Get.to(() => DetailTapeCardPage(
+          //           index: int.parse(index),
+          //           shop_name: shopName,
+          //         ));
+          //   },
+          // );
 
           BlocProvider.of<NavigationCubit>(context)
               .emit(DetailTapeState(int.parse(index), shopName));
@@ -250,20 +248,39 @@ class _MyAppState extends State<MyApp> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      print(data['data'].toString());
 
       product = ProductModel.fromJson(data['data']);
 
       Get.to(() => DetailCardProductPage(product: product!));
 
-      Get.snackbar('Промокод активирован',
-          'покупайте товары и получайте скидку от Блогера',
-          backgroundColor: Colors.blueAccent);
+      // Get.snackbar('Промокод активирован',
+      //     'покупайте товары и получайте скидку от Блогера',
+      //     backgroundColor: Colors.blueAccent);
     } else {
-      Get.snackbar('Ошибка промокод', 'продукт или блогер не найден',
-          backgroundColor: Colors.redAccent);
+      // Get.snackbar('Ошибка промокод', 'продукт или блогер не найден',
+      //     backgroundColor: Colors.redAccent);
     }
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'Haji Market',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        //  fontFamily: 'Nunito',
+        primarySwatch: Colors.blue,
+      ),
+      home: token != true ? const ViewAuthRegisterPage() : const Base(index: 0),
+// const BaseAdmin()
+      // const SelectCountryPage()
+    );
+  }
+}
+
+class MultiBlocWrapper extends StatelessWidget {
+  final Widget child;
+  const MultiBlocWrapper({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -443,19 +460,13 @@ class _MyAppState extends State<MyApp> {
             countryRepository: CountryRepository(),
           ),
         ),
-      ],
-      child: GetMaterialApp(
-        title: 'Haji Market',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          //  fontFamily: 'Nunito',
-          primarySwatch: Colors.blue,
+        BlocProvider(
+          create: (_) => ProductAdCubit(
+            productAdRepository: ProductAdRepository(),
+          ),
         ),
-        home:
-            token != true ? const ViewAuthRegisterPage() : const Base(index: 0),
-// const BaseAdmin()
-        // const SelectCountryPage()
-      ),
+      ],
+      child: child,
     );
   }
 }

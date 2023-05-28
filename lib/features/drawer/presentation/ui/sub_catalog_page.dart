@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/under_catalog_page.dart';
 
@@ -39,7 +40,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Get.to(Base(index: 1));
           },
           icon: SvgPicture.asset('assets/icons/back_header.svg'),
         ),
@@ -133,6 +134,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                 margin: const EdgeInsets.only(top: 12, left: 15, right: 15),
                 child: GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -246,7 +248,7 @@ class CatalogListTile extends StatelessWidget {
                 height: 90,
                 width: 90,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(6),
                     image: DecorationImage(
                         image: NetworkImage(
                           url,

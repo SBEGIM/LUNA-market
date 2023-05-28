@@ -82,19 +82,21 @@ class _CreateProductPageState extends State<CreateProductPage> {
           child: InkWell(
             onTap: () async {
               await BlocProvider.of<ProductAdminCubit>(context).store(
-                  priceController.text,
-                  countController.text,
-                  compoundController.text,
-                  cats!.id.toString(),
-                  brands!.id.toString(),
-                  descriptionController.text,
-                  nameController.text,
-                  heightController.text,
-                  widthController.text,
-                  massaController.text,
-                  articulController.text,
-                  'currency',
-                  '');
+                priceController.text,
+                countController.text,
+                compoundController.text,
+                cats!.id.toString(),
+                brands!.id.toString(),
+                descriptionController.text,
+                nameController.text,
+                heightController.text,
+                widthController.text,
+                massaController.text,
+                articulController.text,
+                'currency',
+                [],
+                [],
+              );
             },
             child: Container(
                 decoration: BoxDecoration(

@@ -5,9 +5,12 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/profile_admin/presentation/widgets/about_shop_admin_page.dart';
 import 'package:haji_market/admin/profile_admin/presentation/widgets/statistics_admin_show_page.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../bloger/auth/presentation/ui/login_admin_page.dart';
+import '../../../../features/drawer/presentation/ui/about_us_page.dart';
 import '../../../auth/presentation/ui/view_auth_register_page.dart';
 import '../../data/bloc/profile_statics_admin_cubit.dart';
 import '../../data/bloc/profile_statics_admin_state.dart';
@@ -305,29 +308,32 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
               ),
             ),
           ),
-
           const Divider(
             color: AppColors.kGray400,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-                top: 15.0, bottom: 15, right: 15, left: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'Связаться с администрацией',
-                  style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                  color: AppColors.kGray300,
-                )
-              ],
+          InkWell(
+            onTap: () =>
+                launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 15.0, bottom: 15, right: 15, left: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    'Связаться с администрацией',
+                    style: TextStyle(
+                        color: AppColors.kGray900,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                    color: AppColors.kGray300,
+                  )
+                ],
+              ),
             ),
           ),
           const Divider(
@@ -337,8 +343,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const AbouShopAdminPage()),
+                MaterialPageRoute(builder: (context) => const AboutUsPage()),
               );
             },
             child: Padding(
@@ -357,6 +362,43 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 16,
+                    color: AppColors.kGray300,
+                  )
+                ],
+              ),
+            ),
+          ),
+          const Divider(
+            color: AppColors.kGray400,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Base(index: 1)),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 10, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Вернуться на маркет',
+                        style: TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
                     color: AppColors.kGray300,
                   )
                 ],
@@ -390,17 +432,13 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       Text(
                         'Выйти',
                         style: TextStyle(
-                            color: AppColors.kGray900,
+                            color: Color(0xffff3347c),
                             fontSize: 16,
                             fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),
-                  const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                    color: AppColors.kGray300,
-                  )
+                  SvgPicture.asset('assets/icons/logout.svg')
                 ],
               ),
             ),

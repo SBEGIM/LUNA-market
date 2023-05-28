@@ -13,11 +13,11 @@ class ProfileMonthStaticsAdminCubit
       {required this.profileMonthStaticsBloggerRepository})
       : super(InitState());
 
-  Future<void> statics() async {
+  Future<void> statics(int year, int month) async {
     try {
       emit(LoadingState());
       final List<ProfileMonthStatics> data =
-          await profileMonthStaticsBloggerRepository.statics();
+          await profileMonthStaticsBloggerRepository.statics(year, month);
 
       // if (data != null) {
       emit(LoadedState(loadedProfile: data));

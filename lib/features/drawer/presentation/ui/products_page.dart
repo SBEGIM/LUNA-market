@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart'
+    as productAdState;
 import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart'
     as productCubit;
 import 'package:haji_market/features/drawer/data/bloc/product_state.dart'
@@ -26,6 +28,8 @@ import '../../data/bloc/brand_cubit.dart' as brandCubit;
 import 'package:haji_market/features/drawer/data/bloc/brand_state.dart'
     as brandState;
 
+import '../../data/bloc/product_ad_cubit.dart';
+import '../../data/bloc/product_ad_state.dart';
 import '../widgets/product_ad_card.dart';
 
 class ProductsPage extends StatefulWidget {
@@ -71,7 +75,7 @@ class _ProductsPageState extends State<ProductsPage> {
     GetStorage().remove('rating');
     BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context).shopsDrawer();
     BlocProvider.of<brandCubit.BrandCubit>(context).brands();
-
+    BlocProvider.of<ProductAdCubit>(context).adProducts(widget.cats.id);
     super.initState();
   }
 
@@ -128,11 +132,11 @@ class _ProductsPageState extends State<ProductsPage> {
             ),
           ),
         ),
-        actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: SvgPicture.asset('assets/icons/share.svg'))
-        ],
+        // actions: [
+        //   Padding(
+        //       padding: const EdgeInsets.only(right: 20.0),
+        //       child: SvgPicture.asset('assets/icons/share.svg'))
+        // ],
       ),
       body: Column(
         // shrinkWrap: false,
@@ -212,59 +216,58 @@ class _ProductsPageState extends State<ProductsPage> {
               ],
             ),
           ),
+          if (catsVisible == false)
+            BlocConsumer<ProductAdCubit, ProductAdState>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  if (state is ErrorState) {
+                    return Center(
+                      child: Text(
+                        state.message,
+                        style:
+                            const TextStyle(fontSize: 20.0, color: Colors.grey),
+                      ),
+                    );
+                  }
+                  if (state is LoadingState) {
+                    return const Center(
+                        child: CircularProgressIndicator(
+                            color: Colors.indigoAccent));
+                  }
 
-          (widget.cats.id == 1 && catsVisible == false)
-              ? BlocConsumer<productCubit.ProductCubit,
-                      productState.ProductState>(
-                  listener: (context, state) {},
-                  builder: (context, state) {
-                    if (state is productState.ErrorState) {
-                      return Center(
-                        child: Text(
-                          state.message,
-                          style: const TextStyle(
-                              fontSize: 20.0, color: Colors.grey),
-                        ),
-                      );
-                    }
-                    if (state is productState.LoadingState) {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                              color: Colors.indigoAccent));
-                    }
-
-                    if (state is productState.LoadedState) {
-                      return SizedBox(
-                          height: 250,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: state.productModel.length < 4
-                                ? state.productModel.length
-                                : 4,
-                            itemBuilder: (BuildContext ctx, index) {
-                              return GestureDetector(
-                                onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          DetailCardProductPage(
-                                              product:
-                                                  state.productModel[index])),
-                                ),
-                                child: ProductAdCard(
-                                  product: state.productModel[index],
-                                ),
-                              );
-                            },
-                          ));
-                    } else {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                              color: Colors.indigoAccent));
-                    }
-                  })
-              : Container(),
+                  if (state is LoadedState) {
+                    return state.productModel.length != 0
+                        ? SizedBox(
+                            height: 250,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              itemCount: state.productModel.length < 4
+                                  ? state.productModel.length
+                                  : 4,
+                              itemBuilder: (BuildContext ctx, index) {
+                                return GestureDetector(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailCardProductPage(
+                                                product:
+                                                    state.productModel[index])),
+                                  ),
+                                  child: ProductAdCard(
+                                    product: state.productModel[index],
+                                  ),
+                                );
+                              },
+                            ))
+                        : Container();
+                  } else {
+                    return Container();
+                  }
+                })
+          else
+            Container(),
           const SizedBox(height: 20),
           const Expanded(child: Products()),
 

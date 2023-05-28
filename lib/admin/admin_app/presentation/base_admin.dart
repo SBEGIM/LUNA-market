@@ -28,7 +28,7 @@ class _BaseAdminState extends State<BaseAdmin> {
   void initState() {
     if (widget.index == 0) {
       BlocProvider.of<AdminNavigationCubit>(context)
-          .getNavBarItemAdmin(const AdminNavigationState.tapeAdmin());
+          .getNavBarItemAdmin(const AdminNavigationState.homeAdmin());
 
       basePageIndex1 = 0;
     }
@@ -57,27 +57,27 @@ class _BaseAdminState extends State<BaseAdmin> {
             currentIndex: basePageIndex1,
             onTap: (int index) {
               switch (index) {
+                // case 0:
+                //   BlocProvider.of<AdminNavigationCubit>(context)
+                //       .getNavBarItemAdmin(
+                //           const AdminNavigationState.tapeAdmin());
+                //   break;
                 case 0:
-                  BlocProvider.of<AdminNavigationCubit>(context)
-                      .getNavBarItemAdmin(
-                          const AdminNavigationState.tapeAdmin());
-                  break;
-                case 1:
                   BlocProvider.of<AdminNavigationCubit>(context)
                       .getNavBarItemAdmin(
                           const AdminNavigationState.homeAdmin());
                   break;
-                case 2:
+                case 1:
                   BlocProvider.of<AdminNavigationCubit>(context)
                       .getNavBarItemAdmin(
                           const AdminNavigationState.chatAdmin());
                   break;
-                case 3:
+                case 2:
                   BlocProvider.of<AdminNavigationCubit>(context)
                       .getNavBarItemAdmin(
                           const AdminNavigationState.myOrderAdmin());
                   break;
-                case 4:
+                case 3:
                   BlocProvider.of<AdminNavigationCubit>(context)
                       .getNavBarItemAdmin(const AdminNavigationState.profile());
                   break;
@@ -94,17 +94,17 @@ class _BaseAdminState extends State<BaseAdmin> {
             showUnselectedLabels: true,
             type: BottomNavigationBarType.fixed,
             items: [
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/tape.svg',
-                  color: AppColors.kGray200,
-                ),
-                label: 'Лента',
-                activeIcon: SvgPicture.asset(
-                  'assets/icons/tape.svg',
-                  color: AppColors.kPrimaryColor,
-                ),
-              ),
+              // BottomNavigationBarItem(
+              //   icon: SvgPicture.asset(
+              //     'assets/icons/tape.svg',
+              //     color: AppColors.kGray200,
+              //   ),
+              //   label: 'Лента',
+              //   activeIcon: SvgPicture.asset(
+              //     'assets/icons/tape.svg',
+              //     color: AppColors.kPrimaryColor,
+              //   ),
+              // ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
                   'assets/icons/date.svg',
@@ -155,9 +155,11 @@ class _BaseAdminState extends State<BaseAdmin> {
       ),
       body: BlocBuilder<AdminNavigationCubit, AdminNavigationState>(
         builder: (context, state) {
-          if (state is TapeAdminState) {
-            return const TapeAdminPage();
-          } else if (state is HomeAdminState) {
+          // if (state is TapeAdminState) {
+          //   return const TapeAdminPage();
+          // } else
+
+          if (state is HomeAdminState) {
             return const MyProductsAdminPage();
           } else if (state is MyOrderAdminState) {
             return const MyOrdersAdminPage();

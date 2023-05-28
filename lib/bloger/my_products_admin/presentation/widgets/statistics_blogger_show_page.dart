@@ -34,13 +34,17 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
   final int _SelectSecondIndex = -1;
   int _summBonus = 0;
 
-  incrementSumm(int Bonus) {
-    _summBonus += Bonus;
+  incrementSumm(List<int> Bonus) {
+    Bonus.forEach((element) {
+      _summBonus += element;
+    });
+
+    setState(() {});
   }
 
   @override
   void initState() {
-    BlocProvider.of<ProfileMonthStaticsBloggerCubit>(context).statics();
+    BlocProvider.of<ProfileMonthStaticsBloggerCubit>(context).statics(1, year);
     super.initState();
   }
 
@@ -84,7 +88,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                   year--;
                   setState(() {});
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.arrow_back,
                   color: Colors.black,
                   size: 15.0,
@@ -95,7 +99,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
               ),
               Text(
                 '$year',
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.kGray900,
                     fontWeight: FontWeight.w700,
                     fontSize: 16),
@@ -108,7 +112,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                   year++;
                   setState(() {});
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.arrow_forward,
                   color: Colors.black,
                   size: 15.0,
@@ -140,10 +144,12 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                     onTap: () {
                       _selectIndex = index;
                       BlocProvider.of<ProfileMonthStaticsBloggerCubit>(context)
-                          .statics();
+                          .statics(_selectIndex + 1, year);
 
+                      _summBonus = 0;
                       setState(() {
                         _selectIndex;
+                        _summBonus;
                       });
                     },
                     child: Padding(
@@ -192,7 +198,13 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
 
             BlocConsumer<ProfileMonthStaticsBloggerCubit,
                 ProfileMonthStaticsBloggerState>(
-              listener: (context, state) {},
+              listener: (context, state) {
+                if (state is LoadedState) {
+                  incrementSumm(state.loadedProfile.map((e) {
+                    return e.bonus ?? 1;
+                  }).toList());
+                }
+              },
               builder: (context, state) {
                 if (state is LoadedState) {
                   return SizedBox(
@@ -201,12 +213,6 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                         scrollDirection: Axis.vertical,
                         itemCount: state.loadedProfile.length,
                         itemBuilder: (context, index) {
-                          incrementSumm(
-                              state.loadedProfile[index].bonus!.toInt());
-                          // setState(() {
-                          //   _summBonus;
-                          // });
-
                           return Container(
                             height: 80,
                             width: 343,

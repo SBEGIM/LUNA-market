@@ -60,7 +60,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                 width: 160,
                 child: Image.network(
                   widget.product.path!.isNotEmpty
-                      ? "http://80.87.202.73:8001/storage/${widget.product.path!.first}"
+                      ? "http://185.116.193.73/storage/${widget.product.path!.first}"
                       : '',
                   height: 160,
                   width: 160,

@@ -14,6 +14,7 @@ import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/detailed_store_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/product_imags_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/specifications_page.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../basket/presentation/ui/basket_order_address_page.dart';
 import '../../../home/presentation/widgets/product_mb_interesting_card.dart';
 import '../../../home/presentation/widgets/product_watching_card.dart';
@@ -75,6 +76,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
   ];
 
   int? rating = 0;
+  int? imageIndex;
+
+  String? productNames;
 
   TextEditingController _commentController = TextEditingController();
 
@@ -82,6 +86,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
   void initState() {
     isvisible = widget.product.inBasket ?? false;
     inFavorite = widget.product.inFavorite ?? false;
+
+    productNames =
+        "https://lunamarket.info/?product_id\u003d${widget.product!.id}";
     super.initState();
 
     compoundPrice =
@@ -114,23 +121,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Row(
-              children: const [
-                Icon(
-                  Icons.ios_share,
-                  color: AppColors.kPrimaryColor,
-                ),
-                // SizedBox(
-                //   width: 10,
-                // ),
-                // Icon(
-                //   Icons.search,
-                //   color: AppColors.kPrimaryColor,
-                // ),
-              ],
-            ),
-          ),
+              padding: const EdgeInsets.only(right: 22.0),
+              child: GestureDetector(
+                  onTap: () async {
+                    await Share.share('${productNames}');
+                  },
+                  child: SvgPicture.asset('assets/icons/share.svg')))
         ],
       ),
       body: ListView(
@@ -141,14 +137,50 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               Container(
                 height: 300,
                 color: Colors.white,
-                child: Image.network(
-                  widget.product.path!.isNotEmpty
-                      ? "http://80.87.202.73:8001/storage/${widget.product.path!.first}"
-                      : '',
-                  height: 375,
-                  width: 400,
+                margin: const EdgeInsets.only(right: 8),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 1,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: (() {
+                        imageIndex = index;
+                        setState(() {});
+                      }),
+                      child: Container(
+                        margin:
+                            const EdgeInsets.only(top: 24, left: 8, right: 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                              width: 0.3,
+                              color: imageIndex == index
+                                  ? AppColors.kPrimaryColor
+                                  : Colors.grey),
+                        ),
+                        //color: Colors.red,
+                        child: Image.network(
+                          height: 375,
+                          width: 400,
+                          "http://185.116.193.73/storage/${widget.product.path![imageIndex ?? index]}",
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
+              // Container(
+              //   height: 300,
+              //   color: Colors.white,
+              //   child: Image.network(
+              //     widget.product.path!.isNotEmpty
+              //         ? "http://80.87.202.73:8001/storage/${widget.product.path!.first}"
+              //         : '',
+              //     height: 375,
+              //     width: 400,
+              //   ),
+              // ),
               Container(
                 margin: const EdgeInsets.only(
                     left: 16.0, right: 4, top: 16, bottom: 4),
@@ -216,22 +248,31 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 ),
               ),
               Container(
-                height: 6,
+                height: 12,
+                //  width: 12,
                 //  alignment: Alignment.r,
                 margin: const EdgeInsets.only(
                     left: 154.0, right: 20, top: 260, bottom: 4),
                 child: Center(
                   child: ListView.builder(
-                    itemCount: widget.product.path!.length,
+                    itemCount: widget.product.path?.length ?? 0,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: ((context, index) {
-                      return Container(
-                        margin: const EdgeInsets.only(left: 16),
-                        //  height: 1,
-                        width: 6,
-                        decoration: BoxDecoration(
-                            color: AppColors.kPrimaryColor,
-                            borderRadius: BorderRadius.circular(100)),
+                      return GestureDetector(
+                        onTap: () {
+                          imageIndex = index;
+                          setState(() {});
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 16),
+                          //  height: 1,
+                          width: 12,
+                          decoration: BoxDecoration(
+                              color: imageIndex == index
+                                  ? AppColors.kPrimaryColor
+                                  : Colors.grey,
+                              borderRadius: BorderRadius.circular(100)),
+                        ),
                       );
                     }),
                   ),
@@ -522,9 +563,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                     } else if (index == 1) {
                                       selectedIndexMonth = 6;
                                     } else if (index == 2) {
-                                      selectedIndexMonth = 12;
+                                      selectedIndexMonth = 9;
                                     } else if (index == 3) {
-                                      selectedIndexMonth = 24;
+                                      selectedIndexMonth = 12;
                                     } else {
                                       selectedIndexMonth = 3;
                                     }
@@ -626,7 +667,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       width: MediaQuery.of(context).size.width * 0.585, // 229,
                       height: 28,
                       child: ListView.builder(
-                        itemCount: bloc.length,
+                        itemCount: widget.product.bloc?.length ?? 0,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.horizontal,
@@ -659,7 +700,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 // ),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  'x${bloc[index]}',
+                                  'x${widget.product.bloc?[index].count ?? 0}',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: selectedIndex3 == index
@@ -686,7 +727,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           fontSize: 12, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      'x${selectedIndex3 != -1 ? bloc[selectedIndex3!] : 0}',
+                      'x${selectedIndex3 != -1 ? " ${widget.product.bloc![selectedIndex3!].count} (${widget.product.bloc![selectedIndex3!].price} тг) " : 0}',
                       style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -700,7 +741,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           color: Colors.grey),
                     ),
                     Text(
-                        ' = ${(widget.product.price!.toInt() - widget.product.compound!.toInt()) * (selectedIndex3 != -1 ? bloc[selectedIndex3!] : 1) * count}',
+                        ' = ${(widget.product.price!.toInt() - widget.product.compound!.toInt()) + (selectedIndex3 != -1 ? widget.product.bloc![selectedIndex3!].price as int : 1) * count}',
                         style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,

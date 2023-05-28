@@ -85,4 +85,13 @@ class LoginCubit extends Cubit<LoginState> {
       emit(ErrorState(message: e.toString()));
     }
   }
+
+  Future<void> delete() async {
+    try {
+      await loginRepository.delete();
+    } catch (e) {
+      log(e.toString());
+      // emit(ErrorState(message: 'Ошибка'));
+    }
+  }
 }

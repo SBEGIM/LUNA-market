@@ -60,7 +60,7 @@ class _MyOrdersAdminPageState extends State<MyOrdersAdminPage> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          'Все',
+                          'FBS',
                           style: TextStyle(
                             fontSize: 15,
                             color: segmentValue == 0
@@ -86,6 +86,23 @@ class _MyOrdersAdminPageState extends State<MyOrdersAdminPage> {
                           ),
                         ),
                       ),
+                      2: Container(
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        height: 39,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          'realFBS',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: segmentValue == 2
+                                ? Colors.black
+                                : const Color(0xff9B9B9B),
+                          ),
+                        ),
+                      ),
                     },
                     onValueChanged: (int? value) async {
                       if (value != null) {
@@ -105,6 +122,7 @@ class _MyOrdersAdminPageState extends State<MyOrdersAdminPage> {
             index: segmentValue,
             children: const [
               AllMyOrdersPage(),
+              DoneMyOrdersPage(),
               DoneMyOrdersPage(),
             ],
           ),

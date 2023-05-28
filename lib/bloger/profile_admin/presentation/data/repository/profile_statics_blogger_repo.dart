@@ -18,8 +18,10 @@ class ProfileStaticsBloggerToApi {
   final _box = GetStorage();
 
   Future<dynamic> statics() async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/blogger/profile/statics'));
+    final bloggerId = _box.read('blogger_id');
+
+    final response = await http.get(
+        Uri.parse('$baseUrl/blogger/profile/statics?blogger_id=$bloggerId'));
 
     return ProfileStaticsBloggerModel.fromJson(jsonDecode(response.body));
   }

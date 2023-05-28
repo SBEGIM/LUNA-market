@@ -55,6 +55,7 @@ class _BaseState extends State<Base> {
   }
 
   final GlobalKey<ScaffoldState> _key = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +65,13 @@ class _BaseState extends State<Base> {
       extendBody: true,
       // drawer: const DrawerHome(),
       // drawer: Container(),
-      bottomNavigationBar: BlocBuilder<NavigationCubit, NavigationState>(
+      bottomNavigationBar: BlocConsumer<NavigationCubit, NavigationState>(
+        listener: (context, state) {
+          if (state is DetailTapeState) {
+            basePageIndex = 0;
+            setState(() {});
+          }
+        },
         builder: (context, state) {
           return BottomNavigationBar(
             currentIndex: basePageIndex,
@@ -74,7 +81,6 @@ class _BaseState extends State<Base> {
                   BlocProvider.of<NavigationCubit>(context)
                       .getNavBarItem(const NavigationState.tape());
                   break;
-
                 case 1:
                   BlocProvider.of<NavigationCubit>(context)
                       .getNavBarItem(const NavigationState.home());

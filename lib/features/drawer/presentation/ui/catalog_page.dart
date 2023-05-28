@@ -183,7 +183,7 @@ class CatalogListTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0x0f9f9f9),
+        color: const Color(0x0fff9f9f),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,10 +196,10 @@ class CatalogListTile extends StatelessWidget {
                 height: 90,
                 width: 90,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(2),
                     image: DecorationImage(
                         image: NetworkImage(
-                          url,
+                          "${url}",
                         ),
                         fit: BoxFit.contain),
                     color: const Color(0xFFF0F5F5)),
@@ -209,16 +209,17 @@ class CatalogListTile extends StatelessWidget {
                 // ),
               ),
               // Container(
-              //   height: 90,
-              //   width: 90,
+              //   height: 154,
+              //   width: 108,
               //   decoration: BoxDecoration(
-              //       borderRadius:
-              //           BorderRadius.circular(8),
+              //       borderRadius: BorderRadius.circular(8),
               //       image: DecorationImage(
               //         image: NetworkImage(
-              //             "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}"),
+              //             "http://80.87.202.73:8001/storage/${layout!.image!}"),
               //         fit: BoxFit.cover,
               //       )),
+
+              //   // child: CircleAvatar(),
               // ),
               if (credit == 1)
                 Container(
@@ -236,25 +237,29 @@ class CatalogListTile extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-              Container(
-                width: 46,
-                height: 22,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                margin: const EdgeInsets.only(top: 105, left: 4),
-                alignment: Alignment.center,
-                child: const Text(
-                  "10% Б",
-                  style: AppTextStyles.bannerTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              // Container(
+              //   width: 46,
+              //   height: 22,
+              //   decoration: BoxDecoration(
+              //     color: Colors.black,
+              //     borderRadius: BorderRadius.circular(6),
+              //   ),
+              //   margin: const EdgeInsets.only(top: 105, left: 4),
+              //   alignment: Alignment.center,
+              //   child: Text(
+              //     "${layout!.bonus.toString()}% Б",
+              //     style: AppTextStyles.bannerTextStyle,
+              //     textAlign: TextAlign.center,
+              //   ),
+              // ),
               Container(
                 margin: const EdgeInsets.only(top: 130, left: 4),
                 alignment: Alignment.center,
-                child: Text(title, style: AppTextStyles.categoryTextStyle),
+                child: Text(
+                  title,
+                  style: AppTextStyles.categoryTextStyle,
+                  textAlign: TextAlign.center,
+                ),
               ),
             ],
           ),
@@ -267,8 +272,6 @@ class CatalogListTile extends StatelessWidget {
           // const SizedBox(
           //   height: 8,
           // ),
-          // Text(state.popularShops[index].name!,
-          //     style: AppTextStyles.categoryTextStyle),
           // Flexible(
           //     child:
         ],

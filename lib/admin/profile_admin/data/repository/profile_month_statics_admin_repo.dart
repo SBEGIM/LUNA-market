@@ -11,15 +11,18 @@ class ProfileMonthStaticsAdminRepository {
   final ProfileMonthStaticsAdminToApi _profileMonthStaticsBloggerToApinToApi =
       ProfileMonthStaticsAdminToApi();
 
-  Future<dynamic> statics() => _profileMonthStaticsBloggerToApinToApi.statics();
+  Future<dynamic> statics(int year, int month) =>
+      _profileMonthStaticsBloggerToApinToApi.statics(year, month);
 }
 
 class ProfileMonthStaticsAdminToApi {
   final _box = GetStorage();
 
-  Future<dynamic> statics() async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/blogger/profile/month/statics'));
+  Future<dynamic> statics(int year, int month) async {
+    final seller_id = _box.read('seller_id');
+
+    final response = await http.get(Uri.parse(
+        '$baseUrl/seller/profile/month/statics/?seller_id=$seller_id&year=$year&month=$month'));
 
     final data = jsonDecode(response.body);
 

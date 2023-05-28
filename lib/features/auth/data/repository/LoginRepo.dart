@@ -11,6 +11,7 @@ class LoginRepository {
 
   Future<dynamic> login(String phone, String password) =>
       _loginToApi.login(phone, password);
+  Future<dynamic> delete() => _loginToApi.delete();
   Future<dynamic> lateAuth() => _loginToApi.lateAuth();
   Future<dynamic> edit(
           String name,
@@ -181,5 +182,16 @@ class LoginToApi {
     } else {
       return false;
     }
+  }
+
+  Future<dynamic> delete() async {
+    final String? token = _box.read('token');
+
+    final response =
+        await http.post(Uri.parse('$baseUrl/user/delete'), headers: {
+      'Authorization': 'Bearer $token',
+    });
+
+    return response.statusCode;
   }
 }

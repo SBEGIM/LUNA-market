@@ -1,16 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/auth/data/bloc/login_cubit.dart';
 import 'package:haji_market/features/drawer/presentation/ui/about_us_page.dart';
 import 'package:haji_market/features/drawer/presentation/ui/city_page.dart';
 import 'package:haji_market/features/drawer/presentation/ui/credit_info_page.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../../admin/admin_app/presentation/base_admin.dart';
+import '../../../../admin/auth/presentation/ui/register_shop_page.dart';
 import '../../../../admin/auth/presentation/ui/view_auth_register_page.dart';
+import '../../../../bloger/admin_app/presentation/base_blogger.dart';
 import '../../../../bloger/auth/presentation/ui/view_auth_register_page.dart';
 import '../../../auth/presentation/ui/view_auth_register_page.dart';
+import '../../../chat/presentation/chat_page.dart';
 import '../../../my_order/presentation/ui/my_order_page.dart';
 import '../../../profile/data/presentation/ui/edit_profile_page.dart';
 import '../../../profile/data/presentation/ui/my_bank_card_page.dart';
@@ -156,7 +162,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                                 Text(
                                     _box.read('name') == 'Не авторизированный'
                                         ? ''
-                                        : 'Алматы',
+                                        : _box.read('city') ?? 'Алматы',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14,
@@ -188,17 +194,6 @@ class _DrawerHomeState extends State<DrawerHome> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             topMenu(
-                                text: 'Мои карты',
-                                icon: 'assets/icons/payment_card_outline.svg',
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const MyBankCardPage()),
-                                  );
-                                }),
-                            topMenu(
                                 text: 'Мои бонусы',
                                 icon: 'assets/icons/ep_money.svg',
                                 onTap: () {
@@ -221,6 +216,17 @@ class _DrawerHomeState extends State<DrawerHome> {
                                   );
                                   // print('123231');
                                 }),
+                            topMenu(
+                              text: 'Мои чаты',
+                              icon: 'assets/icons/chat_2.svg',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const ChatPage()),
+                                );
+                              },
+                            ),
                           ],
                         )
                       : Container()
@@ -232,11 +238,17 @@ class _DrawerHomeState extends State<DrawerHome> {
                 const SizedBox(height: 10),
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AdminAuthPage()),
-                    );
+                    _box.read('seller_token') != null
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const BaseAdmin(index: 0)))
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AdminAuthPage()),
+                          );
                   },
                   child: const DrawerListTile(
                     text: 'Кабинет продавца',
@@ -247,11 +259,18 @@ class _DrawerHomeState extends State<DrawerHome> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const BlogAuthRegisterPage()),
-                    );
+                    _box.read('blogger_token') != null
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const BaseBlogger(index: 0)))
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const BlogAuthRegisterPage()),
+                          );
                   },
                   child: const DrawerListTile(
                     text: 'Кабинет блогера',
@@ -371,7 +390,6 @@ class _DrawerHomeState extends State<DrawerHome> {
                   ),
                 ),
                 const Divider(
-                  //height: 0,
                   color: AppColors.kGray200,
                 ),
 
@@ -520,6 +538,8 @@ class _DrawerHomeState extends State<DrawerHome> {
                     Get.snackbar('Аккаунт удален', 'Account delete',
                         backgroundColor: Colors.redAccent);
 
+                    BlocProvider.of<LoginCubit>(context).delete();
+
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(
@@ -535,8 +555,8 @@ class _DrawerHomeState extends State<DrawerHome> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
-                        children: [
-                          const Text(
+                        children: const [
+                          Text(
                             'Удалить',
                             style: TextStyle(
                               fontSize: 16,
@@ -544,7 +564,11 @@ class _DrawerHomeState extends State<DrawerHome> {
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          SvgPicture.asset('assets/icons/logout.svg')
+                          Icon(
+                            Icons.delete,
+                            color: Color(0xffFF3347),
+                            size: 25,
+                          )
                         ],
                       ),
                     ),

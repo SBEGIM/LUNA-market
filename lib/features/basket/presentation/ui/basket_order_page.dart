@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
 import 'package:share_plus/share_plus.dart';
-
 import '../../../../contract_of_sale.dart';
 import '../../../../core/common/constants.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
@@ -23,7 +22,8 @@ class BasketOrderPage extends StatefulWidget {
 }
 
 class _BasketOrderPageState extends State<BasketOrderPage> {
-  bool isCheckedKaspi = false;
+  bool isCheckedOnline = false;
+  bool isCheckedCash = false;
   bool isCheckedBS = false;
   bool isCheckedTinkoff = false;
   bool isCheckedPart = false;
@@ -42,6 +42,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
   ];
 
   int price = 0;
+  int bs = 0;
   int courier = 0;
   int bonus = 300;
   int count = 0;
@@ -69,8 +70,9 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
       price += element.price!.toInt();
       courier += element.priceCourier!.toInt();
       productNames =
-          "${productNames != null ? "${productNames} ," : ''} ${element.product!.name}";
+          "${productNames != null ? "${productNames} ," : ''}  https://lunamarket.info/?product_id\u003d${element.product!.id}";
     }
+    bs = (price * 0.05).toInt();
   }
 
   Future<void> basketData() async {
@@ -240,49 +242,50 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                 const SizedBox(
                   height: 1,
                 ),
-                Container(
-                    alignment: Alignment.center,
-                    color: Colors.white,
-                    height: 55,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Checkbox(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4)),
-                              checkColor: Colors.white,
-                              activeColor: AppColors.kPrimaryColor,
-                              value: isCheckedBS,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isCheckedBS = value!;
-                                  value == true ? price += 5000 : price -= 5000;
-                                });
-                              },
-                            ),
-                            const Text(
-                              'Безопасная сделка',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(right: 16),
-                          child: const Text(
-                            '5000 ₸',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
+                // Container(
+                //     alignment: Alignment.center,
+                //     color: Colors.white,
+                //     height: 55,
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //         Row(
+                //           children: [
+                //             Checkbox(
+                //               shape: RoundedRectangleBorder(
+                //                   borderRadius: BorderRadius.circular(4)),
+                //               checkColor: Colors.white,
+                //               activeColor: AppColors.kPrimaryColor,
+                //               value: isCheckedBS,
+                //               onChanged: (bool? value) {
+                //                 setState(() {
+                //                   isCheckedBS = value!;
+                //                   value == true ? price += bs : price -= bs;
+                //                 });
+                //               },
+                //             ),
+                //             const Text(
+                //               'Безопасная сделка',
+                //               style: TextStyle(
+                //                 fontSize: 16,
+                //                 fontWeight: FontWeight.w400,
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //         Container(
+                //           padding: const EdgeInsets.only(right: 16),
+                //           child: Text(
+                //             '${bs} ₸',
+                //             style: const TextStyle(
+                //               fontSize: 16,
+                //               fontWeight: FontWeight.w500,
+                //             ),
+                //           ),
+                //         ),
+                //       ],
+                //     )),
+
                 const SizedBox(height: 1),
                 Container(
                     padding: const EdgeInsets.only(left: 5),
@@ -377,34 +380,34 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                         ),
                       ],
                     )),
-                const SizedBox(
-                  height: 1,
-                ),
-                Container(
-                    padding: const EdgeInsets.only(left: 16, right: 16),
-                    alignment: Alignment.center,
-                    color: Colors.white,
-                    height: 55,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
-                          'Способы оплаты',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Text(
-                          'Добавить новую карту',
-                          style: TextStyle(
-                            color: AppColors.kPrimaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    )),
+                // const SizedBox(
+                //   height: 1,
+                // ),
+                // Container(
+                //     padding: const EdgeInsets.only(left: 16, right: 16),
+                //     alignment: Alignment.center,
+                //     color: Colors.white,
+                //     height: 55,
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: const [
+                //         Text(
+                //           'Способы оплаты',
+                //           style: TextStyle(
+                //             fontSize: 16,
+                //             fontWeight: FontWeight.w400,
+                //           ),
+                //         ),
+                //         Text(
+                //           'Добавить новую карту',
+                //           style: TextStyle(
+                //             color: AppColors.kPrimaryColor,
+                //             fontSize: 16,
+                //             fontWeight: FontWeight.w400,
+                //           ),
+                //         ),
+                //       ],
+                //     )),
                 // const SizedBox(
                 //   height: 1,
                 // ),
@@ -591,6 +594,77 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                 //   height: 10,
                 // ),
                 //const SizedBox(height: 1),
+
+                Container(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Онлайн оплата',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Checkbox(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4)),
+                          checkColor: Colors.white,
+                          activeColor: AppColors.kPrimaryColor,
+                          value: isCheckedOnline,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isCheckedTinkoff = false;
+                              isCheckedOnline = value!;
+                              isCheckedCash = false;
+                              isCheckedPart = false;
+                              isCheckedHalal = false;
+                            });
+                          },
+                        ),
+                      ],
+                    )),
+                const SizedBox(height: 1),
+
+                Container(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Наличными',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Checkbox(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4)),
+                          checkColor: Colors.white,
+                          activeColor: AppColors.kPrimaryColor,
+                          value: isCheckedCash,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isCheckedTinkoff = false;
+                              isCheckedOnline = false;
+                              isCheckedCash = value!;
+                              isCheckedPart = false;
+                              isCheckedHalal = false;
+                            });
+                          },
+                        ),
+                      ],
+                    )),
+                const SizedBox(height: 1),
+
                 Container(
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     alignment: Alignment.center,
@@ -623,11 +697,14 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                           activeColor: AppColors.kPrimaryColor,
                           value: isCheckedTinkoff,
                           onChanged: (bool? value) {
-                            setState(() {
-                              isCheckedTinkoff = value!;
-                              isCheckedPart = false;
-                              isCheckedHalal = false;
-                            });
+                            Get.snackbar('Нет доступа',
+                                'данная оплата пока недоступно...',
+                                backgroundColor: Colors.orangeAccent);
+                            // setState(() {
+                            //   isCheckedTinkoff = value!;
+                            //   isCheckedPart = false;
+                            //   isCheckedHalal = false;
+                            // });
                           },
                         ),
                       ],
@@ -718,6 +795,8 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
 
                             setState(() {
                               isCheckedTinkoff = false;
+                              isCheckedOnline = false;
+                              isCheckedCash = false;
                               isCheckedPart = false;
                               isCheckedHalal = value!;
                             });

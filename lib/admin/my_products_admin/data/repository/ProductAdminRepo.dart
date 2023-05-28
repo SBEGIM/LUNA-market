@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/admin/my_products_admin/data/DTO/optom_price_dto.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 import '../models/admin_products_model.dart';
 
@@ -24,10 +26,11 @@ class ProductAdminRepository {
     String massa,
     String articul,
     String currency,
-    String? image,
+    List<dynamic>? image,
+    List<optomPriceDto> optom,
   ) =>
       _productToApi.store(price, count, compound, catId, brandId, description,
-          name, height, width, massa, articul, currency, image);
+          name, height, width, massa, articul, currency, image, optom);
 
   Future<dynamic> update(
           String price,
@@ -46,9 +49,9 @@ class ProductAdminRepository {
           String? image) =>
       _productToApi.update(price, count, compound, catId, brandId, description,
           name, height, width, massa, productId, articul, currency, image);
-
-  Future<dynamic> delete(String id) => _productToApi.delete(id);
-
+  Future<dynamic> delete(String productId) => _productToApi.delete(productId);
+  Future<String?> ad(int productId, int price) =>
+      _productToApi.ad(productId, price);
   Future<List<AdminProductsModel>> products(String? name) =>
       _productToApi.products(name);
 }
@@ -69,43 +72,66 @@ class ProductToApi {
       String massa,
       String articul,
       String currency,
-      String? image) async {
-    final sellerId = _box.read('seller_id');
-    final token = _box.read('seller_token');
+      List<dynamic>? image,
+      List<optomPriceDto> optom) async {
+    try {
+      final sellerId = _box.read('seller_id');
+      final token = _box.read('seller_token');
 
-    final body = {
-      'shop_id': sellerId.toString(),
-      'token': token.toString(),
-      'name': name,
-      'price': price,
-      'count': count,
-      'compound': compound,
-      'cat_id': '1',
-      'brand_id': '1',
-      'description': description,
-      'height': height,
-      'width': width,
-      'massa': massa,
-      'articul': articul,
-      'currency': currency,
-    };
+      Map<String, dynamic> bodys = {
+        'shop_id': sellerId.toString(),
+        'token': token.toString(),
+        'name': name,
+        'price': price,
+        'count': count,
+        'compound': compound,
+        'cat_id': '1',
+        'brand_id': '1',
+        'description': description,
+        'height': height,
+        'width': width,
+        'massa': massa,
+        'articul': articul,
+        'currency': currency,
+      };
 
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('$baseUrl/seller/product/store'),
-    );
+      Map<String, dynamic> queryParams = {};
+      Map<String, dynamic> blocc = {};
+      List<Map<String, dynamic>> blocMapList = [];
 
-    if (image != '') {
-      request.files.add(
-        await http.MultipartFile.fromPath('image', image!),
+      for (var i = 0; i < optom.length; i++) {
+        // blocMapList.add((optom[i]).toJson());
+        blocc['bloc[$i][count]'] = optom[i].count;
+        blocc['bloc[$i][price]'] = optom[i].price;
+      }
+      // queryParams.addAll(blocMapList);
+      queryParams.addAll(blocc);
+      queryParams.addAll(bodys);
+
+      print(queryParams);
+
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse('$baseUrl/seller/product/store')
+            .replace(queryParameters: queryParams),
       );
+
+      image!.forEach((element) async {
+        request.files.add(
+          await http.MultipartFile.fromPath('images[]', element!.path),
+        );
+      });
+
+      //request.fields.addAll(body);
+
+      final http.StreamedResponse response = await request.send();
+      final respStr = await response.stream.bytesToString();
+
+      return response.statusCode;
+    } catch (e) {
+      print(e);
+      rethrow;
     }
-    request.fields.addAll(body);
-
-    final http.StreamedResponse response = await request.send();
-    final respStr = await response.stream.bytesToString();
-
-    return response.statusCode;
   }
 
   Future<dynamic> update(
@@ -187,6 +213,26 @@ class ProductToApi {
       return (data['data'] as List)
           .map((e) => AdminProductsModel.fromJson(e as Map<String, Object?>))
           .toList();
+    } catch (e) {
+      log(e.toString());
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<String?> ad(int productId, int price) async {
+    try {
+      final sellerId = _box.read('seller_id');
+      final String? token = _box.read('token');
+      int view = 300;
+
+      final response = await http.get(
+          Uri.parse(
+              '$baseUrl/seller/ad/payment/?product_id=$productId&price=$price&view=$view'),
+          headers: {"Authorization": "Bearer $token"});
+
+      final data = jsonDecode(response.body);
+
+      return data['data_tinkoff']['PaymentURL'];
     } catch (e) {
       log(e.toString());
       throw Exception(e.toString());

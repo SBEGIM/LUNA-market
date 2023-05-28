@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -49,7 +51,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
   TextEditingController pointsBloggerController = TextEditingController();
   TextEditingController feeController = TextEditingController();
 
-  XFile? _image;
+  List<XFile?> _image = [];
   final ImagePicker _picker = ImagePicker();
   bool change = false;
 
@@ -96,7 +98,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
         ? await _picker.pickImage(source: ImageSource.camera)
         : await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      _image = image;
+      _image.add(image);
     });
   }
 
@@ -754,7 +756,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
 
                                 setState(() {});
                               } else {
-                                // Get.to(() => {});
+                                // Get.to(() => {})
                                 Get.snackbar('Ошибка', 'Данные уже имеется!',
                                     backgroundColor: Colors.redAccent);
                               }
@@ -843,40 +845,40 @@ class _CreateProductPageState extends State<CreateProductPage> {
               const SizedBox(
                 height: 10,
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8)),
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset('assets/icons/bs4.svg'),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Text('Безопасная сделка'),
-                      ],
-                    ),
-                    Switch(
-                      onChanged: toggleSwitch,
-                      value: isSwitched,
-                      activeColor: AppColors.kPrimaryColor,
-                      activeTrackColor: AppColors.kPrimaryColor,
-                      inactiveThumbColor:
-                          const Color.fromRGBO(245, 245, 245, 1),
-                      inactiveTrackColor:
-                          const Color.fromRGBO(237, 237, 237, 1),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
+              // Container(
+              //   padding: const EdgeInsets.symmetric(horizontal: 10),
+              //   decoration: BoxDecoration(
+              //       color: Colors.white,
+              //       borderRadius: BorderRadius.circular(8)),
+              //   alignment: Alignment.center,
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       Row(
+              //         children: [
+              //           SvgPicture.asset('assets/icons/bs4.svg'),
+              //           const SizedBox(
+              //             width: 10,
+              //           ),
+              //           const Text('Безопасная сделка'),
+              //         ],
+              //       ),
+              //       Switch(
+              //         onChanged: toggleSwitch,
+              //         value: isSwitched,
+              //         activeColor: AppColors.kPrimaryColor,
+              //         activeTrackColor: AppColors.kPrimaryColor,
+              //         inactiveThumbColor:
+              //             const Color.fromRGBO(245, 245, 245, 1),
+              //         inactiveTrackColor:
+              //             const Color.fromRGBO(237, 237, 237, 1),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // const SizedBox(
+              //  height: 10,
+              //  ),
               const Text(
                 'Изоброжения товара',
                 style: TextStyle(
@@ -889,6 +891,27 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _image.length != 0
+                        ? SizedBox(
+                            height: 100,
+                            child: ListView.builder(
+                              shrinkWrap: false,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _image.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: CircleAvatar(
+                                    backgroundImage: FileImage(
+                                      File(_image[index]!.path),
+                                    ),
+                                    radius: 34,
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        : Container(),
                     const Text(
                       'Формат - jpg, png',
                       style: TextStyle(
@@ -963,6 +986,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
               const SizedBox(
                 height: 10,
               ),
+
               const Text(
                 'Видео товара',
                 style: TextStyle(
@@ -1082,7 +1106,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
               massaController.text,
               articulController.text,
               currencyName,
-              _image != null ? _image!.path : "",
+              _image,
+              optomCount,
             );
           },
           child: Container(

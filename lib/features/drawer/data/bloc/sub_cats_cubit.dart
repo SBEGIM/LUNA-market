@@ -21,7 +21,7 @@ class SubCatsCubit extends Cubit<SubCatsState> {
       _subCats = data;
 
       _subCats.insert(
-          0, Cats(id: subCatId, name: "Все категорий", icon: 'cats/book.png'));
+          0, Cats(id: subCatId, name: "Все товары", icon: 'cats/book.png'));
 
       emit(LoadedState(data));
     } catch (e) {

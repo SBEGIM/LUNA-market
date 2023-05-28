@@ -17,8 +17,10 @@ class ProfileStaticsAdminToApi {
   final _box = GetStorage();
 
   Future<dynamic> statics() async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/blogger/profile/statics'));
+    final sellerId = _box.read('seller_id');
+
+    final response = await http
+        .get(Uri.parse('$baseUrl/seller/profile/statics?seller_id=$sellerId'));
 
     return ProfileStaticsAdminModel.fromJson(jsonDecode(response.body));
   }

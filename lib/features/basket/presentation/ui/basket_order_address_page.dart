@@ -110,7 +110,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Доставка',
+                            'Курьерская доставка',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -308,11 +308,12 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'От магазина',
+                            'real FBS (доставка силами продавца)',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                             ),
+                            maxLines: 1,
                           ),
                           const SizedBox(height: 8),
                           const Text(

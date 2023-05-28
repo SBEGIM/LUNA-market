@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart';
 import 'package:haji_market/features/tape/presentation/widgets/tape_card_widget.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
 import '../data/bloc/tape_state.dart';
@@ -32,7 +34,9 @@ class _TapePageState extends State<TapePage> {
 
   @override
   void initState() {
-    BlocProvider.of<TapeCubit>(context).tapes(false, false, '');
+    if (BlocProvider.of<TapeCubit>(context).state is! LoadedState) {
+      BlocProvider.of<TapeCubit>(context).tapes(false, false, '');
+    }
     super.initState();
   }
 
@@ -224,6 +228,41 @@ class _TapePageState extends State<TapePage> {
               }
 
               if (state is LoadedState) {
+                return GridView.builder(
+                  padding: const EdgeInsets.all(1),
+
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 150,
+                    childAspectRatio: 1 / 2,
+                    mainAxisSpacing: 3,
+                    crossAxisSpacing: 3,
+                  ),
+                  itemCount: state.tapeModel.length,
+                  // children: const [],
+                  itemBuilder: (context, index) {
+                    return Shimmer(
+                      duration: const Duration(seconds: 3), //Default value
+                      interval: const Duration(
+                          microseconds:
+                              1), //Default value: Duration(seconds: 0)
+                      color: Colors.white, //Default value
+                      colorOpacity: 0, //Default value
+                      enabled: true, //Default value
+                      direction:
+                          const ShimmerDirection.fromLTRB(), //Default Value
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.grey.withOpacity(0.6),
+                        ),
+                        child: TapeCardWidget(
+                          tape: state.tapeModel[index],
+                          index: index,
+                        ),
+                      ),
+                    );
+                  },
+                );
                 // return GridView.custom(
                 //   gridDelegate: SliverQuiltedGridDelegate(
                 //     crossAxisCount: 3,
@@ -349,30 +388,6 @@ class _TapePageState extends State<TapePage> {
 
                 //   },
                 // );
-
-                return GridView.builder(
-                  padding: const EdgeInsets.all(1),
-
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 150,
-                    childAspectRatio: 1 / 2,
-                    mainAxisSpacing: 3,
-                    crossAxisSpacing: 3,
-                  ),
-                  itemCount: state.tapeModel.length,
-                  // children: const [],
-                  itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.grey),
-                      child: TapeCardWidget(
-                        tape: state.tapeModel[index],
-                        index: index,
-                      ),
-                    );
-                  },
-                );
               } else {
                 return const Center(
                     child:

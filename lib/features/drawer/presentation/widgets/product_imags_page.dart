@@ -35,7 +35,7 @@ class _ProductImagesState extends State<ProductImages> {
             height: 343,
             width: 378,
             child: Image.network(
-              "http://80.87.202.73:8001/storage/${widget.images[imageIndex]}",
+              "http://185.116.193.73/storage/${widget.images[imageIndex]}",
               fit: BoxFit.cover,
             ),
           ),
@@ -67,7 +67,7 @@ class _ProductImagesState extends State<ProductImages> {
                     ),
                     //color: Colors.red,
                     child: Image.network(
-                      "http://80.87.202.73:8001/storage/${widget.images[index]}",
+                      "http://185.116.193.73/storage/${widget.images[index]}",
                       fit: BoxFit.cover,
                     ),
                   ),

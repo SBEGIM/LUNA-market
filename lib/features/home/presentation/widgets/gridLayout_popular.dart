@@ -38,7 +38,7 @@ class GridOptionsPopular extends StatelessWidget {
                 height: 90,
                 width: 90,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(2),
                     image: DecorationImage(
                         image: NetworkImage(
                           "http://185.116.193.73/storage/${layout!.icon ?? ''}",

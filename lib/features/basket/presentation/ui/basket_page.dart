@@ -5,13 +5,16 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
+import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart'
+    as productAdCubit;
+import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart'
+    as productAdState;
 import 'package:share_plus/share_plus.dart';
 
 import '../../../drawer/data/bloc/basket_cubit.dart';
 import '../../../drawer/data/bloc/basket_state.dart';
-import '../../../drawer/data/bloc/product_cubit.dart' as productCubit;
-import '../../../drawer/data/bloc/product_state.dart' as productState;
 import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
+import '../../../drawer/presentation/widgets/product_ad_card.dart';
 import '../../../home/presentation/widgets/product_mb_interesting_card.dart';
 import '../../data/DTO/basketOrderDto.dart';
 import 'basket_order_address_page.dart';
@@ -67,7 +70,7 @@ class _BasketPageState extends State<BasketPage> {
   void initState() {
     basketData();
     BlocProvider.of<BasketCubit>(context).basketShow();
-    BlocProvider.of<productCubit.ProductCubit>(context).products();
+    BlocProvider.of<productAdCubit.ProductAdCubit>(context).adProducts(null);
     bottomPrice = GetStorage().listenKey('bottomPrice', (value) {
       basketPrice(value);
     });
@@ -219,11 +222,11 @@ class _BasketPageState extends State<BasketPage> {
                       const SizedBox(
                         height: 10,
                       ),
-                      BlocConsumer<productCubit.ProductCubit,
-                              productState.ProductState>(
+                      BlocConsumer<productAdCubit.ProductAdCubit,
+                              productAdState.ProductAdState>(
                           listener: (context, state) {},
                           builder: (context, state) {
-                            if (state is productState.ErrorState) {
+                            if (state is productAdState.ErrorState) {
                               return Center(
                                 child: Text(
                                   state.message,
@@ -232,13 +235,13 @@ class _BasketPageState extends State<BasketPage> {
                                 ),
                               );
                             }
-                            if (state is productState.LoadingState) {
+                            if (state is productAdState.LoadingState) {
                               return const Center(
                                   child: CircularProgressIndicator(
                                       color: Colors.indigoAccent));
                             }
 
-                            if (state is productState.LoadedState) {
+                            if (state is productAdState.LoadedState) {
                               return SizedBox(
                                   height: 286,
                                   child: ListView.builder(
@@ -255,7 +258,7 @@ class _BasketPageState extends State<BasketPage> {
                                                           state.productModel[
                                                               index])),
                                         ),
-                                        child: ProductMbInterestingCard(
+                                        child: ProductAdCard(
                                           product: state.productModel[index],
                                         ),
                                       );

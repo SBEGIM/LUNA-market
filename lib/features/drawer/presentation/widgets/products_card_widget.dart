@@ -63,9 +63,9 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
             child: Stack(
               children: [
                 Image.network(
-                  widget.product.path!.isNotEmpty
+                  widget.product.path.toString() != '[]'
                       ? "http://185.116.193.73/storage/${widget.product.path!.first}"
-                      : '',
+                      : "http://185.116.193.73/storage/banners/2.png",
                   height: 104,
                   width: 104,
                 ),

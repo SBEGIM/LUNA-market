@@ -8,6 +8,7 @@ class ProductModel {
     String? sizeTitle,
     List<String>? size,
     List<String>? color,
+    List<Bloc>? bloc,
     List<String>? path,
     Shop? shop,
     int? rating,
@@ -25,6 +26,7 @@ class ProductModel {
     _sizeTitle = sizeTitle;
     _size = size;
     _color = color;
+    _bloc = bloc;
     _path = path;
     _shop = shop;
     _rating = rating;
@@ -44,6 +46,12 @@ class ProductModel {
     _sizeTitle = json['size_title'];
     _size = json['size'] != null ? json['size'].cast<String>() : [];
     _color = json['color'] != null ? json['color'].cast<String>() : [];
+    if (json['bloc'] != null) {
+      _bloc = [];
+      json['bloc'].forEach((v) {
+        _bloc!.add(Bloc.fromJson(v));
+      });
+    }
     _path = json['path'] != null ? json['path'].cast<String>() : [];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
     _rating = json['rating'];
@@ -66,6 +74,7 @@ class ProductModel {
   String? _sizeTitle;
   List<String>? _size;
   List<String>? _color;
+  List<Bloc>? _bloc;
   List<String>? _path;
   Shop? _shop;
   int? _rating;
@@ -83,6 +92,7 @@ class ProductModel {
   String? get sizeTitle => _sizeTitle;
   List<String>? get size => _size;
   List<String>? get color => _color;
+  List<Bloc>? get bloc => _bloc;
   List<String>? get path => _path;
   Shop? get shop => _shop;
   int? get rating => _rating;
@@ -102,6 +112,7 @@ class ProductModel {
     map['size_title'] = _sizeTitle;
     map['size'] = _size;
     map['color'] = _color;
+    map['bloc'] = _bloc;
     map['path'] = _path;
     if (_shop != null) {
       map['shop'] = _shop!.toJson();
@@ -275,6 +286,34 @@ class Review {
     map['5'] = _five;
     map['rating'] = _rating;
     map['count'] = _count;
+
+    return map;
+  }
+}
+
+class Bloc {
+  Bloc({
+    int? count,
+    int? price,
+  }) {
+    _count = count;
+    _price = price;
+  }
+
+  Bloc.fromJson(dynamic json) {
+    _count = json['count'];
+    _price = json['price'];
+  }
+  int? _count;
+  int? _price;
+
+  int? get count => _count;
+  int? get price => _price;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['count'] = _count;
+    map['price'] = _price;
 
     return map;
   }

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:haji_market/admin/my_products_admin/data/DTO/optom_price_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/product_admin_state.dart';
 import '../models/admin_products_model.dart';
 import '../repository/ProductAdminRepo.dart';
@@ -79,7 +80,8 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
     String massa,
     String articul,
     String currency,
-    String? image,
+    List<dynamic> image,
+    List<optomPriceDto> optom,
   ) async {
     try {
       emit(LoadingState());
@@ -96,7 +98,8 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
           massa,
           articul,
           currency,
-          image);
+          image,
+          optom);
 
       if (data == 200) {
         emit(InitState());
@@ -147,6 +150,11 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
           backgroundColor: Colors.redAccent);
     }
 
+    return data;
+  }
+
+  Future<String?> ad(int productId, int price) async {
+    final data = await productAdminRepository.ad(productId, price);
     return data;
   }
 }

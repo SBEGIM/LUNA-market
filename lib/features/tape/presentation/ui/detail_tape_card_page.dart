@@ -1,3 +1,4 @@
+import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,7 @@ import 'package:haji_market/features/home/data/model/Cats.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/subs_cubit.dart';
 import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:video_player/video_player.dart';
+//import 'package:video_player/video_player.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
 import '../../../chat/presentation/message.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart' as basCubit;
@@ -616,14 +617,14 @@ class Videos extends StatefulWidget {
 }
 
 class _VideosState extends State<Videos> {
-  VideoPlayerController? _controller;
+  CachedVideoPlayerController? _controller;
   bool icon = true;
 
   Function? videoStop;
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network(
+    _controller = CachedVideoPlayerController.network(
         'http://185.116.193.73/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.play();
@@ -646,8 +647,8 @@ class _VideosState extends State<Videos> {
 
   @override
   void dispose() {
-    _controller!.dispose();
-    videoStop!.call();
+    _controller?.dispose();
+    videoStop?.call();
     super.dispose();
   }
 
@@ -667,7 +668,7 @@ class _VideosState extends State<Videos> {
                     aspectRatio: _controller!.value.aspectRatio,
                     child: Stack(
                       children: [
-                        VideoPlayer(_controller!),
+                        CachedVideoPlayer(_controller!),
                         Container(
                           alignment: Alignment.bottomCenter,
                           padding: EdgeInsets.only(

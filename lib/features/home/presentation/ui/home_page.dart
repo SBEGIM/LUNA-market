@@ -4,6 +4,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart'
+    as productAdCubit;
+import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart'
+    as productAdState;
 import 'package:haji_market/features/drawer/data/bloc/sub_cats_state.dart';
 import 'package:haji_market/features/drawer/presentation/ui/catalog_page.dart';
 import 'package:haji_market/features/home/data/bloc/banners_cubit.dart'
@@ -25,6 +29,7 @@ import '../../../drawer/presentation/ui/products_page.dart';
 import '../../../drawer/presentation/ui/shops_page.dart';
 import '../../../drawer/presentation/ui/sub_catalog_page.dart';
 import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
+import '../../../drawer/presentation/widgets/product_ad_card.dart';
 import '../../../drawer/presentation/widgets/under_catalog_page.dart';
 import '../../data/bloc/cats_cubit.dart' as catCubit;
 import '../../data/bloc/cats_state.dart' as catState;
@@ -49,11 +54,33 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    BlocProvider.of<bannerCubit.BannersCubit>(context).banners();
-    BlocProvider.of<catCubit.CatsCubit>(context).cats();
+    if (BlocProvider.of<bannerCubit.BannersCubit>(context).state
+        is! bannerState.LoadedState) {
+      BlocProvider.of<bannerCubit.BannersCubit>(context).banners();
+    }
+    if (BlocProvider.of<catCubit.CatsCubit>(context).state
+        is! catState.LoadedState) {
+      BlocProvider.of<catCubit.CatsCubit>(context).cats();
+    }
+    // if (BlocProvider.of<productAdCubit.ProductAdCubit>(context).state
+    //     is! productAdState.LoadedState) {
+    BlocProvider.of<productAdCubit.ProductAdCubit>(context).adProducts(null);
+    // }
+
+    // if (BlocProvider.of<subCatCubit.SubCatsCubit>(context).state
+    //     is! subCatState.LoadedState) {
     BlocProvider.of<subCatCubit.SubCatsCubit>(context).subCats(0);
-    BlocProvider.of<popShopsCubit.PopularShopsCubit>(context).popShops();
-    BlocProvider.of<productCubit.ProductCubit>(context).products();
+    //}
+
+    if (BlocProvider.of<popShopsCubit.PopularShopsCubit>(context).state
+        is! popShopsState.LoadedState) {
+      BlocProvider.of<popShopsCubit.PopularShopsCubit>(context).popShops();
+    }
+
+    if (BlocProvider.of<productCubit.ProductCubit>(context).state
+        is! productState.LoadedState) {
+      BlocProvider.of<productCubit.ProductCubit>(context).products();
+    }
 
     super.initState();
   }
@@ -209,11 +236,11 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(
                     height: 16,
                   ),
-                  BlocConsumer<productCubit.ProductCubit,
-                          productState.ProductState>(
+                  BlocConsumer<productAdCubit.ProductAdCubit,
+                          productAdState.ProductAdState>(
                       listener: (context, state) {},
                       builder: (context, state) {
-                        if (state is productState.ErrorState) {
+                        if (state is productAdState.ErrorState) {
                           return Center(
                             child: Text(
                               state.message,
@@ -222,13 +249,13 @@ class _HomePageState extends State<HomePage> {
                             ),
                           );
                         }
-                        if (state is productState.LoadingState) {
+                        if (state is productAdState.LoadingState) {
                           return const Center(
                               child: CircularProgressIndicator(
                                   color: Colors.indigoAccent));
                         }
 
-                        if (state is productState.LoadedState) {
+                        if (state is productAdState.LoadedState) {
                           return SizedBox(
                               height: 608,
                               child: GridView.builder(
@@ -237,7 +264,7 @@ class _HomePageState extends State<HomePage> {
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
-                                        childAspectRatio: 1.6,
+                                        childAspectRatio: 1.5,
                                         crossAxisSpacing: 20,
                                         mainAxisSpacing: 2),
                                 itemCount: 4,
@@ -251,7 +278,7 @@ class _HomePageState extends State<HomePage> {
                                                   product: state
                                                       .productModel[index])),
                                     ),
-                                    child: ProductWatchingCard(
+                                    child: ProductAdCard(
                                       product: state.productModel[index],
                                     ),
                                   );
@@ -303,15 +330,15 @@ class _HomePageState extends State<HomePage> {
                         fontSize: 16,
                         fontWeight: FontWeight.w700),
                   ),
+                  // const SizedBox(
+                  //   height: 20,
+                  // ),
+                  // const Text(
+                  //   'Кабинет продавца',
+                  //   style: AppTextStyles.kcolorPartnerTextStyle,
+                  // ),
                   const SizedBox(
                     height: 20,
-                  ),
-                  const Text(
-                    'Кабинет продавца',
-                    style: AppTextStyles.kcolorPartnerTextStyle,
-                  ),
-                  const SizedBox(
-                    height: 12,
                   ),
                   const Text(
                     'Начать продавать с «»',
@@ -532,14 +559,14 @@ class _CatsHomePageState extends State<CatsHomePage> {
                       height: 16,
                     ),
                     SizedBox(
-                      height: 280,
+                      height: 196,
                       child: GridView.builder(
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
-                                  childAspectRatio: 0.95,
+                                  childAspectRatio: 90 / 80,
                                   crossAxisSpacing: 10,
                                   mainAxisSpacing: 8),
                           itemCount: state.cats.length,
@@ -554,7 +581,6 @@ class _CatsHomePageState extends State<CatsHomePage> {
                                   //       builder: (context) => UnderCatalogPage(
                                   //           cats: state.cats[index])),
                                   // );
-
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -779,7 +805,9 @@ class _PopularShopsState extends State<PopularShops> {
                                 childAspectRatio: 0.65,
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10),
-                        itemCount: state.popularShops.length,
+                        itemCount: state.popularShops.length >= 6
+                            ? 9
+                            : state.popularShops.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                               onTap: () {

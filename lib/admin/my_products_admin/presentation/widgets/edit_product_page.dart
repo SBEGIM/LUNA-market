@@ -436,15 +436,15 @@ class _EditProductPageState extends State<EditProductPage> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              const FieldsProductRequest(
-                titleText: 'Магазин ',
-                hintText: 'Магазин',
-                star: false,
-                arrow: false,
-              ),
+              // const SizedBox(
+              //   height: 10,
+              //),
+              // const FieldsProductRequest(
+              //   titleText: 'Магазин ',
+              //   hintText: 'Магазин',
+              //   star: false,
+              //   arrow: false,
+              // ),
               const SizedBox(
                 height: 80,
               ),

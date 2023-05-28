@@ -10,6 +10,7 @@ import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
 import '../../data/models/basket_admin_order_model.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class DeliveryNoteAdmin extends StatefulWidget {
   final BasketAdminOrderModel basketOrder;
@@ -108,11 +109,21 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                           const SizedBox(
                             width: 30,
                           ),
-                          Image.asset(
-                            'assets/images/code.png',
-                            height: 120,
-                            width: 120,
+                          Container(
+                            height: 110,
+                            width: 110,
+                            padding: const EdgeInsets.all(8.0),
+                            alignment: Alignment.centerLeft,
+                            child: QrImage(
+                              data: "${widget.basketOrder.id}",
+                              version: QrVersions.auto,
+                            ),
                           ),
+                          // Image.asset(
+                          //   'assets/images/code.png',
+                          //   height: 120,
+                          //   width: 120,
+                          // ),
                         ],
                       ),
                       GestureDetector(
@@ -332,12 +343,13 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
             ),
             const SizedBox(height: 12),
             Container(
+              height: 164,
+              width: 168,
               padding: const EdgeInsets.all(8.0),
               alignment: Alignment.centerLeft,
-              child: Image.asset(
-                'assets/images/qr.png',
-                height: 144,
-                width: 148,
+              child: QrImage(
+                data: "${widget.basketOrder.id}",
+                version: QrVersions.auto,
               ),
             ),
           ]),

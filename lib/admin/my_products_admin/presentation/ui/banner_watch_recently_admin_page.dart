@@ -24,9 +24,9 @@ class BannerWatcehRecentlyAdminPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 child: Image.network(
-                  product.path!.path != null
-                      ? "http://185.116.193.73/storage/${product.path!.path}"
-                      : '',
+                  product.path != null && product.path!.path != null
+                      ? "http://185.116.193.73/storage/${product.path?.path}"
+                      : 'http://185.116.193.73/storage/banners/2.png',
                   fit: BoxFit.cover,
                   height: 160,
                   width: 160,

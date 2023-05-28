@@ -50,6 +50,8 @@ Future<dynamic> showAlertStaticticsWidget(
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
           ),
           onPressed: () {
+            Navigator.pop(context, 'Cancel');
+
             showAlertAddWidget(context, product);
           },
         ),

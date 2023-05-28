@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +7,7 @@ import 'package:haji_market/admin/profile_admin/presentation/widgets/about_shop_
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../../features/app/presentaion/base.dart';
 import '../../../auth/presentation/ui/view_auth_register_page.dart';
 import '../../../my_products_admin/presentation/widgets/statistics_blogger_show_page.dart';
 import '../../../my_products_admin/presentation/widgets/statistics_page.dart';
@@ -327,6 +327,43 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 16,
+                    color: AppColors.kGray300,
+                  )
+                ],
+              ),
+            ),
+          ),
+          const Divider(
+            color: AppColors.kGray400,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Base(index: 1)),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 10, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Вернуться на маркет',
+                        style: TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
                     color: AppColors.kGray300,
                   )
                 ],
