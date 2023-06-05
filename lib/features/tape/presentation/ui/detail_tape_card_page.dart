@@ -1,4 +1,4 @@
-import 'package:cached_video_player/cached_video_player.dart';
+import 'package:video_player/video_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -617,14 +617,14 @@ class Videos extends StatefulWidget {
 }
 
 class _VideosState extends State<Videos> {
-  CachedVideoPlayerController? _controller;
+  VideoPlayerController? _controller;
   bool icon = true;
 
   Function? videoStop;
 
   @override
   void initState() {
-    _controller = CachedVideoPlayerController.network(
+    _controller = VideoPlayerController.network(
         'http://185.116.193.73/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.play();
@@ -668,7 +668,7 @@ class _VideosState extends State<Videos> {
                     aspectRatio: _controller!.value.aspectRatio,
                     child: Stack(
                       children: [
-                        CachedVideoPlayer(_controller!),
+                        VideoPlayer(_controller!),
                         Container(
                           alignment: Alignment.bottomCenter,
                           padding: EdgeInsets.only(

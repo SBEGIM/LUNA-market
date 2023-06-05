@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:cached_video_player/cached_video_player.dart';
+import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,11 +24,11 @@ class TapeCardWidget extends StatefulWidget {
 }
 
 class _TapeCardWidgetState extends State<TapeCardWidget> {
-  CachedVideoPlayerController? _controller;
+  VideoPlayerController? _controller;
 
   @override
   void initState() {
-    _controller = CachedVideoPlayerController.network(
+    _controller = VideoPlayerController.network(
         'http://185.116.193.73/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.pause();
@@ -52,7 +52,7 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
             aspectRatio: _controller!.value.aspectRatio,
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: CachedVideoPlayer(_controller!)),
+                child: VideoPlayer(_controller!)),
           ),
         ),
         InkWell(

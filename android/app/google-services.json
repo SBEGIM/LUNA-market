@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "563124245115-f41m1kvm9v544pmn7hi6eqp7t5fefhcp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thousand.haji_market",
+            "certificate_hash": "4ca8c2c2a1ec9ed9027d1afd8fde45c3cc68fdcf"
+          }
+        },
+        {
           "client_id": "563124245115-8qdscuub3b1k9fgdhobbah9n9i4lr41o.apps.googleusercontent.com",
           "client_type": 3
         }

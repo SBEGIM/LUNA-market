@@ -120,8 +120,7 @@ class _MyAppState extends State<MyApp> {
   ProductModel? product;
 
   Future<void> checkInitialMessage() async {
-    final RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
+    final RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
       final RemoteMessage message = initialMessage;
       log('checkInitialMessage:: ${initialMessage.data}');
@@ -146,11 +145,15 @@ class _MyAppState extends State<MyApp> {
           notification.title,
           notification.body,
           NotificationDetails(
-              android: AndroidNotificationDetails(channel.id, channel.name,
-                  channelDescription: channel.description,
-                  color: Colors.blue,
-                  playSound: true,
-                  icon: '@mipmap/ic_launcher')),
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channelDescription: channel.description,
+              color: Colors.blue,
+              playSound: true,
+              icon: '@mipmap/launcher_icon',
+            ),
+          ),
         );
       }
     });
@@ -166,19 +169,11 @@ class _MyAppState extends State<MyApp> {
         // print(bloggerId + '222');
         // print(productId + 'wwww');
 
-        String bloggerId = Uri.parse(initialLink.toString())
-            .queryParameters['blogger_id']
-            .toString();
-        String productId = Uri.parse(initialLink.toString())
-            .queryParameters['product_id']
-            .toString();
+        String bloggerId = Uri.parse(initialLink.toString()).queryParameters['blogger_id'].toString();
+        String productId = Uri.parse(initialLink.toString()).queryParameters['product_id'].toString();
 
-        String shopName = Uri.parse(initialLink.toString())
-            .queryParameters['shop_name']
-            .toString();
-        String index = Uri.parse(initialLink.toString())
-            .queryParameters['index']
-            .toString();
+        String shopName = Uri.parse(initialLink.toString()).queryParameters['shop_name'].toString();
+        String index = Uri.parse(initialLink.toString()).queryParameters['index'].toString();
 
         if (productId != '' && productId != 'null') {
           print('wwww Success product');
@@ -188,8 +183,7 @@ class _MyAppState extends State<MyApp> {
           getProductById(productId);
         }
         if (shopName != '' && shopName != 'null') {
-          BlocProvider.of<NavigationCubit>(context)
-              .emit(DetailTapeState(int.parse(index), shopName));
+          BlocProvider.of<NavigationCubit>(context).emit(DetailTapeState(int.parse(index), shopName));
         }
       }
     } on PlatformException {}
@@ -200,12 +194,9 @@ class _MyAppState extends State<MyApp> {
   Future<void> initUniLinkss() async {
     _sub = linkStream.listen((String? link) async {
       if (link != null) {
-        String bloggerId =
-            Uri.parse(link).queryParameters['blogger_id'].toString();
-        String productId =
-            Uri.parse(link).queryParameters['product_id'].toString();
-        String shopName =
-            Uri.parse(link).queryParameters['shop_name'].toString();
+        String bloggerId = Uri.parse(link).queryParameters['blogger_id'].toString();
+        String productId = Uri.parse(link).queryParameters['product_id'].toString();
+        String shopName = Uri.parse(link).queryParameters['shop_name'].toString();
         String index = Uri.parse(link).queryParameters['index'].toString();
 
         if (productId != '' && productId != 'null') {
@@ -227,8 +218,7 @@ class _MyAppState extends State<MyApp> {
           //   },
           // );
 
-          BlocProvider.of<NavigationCubit>(context)
-              .emit(DetailTapeState(int.parse(index), shopName));
+          BlocProvider.of<NavigationCubit>(context).emit(DetailTapeState(int.parse(index), shopName));
         }
       }
     }, onError: (err) {});
@@ -298,56 +288,29 @@ class MultiBlocWrapper extends StatelessWidget {
             loginBloggerRepository: LoginBloggerRepository(),
           ),
         ),
-        BlocProvider(
-            create: (_) => SmsCubit(registerRepository: RegisterRepository())),
-        BlocProvider(
-            create: (_) =>
-                RegisterCubit(registerRepository: RegisterRepository())),
-        BlocProvider(
-            create: (_) => CatsCubit(listRepository: ListRepository())),
-        BlocProvider(
-            create: (_) => SubCatsCubit(subCatRepository: SubCatsRepository())),
-        BlocProvider(
-            create: (_) => BannersCubit(listRepository: ListRepository())),
-        BlocProvider(
-            create: (_) => PopularShopsCubit(
-                popularShopsRepository: PopularShopsRepository())),
-        BlocProvider(
-            create: (_) => ShopsDrawerCubit(
-                shopsDrawerRepository: ShopsDrawerRepository())),
-        BlocProvider(
-            create: (_) =>
-                ProductCubit(productRepository: ProductRepository())),
+        BlocProvider(create: (_) => SmsCubit(registerRepository: RegisterRepository())),
+        BlocProvider(create: (_) => RegisterCubit(registerRepository: RegisterRepository())),
+        BlocProvider(create: (_) => CatsCubit(listRepository: ListRepository())),
+        BlocProvider(create: (_) => SubCatsCubit(subCatRepository: SubCatsRepository())),
+        BlocProvider(create: (_) => BannersCubit(listRepository: ListRepository())),
+        BlocProvider(create: (_) => PopularShopsCubit(popularShopsRepository: PopularShopsRepository())),
+        BlocProvider(create: (_) => ShopsDrawerCubit(shopsDrawerRepository: ShopsDrawerRepository())),
+        BlocProvider(create: (_) => ProductCubit(productRepository: ProductRepository())),
+        BlocProvider(create: (_) => FavoriteCubit(favoriteRepository: FavoriteRepository())),
+        BlocProvider(create: (_) => BasketCubit(basketRepository: BasketRepository())),
+        BlocProvider(create: (_) => BrandCubit(brandRepository: BrandsRepository())),
+        BlocProvider(create: (_) => LoginAdminCubit(loginAdminRepository: LoginAdminRepository())),
+        BlocProvider(create: (_) => ProductAdminCubit(productAdminRepository: ProductAdminRepository())),
+        BlocProvider(create: (_) => BasketAdminCubit(basketRepository: BasketAdminRepository())),
+        BlocProvider(create: (_) => ColorCubit(colorRepository: ColorAdminRepository())),
+        BlocProvider(create: (_) => TapeCubit(tapeRepository: TapeRepository())),
+        BlocProvider(create: (_) => SubsCubit(subsRepository: SubsRepository())),
         BlocProvider(
             create: (_) =>
-                FavoriteCubit(favoriteRepository: FavoriteRepository())),
-        BlocProvider(
-            create: (_) => BasketCubit(basketRepository: BasketRepository())),
-        BlocProvider(
-            create: (_) => BrandCubit(brandRepository: BrandsRepository())),
-        BlocProvider(
-            create: (_) =>
-                LoginAdminCubit(loginAdminRepository: LoginAdminRepository())),
-        BlocProvider(
-            create: (_) => ProductAdminCubit(
-                productAdminRepository: ProductAdminRepository())),
-        BlocProvider(
-            create: (_) =>
-                BasketAdminCubit(basketRepository: BasketAdminRepository())),
-        BlocProvider(
-            create: (_) => ColorCubit(colorRepository: ColorAdminRepository())),
-        BlocProvider(
-            create: (_) => TapeCubit(tapeRepository: TapeRepository())),
-        BlocProvider(
-            create: (_) => SubsCubit(subsRepository: SubsRepository())),
-        BlocProvider(
-            create: (_) => ProfileStaticsBloggerCubit(
-                profileStaticsBloggerRepository:
-                    ProfileStaticsBloggerRepository())),
+                ProfileStaticsBloggerCubit(profileStaticsBloggerRepository: ProfileStaticsBloggerRepository())),
         BlocProvider(
             create: (_) => ProfileMonthStaticsBloggerCubit(
-                profileMonthStaticsBloggerRepository:
-                    ProfileMonthStaticsBloggerRepository())),
+                profileMonthStaticsBloggerRepository: ProfileMonthStaticsBloggerRepository())),
         BlocProvider(
           create: (_) => EditBloggerCubit(
             editBloggerRepository: EditBloggerRepository(),
@@ -355,8 +318,7 @@ class MultiBlocWrapper extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => BloggerProductStatisticsCubit(
-            bloggerProductStatisticsRepository:
-                BloggerProductsStatisticsRepository(),
+            bloggerProductStatisticsRepository: BloggerProductsStatisticsRepository(),
           ),
         ),
         BlocProvider(
@@ -365,13 +327,10 @@ class MultiBlocWrapper extends StatelessWidget {
           ),
         ),
         BlocProvider(
-            create: (_) => BloggerVideoProductsCubit(
-                bloggerShopProductsRepository:
-                    BloggerVideoProductsRepository())),
+            create: (_) => BloggerVideoProductsCubit(bloggerShopProductsRepository: BloggerVideoProductsRepository())),
         BlocProvider(
           create: (_) => UploadVideoBLoggerCubit(
-            uploadVideoBloggerCubitRepository:
-                UploadVideoBloggerCubitRepository(),
+            uploadVideoBloggerCubitRepository: UploadVideoBloggerCubitRepository(),
           ),
         ),
         BlocProvider(
@@ -396,8 +355,7 @@ class MultiBlocWrapper extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => ProfileMonthStaticsAdminCubit(
-            profileMonthStaticsBloggerRepository:
-                ProfileMonthStaticsAdminRepository(),
+            profileMonthStaticsBloggerRepository: ProfileMonthStaticsAdminRepository(),
           ),
         ),
         BlocProvider(
