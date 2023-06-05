@@ -38,7 +38,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
         centerTitle: false,
         titleSpacing: 16,
         title: const Text(
-          'LUNA-MARKET',
+          'LUNA market',
           style: TextStyle(
               color: Colors.black, fontSize: 20, fontWeight: FontWeight.w700),
         ),
@@ -76,10 +76,11 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
               ),
               title: TextField(
                 onChanged: (value) {
+                  print(value);
                   BlocProvider.of<PopularShopsCubit>(context)
                       .searchShops(value);
                 },
-                keyboardType: TextInputType.phone,
+                keyboardType: TextInputType.text,
                 // inputFormatters: [maskFormatter],
                 controller: searchController,
                 decoration: const InputDecoration(

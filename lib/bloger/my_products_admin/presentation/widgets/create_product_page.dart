@@ -94,8 +94,10 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 massaController.text,
                 articulController.text,
                 'currency',
+                '',
                 [],
                 [],
+                '',
               );
             },
             child: Container(

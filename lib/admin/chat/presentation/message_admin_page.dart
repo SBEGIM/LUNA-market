@@ -108,6 +108,7 @@ class _MessageAdminState extends State<MessageAdmin> {
     await Future.delayed(Duration(milliseconds: 2000));
     _refreshController.loadComplete();
   }
+
   // void scrollDown() {
   //   scrollController.jumpTo(scrollController.position.maxScrollExtent);
   // }
@@ -132,7 +133,6 @@ class _MessageAdminState extends State<MessageAdmin> {
 
     channel.stream.listen((event) {
       final data = jsonDecode(event);
-      print(data);
 
       if (data['action'] == 'ping') {
         String text = jsonEncode({
@@ -146,8 +146,6 @@ class _MessageAdminState extends State<MessageAdmin> {
             .newMessage(MessageAdminDto.fromJson(data));
       }
     });
-
-    print(sellerId);
     super.initState();
   }
 

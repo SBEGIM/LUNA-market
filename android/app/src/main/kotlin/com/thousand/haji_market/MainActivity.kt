@@ -1,4 +1,4 @@
-package com.example.haji_market
+package com.thousand.haji_market
 
 import io.flutter.embedding.android.FlutterActivity
 

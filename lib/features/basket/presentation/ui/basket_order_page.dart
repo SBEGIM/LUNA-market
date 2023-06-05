@@ -768,7 +768,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                         Row(
                           children: [
                             Image.asset(
-                              'assets/images/appIcon.png',
+                              'assets/icons/halal_installment plan.png',
                               height: 34,
                               width: 34,
                             ),

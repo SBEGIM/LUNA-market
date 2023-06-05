@@ -308,8 +308,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
           ),
           GestureDetector(
             onTap: () {
-              onTap:
-              () => launch("https://t.me/LUNAmarketru", forceSafariVC: false);
+              launch("https://t.me/LUNAmarketBlogger", forceSafariVC: false);
             },
             child: Padding(
               padding: const EdgeInsets.only(

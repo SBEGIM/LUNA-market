@@ -48,6 +48,7 @@ class _EditProductPageState extends State<EditProductPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController countController = TextEditingController();
   int cat_id = 0;
+  int sub_cat_id = 0;
   int brand_id = 0;
   TextEditingController heightController = TextEditingController();
   TextEditingController widthController = TextEditingController();
@@ -65,7 +66,7 @@ class _EditProductPageState extends State<EditProductPage> {
     brands = await BlocProvider.of<BrandCubit>(context)
         .brandById(widget.product.brandId.toString());
     subCats = await BlocProvider.of<SubCatsCubit>(context).subCatById(
-        widget.product.brandId.toString(), widget.product.catId.toString());
+        widget.product.catId.toString(), widget.product.subCatId.toString());
 
     if (widget.product.color != null && widget.product.color!.isNotEmpty) {
       colors = await BlocProvider.of<ColorCubit>(context)
@@ -92,6 +93,7 @@ class _EditProductPageState extends State<EditProductPage> {
     nameController.text = widget.product.name.toString();
     countController.text = widget.product.count.toString();
     cat_id = widget.product.catId ?? 0;
+    sub_cat_id = widget.product.subCatId ?? 0;
     brand_id = widget.product.brandId ?? 0;
     heightController.text = widget.product.height.toString();
     widthController.text = widget.product.width.toString();
@@ -461,7 +463,8 @@ class _EditProductPageState extends State<EditProductPage> {
                   priceController.text,
                   countController.text,
                   compoundController.text,
-                  cat_id.toString(),
+                  cats?.id.toString() ?? cat_id.toString(),
+                  subCats?.id.toString() ?? sub_cat_id.toString(),
                   brand_id.toString(),
                   descriptionController.text,
                   nameController.text,

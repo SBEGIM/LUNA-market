@@ -24,7 +24,6 @@ class _UpdateProductVideoPageState extends State<UpdateProductVideoPage> {
     final video = change == true
         ? await _picker.pickVideo(source: ImageSource.camera)
         : await _picker.pickVideo(source: ImageSource.gallery);
-
     setState(() {
       _video = video;
     });

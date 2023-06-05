@@ -529,7 +529,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                   color: AppColors.kGray200,
                 ),
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     GetStorage().erase();
 
                     Get.offAll(
@@ -538,7 +538,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                     Get.snackbar('Аккаунт удален', 'Account delete',
                         backgroundColor: Colors.redAccent);
 
-                    BlocProvider.of<LoginCubit>(context).delete();
+                    await BlocProvider.of<LoginCubit>(context).delete();
 
                     // Navigator.push(
                     //   context,

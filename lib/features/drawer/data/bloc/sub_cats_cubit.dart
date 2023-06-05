@@ -21,7 +21,7 @@ class SubCatsCubit extends Cubit<SubCatsState> {
       _subCats = data;
 
       _subCats.insert(
-          0, Cats(id: subCatId, name: "Все товары", icon: 'cats/book.png'));
+          0, Cats(id: 1, name: "Все товары", icon: 'cats/book.png'));
 
       emit(LoadedState(data));
     } catch (e) {
@@ -50,14 +50,12 @@ class SubCatsCubit extends Cubit<SubCatsState> {
   }
 
   Future<Cats> subCatById(String id, String catId) async {
-    if (id.isEmpty) return Cats(id: 0, name: '');
-    if (_subCats.isEmpty) {
-      await subCats(catId);
-    }
+    final List<Cats> data = await subCatRepository.subCatApi(id);
+
     Cats cat = Cats(id: 0, name: 'Выберите тип');
-    for (int i = 0; i < _subCats.length; i++) {
-      if (_subCats[i].id.toString() == id) {
-        cat = _subCats[i];
+    for (int i = 0; i < data.length; i++) {
+      if (data[i].id.toString() == catId) {
+        cat = data[i];
       }
     }
 

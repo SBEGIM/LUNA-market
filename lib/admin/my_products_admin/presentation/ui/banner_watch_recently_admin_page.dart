@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:haji_market/core/common/constants.dart';
-
 import '../../data/models/admin_products_model.dart';
 
 class BannerWatcehRecentlyAdminPage extends StatelessWidget {

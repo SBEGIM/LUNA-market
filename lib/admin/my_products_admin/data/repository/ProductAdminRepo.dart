@@ -14,29 +14,46 @@ class ProductAdminRepository {
   final ProductToApi _productToApi = ProductToApi();
 
   Future<dynamic> store(
-    String price,
-    String count,
-    String compound,
-    String catId,
-    String brandId,
-    String description,
-    String name,
-    String height,
-    String width,
-    String massa,
-    String articul,
-    String currency,
-    List<dynamic>? image,
-    List<optomPriceDto> optom,
-  ) =>
-      _productToApi.store(price, count, compound, catId, brandId, description,
-          name, height, width, massa, articul, currency, image, optom);
+          String price,
+          String count,
+          String compound,
+          String catId,
+          String subCatId,
+          String brandId,
+          String description,
+          String name,
+          String height,
+          String width,
+          String massa,
+          String articul,
+          String currency,
+          List<dynamic>? image,
+          List<optomPriceDto> optom,
+          String? video) =>
+      _productToApi.store(
+          price,
+          count,
+          compound,
+          catId,
+          subCatId,
+          brandId,
+          description,
+          name,
+          height,
+          width,
+          massa,
+          articul,
+          currency,
+          image,
+          optom,
+          video);
 
   Future<dynamic> update(
           String price,
           String count,
           String compound,
           String catId,
+          String subCatId,
           String brandId,
           String description,
           String name,
@@ -47,8 +64,22 @@ class ProductAdminRepository {
           String articul,
           String currency,
           String? image) =>
-      _productToApi.update(price, count, compound, catId, brandId, description,
-          name, height, width, massa, productId, articul, currency, image);
+      _productToApi.update(
+          price,
+          count,
+          compound,
+          catId,
+          subCatId,
+          brandId,
+          description,
+          name,
+          height,
+          width,
+          massa,
+          productId,
+          articul,
+          currency,
+          image);
   Future<dynamic> delete(String productId) => _productToApi.delete(productId);
   Future<String?> ad(int productId, int price) =>
       _productToApi.ad(productId, price);
@@ -64,6 +95,7 @@ class ProductToApi {
       String count,
       String compound,
       String catId,
+      String subCatId,
       String brandId,
       String description,
       String name,
@@ -73,7 +105,8 @@ class ProductToApi {
       String articul,
       String currency,
       List<dynamic>? image,
-      List<optomPriceDto> optom) async {
+      List<optomPriceDto> optom,
+      String? video) async {
     try {
       final sellerId = _box.read('seller_id');
       final token = _box.read('seller_token');
@@ -85,8 +118,9 @@ class ProductToApi {
         'price': price,
         'count': count,
         'compound': compound,
-        'cat_id': '1',
-        'brand_id': '1',
+        'cat_id': catId,
+        'sub_cat_id': subCatId,
+        'brand_id': brandId,
         'description': description,
         'height': height,
         'width': width,
@@ -100,21 +134,29 @@ class ProductToApi {
       List<Map<String, dynamic>> blocMapList = [];
 
       for (var i = 0; i < optom.length; i++) {
-        // blocMapList.add((optom[i]).toJson());
         blocc['bloc[$i][count]'] = optom[i].count;
         blocc['bloc[$i][price]'] = optom[i].price;
       }
-      // queryParams.addAll(blocMapList);
+
       queryParams.addAll(blocc);
       queryParams.addAll(bodys);
 
-      print(queryParams);
-
       final request = http.MultipartRequest(
-        'POST',
-        Uri.parse('$baseUrl/seller/product/store')
-            .replace(queryParameters: queryParams),
-      );
+          'POST',
+          Uri.parse('$baseUrl/seller/product/store')
+              .replace(queryParameters: queryParams));
+
+      final headers = {
+        'Authorization': 'Bearer $token',
+      };
+
+      request.headers.addAll(headers);
+
+      if (video != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('video', video),
+        );
+      }
 
       image!.forEach((element) async {
         request.files.add(
@@ -122,14 +164,11 @@ class ProductToApi {
         );
       });
 
-      //request.fields.addAll(body);
-
       final http.StreamedResponse response = await request.send();
       final respStr = await response.stream.bytesToString();
 
       return response.statusCode;
     } catch (e) {
-      print(e);
       rethrow;
     }
   }
@@ -139,6 +178,7 @@ class ProductToApi {
       String count,
       String compound,
       String catId,
+      String subCatId,
       String brandId,
       String description,
       String name,
@@ -160,8 +200,9 @@ class ProductToApi {
       'price': price,
       'count': count,
       'compound': compound,
-      'cat_id': '1',
-      'brand_id': '1',
+      'cat_id': catId,
+      'sub_cat_id': subCatId,
+      'brand_id': brandId,
       'description': description,
       'height': height,
       'width': width,

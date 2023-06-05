@@ -1,8 +1,11 @@
+import 'package:cached_video_player/cached_video_player.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/basket/presentation/ui/basket_order_page.dart';
 import 'package:haji_market/features/drawer/data/bloc/basket_cubit.dart';
@@ -14,6 +17,7 @@ import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/detailed_store_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/product_imags_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/specifications_page.dart';
+import 'package:haji_market/features/home/data/model/Cats.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../basket/presentation/ui/basket_order_address_page.dart';
 import '../../../home/presentation/widgets/product_mb_interesting_card.dart';
@@ -21,6 +25,7 @@ import '../../../home/presentation/widgets/product_watching_card.dart';
 import '../../data/bloc/favorite_cubit.dart';
 import '../../data/bloc/product_cubit.dart';
 import '../../data/bloc/product_state.dart';
+import '../ui/products_page.dart';
 
 class DetailCardProductPage extends StatefulWidget {
   final ProductModel product;
@@ -47,11 +52,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
   //bool isvisible = false;
   bool inFavorite = false;
-  List textDescrp = [
-    'Все товары APPLE',
-    'Беспроводные наушники APPLE',
-    'Все товары из категории беспроводные\nнаушники',
-  ];
+  List textDescrp = [];
   List textInst = [
     '3 мес',
     '6 мес',
@@ -76,14 +77,22 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
   ];
 
   int? rating = 0;
-  int? imageIndex;
+  int imageIndex = 0;
+
+  bool icon = true;
 
   String? productNames;
 
   TextEditingController _commentController = TextEditingController();
+  CachedVideoPlayerController? _controller;
 
   @override
   void initState() {
+    textDescrp = [
+      'Все товары ${widget.product.shop!.name}',
+      'Все товары из брэнда  ${widget.product.brandName}',
+      'Все товары из категории  ${widget.product.catName}',
+    ];
     isvisible = widget.product.inBasket ?? false;
     inFavorite = widget.product.inFavorite ?? false;
 
@@ -100,7 +109,27 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
     BlocProvider.of<reviewProductCubit.ReviewCubit>(context).reviews();
 
+    _controller = CachedVideoPlayerController.network(
+        // 'http://185.116.193.73/storage/${widget.product.path?.first ?? ''}'
+        'http://185.116.193.73/storage/${widget.product.video}')
+      ..initialize().then((_) {
+        _controller!.pause();
+        // setState(() {});
+      });
+
+    _controller!.addListener(() {
+      _controller!.value.isPlaying == true ? icon = false : icon = true;
+
+      setState(() {});
+    });
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
   }
 
   @override
@@ -137,39 +166,59 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               Container(
                 height: 300,
                 color: Colors.white,
-                margin: const EdgeInsets.only(right: 8),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 1,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: (() {
-                        imageIndex = index;
-                        setState(() {});
-                      }),
-                      child: Container(
+                margin: const EdgeInsets.only(right: 8, left: 8),
+                child: imageIndex + 1 ==
+                        ((widget.product.path?.length ?? 0) + 1)
+                    ? GestureDetector(
+                        onTap: () {
+                          _controller!.value.isPlaying
+                              ? _controller!.pause()
+                              : _controller!.play();
+                        },
+                        child: Stack(children: [
+                          Container(
+                            width: 600,
+                            height: 300,
+                            child: AspectRatio(
+                              aspectRatio: _controller!.value.aspectRatio,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: CachedVideoPlayer(_controller!)),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.bottomCenter,
+                            padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).size.height * 0.01),
+                            child: VideoProgressIndicator(_controller!,
+                                allowScrubbing: true),
+                          ),
+                          icon
+                              ? Center(
+                                  child: SvgPicture.asset(
+                                  'assets/icons/play_tape.svg',
+                                  color: const Color.fromRGBO(29, 196, 207, 1),
+                                ))
+                              : Container(),
+                        ]),
+                      )
+                    : Container(
                         margin:
                             const EdgeInsets.only(top: 24, left: 8, right: 8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                              width: 0.3,
-                              color: imageIndex == index
-                                  ? AppColors.kPrimaryColor
-                                  : Colors.grey),
                         ),
                         //color: Colors.red,
                         child: Image.network(
                           height: 375,
                           width: 400,
-                          "http://185.116.193.73/storage/${widget.product.path![imageIndex ?? index]}",
+                          "http://185.116.193.73/storage/${widget.product.path![imageIndex]}",
                           fit: BoxFit.cover,
                         ),
                       ),
-                    );
-                  },
-                ),
               ),
+
               // Container(
               //   height: 300,
               //   color: Colors.white,
@@ -200,16 +249,16 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   ),
                 ),
               ),
-              Container(
-                  margin: const EdgeInsets.only(
-                      left: 323.0, right: 4, top: 16, bottom: 4),
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(4)),
-                  child: Image.asset(
-                    'assets/icons/bs2.png',
-                    height: 36,
-                    width: 36,
-                  )),
+              // Container(
+              //     margin: const EdgeInsets.only(
+              //         left: 323.0, right: 4, top: 16, bottom: 4),
+              //     decoration:
+              //         BoxDecoration(borderRadius: BorderRadius.circular(4)),
+              //     child: Image.asset(
+              //       'assets/icons/bs2.png',
+              //       height: 36,
+              //       width: 36,
+              //     )),
               Container(
                 margin: const EdgeInsets.only(
                     left: 16.0, right: 4, top: 48, bottom: 4),
@@ -255,7 +304,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     left: 154.0, right: 20, top: 260, bottom: 4),
                 child: Center(
                   child: ListView.builder(
-                    itemCount: widget.product.path?.length ?? 0,
+                    itemCount: (widget.product.path?.length ?? 0) +
+                        (widget.product.video != null ? 1 : 0),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: ((context, index) {
                       return GestureDetector(
@@ -428,7 +478,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
-                                  '${(widget.product.price!.toInt() / 3).roundToDouble()}',
+                                  '${((widget.product.price!.toInt() - (widget.product.compound ?? 0).toInt()) / 3).roundToDouble()}',
                                   style: const TextStyle(
                                       color: AppColors.kGray900,
                                       fontSize: 14,
@@ -615,7 +665,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             ),
                             alignment: Alignment.center,
                             child: Text(
-                              '${widget.product.price!.toInt() ~/ selectedIndexMonth!.toInt()}',
+                              '${(widget.product.price!.toInt() - (widget.product.compound ?? 0)) ~/ selectedIndexMonth!.toInt()}',
                               style: const TextStyle(
                                   color: AppColors.kGray900,
                                   fontSize: 14,
@@ -722,7 +772,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   height: 14,
                   child: Row(children: [
                     Text(
-                      '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ',
+                      '${selectedIndex3 != -1 ? "${widget.product.bloc![selectedIndex3!].price} " : 0} ',
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w400),
                     ),
@@ -741,7 +791,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           color: Colors.grey),
                     ),
                     Text(
-                        ' = ${(widget.product.price!.toInt() - widget.product.compound!.toInt()) + (selectedIndex3 != -1 ? widget.product.bloc![selectedIndex3!].price as int : 1) * count}',
+                        ' = ${(selectedIndex3 != -1 ? widget.product.bloc![selectedIndex3!].price as int : 1) * count}',
                         style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
@@ -889,7 +939,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       width: 10,
                     ),
                     Text(
-                      'Экономия ${(widget.product.price!.toInt() - widget.product.compound!.toInt()) * (selectedIndex3 != -1 ? bloc[selectedIndex3!] : 1) * count + count != 0 ? ((widget.product.price!.toInt() - widget.product.compound!.toInt()) * count / 10) : 0}  тг',
+                      'Экономия ${((selectedIndex3 != -1 ? widget.product.bloc![selectedIndex3!].price : 1)!.toDouble() * (selectedIndex3 != -1 ? widget.product.bloc![selectedIndex3!].count : 0)!.toInt()) - ((widget.product.price!.toInt() - widget.product.compound!.toInt()) * (selectedIndex3 != -1 ? widget.product.bloc![selectedIndex3!].count : 1)!.toDouble())}  тг',
                       style: const TextStyle(
                           color: AppColors.kPrimaryColor,
                           fontSize: 14,
@@ -1419,25 +1469,25 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               ),
                             ],
                           ),
-                          Container(
-                            padding: const EdgeInsets.only(top: 12),
-                            width: 130,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'Безрпасная сделка',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: AppColors.kPrimaryColor,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                SvgPicture.asset(
-                                  'assets/icons/carbon_security.svg',
-                                )
-                              ],
-                            ),
-                          )
+                          // Container(
+                          //   padding: const EdgeInsets.only(top: 12),
+                          //   width: 130,
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       const Text(
+                          //         'Безрпасная сделка',
+                          //         style: TextStyle(
+                          //             fontSize: 12,
+                          //             color: AppColors.kPrimaryColor,
+                          //             fontWeight: FontWeight.w400),
+                          //       ),
+                          //       SvgPicture.asset(
+                          //         'assets/icons/carbon_security.svg',
+                          //       )
+                          //     ],
+                          //   ),
+                          // )
                         ],
                       ),
                     ),
@@ -1823,88 +1873,95 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           const SizedBox(
             height: 10,
           ),
-          Container(
-            padding: const EdgeInsets.all(16),
-            color: Colors.white,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Оставьте отзыв',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                    textAlign: TextAlign.start,
-                  ),
-                  RatingBar.builder(
-                    initialRating: 0,
-                    minRating: 1,
-                    itemSize: 15,
-                    direction: Axis.horizontal,
-                    allowHalfRating: false,
-                    itemCount: 5,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (value) {
-                      rating = value.toInt();
-                    },
-                  ),
-                ],
-              ),
-              TextFormField(
-                controller: _commentController,
-                maxLines: 5,
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                    hintText: 'Напишите отзывь', border: InputBorder.none),
-              ),
-              GestureDetector(
-                onTap: () async {
-                  await BlocProvider.of<reviewProductCubit.ReviewCubit>(context)
-                      .reviewStore(
-                          _commentController.text, rating.toString(), '28');
-                  _commentController.clear();
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 39,
-                  width: 209,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(width: 0.2),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black,
-                        offset: Offset(
-                          0.2,
-                          0.2,
-                        ), //Offset
-                        blurRadius: 0.1,
-                        spreadRadius: 0.1,
-                      ), //BoxShadow
-                      BoxShadow(
-                        color: Colors.white,
-                        offset: Offset(0.0, 0.0),
-                        blurRadius: 0.0,
-                        spreadRadius: 0.0,
-                      ), //BoxShadow
-                    ],
-                  ),
-                  child: const Text(
-                    'Оставить свой отзыв',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
-            ]),
-          ),
+          widget.product.buyed == true
+              ? Container(
+                  padding: const EdgeInsets.all(16),
+                  color: Colors.white,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Оставьте отзыв',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w700),
+                              textAlign: TextAlign.start,
+                            ),
+                            RatingBar.builder(
+                              initialRating: 0,
+                              minRating: 1,
+                              itemSize: 15,
+                              direction: Axis.horizontal,
+                              allowHalfRating: false,
+                              itemCount: 5,
+                              itemPadding:
+                                  const EdgeInsets.symmetric(horizontal: 0.0),
+                              itemBuilder: (context, _) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              onRatingUpdate: (value) {
+                                rating = value.toInt();
+                              },
+                            ),
+                          ],
+                        ),
+                        TextFormField(
+                          controller: _commentController,
+                          maxLines: 5,
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                              hintText: 'Напишите отзывь',
+                              border: InputBorder.none),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            await BlocProvider.of<
+                                    reviewProductCubit.ReviewCubit>(context)
+                                .reviewStore(_commentController.text,
+                                    rating.toString(), '28');
+                            _commentController.clear();
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 39,
+                            width: 209,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(width: 0.2),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black,
+                                  offset: Offset(
+                                    0.2,
+                                    0.2,
+                                  ), //Offset
+                                  blurRadius: 0.1,
+                                  spreadRadius: 0.1,
+                                ), //BoxShadow
+                                BoxShadow(
+                                  color: Colors.white,
+                                  offset: Offset(0.0, 0.0),
+                                  blurRadius: 0.0,
+                                  spreadRadius: 0.0,
+                                ), //BoxShadow
+                              ],
+                            ),
+                            child: const Text(
+                              'Оставить свой отзыв',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ),
+                      ]),
+                )
+              : Container(),
           const SizedBox(
             height: 10,
           ),
-
           Container(
               height: 170,
               color: Colors.white,
@@ -1915,26 +1972,45 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 separatorBuilder: (BuildContext context, int index) =>
                     const Divider(height: 0),
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    padding:
-                        const EdgeInsets.only(left: 14, top: 14, right: 14),
-                    height: 55,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          textDescrp[index],
-                          style: const TextStyle(
-                              color: AppColors.kGray900,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
-                          color: AppColors.kGray400,
-                        )
-                      ],
+                  return GestureDetector(
+                    onTap: () {
+                      if (index == 0) {
+                        GetStorage().write('shopFilterId',
+                            "${([widget.product.shop!.id]).toString()}");
+                        Get.to(() => ProductsPage(
+                              cats: Cats(id: 0, name: ''),
+                            ));
+                      } else if (index == 1) {
+                        Get.to(() => ProductsPage(
+                              cats: Cats(id: 0, name: ''),
+                            ));
+                      } else if (index == 2) {
+                        Get.to(() => ProductsPage(
+                              cats: Cats(id: 1, name: widget.product.catName),
+                            ));
+                      }
+                    },
+                    child: Container(
+                      padding:
+                          const EdgeInsets.only(left: 14, top: 14, right: 14),
+                      height: 55,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            textDescrp[index],
+                            style: const TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 14,
+                            color: AppColors.kGray400,
+                          )
+                        ],
+                      ),
                     ),
                   );
                 },

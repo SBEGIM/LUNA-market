@@ -9,13 +9,12 @@ const baseUrl = 'http://185.116.193.73/api';
 class ProductRepository {
   final ProductApi _productApi = ProductApi();
 
-  Future<List<ProductModel>> product() => _productApi.product();
+  Future<List<ProductModel>> product(int page) => _productApi.product(page);
 }
 
 class ProductApi {
   final _box = GetStorage();
   RangeValues price = const RangeValues(0, 0);
-
   double? price_start;
   double? price_end;
   String brandId = '';
@@ -28,10 +27,7 @@ class ProductApi {
   List<dynamic> brandIds = [];
   List<dynamic> subCatIds = [];
 
-  Future<List<ProductModel>> product() async {
-    // if (_box.read('shopFilterId') != null) {
-    //   shopId = GetStorage().read('shopFilterId');
-    // }
+  Future<List<ProductModel>> product(int page) async {
     _box.listen(() {
       if (_box.read('priceFilter') != null) {
         price = GetStorage().read('priceFilter');
@@ -67,9 +63,6 @@ class ProductApi {
         CatId = 0;
       }
       if (_box.read('shopFilterId') != null) {
-        print('oooowww');
-        print('2222');
-
         shopId = GetStorage().read('shopFilterId');
         shopIds.clear();
         var ab = json.decode(shopId).cast<int>().toList();
@@ -86,11 +79,6 @@ class ProductApi {
 
     Map<String, dynamic> queryParams = {};
 
-    // shopIds.forEach((element) {
-    //   return queryParams
-    //       .addAll({"shop_id[${(element - 1).toString()}]": element.toString()});
-    // });
-
     for (var i = 0; i < shopIds.length; i++) {
       queryParams['shop_id[$i]'] = shopIds[i].toString();
     }
@@ -100,7 +88,9 @@ class ProductApi {
     }
 
     for (var i = 0; i < subCatIds.length; i++) {
-      queryParams['sub_cat_id[$i]'] = subCatIds[i].toString();
+      if (subCatIds[i] != 1) {
+        queryParams['sub_cat_id[$i]'] = subCatIds[i].toString();
+      }
     }
 
     Map<String, dynamic> body = {
@@ -109,6 +99,7 @@ class ProductApi {
       "search": search,
       "min_price": "$price_start",
       "max_price": "$price_end",
+      "page": "$page"
     };
 
     queryParams.addAll(body);

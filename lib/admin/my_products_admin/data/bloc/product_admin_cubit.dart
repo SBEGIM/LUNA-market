@@ -13,11 +13,14 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
   ProductAdminCubit({required this.productAdminRepository})
       : super(InitState());
 
+  List<AdminProductsModel> productsList = [];
+
   Future<void> update(
       String price,
       String count,
       String compound,
       String catId,
+      String subCatId,
       String brandId,
       String description,
       String name,
@@ -35,6 +38,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
         count,
         compound,
         catId,
+        subCatId,
         brandId,
         description,
         name,
@@ -68,21 +72,22 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
   }
 
   Future<void> store(
-    String price,
-    String count,
-    String compound,
-    String catId,
-    String brandId,
-    String description,
-    String name,
-    String height,
-    String width,
-    String massa,
-    String articul,
-    String currency,
-    List<dynamic> image,
-    List<optomPriceDto> optom,
-  ) async {
+      String price,
+      String count,
+      String compound,
+      String catId,
+      String subCatId,
+      String brandId,
+      String description,
+      String name,
+      String height,
+      String width,
+      String massa,
+      String articul,
+      String currency,
+      List<dynamic> image,
+      List<optomPriceDto> optom,
+      String? video) async {
     try {
       emit(LoadingState());
       final data = await productAdminRepository.store(
@@ -90,6 +95,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
           count,
           compound,
           catId,
+          subCatId,
           brandId,
           description,
           name,
@@ -99,19 +105,20 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
           articul,
           currency,
           image,
-          optom);
+          optom,
+          video);
 
       if (data == 200) {
-        emit(InitState());
         emit(ChangeState());
+        emit(LoadedState(productsList));
       }
       if (data == 400) {
-        emit(InitState());
+        emit(LoadedState(productsList));
         Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
             backgroundColor: Colors.redAccent);
       }
       if (data == 500) {
-        emit(InitState());
+        emit(LoadedState(productsList));
         Get.snackbar('500', 'Ошибка сервера',
             backgroundColor: Colors.redAccent);
       }
@@ -127,6 +134,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       final List<AdminProductsModel> data =
           await productAdminRepository.products(name);
 
+      productsList.addAll(data);
       emit(LoadedState(data));
     } catch (e) {
       log(e.toString());

@@ -458,37 +458,38 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                GestureDetector(
-                                  onTap: () {
-                                    productId = widget
-                                        .basketOrder.product![index].id
-                                        .toString();
+                                if (widget.basketOrder.status == 'end')
+                                  GestureDetector(
+                                    onTap: () {
+                                      productId = widget
+                                          .basketOrder.product![index].id
+                                          .toString();
 
-                                    productName = widget
-                                        .basketOrder.product![index].productName
-                                        .toString();
-                                    hidden = !hidden;
+                                      productName = widget.basketOrder
+                                          .product![index].productName
+                                          .toString();
+                                      hidden = !hidden;
 
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    height: 38,
-                                    width: 136,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromRGBO(
-                                          29, 196, 207, 0.4),
-                                      borderRadius: BorderRadius.circular(12),
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      height: 38,
+                                      width: 136,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(
+                                            29, 196, 207, 0.4),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: const Text(
+                                        'Оставить отзыв',
+                                        style: TextStyle(
+                                            color: AppColors.kPrimaryColor,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500),
+                                      ),
                                     ),
-                                    child: const Text(
-                                      'Оставить отзыв',
-                                      style: TextStyle(
-                                          color: AppColors.kPrimaryColor,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                )
+                                  )
                               ],
                             )
                           ],

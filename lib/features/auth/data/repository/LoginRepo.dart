@@ -185,8 +185,7 @@ class LoginToApi {
   }
 
   Future<dynamic> delete() async {
-    final String? token = _box.read('token');
-
+    final String? token = await _box.read('token');
     final response =
         await http.post(Uri.parse('$baseUrl/user/delete'), headers: {
       'Authorization': 'Bearer $token',

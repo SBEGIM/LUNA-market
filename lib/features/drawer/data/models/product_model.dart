@@ -5,36 +5,46 @@ class ProductModel {
     int? price,
     int? compound,
     String? description,
+    String? catName,
+    String? brandName,
     String? sizeTitle,
     List<String>? size,
     List<String>? color,
     List<Bloc>? bloc,
     List<String>? path,
+    String? video,
     Shop? shop,
     int? rating,
     int? count,
     bool? inBasket,
+    bool? buyed,
     int? basketCount,
     bool? inFavorite,
     List<Shops>? shops,
+    int? total,
   }) {
     _id = id;
     _name = name;
     _price = price;
     _compound = compound;
     _description = description;
+    _catName = catName;
+    _brandName = brandName;
     _sizeTitle = sizeTitle;
     _size = size;
     _color = color;
     _bloc = bloc;
     _path = path;
+    _video = video;
     _shop = shop;
     _rating = rating;
     _count = count;
     _inBasket = inBasket;
+    _buyed = buyed;
     _basketCount = basketCount;
     _inFavorite = inFavorite;
     _shops = shops;
+    _total = total;
   }
 
   ProductModel.fromJson(dynamic json) {
@@ -43,6 +53,8 @@ class ProductModel {
     _price = json['price'];
     _compound = json['compound'];
     _description = json['description'];
+    _catName = json['cat_name'];
+    _brandName = json['brand_name'];
     _sizeTitle = json['size_title'];
     _size = json['size'] != null ? json['size'].cast<String>() : [];
     _color = json['color'] != null ? json['color'].cast<String>() : [];
@@ -53,10 +65,13 @@ class ProductModel {
       });
     }
     _path = json['path'] != null ? json['path'].cast<String>() : [];
+    _video = json['video'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
     _rating = json['rating'];
     _count = json['count'];
+    _total = json['total'];
     _inBasket = json['in_basket'];
+    _buyed = json['buyed'];
     _basketCount = json['basket_count'];
     _inFavorite = json['in_favorite'];
     if (json['shops'] != null) {
@@ -71,15 +86,20 @@ class ProductModel {
   int? _price;
   int? _compound;
   String? _description;
+  String? _catName;
+  String? _brandName;
   String? _sizeTitle;
   List<String>? _size;
   List<String>? _color;
   List<Bloc>? _bloc;
   List<String>? _path;
+  String? _video;
   Shop? _shop;
   int? _rating;
   int? _count;
+  int? _total;
   bool? _inBasket;
+  bool? _buyed;
   int? _basketCount;
   bool? _inFavorite;
   List<Shops>? _shops;
@@ -89,15 +109,20 @@ class ProductModel {
   int? get price => _price;
   int? get compound => _compound;
   String? get description => _description;
+  String? get catName => _catName;
+  String? get brandName => _brandName;
   String? get sizeTitle => _sizeTitle;
   List<String>? get size => _size;
   List<String>? get color => _color;
   List<Bloc>? get bloc => _bloc;
   List<String>? get path => _path;
+  String? get video => _video;
   Shop? get shop => _shop;
   int? get rating => _rating;
   int? get count => _count;
+  int? get total => _total;
   bool? get inBasket => _inBasket;
+  bool? get buyed => _buyed;
   int? get basketCount => _basketCount;
   bool? get inFavorite => _inFavorite;
   List<Shops>? get shops => _shops;
@@ -109,6 +134,8 @@ class ProductModel {
     map['price'] = _price;
     map['compound'] = _compound;
     map['description'] = _description;
+    map['catName'] = _catName;
+    map['brandName'] = _brandName;
     map['size_title'] = _sizeTitle;
     map['size'] = _size;
     map['color'] = _color;
@@ -117,9 +144,12 @@ class ProductModel {
     if (_shop != null) {
       map['shop'] = _shop!.toJson();
     }
+    map['video'] = _video;
     map['rating'] = _rating;
     map['count'] = _count;
+    map['total'] = _total;
     map['in_basket'] = _inBasket;
+    map['buyed'] = _buyed;
     map['basket_count'] = _basketCount;
     map['in_favorite'] = _inFavorite;
     if (_shops != null) {

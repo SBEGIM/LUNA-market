@@ -10,15 +10,34 @@ class ProductCubit extends Cubit<ProductState> {
   final ProductRepository productRepository;
 
   ProductCubit({required this.productRepository}) : super(InitState());
+  int page = 1;
+  List<ProductModel> _products = [];
 
   Future<void> products() async {
     try {
-      emit(LoadingState());
-      final List<ProductModel> data = await productRepository.product();
+      page = 1;
+      final List<ProductModel> data = await productRepository.product(page);
+
+      _products.addAll(data);
 
       emit(LoadedState(data));
     } catch (e) {
-      log(e.toString() + 'ProductCubit products');
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  Future<void> productsPagination() async {
+    try {
+      // emit(LoadingState());
+      page++;
+      final List<ProductModel> data = await productRepository.product(page);
+
+      for (int i = 0; i < data.length; i++) {
+        _products.add(data[i]);
+      }
+
+      emit(LoadedState(_products));
+    } catch (e) {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
@@ -26,8 +45,7 @@ class ProductCubit extends Cubit<ProductState> {
   Future<void> productsMbInteresting() async {
     try {
       emit(LoadingState());
-      final List<ProductModel> data = await productRepository.product();
-
+      final List<ProductModel> data = await productRepository.product(page);
       emit(LoadedState(data));
     } catch (e) {
       log(e.toString());

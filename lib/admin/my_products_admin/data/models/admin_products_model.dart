@@ -1,26 +1,31 @@
+import 'package:haji_market/features/drawer/data/repository/SubCatsRepo.dart';
+
 class AdminProductsModel {
   AdminProductsModel({
-      int? id, 
-      int? catId, 
-      dynamic? brandId,
-      int? shopId, 
-      int? count, 
-      int? currentCount, 
-      String? name, 
-      int? price, 
-      int? compound, 
-      int? bonus, 
-      String? description, 
-      dynamic articul, 
-      dynamic height, 
-      dynamic width, 
-      dynamic deep, 
-      dynamic massa, 
-      List<String>? size, 
-      List<String>? color, 
-      Path? path,}){
+    int? id,
+    int? catId,
+    int? subCatId,
+    int? brandId,
+    int? shopId,
+    int? count,
+    int? currentCount,
+    String? name,
+    int? price,
+    int? compound,
+    int? bonus,
+    String? description,
+    dynamic articul,
+    dynamic height,
+    dynamic width,
+    dynamic deep,
+    dynamic massa,
+    List<String>? size,
+    List<String>? color,
+    Path? path,
+  }) {
     _id = id;
     _catId = catId;
+    _subCatId = subCatId;
     _brandId = brandId;
     _shopId = shopId;
     _count = count;
@@ -38,11 +43,12 @@ class AdminProductsModel {
     _size = size;
     _color = color;
     _path = path;
-}
+  }
 
   AdminProductsModel.fromJson(dynamic json) {
     _id = json['id'];
     _catId = json['cat_id'];
+    _subCatId = json['sub_cat_id'];
     _brandId = json['brand_id'];
     _shopId = json['shop_id'];
     _count = json['count'];
@@ -63,6 +69,7 @@ class AdminProductsModel {
   }
   int? _id;
   int? _catId;
+  int? _subCatId;
   dynamic _brandId;
   int? _shopId;
   int? _count;
@@ -83,6 +90,7 @@ class AdminProductsModel {
 
   int? get id => _id;
   int? get catId => _catId;
+  int? get subCatId => _subCatId;
   dynamic get brandId => _brandId;
   int? get shopId => _shopId;
   int? get count => _count;
@@ -105,6 +113,7 @@ class AdminProductsModel {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['cat_id'] = _catId;
+    map['sub_cat_id'] = _subCatId;
     map['brand_id'] = _brandId;
     map['shop_id'] = _shopId;
     map['count'] = _count;
@@ -126,14 +135,14 @@ class AdminProductsModel {
     }
     return map;
   }
-
 }
 
 class Path {
   Path({
-      String? path,}){
+    String? path,
+  }) {
     _path = path;
-}
+  }
 
   Path.fromJson(dynamic json) {
     _path = json['path'];
@@ -147,5 +156,4 @@ class Path {
     map['path'] = _path;
     return map;
   }
-
 }

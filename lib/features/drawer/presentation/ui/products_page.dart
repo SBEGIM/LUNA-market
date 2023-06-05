@@ -22,6 +22,7 @@ import 'package:haji_market/features/drawer/presentation/widgets/detail_card_pro
 import 'package:haji_market/features/drawer/presentation/widgets/filter_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/products_card_widget.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../home/data/model/Cats.dart';
 import '../../../home/presentation/widgets/product_watching_card.dart';
 import '../../data/bloc/brand_cubit.dart' as brandCubit;
@@ -334,6 +335,26 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
+  int page = 1;
+  RefreshController _refreshController = RefreshController();
+
+  Future<void> onLoading() async {
+    await BlocProvider.of<productCubit.ProductCubit>(context)
+        .productsPagination();
+    await Future.delayed(const Duration(milliseconds: 2000));
+    _refreshController.loadComplete();
+  }
+
+  Future<void> onRefresh() async {
+    await BlocProvider.of<productCubit.ProductCubit>(context)
+        .productsPagination();
+    await Future.delayed(Duration(milliseconds: 1000));
+    if (mounted) {
+      setState(() {});
+    }
+    _refreshController.refreshCompleted();
+  }
+
   @override
   void initState() {
     BlocProvider.of<productCubit.ProductCubit>(context).products();
@@ -380,9 +401,6 @@ class _ProductsState extends State<Products> {
                           notification.metrics.minScrollExtent) {
                         Future.delayed(const Duration(milliseconds: 100), () {})
                             .then((s) {
-                          // print(
-                          //     ' okForward ${notification.metrics.minScrollExtent} ');
-
                           GetStorage().write('scrollView', false);
                         });
 
@@ -391,33 +409,41 @@ class _ProductsState extends State<Products> {
                           ScrollDirection.reverse) {
                         Future.delayed(const Duration(milliseconds: 200), () {})
                             .then((s) {
-                          // print(
-                          //     ' okForward ${notification.metrics.minScrollExtent} ');
-
                           GetStorage().write('scrollView', true);
                         });
                       }
                       return true;
                     },
-                    child: ListView.builder(
-                        // physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: state.productModel.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          DetailCardProductPage(
-                                              product:
-                                                  state.productModel[index])),
-                                );
-                              },
-                              child: ProductCardWidget(
-                                  product: state.productModel[index]));
-                        }),
+                    child: SmartRefresher(
+                      controller: _refreshController,
+                      enablePullDown: false,
+                      enablePullUp: true,
+                      onLoading: () {
+                        onLoading();
+                      },
+                      onRefresh: () {
+                        onRefresh();
+                      },
+                      child: ListView.builder(
+                          // physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: state.productModel.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailCardProductPage(
+                                                product:
+                                                    state.productModel[index])),
+                                  );
+                                },
+                                child: ProductCardWidget(
+                                    product: state.productModel[index]));
+                          }),
+                    ),
                   ),
                 )
               ],
@@ -666,7 +692,8 @@ class _CatsProductPageState extends State<CatsProductPage> {
                           GetStorage().remove('subCatId');
                         } else {
                           GetStorage().write('subCatId', state.cats[index].id);
-
+                          GetStorage().write('subCatFilterId',
+                              [state.cats[index].id].toString());
                           setState(() {
                             subCatName = state.cats[index].name.toString();
                           });
@@ -836,7 +863,6 @@ class _PriceBottomSheetState extends State<PriceBottomSheet> {
                             });
                           }),
                     ),
-
                     Container(
                       color: Colors.white,
                       padding: const EdgeInsets.only(
