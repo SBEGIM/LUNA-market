@@ -1240,7 +1240,8 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
                 controller: widget.controller,
-                keyboardType: widget.textInputNumber == false
+                keyboardType: (widget.textInputNumber == false ||
+                        widget.textInputNumber == null)
                     ? TextInputType.text
                     : const TextInputType.numberWithOptions(
                         signed: true, decimal: true),
