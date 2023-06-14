@@ -20,6 +20,7 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
   bool change = false;
+  bool button = true;
 
   Future<void> _getVideo() async {
     final image = change == true
@@ -149,11 +150,12 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
         padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
         child: InkWell(
             onTap: () async {
-              if (_image != null) {
-                BlocProvider.of<BloggerTapeUploadCubit>(context)
+              Navigator.pop(context);
+              if (_image != null && button == false) {
+                button = true;
+                await BlocProvider.of<BloggerTapeUploadCubit>(context)
                     .uploadVideo(widget.id.toString(), _image!.path);
               }
-              Navigator.pop(context);
             },
             child: SizedBox(
                 height: 80,

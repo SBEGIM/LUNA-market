@@ -2,16 +2,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/auth/data/bloc/sms_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/bloc/sms_admin_state.dart';
 import 'package:haji_market/admin/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
-import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
-
-import '../../../../bloger/auth/presentation/ui/login_admin_page.dart';
 
 class ChangePasswordAdminPage extends StatefulWidget {
   final String textEditingController;

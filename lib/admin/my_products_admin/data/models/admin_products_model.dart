@@ -1,5 +1,3 @@
-import 'package:haji_market/features/drawer/data/repository/SubCatsRepo.dart';
-
 class AdminProductsModel {
   AdminProductsModel({
     int? id,

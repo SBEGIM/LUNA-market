@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../features/home/data/model/Cats.dart';
@@ -14,8 +13,6 @@ class ColorAdminRepository {
 }
 
 class ColorToApi {
-  final _box = GetStorage();
-
   Future<List<Cats>> get() async {
     final response = await http.get(Uri.parse('$baseUrl/list/colors'));
 

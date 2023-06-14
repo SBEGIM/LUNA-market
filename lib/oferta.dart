@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -6,7 +5,7 @@ class Oferta extends StatefulWidget {
   const Oferta({Key? key}) : super(key: key);
 
   @override
-  _Oferta createState() => _Oferta();
+  State<Oferta> createState() => _Oferta();
 }
 
 const htmlData = r"""

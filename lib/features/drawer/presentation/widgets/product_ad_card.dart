@@ -56,15 +56,17 @@ class _ProductAdCardState extends State<ProductAdCard> {
             children: [
               Container(
                 padding: const EdgeInsets.all(4),
-                height: 160,
-                width: 160,
+                //height: 160,
+                // width: 160,
+                alignment: Alignment.center,
                 child: Image.network(
                   widget.product.path!.isNotEmpty
                       ? "http://185.116.193.73/storage/${widget.product.path!.first}"
                       : '',
+                  fit: BoxFit.cover,
                   height: 160,
                   width: 160,
-                  alignment: Alignment.center,
+                  //alignment: Alignment.center,
                 ),
               ),
               Padding(

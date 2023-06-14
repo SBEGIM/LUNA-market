@@ -97,7 +97,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
     inFavorite = widget.product.inFavorite ?? false;
 
     productNames =
-        "https://lunamarket.info/?product_id\u003d${widget.product!.id}";
+        "http://lunamarket.ru/?product_id\u003d${widget.product!.id}";
     super.initState();
 
     compoundPrice =

@@ -426,9 +426,9 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         'Выйти',
                         style: TextStyle(

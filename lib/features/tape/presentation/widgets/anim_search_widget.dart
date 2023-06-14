@@ -109,7 +109,8 @@ class _AnimSearchBarState extends State<AnimSearchBar>
       height: 40.0,
 
       ///if the rtl is true, search bar will be from right to left
-      alignment: widget.rtl ? Alignment.centerRight : const Alignment(-1.0, 0.0),
+      alignment:
+          widget.rtl ? Alignment.centerRight : const Alignment(-1.0, 0.0),
 
       ///Using Animated container to expand and shrink the widget
       child: AnimatedContainer(
@@ -172,15 +173,16 @@ class _AnimSearchBarState extends State<AnimSearchBar>
                           }
                         } catch (e) {
                           ///print the error if the try block fails
-                          print(e);
+                          // print(e);
                         }
                       },
 
                       ///suffixIcon is of type Icon
-                      child: widget.suffixIcon ?? const Icon(
-                              Icons.close,
-                              size: 20.0,
-                            ),
+                      child: widget.suffixIcon ??
+                          const Icon(
+                            Icons.close,
+                            size: 20.0,
+                          ),
                     ),
                   ),
                 ),

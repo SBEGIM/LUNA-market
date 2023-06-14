@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/admin/chat/presentation/message_admin_page.dart';
-import 'package:haji_market/features/chat/presentation/message.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:web_socket_channel/io.dart';
 import '../../../core/common/constants.dart';
 import '../data/cubit/chat_admin_cubit.dart';
 import '../data/cubit/chat_admin_state.dart';
@@ -23,8 +20,6 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
       RefreshController(initialRefresh: false);
 
   TextEditingController searchController = TextEditingController();
-
-  TextEditingController _chatTextController = TextEditingController();
 
   parseDate(date) {
     final dateTimeString = date;
@@ -46,7 +41,7 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
 
   Future<void> onLoading() async {
     await BlocProvider.of<ChatAdminCubit>(context).pagination();
-    await Future.delayed(Duration(milliseconds: 2000));
+    await Future.delayed(const Duration(milliseconds: 2000));
 
     _refreshController.loadComplete();
   }
@@ -220,7 +215,7 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                                 width: 275,
                                                 child: Text(
                                                   '${state.chat[index].lastMessage != null ? state.chat[index].lastMessage!.text : ''}',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Colors.grey,
                                                       fontSize: 14,
                                                       fontWeight:

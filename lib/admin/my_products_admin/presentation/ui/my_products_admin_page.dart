@@ -26,8 +26,6 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool visible = false;
-
     TextEditingController nameController = TextEditingController();
 
     return Scaffold(

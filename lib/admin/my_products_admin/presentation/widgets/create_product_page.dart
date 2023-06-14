@@ -1132,23 +1132,32 @@ class _CreateProductPageState extends State<CreateProductPage> {
         child: InkWell(
           onTap: () async {
             isChangeState = true;
-            await BlocProvider.of<ProductAdminCubit>(context).store(
-                priceController.text,
-                countController.text,
-                compoundController.text,
-                cats!.id.toString(),
-                subCats!.id.toString(),
-                brands!.id.toString(),
-                descriptionController.text,
-                nameController.text,
-                heightController.text,
-                widthController.text,
-                massaController.text,
-                articulController.text,
-                currencyName,
-                _image,
-                optomCount,
-                _video != null ? _video!.path : null);
+            if (_image.isNotEmpty &&
+                nameController.text.isNotEmpty &&
+                priceController.text.isNotEmpty &&
+                countController.text.isNotEmpty &&
+                brands?.id != 0) {
+              await BlocProvider.of<ProductAdminCubit>(context).store(
+                  priceController.text,
+                  countController.text,
+                  compoundController.text,
+                  cats!.id.toString(),
+                  subCats!.id.toString(),
+                  brands!.id.toString(),
+                  descriptionController.text,
+                  nameController.text,
+                  heightController.text,
+                  widthController.text,
+                  massaController.text,
+                  articulController.text,
+                  currencyName,
+                  _image,
+                  optomCount,
+                  _video != null ? _video!.path : null);
+            } else {
+              Get.snackbar("Ошибка", "Заполните данные",
+                  backgroundColor: Colors.orangeAccent);
+            }
           },
           child: Container(
               decoration: BoxDecoration(

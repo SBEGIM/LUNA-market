@@ -42,7 +42,7 @@ class _BasketPageState extends State<BasketPage> {
       count += element.basketCount!.toInt();
       price += element.price!.toInt();
       productNames =
-          "${productNames != null ? "${productNames} ," : ''}  https://lunamarket.info/?product_id\u003d${element.product!.id}";
+          "${productNames != null ? "${productNames} ," : ''}  http://lunamarket.ru/?product_id\u003d${element.product!.id}";
     }
 
     GetStorage().write('bottomCount', count);

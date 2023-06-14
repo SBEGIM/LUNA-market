@@ -20,7 +20,7 @@ class ProductToApi {
   Future<List<BloggerShopProductModel>> products(
       String? name, int shopId) async {
     try {
-      final String? token = _box.read('token');
+      final String? token = _box.read('blogger_token');
       final response = await http.get(
           Uri.parse('$baseUrl/blogger/products?shop_id=$shopId&name=$name'),
           headers: {"Authorization": "Bearer $token"});

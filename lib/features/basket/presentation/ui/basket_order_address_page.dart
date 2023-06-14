@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
-
 import '../../../../core/common/constants.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
 import '../../../app/presentaion/base.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart';
 import '../../../drawer/data/bloc/basket_state.dart';
 import '../../../profile/data/presentation/ui/edit_profile_page.dart';
-import '../widgets/show_alert_statictics_widget.dart';
 import 'basket_order_page.dart';
 import 'map_picker.dart';
 
 class BasketOrderAddressPage extends StatefulWidget {
-  BasketOrderAddressPage({Key? key}) : super(key: key);
+  const BasketOrderAddressPage({Key? key}) : super(key: key);
 
   @override
   _BasketOrderAddressPageState createState() => _BasketOrderAddressPageState();

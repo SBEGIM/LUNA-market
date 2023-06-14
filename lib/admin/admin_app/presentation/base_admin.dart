@@ -6,7 +6,6 @@ import 'package:haji_market/admin/admin_app/bloc/admin_navigation_cubit/admin_na
 import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
 import 'package:haji_market/admin/my_orders_admin/presentation/ui/my_orders_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/ui/my_products_admin_page.dart';
-import 'package:haji_market/admin/tape_admin/presentation/ui/tape_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 
 import '../../chat/presentation/chat_admin_page.dart';

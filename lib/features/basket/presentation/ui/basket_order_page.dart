@@ -70,7 +70,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
       price += element.price!.toInt();
       courier += element.priceCourier!.toInt();
       productNames =
-          "${productNames != null ? "${productNames} ," : ''}  https://lunamarket.info/?product_id\u003d${element.product!.id}";
+          "${productNames != null ? "${productNames} ," : ''}  http://lunamarket.ru/?product_id\u003d${element.product!.id}";
     }
     bs = (price * 0.05).toInt();
   }

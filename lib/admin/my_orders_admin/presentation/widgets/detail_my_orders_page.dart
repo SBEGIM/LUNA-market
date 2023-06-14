@@ -4,9 +4,7 @@ import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_orders_admin/data/models/basket_admin_order_model.dart';
 import 'package:haji_market/admin/my_orders_admin/presentation/widgets/delivery_note_widget.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
-import '../../../../features/my_order/presentation/widget/delivery_note_widget.dart';
 import '../../data/bloc/basket_admin_cubit.dart';
 
 class DetailMyOrdersPage extends StatefulWidget {

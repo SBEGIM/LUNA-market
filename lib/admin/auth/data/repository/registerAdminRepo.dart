@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:get_storage/get_storage.dart';
@@ -67,14 +66,14 @@ class RegisterToApi {
     request.fields.addAll(body);
 
     final http.StreamedResponse response = await request.send();
-    final respStr = await response.stream.bytesToString();
+    await response.stream.bytesToString();
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(respStr);
-      // _box.write('token', data['access_token'].toString());
-      // _box.write('seller_id', data['user']['id'].toString());
-      // _box.write('seller_card', data['user']['card'].toString());
-    }
+    // if (response.statusCode == 200) {
+    // final data = jsonDecode(respStr);
+    // _box.write('token', data['access_token'].toString());
+    // _box.write('seller_id', data['user']['id'].toString());
+    // _box.write('seller_card', data['user']['card'].toString());
+    // }
     return response.statusCode;
   }
 
