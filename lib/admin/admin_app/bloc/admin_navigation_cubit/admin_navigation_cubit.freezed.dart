@@ -19,6 +19,7 @@ mixin _$AdminNavigationState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() tapeAdmin,
+    required TResult Function(int index, String name) detailTapeAdmin,
     required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
@@ -29,6 +30,7 @@ mixin _$AdminNavigationState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? tapeAdmin,
+    TResult? Function(int index, String name)? detailTapeAdmin,
     TResult? Function()? homeAdmin,
     TResult? Function()? myOrderAdmin,
     TResult? Function()? profile,
@@ -39,6 +41,7 @@ mixin _$AdminNavigationState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? tapeAdmin,
+    TResult Function(int index, String name)? detailTapeAdmin,
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
@@ -50,6 +53,7 @@ mixin _$AdminNavigationState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(DetailTapeAdminState value) detailTapeAdmin,
     required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
@@ -60,6 +64,7 @@ mixin _$AdminNavigationState {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult? Function(HomeAdminState value)? homeAdmin,
     TResult? Function(MyOrderAdminState value)? myOrderAdmin,
     TResult? Function(ProfileState value)? profile,
@@ -70,6 +75,7 @@ mixin _$AdminNavigationState {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
@@ -138,6 +144,7 @@ class _$TapeAdminState implements TapeAdminState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() tapeAdmin,
+    required TResult Function(int index, String name) detailTapeAdmin,
     required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
@@ -151,6 +158,7 @@ class _$TapeAdminState implements TapeAdminState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? tapeAdmin,
+    TResult? Function(int index, String name)? detailTapeAdmin,
     TResult? Function()? homeAdmin,
     TResult? Function()? myOrderAdmin,
     TResult? Function()? profile,
@@ -164,6 +172,7 @@ class _$TapeAdminState implements TapeAdminState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? tapeAdmin,
+    TResult Function(int index, String name)? detailTapeAdmin,
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
@@ -181,6 +190,7 @@ class _$TapeAdminState implements TapeAdminState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(DetailTapeAdminState value) detailTapeAdmin,
     required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
@@ -194,6 +204,7 @@ class _$TapeAdminState implements TapeAdminState {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult? Function(HomeAdminState value)? homeAdmin,
     TResult? Function(MyOrderAdminState value)? myOrderAdmin,
     TResult? Function(ProfileState value)? profile,
@@ -207,6 +218,7 @@ class _$TapeAdminState implements TapeAdminState {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
@@ -223,6 +235,180 @@ class _$TapeAdminState implements TapeAdminState {
 
 abstract class TapeAdminState implements AdminNavigationState {
   const factory TapeAdminState() = _$TapeAdminState;
+}
+
+/// @nodoc
+abstract class _$$DetailTapeAdminStateCopyWith<$Res> {
+  factory _$$DetailTapeAdminStateCopyWith(_$DetailTapeAdminState value,
+          $Res Function(_$DetailTapeAdminState) then) =
+      __$$DetailTapeAdminStateCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int index, String name});
+}
+
+/// @nodoc
+class __$$DetailTapeAdminStateCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res, _$DetailTapeAdminState>
+    implements _$$DetailTapeAdminStateCopyWith<$Res> {
+  __$$DetailTapeAdminStateCopyWithImpl(_$DetailTapeAdminState _value,
+      $Res Function(_$DetailTapeAdminState) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? index = null,
+    Object? name = null,
+  }) {
+    return _then(_$DetailTapeAdminState(
+      null == index
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int,
+      null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DetailTapeAdminState implements DetailTapeAdminState {
+  _$DetailTapeAdminState(this.index, this.name);
+
+  @override
+  final int index;
+  @override
+  final String name;
+
+  @override
+  String toString() {
+    return 'AdminNavigationState.detailTapeAdmin(index: $index, name: $name)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DetailTapeAdminState &&
+            (identical(other.index, index) || other.index == index) &&
+            (identical(other.name, name) || other.name == name));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, index, name);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DetailTapeAdminStateCopyWith<_$DetailTapeAdminState> get copyWith =>
+      __$$DetailTapeAdminStateCopyWithImpl<_$DetailTapeAdminState>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() tapeAdmin,
+    required TResult Function(int index, String name) detailTapeAdmin,
+    required TResult Function() homeAdmin,
+    required TResult Function() myOrderAdmin,
+    required TResult Function() profile,
+    required TResult Function() chatAdmin,
+    required TResult Function() adminAuth,
+  }) {
+    return detailTapeAdmin(index, name);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? tapeAdmin,
+    TResult? Function(int index, String name)? detailTapeAdmin,
+    TResult? Function()? homeAdmin,
+    TResult? Function()? myOrderAdmin,
+    TResult? Function()? profile,
+    TResult? Function()? chatAdmin,
+    TResult? Function()? adminAuth,
+  }) {
+    return detailTapeAdmin?.call(index, name);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? tapeAdmin,
+    TResult Function(int index, String name)? detailTapeAdmin,
+    TResult Function()? homeAdmin,
+    TResult Function()? myOrderAdmin,
+    TResult Function()? profile,
+    TResult Function()? chatAdmin,
+    TResult Function()? adminAuth,
+    required TResult orElse(),
+  }) {
+    if (detailTapeAdmin != null) {
+      return detailTapeAdmin(index, name);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(DetailTapeAdminState value) detailTapeAdmin,
+    required TResult Function(HomeAdminState value) homeAdmin,
+    required TResult Function(MyOrderAdminState value) myOrderAdmin,
+    required TResult Function(ProfileState value) profile,
+    required TResult Function(ChatAdminState value) chatAdmin,
+    required TResult Function(AdminAuthState value) adminAuth,
+  }) {
+    return detailTapeAdmin(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(DetailTapeAdminState value)? detailTapeAdmin,
+    TResult? Function(HomeAdminState value)? homeAdmin,
+    TResult? Function(MyOrderAdminState value)? myOrderAdmin,
+    TResult? Function(ProfileState value)? profile,
+    TResult? Function(ChatAdminState value)? chatAdmin,
+    TResult? Function(AdminAuthState value)? adminAuth,
+  }) {
+    return detailTapeAdmin?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(DetailTapeAdminState value)? detailTapeAdmin,
+    TResult Function(HomeAdminState value)? homeAdmin,
+    TResult Function(MyOrderAdminState value)? myOrderAdmin,
+    TResult Function(ProfileState value)? profile,
+    TResult Function(ChatAdminState value)? chatAdmin,
+    TResult Function(AdminAuthState value)? adminAuth,
+    required TResult orElse(),
+  }) {
+    if (detailTapeAdmin != null) {
+      return detailTapeAdmin(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DetailTapeAdminState implements AdminNavigationState {
+  factory DetailTapeAdminState(final int index, final String name) =
+      _$DetailTapeAdminState;
+
+  int get index;
+  String get name;
+  @JsonKey(ignore: true)
+  _$$DetailTapeAdminStateCopyWith<_$DetailTapeAdminState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -264,6 +450,7 @@ class _$HomeAdminState implements HomeAdminState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() tapeAdmin,
+    required TResult Function(int index, String name) detailTapeAdmin,
     required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
@@ -277,6 +464,7 @@ class _$HomeAdminState implements HomeAdminState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? tapeAdmin,
+    TResult? Function(int index, String name)? detailTapeAdmin,
     TResult? Function()? homeAdmin,
     TResult? Function()? myOrderAdmin,
     TResult? Function()? profile,
@@ -290,6 +478,7 @@ class _$HomeAdminState implements HomeAdminState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? tapeAdmin,
+    TResult Function(int index, String name)? detailTapeAdmin,
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
@@ -307,6 +496,7 @@ class _$HomeAdminState implements HomeAdminState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(DetailTapeAdminState value) detailTapeAdmin,
     required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
@@ -320,6 +510,7 @@ class _$HomeAdminState implements HomeAdminState {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult? Function(HomeAdminState value)? homeAdmin,
     TResult? Function(MyOrderAdminState value)? myOrderAdmin,
     TResult? Function(ProfileState value)? profile,
@@ -333,6 +524,7 @@ class _$HomeAdminState implements HomeAdminState {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
@@ -390,6 +582,7 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() tapeAdmin,
+    required TResult Function(int index, String name) detailTapeAdmin,
     required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
@@ -403,6 +596,7 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? tapeAdmin,
+    TResult? Function(int index, String name)? detailTapeAdmin,
     TResult? Function()? homeAdmin,
     TResult? Function()? myOrderAdmin,
     TResult? Function()? profile,
@@ -416,6 +610,7 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? tapeAdmin,
+    TResult Function(int index, String name)? detailTapeAdmin,
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
@@ -433,6 +628,7 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(DetailTapeAdminState value) detailTapeAdmin,
     required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
@@ -446,6 +642,7 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult? Function(HomeAdminState value)? homeAdmin,
     TResult? Function(MyOrderAdminState value)? myOrderAdmin,
     TResult? Function(ProfileState value)? profile,
@@ -459,6 +656,7 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
@@ -516,6 +714,7 @@ class _$ProfileState implements ProfileState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() tapeAdmin,
+    required TResult Function(int index, String name) detailTapeAdmin,
     required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
@@ -529,6 +728,7 @@ class _$ProfileState implements ProfileState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? tapeAdmin,
+    TResult? Function(int index, String name)? detailTapeAdmin,
     TResult? Function()? homeAdmin,
     TResult? Function()? myOrderAdmin,
     TResult? Function()? profile,
@@ -542,6 +742,7 @@ class _$ProfileState implements ProfileState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? tapeAdmin,
+    TResult Function(int index, String name)? detailTapeAdmin,
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
@@ -559,6 +760,7 @@ class _$ProfileState implements ProfileState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(DetailTapeAdminState value) detailTapeAdmin,
     required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
@@ -572,6 +774,7 @@ class _$ProfileState implements ProfileState {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult? Function(HomeAdminState value)? homeAdmin,
     TResult? Function(MyOrderAdminState value)? myOrderAdmin,
     TResult? Function(ProfileState value)? profile,
@@ -585,6 +788,7 @@ class _$ProfileState implements ProfileState {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
@@ -642,6 +846,7 @@ class _$ChatAdminState implements ChatAdminState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() tapeAdmin,
+    required TResult Function(int index, String name) detailTapeAdmin,
     required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
@@ -655,6 +860,7 @@ class _$ChatAdminState implements ChatAdminState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? tapeAdmin,
+    TResult? Function(int index, String name)? detailTapeAdmin,
     TResult? Function()? homeAdmin,
     TResult? Function()? myOrderAdmin,
     TResult? Function()? profile,
@@ -668,6 +874,7 @@ class _$ChatAdminState implements ChatAdminState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? tapeAdmin,
+    TResult Function(int index, String name)? detailTapeAdmin,
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
@@ -685,6 +892,7 @@ class _$ChatAdminState implements ChatAdminState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(DetailTapeAdminState value) detailTapeAdmin,
     required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
@@ -698,6 +906,7 @@ class _$ChatAdminState implements ChatAdminState {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult? Function(HomeAdminState value)? homeAdmin,
     TResult? Function(MyOrderAdminState value)? myOrderAdmin,
     TResult? Function(ProfileState value)? profile,
@@ -711,6 +920,7 @@ class _$ChatAdminState implements ChatAdminState {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,
@@ -768,6 +978,7 @@ class _$AdminAuthState implements AdminAuthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() tapeAdmin,
+    required TResult Function(int index, String name) detailTapeAdmin,
     required TResult Function() homeAdmin,
     required TResult Function() myOrderAdmin,
     required TResult Function() profile,
@@ -781,6 +992,7 @@ class _$AdminAuthState implements AdminAuthState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? tapeAdmin,
+    TResult? Function(int index, String name)? detailTapeAdmin,
     TResult? Function()? homeAdmin,
     TResult? Function()? myOrderAdmin,
     TResult? Function()? profile,
@@ -794,6 +1006,7 @@ class _$AdminAuthState implements AdminAuthState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? tapeAdmin,
+    TResult Function(int index, String name)? detailTapeAdmin,
     TResult Function()? homeAdmin,
     TResult Function()? myOrderAdmin,
     TResult Function()? profile,
@@ -811,6 +1024,7 @@ class _$AdminAuthState implements AdminAuthState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(TapeAdminState value) tapeAdmin,
+    required TResult Function(DetailTapeAdminState value) detailTapeAdmin,
     required TResult Function(HomeAdminState value) homeAdmin,
     required TResult Function(MyOrderAdminState value) myOrderAdmin,
     required TResult Function(ProfileState value) profile,
@@ -824,6 +1038,7 @@ class _$AdminAuthState implements AdminAuthState {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TapeAdminState value)? tapeAdmin,
+    TResult? Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult? Function(HomeAdminState value)? homeAdmin,
     TResult? Function(MyOrderAdminState value)? myOrderAdmin,
     TResult? Function(ProfileState value)? profile,
@@ -837,6 +1052,7 @@ class _$AdminAuthState implements AdminAuthState {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TapeAdminState value)? tapeAdmin,
+    TResult Function(DetailTapeAdminState value)? detailTapeAdmin,
     TResult Function(HomeAdminState value)? homeAdmin,
     TResult Function(MyOrderAdminState value)? myOrderAdmin,
     TResult Function(ProfileState value)? profile,

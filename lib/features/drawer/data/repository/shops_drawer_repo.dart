@@ -9,16 +9,18 @@ const baseUrl = 'http://185.116.193.73/api';
 class ShopsDrawerRepository {
   final ShopsDrawerApi _shopsApi = ShopsDrawerApi();
 
-  Future<List<ShopsDrawerModel>> shopsDrawer() => _shopsApi.shopsDrawer();
+  Future<List<ShopsDrawerModel>> shopsDrawer(int? cat_id) =>
+      _shopsApi.shopsDrawer(cat_id);
 }
 
 class ShopsDrawerApi {
   final _box = GetStorage();
 
-  Future<List<ShopsDrawerModel>> shopsDrawer() async {
+  Future<List<ShopsDrawerModel>> shopsDrawer(int? cat_id) async {
     final String? token = _box.read('token');
 
-    final response = await http.get(Uri.parse('$baseUrl/list/shops'),
+    final response = await http.get(
+        Uri.parse('$baseUrl/list/shops?cat_id=$cat_id'),
         headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);

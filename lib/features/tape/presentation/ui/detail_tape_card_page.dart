@@ -253,49 +253,49 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 ),
                               ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Column(
-                                    children: [
-                                      Container(
-                                        width: 61,
-                                        height: 28,
-                                        decoration: BoxDecoration(
-                                            color: AppColors.kPrimaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(6)),
-                                        margin: const EdgeInsets.only(top: 370),
-                                        alignment: Alignment.center,
-                                        child: const Text(
-                                          '0·0·12',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius:
-                                                BorderRadius.circular(6)),
-                                        // padding: const EdgeInsets.only(
-                                        //     left: 4, right: 4, bottom: 2, top: 2),
-                                        width: 56,
-                                        height: 28,
-                                        margin: const EdgeInsets.only(top: 4),
-                                        alignment: Alignment.center,
-                                        child: const Text(
-                                          '10% Б',
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  // Column(
+                                  //   children: [
+                                  // Container(
+                                  //   width: 61,
+                                  //   height: 28,
+                                  //   decoration: BoxDecoration(
+                                  //       color: AppColors.kPrimaryColor,
+                                  //       borderRadius:
+                                  //           BorderRadius.circular(6)),
+                                  //   margin: const EdgeInsets.only(top: 370),
+                                  //   alignment: Alignment.center,
+                                  //   child: const Text(
+                                  //     '0·0·12',
+                                  //     style: TextStyle(
+                                  //         fontSize: 14,
+                                  //         fontWeight: FontWeight.w400,
+                                  //         color: Colors.white),
+                                  //   ),
+                                  // ),
+                                  // Container(
+                                  //   decoration: BoxDecoration(
+                                  //       color: Colors.black,
+                                  //       borderRadius:
+                                  //           BorderRadius.circular(6)),
+                                  //   // padding: const EdgeInsets.only(
+                                  //   //     left: 4, right: 4, bottom: 2, top: 2),
+                                  //   margin: const EdgeInsets.only(top: 370),
+                                  //   width: 56,
+                                  //   height: 28,
+                                  //   // margin: const EdgeInsets.only(top: 4),
+                                  //   alignment: Alignment.center,
+                                  //   child: const Text(
+                                  //     '10% Б',
+                                  //     style: TextStyle(
+                                  //         fontSize: 12,
+                                  //         fontWeight: FontWeight.w400,
+                                  //         color: Colors.white),
+                                  //   ),
+                                  // ),
+                                  //   ],
+                                  // ),
                                   Container(
                                     margin: EdgeInsets.only(
                                         top:
@@ -345,7 +345,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 height: 14,
                               ),
                               SizedBox(
-                                width: 358,
+                                //width: 358,
                                 height: 30,
                                 child: Row(
                                   mainAxisAlignment:
@@ -409,20 +409,20 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             GetStorage()
                                                 .write('video_stop', true);
 
-                                            if (state.tapeModel[index].chatId ==
-                                                null) {
-                                              Get.to(Message(
-                                                  userId: state.tapeModel[index]
-                                                      .shop!.id,
-                                                  name: state.tapeModel[index]
-                                                      .shop!.name,
-                                                  avatar: state.tapeModel[index]
-                                                      .shop!.image,
-                                                  chatId: state.tapeModel[index]
-                                                      .chatId));
-                                            } else {
-                                              Get.to(() => const ChatPage());
-                                            }
+                                            // if (state.tapeModel[index].chatId ==
+                                            //     null) {
+                                            Get.to(Message(
+                                                userId: state
+                                                    .tapeModel[index].shop!.id,
+                                                name: state.tapeModel[index]
+                                                    .shop!.name,
+                                                avatar: state.tapeModel[index]
+                                                    .shop!.image,
+                                                chatId: state
+                                                    .tapeModel[index].chatId));
+                                            // } else {
+                                            //   Get.to(() => const ChatPage());
+                                            // }
 
                                             // Get.to(ProductsPage(
                                             //   cats: Cats(id: 0, name: ''),
@@ -514,7 +514,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 height: 8,
                               ),
                               SizedBox(
-                                width: 358,
+                                // width: 358,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -522,7 +522,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                     Row(
                                       children: [
                                         Text(
-                                          '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt())} ₸ ',
+                                          '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt())} ₽ ',
                                           style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 16,
@@ -532,7 +532,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                           width: 8,
                                         ),
                                         Text(
-                                          '${state.tapeModel[index].price} ₸ ',
+                                          '${state.tapeModel[index].price} ₽',
                                           style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 16,

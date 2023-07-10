@@ -286,12 +286,12 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                     builder: (context) => const StatisticsAdminShowPage()),
               );
             },
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 15.0, bottom: 15, right: 15, left: 15),
+            child: const Padding(
+              padding:
+                  EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Мой заработок',
                     style: TextStyle(
@@ -314,12 +314,12 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
           InkWell(
             onTap: () =>
                 launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 15.0, bottom: 15, right: 15, left: 15),
+            child: const Padding(
+              padding:
+                  EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Связаться с администрацией',
                     style: TextStyle(

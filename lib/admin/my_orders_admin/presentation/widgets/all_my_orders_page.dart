@@ -229,7 +229,7 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                           fontWeight: FontWeight.w500),
                                     ),
                                     Text(
-                                      '${state.basketOrderModel[index].summa.toString()} ₸',
+                                      '${state.basketOrderModel[index].summa.toString()} ₽',
                                       style: const TextStyle(
                                           color: AppColors.kGray750,
                                           fontSize: 16,

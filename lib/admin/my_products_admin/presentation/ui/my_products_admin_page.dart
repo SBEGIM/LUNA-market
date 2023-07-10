@@ -8,6 +8,7 @@ import 'package:haji_market/core/common/constants.dart';
 
 import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/bloc/product_admin_state.dart';
+import 'admin_products_card_widget.dart';
 
 class MyProductsAdminPage extends StatefulWidget {
   const MyProductsAdminPage({Key? key}) : super(key: key);
@@ -31,6 +32,9 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         // shrinkWrap: true,
         children: [
           Container(
@@ -140,10 +144,6 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
               ],
             ),
           ),
-          Container(
-            height: 14,
-            color: AppColors.kBackgroundColor,
-          ),
           BlocConsumer<ProductAdminCubit, ProductAdminState>(
               listener: (context, state) {},
               builder: (context, state) {
@@ -164,57 +164,72 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
 
                 if (state is LoadedState) {
                   return Expanded(
-                    child: Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.only(
-                        left: 16,
-                        right: 16,
-                      ),
-                      child: GridView.builder(
-                          padding: const EdgeInsets.only(
-                              top: 16, left: 0, right: 0, bottom: 0),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  //  maxCrossAxisExtent: 175,
-                                  childAspectRatio: 2 / 3.2,
-                                  crossAxisSpacing: 8,
-                                  mainAxisSpacing: 16),
-                          itemCount: state.productModel.length,
-                          itemBuilder: (BuildContext ctx, index) {
-                            return Stack(
-                              children: [
-                                BannerWatcehRecentlyAdminPage(
-                                    product: state.productModel[index]),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10)),
-                                ),
-                                InkWell(
-                                  onTap: () async {
-                                    await showAlertStaticticsWidget(
-                                        context, state.productModel[index]);
-                                  },
-                                  child: Container(
-                                    height: 28,
-                                    width: 28,
-                                    margin: const EdgeInsets.only(
-                                        top: 8.0, right: 8.0, left: 135),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(8)),
-                                    child: const Icon(
-                                      Icons.more_vert_rounded,
-                                      color: AppColors.kPrimaryColor,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
-                    ),
+                    child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        // physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.productModel.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return AdminProductCardWidget(
+                              product: state.productModel[index]);
+                        }),
                   );
+
+                  //   AdminProductCardWidget(
+                  //    product: state.productModel[index]),
+                  //       Expanded(
+                  //     child: Container(
+                  //       color: Colors.white,
+                  //       padding: const EdgeInsets.only(
+                  //         left: 16,
+                  //         right: 16,
+                  //       ),
+                  //       child: GridView.builder(
+                  //           padding: const EdgeInsets.only(
+                  //               top: 16, left: 0, right: 0, bottom: 0),
+                  //           gridDelegate:
+                  //               const SliverGridDelegateWithFixedCrossAxisCount(
+                  //                   crossAxisCount: 2,
+                  //                   //  maxCrossAxisExtent: 175,
+                  //                   childAspectRatio: 2 / 3.2,
+                  //                   crossAxisSpacing: 8,
+                  //                   mainAxisSpacing: 16),
+                  //           itemCount: state.productModel.length,
+                  //           itemBuilder: (BuildContext ctx, index) {
+                  //             return Stack(
+                  //               children: [
+                  //                 BannerWatcehRecentlyAdminPage(
+                  //                     product: state.productModel[index]),
+                  //                 Container(
+                  //                   decoration: BoxDecoration(
+                  //                       borderRadius: BorderRadius.circular(10)),
+                  //                 ),
+                  //                 InkWell(
+                  //                   onTap: () async {
+                  //                     await showAlertStaticticsWidget(
+                  //                         context, state.productModel[index]);
+                  //                   },
+                  //                   child: Container(
+                  //                     height: 28,
+                  //                     width: 28,
+                  //                     margin: const EdgeInsets.only(
+                  //                         top: 8.0, right: 8.0, left: 135),
+                  //                     alignment: Alignment.center,
+                  //                     decoration: BoxDecoration(
+                  //                         color: Colors.white,
+                  //                         borderRadius: BorderRadius.circular(8)),
+                  //                     child: const Icon(
+                  //                       Icons.more_vert_rounded,
+                  //                       color: AppColors.kPrimaryColor,
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             );
+                  //           }),
+                  //     ),
+                  //   );
+                  // } else {
                 } else {
                   return const Center(
                       child: CircularProgressIndicator(

@@ -1,3 +1,7 @@
+import 'package:haji_market/features/drawer/data/bloc/profit_cubit.dart'
+    as profitCubit;
+import 'package:haji_market/features/drawer/data/bloc/profit_state.dart'
+    as profitState;
 import 'package:video_player/video_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -108,20 +112,23 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             100;
 
     BlocProvider.of<reviewProductCubit.ReviewCubit>(context).reviews();
+    BlocProvider.of<profitCubit.ProfitCubit>(context).profit();
 
-    _controller = VideoPlayerController.network(
-        // 'http://185.116.193.73/storage/${widget.product.path?.first ?? ''}'
-        'http://185.116.193.73/storage/${widget.product.video}')
-      ..initialize().then((_) {
-        _controller!.pause();
-        // setState(() {});
+    if (widget.product.video != null) {
+      _controller = VideoPlayerController.network(
+          // 'http://185.116.193.73/storage/${widget.product.path?.first ?? ''}'
+          'http://185.116.193.73/storage/${widget.product.video}')
+        ..initialize().then((_) {
+          _controller!.pause();
+          // setState(() {});
+        });
+
+      _controller!.addListener(() {
+        _controller!.value.isPlaying == true ? icon = false : icon = true;
+
+        setState(() {});
       });
-
-    _controller!.addListener(() {
-      _controller!.value.isPlaying == true ? icon = false : icon = true;
-
-      setState(() {});
-    });
+    }
 
     super.initState();
   }
@@ -330,7 +337,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               ),
               GestureDetector(
                 onTap: (() {
-                  Get.to(() => ProductImages(images: widget.product.path!));
+                  Get.to(() => ProductImages(images: widget.product.path));
                 }),
                 child: Container(
                     margin: const EdgeInsets.only(
@@ -354,7 +361,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "${widget.product.name}",
@@ -440,7 +446,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           Row(
                             children: [
                               Text(
-                                '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ₸',
+                                '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ₽',
                                 style: const TextStyle(
                                     color: Colors.red,
                                     fontSize: 16,
@@ -450,7 +456,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 width: 10,
                               ),
                               Text(
-                                '${widget.product.price!.toInt()} ₸',
+                                '${widget.product.price!.toInt()} ₽',
                                 style: const TextStyle(
                                     decoration: TextDecoration.lineThrough,
                                     color: AppColors.kGray900,
@@ -500,7 +506,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         ],
                       )
                     : Text(
-                        '${widget.product.price} ₸',
+                        '${widget.product.price} ₽',
                         textAlign: TextAlign.start,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -553,17 +559,17 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   height: 8,
                 ),
 
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: Colors.red.shade50,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: const Text(
-                    '-10% скидка за наличный расчет',
-                    style: TextStyle(color: Color(0xFFFF3347)),
-                  ),
-                ),
+                // Container(
+                //   width: MediaQuery.of(context).size.width,
+                //   padding: const EdgeInsets.all(8),
+                //   decoration: BoxDecoration(
+                //       color: Colors.red.shade50,
+                //       borderRadius: BorderRadius.circular(8)),
+                //   child: const Text(
+                //     '-10% скидка за наличный расчет',
+                //     style: TextStyle(color: Color(0xFFFF3347)),
+                //   ),
+                // ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -657,7 +663,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       Row(
                         children: [
                           Container(
-                            width: 55,
+                            // width: 90,
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: const Color(0xFFFFD54F),
@@ -698,9 +704,31 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 const SizedBox(
                   height: 16,
                 ),
-                Container(
-                    padding: EdgeInsets.zero,
-                    child: Image.asset('assets/icons/optom_banner.png')),
+
+                BlocBuilder<profitCubit.ProfitCubit, profitState.ProfitState>(
+                    builder: (context, state) {
+                  if (state is profitState.ErrorState) {
+                    return Center(
+                      child: Text(
+                        state.message,
+                        style:
+                            const TextStyle(fontSize: 20.0, color: Colors.grey),
+                      ),
+                    );
+                  }
+                  if (state is profitState.LoadedState) {
+                    return Container(
+                        height: 89,
+                        width: 343,
+                        padding: EdgeInsets.zero,
+                        child: Image.network(
+                            'http://185.116.193.73/storage/${state.path}'));
+                  } else {
+                    return const Center(
+                        child: CircularProgressIndicator(
+                            color: Colors.indigoAccent));
+                  }
+                }),
 
                 const SizedBox(height: 13),
                 Row(
@@ -772,12 +800,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   height: 14,
                   child: Row(children: [
                     Text(
-                      '${selectedIndex3 != -1 ? "${widget.product.bloc![selectedIndex3!].price} " : 0} ',
+                      '${selectedIndex3 != -1 ? "${widget.product.bloc![selectedIndex3!].price} тг " : 0} ',
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      'x${selectedIndex3 != -1 ? " ${widget.product.bloc![selectedIndex3!].count} (${widget.product.bloc![selectedIndex3!].price} тг) " : 0}',
+                      '(${selectedIndex3 != -1 ? " ${widget.product.bloc![selectedIndex3!].count}шт )" : 0}',
                       style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -926,9 +954,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 //       ),
                 //   ],
                 // ),
-
                 const SizedBox(height: 14),
-
                 Row(
                   children: [
                     const Icon(
@@ -1052,115 +1078,132 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 // const SizedBox(
                 //   height: 20,
                 // ),
-                const Text(
-                  'Выберите Размер',
-                  style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.585, // 229,
-                  height: 28,
-                  child: ListView.builder(
-                    itemCount: size.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          setState(() {
-                            selectedIndex4 = index;
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 4.0),
-                          child: Container(
-                            width: 54,
-                            decoration: BoxDecoration(
-                              color: selectedIndex4 == index
-                                  ? Colors.black
-                                  : const Color.fromRGBO(235, 237, 240, 1),
-                              borderRadius: BorderRadius.circular(8),
-                              // border: Border.all(
-                              //   width: 1,
-                              //   color: selectedIndex3 != index
-                              //       ? AppColors.kPrimaryColor
-                              //       : Colors.white,
-                              // ),
-                            ),
-                            // padding: const EdgeInsets.only(
-                            //   top: 8,
-                            //   bottom: 8,
-                            // ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              size[index],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: selectedIndex4 == index
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
+                if (widget.product.size?.length != 0)
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Выберите Размер',
+                        style: TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      SizedBox(
+                        width:
+                            MediaQuery.of(context).size.width * 0.585, // 229,
+                        height: 28,
+                        child: ListView.builder(
+                          itemCount: size?.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                setState(() {
+                                  selectedIndex4 = index;
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 4.0),
+                                child: Container(
+                                  width: 54,
+                                  decoration: BoxDecoration(
+                                    color: selectedIndex4 == index
+                                        ? Colors.black
+                                        : const Color.fromRGBO(
+                                            235, 237, 240, 1),
+                                    borderRadius: BorderRadius.circular(8),
+                                    // border: Border.all(
+                                    //   width: 1,
+                                    //   color: selectedIndex3 != index
+                                    //       ? AppColors.kPrimaryColor
+                                    //       : Colors.white,
+                                    // ),
+                                  ),
+                                  // padding: const EdgeInsets.only(
+                                  //   top: 8,
+                                  //   bottom: 8,
+                                  // ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    size[index],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: selectedIndex4 == index
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  'Выберите цвет',
-                  style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                // for (var item in imgList)
-                Container(
-                  height: 100,
-                  margin: const EdgeInsets.only(top: 1, bottom: 10),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: widget.product.color!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        onTap: () {
-                          setState(() {
-                            selectedIndex = index;
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border: selectedIndex == index
-                                    ? Border.all(color: AppColors.kPrimaryColor)
-                                    : Border.all(color: Colors.grey)),
-                            child: Image.asset(
-                              'assets/images/black_wireles.png',
-                              height: 80,
-                            ),
-                          ),
+                if (widget.product.color?.length != 0)
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        'Выберите цвет',
+                        style: TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      // for (var item in imgList)
+                      Container(
+                        height: 100,
+                        margin: const EdgeInsets.only(top: 1, bottom: 10),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: widget.product.color!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              onTap: () {
+                                setState(() {
+                                  selectedIndex = index;
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: selectedIndex == index
+                                          ? Border.all(
+                                              color: AppColors.kPrimaryColor)
+                                          : Border.all(color: Colors.grey)),
+                                  child: Image.asset(
+                                    'assets/images/black_wireles.png',
+                                    height: 80,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                ),
               ],
             ),
           ),
@@ -1355,7 +1398,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '${widget.product.price} ₸',
+                                '${widget.product.price} ₽',
                                 style: const TextStyle(
                                     color: AppColors.kGray900,
                                     fontSize: 17,
@@ -1365,8 +1408,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 children: [
                                   Container(
                                     height: 22,
-                                    width: 48,
-                                    //padding: const EdgeInsets.all(8),
+                                    // width: 48,
+                                    padding: const EdgeInsets.all(2),
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       color: const Color(0xFFFFD54F),
@@ -2177,7 +2220,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 setState(() {
                   isvisible = true;
                 });
-                BlocProvider.of<ProductCubit>(context).products();
+                await BlocProvider.of<ProductCubit>(context).products();
 
                 Get.to(BasketOrderAddressPage());
 

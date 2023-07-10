@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/admin/tape_admin/data/cubit/tape_admin_state.dart';
 import 'package:haji_market/admin/tape_admin/presentation/ui/widgets/show_alert_tape_widget.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
+import '../../../../bloger/my_orders_admin/presentation/widgets/tape_card_widget.dart';
 import '../../data/cubit/tape_admin_cubit.dart';
 
 // import '../widgets/grid_tape_list.dart';
@@ -109,51 +111,86 @@ class _TapeAdminPageState extends State<TapeAdminPage> {
                   itemCount: state.tapeModel.length,
                   // children: const [],
                   itemBuilder: (context, index) {
-                    return Stack(
-                      children: [
-                        Image.asset('assets/images/tape.png'),
-                        Image.network(
-                          "http://185.116.193.73/storage/${state.tapeModel[index].image}",
+                    return Shimmer(
+                      duration: const Duration(seconds: 3), //Default value
+                      interval: const Duration(
+                          microseconds:
+                              1), //Default value: Duration(seconds: 0)
+                      color: Colors.white, //Default value
+                      colorOpacity: 0, //Default value
+                      enabled: true, //Default value
+                      direction:
+                          const ShimmerDirection.fromLTRB(), //Default Value
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.grey.withOpacity(0.6),
                         ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            color: Colors.transparent.withOpacity(0.4),
-                            child: Text(
-                              '${state.tapeModel[index].name}',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
+                        child: BloggerTapeCardWidget(
+                          tape: state.tapeModel[index],
+                          index: index,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 5.0, top: 5),
-                          child: Align(
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  padding: const EdgeInsets.all(3),
-                                  child: InkWell(
-                                    onTap: () {
-                                      showAlertTapeWidget(context);
-                                      // showAlertStaticticsWidget(context);
-                                    },
-                                    child: const Icon(
-                                      Icons.more_vert_outlined,
-                                      color: AppColors.kPrimaryColor,
-                                    ),
-                                  ))),
-                        ),
-                      ],
+                      ),
                     );
                   },
                 );
+
+                // return GridView.builder(
+                //   padding: const EdgeInsets.all(1),
+                //   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                //     maxCrossAxisExtent: 150,
+                //     childAspectRatio: 1 / 2,
+                //     mainAxisSpacing: 3,
+                //     crossAxisSpacing: 3,
+                //   ),
+                //   itemCount: state.tapeModel.length,
+                //   // children: const [],
+                //   itemBuilder: (context, index) {
+                //     return Stack(
+                //       children: [
+                //         Image.asset('assets/images/tape.png'),
+                //         Image.network(
+                //           "http://185.116.193.73/storage/${state.tapeModel[index].image}",
+                //         ),
+                //         Align(
+                //           alignment: Alignment.bottomCenter,
+                //           child: Container(
+                //             width: MediaQuery.of(context).size.width,
+                //             color: Colors.transparent.withOpacity(0.4),
+                //             child: Text(
+                //               '${state.tapeModel[index].name}',
+                //               textAlign: TextAlign.center,
+                //               style: const TextStyle(
+                //                   color: Colors.white,
+                //                   fontSize: 12,
+                //                   fontWeight: FontWeight.w600),
+                //             ),
+                //           ),
+                //         ),
+                //         Padding(
+                //           padding: const EdgeInsets.only(right: 5.0, top: 5),
+                //           child: Align(
+                //               alignment: Alignment.topRight,
+                //               child: Container(
+                //                   decoration: BoxDecoration(
+                //                       color: Colors.white,
+                //                       borderRadius: BorderRadius.circular(10)),
+                //                   padding: const EdgeInsets.all(3),
+                //                   child: InkWell(
+                //                     onTap: () {
+                //                       showAlertTapeWidget(context);
+                //                       // showAlertStaticticsWidget(context);
+                //                     },
+                //                     child: const Icon(
+                //                       Icons.more_vert_outlined,
+                //                       color: AppColors.kPrimaryColor,
+                //                     ),
+                //                   ))),
+                //         ),
+                //       ],
+                //     );
+                //   },
+                // );
               } else {
                 return const Center(
                     child:

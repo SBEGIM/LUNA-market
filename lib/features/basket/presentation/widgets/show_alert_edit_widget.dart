@@ -1,18 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/edit_product_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/show_alert_add_widget.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/statistics_page.dart';
 
 import '../../../../core/common/constants.dart';
+import '../ui/basket_order_address_page.dart';
 
 Future<dynamic> showAlertEditWidget(BuildContext context) async {
   return showCupertinoModalPopup(
     context: context,
-    builder: (BuildContext context) => Container(
-      child: Material(
+    builder: (BuildContext context) =>
+        StatefulBuilder(builder: (context, setState) {
+      return Material(
         type: MaterialType.transparency,
         color: Colors.white,
         elevation: 0,
@@ -52,13 +55,16 @@ Future<dynamic> showAlertEditWidget(BuildContext context) async {
                     height: 24,
                     width: 24,
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: TextFormField(
+                      onChanged: (value) {
+                        GetStorage().write('city', value);
+                      },
                       controller: null,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Тараз',
+                        hintText: 'Город',
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                           // borderRadius: BorderRadius.circular(3),
@@ -80,10 +86,13 @@ Future<dynamic> showAlertEditWidget(BuildContext context) async {
                     height: 24,
                     width: 24,
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: TextFormField(
                       controller: null,
+                      onChanged: (value) {
+                        GetStorage().write('street', value);
+                      },
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Улица',
@@ -108,10 +117,13 @@ Future<dynamic> showAlertEditWidget(BuildContext context) async {
                     height: 24,
                     width: 24,
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: TextFormField(
                       controller: null,
+                      onChanged: (value) {
+                        GetStorage().write('home', value);
+                      },
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Дом',
@@ -144,6 +156,9 @@ Future<dynamic> showAlertEditWidget(BuildContext context) async {
                             Expanded(
                               child: TextFormField(
                                 controller: null,
+                                onChanged: (value) {
+                                  GetStorage().write('porch', value);
+                                },
                                 decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintText: 'Подъезд',
@@ -172,6 +187,9 @@ Future<dynamic> showAlertEditWidget(BuildContext context) async {
                             Expanded(
                               child: TextFormField(
                                 controller: null,
+                                onChanged: (value) {
+                                  GetStorage().write('floor', value);
+                                },
                                 decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintText: 'Этаж',
@@ -197,10 +215,13 @@ Future<dynamic> showAlertEditWidget(BuildContext context) async {
                     height: 24,
                     width: 24,
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: TextFormField(
                       controller: null,
+                      onChanged: (value) {
+                        GetStorage().write('room', value);
+                      },
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Квартира',
@@ -226,10 +247,11 @@ Future<dynamic> showAlertEditWidget(BuildContext context) async {
             ),
             onPressed: () {
               Navigator.pop(context, 'Cancel');
+              Get.to(() => BasketOrderAddressPage());
             },
           ),
         ),
-      ),
-    ),
+      );
+    }),
   );
 }

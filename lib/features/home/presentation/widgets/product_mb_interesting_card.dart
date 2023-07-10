@@ -241,7 +241,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                           SizedBox(
                             width: 75,
                             child: Text(
-                              '${widget.product.price?.toInt() ?? 0 - (widget.product.compound ?? 0)} ₸ ',
+                              '${widget.product.price?.toInt() ?? 0 - (widget.product.compound ?? 0)} ₽',
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                   fontSize: 12,
@@ -250,7 +250,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                             ),
                           ),
                           Text(
-                            '${widget.product.price} ₸',
+                            '${widget.product.price} ₽',
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                                 decoration: TextDecoration.lineThrough,
@@ -261,7 +261,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                         ],
                       )
                     : Text(
-                        '${widget.product.price} ₸',
+                        '${widget.product.price} ₽',
                         textAlign: TextAlign.start,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(

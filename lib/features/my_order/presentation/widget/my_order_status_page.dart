@@ -349,7 +349,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             ),
                             const SizedBox(width: 13),
                             Text(
-                              '${widget.basketOrder.product!.first.address}',
+                              '${widget.basketOrder.product?.first.address ?? 'Неизвестен'}',
                               style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.w400),
                             )
@@ -397,7 +397,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        '${widget.basketOrder.product![index].price} ₸',
+                                        '${widget.basketOrder.product![index].price} ₽',
                                         style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600),
@@ -612,7 +612,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               fontWeight: FontWeight.w400),
                         ),
                         trailing: Text(
-                          '${widget.basketOrder.summa} ₸ ',
+                          '${widget.basketOrder.summa} ₽ ',
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500),
                         ),
@@ -633,7 +633,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           Container(
                             padding: const EdgeInsets.only(right: 16),
                             child: Text(
-                              '${widget.basketOrder.product!.first.shopCourier!.toInt()} ₸ ',
+                              '${widget.basketOrder.product!.first.shopCourier!.toInt()} ₽ ',
                               style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.w500),
                             ),
@@ -660,7 +660,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           Container(
                             padding: const EdgeInsets.only(right: 16),
                             child: Text(
-                              '${widget.basketOrder.summa!.toInt() + widget.basketOrder.product!.first.shopCourier!.toInt()} ₸ ',
+                              '${widget.basketOrder.summa!.toInt() + widget.basketOrder.product!.first.shopCourier!.toInt()} ₽ ',
                               style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.w500),
                             ),

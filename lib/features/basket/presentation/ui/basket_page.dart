@@ -462,7 +462,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                   ? Row(
                                       children: [
                                         Text(
-                                          '${(widget.basketProducts.product!.price!.toInt() - widget.basketProducts.product!.compound!.toInt())} ₸ ',
+                                          '${(widget.basketProducts.product!.price!.toInt() - widget.basketProducts.product!.compound!.toInt())} ₽ ',
                                           style: const TextStyle(
                                               color: Colors.red,
                                               fontWeight: FontWeight.w500,
@@ -470,7 +470,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                         ),
                                         const SizedBox(width: 8),
                                         Text(
-                                          '${widget.basketProducts.product!.price} ₸ ',
+                                          '${widget.basketProducts.product!.price} ₽ ',
                                           style: const TextStyle(
                                             color: AppColors.kGray900,
                                             fontWeight: FontWeight.w500,
@@ -482,7 +482,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                       ],
                                     )
                                   : Text(
-                                      '${widget.basketProducts.product!.price} ₸ ',
+                                      '${widget.basketProducts.product!.price} ₽ ',
                                       style: const TextStyle(
                                         color: AppColors.kGray900,
                                         fontWeight: FontWeight.w500,
@@ -493,7 +493,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                 height: 8,
                               ),
                               Text(
-                                '$basketPrice ₸/$basketCount шт',
+                                '$basketPrice ₽/$basketCount шт',
                                 style: const TextStyle(
                                   color: AppColors.kGray300,
                                   fontWeight: FontWeight.w400,

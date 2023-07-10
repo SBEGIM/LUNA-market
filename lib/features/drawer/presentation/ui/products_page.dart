@@ -74,7 +74,8 @@ class _ProductsPageState extends State<ProductsPage> {
     }
     GetStorage().remove('ratingFilter');
     GetStorage().remove('rating');
-    BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context).shopsDrawer();
+    BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context)
+        .shopsDrawer(widget.cats.id);
     BlocProvider.of<brandCubit.BrandCubit>(context).brands();
     BlocProvider.of<ProductAdCubit>(context).adProducts(widget.cats.id);
     super.initState();
@@ -239,7 +240,7 @@ class _ProductsPageState extends State<ProductsPage> {
                   if (state is LoadedState) {
                     return state.productModel.length != 0
                         ? SizedBox(
-                            height: 250,
+                            height: 260,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               shrinkWrap: true,

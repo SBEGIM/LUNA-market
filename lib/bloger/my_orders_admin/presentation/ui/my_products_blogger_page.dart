@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../../../features/tape/presentation/widgets/anim_search_widget.dart';
 import '../../data/bloc/blogger_video_products_cubit.dart';
 import '../../data/bloc/blogger_video_products_state.dart';
 import '../widgets/show_alert_statictics_widget.dart';
+import '../widgets/tape_card_widget.dart';
 import 'banner_watch_recently_blogger_page.dart';
 
 class MyProductsBloggerPage extends StatefulWidget {
@@ -84,7 +86,8 @@ class _MyProductsBloggerPageState extends State<MyProductsBloggerPage> {
                   return Center(
                     child: Text(
                       state.message,
-                      style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                      style:
+                          const TextStyle(fontSize: 20.0, color: Colors.grey),
                     ),
                   );
                 }

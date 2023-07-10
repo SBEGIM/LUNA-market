@@ -79,7 +79,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                   )),
             ),
             title: Text(
-              _box.read('blogger_name'),
+              _box.read('blogger_nick_name') ?? 'Никнэйм не найден',
               style: const TextStyle(
                   fontWeight: FontWeight.w700,
                   color: AppColors.kGray900,
@@ -277,12 +277,12 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                     builder: (context) => const BloggerCardPage()),
               );
             },
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 15.0, bottom: 15, right: 15, left: 15),
+            child: const Padding(
+              padding:
+                  EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Способ оплаты',
                     style: TextStyle(

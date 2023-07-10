@@ -181,7 +181,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                               fontWeight: FontWeight.w400),
                         ),
                         const TextSpan(
-                          text: "и даю согласие  на  \nперсональных ",
+                          text: "и даю согласие  на  \nперсональную ",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w400),
                         ),

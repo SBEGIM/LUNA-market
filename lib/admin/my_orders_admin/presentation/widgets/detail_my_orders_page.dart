@@ -243,7 +243,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                           fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.summa} ₸ ',
+                      '${widget.basket.product?.first.price ?? 0} ₽ ',
                       style: const TextStyle(
                           color: AppColors.kGray900,
                           fontSize: 16,
@@ -268,7 +268,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                           fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.summa} ₸ ',
+                      '${widget.basket.product?.first.shopCourier ?? 0} ₽ ',
                       style: const TextStyle(
                           color: AppColors.kGray900,
                           fontSize: 16,
@@ -293,7 +293,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                           fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.summa} ₸ ',
+                      '${widget.basket.summa} ₽ ',
                       style: const TextStyle(
                           color: AppColors.kGray900,
                           fontSize: 16,
@@ -318,7 +318,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                           fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.summa} ₸ ',
+                      '${widget.basket.summa} ₽ ',
                       style: const TextStyle(
                           color: AppColors.kGray900,
                           fontSize: 16,
@@ -441,7 +441,6 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
           ),
           GestureDetector(
             onTap: () {
-              print('qweqweqewq');
               Get.to(DeliveryNoteAdmin(
                   basketOrder: widget.basket as BasketAdminOrderModel));
             },

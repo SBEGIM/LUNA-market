@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/credit_info_detail_page.dart';
 
@@ -48,12 +49,15 @@ class _CreditInfoPageState extends State<CreditInfoPage> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          CreditInfoDetailPage(title: 'Плати Долями')),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) =>
+                //           CreditInfoDetailPage(title: 'Плати Долями')),
+                // );
+
+                Get.snackbar('Нет доступа!', 'Временно не доступен..',
+                    backgroundColor: Colors.orangeAccent);
               },
               child: const DrawerListTile(
                 text: 'Плати Долями',
@@ -64,12 +68,14 @@ class _CreditInfoPageState extends State<CreditInfoPage> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          CreditInfoDetailPage(title: 'Рассрочка Тинькофф')),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) =>
+                //           CreditInfoDetailPage(title: 'Рассрочка Тинькофф')),
+                // );
+                Get.snackbar('Нет доступа!', 'Временно не доступен..',
+                    backgroundColor: Colors.orangeAccent);
               },
               child: const DrawerListTile(
                 text: 'Рассрочка Тинькофф',

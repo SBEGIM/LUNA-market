@@ -81,13 +81,13 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                             borderRadius: BorderRadius.circular(4)),
                         child: const Padding(
                           padding: EdgeInsets.only(
-                              left: 8.0, right: 8, top: 4, bottom: 4),
+                              left: 4, right: 4, top: 2, bottom: 2),
                           child: Text(
                             '0·0·12',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 12,
+                                fontSize: 9,
                                 fontWeight: FontWeight.w400),
                           ),
                         ),
@@ -101,13 +101,13 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                             borderRadius: BorderRadius.circular(4)),
                         child: const Padding(
                           padding: EdgeInsets.only(
-                              left: 4.0, right: 4, top: 4, bottom: 4),
+                              left: 4.0, right: 4, top: 2, bottom: 2),
                           child: Text(
                             '10% Б',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 12,
+                                fontSize: 9,
                                 fontWeight: FontWeight.w400),
                           ),
                         ),
@@ -121,13 +121,13 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                             borderRadius: BorderRadius.circular(4)),
                         child: Padding(
                           padding: const EdgeInsets.only(
-                              left: 4.0, right: 4, top: 4, bottom: 4),
+                              left: 4.0, right: 4, top: 2, bottom: 2),
                           child: Text(
                             '-${procentPrice.toInt()}%',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 12,
+                                fontSize: 9,
                                 fontWeight: FontWeight.w400),
                           ),
                         ),
@@ -143,6 +143,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
             children: [
               SizedBox(
                 width: 205,
@@ -257,9 +258,9 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: 75,
+                          // width: 75,
                           child: Text(
-                            '$compoundPrice ₸ ',
+                            '$compoundPrice ₽ ',
                             style: const TextStyle(
                                 color: Colors.red,
                                 fontWeight: FontWeight.w500,
@@ -267,7 +268,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           ),
                         ),
                         Text(
-                          '${widget.product.price}₸ ',
+                          '${widget.product.price}₽ ',
                           style: const TextStyle(
                             color: AppColors.kGray900,
                             fontWeight: FontWeight.w500,
@@ -278,7 +279,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       ],
                     )
                   : Text(
-                      '${widget.product.price}₸ ',
+                      '${widget.product.price}₽ ',
                       style: const TextStyle(
                         color: AppColors.kGray900,
                         fontWeight: FontWeight.w500,

@@ -284,7 +284,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                     controller: priceController,
                     textInputNumber: true),
                 FieldsProductRequest(
-                    titleText: 'Скидка при оплате наличными, % ',
+                    titleText: 'Скидка  % ',
                     hintText: 'Введите размер скидки',
                     star: true,
                     arrow: false,
@@ -962,7 +962,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                 title: "Изменить фото",
                                 middleText: '',
                                 textConfirm: 'Камера',
-                                textCancel: 'Галлерея',
+                                textCancel: 'Галерея',
                                 titlePadding: const EdgeInsets.only(top: 40),
                                 onConfirm: () {
                                   change = true;
@@ -1049,7 +1049,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               title: "Изменить видео",
                               middleText: '',
                               textConfirm: 'Камера',
-                              textCancel: 'Галлерея',
+                              textCancel: 'Галерея',
                               titlePadding: const EdgeInsets.only(top: 40),
                               onConfirm: () {
                                 change = true;

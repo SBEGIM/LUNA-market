@@ -296,7 +296,7 @@ class _EditProductPageState extends State<EditProductPage> {
                               title: "Изменить фото",
                               middleText: '',
                               textConfirm: 'Камера',
-                              textCancel: 'Галлерея',
+                              textCancel: 'Галерея',
                               titlePadding: const EdgeInsets.only(top: 40),
                               onConfirm: () {
                                 change = true;
@@ -382,7 +382,7 @@ class _EditProductPageState extends State<EditProductPage> {
                             title: "Изменить видео",
                             middleText: '',
                             textConfirm: 'Камера',
-                            textCancel: 'Галлерея',
+                            textCancel: 'Галерея',
                             titlePadding: const EdgeInsets.only(top: 40),
                             onConfirm: () {
                               change = true;

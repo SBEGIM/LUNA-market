@@ -5,9 +5,11 @@ import 'package:get_storage/get_storage.dart';
 import '../../../../core/common/constants.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
 import '../../../app/presentaion/base.dart';
+import '../../../chat/presentation/message.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart';
 import '../../../drawer/data/bloc/basket_state.dart';
 import '../../../profile/data/presentation/ui/edit_profile_page.dart';
+import '../widgets/show_alert_statictics_widget.dart';
 import 'basket_order_page.dart';
 import 'map_picker.dart';
 
@@ -22,6 +24,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
   bool courier = false;
   bool point = false;
   bool shop = false;
+  bool fbs = false;
 
   String? office;
 
@@ -96,6 +99,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                         courier = value!;
                         shop = false;
                         point = false;
+                        fbs = false;
                       });
                     },
                   ),
@@ -135,44 +139,44 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                           const SizedBox(height: 8),
                           GestureDetector(
                             onTap: () {
-                              //  showAlertAddressWidget(context);
+                              showAlertAddressWidget(context);
 
-                              if (GetStorage().read('name') !=
-                                  'Не авторизированный') {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => EditProfilePage(
-                                            name: GetStorage().read('name'),
-                                            phone: GetStorage().read('phone') ??
-                                                '',
-                                            gender:
-                                                GetStorage().read('gender') ??
-                                                    '',
-                                            birthday:
-                                                GetStorage().read('birthday') ??
-                                                    '',
-                                            country:
-                                                GetStorage().read('country') ??
-                                                    '',
-                                            city:
-                                                GetStorage().read('city') ?? '',
-                                            street:
-                                                GetStorage().read('street') ??
-                                                    '',
-                                            home:
-                                                GetStorage().read('home') ?? '',
-                                            porch: GetStorage().read('porch') ??
-                                                '',
-                                            floor: GetStorage().read('floor') ??
-                                                '',
-                                            room:
-                                                GetStorage().read('room') ?? '',
-                                            email: GetStorage().read('email') ??
-                                                '',
-                                          )),
-                                );
-                              }
+                              // if (GetStorage().read('name') !=
+                              //     'Не авторизированный') {
+                              //   Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => EditProfilePage(
+                              //               name: GetStorage().read('name'),
+                              //               phone: GetStorage().read('phone') ??
+                              //                   '',
+                              //               gender:
+                              //                   GetStorage().read('gender') ??
+                              //                       '',
+                              //               birthday:
+                              //                   GetStorage().read('birthday') ??
+                              //                       '',
+                              //               country:
+                              //                   GetStorage().read('country') ??
+                              //                       '',
+                              //               city:
+                              //                   GetStorage().read('city') ?? '',
+                              //               street:
+                              //                   GetStorage().read('street') ??
+                              //                       '',
+                              //               home:
+                              //                   GetStorage().read('home') ?? '',
+                              //               porch: GetStorage().read('porch') ??
+                              //                   '',
+                              //               floor: GetStorage().read('floor') ??
+                              //                   '',
+                              //               room:
+                              //                   GetStorage().read('room') ?? '',
+                              //               email: GetStorage().read('email') ??
+                              //                   '',
+                              //             )),
+                              //   );
+                              // }
                             },
                             child: const Text(
                               'Изменить адрес доставки',
@@ -212,6 +216,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                         point = value!;
                         shop = false;
                         courier = false;
+                        fbs = false;
                       });
                     },
                   ),
@@ -294,6 +299,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                         courier = false;
                         point = false;
                         shop = value!;
+                        fbs = true;
                       });
                     },
                   ),
@@ -381,7 +387,27 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                   color: AppColors.kPrimaryColor),
                             ),
                           ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 8),
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(() => Message(
+                                  userId: state
+                                      .basketShowModel.first.product?.shopId,
+                                  name: state.basketShowModel.first.shopName,
+                                  avatar: state
+                                          .basketShowModel.first.image?.first ??
+                                      '',
+                                  chatId: null));
+                            },
+                            child: const Text(
+                              'Уточнить цену',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.orangeAccent),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
                         ]),
                   )
                 ],
@@ -429,7 +455,9 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
               }
             }
 
-            Get.to(const BasketOrderPage());
+            Get.to(BasketOrderPage(
+              fbs: fbs,
+            ));
 
             // Navigator.pop(context);
           },
