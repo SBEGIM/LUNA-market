@@ -1,19 +1,21 @@
 class TapeModel {
-  TapeModel(
-      {int? id,
-      String? name,
-      String? catName,
-      int? price,
-      String? description,
-      int? compound,
-      String? video,
-      String? image,
-      bool? inBasket,
-      int? chatId,
-      bool? inReport,
-      bool? inFavorite,
-      bool? inSubscribe,
-      Shop? shop}) {
+  TapeModel({
+    int? id,
+    String? name,
+    String? catName,
+    int? price,
+    String? description,
+    int? compound,
+    String? video,
+    String? image,
+    bool? inBasket,
+    int? chatId,
+    bool? inReport,
+    bool? inFavorite,
+    bool? inSubscribe,
+    Shop? shop,
+    Blogger? blogger,
+  }) {
     _id = id;
     _name = name;
     _catName = catName;
@@ -27,8 +29,8 @@ class TapeModel {
     _inReport = inReport;
     _inFavorite = inFavorite;
     _inSubscribe = inSubscribe;
-
     _shop = shop;
+    _blogger = blogger;
   }
 
   TapeModel.fromJson(dynamic json) {
@@ -46,6 +48,8 @@ class TapeModel {
     _inFavorite = json['in_favorite'];
     _inSubscribe = json['in_subscribe'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
+    _blogger =
+        json['blogger'] != null ? Blogger.fromJson(json['blogger']) : null;
   }
   int? _id;
   String? _name;
@@ -61,6 +65,7 @@ class TapeModel {
   bool? _inFavorite;
   bool? _inSubscribe;
   Shop? _shop;
+  Blogger? _blogger;
 
   int? get id => _id;
   String? get name => _name;
@@ -76,6 +81,7 @@ class TapeModel {
   bool? get inFavorite => _inFavorite;
   bool? get inSubscribe => _inSubscribe;
   Shop? get shop => _shop;
+  Blogger? get blogger => _blogger;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -94,6 +100,9 @@ class TapeModel {
     map['inSubscribe'] = _inSubscribe;
     if (_shop != null) {
       map['shop'] = _shop?.toJson();
+    }
+    if (_blogger != null) {
+      map['blogger'] = _blogger?.toJson();
     }
     return map;
   }
@@ -194,6 +203,45 @@ class Shop {
     map['token'] = _token;
     map['created_at'] = _createdAt;
     map['updated_at'] = _updatedAt;
+    return map;
+  }
+}
+
+class Blogger {
+  Blogger({
+    int? id,
+    String? name,
+    String? nickName,
+    String? image,
+  }) {
+    _id = id;
+    _name = name;
+    _nickName = nickName;
+    _image = image;
+  }
+
+  Blogger.fromJson(dynamic json) {
+    _id = json['id'];
+    _name = json['name'];
+    _nickName = json['nick_name'];
+    _image = json['avatar'];
+  }
+  int? _id;
+  String? _name;
+  String? _nickName;
+  String? _image;
+
+  int? get id => _id;
+  String? get name => _name;
+  String? get nickName => _nickName;
+  String? get image => _image;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['name'] = _name;
+    map['nick_name'] = _nickName;
+    map['avatar'] = _image;
     return map;
   }
 }

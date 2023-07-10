@@ -24,7 +24,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
 
   @override
   void initState() {
-    BlocProvider.of<ProfileStaticsBloggerCubit>(context).statics();
+    BlocProvider.of<ProfileStaticsBloggerCubit>(context).statics(0);
 
     super.initState();
   }

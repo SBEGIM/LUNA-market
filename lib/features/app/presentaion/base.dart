@@ -10,6 +10,7 @@ import 'package:haji_market/features/favorite/presentation/ui/favorite_page.dart
 import 'package:haji_market/features/home/presentation/ui/home_page.dart';
 import 'package:haji_market/features/tape/presentation/ui/tape_page.dart';
 
+import '../../../bloger/profile_admin/presentation/ui/blogger_tape_profile_page.dart';
 import '../../tape/presentation/ui/detail_tape_card_page.dart';
 
 class Base extends StatefulWidget {
@@ -178,6 +179,12 @@ class _BaseState extends State<Base> {
           } else if (state is HomeState) {
             return HomePage(
               globalKey: _key,
+            );
+          } else if (state is DetailBloggerTapeState) {
+            return ProfileBloggerTapePage(
+              bloggerId: state.bloggerId,
+              bloggerName: state.bloggerName,
+              bloggerAvatar: state.bloggerAvatar,
             );
           } else if (state is DetailTapeState) {
             return DetailTapeCardPage(

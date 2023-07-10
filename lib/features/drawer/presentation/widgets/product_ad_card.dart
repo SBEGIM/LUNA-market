@@ -343,17 +343,15 @@ class _ProductAdCardState extends State<ProductAdCard> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: 75,
-                            child: Text(
-                              '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ₽ ',
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Color.fromRGBO(255, 50, 72, 1),
-                                  fontWeight: FontWeight.w700),
-                            ),
+                          Text(
+                            '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ₽ ',
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                fontSize: 12,
+                                color: Color.fromRGBO(255, 50, 72, 1),
+                                fontWeight: FontWeight.w700),
                           ),
+                          const SizedBox(width: 10),
                           Text(
                             '${widget.product.price} ₽',
                             overflow: TextOverflow.ellipsis,

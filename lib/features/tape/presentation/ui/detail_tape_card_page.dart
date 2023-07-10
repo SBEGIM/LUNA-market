@@ -13,7 +13,9 @@ import 'package:haji_market/features/tape/presentation/data/bloc/subs_cubit.dart
 import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dart';
 import 'package:share_plus/share_plus.dart';
 //import 'package:video_player/video_player.dart';
+import '../../../../bloger/profile_admin/presentation/ui/blogger_tape_profile_page.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
+import '../../../app/bloc/navigation_cubit/navigation_cubit.dart';
 import '../../../chat/presentation/message.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart' as basCubit;
 import '../../../drawer/data/bloc/favorite_cubit.dart' as favCubit;
@@ -351,45 +353,527 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    GestureDetector(
-                                      onTap: (() {
-                                        final List<int> _selectedListSort = [];
+                                    if (state.tapeModel[index].blogger != null)
+                                      GestureDetector(
+                                        onTap: () {
+                                          BlocProvider.of<NavigationCubit>(
+                                                  context)
+                                              .emit(DetailBloggerTapeState(
+                                                  state.tapeModel[index]
+                                                      .blogger!.id!,
+                                                  state.tapeModel[index].blogger
+                                                          ?.nickName ??
+                                                      '',
+                                                  state.tapeModel[index].blogger
+                                                          ?.image ??
+                                                      ''));
+                                        },
+                                        child: Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              child: state.tapeModel[index]
+                                                          .blogger?.image !=
+                                                      null
+                                                  ? Image.network(
+                                                      'http://185.116.193.73/storage/${state.tapeModel[index].blogger?.image}',
+                                                      height: 30.6,
+                                                      width: 30.6,
+                                                    )
+                                                  : const Icon(Icons.person),
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              '${state.tapeModel[index].blogger?.nickName}',
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    else
+                                      GestureDetector(
+                                        onTap: (() {
+                                          final List<int> _selectedListSort =
+                                              [];
 
-                                        _selectedListSort.add(
-                                            state.tapeModel[index].shop!.id!);
-                                        GetStorage().write('shopFilterId',
-                                            _selectedListSort.toString());
-                                        Get.to(ProductsPage(
-                                          cats: Cats(id: 0, name: ''),
-                                          shopId: state
-                                              .tapeModel[index].shop!.id
-                                              .toString(),
-                                        ));
-                                      }),
-                                      child: Row(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            child: Image.network(
-                                              'http://185.116.193.73/storage/${state.tapeModel[index].shop!.image}',
-                                              height: 30.6,
-                                              width: 30.6,
+                                          _selectedListSort.add(
+                                              state.tapeModel[index].shop!.id!);
+                                          GetStorage().write('shopFilterId',
+                                              _selectedListSort.toString());
+                                          Get.to(ProductsPage(
+                                            cats: Cats(id: 0, name: ''),
+                                            shopId: state
+                                                .tapeModel[index].shop!.id
+                                                .toString(),
+                                          ));
+                                        }),
+                                        child: Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              child: Image.network(
+                                                'http://185.116.193.73/storage/${state.tapeModel[index].shop!.image}',
+                                                height: 30.6,
+                                                width: 30.6,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              '${state.tapeModel[index].shop!.name}',
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    Row(
+                                      children: [
+                                        inSubs(
+                                          tape: state.tapeModel[index],
+                                          index: index,
+                                        ),
+                                        // SvgPicture.asset(
+                                        //   'assets/icons/notification.svg',
+                                        //   color: Colors.white,
+                                        // ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            // Get.off(ChatPage);
+                                            GetStorage()
+                                                .write('video_stop', true);
+
+                                            // if (state.tapeModel[index].chatId ==
+                                            //     null) {
+                                            Get.to(Message(
+                                                userId: state
+                                                    .tapeModel[index].shop!.id,
+                                                name: state.tapeModel[index]
+                                                    .shop!.name,
+                                                avatar: state.tapeModel[index]
+                                                    .shop!.image,
+                                                chatId: state
+                                                    .tapeModel[index].chatId));
+                                            // } else {
+                                            //   Get.to(() => const ChatPage());
+                                            // }
+
+                                            // Get.to(ProductsPage(
+                                            //   cats: Cats(id: 0, name: ''),
+                                            // ));
+                                            // GetStorage()
+                                            //     .write('shopFilterId', 1);
+                                          },
+                                          child: Container(
+                                            height: 30,
+                                            width: 108,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.white),
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
+                                            // padding: const EdgeInsets.only(
+                                            //     left: 8,
+                                            //     right: 8,
+                                            //     top: 4,
+                                            //     bottom: 4),
+                                            alignment: Alignment.center,
+                                            child: const Text(
+                                              'Написать',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400),
                                             ),
                                           ),
-                                          const SizedBox(
-                                            width: 8,
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 7.4,
+                              ),
+                              SizedBox(
+                                width: 358,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Text(
+                                      '${state.tapeModel[index].name}',
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white),
+                                    ),
+                                    // Row(
+                                    //   children: [
+                                    //     inBaskets(
+                                    //       tape: state.tapeModel[index],
+                                    //       index: index,
+                                    //     ),
+                                    //     const SizedBox(
+                                    //       width: 8,
+                                    //     ),
+                                    //     inFavorites(
+                                    //       tape: state.tapeModel[index],
+                                    //       index: index,
+                                    //     ),
+                                    //     const SizedBox(
+                                    //       width: 8,
+                                    //     ),
+                                    //     SvgPicture.asset(
+                                    //       'assets/icons/share.svg',
+                                    //       color: Colors.white,
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 14,
+                              ),
+                              // Text(
+                              //   'Артикул: ${state.tapeModel[index].id}',
+                              //   style: const TextStyle(
+                              //       fontSize: 12,
+                              //       fontWeight: FontWeight.w500,
+                              //       color: Colors.white),
+                              // ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              SizedBox(
+                                // width: 358,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt())} ₽ ',
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text(
+                                          '${state.tapeModel[index].price} ₽',
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              decoration:
+                                                  TextDecoration.lineThrough),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          'в рассрочку',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                4,
+                                              ),
+                                              color: const Color(
+                                                0x30FFFFFF,
+                                              )),
+                                          padding: const EdgeInsets.only(
+                                            left: 8,
+                                            right: 8,
+                                            top: 4,
+                                            bottom: 4,
                                           ),
-                                          Text(
-                                            '${state.tapeModel[index].shop!.name}',
+                                          child: Text(
+                                            '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt()).toInt() ~/ 3}',
                                             style: const TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 12,
-                                                fontWeight: FontWeight.w500),
-                                          )
-                                        ],
-                                      ),
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        const Text(
+                                          'х3',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                );
+              }
+              if (state is tapeState.BloggerLoadedState) {
+                return PageView.builder(
+                  scrollDirection: Axis.vertical,
+                  controller: controller,
+                  itemCount: state.tapeModel.length,
+                  itemBuilder: (context, index) {
+                    // inFavorite = state.tapeModel[index].inFavorite;
+                    // inBasket = state.tapeModel[index].inBasket;
+                    return Stack(
+                      children: [
+                        //VideoPlayer(_controller!)5,
+                        Videos(tape: state.tapeModel[index]),
+                        // Image.network(
+                        //   'http://80.87.202.73:8001/storage/${widget.tape.image}',
+                        //   fit: BoxFit.cover,
+                        //   height: double.infinity,
+                        //   width: double.infinity,
+                        //   alignment: Alignment.center,
+                        // ),
+
+                        Container(
+                          margin: const EdgeInsets.only(left: 16, right: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 49,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFFF3347),
+                                    borderRadius: BorderRadius.circular(6)),
+                                margin: EdgeInsets.only(
+                                  top:
+                                      MediaQuery.of(context).size.height * 0.15,
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '-${procentPrice(state.tapeModel[index].price, state.tapeModel[index].compound)}%',
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  // Column(
+                                  //   children: [
+                                  // Container(
+                                  //   width: 61,
+                                  //   height: 28,
+                                  //   decoration: BoxDecoration(
+                                  //       color: AppColors.kPrimaryColor,
+                                  //       borderRadius:
+                                  //           BorderRadius.circular(6)),
+                                  //   margin: const EdgeInsets.only(top: 370),
+                                  //   alignment: Alignment.center,
+                                  //   child: const Text(
+                                  //     '0·0·12',
+                                  //     style: TextStyle(
+                                  //         fontSize: 14,
+                                  //         fontWeight: FontWeight.w400,
+                                  //         color: Colors.white),
+                                  //   ),
+                                  // ),
+                                  // Container(
+                                  //   decoration: BoxDecoration(
+                                  //       color: Colors.black,
+                                  //       borderRadius:
+                                  //           BorderRadius.circular(6)),
+                                  //   // padding: const EdgeInsets.only(
+                                  //   //     left: 4, right: 4, bottom: 2, top: 2),
+                                  //   margin: const EdgeInsets.only(top: 370),
+                                  //   width: 56,
+                                  //   height: 28,
+                                  //   // margin: const EdgeInsets.only(top: 4),
+                                  //   alignment: Alignment.center,
+                                  //   child: const Text(
+                                  //     '10% Б',
+                                  //     style: TextStyle(
+                                  //         fontSize: 12,
+                                  //         fontWeight: FontWeight.w400,
+                                  //         color: Colors.white),
+                                  //   ),
+                                  // ),
+                                  //   ],
+                                  // ),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        top:
+                                            MediaQuery.of(context).size.height *
+                                                0.36),
+                                    child: Column(
+                                      children: [
+                                        inReport(
+                                          tape: state.tapeModel[index],
+                                          index: index,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        inBaskets(
+                                          tape: state.tapeModel[index],
+                                          index: index,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        inFavorites(
+                                          tape: state.tapeModel[index],
+                                          index: index,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            await Share.share(
+                                                "http://lunamarket.ru/?index\u003d${widget.index}&shop_name\u003d${widget.shop_name}");
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/icons/share.svg',
+                                            height: 30,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(
+                                height: 14,
+                              ),
+                              SizedBox(
+                                //width: 358,
+                                height: 30,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    if (state.tapeModel[index].blogger != null)
+                                      GestureDetector(
+                                        onTap: () {
+                                          BlocProvider.of<NavigationCubit>(
+                                                  context)
+                                              .emit(DetailBloggerTapeState(
+                                                  state.tapeModel[index]
+                                                      .blogger!.id!,
+                                                  state.tapeModel[index].blogger
+                                                          ?.name ??
+                                                      '',
+                                                  state.tapeModel[index].blogger
+                                                          ?.image ??
+                                                      ''));
+                                        },
+                                        child: Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              child: state.tapeModel[index]
+                                                          .blogger?.image !=
+                                                      null
+                                                  ? Image.network(
+                                                      'http://185.116.193.73/storage/${state.tapeModel[index].blogger?.image}',
+                                                      height: 30.6,
+                                                      width: 30.6,
+                                                    )
+                                                  : const Icon(Icons.person),
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              '${state.tapeModel[index].blogger?.nickName}',
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    else
+                                      GestureDetector(
+                                        onTap: (() {
+                                          final List<int> _selectedListSort =
+                                              [];
+
+                                          _selectedListSort.add(
+                                              state.tapeModel[index].shop!.id!);
+                                          GetStorage().write('shopFilterId',
+                                              _selectedListSort.toString());
+                                          Get.to(ProductsPage(
+                                            cats: Cats(id: 0, name: ''),
+                                            shopId: state
+                                                .tapeModel[index].shop!.id
+                                                .toString(),
+                                          ));
+                                        }),
+                                        child: Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              child: Image.network(
+                                                'http://185.116.193.73/storage/${state.tapeModel[index].shop!.image}',
+                                                height: 30.6,
+                                                width: 30.6,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              '${state.tapeModel[index].shop!.name}',
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500),
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                     Row(
                                       children: [
                                         inSubs(

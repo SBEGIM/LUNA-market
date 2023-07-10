@@ -9,6 +9,8 @@ import 'package:haji_market/features/drawer/data/bloc/basket_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/favorite_cubit.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 
+import '../widgets/show_alert_statictics_widget.dart';
+
 class AdminProductCardWidget extends StatefulWidget {
   final AdminProductsModel product;
 
@@ -337,22 +339,28 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                             ),
                           ],
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          // width: 99,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF1DC4CF),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'Редактировать',
-                            // textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600),
+                        GestureDetector(
+                          onTap: () async {
+                            await showAlertStaticticsWidget(
+                                context, widget.product);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            // width: 99,
+                            height: 32,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1DC4CF),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            alignment: Alignment.center,
+                            child: const Text(
+                              'Управление',
+                              // textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
                           ),
                         ),
                       ],

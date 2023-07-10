@@ -11,14 +11,17 @@ class ProfileStaticsBloggerRepository {
   final ProfileStaticsBloggerToApi _profileStaticsBloggerToApinToApi =
       ProfileStaticsBloggerToApi();
 
-  Future<dynamic> statics() => _profileStaticsBloggerToApinToApi.statics();
+  Future<dynamic> statics(bloggerId) =>
+      _profileStaticsBloggerToApinToApi.statics(bloggerId);
 }
 
 class ProfileStaticsBloggerToApi {
   final _box = GetStorage();
 
-  Future<dynamic> statics() async {
-    final bloggerId = _box.read('blogger_id');
+  Future<dynamic> statics(bloggerId) async {
+    if (bloggerId == 0) {
+      final bloggerId = _box.read('blogger_id');
+    }
 
     final response = await http.get(
         Uri.parse('$baseUrl/blogger/profile/statics?blogger_id=$bloggerId'));

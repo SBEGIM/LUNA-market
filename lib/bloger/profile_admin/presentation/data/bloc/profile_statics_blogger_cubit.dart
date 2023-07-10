@@ -11,11 +11,11 @@ class ProfileStaticsBloggerCubit extends Cubit<ProfileStaticsBloggerState> {
   ProfileStaticsBloggerCubit({required this.profileStaticsBloggerRepository})
       : super(InitState());
 
-  Future<void> statics() async {
+  Future<void> statics(int? bloggerId) async {
     try {
       emit(LoadingState());
       final ProfileStaticsBloggerModel data =
-          await profileStaticsBloggerRepository.statics();
+          await profileStaticsBloggerRepository.statics(bloggerId);
 
       // if (data != null) {
       emit(LoadedState(loadedProfile: data));
