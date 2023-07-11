@@ -742,7 +742,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       ),
                     ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.585, // 229,
                       height: 28,
                       child: ListView.builder(
                         itemCount: widget.product.bloc?.length ?? 0,
@@ -752,9 +751,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
-                              setState(() {
+                              if (selectedIndex3 == index) {
+                                selectedIndex3 = -1;
+                              } else {
                                 selectedIndex3 = index;
-                              });
+                              }
+                              setState(() {});
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(right: 4.0),
@@ -800,12 +802,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   height: 14,
                   child: Row(children: [
                     Text(
-                      '${selectedIndex3 != -1 ? "${widget.product.bloc![selectedIndex3!].price} тг " : 0} ',
+                      '${selectedIndex3 != -1 ? "${widget.product.bloc![selectedIndex3!].price} тг " : ''} ',
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '(${selectedIndex3 != -1 ? " ${widget.product.bloc![selectedIndex3!].count}шт )" : 0}',
+                      '${selectedIndex3 != -1 ? "( ${widget.product.bloc![selectedIndex3!].count}шт )" : 0}',
                       style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -838,11 +840,19 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           // BlocProvider.of<BasketCubit>(context)
                           //     .basketMinus(
                           //         widget.product.id.toString(), '1');
-                          setState(() {
-                            if (count != 0) {
-                              count -= 1;
-                            }
-                          });
+                          if (count != 0) {
+                            count -= 1;
+                          } else {
+                            isvisible = false;
+                          }
+                          BlocProvider.of<BasketCubit>(context).basketMinus(
+                              widget.product.id.toString(),
+                              (widget.product.bloc![selectedIndex3!].count! *
+                                  count),
+                              (widget.product.bloc![selectedIndex3!].price! *
+                                  count));
+
+                          setState(() {});
                         },
                         child: Container(
                           height: 32,
@@ -884,9 +894,17 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           //     .basketAdd(
                           //         widget.product.id.toString(), '1');
 
-                          setState(() {
-                            count += 1;
-                          });
+                          count += 1;
+                          isvisible = true;
+
+                          BlocProvider.of<BasketCubit>(context).basketAdd(
+                              widget.product.id.toString(),
+                              (widget.product.bloc![selectedIndex3!].count! *
+                                  count),
+                              (widget.product.bloc![selectedIndex3!].price! *
+                                  count));
+
+                          setState(() {});
                         },
                         child: Container(
                           padding: const EdgeInsets.all(4),
@@ -1493,7 +1511,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                       .basketAdd(
                                           widget
                                               .product.shops![index].productId,
-                                          '1');
+                                          '1',
+                                          0);
                                   setState(() {
                                     isvisible = true;
                                   });
@@ -2216,7 +2235,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             InkWell(
               onTap: () async {
                 await BlocProvider.of<BasketCubit>(context)
-                    .basketAdd(widget.product.id.toString(), '1');
+                    .basketAdd(widget.product.id.toString(), '1', 0);
                 setState(() {
                   isvisible = true;
                 });
@@ -2250,7 +2269,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
                 if (isvisible == false && widget.product.inBasket == false) {
                   BlocProvider.of<BasketCubit>(context)
-                      .basketAdd(widget.product.id.toString(), '1');
+                      .basketAdd(widget.product.id.toString(), '1', 0);
                   setState(() {
                     isvisible = true;
                   });

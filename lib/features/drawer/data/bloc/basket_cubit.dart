@@ -12,9 +12,9 @@ class BasketCubit extends Cubit<BasketState> {
 
   BasketCubit({required this.basketRepository}) : super(InitState());
 
-  Future<void> basketAdd(productId, count) async {
+  Future<void> basketAdd(productId, count, price) async {
     try {
-      final data = await basketRepository.basketAdd(productId, count);
+      final data = await basketRepository.basketAdd(productId, count, price);
       if (data != 200) {
         Get.snackbar('Ошибка', 'Товар не добавлен',
             backgroundColor: Colors.redAccent);
@@ -25,9 +25,9 @@ class BasketCubit extends Cubit<BasketState> {
     }
   }
 
-  Future<void> basketMinus(productId, count) async {
+  Future<void> basketMinus(productId, count, price) async {
     try {
-      final data = await basketRepository.basketMinus(productId, count);
+      final data = await basketRepository.basketMinus(productId, count, price);
       if (data != 200) {
         Get.snackbar('Ошибка', 'Товар не убрань',
             backgroundColor: Colors.redAccent);

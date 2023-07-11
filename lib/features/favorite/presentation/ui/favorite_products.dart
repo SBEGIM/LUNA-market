@@ -354,7 +354,8 @@ class _FavoriteProductsCardWidgetState
                                                   .basketMinus(
                                                       widget.product.id
                                                           .toString(),
-                                                      '1');
+                                                      '1',
+                                                      0);
                                               setState(() {
                                                 if (count == 0) {
                                                   isvisible = false;
@@ -414,7 +415,8 @@ class _FavoriteProductsCardWidgetState
                                                   .basketAdd(
                                                       widget.product.id
                                                           .toString(),
-                                                      '1');
+                                                      '1',
+                                                      0);
 
                                               setState(() {
                                                 count += 1;
@@ -455,7 +457,8 @@ class _FavoriteProductsCardWidgetState
                                         BlocProvider.of<BasketCubit>(context)
                                             .basketAdd(
                                                 widget.product.id.toString(),
-                                                '1');
+                                                '1',
+                                                0);
                                         setState(() {
                                           count += 1;
                                           if (count == 0) {

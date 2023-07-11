@@ -639,7 +639,7 @@ class _BannersState extends State<Banners> {
             // child: Row(children:  <Widget>[
             return Container(
               color: Colors.white,
-              height: 155,
+              height: 175,
               child: ListView.builder(
                   itemCount: state.banners.length,
                   scrollDirection: Axis.horizontal,
@@ -650,6 +650,8 @@ class _BannersState extends State<Banners> {
                       bonus: state.banners[index].bonus as int,
                       date: state.banners[index].date.toString(),
                       image: state.banners[index].path.toString(),
+                      url: state.banners[index].url.toString(),
+                      description: state.banners[index].description.toString(),
                     );
                   }
                   //)
@@ -665,19 +667,23 @@ class _BannersState extends State<Banners> {
 }
 
 class BannerImage extends StatelessWidget {
-  final String title;
   final int index;
+  final String title;
   final int bonus;
   final String date;
   final String image;
-  const BannerImage(
-      {Key? key,
-      required this.index,
-      required this.title,
-      required this.bonus,
-      required this.date,
-      required this.image})
-      : super(key: key);
+  final String url;
+  final String description;
+  const BannerImage({
+    Key? key,
+    required this.index,
+    required this.title,
+    required this.bonus,
+    required this.date,
+    required this.image,
+    required this.url,
+    required this.description,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -687,7 +693,13 @@ class BannerImage extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (context) => BonusPage(
-                  name: title, bonus: bonus, date: date, image: image)),
+                    name: title,
+                    bonus: bonus,
+                    date: date,
+                    image: image,
+                    url: url,
+                    description: description,
+                  )),
         );
       },
       child: Padding(
@@ -699,8 +711,8 @@ class BannerImage extends StatelessWidget {
             Stack(
               children: [
                 Container(
-                  height: 100,
-                  width: 158,
+                  height: 120,
+                  width: 343,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image:

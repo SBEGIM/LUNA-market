@@ -545,11 +545,13 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                         children: [
                           GestureDetector(
                             onTap: () async {
+                              print('s');
                               await BlocProvider.of<BasketCubit>(context)
                                   .basketMinus(
                                       widget.basketProducts.product!.id
                                           .toString(),
-                                      '1');
+                                      '1',
+                                      0);
 
                               basketCount--;
                               int bottomPrice =
@@ -618,7 +620,8 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                             onTap: () {
                               BlocProvider.of<BasketCubit>(context).basketAdd(
                                   widget.basketProducts.product!.id.toString(),
-                                  '1');
+                                  '1',
+                                  0);
                               setState(() {
                                 basketCount++;
                                 basketPrice = (basketPrice +
@@ -669,7 +672,8 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                         onTap: () {
                           BlocProvider.of<BasketCubit>(context).basketMinus(
                               widget.basketProducts.product!.id.toString(),
-                              basketCount.toString());
+                              basketCount.toString(),
+                              0);
                           isVisible = false;
 
                           setState(() {});

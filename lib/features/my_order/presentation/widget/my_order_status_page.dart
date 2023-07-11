@@ -429,7 +429,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           .basketAdd(
                                               widget.basketOrder.product![index]
                                                   .id,
-                                              '1');
+                                              '1',
+                                              0);
                                       Get.snackbar(
                                           'Успешно', 'Товар добавлен в корзину',
                                           backgroundColor: Colors.blueAccent);

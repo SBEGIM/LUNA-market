@@ -10,10 +10,10 @@ const baseUrl = 'http://185.116.193.73/api';
 class BasketRepository {
   final Basket _basket = Basket();
 
-  Future<int> basketAdd(productId, count) =>
-      _basket.basketAdd(productId, count);
-  Future<int> basketMinus(productId, count) =>
-      _basket.basketMinus(productId, count);
+  Future<int> basketAdd(productId, count, price) =>
+      _basket.basketAdd(productId, count, price);
+  Future<int> basketMinus(productId, count, price) =>
+      _basket.basketMinus(productId, count, price);
   Future<List<BasketShowModel>> basketShow() => _basket.basketShow();
   Future<List<BasketOrderModel>> basketOrderShow() => _basket.basketOrderShow();
   Future<int> basketOrder(List id) => _basket.basketOrder(id);
@@ -25,32 +25,36 @@ class BasketRepository {
 class Basket {
   final _box = GetStorage();
 
-  Future<int> basketAdd(productId, count) async {
+  Future<int> basketAdd(productId, count, price) async {
     final String? token = _box.read('token');
 
-    final response =
-        await http.post(Uri.parse('$baseUrl/basket/add'), headers: {
-      "Authorization": "Bearer $token"
-    }, body: {
-      'product_id': productId,
-      'count': count,
-    });
+    final response = await http.post(Uri.parse('$baseUrl/basket/add'),
+        headers: {
+          "Authorization": "Bearer $token"
+        },
+        body: {
+          'product_id': productId,
+          'count': count.toString(),
+          'price': price.toString()
+        });
 
     final data = response.statusCode;
 
     return data;
   }
 
-  Future<int> basketMinus(productId, count) async {
+  Future<int> basketMinus(productId, count, int? price) async {
     final String? token = _box.read('token');
 
-    final response =
-        await http.post(Uri.parse('$baseUrl/basket/minus'), headers: {
-      "Authorization": "Bearer $token"
-    }, body: {
-      'product_id': productId,
-      'count': count,
-    });
+    final response = await http.post(Uri.parse('$baseUrl/basket/minus'),
+        headers: {
+          "Authorization": "Bearer $token"
+        },
+        body: {
+          'product_id': productId,
+          'count': count.toString(),
+          'price': price.toString()
+        });
 
     final data = response.statusCode;
 

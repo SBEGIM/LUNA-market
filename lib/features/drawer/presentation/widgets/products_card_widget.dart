@@ -347,7 +347,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                           BlocProvider.of<BasketCubit>(context)
                                               .basketMinus(
                                                   widget.product.id.toString(),
-                                                  '1');
+                                                  '1',
+                                                  0);
                                           setState(() {
                                             if (count == 0) {
                                               isvisible = false;
@@ -405,7 +406,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                           BlocProvider.of<BasketCubit>(context)
                                               .basketAdd(
                                                   widget.product.id.toString(),
-                                                  '1');
+                                                  '1',
+                                                  0);
 
                                           setState(() {
                                             count += 1;
@@ -444,8 +446,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                               : GestureDetector(
                                   onTap: () {
                                     BlocProvider.of<BasketCubit>(context)
-                                        .basketAdd(
-                                            widget.product.id.toString(), '1');
+                                        .basketAdd(widget.product.id.toString(),
+                                            '1', 0);
                                     setState(() {
                                       count += 1;
                                       if (count == 0) {
