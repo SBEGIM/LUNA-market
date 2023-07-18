@@ -15,31 +15,26 @@ const _tag = 'messageRepository';
 class MessageRepository {
   final Message _message = Message();
 
-  Future<List<MessageDto>> messageList(int page, int chatId) =>
-      _message.messageList(page, chatId);
+  Future<List<MessageDto>> messageList(int page, int chatId, int userId) => _message.messageList(page, chatId,userId);
   Future<String> imageStore(String avatar) => _message.imageStore(avatar);
 }
 
 class Message {
   final _box = GetStorage();
 
-  Future<List<MessageDto>> messageList(int page, int chatId) async {
+  Future<List<MessageDto>> messageList(int page, int chatId, int userId) async {
     try {
       final String? token = _box.read('token');
 
       final response = await http.get(
-          Uri.parse("$baseUrl/chat/message?page=$page&chat_id=$chatId"),
-          headers: {
-            "Authorization":
-                "Bearer 204|qjptPdGTnA87ADzbexEk0TTUzKYHzk8Yq8FrUcHC"
-          });
+        Uri.parse("$baseUrl/chat/message?page=$page& ${chatId == 0 ? 'user_id=$userId' : 'chat_id=$chatId'} "),
+        headers: {"Authorization": "Bearer 204|qjptPdGTnA87ADzbexEk0TTUzKYHzk8Yq8FrUcHC"},
+      );
       print('ok');
 
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 
-      return (data['data'] as List)
-          .map((e) => MessageDto.fromJson(e as Map<String, dynamic>))
-          .toList();
+      return (data['data'] as List).map((e) => MessageDto.fromJson(e as Map<String, dynamic>)).toList();
     } catch (e) {
       log('messageList::: $e', name: _tag);
       throw Exception(e);
