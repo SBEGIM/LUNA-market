@@ -110,7 +110,7 @@ class _MessageState extends State<Message> {
 
   Future<void> onLoading() async {
     await BlocProvider.of<MessageCubit>(context)
-        .paginationMessage(widget.chatId!);
+        .paginationMessage(widget.chatId??0,widget.userId??0);
     await Future.delayed(const Duration(milliseconds: 2000));
     _refreshController.loadComplete();
   }
@@ -127,7 +127,7 @@ class _MessageState extends State<Message> {
 
   @override
   void initState() {
-    BlocProvider.of<MessageCubit>(context).getMessage(widget.chatId ?? 0);
+    BlocProvider.of<MessageCubit>(context).getMessage(widget.chatId ?? 0,widget.userId??0);
     channel =
         IOWebSocketChannel.connect("ws://185.116.193.73:1995/?user_id=$myId");
 

@@ -12,6 +12,7 @@ class AdminNavigationCubit extends Cubit<AdminNavigationState> {
 
     state.when(
       tapeAdmin: () => emit(const TapeAdminState()),
+      detailTapeAdmin: (int j, String k) => emit(DetailTapeAdminState(j, k)),
       homeAdmin: () => emit(const HomeAdminState()),
       myOrderAdmin: () => emit(const MyOrderAdminState()),
       chatAdmin: () => emit(const ChatAdminState()),

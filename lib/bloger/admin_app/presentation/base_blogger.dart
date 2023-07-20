@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/admin/admin_app/bloc/admin_navigation_cubit/admin_navigation_cubit.dart';
 import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
+import 'package:haji_market/admin/tape_admin/presentation/ui/tape_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 import '../../my_orders_admin/presentation/ui/my_products_blogger_page.dart';
+import '../../my_orders_admin/presentation/widgets/detail_tape_card_page.dart';
 import '../../profile_admin/presentation/ui/blogger_profile_page.dart';
 import '../../shops/BlogShopsPage.dart';
 
@@ -25,7 +27,7 @@ class _BaseBloggerState extends State<BaseBlogger> {
   void initState() {
     if (widget.index == 0) {
       BlocProvider.of<AdminNavigationCubit>(context)
-          .getNavBarItemAdmin(const AdminNavigationState.tapeAdmin());
+          .getNavBarItemAdmin(const AdminNavigationState.myOrderAdmin());
 
       basePageIndex1 = 0;
     }
@@ -43,12 +45,25 @@ class _BaseBloggerState extends State<BaseBlogger> {
     super.initState();
   }
 
+  bool backGroundColor = true;
+
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      extendBodyBehindAppBar: false,
+      backgroundColor: basePageIndex1 != 0 ? Colors.white : null,
+      key: _key,
+      extendBody: true,
       bottomNavigationBar:
-          BlocBuilder<AdminNavigationCubit, AdminNavigationState>(
+          BlocConsumer<AdminNavigationCubit, AdminNavigationState>(
+        listener: (context, state) {
+          if (state is DetailTapeAdminState) {
+            basePageIndex1 = 1;
+            setState(() {});
+          }
+        },
         builder: (context, state) {
           return BottomNavigationBar(
             currentIndex: basePageIndex1,
@@ -57,12 +72,12 @@ class _BaseBloggerState extends State<BaseBlogger> {
                 case 0:
                   BlocProvider.of<AdminNavigationCubit>(context)
                       .getNavBarItemAdmin(
-                          const AdminNavigationState.tapeAdmin());
+                          const AdminNavigationState.myOrderAdmin());
                   break;
                 case 1:
                   BlocProvider.of<AdminNavigationCubit>(context)
                       .getNavBarItemAdmin(
-                          const AdminNavigationState.myOrderAdmin());
+                          const AdminNavigationState.tapeAdmin());
                   break;
                 case 2:
                   BlocProvider.of<AdminNavigationCubit>(context)
@@ -79,6 +94,8 @@ class _BaseBloggerState extends State<BaseBlogger> {
             elevation: 4,
             showSelectedLabels: true,
             showUnselectedLabels: true,
+            backgroundColor:
+                basePageIndex1 == 1 ? Colors.transparent : Colors.white,
             type: BottomNavigationBarType.fixed,
             items: [
               BottomNavigationBarItem(
@@ -121,9 +138,14 @@ class _BaseBloggerState extends State<BaseBlogger> {
       body: BlocBuilder<AdminNavigationCubit, AdminNavigationState>(
         builder: (context, state) {
           if (state is TapeAdminState) {
-            return const BlogShopsPage();
+            return const TapeAdminPage();
           } else if (state is MyOrderAdminState) {
-            return const MyProductsBloggerPage();
+            return const BlogShopsPage();
+          } else if (state is DetailTapeAdminState) {
+            return BloggerDetailTapeCardPage(
+              index: state.index,
+              shop_name: state.name,
+            );
           } else if (state is ProfileState) {
             return const ProfileBloggerPage();
           } else if (state is AdminAuthState) {

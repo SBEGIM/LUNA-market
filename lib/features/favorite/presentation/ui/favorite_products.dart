@@ -122,7 +122,6 @@ class _FavoriteProductsCardWidgetState
                             height: 18,
                           ),
                           Container(
-                            width: 40,
                             height: 22,
                             decoration: BoxDecoration(
                                 color: const Color.fromRGBO(255, 50, 72, 1),
@@ -265,7 +264,7 @@ class _FavoriteProductsCardWidgetState
                             SizedBox(
                               width: 75,
                               child: Text(
-                                '$compoundPrice ₸ ',
+                                '$compoundPrice ₽ ',
                                 style: const TextStyle(
                                     color: Colors.red,
                                     fontWeight: FontWeight.w500,
@@ -273,7 +272,7 @@ class _FavoriteProductsCardWidgetState
                               ),
                             ),
                             Text(
-                              '${widget.product.price}₸ ',
+                              '${widget.product.price}₽ ',
                               style: const TextStyle(
                                 color: AppColors.kGray900,
                                 fontWeight: FontWeight.w500,
@@ -284,7 +283,7 @@ class _FavoriteProductsCardWidgetState
                           ],
                         )
                       : Text(
-                          '${widget.product.price}₸ ',
+                          '${widget.product.price}₽ ',
                           style: const TextStyle(
                             color: AppColors.kGray900,
                             fontWeight: FontWeight.w500,
@@ -355,7 +354,8 @@ class _FavoriteProductsCardWidgetState
                                                   .basketMinus(
                                                       widget.product.id
                                                           .toString(),
-                                                      '1');
+                                                      '1',
+                                                      0);
                                               setState(() {
                                                 if (count == 0) {
                                                   isvisible = false;
@@ -415,7 +415,8 @@ class _FavoriteProductsCardWidgetState
                                                   .basketAdd(
                                                       widget.product.id
                                                           .toString(),
-                                                      '1');
+                                                      '1',
+                                                      0);
 
                                               setState(() {
                                                 count += 1;
@@ -456,7 +457,8 @@ class _FavoriteProductsCardWidgetState
                                         BlocProvider.of<BasketCubit>(context)
                                             .basketAdd(
                                                 widget.product.id.toString(),
-                                                '1');
+                                                '1',
+                                                0);
                                         setState(() {
                                           count += 1;
                                           if (count == 0) {

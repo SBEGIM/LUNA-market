@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:haji_market/core/common/constants.dart';
 
 class ProductImages extends StatefulWidget {
-  List<String> images;
+  List<String>? images;
   ProductImages({required this.images, super.key});
 
   @override
@@ -34,10 +34,12 @@ class _ProductImagesState extends State<ProductImages> {
             margin: const EdgeInsets.only(top: 24, left: 16, right: 16),
             height: 343,
             width: 378,
-            child: Image.network(
-              "http://185.116.193.73/storage/${widget.images[imageIndex]}",
-              fit: BoxFit.cover,
-            ),
+            child: widget.images?.length != 0
+                ? Image.network(
+                    "http://185.116.193.73/storage/${widget.images![imageIndex]}",
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset('assets/icons/no_data.png'),
           ),
           Container(
             margin: const EdgeInsets.only(top: 82, left: 16, right: 16),
@@ -46,7 +48,7 @@ class _ProductImagesState extends State<ProductImages> {
             // color: Colors.red,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: widget.images.length,
+              itemCount: widget.images?.length ?? 0,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: (() {
@@ -67,7 +69,7 @@ class _ProductImagesState extends State<ProductImages> {
                     ),
                     //color: Colors.red,
                     child: Image.network(
-                      "http://185.116.193.73/storage/${widget.images[index]}",
+                      "http://185.116.193.73/storage/${widget.images![index]}",
                       fit: BoxFit.cover,
                     ),
                   ),

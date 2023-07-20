@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
-
 import '../../../../../core/common/constants.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import 'blogger_new_card_page.dart';
@@ -124,7 +122,7 @@ class _BloggerCardPageState extends State<BloggerCardPage> {
             const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
         child: InkWell(
           onTap: () {
-            Get.to(BloggerNewCardPage());
+            Get.to(const BloggerNewCardPage());
           },
           child: Container(
               decoration: BoxDecoration(

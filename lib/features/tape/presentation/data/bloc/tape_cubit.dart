@@ -11,14 +11,20 @@ class TapeCubit extends Cubit<TapeState> {
   List<TapeModel> array = [];
 
   TapeCubit({required this.tapeRepository}) : super(InitState());
-  Future<void> tapes(bool? inSub, bool? inFav, String? search) async {
+  Future<void> tapes(
+      bool? inSub, bool? inFav, String? search, int? blogger_id) async {
     try {
       emit(LoadingState());
-      final data = await tapeRepository.tapes(inSub, inFav, search);
+      final data = await tapeRepository.tapes(inSub, inFav, search, blogger_id);
       if (data.isEmpty) {
         emit(NoDataState());
       } else {
-        emit(LoadedState(data));
+        if (blogger_id == 0) {
+          emit(LoadedState(data));
+        } else {
+          emit(BloggerLoadedState(data));
+        }
+        array.clear();
         data.forEach((element) {
           array.add(element);
         });

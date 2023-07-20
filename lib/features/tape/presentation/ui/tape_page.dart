@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +34,7 @@ class _TapePageState extends State<TapePage> {
   @override
   void initState() {
     if (BlocProvider.of<TapeCubit>(context).state is! LoadedState) {
-      BlocProvider.of<TapeCubit>(context).tapes(false, false, '');
+      BlocProvider.of<TapeCubit>(context).tapes(false, false, '', 0);
     }
     super.initState();
   }
@@ -60,7 +59,8 @@ class _TapePageState extends State<TapePage> {
                     // BlocProvider.of<navCubit.NavigationCubit>(context)
                     //     .getNavBarItem(const navCubit.NavigationState.tape());
                     title = 'Лента';
-                    BlocProvider.of<TapeCubit>(context).tapes(false, false, '');
+                    BlocProvider.of<TapeCubit>(context)
+                        .tapes(false, false, '', 0);
 
                     setState(() {});
                     // print(title);
@@ -77,7 +77,7 @@ class _TapePageState extends State<TapePage> {
               color: AppColors.kPrimaryColor,
               onChanged: (String? value) {
                 BlocProvider.of<TapeCubit>(context)
-                    .tapes(false, false, searchController.text);
+                    .tapes(false, false, searchController.text, 0);
                 setState(() {});
               },
               style: const TextStyle(
@@ -124,7 +124,7 @@ class _TapePageState extends State<TapePage> {
                             onTap: () {
                               title = 'Подписки';
                               BlocProvider.of<TapeCubit>(context)
-                                  .tapes(true, false, null);
+                                  .tapes(true, false, null, 0);
 
                               setState(() {});
                             },
@@ -143,7 +143,7 @@ class _TapePageState extends State<TapePage> {
                           PopupMenuItem(
                             onTap: () {
                               BlocProvider.of<TapeCubit>(context)
-                                  .tapes(false, true, null);
+                                  .tapes(false, true, null, 0);
 
                               title = 'Избранное';
                               setState(() {});

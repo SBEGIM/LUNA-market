@@ -88,14 +88,14 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 const SizedBox(
                   height: 8,
                 ),
-                Container(
-                  // height: 150,
-                  color: AppColors.kBackgroundColor,
-                  child: Image.asset('assets/images/map.png'),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
+                // Container(
+                //   // height: 150,
+                //   color: AppColors.kBackgroundColor,
+                //   child: Image.asset('assets/images/map.png'),
+                // ),
+                // const SizedBox(
+                //   height: 8,
+                // ),
                 const Text(
                   'Россия Чеченская республика, Грозный.',
                   style: TextStyle(

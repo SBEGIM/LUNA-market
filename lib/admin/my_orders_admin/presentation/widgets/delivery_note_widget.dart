@@ -229,9 +229,9 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         'Номер отправителя',
                         style: TextStyle(
@@ -257,11 +257,16 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w400),
                       ),
-                      Text(
-                        '${widget.basketOrder.user!.phone}',
-                        style: const TextStyle(
+                      const Text(
+                        '***********',
+                        style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w400),
                       ),
+                      // Text(
+                      //   '${widget.basketOrder.user!.phone}',
+                      //   style: const TextStyle(
+                      //       fontSize: 16, fontWeight: FontWeight.w400),
+                      // ),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -333,11 +338,27 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                         color: Colors.grey),
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    '${widget.basketOrder.comment ?? 'Нет комментарий'}',
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w400),
+                  const TextField(
+                    // controller: null,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Напишите комментарий',
+                      hintStyle: TextStyle(
+                          color: Color.fromRGBO(194, 197, 200, 1),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        // borderRadius: BorderRadius.circular(3),
+                      ),
+                    ),
                   ),
+                  // const SizedBox(height: 12),
+                  // Text(
+                  //   '${widget.basketOrder.comment ?? 'Нет комментарий'}',
+                  //   style: const TextStyle(
+                  //       fontSize: 16, fontWeight: FontWeight.w400),
+                  // ),
                 ],
               ),
             ),

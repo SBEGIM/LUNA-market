@@ -164,7 +164,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                   child: RichText(
                     textAlign: TextAlign.left,
                     text: TextSpan(
-                      style: TextStyle(fontSize: 16, color: Colors.black),
+                      style: const TextStyle(fontSize: 16, color: Colors.black),
                       children: <TextSpan>[
                         const TextSpan(
                           text: "принимаю ",
@@ -181,7 +181,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                               fontWeight: FontWeight.w400),
                         ),
                         const TextSpan(
-                          text: "и даю согласие  на  \nперсональных ",
+                          text: "и даю согласие  на  \nперсональную ",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w400),
                         ),
@@ -240,8 +240,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
 
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const AuthAdminPage()),
+                  MaterialPageRoute(builder: (context) => AuthAdminPage()),
                 );
                 Get.snackbar('Успешно', 'Заявка отправлено',
                     backgroundColor: Colors.blueAccent);

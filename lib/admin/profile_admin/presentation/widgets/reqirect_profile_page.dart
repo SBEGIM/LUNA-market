@@ -138,7 +138,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                       title: "Изменить фото",
                       middleText: '',
                       textConfirm: 'Камера',
-                      textCancel: 'Галлерея',
+                      textCancel: 'Галерея',
                       titlePadding: const EdgeInsets.only(top: 40),
                       onConfirm: () {
                         change = true;
@@ -397,6 +397,14 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           //   width: 24,
                           // ),
                         ),
+                      ),
+                      const Text(
+                        'Ваши товары будут показаны для этого города или региона *',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                            color: Colors.grey),
+                        textAlign: TextAlign.left,
                       ),
                       ListTile(
                         horizontalTitleGap: 0,

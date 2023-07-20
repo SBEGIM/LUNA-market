@@ -42,7 +42,7 @@ class _BasketPageState extends State<BasketPage> {
       count += element.basketCount!.toInt();
       price += element.price!.toInt();
       productNames =
-          "${productNames != null ? "${productNames} ," : ''}  https://lunamarket.info/?product_id\u003d${element.product!.id}";
+          "${productNames != null ? "${productNames} ," : ''}  http://lunamarket.ru/?product_id\u003d${element.product!.id}";
     }
 
     GetStorage().write('bottomCount', count);
@@ -436,6 +436,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                       children: [
                         Column(
                           children: [
+                            if(widget.basketProducts.image!=null&&widget.basketProducts.image!.isNotEmpty)
                             Container(
                               height: 104,
                               width: 104,
@@ -462,7 +463,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                   ? Row(
                                       children: [
                                         Text(
-                                          '${(widget.basketProducts.product!.price!.toInt() - widget.basketProducts.product!.compound!.toInt())} ₸ ',
+                                          '${(widget.basketProducts.product!.price!.toInt() - widget.basketProducts.product!.compound!.toInt())} ₽ ',
                                           style: const TextStyle(
                                               color: Colors.red,
                                               fontWeight: FontWeight.w500,
@@ -470,7 +471,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                         ),
                                         const SizedBox(width: 8),
                                         Text(
-                                          '${widget.basketProducts.product!.price} ₸ ',
+                                          '${widget.basketProducts.product!.price} ₽ ',
                                           style: const TextStyle(
                                             color: AppColors.kGray900,
                                             fontWeight: FontWeight.w500,
@@ -482,7 +483,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                       ],
                                     )
                                   : Text(
-                                      '${widget.basketProducts.product!.price} ₸ ',
+                                      '${widget.basketProducts.product!.price} ₽ ',
                                       style: const TextStyle(
                                         color: AppColors.kGray900,
                                         fontWeight: FontWeight.w500,
@@ -493,7 +494,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                 height: 8,
                               ),
                               Text(
-                                '$basketPrice ₸/$basketCount шт',
+                                '$basketPrice ₽/$basketCount шт',
                                 style: const TextStyle(
                                   color: AppColors.kGray300,
                                   fontWeight: FontWeight.w400,
@@ -545,11 +546,13 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                         children: [
                           GestureDetector(
                             onTap: () async {
+                              print('s');
                               await BlocProvider.of<BasketCubit>(context)
                                   .basketMinus(
                                       widget.basketProducts.product!.id
                                           .toString(),
-                                      '1');
+                                      '1',
+                                      0);
 
                               basketCount--;
                               int bottomPrice =
@@ -618,7 +621,8 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                             onTap: () {
                               BlocProvider.of<BasketCubit>(context).basketAdd(
                                   widget.basketProducts.product!.id.toString(),
-                                  '1');
+                                  '1',
+                                  0);
                               setState(() {
                                 basketCount++;
                                 basketPrice = (basketPrice +
@@ -669,7 +673,8 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                         onTap: () {
                           BlocProvider.of<BasketCubit>(context).basketMinus(
                               widget.basketProducts.product!.id.toString(),
-                              basketCount.toString());
+                              basketCount.toString(),
+                              0);
                           isVisible = false;
 
                           setState(() {});

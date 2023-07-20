@@ -1,14 +1,9 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/features/chat/data/DTO/DTO/message_dto.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -68,7 +63,7 @@ class _MessageAdminState extends State<MessageAdmin> {
   late WebSocketChannel channel;
 
   final TextEditingController _chatTextController = TextEditingController();
-  RefreshController _refreshController = RefreshController();
+  final RefreshController _refreshController = RefreshController();
 
   void SendData() {
     if (_chatTextController.text.isNotEmpty) {
@@ -85,7 +80,6 @@ class _MessageAdminState extends State<MessageAdmin> {
   }
 
   messageDTO? messageText;
-  ScrollController _scrollController = new ScrollController();
   String sellerId = GetStorage().read('seller_id');
   bool ready = false;
 
@@ -105,7 +99,7 @@ class _MessageAdminState extends State<MessageAdmin> {
   Future<void> onLoading() async {
     await BlocProvider.of<MessageAdminCubit>(context)
         .paginationMessage(widget.chatId!);
-    await Future.delayed(Duration(milliseconds: 2000));
+    await Future.delayed(const Duration(milliseconds: 2000));
     _refreshController.loadComplete();
   }
 
@@ -215,7 +209,8 @@ class _MessageAdminState extends State<MessageAdmin> {
                                 reverse: true,
                                 groupSeparatorBuilder: (dynamic element) =>
                                     Container(
-                                  margin: EdgeInsets.only(top: 8, bottom: 8),
+                                  margin:
+                                      const EdgeInsets.only(top: 8, bottom: 8),
                                   alignment: Alignment.center,
                                   height: 20,
                                   child: Text(
@@ -334,8 +329,9 @@ class _MessageAdminState extends State<MessageAdmin> {
                                   // ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(left: 10, right: 10),
-                                  padding: EdgeInsets.only(left: 16),
+                                  margin: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  padding: const EdgeInsets.only(left: 16),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(30),
                                       border: Border.all(

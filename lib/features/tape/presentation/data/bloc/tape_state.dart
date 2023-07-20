@@ -13,6 +13,11 @@ class LoadedState extends TapeState {
   LoadedState(this.tapeModel);
 }
 
+class BloggerLoadedState extends TapeState {
+  List<TapeModel> tapeModel;
+  BloggerLoadedState(this.tapeModel);
+}
+
 class ErrorState extends TapeState {
   String message;
   ErrorState({required this.message});

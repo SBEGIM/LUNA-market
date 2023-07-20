@@ -15,12 +15,12 @@ class MessageCubit extends Cubit<MessageState> {
 
   MessageCubit({required this.messageRepository}) : super(InitState());
 
-  Future<void> getMessage(int chatId) async {
+  Future<void> getMessage(int chatId,int userId) async {
     try {
       _page = 1;
       emit(LoadingState());
       final List<MessageDto> data =
-          await messageRepository.messageList(_page, chatId);
+          await messageRepository.messageList(_page, chatId,userId);
       _message = data;
       emit(LoadedState(data));
     } catch (e) {
@@ -29,14 +29,14 @@ class MessageCubit extends Cubit<MessageState> {
     }
   }
 
-  Future<void> paginationMessage(int chatId) async {
+  Future<void> paginationMessage(int chatId,userId) async {
     try {
       _page++;
       //  print(_page++);
       // emit(LoadingState());
 
       final List<MessageDto> data =
-          await messageRepository.messageList(_page, chatId);
+          await messageRepository.messageList(_page, chatId,userId);
       if (data.length == 0) {
         _page--;
       }

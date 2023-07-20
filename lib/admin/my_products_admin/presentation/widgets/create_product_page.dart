@@ -284,7 +284,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                     controller: priceController,
                     textInputNumber: true),
                 FieldsProductRequest(
-                    titleText: 'Скидка при оплате наличными, % ',
+                    titleText: 'Скидка  % ',
                     hintText: 'Введите размер скидки',
                     star: true,
                     arrow: false,
@@ -962,7 +962,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                 title: "Изменить фото",
                                 middleText: '',
                                 textConfirm: 'Камера',
-                                textCancel: 'Галлерея',
+                                textCancel: 'Галерея',
                                 titlePadding: const EdgeInsets.only(top: 40),
                                 onConfirm: () {
                                   change = true;
@@ -1049,7 +1049,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               title: "Изменить видео",
                               middleText: '',
                               textConfirm: 'Камера',
-                              textCancel: 'Галлерея',
+                              textCancel: 'Галерея',
                               titlePadding: const EdgeInsets.only(top: 40),
                               onConfirm: () {
                                 change = true;
@@ -1132,23 +1132,32 @@ class _CreateProductPageState extends State<CreateProductPage> {
         child: InkWell(
           onTap: () async {
             isChangeState = true;
-            await BlocProvider.of<ProductAdminCubit>(context).store(
-                priceController.text,
-                countController.text,
-                compoundController.text,
-                cats!.id.toString(),
-                subCats!.id.toString(),
-                brands!.id.toString(),
-                descriptionController.text,
-                nameController.text,
-                heightController.text,
-                widthController.text,
-                massaController.text,
-                articulController.text,
-                currencyName,
-                _image,
-                optomCount,
-                _video != null ? _video!.path : null);
+            if (_image.isNotEmpty &&
+                nameController.text.isNotEmpty &&
+                priceController.text.isNotEmpty &&
+                countController.text.isNotEmpty &&
+                brands?.id != 0) {
+              await BlocProvider.of<ProductAdminCubit>(context).store(
+                  priceController.text,
+                  countController.text,
+                  compoundController.text,
+                  cats!.id.toString(),
+                  subCats!.id.toString(),
+                  brands!.id.toString(),
+                  descriptionController.text,
+                  nameController.text,
+                  heightController.text,
+                  widthController.text,
+                  massaController.text,
+                  articulController.text,
+                  currencyName,
+                  _image,
+                  optomCount,
+                  _video != null ? _video!.path : null);
+            } else {
+              Get.snackbar("Ошибка", "Заполните данные",
+                  backgroundColor: Colors.orangeAccent);
+            }
           },
           child: Container(
               decoration: BoxDecoration(
@@ -1240,7 +1249,8 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
                 controller: widget.controller,
-                keyboardType: widget.textInputNumber == false
+                keyboardType: (widget.textInputNumber == false ||
+                        widget.textInputNumber == null)
                     ? TextInputType.text
                     : const TextInputType.numberWithOptions(
                         signed: true, decimal: true),

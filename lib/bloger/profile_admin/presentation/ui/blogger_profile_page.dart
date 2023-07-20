@@ -1,16 +1,12 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/admin/profile_admin/presentation/widgets/about_shop_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../features/app/presentaion/base.dart';
 import '../../../auth/presentation/ui/view_auth_register_page.dart';
 import '../../../my_products_admin/presentation/widgets/statistics_blogger_show_page.dart';
-import '../../../my_products_admin/presentation/widgets/statistics_page.dart';
 import '../data/bloc/profile_statics_blogger_cubit.dart';
 import '../data/bloc/profile_statics_blogger_state.dart';
 import '../widgets/reqirect_profile_page.dart';
@@ -28,7 +24,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
 
   @override
   void initState() {
-    BlocProvider.of<ProfileStaticsBloggerCubit>(context).statics();
+    BlocProvider.of<ProfileStaticsBloggerCubit>(context).statics(0);
 
     super.initState();
   }
@@ -83,7 +79,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                   )),
             ),
             title: Text(
-              _box.read('blogger_name'),
+              _box.read('blogger_nick_name') ?? 'Никнэйм не найден',
               style: const TextStyle(
                   fontWeight: FontWeight.w700,
                   color: AppColors.kGray900,
@@ -110,7 +106,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
             height: 8,
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             alignment: Alignment.center,
             width: 500,
             height: 76,
@@ -248,12 +244,12 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                     builder: (context) => const StatisticsBloggerShowPage()),
               );
             },
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 15.0, bottom: 15, right: 15, left: 15),
+            child: const Padding(
+              padding:
+                  EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Мой заработок',
                     style: TextStyle(
@@ -281,12 +277,12 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                     builder: (context) => const BloggerCardPage()),
               );
             },
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 15.0, bottom: 15, right: 15, left: 15),
+            child: const Padding(
+              padding:
+                  EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Способ оплаты',
                     style: TextStyle(
@@ -310,12 +306,12 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
             onTap: () {
               launch("https://t.me/LUNAmarketBlogger", forceSafariVC: false);
             },
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 15.0, bottom: 15, right: 15, left: 15),
+            child: const Padding(
+              padding:
+                  EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Связаться с администрацией',
                     style: TextStyle(
@@ -345,12 +341,12 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
             child: Container(
               padding: const EdgeInsets.only(
                   left: 16, right: 16, top: 10, bottom: 10),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         'Вернуться на маркет',
                         style: TextStyle(
@@ -360,7 +356,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                       ),
                     ],
                   ),
-                  const Icon(
+                  Icon(
                     Icons.arrow_forward_ios,
                     size: 20,
                     color: AppColors.kGray300,
@@ -387,9 +383,9 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         'Выйти',
                         style: TextStyle(

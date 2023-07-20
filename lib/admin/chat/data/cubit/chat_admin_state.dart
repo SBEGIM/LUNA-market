@@ -1,4 +1,3 @@
-import '../DTO/DTO/messageAdminDto.dart';
 import '../model/chat_model.dart';
 
 abstract class ChatAdminState {}

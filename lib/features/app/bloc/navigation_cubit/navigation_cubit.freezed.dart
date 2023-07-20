@@ -21,6 +21,9 @@ mixin _$NavigationState {
     required TResult Function() home,
     required TResult Function() tape,
     required TResult Function(int index, String name) detailTape,
+    required TResult Function(
+            int bloggerId, String bloggerName, String bloggerAvatar)
+        detailBloggerTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -33,6 +36,8 @@ mixin _$NavigationState {
     TResult? Function()? home,
     TResult? Function()? tape,
     TResult? Function(int index, String name)? detailTape,
+    TResult? Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult? Function()? favorite,
     TResult? Function()? basket,
     TResult? Function()? myOrder,
@@ -45,6 +50,8 @@ mixin _$NavigationState {
     TResult Function()? home,
     TResult Function()? tape,
     TResult Function(int index, String name)? detailTape,
+    TResult Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -58,6 +65,7 @@ mixin _$NavigationState {
     required TResult Function(HomeState value) home,
     required TResult Function(TapeState value) tape,
     required TResult Function(DetailTapeState value) detailTape,
+    required TResult Function(DetailBloggerTapeState value) detailBloggerTape,
     required TResult Function(FavoriteState value) favorite,
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
@@ -70,6 +78,7 @@ mixin _$NavigationState {
     TResult? Function(HomeState value)? home,
     TResult? Function(TapeState value)? tape,
     TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult? Function(FavoriteState value)? favorite,
     TResult? Function(BasketState value)? basket,
     TResult? Function(MyOrderState value)? myOrder,
@@ -82,6 +91,7 @@ mixin _$NavigationState {
     TResult Function(HomeState value)? home,
     TResult Function(TapeState value)? tape,
     TResult Function(DetailTapeState value)? detailTape,
+    TResult Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult Function(FavoriteState value)? favorite,
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
@@ -151,6 +161,9 @@ class _$HomeState implements HomeState {
     required TResult Function() home,
     required TResult Function() tape,
     required TResult Function(int index, String name) detailTape,
+    required TResult Function(
+            int bloggerId, String bloggerName, String bloggerAvatar)
+        detailBloggerTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -166,6 +179,8 @@ class _$HomeState implements HomeState {
     TResult? Function()? home,
     TResult? Function()? tape,
     TResult? Function(int index, String name)? detailTape,
+    TResult? Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult? Function()? favorite,
     TResult? Function()? basket,
     TResult? Function()? myOrder,
@@ -181,6 +196,8 @@ class _$HomeState implements HomeState {
     TResult Function()? home,
     TResult Function()? tape,
     TResult Function(int index, String name)? detailTape,
+    TResult Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -200,6 +217,7 @@ class _$HomeState implements HomeState {
     required TResult Function(HomeState value) home,
     required TResult Function(TapeState value) tape,
     required TResult Function(DetailTapeState value) detailTape,
+    required TResult Function(DetailBloggerTapeState value) detailBloggerTape,
     required TResult Function(FavoriteState value) favorite,
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
@@ -215,6 +233,7 @@ class _$HomeState implements HomeState {
     TResult? Function(HomeState value)? home,
     TResult? Function(TapeState value)? tape,
     TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult? Function(FavoriteState value)? favorite,
     TResult? Function(BasketState value)? basket,
     TResult? Function(MyOrderState value)? myOrder,
@@ -230,6 +249,7 @@ class _$HomeState implements HomeState {
     TResult Function(HomeState value)? home,
     TResult Function(TapeState value)? tape,
     TResult Function(DetailTapeState value)? detailTape,
+    TResult Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult Function(FavoriteState value)? favorite,
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
@@ -289,6 +309,9 @@ class _$TapeState implements TapeState {
     required TResult Function() home,
     required TResult Function() tape,
     required TResult Function(int index, String name) detailTape,
+    required TResult Function(
+            int bloggerId, String bloggerName, String bloggerAvatar)
+        detailBloggerTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -304,6 +327,8 @@ class _$TapeState implements TapeState {
     TResult? Function()? home,
     TResult? Function()? tape,
     TResult? Function(int index, String name)? detailTape,
+    TResult? Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult? Function()? favorite,
     TResult? Function()? basket,
     TResult? Function()? myOrder,
@@ -319,6 +344,8 @@ class _$TapeState implements TapeState {
     TResult Function()? home,
     TResult Function()? tape,
     TResult Function(int index, String name)? detailTape,
+    TResult Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -338,6 +365,7 @@ class _$TapeState implements TapeState {
     required TResult Function(HomeState value) home,
     required TResult Function(TapeState value) tape,
     required TResult Function(DetailTapeState value) detailTape,
+    required TResult Function(DetailBloggerTapeState value) detailBloggerTape,
     required TResult Function(FavoriteState value) favorite,
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
@@ -353,6 +381,7 @@ class _$TapeState implements TapeState {
     TResult? Function(HomeState value)? home,
     TResult? Function(TapeState value)? tape,
     TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult? Function(FavoriteState value)? favorite,
     TResult? Function(BasketState value)? basket,
     TResult? Function(MyOrderState value)? myOrder,
@@ -368,6 +397,7 @@ class _$TapeState implements TapeState {
     TResult Function(HomeState value)? home,
     TResult Function(TapeState value)? tape,
     TResult Function(DetailTapeState value)? detailTape,
+    TResult Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult Function(FavoriteState value)? favorite,
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
@@ -461,6 +491,9 @@ class _$DetailTapeState implements DetailTapeState {
     required TResult Function() home,
     required TResult Function() tape,
     required TResult Function(int index, String name) detailTape,
+    required TResult Function(
+            int bloggerId, String bloggerName, String bloggerAvatar)
+        detailBloggerTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -476,6 +509,8 @@ class _$DetailTapeState implements DetailTapeState {
     TResult? Function()? home,
     TResult? Function()? tape,
     TResult? Function(int index, String name)? detailTape,
+    TResult? Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult? Function()? favorite,
     TResult? Function()? basket,
     TResult? Function()? myOrder,
@@ -491,6 +526,8 @@ class _$DetailTapeState implements DetailTapeState {
     TResult Function()? home,
     TResult Function()? tape,
     TResult Function(int index, String name)? detailTape,
+    TResult Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -510,6 +547,7 @@ class _$DetailTapeState implements DetailTapeState {
     required TResult Function(HomeState value) home,
     required TResult Function(TapeState value) tape,
     required TResult Function(DetailTapeState value) detailTape,
+    required TResult Function(DetailBloggerTapeState value) detailBloggerTape,
     required TResult Function(FavoriteState value) favorite,
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
@@ -525,6 +563,7 @@ class _$DetailTapeState implements DetailTapeState {
     TResult? Function(HomeState value)? home,
     TResult? Function(TapeState value)? tape,
     TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult? Function(FavoriteState value)? favorite,
     TResult? Function(BasketState value)? basket,
     TResult? Function(MyOrderState value)? myOrder,
@@ -540,6 +579,7 @@ class _$DetailTapeState implements DetailTapeState {
     TResult Function(HomeState value)? home,
     TResult Function(TapeState value)? tape,
     TResult Function(DetailTapeState value)? detailTape,
+    TResult Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult Function(FavoriteState value)? favorite,
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
@@ -562,6 +602,210 @@ abstract class DetailTapeState implements NavigationState {
   String get name;
   @JsonKey(ignore: true)
   _$$DetailTapeStateCopyWith<_$DetailTapeState> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DetailBloggerTapeStateCopyWith<$Res> {
+  factory _$$DetailBloggerTapeStateCopyWith(_$DetailBloggerTapeState value,
+          $Res Function(_$DetailBloggerTapeState) then) =
+      __$$DetailBloggerTapeStateCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int bloggerId, String bloggerName, String bloggerAvatar});
+}
+
+/// @nodoc
+class __$$DetailBloggerTapeStateCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$DetailBloggerTapeState>
+    implements _$$DetailBloggerTapeStateCopyWith<$Res> {
+  __$$DetailBloggerTapeStateCopyWithImpl(_$DetailBloggerTapeState _value,
+      $Res Function(_$DetailBloggerTapeState) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? bloggerId = null,
+    Object? bloggerName = null,
+    Object? bloggerAvatar = null,
+  }) {
+    return _then(_$DetailBloggerTapeState(
+      null == bloggerId
+          ? _value.bloggerId
+          : bloggerId // ignore: cast_nullable_to_non_nullable
+              as int,
+      null == bloggerName
+          ? _value.bloggerName
+          : bloggerName // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == bloggerAvatar
+          ? _value.bloggerAvatar
+          : bloggerAvatar // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DetailBloggerTapeState implements DetailBloggerTapeState {
+  _$DetailBloggerTapeState(
+      this.bloggerId, this.bloggerName, this.bloggerAvatar);
+
+  @override
+  final int bloggerId;
+  @override
+  final String bloggerName;
+  @override
+  final String bloggerAvatar;
+
+  @override
+  String toString() {
+    return 'NavigationState.detailBloggerTape(bloggerId: $bloggerId, bloggerName: $bloggerName, bloggerAvatar: $bloggerAvatar)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DetailBloggerTapeState &&
+            (identical(other.bloggerId, bloggerId) ||
+                other.bloggerId == bloggerId) &&
+            (identical(other.bloggerName, bloggerName) ||
+                other.bloggerName == bloggerName) &&
+            (identical(other.bloggerAvatar, bloggerAvatar) ||
+                other.bloggerAvatar == bloggerAvatar));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, bloggerId, bloggerName, bloggerAvatar);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DetailBloggerTapeStateCopyWith<_$DetailBloggerTapeState> get copyWith =>
+      __$$DetailBloggerTapeStateCopyWithImpl<_$DetailBloggerTapeState>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() home,
+    required TResult Function() tape,
+    required TResult Function(int index, String name) detailTape,
+    required TResult Function(
+            int bloggerId, String bloggerName, String bloggerAvatar)
+        detailBloggerTape,
+    required TResult Function() favorite,
+    required TResult Function() basket,
+    required TResult Function() myOrder,
+    required TResult Function() auth,
+    required TResult Function() notAuth,
+  }) {
+    return detailBloggerTape(bloggerId, bloggerName, bloggerAvatar);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? home,
+    TResult? Function()? tape,
+    TResult? Function(int index, String name)? detailTape,
+    TResult? Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
+    TResult? Function()? favorite,
+    TResult? Function()? basket,
+    TResult? Function()? myOrder,
+    TResult? Function()? auth,
+    TResult? Function()? notAuth,
+  }) {
+    return detailBloggerTape?.call(bloggerId, bloggerName, bloggerAvatar);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? home,
+    TResult Function()? tape,
+    TResult Function(int index, String name)? detailTape,
+    TResult Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
+    TResult Function()? favorite,
+    TResult Function()? basket,
+    TResult Function()? myOrder,
+    TResult Function()? auth,
+    TResult Function()? notAuth,
+    required TResult orElse(),
+  }) {
+    if (detailBloggerTape != null) {
+      return detailBloggerTape(bloggerId, bloggerName, bloggerAvatar);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(HomeState value) home,
+    required TResult Function(TapeState value) tape,
+    required TResult Function(DetailTapeState value) detailTape,
+    required TResult Function(DetailBloggerTapeState value) detailBloggerTape,
+    required TResult Function(FavoriteState value) favorite,
+    required TResult Function(BasketState value) basket,
+    required TResult Function(MyOrderState value) myOrder,
+    required TResult Function(AuthState value) auth,
+    required TResult Function(NotAuthState value) notAuth,
+  }) {
+    return detailBloggerTape(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(HomeState value)? home,
+    TResult? Function(TapeState value)? tape,
+    TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(DetailBloggerTapeState value)? detailBloggerTape,
+    TResult? Function(FavoriteState value)? favorite,
+    TResult? Function(BasketState value)? basket,
+    TResult? Function(MyOrderState value)? myOrder,
+    TResult? Function(AuthState value)? auth,
+    TResult? Function(NotAuthState value)? notAuth,
+  }) {
+    return detailBloggerTape?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(HomeState value)? home,
+    TResult Function(TapeState value)? tape,
+    TResult Function(DetailTapeState value)? detailTape,
+    TResult Function(DetailBloggerTapeState value)? detailBloggerTape,
+    TResult Function(FavoriteState value)? favorite,
+    TResult Function(BasketState value)? basket,
+    TResult Function(MyOrderState value)? myOrder,
+    TResult Function(AuthState value)? auth,
+    TResult Function(NotAuthState value)? notAuth,
+    required TResult orElse(),
+  }) {
+    if (detailBloggerTape != null) {
+      return detailBloggerTape(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DetailBloggerTapeState implements NavigationState {
+  factory DetailBloggerTapeState(final int bloggerId, final String bloggerName,
+      final String bloggerAvatar) = _$DetailBloggerTapeState;
+
+  int get bloggerId;
+  String get bloggerName;
+  String get bloggerAvatar;
+  @JsonKey(ignore: true)
+  _$$DetailBloggerTapeStateCopyWith<_$DetailBloggerTapeState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -606,6 +850,9 @@ class _$FavoriteState implements FavoriteState {
     required TResult Function() home,
     required TResult Function() tape,
     required TResult Function(int index, String name) detailTape,
+    required TResult Function(
+            int bloggerId, String bloggerName, String bloggerAvatar)
+        detailBloggerTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -621,6 +868,8 @@ class _$FavoriteState implements FavoriteState {
     TResult? Function()? home,
     TResult? Function()? tape,
     TResult? Function(int index, String name)? detailTape,
+    TResult? Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult? Function()? favorite,
     TResult? Function()? basket,
     TResult? Function()? myOrder,
@@ -636,6 +885,8 @@ class _$FavoriteState implements FavoriteState {
     TResult Function()? home,
     TResult Function()? tape,
     TResult Function(int index, String name)? detailTape,
+    TResult Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -655,6 +906,7 @@ class _$FavoriteState implements FavoriteState {
     required TResult Function(HomeState value) home,
     required TResult Function(TapeState value) tape,
     required TResult Function(DetailTapeState value) detailTape,
+    required TResult Function(DetailBloggerTapeState value) detailBloggerTape,
     required TResult Function(FavoriteState value) favorite,
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
@@ -670,6 +922,7 @@ class _$FavoriteState implements FavoriteState {
     TResult? Function(HomeState value)? home,
     TResult? Function(TapeState value)? tape,
     TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult? Function(FavoriteState value)? favorite,
     TResult? Function(BasketState value)? basket,
     TResult? Function(MyOrderState value)? myOrder,
@@ -685,6 +938,7 @@ class _$FavoriteState implements FavoriteState {
     TResult Function(HomeState value)? home,
     TResult Function(TapeState value)? tape,
     TResult Function(DetailTapeState value)? detailTape,
+    TResult Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult Function(FavoriteState value)? favorite,
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
@@ -744,6 +998,9 @@ class _$BasketState implements BasketState {
     required TResult Function() home,
     required TResult Function() tape,
     required TResult Function(int index, String name) detailTape,
+    required TResult Function(
+            int bloggerId, String bloggerName, String bloggerAvatar)
+        detailBloggerTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -759,6 +1016,8 @@ class _$BasketState implements BasketState {
     TResult? Function()? home,
     TResult? Function()? tape,
     TResult? Function(int index, String name)? detailTape,
+    TResult? Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult? Function()? favorite,
     TResult? Function()? basket,
     TResult? Function()? myOrder,
@@ -774,6 +1033,8 @@ class _$BasketState implements BasketState {
     TResult Function()? home,
     TResult Function()? tape,
     TResult Function(int index, String name)? detailTape,
+    TResult Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -793,6 +1054,7 @@ class _$BasketState implements BasketState {
     required TResult Function(HomeState value) home,
     required TResult Function(TapeState value) tape,
     required TResult Function(DetailTapeState value) detailTape,
+    required TResult Function(DetailBloggerTapeState value) detailBloggerTape,
     required TResult Function(FavoriteState value) favorite,
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
@@ -808,6 +1070,7 @@ class _$BasketState implements BasketState {
     TResult? Function(HomeState value)? home,
     TResult? Function(TapeState value)? tape,
     TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult? Function(FavoriteState value)? favorite,
     TResult? Function(BasketState value)? basket,
     TResult? Function(MyOrderState value)? myOrder,
@@ -823,6 +1086,7 @@ class _$BasketState implements BasketState {
     TResult Function(HomeState value)? home,
     TResult Function(TapeState value)? tape,
     TResult Function(DetailTapeState value)? detailTape,
+    TResult Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult Function(FavoriteState value)? favorite,
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
@@ -882,6 +1146,9 @@ class _$MyOrderState implements MyOrderState {
     required TResult Function() home,
     required TResult Function() tape,
     required TResult Function(int index, String name) detailTape,
+    required TResult Function(
+            int bloggerId, String bloggerName, String bloggerAvatar)
+        detailBloggerTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -897,6 +1164,8 @@ class _$MyOrderState implements MyOrderState {
     TResult? Function()? home,
     TResult? Function()? tape,
     TResult? Function(int index, String name)? detailTape,
+    TResult? Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult? Function()? favorite,
     TResult? Function()? basket,
     TResult? Function()? myOrder,
@@ -912,6 +1181,8 @@ class _$MyOrderState implements MyOrderState {
     TResult Function()? home,
     TResult Function()? tape,
     TResult Function(int index, String name)? detailTape,
+    TResult Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -931,6 +1202,7 @@ class _$MyOrderState implements MyOrderState {
     required TResult Function(HomeState value) home,
     required TResult Function(TapeState value) tape,
     required TResult Function(DetailTapeState value) detailTape,
+    required TResult Function(DetailBloggerTapeState value) detailBloggerTape,
     required TResult Function(FavoriteState value) favorite,
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
@@ -946,6 +1218,7 @@ class _$MyOrderState implements MyOrderState {
     TResult? Function(HomeState value)? home,
     TResult? Function(TapeState value)? tape,
     TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult? Function(FavoriteState value)? favorite,
     TResult? Function(BasketState value)? basket,
     TResult? Function(MyOrderState value)? myOrder,
@@ -961,6 +1234,7 @@ class _$MyOrderState implements MyOrderState {
     TResult Function(HomeState value)? home,
     TResult Function(TapeState value)? tape,
     TResult Function(DetailTapeState value)? detailTape,
+    TResult Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult Function(FavoriteState value)? favorite,
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
@@ -1020,6 +1294,9 @@ class _$AuthState implements AuthState {
     required TResult Function() home,
     required TResult Function() tape,
     required TResult Function(int index, String name) detailTape,
+    required TResult Function(
+            int bloggerId, String bloggerName, String bloggerAvatar)
+        detailBloggerTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -1035,6 +1312,8 @@ class _$AuthState implements AuthState {
     TResult? Function()? home,
     TResult? Function()? tape,
     TResult? Function(int index, String name)? detailTape,
+    TResult? Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult? Function()? favorite,
     TResult? Function()? basket,
     TResult? Function()? myOrder,
@@ -1050,6 +1329,8 @@ class _$AuthState implements AuthState {
     TResult Function()? home,
     TResult Function()? tape,
     TResult Function(int index, String name)? detailTape,
+    TResult Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -1069,6 +1350,7 @@ class _$AuthState implements AuthState {
     required TResult Function(HomeState value) home,
     required TResult Function(TapeState value) tape,
     required TResult Function(DetailTapeState value) detailTape,
+    required TResult Function(DetailBloggerTapeState value) detailBloggerTape,
     required TResult Function(FavoriteState value) favorite,
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
@@ -1084,6 +1366,7 @@ class _$AuthState implements AuthState {
     TResult? Function(HomeState value)? home,
     TResult? Function(TapeState value)? tape,
     TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult? Function(FavoriteState value)? favorite,
     TResult? Function(BasketState value)? basket,
     TResult? Function(MyOrderState value)? myOrder,
@@ -1099,6 +1382,7 @@ class _$AuthState implements AuthState {
     TResult Function(HomeState value)? home,
     TResult Function(TapeState value)? tape,
     TResult Function(DetailTapeState value)? detailTape,
+    TResult Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult Function(FavoriteState value)? favorite,
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,
@@ -1158,6 +1442,9 @@ class _$NotAuthState implements NotAuthState {
     required TResult Function() home,
     required TResult Function() tape,
     required TResult Function(int index, String name) detailTape,
+    required TResult Function(
+            int bloggerId, String bloggerName, String bloggerAvatar)
+        detailBloggerTape,
     required TResult Function() favorite,
     required TResult Function() basket,
     required TResult Function() myOrder,
@@ -1173,6 +1460,8 @@ class _$NotAuthState implements NotAuthState {
     TResult? Function()? home,
     TResult? Function()? tape,
     TResult? Function(int index, String name)? detailTape,
+    TResult? Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult? Function()? favorite,
     TResult? Function()? basket,
     TResult? Function()? myOrder,
@@ -1188,6 +1477,8 @@ class _$NotAuthState implements NotAuthState {
     TResult Function()? home,
     TResult Function()? tape,
     TResult Function(int index, String name)? detailTape,
+    TResult Function(int bloggerId, String bloggerName, String bloggerAvatar)?
+        detailBloggerTape,
     TResult Function()? favorite,
     TResult Function()? basket,
     TResult Function()? myOrder,
@@ -1207,6 +1498,7 @@ class _$NotAuthState implements NotAuthState {
     required TResult Function(HomeState value) home,
     required TResult Function(TapeState value) tape,
     required TResult Function(DetailTapeState value) detailTape,
+    required TResult Function(DetailBloggerTapeState value) detailBloggerTape,
     required TResult Function(FavoriteState value) favorite,
     required TResult Function(BasketState value) basket,
     required TResult Function(MyOrderState value) myOrder,
@@ -1222,6 +1514,7 @@ class _$NotAuthState implements NotAuthState {
     TResult? Function(HomeState value)? home,
     TResult? Function(TapeState value)? tape,
     TResult? Function(DetailTapeState value)? detailTape,
+    TResult? Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult? Function(FavoriteState value)? favorite,
     TResult? Function(BasketState value)? basket,
     TResult? Function(MyOrderState value)? myOrder,
@@ -1237,6 +1530,7 @@ class _$NotAuthState implements NotAuthState {
     TResult Function(HomeState value)? home,
     TResult Function(TapeState value)? tape,
     TResult Function(DetailTapeState value)? detailTape,
+    TResult Function(DetailBloggerTapeState value)? detailBloggerTape,
     TResult Function(FavoriteState value)? favorite,
     TResult Function(BasketState value)? basket,
     TResult Function(MyOrderState value)? myOrder,

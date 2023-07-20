@@ -30,12 +30,11 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool visible0 = false;
     String? title;
     final TextEditingController searchController = TextEditingController();
     bool visible = true;
 
-    TextEditingController nameController = TextEditingController();
+    final TextEditingController nameController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -132,7 +131,8 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                                 GestureDetector(
                                   onTap: (() => Get.to(() =>
                                       UploadProductVideoPage(
-                                          id: state.productModel[index].id!))),
+                                          id: state.productModel[index].id ??
+                                              0))),
                                   child: title == 'Мои видео обзоры'
                                       ? ProductDetail(
                                           product: state.productModel[index])

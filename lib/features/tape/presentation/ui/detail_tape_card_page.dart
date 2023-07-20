@@ -13,7 +13,9 @@ import 'package:haji_market/features/tape/presentation/data/bloc/subs_cubit.dart
 import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dart';
 import 'package:share_plus/share_plus.dart';
 //import 'package:video_player/video_player.dart';
+import '../../../../bloger/profile_admin/presentation/ui/blogger_tape_profile_page.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
+import '../../../app/bloc/navigation_cubit/navigation_cubit.dart';
 import '../../../chat/presentation/message.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart' as basCubit;
 import '../../../drawer/data/bloc/favorite_cubit.dart' as favCubit;
@@ -24,9 +26,7 @@ import '../data/bloc/tape_state.dart' as tapeState;
 class DetailTapeCardPage extends StatefulWidget {
   final int? index;
   final String? shop_name;
-  const DetailTapeCardPage(
-      {required this.index, required this.shop_name, Key? key})
-      : super(key: key);
+  const DetailTapeCardPage({required this.index, required this.shop_name, Key? key}) : super(key: key);
 
   @override
   State<DetailTapeCardPage> createState() => _DetailTapeCardPageState();
@@ -39,20 +39,24 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
   bool visible = true;
 
   bool inSub = false;
+  int currentIndex = 0;
 
   procentPrice(price, compound) {
-    var pp = (((price!.toInt() - compound!.toInt()) / price!.toInt()) * 100)
-        as double;
+    var pp = (((price!.toInt() - compound!.toInt()) / price!.toInt()) * 100) as double;
     return pp.toInt();
   }
 
   @override
   void initState() {
+    if(widget.index!=null){
+      currentIndex = widget.index!;
     controller = PageController(initialPage: widget.index!);
+    }
     title = 'Лента';
     GetStorage().write('title_tape', 'Отписаться');
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +73,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                 ? Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: CustomBackButton(onTap: () {
-                      BlocProvider.of<navCubit.NavigationCubit>(context)
-                          .emit(const navCubit.TapeState());
+                      BlocProvider.of<navCubit.NavigationCubit>(context).emit(const navCubit.TapeState());
                     }),
                   )
                 : null,
@@ -78,8 +81,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
             actions: [
               GestureDetector(
                 onTap: () {
-                  if (GetStorage().read('title_tape').toString() ==
-                      'Отписаться') {
+                  if (GetStorage().read('title_tape').toString() == 'Отписаться') {
                     GetStorage().write('title_tape', 'Подписаться');
                   } else {
                     GetStorage().write('title_tape', 'Отписаться');
@@ -102,22 +104,33 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                   ),
                   child: Text(
                     GetStorage().read('title_tape').toString(),
-                    style: const TextStyle(
-                        color: AppColors.kPrimaryColor, fontSize: 12),
+                    style: const TextStyle(color: AppColors.kPrimaryColor, fontSize: 12),
                   ),
                 ),
               ),
             ],
             centerTitle: true,
-            title: visible == true
-                ? Text(
-                    '${widget.shop_name}',
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500),
-                  )
-                : null
+            title: BlocBuilder<tapeCubit.TapeCubit, tapeState.TapeState>(
+                      builder: (context, state) {
+                        
+              if (state is tapeState.LoadedState) {
+                        return visible == true&& (state.tapeModel[currentIndex].blogger != null)
+                ? GestureDetector(
+                    onTap: () {
+                      BlocProvider.of<NavigationCubit>(context).emit(DetailBloggerTapeState(
+                          state.tapeModel[currentIndex].blogger!.id!,
+                          state.tapeModel[currentIndex].blogger?.nickName ?? '',
+                          state.tapeModel[currentIndex].blogger?.image ?? ''));
+                    },
+                    child: Text(
+                      '${state.tapeModel[currentIndex].blogger?.nickName}',
+                      style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                    ))
+                : const SizedBox();}
+                return const SizedBox();
+                      },
+                    ) ,
+                   
             // ? Row(
             //     mainAxisSize: MainAxisSize.min,
             //     children: [
@@ -203,9 +216,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                 );
               }
               if (state is tapeState.LoadingState) {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
 
               if (state is tapeState.LoadedState) {
@@ -213,6 +224,12 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                   scrollDirection: Axis.vertical,
                   controller: controller,
                   itemCount: state.tapeModel.length,
+                  onPageChanged: (value) {
+                    currentIndex = value;
+                    setState(() {
+                      
+                    });
+                  },
                   itemBuilder: (context, index) {
                     // inFavorite = state.tapeModel[index].inFavorite;
                     // inBasket = state.tapeModel[index].inBasket;
@@ -237,70 +254,63 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 width: 49,
                                 height: 28,
                                 decoration: BoxDecoration(
-                                    color: const Color(0xFFFF3347),
-                                    borderRadius: BorderRadius.circular(6)),
+                                    color: const Color(0xFFFF3347), borderRadius: BorderRadius.circular(6)),
                                 margin: EdgeInsets.only(
-                                  top:
-                                      MediaQuery.of(context).size.height * 0.15,
+                                  top: MediaQuery.of(context).size.height * 0.15,
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
                                   '-${procentPrice(state.tapeModel[index].price, state.tapeModel[index].compound)}%',
-                                  style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
+                                  style:
+                                      const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
                                 ),
                               ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Column(
-                                    children: [
-                                      Container(
-                                        width: 61,
-                                        height: 28,
-                                        decoration: BoxDecoration(
-                                            color: AppColors.kPrimaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(6)),
-                                        margin: const EdgeInsets.only(top: 370),
-                                        alignment: Alignment.center,
-                                        child: const Text(
-                                          '0·0·12',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius:
-                                                BorderRadius.circular(6)),
-                                        // padding: const EdgeInsets.only(
-                                        //     left: 4, right: 4, bottom: 2, top: 2),
-                                        width: 56,
-                                        height: 28,
-                                        margin: const EdgeInsets.only(top: 4),
-                                        alignment: Alignment.center,
-                                        child: const Text(
-                                          '10% Б',
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  // Column(
+                                  //   children: [
+                                  // Container(
+                                  //   width: 61,
+                                  //   height: 28,
+                                  //   decoration: BoxDecoration(
+                                  //       color: AppColors.kPrimaryColor,
+                                  //       borderRadius:
+                                  //           BorderRadius.circular(6)),
+                                  //   margin: const EdgeInsets.only(top: 370),
+                                  //   alignment: Alignment.center,
+                                  //   child: const Text(
+                                  //     '0·0·12',
+                                  //     style: TextStyle(
+                                  //         fontSize: 14,
+                                  //         fontWeight: FontWeight.w400,
+                                  //         color: Colors.white),
+                                  //   ),
+                                  // ),
+                                  // Container(
+                                  //   decoration: BoxDecoration(
+                                  //       color: Colors.black,
+                                  //       borderRadius:
+                                  //           BorderRadius.circular(6)),
+                                  //   // padding: const EdgeInsets.only(
+                                  //   //     left: 4, right: 4, bottom: 2, top: 2),
+                                  //   margin: const EdgeInsets.only(top: 370),
+                                  //   width: 56,
+                                  //   height: 28,
+                                  //   // margin: const EdgeInsets.only(top: 4),
+                                  //   alignment: Alignment.center,
+                                  //   child: const Text(
+                                  //     '10% Б',
+                                  //     style: TextStyle(
+                                  //         fontSize: 12,
+                                  //         fontWeight: FontWeight.w400,
+                                  //         color: Colors.white),
+                                  //   ),
+                                  // ),
+                                  //   ],
+                                  // ),
                                   Container(
-                                    margin: EdgeInsets.only(
-                                        top:
-                                            MediaQuery.of(context).size.height *
-                                                0.36),
+                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.36),
                                     child: Column(
                                       children: [
                                         inReport(
@@ -327,7 +337,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         GestureDetector(
                                           onTap: () async {
                                             await Share.share(
-                                                "https://lunamarket.info/?index\u003d${widget.index}&shop_name\u003d${widget.shop_name}");
+                                                "http://lunamarket.ru/?index\u003d${widget.index}&shop_name\u003d${widget.shop_name}");
                                           },
                                           child: SvgPicture.asset(
                                             'assets/icons/share.svg',
@@ -345,51 +355,75 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 height: 14,
                               ),
                               SizedBox(
-                                width: 358,
+                                //width: 358,
                                 height: 30,
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    GestureDetector(
-                                      onTap: (() {
-                                        final List<int> _selectedListSort = [];
+                                    // if (state.tapeModel[index].blogger != null)
+                                    //   GestureDetector(
+                                    //     onTap: () {
+                                    //       BlocProvider.of<NavigationCubit>(context).emit(DetailBloggerTapeState(
+                                    //           state.tapeModel[index].blogger!.id!,
+                                    //           state.tapeModel[index].blogger?.nickName ?? '',
+                                    //           state.tapeModel[index].blogger?.image ?? ''));
+                                    //     },
+                                    //     child: Row(
+                                    //       children: [
+                                    //         ClipRRect(
+                                    //           borderRadius: BorderRadius.circular(5),
+                                    //           child: state.tapeModel[index].blogger?.image != null
+                                    //               ? Image.network(
+                                    //                   'http://185.116.193.73/storage/${state.tapeModel[index].blogger?.image}',
+                                    //                   height: 30.6,
+                                    //                   width: 30.6,
+                                    //                 )
+                                    //               : const Icon(Icons.person),
+                                    //         ),
+                                    //         const SizedBox(
+                                    //           width: 8,
+                                    //         ),
+                                    //         Text(
+                                    //           '${state.tapeModel[index].blogger?.nickName}',
+                                    //           style: const TextStyle(
+                                    //               color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                                    //         )
+                                    //       ],
+                                    //     ),
+                                    //   )
+                                    // else
+                                      GestureDetector(
+                                        onTap: (() {
+                                          final List<int> _selectedListSort = [];
 
-                                        _selectedListSort.add(
-                                            state.tapeModel[index].shop!.id!);
-                                        GetStorage().write('shopFilterId',
-                                            _selectedListSort.toString());
-                                        Get.to(ProductsPage(
-                                          cats: Cats(id: 0, name: ''),
-                                          shopId: state
-                                              .tapeModel[index].shop!.id
-                                              .toString(),
-                                        ));
-                                      }),
-                                      child: Row(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            child: Image.network(
-                                              'http://185.116.193.73/storage/${state.tapeModel[index].shop!.image}',
-                                              height: 30.6,
-                                              width: 30.6,
+                                          _selectedListSort.add(state.tapeModel[index].shop!.id!);
+                                          GetStorage().write('shopFilterId', _selectedListSort.toString());
+                                          Get.to(ProductsPage(
+                                            cats: Cats(id: 0, name: ''),
+                                            shopId: state.tapeModel[index].shop!.id.toString(),
+                                          ));
+                                        }),
+                                        child: Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(5),
+                                              child: Image.network(
+                                                'http://185.116.193.73/storage/${state.tapeModel[index].shop!.image}',
+                                                height: 30.6,
+                                                width: 30.6,
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text(
-                                            '${state.tapeModel[index].shop!.name}',
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500),
-                                          )
-                                        ],
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              '${state.tapeModel[index].shop!.name}',
+                                              style: const TextStyle(
+                                                  color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
                                     Row(
                                       children: [
                                         inSubs(
@@ -406,23 +440,18 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         GestureDetector(
                                           onTap: () {
                                             // Get.off(ChatPage);
-                                            GetStorage()
-                                                .write('video_stop', true);
+                                            GetStorage().write('video_stop', true);
 
-                                            if (state.tapeModel[index].chatId ==
-                                                null) {
-                                              Get.to(Message(
-                                                  userId: state.tapeModel[index]
-                                                      .shop!.id,
-                                                  name: state.tapeModel[index]
-                                                      .shop!.name,
-                                                  avatar: state.tapeModel[index]
-                                                      .shop!.image,
-                                                  chatId: state.tapeModel[index]
-                                                      .chatId));
-                                            } else {
-                                              Get.to(() => const ChatPage());
-                                            }
+                                            // if (state.tapeModel[index].chatId ==
+                                            //     null) {
+                                            Get.to(Message(
+                                                userId: state.tapeModel[index].shop!.id,
+                                                name: state.tapeModel[index].shop!.name,
+                                                avatar: state.tapeModel[index].shop!.image,
+                                                chatId: state.tapeModel[index].chatId));
+                                            // } else {
+                                            //   Get.to(() => const ChatPage());
+                                            // }
 
                                             // Get.to(ProductsPage(
                                             //   cats: Cats(id: 0, name: ''),
@@ -434,10 +463,8 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             height: 30,
                                             width: 108,
                                             decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.white),
-                                                borderRadius:
-                                                    BorderRadius.circular(8)),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.circular(8)),
                                             // padding: const EdgeInsets.only(
                                             //     left: 8,
                                             //     right: 8,
@@ -447,9 +474,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             child: const Text(
                                               'Написать',
                                               style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400),
+                                                  color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                                             ),
                                           ),
                                         )
@@ -464,16 +489,13 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                               SizedBox(
                                 width: 358,
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Text(
                                       '${state.tapeModel[index].name}',
                                       style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white),
+                                          fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white),
                                     ),
                                     // Row(
                                     //   children: [
@@ -514,31 +536,27 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 height: 8,
                               ),
                               SizedBox(
-                                width: 358,
+                                // width: 358,
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
                                         Text(
-                                          '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt())} ₸ ',
+                                          '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt())} ₽ ',
                                           style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500),
+                                              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
                                         ),
                                         const SizedBox(
                                           width: 8,
                                         ),
                                         Text(
-                                          '${state.tapeModel[index].price} ₸ ',
+                                          '${state.tapeModel[index].price} ₽',
                                           style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
-                                              decoration:
-                                                  TextDecoration.lineThrough),
+                                              decoration: TextDecoration.lineThrough),
                                         ),
                                       ],
                                     ),
@@ -546,18 +564,15 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                       children: [
                                         const Text(
                                           'в рассрочку',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400),
+                                          style:
+                                              TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                                         ),
                                         const SizedBox(
                                           width: 4,
                                         ),
                                         Container(
                                           decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(
+                                              borderRadius: BorderRadius.circular(
                                                 4,
                                               ),
                                               color: const Color(
@@ -572,9 +587,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                           child: Text(
                                             '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt()).toInt() ~/ 3}',
                                             style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400),
+                                                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                                           ),
                                         ),
                                         const SizedBox(
@@ -582,10 +595,394 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         ),
                                         const Text(
                                           'х3',
-                                          style: TextStyle(
+                                          style:
+                                              TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                );
+              }
+              if (state is tapeState.BloggerLoadedState) {
+                return PageView.builder(
+                  scrollDirection: Axis.vertical,
+                  controller: controller,
+                  itemCount: state.tapeModel.length,
+                  itemBuilder: (context, index) {
+                    // inFavorite = state.tapeModel[index].inFavorite;
+                    // inBasket = state.tapeModel[index].inBasket;
+                    return Stack(
+                      children: [
+                        //VideoPlayer(_controller!)5,
+                        Videos(tape: state.tapeModel[index]),
+                        // Image.network(
+                        //   'http://80.87.202.73:8001/storage/${widget.tape.image}',
+                        //   fit: BoxFit.cover,
+                        //   height: double.infinity,
+                        //   width: double.infinity,
+                        //   alignment: Alignment.center,
+                        // ),
+
+                        Container(
+                          margin: const EdgeInsets.only(left: 16, right: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 49,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFFF3347), borderRadius: BorderRadius.circular(6)),
+                                margin: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height * 0.15,
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '-${procentPrice(state.tapeModel[index].price, state.tapeModel[index].compound)}%',
+                                  style:
+                                      const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  // Column(
+                                  //   children: [
+                                  // Container(
+                                  //   width: 61,
+                                  //   height: 28,
+                                  //   decoration: BoxDecoration(
+                                  //       color: AppColors.kPrimaryColor,
+                                  //       borderRadius:
+                                  //           BorderRadius.circular(6)),
+                                  //   margin: const EdgeInsets.only(top: 370),
+                                  //   alignment: Alignment.center,
+                                  //   child: const Text(
+                                  //     '0·0·12',
+                                  //     style: TextStyle(
+                                  //         fontSize: 14,
+                                  //         fontWeight: FontWeight.w400,
+                                  //         color: Colors.white),
+                                  //   ),
+                                  // ),
+                                  // Container(
+                                  //   decoration: BoxDecoration(
+                                  //       color: Colors.black,
+                                  //       borderRadius:
+                                  //           BorderRadius.circular(6)),
+                                  //   // padding: const EdgeInsets.only(
+                                  //   //     left: 4, right: 4, bottom: 2, top: 2),
+                                  //   margin: const EdgeInsets.only(top: 370),
+                                  //   width: 56,
+                                  //   height: 28,
+                                  //   // margin: const EdgeInsets.only(top: 4),
+                                  //   alignment: Alignment.center,
+                                  //   child: const Text(
+                                  //     '10% Б',
+                                  //     style: TextStyle(
+                                  //         fontSize: 12,
+                                  //         fontWeight: FontWeight.w400,
+                                  //         color: Colors.white),
+                                  //   ),
+                                  // ),
+                                  //   ],
+                                  // ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.36),
+                                    child: Column(
+                                      children: [
+                                        inReport(
+                                          tape: state.tapeModel[index],
+                                          index: index,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        inBaskets(
+                                          tape: state.tapeModel[index],
+                                          index: index,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        inFavorites(
+                                          tape: state.tapeModel[index],
+                                          index: index,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            await Share.share(
+                                                "http://lunamarket.ru/?index\u003d${widget.index}&shop_name\u003d${widget.shop_name}");
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/icons/share.svg',
+                                            height: 30,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(
+                                height: 14,
+                              ),
+                              SizedBox(
+                                //width: 358,
+                                height: 30,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    if (state.tapeModel[index].blogger != null)
+                                      GestureDetector(
+                                        onTap: () {
+                                          BlocProvider.of<NavigationCubit>(context).emit(DetailBloggerTapeState(
+                                              state.tapeModel[index].blogger!.id!,
+                                              state.tapeModel[index].blogger?.name ?? '',
+                                              state.tapeModel[index].blogger?.image ?? ''));
+                                        },
+                                        child: Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(5),
+                                              child: state.tapeModel[index].blogger?.image != null
+                                                  ? Image.network(
+                                                      'http://185.116.193.73/storage/${state.tapeModel[index].blogger?.image}',
+                                                      height: 30.6,
+                                                      width: 30.6,
+                                                    )
+                                                  : const Icon(Icons.person),
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              '${state.tapeModel[index].blogger?.nickName}',
+                                              style: const TextStyle(
+                                                  color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    else
+                                      GestureDetector(
+                                        onTap: (() {
+                                          final List<int> _selectedListSort = [];
+
+                                          _selectedListSort.add(state.tapeModel[index].shop!.id!);
+                                          GetStorage().write('shopFilterId', _selectedListSort.toString());
+                                          Get.to(ProductsPage(
+                                            cats: Cats(id: 0, name: ''),
+                                            shopId: state.tapeModel[index].shop!.id.toString(),
+                                          ));
+                                        }),
+                                        child: Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(5),
+                                              child: Image.network(
+                                                'http://185.116.193.73/storage/${state.tapeModel[index].shop!.image}',
+                                                height: 30.6,
+                                                width: 30.6,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              '${state.tapeModel[index].shop!.name}',
+                                              style: const TextStyle(
+                                                  color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    Row(
+                                      children: [
+                                        inSubs(
+                                          tape: state.tapeModel[index],
+                                          index: index,
+                                        ),
+                                        // SvgPicture.asset(
+                                        //   'assets/icons/notification.svg',
+                                        //   color: Colors.white,
+                                        // ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            // Get.off(ChatPage);
+                                            GetStorage().write('video_stop', true);
+
+                                            // if (state.tapeModel[index].chatId ==
+                                            //     null) {
+                                            Get.to(Message(
+                                                userId: state.tapeModel[index].shop!.id,
+                                                name: state.tapeModel[index].shop!.name,
+                                                avatar: state.tapeModel[index].shop!.image,
+                                                chatId: state.tapeModel[index].chatId));
+                                            // } else {
+                                            //   Get.to(() => const ChatPage());
+                                            // }
+
+                                            // Get.to(ProductsPage(
+                                            //   cats: Cats(id: 0, name: ''),
+                                            // ));
+                                            // GetStorage()
+                                            //     .write('shopFilterId', 1);
+                                          },
+                                          child: Container(
+                                            height: 30,
+                                            width: 108,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.circular(8)),
+                                            // padding: const EdgeInsets.only(
+                                            //     left: 8,
+                                            //     right: 8,
+                                            //     top: 4,
+                                            //     bottom: 4),
+                                            alignment: Alignment.center,
+                                            child: const Text(
+                                              'Написать',
+                                              style: TextStyle(
+                                                  color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 7.4,
+                              ),
+                              SizedBox(
+                                width: 358,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Text(
+                                      '${state.tapeModel[index].name}',
+                                      style: const TextStyle(
+                                          fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white),
+                                    ),
+                                    // Row(
+                                    //   children: [
+                                    //     inBaskets(
+                                    //       tape: state.tapeModel[index],
+                                    //       index: index,
+                                    //     ),
+                                    //     const SizedBox(
+                                    //       width: 8,
+                                    //     ),
+                                    //     inFavorites(
+                                    //       tape: state.tapeModel[index],
+                                    //       index: index,
+                                    //     ),
+                                    //     const SizedBox(
+                                    //       width: 8,
+                                    //     ),
+                                    //     SvgPicture.asset(
+                                    //       'assets/icons/share.svg',
+                                    //       color: Colors.white,
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 14,
+                              ),
+                              // Text(
+                              //   'Артикул: ${state.tapeModel[index].id}',
+                              //   style: const TextStyle(
+                              //       fontSize: 12,
+                              //       fontWeight: FontWeight.w500,
+                              //       color: Colors.white),
+                              // ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              SizedBox(
+                                // width: 358,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt())} ₽ ',
+                                          style: const TextStyle(
+                                              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text(
+                                          '${state.tapeModel[index].price} ₽',
+                                          style: const TextStyle(
                                               color: Colors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              decoration: TextDecoration.lineThrough),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          'в рассрочку',
+                                          style:
+                                              TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(
+                                                4,
+                                              ),
+                                              color: const Color(
+                                                0x30FFFFFF,
+                                              )),
+                                          padding: const EdgeInsets.only(
+                                            left: 8,
+                                            right: 8,
+                                            top: 4,
+                                            bottom: 4,
+                                          ),
+                                          child: Text(
+                                            '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt()).toInt() ~/ 3}',
+                                            style: const TextStyle(
+                                                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        const Text(
+                                          'х3',
+                                          style:
+                                              TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                                         )
                                       ],
                                     )
@@ -600,9 +997,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                   },
                 );
               } else {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }));
   }
@@ -624,8 +1019,7 @@ class _VideosState extends State<Videos> {
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network(
-        'http://185.116.193.73/storage/${widget.tape.video}')
+    _controller = VideoPlayerController.network('http://185.116.193.73/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.play();
         setState(() {});
@@ -657,9 +1051,7 @@ class _VideosState extends State<Videos> {
     return _controller!.value.isInitialized
         ? GestureDetector(
             onTap: () {
-              _controller!.value.isPlaying
-                  ? _controller!.pause()
-                  : _controller!.play();
+              _controller!.value.isPlaying ? _controller!.pause() : _controller!.play();
             },
             child: SizedBox(
                 height: double.infinity,
@@ -671,11 +1063,8 @@ class _VideosState extends State<Videos> {
                         VideoPlayer(_controller!),
                         Container(
                           alignment: Alignment.bottomCenter,
-                          padding: EdgeInsets.only(
-                              bottom:
-                                  MediaQuery.of(context).size.height * 0.11),
-                          child: VideoProgressIndicator(_controller!,
-                              allowScrubbing: true),
+                          padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11),
+                          child: VideoProgressIndicator(_controller!, allowScrubbing: true),
                         ),
                         icon
                             ? Center(
@@ -686,8 +1075,7 @@ class _VideosState extends State<Videos> {
                             : Container(),
                       ],
                     ))))
-        : const Center(
-            child: CircularProgressIndicator(color: Colors.blueAccent));
+        : const Center(child: CircularProgressIndicator(color: Colors.blueAccent));
   }
 }
 
@@ -713,26 +1101,18 @@ class _inSubsState extends State<inSubs> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        BlocProvider.of<SubsCubit>(context)
-            .sub(widget.tape.shop!.id.toString());
+        BlocProvider.of<SubsCubit>(context).sub(widget.tape.shop!.id.toString());
 
         //widget.tape.inSubscribe = false;
         BlocProvider.of<tapeCubit.TapeCubit>(context).update(
-            widget.tape,
-            widget.index,
-            !inSub!,
-            widget.tape.inBasket,
-            widget.tape.inFavorite,
-            widget.tape.inReport);
+            widget.tape, widget.index, !inSub!, widget.tape.inBasket, widget.tape.inFavorite, widget.tape.inReport);
 
         setState(() {
           inSub = !inSub!;
         });
       },
       child: SvgPicture.asset(
-        inSub != true
-            ? 'assets/icons/notification.svg'
-            : 'assets/icons/notification2.svg',
+        inSub != true ? 'assets/icons/notification.svg' : 'assets/icons/notification2.svg',
         height: 20,
         width: 20,
         color: Colors.white,
@@ -765,22 +1145,15 @@ class _inFavoritesState extends State<inFavorites> {
       onTap: () async {
         final favorite = BlocProvider.of<favCubit.FavoriteCubit>(context);
         await favorite.favorite(widget.tape.id.toString());
-        BlocProvider.of<tapeCubit.TapeCubit>(context).update(
-            widget.tape,
-            widget.index,
-            widget.tape.inSubscribe,
-            widget.tape.inBasket,
-            !inFavorite!,
-            widget.tape.inReport);
+        BlocProvider.of<tapeCubit.TapeCubit>(context).update(widget.tape, widget.index, widget.tape.inSubscribe,
+            widget.tape.inBasket, !inFavorite!, widget.tape.inReport);
 
         inFavorite = !inFavorite!;
 
         setState(() {});
       },
       child: SvgPicture.asset(
-        inFavorite == true
-            ? 'assets/icons/heart_fill.svg'
-            : 'assets/icons/heart_outline.svg',
+        inFavorite == true ? 'assets/icons/heart_fill.svg' : 'assets/icons/heart_outline.svg',
         height: 30,
         color: inFavorite == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
       ),
@@ -811,26 +1184,17 @@ class _inBasketsState extends State<inBaskets> {
     return GestureDetector(
       onTap: () async {
         inBasket == false
-            ? BlocProvider.of<basCubit.BasketCubit>(context)
-                .basketAdd(widget.tape.id.toString(), '1')
-            : BlocProvider.of<basCubit.BasketCubit>(context)
-                .basketMinus(widget.tape.id.toString(), '1');
+            ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(widget.tape.id.toString(), '1', 0)
+            : BlocProvider.of<basCubit.BasketCubit>(context).basketMinus(widget.tape.id.toString(), '1', 0);
 
-        BlocProvider.of<tapeCubit.TapeCubit>(context).update(
-            widget.tape,
-            widget.index,
-            widget.tape.inSubscribe,
-            !inBasket!,
-            widget.tape.inFavorite,
-            widget.tape.inReport);
+        BlocProvider.of<tapeCubit.TapeCubit>(context).update(widget.tape, widget.index, widget.tape.inSubscribe,
+            !inBasket!, widget.tape.inFavorite, widget.tape.inReport);
         setState(() {
           inBasket = !inBasket!;
         });
       },
       child: SvgPicture.asset(
-        inBasket != true
-            ? 'assets/icons/shop_cart.svg'
-            : 'assets/icons/shop_cart_white.svg',
+        inBasket != true ? 'assets/icons/shop_cart.svg' : 'assets/icons/shop_cart_white.svg',
         height: 30,
         //  color: inBasket == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
       ),
@@ -902,8 +1266,7 @@ Future<dynamic> showAlertTapeWidget(BuildContext context) async {
           ),
           onPressed: () {
             Navigator.pop(context, 'Two');
-            Get.snackbar('Report Success', "Жестокое обращение с детьми",
-                backgroundColor: AppColors.kPrimaryColor);
+            Get.snackbar('Report Success', "Жестокое обращение с детьми", backgroundColor: AppColors.kPrimaryColor);
           },
         ),
         CupertinoActionSheetAction(
@@ -913,8 +1276,7 @@ Future<dynamic> showAlertTapeWidget(BuildContext context) async {
           ),
           onPressed: () {
             Navigator.pop(context, 'Two');
-            Get.snackbar('Report Success', "Спам",
-                backgroundColor: AppColors.kPrimaryColor);
+            Get.snackbar('Report Success', "Спам", backgroundColor: AppColors.kPrimaryColor);
           },
         ),
         CupertinoActionSheetAction(
@@ -924,8 +1286,7 @@ Future<dynamic> showAlertTapeWidget(BuildContext context) async {
           ),
           onPressed: () {
             Navigator.pop(context, 'Two');
-            Get.snackbar('Report Success', "Вредные или опасные действия",
-                backgroundColor: AppColors.kPrimaryColor);
+            Get.snackbar('Report Success', "Вредные или опасные действия", backgroundColor: AppColors.kPrimaryColor);
           },
         ),
         CupertinoActionSheetAction(
@@ -935,8 +1296,7 @@ Future<dynamic> showAlertTapeWidget(BuildContext context) async {
           ),
           onPressed: () {
             Navigator.pop(context, 'Two');
-            Get.snackbar(
-                'Report Success', "Жестокое или отталкивающее содержание",
+            Get.snackbar('Report Success', "Жестокое или отталкивающее содержание",
                 backgroundColor: AppColors.kPrimaryColor);
           },
         ),
@@ -947,8 +1307,7 @@ Future<dynamic> showAlertTapeWidget(BuildContext context) async {
           ),
           onPressed: () {
             Navigator.pop(context, 'Two');
-            Get.snackbar('Report Success',
-                "Дискриминационные высказывание и оскорбления",
+            Get.snackbar('Report Success', "Дискриминационные высказывание и оскорбления",
                 backgroundColor: AppColors.kPrimaryColor);
           },
         ),

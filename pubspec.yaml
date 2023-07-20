@@ -5,7 +5,7 @@ description: A new Flutter project.
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.5+66
+version: 1.0.7+68
 
 environment:
   sdk: ">=2.19.0"
@@ -21,7 +21,7 @@ dependencies:
   freezed_annotation:
   mask_text_input_formatter: ^2.1.0
   pin_code_fields: ^7.4.0
-  carousel_slider: ^4.1.1
+  carousel_slider: ^4.2.1
   flutter_bloc: ^8.1.2
   flutter_rating_bar: ^4.0.1
   http: ^0.13.5
@@ -95,7 +95,7 @@ flutter:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/appIcon.png"
+  image_path: "assets/icons/appIconNew.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true

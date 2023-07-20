@@ -293,7 +293,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                                                   fontWeight: FontWeight.w400)),
                                           const SizedBox(width: 45),
                                           Text(
-                                              '${state.loadedProfile[index].price.toString()} тг',
+                                              '${state.loadedProfile[index].price.toString()} ₽',
                                               style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400)),
@@ -334,7 +334,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                     'Мой заработок',
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   ),
-                  Text('$_summBonus тг',
+                  Text('$_summBonus ₽',
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w400)),
                 ],

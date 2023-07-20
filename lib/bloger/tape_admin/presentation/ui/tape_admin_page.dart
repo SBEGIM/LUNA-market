@@ -15,7 +15,6 @@ class _TapeAdminPageState extends State<TapeAdminPage> {
   final List<Map> myProducts =
       List.generate(6, (index) => {"id": index, "name": "Product "}).toList();
 
-  final int _value = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

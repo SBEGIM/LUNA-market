@@ -56,15 +56,17 @@ class _ProductAdCardState extends State<ProductAdCard> {
             children: [
               Container(
                 padding: const EdgeInsets.all(4),
-                height: 160,
-                width: 160,
+                //height: 160,
+                // width: 160,
+                alignment: Alignment.center,
                 child: Image.network(
                   widget.product.path!.isNotEmpty
                       ? "http://185.116.193.73/storage/${widget.product.path!.first}"
                       : '',
+                  fit: BoxFit.cover,
                   height: 160,
                   width: 160,
-                  alignment: Alignment.center,
+                  //alignment: Alignment.center,
                 ),
               ),
               Padding(
@@ -246,15 +248,14 @@ class _ProductAdCardState extends State<ProductAdCard> {
                                           //   textAlign: TextAlign.center,
                                           // ),
                                           const SizedBox(height: 16),
-                                          Row(
+                                          const Row(
                                             children: [
-                                              const Icon(
-                                                  Icons.info_outline_rounded),
-                                              const SizedBox(width: 10),
+                                              Icon(Icons.info_outline_rounded),
+                                              SizedBox(width: 10),
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
-                                                children: const [
+                                                children: [
                                                   Text(
                                                     'О рекламодателе',
                                                     style: TextStyle(
@@ -275,8 +276,8 @@ class _ProductAdCardState extends State<ProductAdCard> {
                                             ],
                                           ),
                                           const SizedBox(height: 16),
-                                          Row(
-                                            children: const [
+                                          const Row(
+                                            children: [
                                               Icon(Icons.link),
                                               SizedBox(width: 10),
                                               Text(
@@ -342,19 +343,17 @@ class _ProductAdCardState extends State<ProductAdCard> {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: 75,
-                            child: Text(
-                              '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ₸ ',
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Color.fromRGBO(255, 50, 72, 1),
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
                           Text(
-                            '${widget.product.price} ₸',
+                            '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ₽ ',
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                fontSize: 12,
+                                color: Color.fromRGBO(255, 50, 72, 1),
+                                fontWeight: FontWeight.w700),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            '${widget.product.price} ₽',
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                                 decoration: TextDecoration.lineThrough,
@@ -365,7 +364,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                         ],
                       )
                     : Text(
-                        '${widget.product.price} ₸',
+                        '${widget.product.price} ₽',
                         textAlign: TextAlign.start,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -380,21 +379,19 @@ class _ProductAdCardState extends State<ProductAdCard> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      padding: const EdgeInsets.only(
+                          left: 4, right: 4, top: 4, bottom: 4),
+                      margin: const EdgeInsets.only(right: 4),
                       decoration: const BoxDecoration(
                           color: Colors.amber,
                           borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 4, right: 4, top: 4, bottom: 4),
-                        child: Text(
-                          '${widget.product.price!.toInt() ~/ 3}',
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontSize: 10,
-                              color: Color(0xFF19191A),
-                              fontWeight: FontWeight.w500),
-                        ),
+                      child: Text(
+                        '${widget.product.price!.toInt() ~/ 3}',
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 10,
+                            color: Color(0xFF19191A),
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                     // const SizedBox(

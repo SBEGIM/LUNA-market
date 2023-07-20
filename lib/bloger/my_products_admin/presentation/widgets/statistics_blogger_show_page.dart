@@ -200,9 +200,14 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                 ProfileMonthStaticsBloggerState>(
               listener: (context, state) {
                 if (state is LoadedState) {
-                  incrementSumm(state.loadedProfile.map((e) {
-                    return e.bonus ?? 1;
-                  }).toList());
+                  if (state.loadedProfile.isNotEmpty) {
+                    _summBonus = state.loadedProfile.first.total ?? 0;
+                    setState(() {});
+                  }
+
+                  // incrementSumm(state.loadedProfile.map((e) {
+                  //   return e.bonus ?? 1;
+                  // }).toList());
                 }
               },
               builder: (context, state) {
@@ -284,7 +289,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                                                   fontWeight: FontWeight.w400)),
                                           const SizedBox(width: 45),
                                           Text(
-                                              '${state.loadedProfile[index].bonus.toString()}тг',
+                                              '${state.loadedProfile[index].bonus.toString()}₽',
                                               style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400)),
@@ -325,7 +330,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                     'Мой заработок',
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   ),
-                  Text('$_summBonus тг',
+                  Text('$_summBonus ₽',
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w400)),
                 ],

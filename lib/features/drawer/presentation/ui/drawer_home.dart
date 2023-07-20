@@ -530,6 +530,7 @@ class _DrawerHomeState extends State<DrawerHome> {
                 ),
                 GestureDetector(
                   onTap: () async {
+                    await BlocProvider.of<LoginCubit>(context).delete();
                     GetStorage().erase();
 
                     Get.offAll(
@@ -538,8 +539,6 @@ class _DrawerHomeState extends State<DrawerHome> {
                     Get.snackbar('Аккаунт удален', 'Account delete',
                         backgroundColor: Colors.redAccent);
 
-                    await BlocProvider.of<LoginCubit>(context).delete();
-
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(
@@ -547,15 +546,15 @@ class _DrawerHomeState extends State<DrawerHome> {
                     //           const ViewAuthRegisterPage(BackButton: true)),
                     // );
                   },
-                  child: SizedBox(
+                  child: const SizedBox(
                     height: 55,
                     child: Padding(
-                      padding: const EdgeInsets.only(
+                      padding: EdgeInsets.only(
                           left: 13.0, right: 20, top: 13, bottom: 13),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
-                        children: const [
+                        children: [
                           Text(
                             'Удалить',
                             style: TextStyle(

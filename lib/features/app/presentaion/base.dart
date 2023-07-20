@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/bloc/navigation_cubit/navigation_cubit.dart';
+import 'package:haji_market/features/app/bloc/navigation_cubit/navigation_cubit.dart';
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:haji_market/features/basket/presentation/ui/basket_page.dart';
 import 'package:haji_market/features/drawer/presentation/ui/drawer_home.dart';
@@ -10,6 +11,7 @@ import 'package:haji_market/features/favorite/presentation/ui/favorite_page.dart
 import 'package:haji_market/features/home/presentation/ui/home_page.dart';
 import 'package:haji_market/features/tape/presentation/ui/tape_page.dart';
 
+import '../../../bloger/profile_admin/presentation/ui/blogger_tape_profile_page.dart';
 import '../../tape/presentation/ui/detail_tape_card_page.dart';
 
 class Base extends StatefulWidget {
@@ -33,16 +35,13 @@ class _BaseState extends State<Base> {
     if (widget.index != null) {
       basePageIndex = widget.index!;
       if (widget.index == 0) {
-        BlocProvider.of<NavigationCubit>(context)
-            .getNavBarItem(const NavigationState.tape());
+        BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.tape());
       }
       if (basePageIndex == 1) {
-        BlocProvider.of<NavigationCubit>(context)
-            .getNavBarItem(const NavigationState.home());
+        BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.home());
       }
       if (basePageIndex == 3) {
-        BlocProvider.of<NavigationCubit>(context)
-            .getNavBarItem(const NavigationState.basket());
+        BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.basket());
       }
 
       // } else if (basePageIndex == 3) {
@@ -71,6 +70,12 @@ class _BaseState extends State<Base> {
             basePageIndex = 0;
             setState(() {});
           }
+          if (state is BasketState) {
+            if (basePageIndex != 3) {
+              basePageIndex = 3;
+              setState(() {});
+            }
+          }
         },
         builder: (context, state) {
           return BottomNavigationBar(
@@ -78,24 +83,19 @@ class _BaseState extends State<Base> {
             onTap: (int index) {
               switch (index) {
                 case 0:
-                  BlocProvider.of<NavigationCubit>(context)
-                      .getNavBarItem(const NavigationState.tape());
+                  BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.tape());
                   break;
                 case 1:
-                  BlocProvider.of<NavigationCubit>(context)
-                      .getNavBarItem(const NavigationState.home());
+                  BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.home());
                   break;
                 case 2:
-                  BlocProvider.of<NavigationCubit>(context)
-                      .getNavBarItem(const NavigationState.favorite());
+                  BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.favorite());
                   break;
                 case 3:
-                  BlocProvider.of<NavigationCubit>(context)
-                      .getNavBarItem(const NavigationState.basket());
+                  BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.basket());
                   break;
                 case 4:
-                  BlocProvider.of<NavigationCubit>(context)
-                      .getNavBarItem(const NavigationState.myOrder());
+                  BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.myOrder());
                   break;
               }
               setState(() {
@@ -108,8 +108,7 @@ class _BaseState extends State<Base> {
             elevation: 4,
             showSelectedLabels: true,
             showUnselectedLabels: true,
-            backgroundColor:
-                basePageIndex == 0 ? Colors.transparent : Colors.white,
+            backgroundColor: basePageIndex == 0 ? Colors.transparent : Colors.white,
             type: BottomNavigationBarType.fixed,
             items: [
               BottomNavigationBarItem(
@@ -178,6 +177,12 @@ class _BaseState extends State<Base> {
           } else if (state is HomeState) {
             return HomePage(
               globalKey: _key,
+            );
+          } else if (state is DetailBloggerTapeState) {
+            return ProfileBloggerTapePage(
+              bloggerId: state.bloggerId,
+              bloggerName: state.bloggerName,
+              bloggerAvatar: state.bloggerAvatar,
             );
           } else if (state is DetailTapeState) {
             return DetailTapeCardPage(

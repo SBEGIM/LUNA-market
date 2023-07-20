@@ -21,6 +21,7 @@ class ReqirectProfilePage extends StatefulWidget {
 class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   final maskFormatter = MaskTextInputFormatter(mask: '+#(###)-###-##-##');
   final nameController = TextEditingController();
+  final nickNameController = TextEditingController();
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
   final reapatPasswordController = TextEditingController();
@@ -83,7 +84,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           title: "Изменить фото",
                           middleText: '',
                           textConfirm: 'Камера',
-                          textCancel: 'Галлерея',
+                          textCancel: 'Галерея',
                           titlePadding: const EdgeInsets.only(top: 40),
                           onConfirm: () {
                             change = true;
@@ -117,7 +118,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                   ),
                 ),
                 title: Text(
-                  _box.read('blogger_name'),
+                  _box.read('blogger_nick_name') ?? 'Никнэйм не найден',
                   style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       color: AppColors.kGray900,
@@ -161,6 +162,29 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Имя и фамилия',
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  // borderRadius: BorderRadius.circular(3),
+                                ),
+                              ),
+                            ),
+                            // trailing: SvgPicture.asset(
+                            //   'assets/icons/delete_circle.svg',
+                            //   height: 24,
+                            //   width: 24,
+                            // ),
+                          ),
+                          ListTile(
+                            leading: SvgPicture.asset(
+                              'assets/icons/user.svg',
+                              height: 24,
+                              width: 24,
+                            ),
+                            title: TextField(
+                              controller: nickNameController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Никнэйм',
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white),
                                   // borderRadius: BorderRadius.circular(3),
@@ -252,12 +276,14 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
             const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
         child: InkWell(
           onTap: () async {
-            if (nameController.text.isNotEmpty) {
+            if (nameController.text.isNotEmpty ||
+                nickNameController.text.isNotEmpty) {
               if (passwordController.text == reapatPasswordController.text) {}
 
               final register = BlocProvider.of<EditBloggerCubit>(context);
               await register.edit(
                   nameController.text,
+                  nickNameController.text,
                   phoneController.text,
                   passwordController.text,
                   _image != null ? _image!.path : null);

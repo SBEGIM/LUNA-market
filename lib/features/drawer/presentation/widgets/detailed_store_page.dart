@@ -3,13 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/features/app/widgets/custom_switch_button.dart';
 import 'package:haji_market/features/drawer/data/bloc/review_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/review_state.dart';
+import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/punkts_widget.dart';
+import 'package:haji_market/features/home/data/model/Cats.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/common/constants.dart';
 import '../../../chat/presentation/chat_page.dart';
+import '../../../chat/presentation/message.dart';
 import '../../../tape/presentation/data/bloc/subs_cubit.dart';
 import '../../data/models/product_model.dart';
 
@@ -63,11 +68,11 @@ class _DetailStorePageState extends State<DetailStorePage> {
               fontWeight: FontWeight.w500,
               fontSize: 18),
         ),
-        actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: SvgPicture.asset('assets/icons/share.svg'))
-        ],
+        // actions: [
+        //   Padding(
+        //       padding: const EdgeInsets.only(right: 16.0),
+        //       child: SvgPicture.asset('assets/icons/share.svg'))
+        // ],
       ),
       // appBar: ,
       body: ListView(
@@ -160,7 +165,13 @@ class _DetailStorePageState extends State<DetailStorePage> {
                     children: [
                       InkWell(
                         onTap: () {
-                          Get.to(() => const ChatPage());
+                          //  Get.to(() => const ChatPage());
+
+                          Get.to(Message(
+                              userId: widget.shop.shop?.id,
+                              name: widget.shop.shop?.name,
+                              avatar: widget.shop.shop?.image,
+                              chatId: null));
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(left: 16.0),
@@ -233,23 +244,27 @@ class _DetailStorePageState extends State<DetailStorePage> {
             height: 1,
             color: AppColors.kGray300,
           ),
-          Container(
-            height: 56,
-            padding: EdgeInsets.only(left: 16),
-            color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
-                Icon(
-                  Icons.forum,
-                  color: AppColors.kPrimaryColor,
-                ),
-                SizedBox(width: 10),
-                Text(
-                  'Чат с поддержкой',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                )
-              ],
+          GestureDetector(
+            onTap: () =>
+                launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
+            child: Container(
+              height: 56,
+              padding: EdgeInsets.only(left: 16),
+              color: Colors.white,
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.forum,
+                    color: AppColors.kPrimaryColor,
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    'Чат с поддержкой',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                  )
+                ],
+              ),
             ),
           ),
           Container(
@@ -274,19 +289,33 @@ class _DetailStorePageState extends State<DetailStorePage> {
                   height: 1,
                   color: AppColors.kGray300,
                 ),
-                ListTile(
-                    leading: Text(
-                      'Все товары ${widget.shop.shop!.name}',
-                      style: const TextStyle(
-                          color: AppColors.kPrimaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppColors.kPrimaryColor,
-                      size: 16,
-                    )),
+                GestureDetector(
+                  onTap: () {
+                    final List<int> _selectedListSort = [];
+
+                    _selectedListSort.add(widget.shop.shop!.id as int);
+
+                    GetStorage()
+                        .write('shopFilterId', _selectedListSort.toString());
+                    Get.to(ProductsPage(
+                      cats: Cats(id: 0, name: ''),
+                      shopId: widget.shop.shop!.id.toString(),
+                    ));
+                  },
+                  child: ListTile(
+                      leading: Text(
+                        'Все товары ${widget.shop.shop!.name}',
+                        style: const TextStyle(
+                            color: AppColors.kPrimaryColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        color: AppColors.kPrimaryColor,
+                        size: 16,
+                      )),
+                ),
                 const Divider(
                   height: 1,
                   color: AppColors.kGray300,
@@ -300,6 +329,23 @@ class _DetailStorePageState extends State<DetailStorePage> {
                     groupValue: segmentValue,
                     children: {
                       0: Container(
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        height: 39,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: const Text(
+                          'Пункты самовывоза',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Colors.black
+                              // : const Color(0xff9B9B9B),
+                              ),
+                        ),
+                      ),
+                      1: Container(
                         alignment: Alignment.center,
                         height: 39,
                         width: MediaQuery.of(context).size.width,
@@ -318,27 +364,13 @@ class _DetailStorePageState extends State<DetailStorePage> {
                               ),
                         ),
                       ),
-                      1: Container(
-                        width: MediaQuery.of(context).size.width,
-                        alignment: Alignment.center,
-                        height: 39,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: const Text(
-                          'Пункты самовывоза',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                              color: Colors.black
-                              // : const Color(0xff9B9B9B),
-                              ),
-                        ),
-                      ),
                     },
                     onValueChanged: (int? value) async {
-                      if (value != null) {
+                      if (value != null && value != 1) {
                         segmentValue = value;
+                      } else {
+                        Get.snackbar('Нет доступа', 'временно не доступен',
+                            backgroundColor: Colors.orangeAccent);
                       }
                       setState(() {});
                     },
@@ -356,9 +388,10 @@ class _DetailStorePageState extends State<DetailStorePage> {
           ),
           IndexedStack(
             index: segmentValue,
-            children: [
-              ReviewsWidget(),
-              const PunktsWidget(),
+            children: const [
+              PunktsWidget(),
+              SizedBox()
+              // ReviewsWidget(),
             ],
           )
 

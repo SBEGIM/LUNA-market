@@ -15,7 +15,8 @@ import '../widgets/payment_webview_widget.dart';
 import 'basket_order_address_page.dart';
 
 class BasketOrderPage extends StatefulWidget {
-  const BasketOrderPage({Key? key}) : super(key: key);
+  bool? fbs;
+  BasketOrderPage({this.fbs, Key? key}) : super(key: key);
 
   @override
   _BasketOrderPageState createState() => _BasketOrderPageState();
@@ -68,9 +69,9 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
       id.add(element.basketId!.toInt());
       count += element.basketCount!.toInt();
       price += element.price!.toInt();
-      courier += element.priceCourier!.toInt();
+      if (widget.fbs != true) courier += element.priceCourier!.toInt();
       productNames =
-          "${productNames != null ? "${productNames} ," : ''}  https://lunamarket.info/?product_id\u003d${element.product!.id}";
+          "${productNames != null ? "${productNames} ," : ''}  http://lunamarket.ru/?product_id\u003d${element.product!.id}";
     }
     bs = (price * 0.05).toInt();
   }
@@ -171,7 +172,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                           ],
                         ),
                         Text(
-                          "$price ₸",
+                          "$price ₽",
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -200,7 +201,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                         Container(
                           padding: const EdgeInsets.only(right: 16),
                           child: Text(
-                            '$courier ₸',
+                            '$courier ₽',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -230,7 +231,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                         Container(
                           padding: const EdgeInsets.only(right: 16),
                           child: Text(
-                            ' ${courier + price} ₸',
+                            ' ${courier + price} ₽',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -313,9 +314,9 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                                       const Color.fromRGBO(237, 237, 237, 1),
                                 ),
                               ),
-                              Column(
+                              const Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
+                                children: [
                                   Text(
                                     '300 Бонусов',
                                     style: TextStyle(
@@ -371,7 +372,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                         Container(
                           padding: const EdgeInsets.only(right: 16),
                           child: Text(
-                            ' ${isSwitched == true ? (courier + price - bonus) : (courier + price)} ₸',
+                            ' ${isSwitched == true ? (courier + price - bonus) : (courier + price)} ₽',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,

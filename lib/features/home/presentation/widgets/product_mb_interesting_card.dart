@@ -33,7 +33,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
   void initState() {
     inFavorite = widget.product.inFavorite as bool;
     procentPrice =
-        ((widget.product.price!.toInt() - widget.product.compound!.toInt()) /
+        ((widget.product.price?.toInt() ?? 0 - (widget.product.compound ?? 0)) /
                 widget.product.price!.toInt()) *
             100;
     super.initState();
@@ -57,8 +57,8 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                 height: 160,
                 width: 144,
                 child: Image.network(
-                  widget.product.path!.isNotEmpty
-                      ? "http://185.116.193.73/storage/${widget.product.path!.first}"
+                  widget.product.path?.length != 0
+                      ? "http://185.116.193.73/storage/${widget.product.path?.first}"
                       : '',
                   height: 160,
                   width: 160,
@@ -241,7 +241,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                           SizedBox(
                             width: 75,
                             child: Text(
-                              '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ₸ ',
+                              '${widget.product.price?.toInt() ?? 0 - (widget.product.compound ?? 0)} ₽',
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                   fontSize: 12,
@@ -250,7 +250,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                             ),
                           ),
                           Text(
-                            '${widget.product.price} ₸',
+                            '${widget.product.price} ₽',
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                                 decoration: TextDecoration.lineThrough,
@@ -261,7 +261,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                         ],
                       )
                     : Text(
-                        '${widget.product.price} ₸',
+                        '${widget.product.price} ₽',
                         textAlign: TextAlign.start,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -283,7 +283,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                           color: Colors.amber,
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Text(
-                        '${widget.product.price!.toInt() ~/ 3}',
+                        '${widget.product.price?.toInt() ?? 0 ~/ 3}',
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                         style: const TextStyle(

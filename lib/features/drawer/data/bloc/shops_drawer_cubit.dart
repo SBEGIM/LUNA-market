@@ -5,16 +5,16 @@ import 'package:haji_market/features/drawer/data/models/shops_drawer_model.dart'
 import '../repository/shops_drawer_repo.dart';
 import 'shops_drawer_state.dart';
 
-
 class ShopsDrawerCubit extends Cubit<ShopsDrawerState> {
   final ShopsDrawerRepository shopsDrawerRepository;
 
   ShopsDrawerCubit({required this.shopsDrawerRepository}) : super(InitState());
 
-  Future<void> shopsDrawer() async {
+  Future<void> shopsDrawer(int? cat_id) async {
     try {
       emit(LoadingState());
-      final List<ShopsDrawerModel> data = await shopsDrawerRepository.shopsDrawer();
+      final List<ShopsDrawerModel> data =
+          await shopsDrawerRepository.shopsDrawer(cat_id);
 
       emit(LoadedState(data));
     } catch (e) {
