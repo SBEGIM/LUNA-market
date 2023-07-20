@@ -436,6 +436,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                       children: [
                         Column(
                           children: [
+                            if(widget.basketProducts.image!=null&&widget.basketProducts.image!.isNotEmpty)
                             Container(
                               height: 104,
                               width: 104,

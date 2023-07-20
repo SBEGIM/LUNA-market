@@ -76,7 +76,7 @@ class _ProductsPageState extends State<ProductsPage> {
     GetStorage().remove('rating');
     BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context)
         .shopsDrawer(widget.cats.id);
-    BlocProvider.of<brandCubit.BrandCubit>(context).brands();
+    BlocProvider.of<brandCubit.BrandCubit>(context).brands(subCatId: widget.cats.id);
     BlocProvider.of<ProductAdCubit>(context).adProducts(widget.cats.id);
     super.initState();
   }
@@ -701,6 +701,8 @@ class _CatsProductPageState extends State<CatsProductPage> {
                         }
                         BlocProvider.of<productCubit.ProductCubit>(context)
                             .products();
+                        BlocProvider.of<brandCubit.BrandCubit>(context)
+                            .brands(subCatId: state.cats[index].id);
                       },
                       child: Container(
                         height: 28,

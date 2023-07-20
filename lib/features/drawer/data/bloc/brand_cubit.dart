@@ -10,10 +10,12 @@ class BrandCubit extends Cubit<BrandState> {
   BrandCubit({required this.brandRepository}) : super(InitState());
   List<Cats> _brands = [];
 
-  Future<void> brands() async {
+  Future<void> brands({
+    int? subCatId,
+  }) async {
     try {
       emit(LoadingState());
-      final List<Cats> data = await brandRepository.brandApi();
+      final List<Cats> data = await brandRepository.brandApi(subCatId: subCatId);
       _brands = data;
       emit(LoadedState(data));
     } catch (e) {
