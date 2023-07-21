@@ -23,7 +23,7 @@ class ProductVideo extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 child: Image.network(
-                  product.path!.path != null
+                  product.path?.path != null
                       ? "http://185.116.193.73/storage/${product.path!.path}"
                       : '',
                   fit: BoxFit.cover,

@@ -178,8 +178,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: const [
+                      const Row(
+                        children: [
                           Text(
                             'Валюта',
                             style: TextStyle(
@@ -935,12 +935,26 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: CircleAvatar(
-                                      backgroundImage: FileImage(
-                                        File(_image[index]!.path),
+                                    child: Stack(children: [
+                                      CircleAvatar(
+                                        backgroundImage: FileImage(
+                                          File(_image[index]!.path),
+                                        ),
+                                        radius: 34,
                                       ),
-                                      radius: 34,
-                                    ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          _image.removeAt(index);
+                                          setState(() {
+                                            _image;
+                                          });
+                                        },
+                                        child: const Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ]),
                                   );
                                 },
                               ),

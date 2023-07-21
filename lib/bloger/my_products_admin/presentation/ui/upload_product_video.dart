@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../../core/common/constants.dart';
 import '../../data/bloc/blogger_tape_upload_cubit.dart';
+import '../../data/bloc/blogger_tape_upload_state.dart';
 
 class UploadProductVideoPage extends StatefulWidget {
   int id;
@@ -60,97 +60,112 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
         ),
         elevation: 0,
       ),
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Видео товара',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
+      body: BlocConsumer<BloggerTapeUploadCubit, BloggerTapeUploadState>(
+          listener: (context, state) {
+        if (state is LoadedState) {
+          Navigator.pop(context);
+
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const BaseAdmin()),
+          // );
+        }
+      }, builder: (context, state) {
+        if (state is InitState) {
+          return Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Видео товара',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Формат - mp4,mpeg',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                GestureDetector(
+                  onTap: () {
+                    if (_image == null) {
+                      Get.defaultDialog(
+                          title: "Загрузить видео",
+                          middleText: '',
+                          textConfirm: 'Камера',
+                          textCancel: 'Галлерея',
+                          titlePadding: const EdgeInsets.only(top: 40),
+                          onConfirm: () {
+                            change = true;
+                            setState(() {
+                              change;
+                            });
+                            _getVideo();
+                          },
+                          onCancel: () {
+                            change = false;
+                            setState(() {
+                              change;
+                            });
+                            _getVideo();
+                          });
+                    }
+                  },
+                  child: Container(
+                      width: 343,
+                      height: 56,
+                      //  alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Row(
+                        //crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/video.svg',
+                            color: _image != null
+                                ? AppColors.kPrimaryColor
+                                : Colors.grey,
+                          ),
+                          const SizedBox(width: 10),
+                          const Text(
+                            'Добавить видео',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.grey),
+                          ),
+                        ],
+                      )),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Разрешение — 1080×1350 px — для горизонтального; 566×1080 px — для вертикального; Расширение — mov, mp4; jpg, png; Размер — 4 ГБ — для видео, 30 МБ — для фото; Длительность — от 3 до 60 секунд.',
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.grey),
+                ),
+              ],
             ),
-            const SizedBox(height: 12),
-            const Text(
-              'Формат - mp4,mpeg',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            const SizedBox(height: 12),
-            GestureDetector(
-              onTap: () {
-                if (_image == null) {
-                  Get.defaultDialog(
-                      title: "Загрузить видео",
-                      middleText: '',
-                      textConfirm: 'Камера',
-                      textCancel: 'Галлерея',
-                      titlePadding: const EdgeInsets.only(top: 40),
-                      onConfirm: () {
-                        change = true;
-                        setState(() {
-                          change;
-                        });
-                        _getVideo();
-                      },
-                      onCancel: () {
-                        change = false;
-                        setState(() {
-                          change;
-                        });
-                        _getVideo();
-                      });
-                }
-              },
-              child: Container(
-                  width: 343,
-                  height: 56,
-                  //  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Row(
-                    //crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/video.svg',
-                        color: _image != null
-                            ? AppColors.kPrimaryColor
-                            : Colors.grey,
-                      ),
-                      const SizedBox(width: 10),
-                      const Text(
-                        'Добавить видео',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey),
-                      ),
-                    ],
-                  )),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Разрешение — 1080×1350 px — для горизонтального; 566×1080 px — для вертикального; Расширение — mov, mp4; jpg, png; Размер — 4 ГБ — для видео, 30 МБ — для фото; Длительность — от 3 до 60 секунд.',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey),
-            ),
-          ],
-        ),
-      ),
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      }),
       bottomSheet: Container(
         color: Colors.white,
         padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
         child: InkWell(
             onTap: () async {
-              Navigator.pop(context);
               if (_image != null && button == false) {
                 button = true;
                 await BlocProvider.of<BloggerTapeUploadCubit>(context)

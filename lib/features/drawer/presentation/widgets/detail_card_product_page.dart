@@ -2040,7 +2040,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 separatorBuilder: (BuildContext context, int index) =>
                     const Divider(height: 0),
                 itemBuilder: (BuildContext context, int index) {
-                  
                   return GestureDetector(
                     onTap: () {
                       if (index == 0) {
