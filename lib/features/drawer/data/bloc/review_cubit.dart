@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:haji_market/features/drawer/data/bloc/review_state.dart';
 import 'package:haji_market/features/drawer/data/models/review_product_model.dart';
 
@@ -10,15 +12,14 @@ class ReviewCubit extends Cubit<ReviewState> {
 
   ReviewCubit({required this.reviewProductRepository}) : super(InitState());
 
-  Future<void> reviews() async {
+  Future<void> reviews(String product_id) async {
     try {
       emit(LoadingState());
       final List<ReviewProductModel> data =
-          await reviewProductRepository.productReviews();
+          await reviewProductRepository.productReviews(product_id);
 
       emit(LoadedState(data));
     } catch (e) {
-      log(e.toString() + 'reviewCUBIT');
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
@@ -31,9 +32,17 @@ class ReviewCubit extends Cubit<ReviewState> {
           await reviewProductRepository.storeReview(review, rating, product_id);
       if (statusCode == 200) {
         final List<ReviewProductModel> data =
-            await reviewProductRepository.productReviews();
+            await reviewProductRepository.productReviews(product_id);
 
         emit(LoadedState(data));
+      } else {
+        final List<ReviewProductModel> data =
+            await reviewProductRepository.productReviews(product_id);
+
+        emit(LoadedState(data));
+
+        Get.snackbar('Ошибка', 'Вы не можете оставлять отзыв',
+            backgroundColor: Colors.orangeAccent);
       }
     } catch (e) {
       log(e.toString());

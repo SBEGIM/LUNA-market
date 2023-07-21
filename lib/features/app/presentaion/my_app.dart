@@ -9,12 +9,14 @@ import 'package:haji_market/admin/auth/data/bloc/register_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/bloc/sms_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/repository/registerAdminRepo.dart';
 import 'package:haji_market/admin/tape_admin/data/repository/tape_admin_repo.dart';
+import 'package:haji_market/features/drawer/data/bloc/bonus_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/profit_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/respublic_cubit.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:haji_market/features/drawer/data/repository/CityRepo.dart';
 import 'package:haji_market/features/drawer/data/repository/CountryRepo.dart';
+import 'package:haji_market/features/drawer/data/repository/bonus_repo.dart';
 import 'package:haji_market/features/drawer/data/repository/profit_repo.dart';
 import 'package:haji_market/features/drawer/data/repository/respublic_repo.dart';
 import 'package:haji_market/features/tape/presentation/ui/detail_tape_card_page.dart';
@@ -474,6 +476,11 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (_) => ProfitCubit(
             profitRepository: ProfitRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => BonusCubit(
+            bonusRepository: BonusRepository(),
           ),
         ),
       ],

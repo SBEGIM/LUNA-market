@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
-import 'package:haji_market/features/home/data/bloc/popular_shops_cubit.dart';
-import '../../../home/data/bloc/popular_shops_state.dart';
+import 'package:haji_market/features/drawer/data/bloc/bonus_cubit.dart';
+import 'package:haji_market/features/drawer/data/bloc/bonus_state.dart';
 
 class BonusUserPage extends StatefulWidget {
   const BonusUserPage({Key? key}) : super(key: key);
@@ -21,16 +20,16 @@ class _BonusUserPageState extends State<BonusUserPage> {
 
   @override
   void initState() {
-    BlocProvider.of<PopularShopsCubit>(context).popShops();
+    BlocProvider.of<BonusCubit>(context).myBonus();
 
-    final appLang = GetStorage().read('app_lang');
-    if (appLang != null) {
-      if (appLang == 'kz') {
-        currency = 'тг';
-      } else {
-        currency = 'руб';
-      }
-    }
+    // final appLang = GetStorage().read('app_lang');
+    // if (appLang != null) {
+    //   if (appLang == 'kz') {
+    //     currency = 'тг';
+    //   } else {
+    //     currency = 'руб';
+    //   }
+    // }
 
     super.initState();
   }
@@ -88,11 +87,41 @@ class _BonusUserPageState extends State<BonusUserPage> {
           ),
           Container(
               color: Colors.white,
-              child: BlocConsumer<PopularShopsCubit, PopularShopsState>(
+              child: BlocConsumer<BonusCubit, BonusState>(
                   listener: (context, state) {},
                   builder: (context, state) {
+                    if (state is NoDataState) {
+                      return SizedBox(
+                        height: 1000,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Container(
+                                color: Colors.white,
+                                margin: EdgeInsets.only(top: 146),
+                                child: Image.asset('assets/icons/no_data.png')),
+                            const Text(
+                              'У вас пока нет бонусов',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                              textAlign: TextAlign.center,
+                            ),
+                            const Text(
+                              'Для выбора вещей перейдите в маркет',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xff717171)),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      );
+                    }
                     if (state is LoadedState) {
                       return Column(
+                        mainAxisSize: MainAxisSize.max,
                         children: [
                           ListView.separated(
                               shrinkWrap: true,
@@ -100,40 +129,32 @@ class _BonusUserPageState extends State<BonusUserPage> {
                                   (BuildContext context, int index) =>
                                       const Divider(),
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: 5,
+                              itemCount: state.bonusModel.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      // устанавливаем индекс выделенного элемента
-                                      _selectedIndex = index;
-                                    });
-                                  },
-                                  child: SizedBox(
-                                    height: 47,
-                                    child: ListTile(
-                                      selected: index == _selectedIndex,
-                                      leading: Text(
-                                        '${state.popularShops[index].name}',
-                                        style: const TextStyle(
-                                            color: AppColors.kGray900,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      trailing: ClipPath(
-                                        clipper: TrapeziumClipper(),
-                                        child: Container(
-                                          height: 16,
-                                          width: 46,
-                                          alignment: Alignment.center,
-                                          decoration: const BoxDecoration(
-                                              color: AppColors.kPrimaryColor),
-                                          child: Text(
-                                            '${state.popularShops[index].bonus} $currency',
-                                            style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500),
-                                          ),
+                                return SizedBox(
+                                  height: 47,
+                                  child: ListTile(
+                                    minLeadingWidth: 100,
+                                    leading: Text(
+                                      '${state.bonusModel[index].name}',
+                                      style: const TextStyle(
+                                          color: AppColors.kGray900,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    trailing: ClipPath(
+                                      clipper: TrapeziumClipper(),
+                                      child: Container(
+                                        height: 16,
+                                        width: 60,
+                                        alignment: Alignment.center,
+                                        decoration: const BoxDecoration(
+                                            color: AppColors.kPrimaryColor),
+                                        child: Text(
+                                          '${state.bonusModel[index].bonus} $currency',
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500),
                                         ),
                                       ),
                                     ),
@@ -143,7 +164,9 @@ class _BonusUserPageState extends State<BonusUserPage> {
                         ],
                       );
                     } else {
-                      return Container();
+                      return const CircularProgressIndicator(
+                        color: Colors.blueAccent,
+                      );
                     }
                   })),
           Container(
@@ -162,7 +185,7 @@ class TrapeziumClipper extends CustomClipper<Path> {
     final path = Path();
     path.lineTo(size.width, 0.0);
     path.lineTo(size.width * 0.80, size.height);
-    path.lineTo(size.width * 0.0, size.height);
+    path.lineTo(0, size.height);
     path.close();
     return path;
   }

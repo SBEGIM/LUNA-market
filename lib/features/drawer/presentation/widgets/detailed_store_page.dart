@@ -408,7 +408,9 @@ class _DetailStorePageState extends State<DetailStorePage> {
 }
 
 class ReviewsWidget extends StatefulWidget {
+  final String product_id;
   ReviewsWidget({
+    required this.product_id,
     Key? key,
   }) : super(key: key);
 
@@ -424,7 +426,7 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
   void initState() {
     // TODO: implement initState
 
-    BlocProvider.of<ReviewCubit>(context).reviews();
+    BlocProvider.of<ReviewCubit>(context).reviews(widget.product_id);
     super.initState();
   }
 

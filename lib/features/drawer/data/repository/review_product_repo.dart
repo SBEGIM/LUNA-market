@@ -11,8 +11,8 @@ const baseUrl = 'http://185.116.193.73/api';
 class ReviewProductRepository {
   final ReviewProductApi _reviewProductApi = ReviewProductApi();
 
-  Future<List<ReviewProductModel>> productReviews() =>
-      _reviewProductApi.productReviews();
+  Future<List<ReviewProductModel>> productReviews(String product_id) =>
+      _reviewProductApi.productReviews(product_id);
 
   Future<int> storeReview(String review, String rating, String product_id) =>
       _reviewProductApi.storeReview(review, rating, product_id);
@@ -21,11 +21,11 @@ class ReviewProductRepository {
 class ReviewProductApi {
   final _box = GetStorage();
 
-  Future<List<ReviewProductModel>> productReviews() async {
+  Future<List<ReviewProductModel>> productReviews(String product_id) async {
     final String? token = _box.read('token');
 
     final response = await http.get(
-        Uri.parse("$baseUrl/shop/review/product?id=28&page=1"),
+        Uri.parse("$baseUrl/shop/review/product?id=$product_id&page=1"),
         headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);
