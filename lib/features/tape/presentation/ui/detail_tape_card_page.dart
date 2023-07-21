@@ -26,7 +26,9 @@ import '../data/bloc/tape_state.dart' as tapeState;
 class DetailTapeCardPage extends StatefulWidget {
   final int? index;
   final String? shop_name;
-  const DetailTapeCardPage({required this.index, required this.shop_name, Key? key}) : super(key: key);
+  const DetailTapeCardPage(
+      {required this.index, required this.shop_name, Key? key})
+      : super(key: key);
 
   @override
   State<DetailTapeCardPage> createState() => _DetailTapeCardPageState();
@@ -38,25 +40,25 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
   final TextEditingController searchController = TextEditingController();
   bool visible = true;
 
-  bool inSub = false;
+  bool? inSub;
   int currentIndex = 0;
 
   procentPrice(price, compound) {
-    var pp = (((price!.toInt() - compound!.toInt()) / price!.toInt()) * 100) as double;
+    var pp = (((price!.toInt() - compound!.toInt()) / price!.toInt()) * 100)
+        as double;
     return pp.toInt();
   }
 
   @override
   void initState() {
-    if(widget.index!=null){
+    if (widget.index != null) {
       currentIndex = widget.index!;
-    controller = PageController(initialPage: widget.index!);
+      controller = PageController(initialPage: widget.index!);
     }
     title = 'Лента';
-    GetStorage().write('title_tape', 'Отписаться');
+    // GetStorage().write('title_tape', 'Отписаться');
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,146 +66,182 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
         extendBodyBehindAppBar: true,
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-            iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            // excludeHeaderSemantics: true,
+          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          // excludeHeaderSemantics: true,
 
-            leading: visible == true
-                ? Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: CustomBackButton(onTap: () {
-                      BlocProvider.of<navCubit.NavigationCubit>(context).emit(const navCubit.TapeState());
-                    }),
-                  )
-                : null,
-            toolbarHeight: 26,
-            actions: [
-              GestureDetector(
-                onTap: () {
-                  if (GetStorage().read('title_tape').toString() == 'Отписаться') {
-                    GetStorage().write('title_tape', 'Подписаться');
-                  } else {
-                    GetStorage().write('title_tape', 'Отписаться');
-                  }
+          leading: visible == true
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: CustomBackButton(onTap: () {
+                    BlocProvider.of<navCubit.NavigationCubit>(context)
+                        .emit(const navCubit.TapeState());
+                  }),
+                )
+              : null,
+          toolbarHeight: 26,
+          actions: [
+            BlocBuilder<tapeCubit.TapeCubit, tapeState.TapeState>(
+              builder: (context, state) {
+                if (state is tapeState.LoadedState) {
+                  return GestureDetector(
+                    onTap: () async {
+                      // if (GetStorage().read('title_tape').toString() ==
+                      //     'Отписаться') {
+                      //   GetStorage().write('title_tape', 'Подписаться');
+                      // } else {
+                      //   GetStorage().write('title_tape', 'Отписаться');
+                      // }
 
-                  // inSub = !inSub;
-                  setState(() {});
-                  // print('okkkwwww');
-                },
-                child: Container(
-                  height: 26,
-                  width: 98,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      width: 0.3,
-                      color: AppColors.kPrimaryColor,
-                    ),
-                  ),
-                  child: Text(
-                    GetStorage().read('title_tape').toString(),
-                    style: const TextStyle(color: AppColors.kPrimaryColor, fontSize: 12),
-                  ),
-                ),
-              ),
-            ],
-            centerTitle: true,
-            title: BlocBuilder<tapeCubit.TapeCubit, tapeState.TapeState>(
-                      builder: (context, state) {
-                        
-              if (state is tapeState.LoadedState) {
-                        return visible == true&& (state.tapeModel[currentIndex].blogger != null)
-                ? GestureDetector(
-                    onTap: () {
-                      BlocProvider.of<NavigationCubit>(context).emit(DetailBloggerTapeState(
-                          state.tapeModel[currentIndex].blogger!.id!,
-                          state.tapeModel[currentIndex].blogger?.nickName ?? '',
-                          state.tapeModel[currentIndex].blogger?.image ?? ''));
+                      BlocProvider.of<SubsCubit>(context).sub(
+                          state.tapeModel[currentIndex].shop?.id.toString());
+
+                      await BlocProvider.of<tapeCubit.TapeCubit>(context)
+                          .update(
+                              state.tapeModel[currentIndex],
+                              currentIndex,
+                              !(state.tapeModel[currentIndex].inSubscribe ??
+                                  true),
+                              state.tapeModel[currentIndex].inBasket,
+                              state.tapeModel[currentIndex].inFavorite,
+                              state.tapeModel[currentIndex].inReport);
+
+                      setState(() {
+                        inSub = !(state.tapeModel[currentIndex].inSubscribe ??
+                            true);
+                      });
+                      print('qweqweqw');
                     },
-                    child: Text(
-                      '${state.tapeModel[currentIndex].blogger?.nickName}',
-                      style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
-                    ))
-                : const SizedBox();}
+                    child: Container(
+                      height: 26,
+                      width: 98,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          width: 0.3,
+                          color: AppColors.kPrimaryColor,
+                        ),
+                      ),
+                      child: Text(
+                        state.tapeModel[currentIndex].inSubscribe == true
+                            ? 'Подписаться'
+                            : 'Отписаться',
+                        style: const TextStyle(
+                            color: AppColors.kPrimaryColor, fontSize: 12),
+                      ),
+                    ),
+                  );
+                }
                 return const SizedBox();
-                      },
-                    ) ,
-                   
-            // ? Row(
-            //     mainAxisSize: MainAxisSize.min,
-            //     children: [
-            //       PopupMenuButton(
-            //         color: const Color.fromRGBO(230, 231, 232, 1),
-            //         shape: const RoundedRectangleBorder(
-            //             borderRadius:
-            //                 BorderRadius.all(Radius.circular(15.0))),
-            //         position: PopupMenuPosition.under,
-            //         offset: const Offset(0, 25),
-            //         itemBuilder: (BuildContext bc) {
-            //           return [
-            //             PopupMenuItem(
-            //               onTap: () {
-            //                 title = 'Подписки';
-            //                 BlocProvider.of<tapeCubit.TapeCubit>(context)
-            //                     .tapes(true, false, null);
-            //                 setState(() {});
-            //               },
-            //               value: 0,
-            //               child: Row(
-            //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //                 children: [
-            //                   const Text(
-            //                     "Подписки",
-            //                     style: TextStyle(color: Colors.black),
-            //                   ),
-            //                   SvgPicture.asset('assets/icons/lenta1.svg'),
-            //                 ],
-            //               ),
-            //             ),
-            //             PopupMenuItem(
-            //               onTap: () {
-            //                 BlocProvider.of<tapeCubit.TapeCubit>(context)
-            //                     .tapes(false, true, null);
-
-            //                 title = 'Избранное';
-            //                 setState(() {});
-            //               },
-            //               value: 1,
-            //               child: Row(
-            //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //                 children: [
-            //                   const Text("Избранное"),
-            //                   SvgPicture.asset('assets/icons/lenta2.svg'),
-            //                 ],
-            //               ),
-            //             ),
-            //           ];
-            //         },
-            //         child: Row(
-            //           children: [
-            //             Text(
-            //               '${title}',
-            //               textAlign: TextAlign.center,
-            //               style: const TextStyle(
-            //                   color: AppColors.kGray900,
-            //                   fontSize: 16,
-            //                   fontWeight: FontWeight.w500),
-            //             ),
-            //             const SizedBox(width: 5),
-            //             Image.asset(
-            //               'assets/icons/down.png',
-            //               height: 16.5,
-            //               width: 9.5,
-            //             )
-            //           ],
-            //         ), // Icon(Icons.done,color: AppColors.kPrimaryColor,size: 16,)
-            //       ),
-            //     ],
-            //   )
-            // : null,
+              },
             ),
+          ],
+          centerTitle: true,
+          title: BlocBuilder<tapeCubit.TapeCubit, tapeState.TapeState>(
+            builder: (context, state) {
+              if (state is tapeState.LoadedState) {
+                return visible == true &&
+                        (state.tapeModel[currentIndex].blogger != null)
+                    ? GestureDetector(
+                        onTap: () {
+                          BlocProvider.of<NavigationCubit>(context).emit(
+                              DetailBloggerTapeState(
+                                  state.tapeModel[currentIndex].blogger!.id!,
+                                  state.tapeModel[currentIndex].blogger
+                                          ?.nickName ??
+                                      '',
+                                  state.tapeModel[currentIndex].blogger
+                                          ?.image ??
+                                      ''));
+                        },
+                        child: Text(
+                          '${state.tapeModel[currentIndex].blogger?.nickName}',
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ))
+                    : const SizedBox();
+              }
+              return const SizedBox();
+            },
+          ),
+
+          // ? Row(
+          //     mainAxisSize: MainAxisSize.min,
+          //     children: [
+          //       PopupMenuButton(
+          //         color: const Color.fromRGBO(230, 231, 232, 1),
+          //         shape: const RoundedRectangleBorder(
+          //             borderRadius:
+          //                 BorderRadius.all(Radius.circular(15.0))),
+          //         position: PopupMenuPosition.under,
+          //         offset: const Offset(0, 25),
+          //         itemBuilder: (BuildContext bc) {
+          //           return [
+          //             PopupMenuItem(
+          //               onTap: () {
+          //                 title = 'Подписки';
+          //                 BlocProvider.of<tapeCubit.TapeCubit>(context)
+          //                     .tapes(true, false, null);
+          //                 setState(() {});
+          //               },
+          //               value: 0,
+          //               child: Row(
+          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                 children: [
+          //                   const Text(
+          //                     "Подписки",
+          //                     style: TextStyle(color: Colors.black),
+          //                   ),
+          //                   SvgPicture.asset('assets/icons/lenta1.svg'),
+          //                 ],
+          //               ),
+          //             ),
+          //             PopupMenuItem(
+          //               onTap: () {
+          //                 BlocProvider.of<tapeCubit.TapeCubit>(context)
+          //                     .tapes(false, true, null);
+
+          //                 title = 'Избранное';
+          //                 setState(() {});
+          //               },
+          //               value: 1,
+          //               child: Row(
+          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                 children: [
+          //                   const Text("Избранное"),
+          //                   SvgPicture.asset('assets/icons/lenta2.svg'),
+          //                 ],
+          //               ),
+          //             ),
+          //           ];
+          //         },
+          //         child: Row(
+          //           children: [
+          //             Text(
+          //               '${title}',
+          //               textAlign: TextAlign.center,
+          //               style: const TextStyle(
+          //                   color: AppColors.kGray900,
+          //                   fontSize: 16,
+          //                   fontWeight: FontWeight.w500),
+          //             ),
+          //             const SizedBox(width: 5),
+          //             Image.asset(
+          //               'assets/icons/down.png',
+          //               height: 16.5,
+          //               width: 9.5,
+          //             )
+          //           ],
+          //         ), // Icon(Icons.done,color: AppColors.kPrimaryColor,size: 16,)
+          //       ),
+          //     ],
+          //   )
+          // : null,
+        ),
         body: BlocConsumer<tapeCubit.TapeCubit, tapeState.TapeState>(
             listener: (context, state) {},
             builder: (context, state) {
@@ -216,7 +254,9 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                 );
               }
               if (state is tapeState.LoadingState) {
-                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.indigoAccent));
               }
 
               if (state is tapeState.LoadedState) {
@@ -226,9 +266,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                   itemCount: state.tapeModel.length,
                   onPageChanged: (value) {
                     currentIndex = value;
-                    setState(() {
-                      
-                    });
+                    setState(() {});
                   },
                   itemBuilder: (context, index) {
                     // inFavorite = state.tapeModel[index].inFavorite;
@@ -254,15 +292,19 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 width: 49,
                                 height: 28,
                                 decoration: BoxDecoration(
-                                    color: const Color(0xFFFF3347), borderRadius: BorderRadius.circular(6)),
+                                    color: const Color(0xFFFF3347),
+                                    borderRadius: BorderRadius.circular(6)),
                                 margin: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height * 0.15,
+                                  top:
+                                      MediaQuery.of(context).size.height * 0.15,
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
                                   '-${procentPrice(state.tapeModel[index].price, state.tapeModel[index].compound)}%',
-                                  style:
-                                      const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
                                 ),
                               ),
                               Row(
@@ -310,7 +352,10 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                   //   ],
                                   // ),
                                   Container(
-                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.36),
+                                    margin: EdgeInsets.only(
+                                        top:
+                                            MediaQuery.of(context).size.height *
+                                                0.36),
                                     child: Column(
                                       children: [
                                         inReport(
@@ -358,7 +403,8 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 //width: 358,
                                 height: 30,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     // if (state.tapeModel[index].blogger != null)
                                     //   GestureDetector(
@@ -392,38 +438,45 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                     //     ),
                                     //   )
                                     // else
-                                      GestureDetector(
-                                        onTap: (() {
-                                          final List<int> _selectedListSort = [];
+                                    GestureDetector(
+                                      onTap: (() {
+                                        final List<int> _selectedListSort = [];
 
-                                          _selectedListSort.add(state.tapeModel[index].shop!.id!);
-                                          GetStorage().write('shopFilterId', _selectedListSort.toString());
-                                          Get.to(ProductsPage(
-                                            cats: Cats(id: 0, name: ''),
-                                            shopId: state.tapeModel[index].shop!.id.toString(),
-                                          ));
-                                        }),
-                                        child: Row(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius: BorderRadius.circular(5),
-                                              child: Image.network(
-                                                'http://185.116.193.73/storage/${state.tapeModel[index].shop!.image}',
-                                                height: 30.6,
-                                                width: 30.6,
-                                              ),
+                                        _selectedListSort.add(
+                                            state.tapeModel[index].shop!.id!);
+                                        GetStorage().write('shopFilterId',
+                                            _selectedListSort.toString());
+                                        Get.to(ProductsPage(
+                                          cats: Cats(id: 0, name: ''),
+                                          shopId: state
+                                              .tapeModel[index].shop!.id
+                                              .toString(),
+                                        ));
+                                      }),
+                                      child: Row(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            child: Image.network(
+                                              'http://185.116.193.73/storage/${state.tapeModel[index].shop!.image}',
+                                              height: 30.6,
+                                              width: 30.6,
                                             ),
-                                            const SizedBox(
-                                              width: 8,
-                                            ),
-                                            Text(
-                                              '${state.tapeModel[index].shop!.name}',
-                                              style: const TextStyle(
-                                                  color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
-                                            )
-                                          ],
-                                        ),
+                                          ),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            '${state.tapeModel[index].shop!.name}',
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500),
+                                          )
+                                        ],
                                       ),
+                                    ),
                                     Row(
                                       children: [
                                         inSubs(
@@ -440,15 +493,20 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         GestureDetector(
                                           onTap: () {
                                             // Get.off(ChatPage);
-                                            GetStorage().write('video_stop', true);
+                                            GetStorage()
+                                                .write('video_stop', true);
 
                                             // if (state.tapeModel[index].chatId ==
                                             //     null) {
                                             Get.to(Message(
-                                                userId: state.tapeModel[index].shop!.id,
-                                                name: state.tapeModel[index].shop!.name,
-                                                avatar: state.tapeModel[index].shop!.image,
-                                                chatId: state.tapeModel[index].chatId));
+                                                userId: state
+                                                    .tapeModel[index].shop!.id,
+                                                name: state.tapeModel[index]
+                                                    .shop!.name,
+                                                avatar: state.tapeModel[index]
+                                                    .shop!.image,
+                                                chatId: state
+                                                    .tapeModel[index].chatId));
                                             // } else {
                                             //   Get.to(() => const ChatPage());
                                             // }
@@ -463,8 +521,10 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             height: 30,
                                             width: 108,
                                             decoration: BoxDecoration(
-                                                border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.circular(8)),
+                                                border: Border.all(
+                                                    color: Colors.white),
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
                                             // padding: const EdgeInsets.only(
                                             //     left: 8,
                                             //     right: 8,
@@ -474,7 +534,9 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             child: const Text(
                                               'Написать',
                                               style: TextStyle(
-                                                  color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400),
                                             ),
                                           ),
                                         )
@@ -489,13 +551,16 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                               SizedBox(
                                 width: 358,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Text(
                                       '${state.tapeModel[index].name}',
                                       style: const TextStyle(
-                                          fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white),
                                     ),
                                     // Row(
                                     //   children: [
@@ -538,14 +603,17 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                               SizedBox(
                                 // width: 358,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
                                         Text(
                                           '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt())} ₽ ',
                                           style: const TextStyle(
-                                              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
                                         ),
                                         const SizedBox(
                                           width: 8,
@@ -556,7 +624,8 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                               color: Colors.white,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
-                                              decoration: TextDecoration.lineThrough),
+                                              decoration:
+                                                  TextDecoration.lineThrough),
                                         ),
                                       ],
                                     ),
@@ -564,15 +633,18 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                       children: [
                                         const Text(
                                           'в рассрочку',
-                                          style:
-                                              TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400),
                                         ),
                                         const SizedBox(
                                           width: 4,
                                         ),
                                         Container(
                                           decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(
+                                              borderRadius:
+                                                  BorderRadius.circular(
                                                 4,
                                               ),
                                               color: const Color(
@@ -587,7 +659,9 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                           child: Text(
                                             '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt()).toInt() ~/ 3}',
                                             style: const TextStyle(
-                                                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400),
                                           ),
                                         ),
                                         const SizedBox(
@@ -595,8 +669,10 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         ),
                                         const Text(
                                           'х3',
-                                          style:
-                                              TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400),
                                         )
                                       ],
                                     )
@@ -640,15 +716,19 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 width: 49,
                                 height: 28,
                                 decoration: BoxDecoration(
-                                    color: const Color(0xFFFF3347), borderRadius: BorderRadius.circular(6)),
+                                    color: const Color(0xFFFF3347),
+                                    borderRadius: BorderRadius.circular(6)),
                                 margin: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height * 0.15,
+                                  top:
+                                      MediaQuery.of(context).size.height * 0.15,
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
                                   '-${procentPrice(state.tapeModel[index].price, state.tapeModel[index].compound)}%',
-                                  style:
-                                      const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
                                 ),
                               ),
                               Row(
@@ -696,7 +776,10 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                   //   ],
                                   // ),
                                   Container(
-                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.36),
+                                    margin: EdgeInsets.only(
+                                        top:
+                                            MediaQuery.of(context).size.height *
+                                                0.36),
                                     child: Column(
                                       children: [
                                         inReport(
@@ -744,21 +827,32 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 //width: 358,
                                 height: 30,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     if (state.tapeModel[index].blogger != null)
                                       GestureDetector(
                                         onTap: () {
-                                          BlocProvider.of<NavigationCubit>(context).emit(DetailBloggerTapeState(
-                                              state.tapeModel[index].blogger!.id!,
-                                              state.tapeModel[index].blogger?.name ?? '',
-                                              state.tapeModel[index].blogger?.image ?? ''));
+                                          BlocProvider.of<NavigationCubit>(
+                                                  context)
+                                              .emit(DetailBloggerTapeState(
+                                                  state.tapeModel[index]
+                                                      .blogger!.id!,
+                                                  state.tapeModel[index].blogger
+                                                          ?.name ??
+                                                      '',
+                                                  state.tapeModel[index].blogger
+                                                          ?.image ??
+                                                      ''));
                                         },
                                         child: Row(
                                           children: [
                                             ClipRRect(
-                                              borderRadius: BorderRadius.circular(5),
-                                              child: state.tapeModel[index].blogger?.image != null
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              child: state.tapeModel[index]
+                                                          .blogger?.image !=
+                                                      null
                                                   ? Image.network(
                                                       'http://185.116.193.73/storage/${state.tapeModel[index].blogger?.image}',
                                                       height: 30.6,
@@ -772,7 +866,9 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             Text(
                                               '${state.tapeModel[index].blogger?.nickName}',
                                               style: const TextStyle(
-                                                  color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500),
                                             )
                                           ],
                                         ),
@@ -780,19 +876,25 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                     else
                                       GestureDetector(
                                         onTap: (() {
-                                          final List<int> _selectedListSort = [];
+                                          final List<int> _selectedListSort =
+                                              [];
 
-                                          _selectedListSort.add(state.tapeModel[index].shop!.id!);
-                                          GetStorage().write('shopFilterId', _selectedListSort.toString());
+                                          _selectedListSort.add(
+                                              state.tapeModel[index].shop!.id!);
+                                          GetStorage().write('shopFilterId',
+                                              _selectedListSort.toString());
                                           Get.to(ProductsPage(
                                             cats: Cats(id: 0, name: ''),
-                                            shopId: state.tapeModel[index].shop!.id.toString(),
+                                            shopId: state
+                                                .tapeModel[index].shop!.id
+                                                .toString(),
                                           ));
                                         }),
                                         child: Row(
                                           children: [
                                             ClipRRect(
-                                              borderRadius: BorderRadius.circular(5),
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
                                               child: Image.network(
                                                 'http://185.116.193.73/storage/${state.tapeModel[index].shop!.image}',
                                                 height: 30.6,
@@ -805,7 +907,9 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             Text(
                                               '${state.tapeModel[index].shop!.name}',
                                               style: const TextStyle(
-                                                  color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500),
                                             )
                                           ],
                                         ),
@@ -826,15 +930,20 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         GestureDetector(
                                           onTap: () {
                                             // Get.off(ChatPage);
-                                            GetStorage().write('video_stop', true);
+                                            GetStorage()
+                                                .write('video_stop', true);
 
                                             // if (state.tapeModel[index].chatId ==
                                             //     null) {
                                             Get.to(Message(
-                                                userId: state.tapeModel[index].shop!.id,
-                                                name: state.tapeModel[index].shop!.name,
-                                                avatar: state.tapeModel[index].shop!.image,
-                                                chatId: state.tapeModel[index].chatId));
+                                                userId: state
+                                                    .tapeModel[index].shop!.id,
+                                                name: state.tapeModel[index]
+                                                    .shop!.name,
+                                                avatar: state.tapeModel[index]
+                                                    .shop!.image,
+                                                chatId: state
+                                                    .tapeModel[index].chatId));
                                             // } else {
                                             //   Get.to(() => const ChatPage());
                                             // }
@@ -849,8 +958,10 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             height: 30,
                                             width: 108,
                                             decoration: BoxDecoration(
-                                                border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.circular(8)),
+                                                border: Border.all(
+                                                    color: Colors.white),
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
                                             // padding: const EdgeInsets.only(
                                             //     left: 8,
                                             //     right: 8,
@@ -860,7 +971,9 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             child: const Text(
                                               'Написать',
                                               style: TextStyle(
-                                                  color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400),
                                             ),
                                           ),
                                         )
@@ -875,13 +988,16 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                               SizedBox(
                                 width: 358,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Text(
                                       '${state.tapeModel[index].name}',
                                       style: const TextStyle(
-                                          fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white),
                                     ),
                                     // Row(
                                     //   children: [
@@ -924,14 +1040,17 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                               SizedBox(
                                 // width: 358,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
                                         Text(
                                           '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt())} ₽ ',
                                           style: const TextStyle(
-                                              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
                                         ),
                                         const SizedBox(
                                           width: 8,
@@ -942,7 +1061,8 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                               color: Colors.white,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
-                                              decoration: TextDecoration.lineThrough),
+                                              decoration:
+                                                  TextDecoration.lineThrough),
                                         ),
                                       ],
                                     ),
@@ -950,15 +1070,18 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                       children: [
                                         const Text(
                                           'в рассрочку',
-                                          style:
-                                              TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400),
                                         ),
                                         const SizedBox(
                                           width: 4,
                                         ),
                                         Container(
                                           decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(
+                                              borderRadius:
+                                                  BorderRadius.circular(
                                                 4,
                                               ),
                                               color: const Color(
@@ -973,7 +1096,9 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                           child: Text(
                                             '${(state.tapeModel[index].price!.toInt() - state.tapeModel[index].compound!.toInt()).toInt() ~/ 3}',
                                             style: const TextStyle(
-                                                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400),
                                           ),
                                         ),
                                         const SizedBox(
@@ -981,8 +1106,10 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         ),
                                         const Text(
                                           'х3',
-                                          style:
-                                              TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400),
                                         )
                                       ],
                                     )
@@ -997,7 +1124,9 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                   },
                 );
               } else {
-                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }));
   }
@@ -1019,7 +1148,8 @@ class _VideosState extends State<Videos> {
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network('http://185.116.193.73/storage/${widget.tape.video}')
+    _controller = VideoPlayerController.network(
+        'http://185.116.193.73/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.play();
         setState(() {});
@@ -1051,7 +1181,9 @@ class _VideosState extends State<Videos> {
     return _controller!.value.isInitialized
         ? GestureDetector(
             onTap: () {
-              _controller!.value.isPlaying ? _controller!.pause() : _controller!.play();
+              _controller!.value.isPlaying
+                  ? _controller!.pause()
+                  : _controller!.play();
             },
             child: SizedBox(
                 height: double.infinity,
@@ -1063,8 +1195,11 @@ class _VideosState extends State<Videos> {
                         VideoPlayer(_controller!),
                         Container(
                           alignment: Alignment.bottomCenter,
-                          padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11),
-                          child: VideoProgressIndicator(_controller!, allowScrubbing: true),
+                          padding: EdgeInsets.only(
+                              bottom:
+                                  MediaQuery.of(context).size.height * 0.11),
+                          child: VideoProgressIndicator(_controller!,
+                              allowScrubbing: true),
                         ),
                         icon
                             ? Center(
@@ -1075,7 +1210,8 @@ class _VideosState extends State<Videos> {
                             : Container(),
                       ],
                     ))))
-        : const Center(child: CircularProgressIndicator(color: Colors.blueAccent));
+        : const Center(
+            child: CircularProgressIndicator(color: Colors.blueAccent));
   }
 }
 
@@ -1101,18 +1237,26 @@ class _inSubsState extends State<inSubs> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        BlocProvider.of<SubsCubit>(context).sub(widget.tape.shop!.id.toString());
+        BlocProvider.of<SubsCubit>(context)
+            .sub(widget.tape.shop!.id.toString());
 
         //widget.tape.inSubscribe = false;
         BlocProvider.of<tapeCubit.TapeCubit>(context).update(
-            widget.tape, widget.index, !inSub!, widget.tape.inBasket, widget.tape.inFavorite, widget.tape.inReport);
+            widget.tape,
+            widget.index,
+            !inSub!,
+            widget.tape.inBasket,
+            widget.tape.inFavorite,
+            widget.tape.inReport);
 
         setState(() {
           inSub = !inSub!;
         });
       },
       child: SvgPicture.asset(
-        inSub != true ? 'assets/icons/notification.svg' : 'assets/icons/notification2.svg',
+        inSub != true
+            ? 'assets/icons/notification.svg'
+            : 'assets/icons/notification2.svg',
         height: 20,
         width: 20,
         color: Colors.white,
@@ -1145,15 +1289,22 @@ class _inFavoritesState extends State<inFavorites> {
       onTap: () async {
         final favorite = BlocProvider.of<favCubit.FavoriteCubit>(context);
         await favorite.favorite(widget.tape.id.toString());
-        BlocProvider.of<tapeCubit.TapeCubit>(context).update(widget.tape, widget.index, widget.tape.inSubscribe,
-            widget.tape.inBasket, !inFavorite!, widget.tape.inReport);
+        BlocProvider.of<tapeCubit.TapeCubit>(context).update(
+            widget.tape,
+            widget.index,
+            widget.tape.inSubscribe,
+            widget.tape.inBasket,
+            !inFavorite!,
+            widget.tape.inReport);
 
         inFavorite = !inFavorite!;
 
         setState(() {});
       },
       child: SvgPicture.asset(
-        inFavorite == true ? 'assets/icons/heart_fill.svg' : 'assets/icons/heart_outline.svg',
+        inFavorite == true
+            ? 'assets/icons/heart_fill.svg'
+            : 'assets/icons/heart_outline.svg',
         height: 30,
         color: inFavorite == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
       ),
@@ -1184,17 +1335,26 @@ class _inBasketsState extends State<inBaskets> {
     return GestureDetector(
       onTap: () async {
         inBasket == false
-            ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(widget.tape.id.toString(), '1', 0)
-            : BlocProvider.of<basCubit.BasketCubit>(context).basketMinus(widget.tape.id.toString(), '1', 0);
+            ? BlocProvider.of<basCubit.BasketCubit>(context)
+                .basketAdd(widget.tape.id.toString(), '1', 0)
+            : BlocProvider.of<basCubit.BasketCubit>(context)
+                .basketMinus(widget.tape.id.toString(), '1', 0);
 
-        BlocProvider.of<tapeCubit.TapeCubit>(context).update(widget.tape, widget.index, widget.tape.inSubscribe,
-            !inBasket!, widget.tape.inFavorite, widget.tape.inReport);
+        BlocProvider.of<tapeCubit.TapeCubit>(context).update(
+            widget.tape,
+            widget.index,
+            widget.tape.inSubscribe,
+            !inBasket!,
+            widget.tape.inFavorite,
+            widget.tape.inReport);
         setState(() {
           inBasket = !inBasket!;
         });
       },
       child: SvgPicture.asset(
-        inBasket != true ? 'assets/icons/shop_cart.svg' : 'assets/icons/shop_cart_white.svg',
+        inBasket != true
+            ? 'assets/icons/shop_cart.svg'
+            : 'assets/icons/shop_cart_white.svg',
         height: 30,
         //  color: inBasket == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
       ),
@@ -1266,7 +1426,8 @@ Future<dynamic> showAlertTapeWidget(BuildContext context) async {
           ),
           onPressed: () {
             Navigator.pop(context, 'Two');
-            Get.snackbar('Report Success', "Жестокое обращение с детьми", backgroundColor: AppColors.kPrimaryColor);
+            Get.snackbar('Report Success', "Жестокое обращение с детьми",
+                backgroundColor: AppColors.kPrimaryColor);
           },
         ),
         CupertinoActionSheetAction(
@@ -1276,7 +1437,8 @@ Future<dynamic> showAlertTapeWidget(BuildContext context) async {
           ),
           onPressed: () {
             Navigator.pop(context, 'Two');
-            Get.snackbar('Report Success', "Спам", backgroundColor: AppColors.kPrimaryColor);
+            Get.snackbar('Report Success', "Спам",
+                backgroundColor: AppColors.kPrimaryColor);
           },
         ),
         CupertinoActionSheetAction(
@@ -1286,7 +1448,8 @@ Future<dynamic> showAlertTapeWidget(BuildContext context) async {
           ),
           onPressed: () {
             Navigator.pop(context, 'Two');
-            Get.snackbar('Report Success', "Вредные или опасные действия", backgroundColor: AppColors.kPrimaryColor);
+            Get.snackbar('Report Success', "Вредные или опасные действия",
+                backgroundColor: AppColors.kPrimaryColor);
           },
         ),
         CupertinoActionSheetAction(
@@ -1296,7 +1459,8 @@ Future<dynamic> showAlertTapeWidget(BuildContext context) async {
           ),
           onPressed: () {
             Navigator.pop(context, 'Two');
-            Get.snackbar('Report Success', "Жестокое или отталкивающее содержание",
+            Get.snackbar(
+                'Report Success', "Жестокое или отталкивающее содержание",
                 backgroundColor: AppColors.kPrimaryColor);
           },
         ),
@@ -1307,7 +1471,8 @@ Future<dynamic> showAlertTapeWidget(BuildContext context) async {
           ),
           onPressed: () {
             Navigator.pop(context, 'Two');
-            Get.snackbar('Report Success', "Дискриминационные высказывание и оскорбления",
+            Get.snackbar('Report Success',
+                "Дискриминационные высказывание и оскорбления",
                 backgroundColor: AppColors.kPrimaryColor);
           },
         ),

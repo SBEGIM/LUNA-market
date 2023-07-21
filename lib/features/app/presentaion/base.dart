@@ -35,13 +35,16 @@ class _BaseState extends State<Base> {
     if (widget.index != null) {
       basePageIndex = widget.index!;
       if (widget.index == 0) {
-        BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.tape());
+        BlocProvider.of<NavigationCubit>(context)
+            .getNavBarItem(const NavigationState.tape());
       }
       if (basePageIndex == 1) {
-        BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.home());
+        BlocProvider.of<NavigationCubit>(context)
+            .getNavBarItem(const NavigationState.home());
       }
       if (basePageIndex == 3) {
-        BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.basket());
+        BlocProvider.of<NavigationCubit>(context)
+            .getNavBarItem(const NavigationState.basket());
       }
 
       // } else if (basePageIndex == 3) {
@@ -83,19 +86,24 @@ class _BaseState extends State<Base> {
             onTap: (int index) {
               switch (index) {
                 case 0:
-                  BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.tape());
+                  BlocProvider.of<NavigationCubit>(context)
+                      .getNavBarItem(const NavigationState.tape());
                   break;
                 case 1:
-                  BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.home());
+                  BlocProvider.of<NavigationCubit>(context)
+                      .getNavBarItem(const NavigationState.home());
                   break;
                 case 2:
-                  BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.favorite());
+                  BlocProvider.of<NavigationCubit>(context)
+                      .getNavBarItem(const NavigationState.favorite());
                   break;
                 case 3:
-                  BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.basket());
+                  BlocProvider.of<NavigationCubit>(context)
+                      .getNavBarItem(const NavigationState.basket());
                   break;
                 case 4:
-                  BlocProvider.of<NavigationCubit>(context).getNavBarItem(const NavigationState.myOrder());
+                  BlocProvider.of<NavigationCubit>(context)
+                      .getNavBarItem(const NavigationState.myOrder());
                   break;
               }
               setState(() {
@@ -108,7 +116,8 @@ class _BaseState extends State<Base> {
             elevation: 4,
             showSelectedLabels: true,
             showUnselectedLabels: true,
-            backgroundColor: basePageIndex == 0 ? Colors.transparent : Colors.white,
+            backgroundColor:
+                basePageIndex == 0 ? Colors.transparent : Colors.white,
             type: BottomNavigationBarType.fixed,
             items: [
               BottomNavigationBarItem(

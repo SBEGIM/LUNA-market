@@ -49,6 +49,7 @@ class TapeCubit extends Cubit<TapeState> {
           compound: tape.compound,
           video: tape.video,
           image: tape.image,
+          blogger: tape.blogger,
           inBasket: inBas ?? tape.inBasket,
           inReport: inReport ?? tape.inReport,
           inFavorite: inFav ?? tape.inFavorite,
@@ -60,7 +61,7 @@ class TapeCubit extends Cubit<TapeState> {
 
       array[index] = tapeModel;
 
-      // emit(LoadedState(data!));
+      emit(LoadedState(array));
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
