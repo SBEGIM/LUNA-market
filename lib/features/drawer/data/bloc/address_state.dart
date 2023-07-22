@@ -6,6 +6,8 @@ class InitState extends AddressState {}
 
 class LoadingState extends AddressState {}
 
+class NoDataState extends AddressState {}
+
 class LoadedState extends AddressState {
   List<AddressModel> addressModel;
   LoadedState(this.addressModel);
