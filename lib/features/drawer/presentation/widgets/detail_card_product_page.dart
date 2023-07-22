@@ -2245,18 +2245,26 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       .basketAdd(widget.product.id.toString(), '1', 0),
                 ]);
 
-                setState(() {
-                  isvisible = true;
-                });
+                if (BlocProvider.of<BasketCubit>(context).state
+                    is! LoadedState) {
+                  Future.wait<void>([
+                    BlocProvider.of<BasketCubit>(context).basketShow(),
+                  ]);
+                }
+
                 Future.wait<void>(
                     [BlocProvider.of<ProductCubit>(context).products()]);
 
-                Navigator.popUntil(context, (route) => route.isFirst);
-                BlocProvider.of<NavigationCubit>(context)
-                    .getNavBarItem(const NavigationState.basket());
-                // Get.to(BasketOrderAddressPage());
+                Get.to(() => const BasketOrderAddressPage());
 
-                //Get.to(() => const BasketOrderPa!ge());
+                // Navigator.popUntil(context, (route) => route.isFirst);
+                // BlocProvider.of<NavigationCubit>(context)
+                //     .getNavBarItem(const NavigationState.basket());
+                // setState(() {
+                //   isvisible = true;
+                // });
+
+                //    Get.to(() => BasketOrderPage(fbs: false));
               },
               child: Container(
                   height: 46,

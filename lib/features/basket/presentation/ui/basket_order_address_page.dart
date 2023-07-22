@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/features/drawer/data/bloc/address_cubit.dart';
 import '../../../../core/common/constants.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
 import '../../../app/presentaion/base.dart';
@@ -138,7 +139,9 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                           ),
                           const SizedBox(height: 8),
                           GestureDetector(
-                            onTap: () {
+                            onTap: () async {
+                              await BlocProvider.of<AddressCubit>(context)
+                                  .address();
                               showAlertAddressWidget(context);
 
                               // if (GetStorage().read('name') !=
