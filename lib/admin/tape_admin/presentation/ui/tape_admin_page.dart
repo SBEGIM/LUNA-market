@@ -50,7 +50,7 @@ class _TapeAdminPageState extends State<TapeAdminPage> {
             )
           ],
           title: const Text(
-            "Лента",
+            "Мои видео",
             style: AppTextStyles.appBarTextStylea,
           ),
         ),

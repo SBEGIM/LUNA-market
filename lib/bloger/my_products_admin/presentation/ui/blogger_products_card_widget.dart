@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:haji_market/admin/my_products_admin/data/models/admin_products_model.dart';
+import 'package:get/route_manager.dart';
+import 'package:haji_market/bloger/my_products_admin/data/models/blogger_shop_products_model.dart';
+import 'package:haji_market/bloger/my_products_admin/presentation/ui/upload_product_video.dart';
 import 'package:haji_market/core/common/constants.dart';
-import '../widgets/show_alert_statictics_widget.dart';
 
-class AdminProductCardWidget extends StatefulWidget {
-  final AdminProductsModel product;
+class BloggerProductCardWidget extends StatefulWidget {
+  final BloggerShopProductModel product;
 
-  const AdminProductCardWidget({required this.product, Key? key})
+  const BloggerProductCardWidget({required this.product, Key? key})
       : super(key: key);
 
   @override
-  State<AdminProductCardWidget> createState() => _AdminProductCardWidgetState();
+  State<BloggerProductCardWidget> createState() => _BloggerProductCardWidget();
 }
 
-class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
+class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
   int count = 0;
   bool isvisible = false;
   bool inFavorite = false;
@@ -334,8 +335,11 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            await showAlertStaticticsWidget(
-                                context, widget.product);
+                            // await showAlertStaticticsWidget(
+                            //     context, widget.product);
+
+                            Get.to(() =>
+                                UploadProductVideoPage(id: widget.product.id!));
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -347,7 +351,7 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                             ),
                             alignment: Alignment.center,
                             child: const Text(
-                              'Управление',
+                              'Добавить видео',
                               // textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 14,

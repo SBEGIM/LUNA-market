@@ -15,8 +15,11 @@ class BloggerShopProductsCubit extends Cubit<BloggerShopProductsState> {
       emit(LoadingState());
       final List<BloggerShopProductModel> data =
           await bloggerShopProductsRepository.products(name, shopId);
-
-      emit(LoadedState(data));
+      if (data.isEmpty) {
+        emit(NoDataState());
+      } else {
+        emit(LoadedState(data));
+      }
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
