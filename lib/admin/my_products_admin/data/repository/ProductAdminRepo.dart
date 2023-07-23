@@ -27,6 +27,7 @@ class ProductAdminRepository {
           String massa,
           String articul,
           String currency,
+          String deep,
           List<dynamic>? image,
           List<optomPriceDto> optom,
           String? video) =>
@@ -44,6 +45,7 @@ class ProductAdminRepository {
           massa,
           articul,
           currency,
+          deep,
           image,
           optom,
           video);
@@ -55,6 +57,7 @@ class ProductAdminRepository {
           String catId,
           String subCatId,
           String brandId,
+          String colorId,
           String description,
           String name,
           String height,
@@ -63,7 +66,8 @@ class ProductAdminRepository {
           String productId,
           String articul,
           String currency,
-          String? image) =>
+          String deep,
+          List<dynamic>? image) =>
       _productToApi.update(
           price,
           count,
@@ -71,6 +75,7 @@ class ProductAdminRepository {
           catId,
           subCatId,
           brandId,
+          colorId,
           description,
           name,
           height,
@@ -79,6 +84,7 @@ class ProductAdminRepository {
           productId,
           articul,
           currency,
+          deep,
           image);
   Future<dynamic> delete(String productId) => _productToApi.delete(productId);
   Future<String?> ad(int productId, int price) =>
@@ -104,6 +110,7 @@ class ProductToApi {
       String massa,
       String articul,
       String currency,
+      String deep,
       List<dynamic>? image,
       List<optomPriceDto> optom,
       String? video) async {
@@ -126,6 +133,7 @@ class ProductToApi {
         'width': width,
         'massa': massa,
         'articul': articul,
+        'deep': deep,
         'currency': currency,
       };
 
@@ -180,6 +188,7 @@ class ProductToApi {
       String catId,
       String subCatId,
       String brandId,
+      String colorId,
       String description,
       String name,
       String height,
@@ -188,7 +197,8 @@ class ProductToApi {
       String productId,
       String articul,
       String currency,
-      String? image) async {
+      String deep,
+      List<dynamic>? image) async {
     final sellerId = _box.read('seller_id');
     final token = _box.read('seller_token');
 
@@ -203,11 +213,13 @@ class ProductToApi {
       'cat_id': catId,
       'sub_cat_id': subCatId,
       'brand_id': brandId,
+      'color_id': colorId,
       'description': description,
       'height': height,
       'width': width,
       'massa': massa,
       'articul': articul,
+      'deep': deep,
       'currency': currency,
     };
 
@@ -216,10 +228,12 @@ class ProductToApi {
       Uri.parse('$baseUrl/seller/product/update'),
     );
 
-    if (image != '') {
-      request.files.add(
-        await http.MultipartFile.fromPath('image', image!),
-      );
+    if (image != null) {
+      image.forEach((element) async {
+        request.files.add(
+          await http.MultipartFile.fromPath('images[]', element!.path),
+        );
+      });
     }
     request.fields.addAll(body);
 

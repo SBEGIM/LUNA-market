@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,7 +7,6 @@ import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/color_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caats_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/drawer/data/bloc/city_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart';
 import 'package:haji_market/features/home/data/bloc/cats_cubit.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,7 +15,6 @@ import '../../../../features/drawer/data/bloc/brand_cubit.dart';
 import '../../../../features/home/data/model/Cats.dart';
 import '../../../admin_app/presentation/base_admin.dart';
 import '../../data/bloc/product_admin_cubit.dart';
-import '../../data/bloc/product_admin_state.dart';
 import '../../data/models/admin_products_model.dart';
 import 'brands_admin_page.dart';
 import 'cats_admin_page.dart';
@@ -29,7 +29,10 @@ class EditProductPage extends StatefulWidget {
 }
 
 class _EditProductPageState extends State<EditProductPage> {
-  XFile? _image;
+  // XFile? _image;
+
+  List<XFile?> _image = [];
+
   final ImagePicker _picker = ImagePicker();
   bool change = false;
 
@@ -38,7 +41,7 @@ class _EditProductPageState extends State<EditProductPage> {
         ? await _picker.pickImage(source: ImageSource.camera)
         : await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      _image = image;
+      _image.add(image);
     });
   }
 
@@ -48,11 +51,13 @@ class _EditProductPageState extends State<EditProductPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController countController = TextEditingController();
   int cat_id = 0;
+  int color_id = 0;
   int sub_cat_id = 0;
   int brand_id = 0;
   TextEditingController heightController = TextEditingController();
   TextEditingController widthController = TextEditingController();
   TextEditingController massaController = TextEditingController();
+  TextEditingController deepController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
   Cats? cats;
@@ -68,7 +73,8 @@ class _EditProductPageState extends State<EditProductPage> {
     subCats = await BlocProvider.of<SubCatsCubit>(context).subCatById(
         widget.product.catId.toString(), widget.product.subCatId.toString());
 
-    if (widget.product.color != null && widget.product.color!.isNotEmpty) {
+    if (widget.product.color!.isNotEmpty) {
+      print('qweqwewqeq');
       colors = await BlocProvider.of<ColorCubit>(context)
           .ColorById(widget.product.color!.first);
     } else {
@@ -87,18 +93,30 @@ class _EditProductPageState extends State<EditProductPage> {
   void initState() {
     CatById();
     // BlocProvider.of<ProductAdminCubit>(context)
-    articulController.text = widget.product.articul.toString();
-    priceController.text = widget.product.price.toString();
-    compoundController.text = widget.product.compound.toString();
-    nameController.text = widget.product.name.toString();
-    countController.text = widget.product.count.toString();
+    articulController.text = widget.product.articul;
+    priceController.text =
+        widget.product.price != null ? widget.product.price.toString() : '0';
+    compoundController.text = widget.product.compound != null
+        ? widget.product.compound.toString()
+        : '0';
+    nameController.text =
+        widget.product.name != null ? widget.product.name.toString() : '';
+    countController.text =
+        widget.product.count != null ? widget.product.count.toString() : '0';
     cat_id = widget.product.catId ?? 0;
     sub_cat_id = widget.product.subCatId ?? 0;
     brand_id = widget.product.brandId ?? 0;
-    heightController.text = widget.product.height.toString();
-    widthController.text = widget.product.width.toString();
-    massaController.text = widget.product.massa.toString();
-    descriptionController.text = widget.product.description.toString();
+    heightController.text =
+        widget.product.height != null ? widget.product.height.toString() : '';
+    widthController.text =
+        widget.product.width != null ? widget.product.width.toString() : '';
+    massaController.text =
+        widget.product.massa != null ? widget.product.massa.toString() : '';
+    descriptionController.text = widget.product.description != null
+        ? widget.product.description.toString()
+        : '';
+    deepController.text =
+        widget.product.deep != null ? widget.product.deep.toString() : '';
 
     super.initState();
   }
@@ -219,13 +237,14 @@ class _EditProductPageState extends State<EditProductPage> {
               ),
               FieldsProductRequest(
                 titleText: 'Цвет ',
-                hintText: colors?.name ?? "",
+                hintText: colors?.name ?? "Выберите цвет",
                 star: true,
                 arrow: true,
                 onPressed: () async {
                   final data = await Get.to(const ColorsAdminPage());
                   if (data != null) {
                     final Cats cat = data;
+                    color_id = cat.id ?? 0;
                     setState(() {});
                     colors = cat;
                   }
@@ -245,11 +264,12 @@ class _EditProductPageState extends State<EditProductPage> {
                 arrow: false,
                 controller: heightController,
               ),
-              const FieldsProductRequest(
+              FieldsProductRequest(
                 titleText: 'Глубина, мм ',
                 hintText: 'Введите глубину',
                 star: true,
                 arrow: false,
+                controller: deepController,
               ),
               FieldsProductRequest(
                 titleText: 'Вес, г ',
@@ -280,6 +300,41 @@ class _EditProductPageState extends State<EditProductPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _image.length != 0
+                        ? SizedBox(
+                            height: 100,
+                            child: ListView.builder(
+                              shrinkWrap: false,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _image.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Stack(children: [
+                                    CircleAvatar(
+                                      backgroundImage: FileImage(
+                                        File(_image[index]!.path),
+                                      ),
+                                      radius: 34,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        _image.removeAt(index);
+                                        setState(() {
+                                          _image;
+                                        });
+                                      },
+                                      child: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ]),
+                                );
+                              },
+                            ),
+                          )
+                        : Container(),
                     const Text(
                       'Формат - jpg, png',
                       style: TextStyle(
@@ -351,6 +406,7 @@ class _EditProductPageState extends State<EditProductPage> {
                   ],
                 ),
               ),
+
               const SizedBox(
                 height: 10,
               ),
@@ -466,6 +522,7 @@ class _EditProductPageState extends State<EditProductPage> {
                   cats?.id.toString() ?? cat_id.toString(),
                   subCats?.id.toString() ?? sub_cat_id.toString(),
                   brand_id.toString(),
+                  colors?.id.toString() ?? color_id.toString(),
                   descriptionController.text,
                   nameController.text,
                   heightController.text,
@@ -474,7 +531,10 @@ class _EditProductPageState extends State<EditProductPage> {
                   widget.product.id.toString(),
                   articulController.text,
                   '',
-                  _image != null ? _image!.path : '');
+                  deepController.text,
+                  _image);
+
+              await BlocProvider.of<ProductAdminCubit>(context).products('');
 
               Navigator.push(
                 context,

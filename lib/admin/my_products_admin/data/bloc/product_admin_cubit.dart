@@ -22,6 +22,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       String catId,
       String subCatId,
       String brandId,
+      String colorId,
       String description,
       String name,
       String height,
@@ -30,7 +31,8 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       String productId,
       String articul,
       String currency,
-      String? image) async {
+      String deep,
+      List<dynamic> image) async {
     try {
       emit(LoadingState());
       final data = await productAdminRepository.update(
@@ -40,6 +42,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
         catId,
         subCatId,
         brandId,
+        colorId,
         description,
         name,
         height,
@@ -48,6 +51,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
         productId,
         articul,
         currency,
+        deep,
         image,
       );
 
@@ -85,6 +89,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       String massa,
       String articul,
       String currency,
+      String deep,
       List<dynamic> image,
       List<optomPriceDto> optom,
       String? video) async {
@@ -104,6 +109,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
           massa,
           articul,
           currency,
+          deep,
           image,
           optom,
           video);
@@ -133,7 +139,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       emit(LoadingState());
       final List<AdminProductsModel> data =
           await productAdminRepository.products(name);
-
+      productsList.clear();
       productsList.addAll(data);
       emit(LoadedState(data));
     } catch (e) {

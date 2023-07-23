@@ -51,6 +51,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
   TextEditingController pointsController = TextEditingController();
   TextEditingController pointsBloggerController = TextEditingController();
   TextEditingController feeController = TextEditingController();
+  TextEditingController deepController = TextEditingController();
 
   List<XFile?> _image = [];
   XFile? _video;
@@ -1165,6 +1166,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   massaController.text,
                   articulController.text,
                   currencyName,
+                  deepController.text,
                   _image,
                   optomCount,
                   _video != null ? _video!.path : null);
