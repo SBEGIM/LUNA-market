@@ -11,6 +11,7 @@ import 'package:haji_market/features/tape/presentation/widgets/tape_card_widget.
 import 'package:shimmer_animation/shimmer_animation.dart';
 import '../data/bloc/tape_state.dart';
 import '../widgets/anim_search_widget.dart';
+
 @RoutePage()
 class TapePage extends StatefulWidget {
   const TapePage({Key? key}) : super(key: key);

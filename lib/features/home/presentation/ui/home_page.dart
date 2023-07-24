@@ -11,7 +11,6 @@ import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart'
     as productAdCubit;
 import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart'
     as productAdState;
-import 'package:haji_market/features/drawer/data/bloc/sub_cats_state.dart';
 import 'package:haji_market/features/drawer/presentation/ui/catalog_page.dart';
 import 'package:haji_market/features/home/data/bloc/banners_cubit.dart'
     as bannerCubit;
@@ -25,8 +24,7 @@ import 'package:haji_market/features/home/data/model/Cats.dart';
 import 'package:haji_market/features/home/presentation/widgets/gridLayout_popular.dart';
 import 'package:haji_market/features/home/presentation/widgets/gridlayout_categor.dart';
 import 'package:haji_market/features/home/presentation/widgets/product_mb_interesting_card.dart';
-import 'package:haji_market/features/home/presentation/widgets/user_agreement_page.dart';
-
+import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../../drawer/data/bloc/product_cubit.dart' as productCubit;
 import '../../../drawer/data/bloc/product_state.dart' as productState;
 import '../../../drawer/data/bloc/sub_cats_cubit.dart' as subCatCubit;
@@ -37,12 +35,10 @@ import '../../../drawer/presentation/ui/sub_catalog_page.dart';
 import '../../../drawer/presentation/widgets/credit_webview.dart';
 import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
 import '../../../drawer/presentation/widgets/product_ad_card.dart';
-import '../../../drawer/presentation/widgets/under_catalog_page.dart';
 import '../../data/bloc/cats_cubit.dart' as catCubit;
 import '../../data/bloc/cats_state.dart' as catState;
 import '../../data/bloc/popular_shops_cubit.dart' as popShopsCubit;
 import '../../data/bloc/popular_shops_state.dart' as popShopsState;
-import '../widgets/product_watching_card.dart';
 import '../widgets/search_product_page.dart';
 
 @RoutePage()
@@ -404,8 +400,32 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             } else {
-              return const SizedBox(
-                  height: 20, width: 20, child: CircularProgressIndicator());
+              return Shimmer(
+                duration: const Duration(seconds: 3), //Default value
+                interval: const Duration(
+                    microseconds: 1), //Default value: Duration(seconds: 0)
+                color: Colors.white, //Default value
+                colorOpacity: 0, //Default value
+                enabled: true, //Default value
+                direction: const ShimmerDirection.fromLTRB(), //Default Value
+                child: Container(
+                  margin: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.grey.withOpacity(0.6),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16,
+                    ),
+                    child: SizedBox(
+                      height: 90,
+                      width: 90,
+                    ),
+                  ),
+                ),
+              );
+              ;
             }
           }),
           const SizedBox(
@@ -535,8 +555,30 @@ class _PopularCatsHompageState extends State<PopularCatsHompage> {
               ),
             );
           } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return Shimmer(
+              duration: const Duration(seconds: 3), //Default value
+              interval: const Duration(
+                  microseconds: 1), //Default value: Duration(seconds: 0)
+              color: Colors.white, //Default value
+              colorOpacity: 0, //Default value
+              enabled: true, //Default value
+              direction: const ShimmerDirection.fromLTRB(), //Default Value
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.grey.withOpacity(0.6),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 16,
+                  ),
+                  child: SizedBox(
+                    height: 90,
+                    width: 90,
+                  ),
+                ),
+              ),
+            );
           }
         });
   }
@@ -626,8 +668,30 @@ class _CatsHomePageState extends State<CatsHomePage> {
               ),
             );
           } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return Shimmer(
+              duration: const Duration(seconds: 3), //Default value
+              interval: const Duration(
+                  microseconds: 1), //Default value: Duration(seconds: 0)
+              color: Colors.white, //Default value
+              colorOpacity: 0, //Default value
+              enabled: true, //Default value
+              direction: const ShimmerDirection.fromLTRB(), //Default Value
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.grey.withOpacity(0.6),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                  ),
+                  child: SizedBox(
+                    height: 196,
+                    width: MediaQuery.of(context).size.width - 32,
+                  ),
+                ),
+              ),
+            );
           }
         });
   }
@@ -698,8 +762,30 @@ class _BannersState extends State<Banners> {
               ),
             );
           } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return Shimmer(
+              duration: const Duration(seconds: 3), //Default value
+              interval: const Duration(
+                  microseconds: 1), //Default value: Duration(seconds: 0)
+              color: Colors.white, //Default value
+              colorOpacity: 0, //Default value
+              enabled: true, //Default value
+              direction: const ShimmerDirection.fromLTRB(), //Default Value
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.grey.withOpacity(0.6),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                  ),
+                  child: SizedBox(
+                    height: 218,
+                    width: MediaQuery.of(context).size.width - 32,
+                  ),
+                ),
+              ),
+            );
           }
         });
   }
@@ -1022,8 +1108,30 @@ class _PopularShopsState extends State<PopularShops> {
               ),
             );
           } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return Shimmer(
+              duration: const Duration(seconds: 3), //Default value
+              interval: const Duration(
+                  microseconds: 1), //Default value: Duration(seconds: 0)
+              color: Colors.white, //Default value
+              colorOpacity: 0, //Default value
+              enabled: true, //Default value
+              direction: const ShimmerDirection.fromLTRB(), //Default Value
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.grey.withOpacity(0.6),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 16,
+                  ),
+                  child: SizedBox(
+                    height: 90,
+                    width: 90,
+                  ),
+                ),
+              ),
+            );
           }
         });
   }
