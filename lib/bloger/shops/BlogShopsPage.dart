@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,7 +9,7 @@ import '../../core/common/constants.dart';
 import '../../features/home/data/bloc/popular_shops_cubit.dart';
 import '../../features/home/data/bloc/popular_shops_state.dart';
 import '../my_products_admin/presentation/ui/shop_products_page.dart';
-
+@RoutePage()
 class BlogShopsPage extends StatefulWidget {
   const BlogShopsPage({super.key});
 

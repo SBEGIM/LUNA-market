@@ -10,8 +10,7 @@ import '../../../../features/home/data/model/Cats.dart';
 class CreateProductPage extends StatefulWidget {
   final Cats cat;
   final Cats subCat;
-  const CreateProductPage({required this.cat, required this.subCat, Key? key})
-      : super(key: key);
+  const CreateProductPage({required this.cat, required this.subCat, Key? key}) : super(key: key);
 
   @override
   State<CreateProductPage> createState() => _CreateProductPageState();
@@ -77,8 +76,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
         ),
         bottomSheet: Container(
           color: Colors.white,
-          padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
           child: InkWell(
             onTap: () async {
               await BlocProvider.of<ProductAdminCubit>(context).store(
@@ -95,6 +93,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 articulController.text,
                 'currency',
                 '',
+                '',
                 [],
                 [],
                 '',
@@ -109,10 +108,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 padding: const EdgeInsets.all(16),
                 child: const Text(
                   'Сохранить',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                   textAlign: TextAlign.center,
                 )),
           ),
@@ -502,18 +498,12 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
             children: [
               Text(
                 widget.titleText,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: AppColors.kGray900),
+                style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
               ),
               widget.star != true
                   ? const Text(
                       '*',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: Colors.red),
+                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Colors.red),
                     )
                   : Container()
             ],
@@ -522,8 +512,7 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
             height: 4,
           ),
           Container(
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: Padding(
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
@@ -533,9 +522,7 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                   border: InputBorder.none,
                   hintText: widget.hintText,
                   hintStyle: const TextStyle(
-                      color: Color.fromRGBO(194, 197, 200, 1),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
+                      color: Color.fromRGBO(194, 197, 200, 1), fontSize: 16, fontWeight: FontWeight.w400),
                   enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                     // borderRadius: BorderRadius.circular(3),
@@ -543,8 +530,7 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                   suffixIcon: IconButton(
                     onPressed: widget.onPressed,
                     icon: widget.arrow == true
-                        ? SvgPicture.asset('assets/icons/back_menu.svg',
-                            color: Colors.grey)
+                        ? SvgPicture.asset('assets/icons/back_menu.svg', color: Colors.grey)
                         : SvgPicture.asset(''),
                   ),
                 ),

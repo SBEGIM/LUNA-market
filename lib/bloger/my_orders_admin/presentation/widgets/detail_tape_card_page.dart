@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:haji_market/admin/admin_app/bloc/admin_navigation_cubit/admin_navigation_cubit.dart'
     as navCubit;
 import 'package:haji_market/admin/tape_admin/data/cubit/tape_admin_cubit.dart'
@@ -21,12 +22,12 @@ import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dar
 import 'package:share_plus/share_plus.dart';
 
 //import 'package:video_player/video_player.dart';
-
+@RoutePage()
 class BloggerDetailTapeCardPage extends StatefulWidget {
   final int? index;
-  final String? shop_name;
+  final String? shopName;
   const BloggerDetailTapeCardPage(
-      {required this.index, required this.shop_name, Key? key})
+      {required this.index, required this.shopName, Key? key})
       : super(key: key);
 
   @override

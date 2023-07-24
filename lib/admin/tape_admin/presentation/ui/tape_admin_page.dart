@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/admin/tape_admin/data/cubit/tape_admin_state.dart';
@@ -9,7 +10,7 @@ import '../../../../bloger/my_orders_admin/presentation/widgets/tape_card_widget
 import '../../data/cubit/tape_admin_cubit.dart';
 
 // import '../widgets/grid_tape_list.dart';
-
+@RoutePage()
 class TapeAdminPage extends StatefulWidget {
   const TapeAdminPage({Key? key}) : super(key: key);
 

@@ -1,6 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:haji_market/admin/tape_admin/presentation/ui/tape_admin_page.dart';
+import 'package:haji_market/bloger/my_orders_admin/presentation/widgets/detail_tape_card_page.dart';
+import 'package:haji_market/bloger/profile_admin/presentation/ui/blogger_profile_page.dart';
 import 'package:haji_market/bloger/profile_admin/presentation/ui/blogger_tape_profile_page.dart';
+import 'package:haji_market/bloger/shops/BlogShopsPage.dart';
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:haji_market/features/basket/presentation/ui/basket_page.dart';
 import 'package:haji_market/features/drawer/presentation/ui/drawer_home.dart';
@@ -24,6 +28,7 @@ class AppRouter extends _$AppRouter {
           page: LauncherRoute.page,
           initial: true,
           children: [
+            /// For User
             AutoRoute(
               page: BaseTapeTab.page,
               children: [
@@ -43,6 +48,16 @@ class AppRouter extends _$AppRouter {
             AutoRoute(page: FavoriteRoute.page),
             AutoRoute(page: BasketRoute.page),
             AutoRoute(page: DrawerRoute.page),
+
+            /// For Blogger
+            AutoRoute(page: BaseAdminTapeTab.page, children: [
+              AutoRoute(page: TapeAdminRoute.page, initial: true),
+              AutoRoute(page: BloggerDetailTapeCardRoute.page),
+            ]),
+            AutoRoute(page: BlogShopsRoute.page),
+            AutoRoute(page: ProfileBloggerRoute.page)
+
+            ///For Admin
           ],
         ),
       ];
@@ -53,22 +68,27 @@ class BaseTapePage extends AutoRouter {
   const BaseTapePage({super.key});
 }
 
-@RoutePage(name: 'BaseHomeTab')
-class BaseHomePage extends AutoRouter {
-  const BaseHomePage({super.key});
+@RoutePage(name: 'BaseAdminTapeTab')
+class BaseAdminTapePage extends AutoRouter {
+  const BaseAdminTapePage({super.key});
 }
 
-@RoutePage(name: 'BaseBasketTab')
-class BaseBasketPage extends AutoRouter {
-  const BaseBasketPage({super.key});
-}
+// @RoutePage(name: 'BaseHomeTab')
+// class BaseHomePage extends AutoRouter {
+//   const BaseHomePage({super.key});
+// }
 
-@RoutePage(name: 'BaseFavoriteTab')
-class BaseFavoritePage extends AutoRouter {
-  const BaseFavoritePage({super.key});
-}
+// @RoutePage(name: 'BaseBasketTab')
+// class BaseBasketPage extends AutoRouter {
+//   const BaseBasketPage({super.key});
+// }
 
-@RoutePage(name: 'BaseDrawerTab')
-class BaseDrawerPage extends AutoRouter {
-  const BaseDrawerPage({super.key});
-}
+// @RoutePage(name: 'BaseFavoriteTab')
+// class BaseFavoritePage extends AutoRouter {
+//   const BaseFavoritePage({super.key});
+// }
+
+// @RoutePage(name: 'BaseDrawerTab')
+// class BaseDrawerPage extends AutoRouter {
+//   const BaseDrawerPage({super.key});
+// }

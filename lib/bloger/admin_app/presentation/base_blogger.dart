@@ -144,7 +144,7 @@ class _BaseBloggerState extends State<BaseBlogger> {
           } else if (state is DetailTapeAdminState) {
             return BloggerDetailTapeCardPage(
               index: state.index,
-              shop_name: state.name,
+              shopName: state.name,
             );
           } else if (state is ProfileState) {
             return const ProfileBloggerPage();

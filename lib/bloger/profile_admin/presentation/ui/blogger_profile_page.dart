@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,7 +12,7 @@ import '../data/bloc/profile_statics_blogger_cubit.dart';
 import '../data/bloc/profile_statics_blogger_state.dart';
 import '../widgets/reqirect_profile_page.dart';
 import 'blogger_cards_page.dart';
-
+@RoutePage()
 class ProfileBloggerPage extends StatefulWidget {
   const ProfileBloggerPage({Key? key}) : super(key: key);
 

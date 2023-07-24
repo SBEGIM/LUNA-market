@@ -15,6 +15,29 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    TapeAdminRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const TapeAdminPage(),
+      );
+    },
+    BloggerDetailTapeCardRoute.name: (routeData) {
+      final args = routeData.argsAs<BloggerDetailTapeCardRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: BloggerDetailTapeCardPage(
+          index: args.index,
+          shopName: args.shopName,
+          key: args.key,
+        ),
+      );
+    },
+    ProfileBloggerRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ProfileBloggerPage(),
+      );
+    },
     ProfileBloggerTapeRoute.name: (routeData) {
       final args = routeData.argsAs<ProfileBloggerTapeRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -26,6 +49,12 @@ abstract class _$AppRouter extends RootStackRouter {
           bloggerAvatar: args.bloggerAvatar,
           key: args.key,
         )),
+      );
+    },
+    BlogShopsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const BlogShopsPage(),
       );
     },
     LauncherRoute.name: (routeData) {
@@ -40,28 +69,10 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const BaseTapePage(),
       );
     },
-    BaseHomeTab.name: (routeData) {
+    BaseAdminTapeTab.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const BaseHomePage(),
-      );
-    },
-    BaseBasketTab.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const BaseBasketPage(),
-      );
-    },
-    BaseFavoriteTab.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const BaseFavoritePage(),
-      );
-    },
-    BaseDrawerTab.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const BaseDrawerPage(),
+        child: const BaseAdminTapePage(),
       );
     },
     ViewAuthRegisterRoute.name: (routeData) {
@@ -126,6 +137,78 @@ abstract class _$AppRouter extends RootStackRouter {
 }
 
 /// generated route for
+/// [TapeAdminPage]
+class TapeAdminRoute extends PageRouteInfo<void> {
+  const TapeAdminRoute({List<PageRouteInfo>? children})
+      : super(
+          TapeAdminRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TapeAdminRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [BloggerDetailTapeCardPage]
+class BloggerDetailTapeCardRoute
+    extends PageRouteInfo<BloggerDetailTapeCardRouteArgs> {
+  BloggerDetailTapeCardRoute({
+    required int? index,
+    required String? shopName,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          BloggerDetailTapeCardRoute.name,
+          args: BloggerDetailTapeCardRouteArgs(
+            index: index,
+            shopName: shopName,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'BloggerDetailTapeCardRoute';
+
+  static const PageInfo<BloggerDetailTapeCardRouteArgs> page =
+      PageInfo<BloggerDetailTapeCardRouteArgs>(name);
+}
+
+class BloggerDetailTapeCardRouteArgs {
+  const BloggerDetailTapeCardRouteArgs({
+    required this.index,
+    required this.shopName,
+    this.key,
+  });
+
+  final int? index;
+
+  final String? shopName;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'BloggerDetailTapeCardRouteArgs{index: $index, shopName: $shopName, key: $key}';
+  }
+}
+
+/// generated route for
+/// [ProfileBloggerPage]
+class ProfileBloggerRoute extends PageRouteInfo<void> {
+  const ProfileBloggerRoute({List<PageRouteInfo>? children})
+      : super(
+          ProfileBloggerRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileBloggerRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [ProfileBloggerTapePage]
 class ProfileBloggerTapeRoute
     extends PageRouteInfo<ProfileBloggerTapeRouteArgs> {
@@ -175,6 +258,20 @@ class ProfileBloggerTapeRouteArgs {
 }
 
 /// generated route for
+/// [BlogShopsPage]
+class BlogShopsRoute extends PageRouteInfo<void> {
+  const BlogShopsRoute({List<PageRouteInfo>? children})
+      : super(
+          BlogShopsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BlogShopsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [LauncherApp]
 class LauncherRoute extends PageRouteInfo<void> {
   const LauncherRoute({List<PageRouteInfo>? children})
@@ -203,57 +300,15 @@ class BaseTapeTab extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [BaseHomePage]
-class BaseHomeTab extends PageRouteInfo<void> {
-  const BaseHomeTab({List<PageRouteInfo>? children})
+/// [BaseAdminTapePage]
+class BaseAdminTapeTab extends PageRouteInfo<void> {
+  const BaseAdminTapeTab({List<PageRouteInfo>? children})
       : super(
-          BaseHomeTab.name,
+          BaseAdminTapeTab.name,
           initialChildren: children,
         );
 
-  static const String name = 'BaseHomeTab';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [BaseBasketPage]
-class BaseBasketTab extends PageRouteInfo<void> {
-  const BaseBasketTab({List<PageRouteInfo>? children})
-      : super(
-          BaseBasketTab.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'BaseBasketTab';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [BaseFavoritePage]
-class BaseFavoriteTab extends PageRouteInfo<void> {
-  const BaseFavoriteTab({List<PageRouteInfo>? children})
-      : super(
-          BaseFavoriteTab.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'BaseFavoriteTab';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [BaseDrawerPage]
-class BaseDrawerTab extends PageRouteInfo<void> {
-  const BaseDrawerTab({List<PageRouteInfo>? children})
-      : super(
-          BaseDrawerTab.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'BaseDrawerTab';
+  static const String name = 'BaseAdminTapeTab';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
