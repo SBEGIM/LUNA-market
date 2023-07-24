@@ -15,70 +15,28 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    ChatAdminRoute.name: (routeData) {
+    HomeRoute.name: (routeData) {
+      final args =
+          routeData.argsAs<HomeRouteArgs>(orElse: () => const HomeRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const ChatAdminPage(),
-      );
-    },
-    MyOrdersAdminRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const MyOrdersAdminPage(),
-      );
-    },
-    MyProductsAdminRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const MyProductsAdminPage(),
-      );
-    },
-    ProfileAdminRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ProfileAdminPage(),
-      );
-    },
-    TapeAdminRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const TapeAdminPage(),
-      );
-    },
-    BloggerDetailTapeCardRoute.name: (routeData) {
-      final args = routeData.argsAs<BloggerDetailTapeCardRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: BloggerDetailTapeCardPage(
-          index: args.index,
-          shopName: args.shopName,
+        child: HomePage(
+          globalKey: args.globalKey,
+          drawerCallback: args.drawerCallback,
           key: args.key,
         ),
       );
     },
-    ProfileBloggerRoute.name: (routeData) {
+    DrawerRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const ProfileBloggerPage(),
+        child: const DrawerPage(),
       );
     },
-    ProfileBloggerTapeRoute.name: (routeData) {
-      final args = routeData.argsAs<ProfileBloggerTapeRouteArgs>();
+    BasketRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: WrappedRoute(
-            child: ProfileBloggerTapePage(
-          bloggerId: args.bloggerId,
-          bloggerName: args.bloggerName,
-          bloggerAvatar: args.bloggerAvatar,
-          key: args.key,
-        )),
-      );
-    },
-    BlogShopsRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const BlogShopsPage(),
+        child: const BasketPage(),
       );
     },
     LauncherRoute.name: (routeData) {
@@ -110,34 +68,16 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    BasketRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const BasketPage(),
-      );
-    },
-    DrawerRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const DrawerPage(),
-      );
-    },
     FavoriteRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const FavoritePage(),
       );
     },
-    HomeRoute.name: (routeData) {
-      final args =
-          routeData.argsAs<HomeRouteArgs>(orElse: () => const HomeRouteArgs());
+    TapeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: HomePage(
-          globalKey: args.globalKey,
-          drawerCallback: args.drawerCallback,
-          key: args.key,
-        ),
+        child: const TapePage(),
       );
     },
     DetailTapeCardRoute.name: (routeData) {
@@ -151,10 +91,70 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    TapeRoute.name: (routeData) {
+    ProfileAdminRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const TapePage(),
+        child: const ProfileAdminPage(),
+      );
+    },
+    ChatAdminRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ChatAdminPage(),
+      );
+    },
+    MyOrdersAdminRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const MyOrdersAdminPage(),
+      );
+    },
+    MyProductsAdminRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const MyProductsAdminPage(),
+      );
+    },
+    TapeAdminRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const TapeAdminPage(),
+      );
+    },
+    ProfileBloggerTapeRoute.name: (routeData) {
+      final args = routeData.argsAs<ProfileBloggerTapeRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: WrappedRoute(
+            child: ProfileBloggerTapePage(
+          bloggerId: args.bloggerId,
+          bloggerName: args.bloggerName,
+          bloggerAvatar: args.bloggerAvatar,
+          key: args.key,
+        )),
+      );
+    },
+    ProfileBloggerRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ProfileBloggerPage(),
+      );
+    },
+    BloggerDetailTapeCardRoute.name: (routeData) {
+      final args = routeData.argsAs<BloggerDetailTapeCardRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: BloggerDetailTapeCardPage(
+          index: args.index,
+          shopName: args.shopName,
+          key: args.key,
+        ),
+      );
+    },
+    BlogShopsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const BlogShopsPage(),
       );
     },
     TapeBloggerRoute.name: (routeData) {
@@ -167,192 +167,71 @@ abstract class _$AppRouter extends RootStackRouter {
 }
 
 /// generated route for
-/// [ChatAdminPage]
-class ChatAdminRoute extends PageRouteInfo<void> {
-  const ChatAdminRoute({List<PageRouteInfo>? children})
-      : super(
-          ChatAdminRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'ChatAdminRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [MyOrdersAdminPage]
-class MyOrdersAdminRoute extends PageRouteInfo<void> {
-  const MyOrdersAdminRoute({List<PageRouteInfo>? children})
-      : super(
-          MyOrdersAdminRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'MyOrdersAdminRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [MyProductsAdminPage]
-class MyProductsAdminRoute extends PageRouteInfo<void> {
-  const MyProductsAdminRoute({List<PageRouteInfo>? children})
-      : super(
-          MyProductsAdminRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'MyProductsAdminRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [ProfileAdminPage]
-class ProfileAdminRoute extends PageRouteInfo<void> {
-  const ProfileAdminRoute({List<PageRouteInfo>? children})
-      : super(
-          ProfileAdminRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'ProfileAdminRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [TapeAdminPage]
-class TapeAdminRoute extends PageRouteInfo<void> {
-  const TapeAdminRoute({List<PageRouteInfo>? children})
-      : super(
-          TapeAdminRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'TapeAdminRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [BloggerDetailTapeCardPage]
-class BloggerDetailTapeCardRoute
-    extends PageRouteInfo<BloggerDetailTapeCardRouteArgs> {
-  BloggerDetailTapeCardRoute({
-    required int? index,
-    required String? shopName,
+/// [HomePage]
+class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
+  HomeRoute({
+    GlobalKey<ScaffoldState>? globalKey,
+    void Function()? drawerCallback,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
-          BloggerDetailTapeCardRoute.name,
-          args: BloggerDetailTapeCardRouteArgs(
-            index: index,
-            shopName: shopName,
+          HomeRoute.name,
+          args: HomeRouteArgs(
+            globalKey: globalKey,
+            drawerCallback: drawerCallback,
             key: key,
           ),
           initialChildren: children,
         );
 
-  static const String name = 'BloggerDetailTapeCardRoute';
+  static const String name = 'HomeRoute';
 
-  static const PageInfo<BloggerDetailTapeCardRouteArgs> page =
-      PageInfo<BloggerDetailTapeCardRouteArgs>(name);
+  static const PageInfo<HomeRouteArgs> page = PageInfo<HomeRouteArgs>(name);
 }
 
-class BloggerDetailTapeCardRouteArgs {
-  const BloggerDetailTapeCardRouteArgs({
-    required this.index,
-    required this.shopName,
+class HomeRouteArgs {
+  const HomeRouteArgs({
+    this.globalKey,
+    this.drawerCallback,
     this.key,
   });
 
-  final int? index;
+  final GlobalKey<ScaffoldState>? globalKey;
 
-  final String? shopName;
+  final void Function()? drawerCallback;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'BloggerDetailTapeCardRouteArgs{index: $index, shopName: $shopName, key: $key}';
+    return 'HomeRouteArgs{globalKey: $globalKey, drawerCallback: $drawerCallback, key: $key}';
   }
 }
 
 /// generated route for
-/// [ProfileBloggerPage]
-class ProfileBloggerRoute extends PageRouteInfo<void> {
-  const ProfileBloggerRoute({List<PageRouteInfo>? children})
+/// [DrawerPage]
+class DrawerRoute extends PageRouteInfo<void> {
+  const DrawerRoute({List<PageRouteInfo>? children})
       : super(
-          ProfileBloggerRoute.name,
+          DrawerRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'ProfileBloggerRoute';
+  static const String name = 'DrawerRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [ProfileBloggerTapePage]
-class ProfileBloggerTapeRoute
-    extends PageRouteInfo<ProfileBloggerTapeRouteArgs> {
-  ProfileBloggerTapeRoute({
-    required int bloggerId,
-    required String bloggerName,
-    required String bloggerAvatar,
-    Key? key,
-    List<PageRouteInfo>? children,
-  }) : super(
-          ProfileBloggerTapeRoute.name,
-          args: ProfileBloggerTapeRouteArgs(
-            bloggerId: bloggerId,
-            bloggerName: bloggerName,
-            bloggerAvatar: bloggerAvatar,
-            key: key,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'ProfileBloggerTapeRoute';
-
-  static const PageInfo<ProfileBloggerTapeRouteArgs> page =
-      PageInfo<ProfileBloggerTapeRouteArgs>(name);
-}
-
-class ProfileBloggerTapeRouteArgs {
-  const ProfileBloggerTapeRouteArgs({
-    required this.bloggerId,
-    required this.bloggerName,
-    required this.bloggerAvatar,
-    this.key,
-  });
-
-  final int bloggerId;
-
-  final String bloggerName;
-
-  final String bloggerAvatar;
-
-  final Key? key;
-
-  @override
-  String toString() {
-    return 'ProfileBloggerTapeRouteArgs{bloggerId: $bloggerId, bloggerName: $bloggerName, bloggerAvatar: $bloggerAvatar, key: $key}';
-  }
-}
-
-/// generated route for
-/// [BlogShopsPage]
-class BlogShopsRoute extends PageRouteInfo<void> {
-  const BlogShopsRoute({List<PageRouteInfo>? children})
+/// [BasketPage]
+class BasketRoute extends PageRouteInfo<void> {
+  const BasketRoute({List<PageRouteInfo>? children})
       : super(
-          BlogShopsRoute.name,
+          BasketRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'BlogShopsRoute';
+  static const String name = 'BasketRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -438,34 +317,6 @@ class ViewAuthRegisterRouteArgs {
 }
 
 /// generated route for
-/// [BasketPage]
-class BasketRoute extends PageRouteInfo<void> {
-  const BasketRoute({List<PageRouteInfo>? children})
-      : super(
-          BasketRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'BasketRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [DrawerPage]
-class DrawerRoute extends PageRouteInfo<void> {
-  const DrawerRoute({List<PageRouteInfo>? children})
-      : super(
-          DrawerRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'DrawerRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
 /// [FavoritePage]
 class FavoriteRoute extends PageRouteInfo<void> {
   const FavoriteRoute({List<PageRouteInfo>? children})
@@ -480,45 +331,17 @@ class FavoriteRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [HomePage]
-class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
-  HomeRoute({
-    GlobalKey<ScaffoldState>? globalKey,
-    void Function()? drawerCallback,
-    Key? key,
-    List<PageRouteInfo>? children,
-  }) : super(
-          HomeRoute.name,
-          args: HomeRouteArgs(
-            globalKey: globalKey,
-            drawerCallback: drawerCallback,
-            key: key,
-          ),
+/// [TapePage]
+class TapeRoute extends PageRouteInfo<void> {
+  const TapeRoute({List<PageRouteInfo>? children})
+      : super(
+          TapeRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'HomeRoute';
+  static const String name = 'TapeRoute';
 
-  static const PageInfo<HomeRouteArgs> page = PageInfo<HomeRouteArgs>(name);
-}
-
-class HomeRouteArgs {
-  const HomeRouteArgs({
-    this.globalKey,
-    this.drawerCallback,
-    this.key,
-  });
-
-  final GlobalKey<ScaffoldState>? globalKey;
-
-  final void Function()? drawerCallback;
-
-  final Key? key;
-
-  @override
-  String toString() {
-    return 'HomeRouteArgs{globalKey: $globalKey, drawerCallback: $drawerCallback, key: $key}';
-  }
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -565,15 +388,192 @@ class DetailTapeCardRouteArgs {
 }
 
 /// generated route for
-/// [TapePage]
-class TapeRoute extends PageRouteInfo<void> {
-  const TapeRoute({List<PageRouteInfo>? children})
+/// [ProfileAdminPage]
+class ProfileAdminRoute extends PageRouteInfo<void> {
+  const ProfileAdminRoute({List<PageRouteInfo>? children})
       : super(
-          TapeRoute.name,
+          ProfileAdminRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'TapeRoute';
+  static const String name = 'ProfileAdminRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ChatAdminPage]
+class ChatAdminRoute extends PageRouteInfo<void> {
+  const ChatAdminRoute({List<PageRouteInfo>? children})
+      : super(
+          ChatAdminRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ChatAdminRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [MyOrdersAdminPage]
+class MyOrdersAdminRoute extends PageRouteInfo<void> {
+  const MyOrdersAdminRoute({List<PageRouteInfo>? children})
+      : super(
+          MyOrdersAdminRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MyOrdersAdminRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [MyProductsAdminPage]
+class MyProductsAdminRoute extends PageRouteInfo<void> {
+  const MyProductsAdminRoute({List<PageRouteInfo>? children})
+      : super(
+          MyProductsAdminRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MyProductsAdminRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [TapeAdminPage]
+class TapeAdminRoute extends PageRouteInfo<void> {
+  const TapeAdminRoute({List<PageRouteInfo>? children})
+      : super(
+          TapeAdminRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TapeAdminRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ProfileBloggerTapePage]
+class ProfileBloggerTapeRoute
+    extends PageRouteInfo<ProfileBloggerTapeRouteArgs> {
+  ProfileBloggerTapeRoute({
+    required int bloggerId,
+    required String bloggerName,
+    required String bloggerAvatar,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ProfileBloggerTapeRoute.name,
+          args: ProfileBloggerTapeRouteArgs(
+            bloggerId: bloggerId,
+            bloggerName: bloggerName,
+            bloggerAvatar: bloggerAvatar,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileBloggerTapeRoute';
+
+  static const PageInfo<ProfileBloggerTapeRouteArgs> page =
+      PageInfo<ProfileBloggerTapeRouteArgs>(name);
+}
+
+class ProfileBloggerTapeRouteArgs {
+  const ProfileBloggerTapeRouteArgs({
+    required this.bloggerId,
+    required this.bloggerName,
+    required this.bloggerAvatar,
+    this.key,
+  });
+
+  final int bloggerId;
+
+  final String bloggerName;
+
+  final String bloggerAvatar;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ProfileBloggerTapeRouteArgs{bloggerId: $bloggerId, bloggerName: $bloggerName, bloggerAvatar: $bloggerAvatar, key: $key}';
+  }
+}
+
+/// generated route for
+/// [ProfileBloggerPage]
+class ProfileBloggerRoute extends PageRouteInfo<void> {
+  const ProfileBloggerRoute({List<PageRouteInfo>? children})
+      : super(
+          ProfileBloggerRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileBloggerRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [BloggerDetailTapeCardPage]
+class BloggerDetailTapeCardRoute
+    extends PageRouteInfo<BloggerDetailTapeCardRouteArgs> {
+  BloggerDetailTapeCardRoute({
+    required int? index,
+    required String? shopName,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          BloggerDetailTapeCardRoute.name,
+          args: BloggerDetailTapeCardRouteArgs(
+            index: index,
+            shopName: shopName,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'BloggerDetailTapeCardRoute';
+
+  static const PageInfo<BloggerDetailTapeCardRouteArgs> page =
+      PageInfo<BloggerDetailTapeCardRouteArgs>(name);
+}
+
+class BloggerDetailTapeCardRouteArgs {
+  const BloggerDetailTapeCardRouteArgs({
+    required this.index,
+    required this.shopName,
+    this.key,
+  });
+
+  final int? index;
+
+  final String? shopName;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'BloggerDetailTapeCardRouteArgs{index: $index, shopName: $shopName, key: $key}';
+  }
+}
+
+/// generated route for
+/// [BlogShopsPage]
+class BlogShopsRoute extends PageRouteInfo<void> {
+  const BlogShopsRoute({List<PageRouteInfo>? children})
+      : super(
+          BlogShopsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BlogShopsRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

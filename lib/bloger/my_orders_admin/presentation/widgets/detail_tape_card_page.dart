@@ -1,25 +1,16 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:haji_market/admin/admin_app/bloc/admin_navigation_cubit/admin_navigation_cubit.dart'
-    as navCubit;
-import 'package:haji_market/admin/tape_admin/data/cubit/tape_admin_cubit.dart'
-    as tapeCubit;
-import 'package:haji_market/admin/tape_admin/data/model/TapeAdminModel.dart';
-import '../../../../admin/tape_admin/data/cubit/tape_admin_state.dart'
-    as tapeState;
+import 'package:haji_market/bloger/tape/data/cubit/tape_blogger_state.dart';
+import 'package:haji_market/bloger/tape/data/model/TapeBloggerModel.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
-import 'package:haji_market/features/chat/presentation/chat_page.dart';
-import 'package:haji_market/features/home/data/model/Cats.dart';
-import 'package:haji_market/features/tape/presentation/data/bloc/subs_cubit.dart';
-import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dart';
-import 'package:share_plus/share_plus.dart';
+
+import '../../../tape/data/cubit/tape_blogger_cubit.dart';
 
 //import 'package:video_player/video_player.dart';
 @RoutePage()
@@ -70,8 +61,12 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
           leading: Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: CustomBackButton(onTap: () {
-              BlocProvider.of<navCubit.AdminNavigationCubit>(context)
-                  .emit(const navCubit.AdminNavigationState.tapeAdmin());
+              context.router.pop();
+
+              //Get.back();
+
+              // BlocProvider.of<navCubit.AdminNavigationCubit>(context)
+              //     .emit(const navCubit.AdminNavigationState.tapeAdmin());
             }),
           ),
           // toolbarHeight: 26,
@@ -191,10 +186,10 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
           //   )
           // : null,
         ),
-        body: BlocConsumer<tapeCubit.TapeAdminCubit, tapeState.TapeAdminState>(
+        body: BlocConsumer<TapeBloggerCubit, TapeBloggerState>(
             listener: (context, state) {},
             builder: (context, state) {
-              if (state is tapeState.ErrorState) {
+              if (state is ErrorState) {
                 return Center(
                   child: Text(
                     state.message,
@@ -202,13 +197,13 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                   ),
                 );
               }
-              if (state is tapeState.LoadingState) {
+              if (state is LoadingState) {
                 return const Center(
                     child:
                         CircularProgressIndicator(color: Colors.indigoAccent));
               }
 
-              if (state is tapeState.LoadedState) {
+              if (state is LoadedState) {
                 return PageView.builder(
                   scrollDirection: Axis.vertical,
                   controller: controller,
@@ -405,7 +400,7 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
 }
 
 class Videos extends StatefulWidget {
-  final TapeAdminModel tape;
+  final TapeBloggerModel tape;
   const Videos({required this.tape, super.key});
 
   @override

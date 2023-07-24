@@ -16,7 +16,8 @@ class BaseBloggerNew extends StatefulWidget {
   _BaseBloggerNewState createState() => _BaseBloggerNewState();
 }
 
-class _BaseBloggerNewState extends State<BaseBloggerNew> with TickerProviderStateMixin {
+class _BaseBloggerNewState extends State<BaseBloggerNew>
+    with TickerProviderStateMixin {
   TabController? tabController;
   int? previousIndex;
 
@@ -41,10 +42,7 @@ class _BaseBloggerNewState extends State<BaseBloggerNew> with TickerProviderStat
       backgroundColor: tabController?.index != 1 ? Colors.white : null,
       extendBody: true,
       transitionBuilder: (context, child, animation) {
-        return SafeArea(
-          bottom: false,
-          child: child,
-        );
+        return child;
       },
       // floatingActionButton: FloatingActionButton(onPressed: () {
       //   AutoTabsRouter.of(context).setActiveIndex(2);
@@ -65,7 +63,8 @@ class _BaseBloggerNewState extends State<BaseBloggerNew> with TickerProviderStat
           elevation: 4,
           showSelectedLabels: true,
           showUnselectedLabels: true,
-          backgroundColor: tabsRouter.activeIndex == 1 ? Colors.transparent : Colors.white,
+          backgroundColor:
+              tabsRouter.activeIndex == 1 ? Colors.transparent : Colors.white,
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(

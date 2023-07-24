@@ -43,10 +43,7 @@ class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
       backgroundColor: tabController?.index != 0 ? Colors.white : null,
       extendBody: true,
       transitionBuilder: (context, child, animation) {
-        return SafeArea(
-          bottom: false,
-          child: child,
-        );
+        return child;
       },
       // floatingActionButton: FloatingActionButton(onPressed: () {
       //   AutoTabsRouter.of(context).setActiveIndex(2);
@@ -67,7 +64,8 @@ class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
           elevation: 4,
           showSelectedLabels: true,
           showUnselectedLabels: true,
-          backgroundColor: tabsRouter.activeIndex == 0 ? Colors.transparent : Colors.white,
+          backgroundColor:
+              tabsRouter.activeIndex == 0 ? Colors.transparent : Colors.white,
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(

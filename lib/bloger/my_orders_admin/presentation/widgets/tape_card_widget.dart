@@ -60,7 +60,8 @@ class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
         ),
         InkWell(
           onTap: () {
-            context.router.push(BloggerDetailTapeCardRoute(index: widget.index,shopName: widget.tape.shop?.name??''));
+            context.router.push(BloggerDetailTapeCardRoute(
+                index: widget.index, shopName: widget.tape.shop?.name ?? ''));
             // BlocProvider.of<AdminNavigationCubit>(context).emit(
             //     DetailTapeAdminState(widget.index, widget.tape.shop!.name!));
             // Navigator.push(
