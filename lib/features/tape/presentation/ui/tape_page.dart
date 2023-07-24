@@ -3,16 +3,12 @@ import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart';
 import 'package:haji_market/features/tape/presentation/widgets/tape_card_widget.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
-
-import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
 import '../data/bloc/tape_state.dart';
 import '../widgets/anim_search_widget.dart';
 @RoutePage()
@@ -200,7 +196,7 @@ class _TapePageState extends State<TapePage> {
                         CircularProgressIndicator(color: Colors.indigoAccent));
               }
               if (state is NoDataState) {
-                return Container(
+                return SizedBox(
                   width: MediaQuery.of(context).size.height,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -232,7 +228,6 @@ class _TapePageState extends State<TapePage> {
                 return GridView.builder(
                   cacheExtent: 10000,
                   padding: const EdgeInsets.all(1),
-
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 150,
                     childAspectRatio: 1 / 2,

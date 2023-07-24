@@ -1,20 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/edit_product_page.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/show_alert_add_widget.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/statistics_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/features/basket/presentation/widgets/show_alert_edit_widget.dart';
 
-import '../../../../core/common/constants.dart';
+import '../../../drawer/data/bloc/address_cubit.dart';
 
-Future<dynamic> showAlertEditDestroyWidget(BuildContext context) async {
+Future<dynamic> showAlertEditDestroyWidget(BuildContext context, int id,
+    country, city, street, home, floor, porch, room) async {
   return showCupertinoModalPopup(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
       actions: <Widget>[
         CupertinoActionSheetAction(
-          child: Row(
+          child: const Row(
             children: [
               Icon(
                 Icons.create,
@@ -22,9 +20,9 @@ Future<dynamic> showAlertEditDestroyWidget(BuildContext context) async {
                 size: 24.0,
               ),
               SizedBox(width: 16),
-              Container(
+              SizedBox(
                 width: 270,
-                child: const Text(
+                child: Text(
                   'Редактировать',
                   style: TextStyle(
                       color: Colors.black,
@@ -37,29 +35,23 @@ Future<dynamic> showAlertEditDestroyWidget(BuildContext context) async {
           ),
           onPressed: () {
             // GetStorage().write('basket_address_box', 1);
-            Navigator.pop(context);
-            showAlertEditWidget(context);
+            // Navigator.pop(context);
+            showAlertEditWidget(
+                context, id, country, city, street, home, floor, porch, room);
           },
         ),
         CupertinoActionSheetAction(
-          child: Row(
+          child: const Row(
             children: [
-              GestureDetector(
-                onTap: () {
-                  // GetStorage().write('basket_address_box', 1);
-                  Navigator.pop(context);
-                  showAlertEditWidget(context);
-                },
-                child: Icon(
-                  Icons.delete,
-                  color: Colors.red,
-                  size: 24.0,
-                ),
+              Icon(
+                Icons.delete,
+                color: Colors.red,
+                size: 24.0,
               ),
               SizedBox(width: 16),
-              Container(
+              SizedBox(
                 width: 270,
-                child: const Text(
+                child: Text(
                   'Удалить',
                   style: TextStyle(
                       color: Colors.black,
@@ -70,7 +62,10 @@ Future<dynamic> showAlertEditDestroyWidget(BuildContext context) async {
               ),
             ],
           ),
-          onPressed: () {
+          onPressed: () async {
+            print('delete');
+            await BlocProvider.of<AddressCubit>(context).delete(id);
+            Navigator.pop(context);
             // showAlertAddWidget(context, product);
           },
         ),

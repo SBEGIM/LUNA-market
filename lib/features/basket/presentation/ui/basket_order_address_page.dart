@@ -342,45 +342,11 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                           ),
                           const SizedBox(height: 8),
                           GestureDetector(
-                            onTap: () {
+                            onTap: () async {
                               //  showAlertAddressWidget(context);
-
-                              if (GetStorage().read('name') !=
-                                  'Не авторизированный') {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => EditProfilePage(
-                                            name: GetStorage().read('name'),
-                                            phone: GetStorage().read('phone') ??
-                                                '',
-                                            gender:
-                                                GetStorage().read('gender') ??
-                                                    '',
-                                            birthday:
-                                                GetStorage().read('birthday') ??
-                                                    '',
-                                            country:
-                                                GetStorage().read('country') ??
-                                                    '',
-                                            city:
-                                                GetStorage().read('city') ?? '',
-                                            street:
-                                                GetStorage().read('street') ??
-                                                    '',
-                                            home:
-                                                GetStorage().read('home') ?? '',
-                                            porch: GetStorage().read('porch') ??
-                                                '',
-                                            floor: GetStorage().read('floor') ??
-                                                '',
-                                            room:
-                                                GetStorage().read('room') ?? '',
-                                            email: GetStorage().read('email') ??
-                                                '',
-                                          )),
-                                );
-                              }
+                              await BlocProvider.of<AddressCubit>(context)
+                                  .address();
+                              showAlertAddressWidget(context);
                             },
                             child: const Text(
                               'Изменить адрес доставки',

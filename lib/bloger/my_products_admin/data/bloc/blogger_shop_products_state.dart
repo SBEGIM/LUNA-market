@@ -8,6 +8,8 @@ class LoadingState extends BloggerShopProductsState {}
 
 class ChangeState extends BloggerShopProductsState {}
 
+class NoDataState extends BloggerShopProductsState {}
+
 class LoadedState extends BloggerShopProductsState {
   List<BloggerShopProductModel> productModel;
   LoadedState(this.productModel);

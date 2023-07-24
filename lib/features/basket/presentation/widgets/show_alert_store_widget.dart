@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/admin/my_products_admin/data/bloc/product_admin_state.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/edit_product_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/show_alert_add_widget.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/statistics_page.dart';
@@ -15,16 +14,7 @@ import 'package:haji_market/features/drawer/data/models/address_model.dart';
 import '../../../../core/common/constants.dart';
 import '../ui/basket_order_address_page.dart';
 
-Future<dynamic> showAlertEditWidget(
-    BuildContext context,
-    int id,
-    String? country,
-    String? city,
-    String? street,
-    String? home,
-    String? floor,
-    String? porch,
-    String? room) async {
+Future<dynamic> showAlertStoreWidget(BuildContext context) async {
   TextEditingController countryController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController streetController = TextEditingController();
@@ -37,14 +27,6 @@ Future<dynamic> showAlertEditWidget(
     context: context,
     builder: (BuildContext context) =>
         StatefulBuilder(builder: (context, setState) {
-      country != null ? countryController.text = country! : null;
-      city != null ? cityController.text = city! : null;
-      street != null ? streetController.text = street! : null;
-      home != null ? homeController.text = home! : null;
-      porch != null ? porchController.text = porch! : null;
-      floor != null ? floorController.text = floor! : null;
-      room != null ? roomController.text = room! : null;
-
       return Material(
           type: MaterialType.transparency,
           color: Colors.white,
@@ -63,7 +45,7 @@ Future<dynamic> showAlertEditWidget(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              '  Редактировать',
+                              '  Добавить',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
@@ -315,8 +297,7 @@ Future<dynamic> showAlertEditWidget(
                   ),
                   GestureDetector(
                     onTap: () async {
-                      await BlocProvider.of<AddressCubit>(context).update(
-                          id,
+                      await BlocProvider.of<AddressCubit>(context).store(
                           countryController.text,
                           cityController.text,
                           streetController.text,

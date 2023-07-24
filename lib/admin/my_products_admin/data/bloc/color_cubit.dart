@@ -26,19 +26,17 @@ class ColorCubit extends Cubit<ColorState> {
   }
 
   ColorById(
-    String id,
+    String name,
   ) async {
-    if (id.isEmpty) return;
+    if (name.isEmpty) return;
     if (_colors.isEmpty) {
       await brands();
       // final List<City> data = await listRepository.cities();
       // _cities = data;
     }
     Cats color = Cats(id: 0, name: 'Выберите цвет');
-
     for (int i = 0; i < _colors.length; i++) {
-      if (_colors[i].name != null &&
-          _colors[i].name!.toLowerCase().contains(id)) {
+      if (_colors[i].name == name) {
         color = _colors[i];
       }
     }

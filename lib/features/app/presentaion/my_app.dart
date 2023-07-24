@@ -19,6 +19,7 @@ import 'package:haji_market/features/drawer/data/bloc/respublic_cubit.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:haji_market/features/drawer/data/repository/CityRepo.dart';
 import 'package:haji_market/features/drawer/data/repository/CountryRepo.dart';
+import 'package:haji_market/features/drawer/data/repository/address_repo.dart';
 import 'package:haji_market/features/drawer/data/repository/bonus_repo.dart';
 import 'package:haji_market/features/drawer/data/repository/profit_repo.dart';
 import 'package:haji_market/features/drawer/data/repository/respublic_repo.dart';
@@ -495,6 +496,11 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (_) => BonusCubit(
             bonusRepository: BonusRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => AddressCubit(
+            addressRepository: AddressRepository(),
           ),
         ),
       ],

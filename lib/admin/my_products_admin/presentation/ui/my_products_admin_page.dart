@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/ui/banner_watch_recently_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/category_admin_page.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/show_alert_statictics_widget.dart';
 import 'package:haji_market/core/common/constants.dart';
-
 import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/bloc/product_admin_state.dart';
 import 'admin_products_card_widget.dart';

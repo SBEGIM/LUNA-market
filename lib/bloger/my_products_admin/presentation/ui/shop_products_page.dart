@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:haji_market/bloger/my_products_admin/data/bloc/blogger_shop_products_state.dart';
-import 'package:haji_market/bloger/my_products_admin/presentation/ui/product_detail.dart';
-import 'package:haji_market/bloger/my_products_admin/presentation/ui/products_video_page.dart';
-import 'package:haji_market/bloger/my_products_admin/presentation/ui/upload_product_video.dart';
 import '../../../../core/common/constants.dart';
 import '../../../../features/tape/presentation/widgets/anim_search_widget.dart';
 import '../../data/bloc/blogger_shop_products_cubit.dart';
+import 'blogger_products_card_widget.dart';
 
 class ShopProductsBloggerPage extends StatefulWidget {
   String title;
@@ -106,69 +103,110 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                       child: CircularProgressIndicator(
                           color: Colors.indigoAccent));
                 }
-
-                if (state is LoadedState) {
+                if (state is NoDataState) {
                   return Expanded(
-                    child: Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.only(
-                        left: 16,
-                        right: 16,
-                      ),
-                      child: GridView.builder(
-                          padding: const EdgeInsets.only(
-                              top: 16, left: 0, right: 0, bottom: 0),
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 190,
-                                  childAspectRatio: 2 / 3.2,
-                                  crossAxisSpacing: 8,
-                                  mainAxisSpacing: 16),
-                          itemCount: state.productModel.length,
-                          itemBuilder: (BuildContext ctx, index) {
-                            return Stack(
-                              children: [
-                                GestureDetector(
-                                  onTap: (() => Get.to(() =>
-                                      UploadProductVideoPage(
-                                          id: state.productModel[index].id ??
-                                              0))),
-                                  child: title == 'Мои видео обзоры'
-                                      ? ProductDetail(
-                                          product: state.productModel[index])
-                                      : ProductVideo(
-                                          product: state.productModel[index],
-                                        ),
-                                ),
-                                // Container(
-                                //   decoration: BoxDecoration(
-                                //       borderRadius: BorderRadius.circular(10)),
-                                // ),
-                                // InkWell(
-                                //   onTap: () {
-                                //     showAlertStaticticsWidget(
-                                //         context, state.productModel[index]);
-                                //   },
-                                //   child: Container(
-                                //     height: 28,
-                                //     width: 28,
-                                //     margin: const EdgeInsets.only(
-                                //         top: 8.0, right: 8.0, left: 135),
-                                //     alignment: Alignment.center,
-                                //     decoration: BoxDecoration(
-                                //         color: Colors.white,
-                                //         borderRadius: BorderRadius.circular(8)),
-                                //     child: const Icon(
-                                //       Icons.more_vert_rounded,
-                                //       color: AppColors.kPrimaryColor,
-                                //     ),
-                                //   ),
-                                // ),
-                              ],
-                            );
-                          }),
+                    // width: MediaQuery.of(context).size.height,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                            margin: const EdgeInsets.only(top: 220),
+                            child: Image.asset('assets/icons/no_data.png')),
+                        const Text(
+                          'Нет данных',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w600),
+                          textAlign: TextAlign.center,
+                        ),
+                        const Text(
+                          'У этого магазина отсуствует товары',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff717171)),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
                     ),
                   );
+                }
+                if (state is LoadedState) {
+                  return Expanded(
+                    child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        // physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.productModel.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return BloggerProductCardWidget(
+                            product: state.productModel[index],
+                          );
+                          //  product: state.productModel[index]);
+                        }),
+                  );
+
+                  //   Expanded(
+                  //     child: Container(
+                  //       color: Colors.white,
+                  //       padding: const EdgeInsets.only(
+                  //         left: 16,
+                  //         right: 16,
+                  //       ),
+                  //       child: GridView.builder(
+                  //           padding: const EdgeInsets.only(
+                  //               top: 16, left: 0, right: 0, bottom: 0),
+                  //           gridDelegate:
+                  //               const SliverGridDelegateWithMaxCrossAxisExtent(
+                  //                   maxCrossAxisExtent: 190,
+                  //                   childAspectRatio: 2 / 3.2,
+                  //                   crossAxisSpacing: 8,
+                  //                   mainAxisSpacing: 16),
+                  //           itemCount: state.productModel.length,
+                  //           itemBuilder: (BuildContext ctx, index) {
+                  //             return Stack(
+                  //               children: [
+                  //                 GestureDetector(
+                  //                   onTap: (() => Get.to(() =>
+                  //                       UploadProductVideoPage(
+                  //                           id: state.productModel[index].id ??
+                  //                               0))),
+                  //                   child: title == 'Мои видео обзоры'
+                  //                       ? ProductDetail(
+                  //                           product: state.productModel[index])
+                  //                       : ProductVideo(
+                  //                           product: state.productModel[index],
+                  //                         ),
+                  //                 ),
+                  //                 // Container(
+                  //                 //   decoration: BoxDecoration(
+                  //                 //       borderRadius: BorderRadius.circular(10)),
+                  //                 // ),
+                  //                 // InkWell(
+                  //                 //   onTap: () {
+                  //                 //     showAlertStaticticsWidget(
+                  //                 //         context, state.productModel[index]);
+                  //                 //   },
+                  //                 //   child: Container(
+                  //                 //     height: 28,
+                  //                 //     width: 28,
+                  //                 //     margin: const EdgeInsets.only(
+                  //                 //         top: 8.0, right: 8.0, left: 135),
+                  //                 //     alignment: Alignment.center,
+                  //                 //     decoration: BoxDecoration(
+                  //                 //         color: Colors.white,
+                  //                 //         borderRadius: BorderRadius.circular(8)),
+                  //                 //     child: const Icon(
+                  //                 //       Icons.more_vert_rounded,
+                  //                 //       color: AppColors.kPrimaryColor,
+                  //                 //     ),
+                  //                 //   ),
+                  //                 // ),
+                  //               ],
+                  //             );
+                  //           }),
+                  //     ),
+                  //   );
                 } else {
                   return const Center(
                       child: CircularProgressIndicator(
