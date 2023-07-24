@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:haji_market/admin/my_orders_admin/presentation/widgets/all_my_orders_page.dart';
 import 'package:haji_market/admin/my_orders_admin/presentation/widgets/done_my_orders_page.dart';
@@ -5,7 +6,7 @@ import 'package:haji_market/core/common/constants.dart';
 
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/app/widgets/custom_switch_button.dart';
-
+@RoutePage()
 class MyOrdersAdminPage extends StatefulWidget {
   const MyOrdersAdminPage({Key? key}) : super(key: key);
 

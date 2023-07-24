@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:haji_market/features/auth/data/bloc/login_cubit.dart';
 import 'package:haji_market/features/drawer/presentation/ui/about_us_page.dart';
 import 'package:haji_market/features/drawer/presentation/ui/credit_info_page.dart';
@@ -19,6 +20,7 @@ import '../../../chat/presentation/chat_page.dart';
 import '../../../my_order/presentation/ui/my_order_page.dart';
 import '../../../profile/data/presentation/ui/edit_profile_page.dart';
 import '../widgets/bonus_page.dart';
+
 @RoutePage()
 class DrawerPage extends StatefulWidget {
   const DrawerPage({Key? key}) : super(key: key);
@@ -80,9 +82,7 @@ class _DrawerPageState extends State<DrawerPage> {
                         GetStorage().remove('token');
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const ViewAuthRegisterPage(BackButton: true)),
+                          MaterialPageRoute(builder: (context) => const ViewAuthRegisterPage(BackButton: true)),
                         );
                       } else {
                         Navigator.push(
@@ -118,13 +118,9 @@ class _DrawerPageState extends State<DrawerPage> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(31),
                                         image: DecorationImage(
-                                          image: (_box.read('avatar') != null &&
-                                                  _box.read('avatar') != "null")
-                                              ? NetworkImage(
-                                                  "http://185.116.193.73/storage/${_box.read('avatar')}")
-                                              : const AssetImage(
-                                                      'assets/icons/profile2.png')
-                                                  as ImageProvider,
+                                          image: (_box.read('avatar') != null && _box.read('avatar') != "null")
+                                              ? NetworkImage("http://185.116.193.73/storage/${_box.read('avatar')}")
+                                              : const AssetImage('assets/icons/profile2.png') as ImageProvider,
                                           fit: BoxFit.cover,
                                         )),
                                   )
@@ -139,9 +135,7 @@ class _DrawerPageState extends State<DrawerPage> {
                             // ),
 
                             SizedBox(
-                              width: _box.read('name') != 'Не авторизированный'
-                                  ? 10
-                                  : 0,
+                              width: _box.read('name') != 'Не авторизированный' ? 10 : 0,
                             ),
                             Column(
                               mainAxisSize: MainAxisSize.min,
@@ -152,20 +146,14 @@ class _DrawerPageState extends State<DrawerPage> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 16,
-                                        color: _box.read('name') ==
-                                                'Не авторизированный'
-                                            ? Colors.white
-                                            : Colors.black)),
+                                        color:
+                                            _box.read('name') == 'Не авторизированный' ? Colors.white : Colors.black)),
                                 const SizedBox(height: 4),
-                                Text(
-                                    _box.read('name') == 'Не авторизированный'
-                                        ? ''
-                                        : _box.read('city') ?? 'Алматы',
+                                Text(_box.read('name') == 'Не авторизированный' ? '' : _box.read('city') ?? 'Алматы',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14,
-                                        color:
-                                            Color.fromRGBO(145, 145, 145, 1))),
+                                        color: Color.fromRGBO(145, 145, 145, 1))),
                               ],
                             )
                           ],
@@ -197,9 +185,7 @@ class _DrawerPageState extends State<DrawerPage> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const BonusUserPage()),
+                                    MaterialPageRoute(builder: (context) => const BonusUserPage()),
                                   );
                                 }),
                             topMenu(
@@ -208,9 +194,7 @@ class _DrawerPageState extends State<DrawerPage> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const MyOrderPage()),
+                                    MaterialPageRoute(builder: (context) => const MyOrderPage()),
                                   );
                                   // print('123231');
                                 }),
@@ -220,8 +204,7 @@ class _DrawerPageState extends State<DrawerPage> {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const ChatPage()),
+                                  MaterialPageRoute(builder: (context) => const ChatPage()),
                                 );
                               },
                             ),
@@ -237,15 +220,11 @@ class _DrawerPageState extends State<DrawerPage> {
                 InkWell(
                   onTap: () {
                     _box.read('seller_token') != null
-                        ? Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const BaseAdmin(index: 0)))
+                        ? BlocProvider.of<AppBloc>(context)
+                            .add(const AppEvent.chageState(state: AppState.inAppAdminState()))
                         : Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => const AdminAuthPage()),
+                            MaterialPageRoute(builder: (context) => const AdminAuthPage()),
                           );
                   },
                   child: const DrawerListTile(
@@ -258,16 +237,11 @@ class _DrawerPageState extends State<DrawerPage> {
                 InkWell(
                   onTap: () {
                     _box.read('blogger_token') != null
-                        ? Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const BaseBlogger(index: 0)))
+                        ? BlocProvider.of<AppBloc>(context)
+                            .add(const AppEvent.chageState(state: AppState.inAppBlogerState()))
                         : Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const BlogAuthRegisterPage()),
+                            MaterialPageRoute(builder: (context) => const BlogAuthRegisterPage()),
                           );
                   },
                   child: const DrawerListTile(
@@ -281,8 +255,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const CreditInfoPage()),
+                      MaterialPageRoute(builder: (context) => const CreditInfoPage()),
                     );
                   },
                   child: const DrawerListTile(
@@ -378,8 +351,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   //   MaterialPageRoute(builder: (context) => AboutUsPage()),
                   // );
                   // },
-                  onTap: () => launch("https://t.me/LUNAmarketAdmin",
-                      forceSafariVC: false),
+                  onTap: () => launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
                   child: const SizedBox(
                     height: 55,
                     child: DrawerListTile(
@@ -470,8 +442,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const AboutUsPage()),
+                      MaterialPageRoute(builder: (context) => const AboutUsPage()),
                     );
                   },
                   child: const SizedBox(
@@ -489,8 +460,7 @@ class _DrawerPageState extends State<DrawerPage> {
                 GestureDetector(
                   onTap: () {
                     GetStorage().erase();
-                    Get.offAll(
-                        () => const ViewAuthRegisterPage(BackButton: true));
+                    Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
 
                     // Navigator.push(
                     //   context,
@@ -502,8 +472,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   child: SizedBox(
                     height: 55,
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 13.0, right: 20, top: 13, bottom: 13),
+                      padding: const EdgeInsets.only(left: 13.0, right: 20, top: 13, bottom: 13),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
@@ -531,11 +500,9 @@ class _DrawerPageState extends State<DrawerPage> {
                     await BlocProvider.of<LoginCubit>(context).delete();
                     GetStorage().erase();
 
-                    Get.offAll(
-                        () => const ViewAuthRegisterPage(BackButton: true));
+                    Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
 
-                    Get.snackbar('Аккаунт удален', 'Account delete',
-                        backgroundColor: Colors.redAccent);
+                    Get.snackbar('Аккаунт удален', 'Account delete', backgroundColor: Colors.redAccent);
 
                     // Navigator.push(
                     //   context,
@@ -547,8 +514,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   child: const SizedBox(
                     height: 55,
                     child: Padding(
-                      padding: EdgeInsets.only(
-                          left: 13.0, right: 20, top: 13, bottom: 13),
+                      padding: EdgeInsets.only(left: 13.0, right: 20, top: 13, bottom: 13),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
@@ -713,20 +679,17 @@ class _DrawerPageState extends State<DrawerPage> {
                       height: 34,
                       width: 54,
                       decoration: BoxDecoration(
-                          color:
-                              selected == false ? Colors.white : Colors.black,
+                          color: selected == false ? Colors.white : Colors.black,
                           border: Border.all(
                             color: AppColors.kGray900,
                           ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10))),
+                          borderRadius: const BorderRadius.all(Radius.circular(10))),
                       child: Center(
                           child: Text(
                         'Қаз',
                         style: TextStyle(
                           fontSize: 17,
-                          color:
-                              selected == false ? Colors.black : Colors.white,
+                          color: selected == false ? Colors.black : Colors.white,
                           // AppColors.kLightBlackColor,
                           fontWeight: FontWeight.w500,
                         ),
@@ -750,8 +713,7 @@ class _DrawerPageState extends State<DrawerPage> {
                           border: Border.all(
                             color: AppColors.kGray900,
                           ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10))),
+                          borderRadius: const BorderRadius.all(Radius.circular(10))),
                       child: Center(
                           child: Text(
                         'Рус',
@@ -848,10 +810,7 @@ class topMenu extends StatelessWidget {
             ),
             Text(
               text,
-              style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
             ),
           ],
         ),

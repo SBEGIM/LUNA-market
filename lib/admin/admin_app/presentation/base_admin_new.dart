@@ -7,22 +7,22 @@ import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 
 // ignore: unused_element
-const _tag = 'BaseBloggerNew';
+const _tag = 'BaseNew';
 
-class BaseBloggerNew extends StatefulWidget {
-  const BaseBloggerNew({super.key});
+class BaseAdminNew extends StatefulWidget {
+  const BaseAdminNew({super.key});
 
   @override
-  _BaseBloggerNewState createState() => _BaseBloggerNewState();
+  _BaseAdminNewState createState() => _BaseAdminNewState();
 }
 
-class _BaseBloggerNewState extends State<BaseBloggerNew> with TickerProviderStateMixin {
+class _BaseAdminNewState extends State<BaseAdminNew> with TickerProviderStateMixin {
   TabController? tabController;
   int? previousIndex;
 
   @override
   void initState() {
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: 4, vsync: this);
     super.initState();
   }
 
@@ -34,11 +34,12 @@ class _BaseBloggerNewState extends State<BaseBloggerNew> with TickerProviderStat
     return AutoTabsScaffold(
       // endDrawer: BaseDrawer(),
       routes: const [
-        BlogShopsRoute(),
-        BaseAdminTapeTab(),
-        ProfileBloggerRoute(),
+        MyProductsAdminRoute(),
+        ChatAdminRoute(),
+        MyOrdersAdminRoute(),
+        ProfileAdminRoute(),
       ],
-      backgroundColor: tabController?.index != 1 ? Colors.white : null,
+      backgroundColor: Colors.white,
       extendBody: true,
       transitionBuilder: (context, child, animation) {
         return SafeArea(
@@ -65,17 +66,27 @@ class _BaseBloggerNewState extends State<BaseBloggerNew> with TickerProviderStat
           elevation: 4,
           showSelectedLabels: true,
           showUnselectedLabels: true,
-          backgroundColor: tabsRouter.activeIndex == 1 ? Colors.transparent : Colors.white,
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                'assets/icons/tape.svg',
+                'assets/icons/date.svg',
                 color: AppColors.kGray200,
               ),
-              label: 'Магазины',
+              label: 'Мои товары',
               activeIcon: SvgPicture.asset(
-                'assets/icons/tape.svg',
+                'assets/icons/date.svg',
+                color: AppColors.kPrimaryColor,
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/icons/chat_2.svg',
+                color: AppColors.kGray200,
+              ),
+              label: 'Чат',
+              activeIcon: SvgPicture.asset(
+                'assets/icons/chat_2.svg',
                 color: AppColors.kPrimaryColor,
               ),
             ),
@@ -84,7 +95,7 @@ class _BaseBloggerNewState extends State<BaseBloggerNew> with TickerProviderStat
                 'assets/icons/docs.svg',
                 color: AppColors.kGray200,
               ),
-              label: 'Видео обзоры',
+              label: 'Заказы',
               activeIcon: SvgPicture.asset(
                 'assets/icons/docs.svg',
                 color: AppColors.kPrimaryColor,

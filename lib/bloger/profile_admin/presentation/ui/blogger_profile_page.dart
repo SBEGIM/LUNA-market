@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../features/app/presentaion/base.dart';
 import '../../../auth/presentation/ui/view_auth_register_page.dart';
@@ -12,6 +13,7 @@ import '../data/bloc/profile_statics_blogger_cubit.dart';
 import '../data/bloc/profile_statics_blogger_state.dart';
 import '../widgets/reqirect_profile_page.dart';
 import 'blogger_cards_page.dart';
+
 @RoutePage()
 class ProfileBloggerPage extends StatefulWidget {
   const ProfileBloggerPage({Key? key}) : super(key: key);
@@ -51,8 +53,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
         centerTitle: true,
         title: const Text(
           'Профиль блогера',
-          style: TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+          style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
         ),
         // actions: [
         //   Padding(
@@ -72,34 +73,25 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                   borderRadius: BorderRadius.circular(60),
                   image: DecorationImage(
                     image: _box.read('blogger_avatar') != null
-                        ? NetworkImage(
-                            "http://185.116.193.73/storage/${_box.read('blogger_avatar')}")
-                        : const AssetImage('assets/icons/profile2.png')
-                            as ImageProvider,
+                        ? NetworkImage("http://185.116.193.73/storage/${_box.read('blogger_avatar')}")
+                        : const AssetImage('assets/icons/profile2.png') as ImageProvider,
                     fit: BoxFit.cover,
                   )),
             ),
             title: Text(
               _box.read('blogger_nick_name') ?? 'Никнэйм не найден',
-              style: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.kGray900,
-                  fontSize: 16),
+              style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.kGray900, fontSize: 16),
             ),
             subtitle: InkWell(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const ReqirectProfilePage()),
+                  MaterialPageRoute(builder: (context) => const ReqirectProfilePage()),
                 );
               },
               child: const Text(
                 'Редактирование',
-                style: TextStyle(
-                    color: AppColors.kPrimaryColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400),
+                style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w400),
               ),
             ),
           ),
@@ -111,8 +103,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
             alignment: Alignment.center,
             width: 500,
             height: 76,
-            child: BlocConsumer<ProfileStaticsBloggerCubit,
-                ProfileStaticsBloggerState>(
+            child: BlocConsumer<ProfileStaticsBloggerCubit, ProfileStaticsBloggerState>(
               listener: (context, state) {},
               builder: (context, state) {
                 if (state is LoadedState) {
@@ -133,17 +124,11 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                             children: [
                               Text(
                                 state.loadedProfile.videoReview.toString(),
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600),
+                                style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
                               ),
                               const Text(
                                 'Видео обзоров',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500),
+                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
@@ -152,17 +137,11 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                             children: [
                               Text(
                                 state.loadedProfile.subscribers.toString(),
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600),
+                                style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
                               ),
                               const Text(
                                 'Подписчиков',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500),
+                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
@@ -171,26 +150,18 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                             children: [
                               Text(
                                 state.loadedProfile.sales.toString(),
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600),
+                                style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
                               ),
                               const Text(
                                 'Продаж',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500),
+                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
                         ]),
                   );
                 } else {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent));
+                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                 }
               },
             ),
@@ -241,22 +212,17 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const StatisticsBloggerShowPage()),
+                MaterialPageRoute(builder: (context) => const StatisticsBloggerShowPage()),
               );
             },
             child: const Padding(
-              padding:
-                  EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
+              padding: EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Мой заработок',
-                    style: TextStyle(
-                        color: AppColors.kGray900,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400),
+                    style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
@@ -274,22 +240,17 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const BloggerCardPage()),
+                MaterialPageRoute(builder: (context) => const BloggerCardPage()),
               );
             },
             child: const Padding(
-              padding:
-                  EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
+              padding: EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Способ оплаты',
-                    style: TextStyle(
-                        color: AppColors.kGray900,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400),
+                    style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
@@ -308,17 +269,13 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
               launch("https://t.me/LUNAmarketBlogger", forceSafariVC: false);
             },
             child: const Padding(
-              padding:
-                  EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
+              padding: EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Связаться с администрацией',
-                    style: TextStyle(
-                        color: AppColors.kGray900,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400),
+                    style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
@@ -334,14 +291,10 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Base(index: 1)),
-              );
+              BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppUserState()));
             },
             child: Container(
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, top: 10, bottom: 10),
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -350,10 +303,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                     children: [
                       Text(
                         'Вернуться на маркет',
-                        style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                        style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -374,13 +324,11 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
               GetStorage().remove('blogger_token');
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const BlogAuthRegisterPage()),
+                MaterialPageRoute(builder: (context) => const BlogAuthRegisterPage()),
               );
             },
             child: Container(
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, top: 10, bottom: 10),
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -389,10 +337,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                     children: [
                       Text(
                         'Выйти',
-                        style: TextStyle(
-                            color: Color(0xffff3347c),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                        style: TextStyle(color: Color(0xffff3347c), fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),

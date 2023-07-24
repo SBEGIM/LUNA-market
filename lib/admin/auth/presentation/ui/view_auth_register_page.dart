@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/app/widgets/custom_switch_button.dart';
@@ -38,7 +40,9 @@ class _AdminAuthPageState extends State<AdminAuthPage> {
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
           child: CustomBackButton(onTap: () {
-            Get.to(() => const Base(index: 4));
+            BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppBlogerState()));
+            Navigator.pop(context);
+            // Get.to(() => const Base(index: 4));
           }),
         ),
         bottom: PreferredSize(
@@ -71,12 +75,8 @@ class _AdminAuthPageState extends State<AdminAuthPage> {
                         'Вход',
                         style: TextStyle(
                           fontSize: 15,
-                          fontWeight: segmentValue == 0
-                              ? FontWeight.w700
-                              : FontWeight.w500,
-                          color: segmentValue == 0
-                              ? Colors.black
-                              : const Color(0xff9B9B9B),
+                          fontWeight: segmentValue == 0 ? FontWeight.w700 : FontWeight.w500,
+                          color: segmentValue == 0 ? Colors.black : const Color(0xff9B9B9B),
                         ),
                       ),
                     ),
@@ -90,22 +90,16 @@ class _AdminAuthPageState extends State<AdminAuthPage> {
                       child: Text(
                         'Регистрация',
                         style: TextStyle(
-                          fontWeight: segmentValue == 1
-                              ? FontWeight.w700
-                              : FontWeight.w500,
+                          fontWeight: segmentValue == 1 ? FontWeight.w700 : FontWeight.w500,
                           fontSize: 14,
-                          color: segmentValue == 1
-                              ? Colors.black
-                              : const Color(0xff9B9B9B),
+                          color: segmentValue == 1 ? Colors.black : const Color(0xff9B9B9B),
                         ),
                       ),
                     ),
                   },
                   onValueChanged: (int? value) async {
                     if (value != null) {
-                      value == 0
-                          ? (title = 'Войти в кабинет продавца')
-                          : (title = 'Заявка на содрудничество');
+                      value == 0 ? (title = 'Войти в кабинет продавца') : (title = 'Заявка на содрудничество');
                       segmentValue = value;
                     }
                     setState(() {});

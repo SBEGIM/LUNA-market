@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:haji_market/admin/admin_app/presentation/base_admin_new.dart';
+import 'package:haji_market/bloger/admin_app/presentation/base_blogger_new.dart';
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:haji_market/features/app/presentaion/base_new.dart';
 import 'package:haji_market/features/app/widgets/custom_loading_widget.dart';
@@ -38,6 +40,8 @@ class _LauncherAppState extends State<LauncherApp> {
         return state.maybeWhen(
           notAuthorizedState: () => const ViewAuthRegisterPage(),
           loadingState: () => const _Scaffold(child: CustomLoadingWidget()),
+          inAppBlogerState: () => const BaseBloggerNew(),
+          inAppAdminState: () => const BaseAdminNew(),
           orElse: () => const BaseNew(),
         );
       },

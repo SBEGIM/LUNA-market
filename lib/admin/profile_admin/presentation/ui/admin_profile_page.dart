@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/profile_admin/presentation/widgets/about_shop_admin_page.dart';
 import 'package:haji_market/admin/profile_admin/presentation/widgets/statistics_admin_show_page.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +18,7 @@ import '../../data/bloc/profile_statics_admin_cubit.dart';
 import '../../data/bloc/profile_statics_admin_state.dart';
 import '../widgets/reqirect_profile_page.dart';
 
+@RoutePage()
 class ProfileAdminPage extends StatefulWidget {
   const ProfileAdminPage({Key? key}) : super(key: key);
 
@@ -57,9 +60,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
           ),
         ),
         actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: SvgPicture.asset('assets/icons/notification.svg'))
+          Padding(padding: const EdgeInsets.only(right: 16.0), child: SvgPicture.asset('assets/icons/notification.svg'))
         ],
       ),
       body: Column(
@@ -83,25 +84,18 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
             ),
             title: Text(
               '${GetStorage().read('seller_name')}',
-              style: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.kGray900,
-                  fontSize: 16),
+              style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.kGray900, fontSize: 16),
             ),
             subtitle: InkWell(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const ReqirectProfilePage()),
+                  MaterialPageRoute(builder: (context) => const ReqirectProfilePage()),
                 );
               },
               child: const Text(
                 'Редактирование',
-                style: TextStyle(
-                    color: AppColors.kPrimaryColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400),
+                style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w400),
               ),
             ),
           ),
@@ -113,8 +107,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
             alignment: Alignment.center,
             width: 500,
             height: 76,
-            child: BlocConsumer<ProfileStaticsAdminCubit,
-                ProfileStaticsAdminState>(
+            child: BlocConsumer<ProfileStaticsAdminCubit, ProfileStaticsAdminState>(
               listener: (context, state) {},
               builder: (context, state) {
                 if (state is LoadedState) {
@@ -135,17 +128,11 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                             children: [
                               Text(
                                 state.loadedProfile.videoReview.toString(),
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600),
+                                style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
                               ),
                               const Text(
                                 'Видео обзоров',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500),
+                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
@@ -154,17 +141,11 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                             children: [
                               Text(
                                 state.loadedProfile.subscribers.toString(),
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600),
+                                style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
                               ),
                               const Text(
                                 'Подписчиков',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500),
+                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
@@ -173,26 +154,18 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                             children: [
                               Text(
                                 state.loadedProfile.sales.toString(),
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600),
+                                style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
                               ),
                               const Text(
                                 'Продаж',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500),
+                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
                         ]),
                   );
                 } else {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent));
+                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                 }
               },
             ),
@@ -282,22 +255,17 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const StatisticsAdminShowPage()),
+                MaterialPageRoute(builder: (context) => const StatisticsAdminShowPage()),
               );
             },
             child: const Padding(
-              padding:
-                  EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
+              padding: EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Мой заработок',
-                    style: TextStyle(
-                        color: AppColors.kGray900,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400),
+                    style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
@@ -312,20 +280,15 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
             color: AppColors.kGray400,
           ),
           InkWell(
-            onTap: () =>
-                launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
+            onTap: () => launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
             child: const Padding(
-              padding:
-                  EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
+              padding: EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Связаться с администрацией',
-                    style: TextStyle(
-                        color: AppColors.kGray900,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400),
+                    style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
@@ -347,17 +310,13 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
               );
             },
             child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 15.0, bottom: 15, right: 15, left: 15),
+              padding: const EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
                   Text(
                     'О нас',
-                    style: TextStyle(
-                        color: AppColors.kGray900,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400),
+                    style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
@@ -373,14 +332,14 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Base(index: 1)),
-              );
+              BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppUserState()));
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
+              // );
             },
             child: Container(
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, top: 10, bottom: 10),
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -389,10 +348,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                     children: const [
                       Text(
                         'Вернуться на маркет',
-                        style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                        style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -421,8 +377,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
               );
             },
             child: Container(
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, top: 10, bottom: 10),
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -431,10 +386,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                     children: [
                       Text(
                         'Выйти',
-                        style: TextStyle(
-                            color: Color(0xffff3347c),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                        style: TextStyle(color: Color(0xffff3347c), fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),

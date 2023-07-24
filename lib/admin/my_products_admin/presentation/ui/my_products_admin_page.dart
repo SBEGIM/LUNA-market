@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,7 +7,7 @@ import 'package:haji_market/core/common/constants.dart';
 import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/bloc/product_admin_state.dart';
 import 'admin_products_card_widget.dart';
-
+@RoutePage()
 class MyProductsAdminPage extends StatefulWidget {
   const MyProductsAdminPage({Key? key}) : super(key: key);
 

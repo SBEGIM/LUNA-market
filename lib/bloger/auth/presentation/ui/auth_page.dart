@@ -4,6 +4,7 @@ import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/bloger/admin_app/presentation/base_blogger.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:haji_market/features/auth/presentation/ui/forgot_password.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -30,20 +31,20 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
     setState(() {});
   }
 
-  TextEditingController phoneControllerAuth =
-      MaskedTextController(mask: '+7(000)-000-00-00');
+  TextEditingController phoneControllerAuth = MaskedTextController(mask: '+7(000)-000-00-00');
   TextEditingController passwordControllerAuth = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginBloggerCubit, LoginBloggerState>(
-        listener: (context, state) {
+    return BlocConsumer<LoginBloggerCubit, LoginBloggerState>(listener: (context, state) {
       if (state is LoadedState) {
+        BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppBlogerState()));
+        Navigator.pop(context);
         // Get.to(() => ());
 
-        Get.to(() => const BaseBlogger(
-              index: 0,
-            ));
+        // Get.to(() => const BaseBlogger(
+        //       index: 0,
+        //     ));
 
         // Navigator.push(
         //   context,
@@ -53,16 +54,13 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
     }, builder: (context, state) {
       if (state is InitState) {
         return Padding(
-          padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 45),
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 45),
           child: Column(
             children: [
               Column(
                 children: [
                   Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8)),
+                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
                     child: Column(
                       children: [
                         ListTile(
@@ -125,11 +123,8 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                             },
                             child: __visibleIconView == true
                                 ? Icon(
-                                    _passwordVisible
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color:
-                                        const Color.fromRGBO(177, 179, 181, 1),
+                                    _passwordVisible ? Icons.visibility_off : Icons.visibility,
+                                    color: const Color.fromRGBO(177, 179, 181, 1),
                                   )
                                 : const SizedBox(width: 5),
                           ),
@@ -187,10 +182,7 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                     child: const Center(
                       child: Text(
                         'Забыли пароль?',
-                        style: TextStyle(
-                            color: AppColors.kPrimaryColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500),
+                        style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 18, fontWeight: FontWeight.w500),
                       ),
                     ),
                   )
@@ -202,20 +194,14 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
                 child: DefaultButton(
-                    backgroundColor: isButtonEnabled
-                        ? AppColors.kPrimaryColor
-                        : const Color(0xFFD6D8DB),
+                    backgroundColor: isButtonEnabled ? AppColors.kPrimaryColor : const Color(0xFFD6D8DB),
                     text: 'Войти',
                     press: () {
-                      if (phoneControllerAuth.text.length >= 17 ||
-                          passwordControllerAuth.text.isEmpty) {
-                        final login =
-                            BlocProvider.of<LoginBloggerCubit>(context);
-                        login.login(phoneControllerAuth.text,
-                            passwordControllerAuth.text);
+                      if (phoneControllerAuth.text.length >= 17 || passwordControllerAuth.text.isEmpty) {
+                        final login = BlocProvider.of<LoginBloggerCubit>(context);
+                        login.login(phoneControllerAuth.text, passwordControllerAuth.text);
                       } else {
-                        Get.snackbar('Ошибка запроса', 'Заполните все данныые',
-                            backgroundColor: Colors.blueAccent);
+                        Get.snackbar('Ошибка запроса', 'Заполните все данныые', backgroundColor: Colors.blueAccent);
                       }
                     },
                     color: Colors.white,
@@ -233,8 +219,7 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
           ),
         );
       } else {
-        return const Center(
-            child: CircularProgressIndicator(color: Colors.indigoAccent));
+        return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
       }
     });
   }
