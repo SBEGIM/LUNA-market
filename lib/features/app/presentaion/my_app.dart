@@ -9,6 +9,8 @@ import 'package:haji_market/admin/auth/data/bloc/register_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/bloc/sms_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/repository/registerAdminRepo.dart';
 import 'package:haji_market/admin/tape_admin/data/repository/tape_admin_repo.dart';
+import 'package:haji_market/bloger/tape/data/cubit/tape_blogger_cubit.dart';
+import 'package:haji_market/bloger/tape/data/repository/tape_blogger_repo.dart';
 import 'package:haji_market/features/drawer/data/bloc/address_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/bonus_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart';
@@ -488,6 +490,11 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (_) => AddressCubit(
             addressRepository: AddressRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => TapeBloggerCubit(
+            tapeRepository: TapeBloggerRepository(),
           ),
         ),
       ],

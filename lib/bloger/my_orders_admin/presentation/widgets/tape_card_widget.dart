@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:haji_market/admin/admin_app/bloc/admin_navigation_cubit/admin_navigation_cubit.dart';
 import 'package:haji_market/admin/tape_admin/data/model/TapeAdminModel.dart';
+import 'package:haji_market/bloger/tape/data/model/TapeBloggerModel.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,7 @@ import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dar
 import 'package:video_player/video_player.dart';
 
 class BloggerTapeCardWidget extends StatefulWidget {
-  final TapeAdminModel tape;
+  final TapeBloggerModel tape;
   final int index;
   const BloggerTapeCardWidget({
     required this.tape,

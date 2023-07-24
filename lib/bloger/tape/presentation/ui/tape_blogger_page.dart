@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:haji_market/admin/tape_admin/data/cubit/tape_admin_state.dart';
-import 'package:haji_market/admin/tape_admin/presentation/ui/widgets/show_alert_tape_widget.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
-import '../../../../bloger/my_orders_admin/presentation/widgets/tape_card_widget.dart';
-import '../../data/cubit/tape_admin_cubit.dart';
+import '../../../my_orders_admin/presentation/widgets/tape_card_widget.dart';
+import '../../data/cubit/tape_blogger_cubit.dart';
+import '../../data/cubit/tape_blogger_state.dart';
 
 // import '../widgets/grid_tape_list.dart';
 
-class TapeAdminPage extends StatefulWidget {
-  const TapeAdminPage({Key? key}) : super(key: key);
+class TapeBloggerPage extends StatefulWidget {
+  const TapeBloggerPage({Key? key}) : super(key: key);
 
   @override
-  State<TapeAdminPage> createState() => _TapeAdminPageState();
+  State<TapeBloggerPage> createState() => _TapeBloggerPageState();
 }
 
-class _TapeAdminPageState extends State<TapeAdminPage> {
+class _TapeBloggerPageState extends State<TapeBloggerPage> {
   final List<Map> myProducts =
       List.generate(6, (index) => {"id": index, "name": "Product "}).toList();
 
@@ -25,7 +24,7 @@ class _TapeAdminPageState extends State<TapeAdminPage> {
 
   @override
   void initState() {
-    BlocProvider.of<TapeAdminCubit>(context).tapes(false, false, '');
+    BlocProvider.of<TapeBloggerCubit>(context).tapes(false, false, '');
     super.initState();
   }
 
@@ -54,7 +53,7 @@ class _TapeAdminPageState extends State<TapeAdminPage> {
             style: AppTextStyles.appBarTextStylea,
           ),
         ),
-        body: BlocConsumer<TapeAdminCubit, TapeAdminState>(
+        body: BlocConsumer<TapeBloggerCubit, TapeBloggerState>(
             listener: (context, state) {},
             builder: (context, state) {
               if (state is ErrorState) {
@@ -100,42 +99,40 @@ class _TapeAdminPageState extends State<TapeAdminPage> {
               }
 
               if (state is LoadedState) {
-                return Container();
-
-                // GridView.builder(
-                //   padding: const EdgeInsets.all(1),
-                //   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                //     maxCrossAxisExtent: 150,
-                //     childAspectRatio: 1 / 2,
-                //     mainAxisSpacing: 3,
-                //     crossAxisSpacing: 3,
-                //   ),
-                //   itemCount: state.tapeModel.length,
-                //   // children: const [],
-                //   itemBuilder: (context, index) {
-                //     return Shimmer(
-                //       duration: const Duration(seconds: 3), //Default value
-                //       interval: const Duration(
-                //           microseconds:
-                //               1), //Default value: Duration(seconds: 0)
-                //       color: Colors.white, //Default value
-                //       colorOpacity: 0, //Default value
-                //       enabled: true, //Default value
-                //       direction:
-                //           const ShimmerDirection.fromLTRB(), //Default Value
-                //       child: Container(
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(12),
-                //           color: Colors.grey.withOpacity(0.6),
-                //         ),
-                //         child: BloggerTapeCardWidget(
-                //           tape: state.tapeModel[index],
-                //           index: index,
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // );
+                return GridView.builder(
+                  padding: const EdgeInsets.all(1),
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 150,
+                    childAspectRatio: 1 / 2,
+                    mainAxisSpacing: 3,
+                    crossAxisSpacing: 3,
+                  ),
+                  itemCount: state.tapeModel.length,
+                  // children: const [],
+                  itemBuilder: (context, index) {
+                    return Shimmer(
+                      duration: const Duration(seconds: 3), //Default value
+                      interval: const Duration(
+                          microseconds:
+                              1), //Default value: Duration(seconds: 0)
+                      color: Colors.white, //Default value
+                      colorOpacity: 0, //Default value
+                      enabled: true, //Default value
+                      direction:
+                          const ShimmerDirection.fromLTRB(), //Default Value
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.grey.withOpacity(0.6),
+                        ),
+                        child: BloggerTapeCardWidget(
+                          tape: state.tapeModel[index],
+                          index: index,
+                        ),
+                      ),
+                    );
+                  },
+                );
 
                 // return GridView.builder(
                 //   padding: const EdgeInsets.all(1),

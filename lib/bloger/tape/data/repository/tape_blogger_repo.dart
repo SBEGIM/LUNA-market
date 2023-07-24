@@ -2,23 +2,23 @@ import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
-import '../model/TapeAdminModel.dart';
+import '../model/TapeBloggerModel.dart';
 
 const baseUrl = 'http://185.116.193.73/api';
 
-class TapeAdminRepository {
+class TapeBloggerRepository {
   final TapeApi _tapeApi = TapeApi();
 
-  Future<List<TapeAdminModel>> tapes(inSub, inFav, search) =>
+  Future<List<TapeBloggerModel>> tapes(inSub, inFav, search) =>
       _tapeApi.tapes(inSub, inFav, search);
 }
 
 class TapeApi {
   final _box = GetStorage();
 
-  Future<List<TapeAdminModel>> tapes(inSub, inFav, search) async {
-    final token = _box.read('seller_token');
-    final sellerId = _box.read('seller_id');
+  Future<List<TapeBloggerModel>> tapes(inSub, inFav, search) async {
+    final token = _box.read('blogger_token');
+    final sellerId = _box.read('blogger_id');
 
     // final queryParameters = {
     //   'subscribes': '$inSub',
@@ -33,13 +33,13 @@ class TapeApi {
 
     final response = await http.get(
       Uri.parse(
-          '$baseUrl/seller/tape?token=${token.toString()}&shop_id=${sellerId.toString()}&search=$search'),
+          '$baseUrl/blogger/tape?token=${token.toString()}&blogger_id=${sellerId.toString()}&search=$search'),
     );
 
     final data = jsonDecode(response.body);
 
     return (data['data'] as List)
-        .map((e) => TapeAdminModel.fromJson(e))
+        .map((e) => TapeBloggerModel.fromJson(e))
         .toList();
   }
 }
