@@ -17,8 +17,8 @@ class TapeApi {
   final _box = GetStorage();
 
   Future<List<TapeAdminModel>> tapes(inSub, inFav, search) async {
-    final token = _box.read('seller_token');
-    final sellerId = _box.read('seller_id');
+    final token = _box.read('blogger_token');
+    final sellerId = _box.read('blogger_id');
 
     // final queryParameters = {
     //   'subscribes': '$inSub',
@@ -33,7 +33,7 @@ class TapeApi {
 
     final response = await http.get(
       Uri.parse(
-          '$baseUrl/seller/tape?token=${token.toString()}&shop_id=${sellerId.toString()}&search=$search'),
+          '$baseUrl/blogger/tape?token=${token.toString()}&blogger_id=${sellerId.toString()}&search=$search'),
     );
 
     final data = jsonDecode(response.body);
