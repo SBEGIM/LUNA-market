@@ -12,6 +12,7 @@ import 'package:haji_market/admin/tape_admin/data/repository/tape_admin_repo.dar
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:haji_market/features/app/presentaion/app_router_builder.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
+import 'package:haji_market/features/drawer/data/bloc/address_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/bonus_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/profit_cubit.dart';
