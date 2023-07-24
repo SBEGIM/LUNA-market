@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/core/common/constants.dart';
@@ -8,7 +9,7 @@ import '../../data/cubit/tape_blogger_cubit.dart';
 import '../../data/cubit/tape_blogger_state.dart';
 
 // import '../widgets/grid_tape_list.dart';
-
+@RoutePage()
 class TapeBloggerPage extends StatefulWidget {
   const TapeBloggerPage({Key? key}) : super(key: key);
 

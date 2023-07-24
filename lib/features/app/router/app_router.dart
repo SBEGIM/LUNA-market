@@ -9,6 +9,7 @@ import 'package:haji_market/bloger/my_orders_admin/presentation/widgets/detail_t
 import 'package:haji_market/bloger/profile_admin/presentation/ui/blogger_profile_page.dart';
 import 'package:haji_market/bloger/profile_admin/presentation/ui/blogger_tape_profile_page.dart';
 import 'package:haji_market/bloger/shops/BlogShopsPage.dart';
+import 'package:haji_market/bloger/tape/presentation/ui/tape_blogger_page.dart';
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:haji_market/features/basket/presentation/ui/basket_page.dart';
 import 'package:haji_market/features/drawer/presentation/ui/drawer_home.dart';
@@ -55,7 +56,9 @@ class AppRouter extends _$AppRouter {
 
             /// For Blogger
             AutoRoute(page: BaseAdminTapeTab.page, children: [
-              AutoRoute(page: TapeAdminRoute.page, initial: true),
+
+              // AutoRoute(page: TapeAdminRoute.page, initial: true),
+              AutoRoute(page: TapeBloggerRoute.page, initial: true),
               AutoRoute(page: BloggerDetailTapeCardRoute.page),
             ]),
             AutoRoute(page: BlogShopsRoute.page),
