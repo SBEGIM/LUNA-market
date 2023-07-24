@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/auth/presentation/ui/forgot_password.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
@@ -30,15 +31,14 @@ class _AuthPageState extends State<AuthPage> {
     setState(() {});
   }
 
-  TextEditingController phoneControllerAuth =
-      MaskedTextController(mask: '+7(000)-000-00-00');
+  TextEditingController phoneControllerAuth = MaskedTextController(mask: '+7(000)-000-00-00');
   TextEditingController passwordControllerAuth = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginState>(listener: (context, state) {
       if (state is LoadedState) {
-        Get.off(() => const Base(index: 0));
+        BlocProvider.of<AppBloc>(context).add(const AppEvent.logining());
         // Navigator.push(
         //   context,
         //   MaterialPageRoute(builder: (context) => const Base()),
@@ -47,16 +47,13 @@ class _AuthPageState extends State<AuthPage> {
     }, builder: (context, state) {
       if (state is InitState) {
         return Padding(
-          padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 45),
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 45),
           child: Column(
             children: [
               Column(
                 children: [
                   Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8)),
+                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
                     child: Column(
                       children: [
                         ListTile(
@@ -89,8 +86,7 @@ class _AuthPageState extends State<AuthPage> {
                             onChanged: (value) {
                               _visibleIconClear = true;
                               if (phoneControllerAuth.text.length == 17) {
-                                FocusScope.of(context)
-                                    .requestFocus(FocusNode());
+                                FocusScope.of(context).requestFocus(FocusNode());
 
                                 setIsButtonEnabled(true);
                               } else {
@@ -122,11 +118,8 @@ class _AuthPageState extends State<AuthPage> {
                             },
                             child: __visibleIconView == true
                                 ? Icon(
-                                    _passwordVisible
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color:
-                                        const Color.fromRGBO(177, 179, 181, 1),
+                                    _passwordVisible ? Icons.visibility_off : Icons.visibility,
+                                    color: const Color.fromRGBO(177, 179, 181, 1),
                                   )
                                 : const SizedBox(width: 5),
                           ),
@@ -184,10 +177,7 @@ class _AuthPageState extends State<AuthPage> {
                     child: const Center(
                       child: Text(
                         'Забыли пароль?',
-                        style: TextStyle(
-                            color: AppColors.kPrimaryColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500),
+                        style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 18, fontWeight: FontWeight.w500),
                       ),
                     ),
                   )
@@ -199,19 +189,14 @@ class _AuthPageState extends State<AuthPage> {
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
                 child: DefaultButton(
-                    backgroundColor: isButtonEnabled
-                        ? AppColors.kPrimaryColor
-                        : const Color(0xFFD6D8DB),
+                    backgroundColor: isButtonEnabled ? AppColors.kPrimaryColor : const Color(0xFFD6D8DB),
                     text: 'Войти',
                     press: () {
-                      if (phoneControllerAuth.text.length >= 17 ||
-                          passwordControllerAuth.text.isEmpty) {
+                      if (phoneControllerAuth.text.length >= 17 || passwordControllerAuth.text.isEmpty) {
                         final login = BlocProvider.of<LoginCubit>(context);
-                        login.login(phoneControllerAuth.text,
-                            passwordControllerAuth.text);
+                        login.login(phoneControllerAuth.text, passwordControllerAuth.text);
                       } else {
-                        Get.snackbar('Ошибка запроса', 'Заполните все данныые',
-                            backgroundColor: Colors.blueAccent);
+                        Get.snackbar('Ошибка запроса', 'Заполните все данныые', backgroundColor: Colors.blueAccent);
                       }
                     },
                     color: Colors.white,
@@ -226,10 +211,7 @@ class _AuthPageState extends State<AuthPage> {
                     padding: const EdgeInsets.only(top: 12),
                     child: const Text(
                       'Авторизоваться позже',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: AppColors.kPrimaryColor,
-                          fontWeight: FontWeight.w500),
+                      style: TextStyle(fontSize: 16, color: AppColors.kPrimaryColor, fontWeight: FontWeight.w500),
                     ),
                   ))
             ],
@@ -244,8 +226,7 @@ class _AuthPageState extends State<AuthPage> {
           ),
         );
       } else {
-        return const Center(
-            child: CircularProgressIndicator(color: Colors.indigoAccent));
+        return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
       }
     });
   }

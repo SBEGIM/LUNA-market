@@ -15,7 +15,7 @@ class _StocksPageState extends State<StocksPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const DrawerHome(),
+      drawer: const DrawerPage(),
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),

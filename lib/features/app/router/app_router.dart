@@ -1,0 +1,74 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:haji_market/bloger/profile_admin/presentation/ui/blogger_tape_profile_page.dart';
+import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
+import 'package:haji_market/features/basket/presentation/ui/basket_page.dart';
+import 'package:haji_market/features/drawer/presentation/ui/drawer_home.dart';
+import 'package:haji_market/features/favorite/presentation/ui/favorite_page.dart';
+import 'package:haji_market/features/home/presentation/ui/home_page.dart';
+import 'package:haji_market/features/tape/presentation/ui/tape_page.dart';
+import 'package:haji_market/features/app/presentaion/launcher.dart';
+
+import 'package:haji_market/features/tape/presentation/ui/detail_tape_card_page.dart';
+
+part 'app_router.gr.dart';
+
+@AutoRouterConfig()
+class AppRouter extends _$AppRouter {
+  @override
+  RouteType get defaultRouteType => const RouteType.material(); //.cupertino, .adaptive ..etc
+
+  @override
+  List<AutoRoute> get routes => [
+        AutoRoute(
+          page: LauncherRoute.page,
+          initial: true,
+          children: [
+            AutoRoute(
+              page: BaseTapeTab.page,
+              children: [
+                AutoRoute(
+                  page: TapeRoute.page,
+                  initial: true,
+                ),
+                AutoRoute(
+                  page: DetailTapeCardRoute.page,
+                ),
+                AutoRoute(
+                  page: ProfileBloggerTapeRoute.page,
+                ),
+              ],
+            ),
+            AutoRoute(page: HomeRoute.page),
+            AutoRoute(page: FavoriteRoute.page),
+            AutoRoute(page: BasketRoute.page),
+            AutoRoute(page: DrawerRoute.page),
+          ],
+        ),
+      ];
+}
+
+@RoutePage(name: 'BaseTapeTab')
+class BaseTapePage extends AutoRouter {
+  const BaseTapePage({super.key});
+}
+
+@RoutePage(name: 'BaseHomeTab')
+class BaseHomePage extends AutoRouter {
+  const BaseHomePage({super.key});
+}
+
+@RoutePage(name: 'BaseBasketTab')
+class BaseBasketPage extends AutoRouter {
+  const BaseBasketPage({super.key});
+}
+
+@RoutePage(name: 'BaseFavoriteTab')
+class BaseFavoritePage extends AutoRouter {
+  const BaseFavoritePage({super.key});
+}
+
+@RoutePage(name: 'BaseDrawerTab')
+class BaseDrawerPage extends AutoRouter {
+  const BaseDrawerPage({super.key});
+}

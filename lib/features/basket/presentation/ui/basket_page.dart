@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -19,7 +20,7 @@ import '../../../home/presentation/widgets/product_mb_interesting_card.dart';
 import '../../data/DTO/basketOrderDto.dart';
 import 'basket_order_address_page.dart';
 import 'basket_order_page.dart';
-
+@RoutePage()
 class BasketPage extends StatefulWidget {
   const BasketPage({Key? key}) : super(key: key);
 

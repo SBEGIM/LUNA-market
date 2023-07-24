@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -14,7 +15,7 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
 import '../data/bloc/tape_state.dart';
 import '../widgets/anim_search_widget.dart';
-
+@RoutePage()
 class TapePage extends StatefulWidget {
   const TapePage({Key? key}) : super(key: key);
 
@@ -229,6 +230,7 @@ class _TapePageState extends State<TapePage> {
 
               if (state is LoadedState) {
                 return GridView.builder(
+                  cacheExtent: 10000,
                   padding: const EdgeInsets.all(1),
 
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(

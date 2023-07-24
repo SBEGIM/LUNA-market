@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/core/common/constants.dart';
@@ -5,7 +6,7 @@ import 'package:haji_market/features/drawer/data/bloc/favorite_cubit.dart';
 import '../../../drawer/data/bloc/favorite_state.dart';
 import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
 import 'favorite_products.dart';
-
+@RoutePage()
 class FavoritePage extends StatefulWidget {
   const FavoritePage({Key? key}) : super(key: key);
 

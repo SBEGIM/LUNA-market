@@ -9,6 +9,9 @@ import 'package:haji_market/admin/auth/data/bloc/register_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/bloc/sms_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/repository/registerAdminRepo.dart';
 import 'package:haji_market/admin/tape_admin/data/repository/tape_admin_repo.dart';
+import 'package:haji_market/features/app/bloc/app_bloc.dart';
+import 'package:haji_market/features/app/presentaion/app_router_builder.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/drawer/data/bloc/bonus_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/profit_cubit.dart';
@@ -279,7 +282,17 @@ class _MyAppState extends State<MyApp> {
         //  fontFamily: 'Nunito',
         primarySwatch: Colors.blue,
       ),
-      home: token != true ? const ViewAuthRegisterPage() : const Base(index: 0),
+      home: AppRouterBuilder(
+      createRouter: (context) => AppRouter(),
+      builder: (context, parser, delegate) => MaterialApp.router(
+        routeInformationParser: parser,
+        routerDelegate: delegate,
+        // onGenerateTitle: (context) => context.localized.appTitle,
+        // theme: ThemeData.light(),
+        // darkTheme: ThemeData.dark(),
+        // themeMode: themeMode,
+      ),
+    ),
 // const BaseAdmin()
       // const SelectCountryPage()
     );
@@ -294,6 +307,7 @@ class MultiBlocWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (_) => AppBloc()),
         BlocProvider(create: (_) => NavigationCubit()),
         BlocProvider(create: (_) => AdminNavigationCubit()),
         BlocProvider(

@@ -196,7 +196,7 @@ class _BaseState extends State<Base> {
           } else if (state is DetailTapeState) {
             return DetailTapeCardPage(
               index: state.index,
-              shop_name: state.name,
+              shopName: state.name,
             );
           } else if (state is FavoriteState) {
             return const FavoritePage();
@@ -204,7 +204,7 @@ class _BaseState extends State<Base> {
             return const BasketPage();
           } else if (state is MyOrderState) {
             // return const MyOrderPage();]
-            return const DrawerHome();
+            return const DrawerPage();
           } else if (state is AuthState) {
             return const ViewAuthRegisterPage();
           } else if (state is NotAuthState) {

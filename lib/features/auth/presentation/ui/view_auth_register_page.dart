@@ -1,10 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/app/widgets/custom_switch_button.dart';
 import 'package:haji_market/features/auth/presentation/ui/auth_page.dart';
 import 'package:haji_market/features/auth/presentation/ui/register_page.dart';
-
+@RoutePage()
 class ViewAuthRegisterPage extends StatefulWidget {
   final bool? BackButton;
   const ViewAuthRegisterPage({this.BackButton, Key? key}) : super(key: key);

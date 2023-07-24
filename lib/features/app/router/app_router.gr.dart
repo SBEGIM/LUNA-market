@@ -1,0 +1,438 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// AutoRouterGenerator
+// **************************************************************************
+
+// ignore_for_file: type=lint
+// coverage:ignore-file
+
+part of 'app_router.dart';
+
+abstract class _$AppRouter extends RootStackRouter {
+  // ignore: unused_element
+  _$AppRouter({super.navigatorKey});
+
+  @override
+  final Map<String, PageFactory> pagesMap = {
+    ProfileBloggerTapeRoute.name: (routeData) {
+      final args = routeData.argsAs<ProfileBloggerTapeRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: WrappedRoute(
+            child: ProfileBloggerTapePage(
+          bloggerId: args.bloggerId,
+          bloggerName: args.bloggerName,
+          bloggerAvatar: args.bloggerAvatar,
+          key: args.key,
+        )),
+      );
+    },
+    LauncherRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LauncherApp(),
+      );
+    },
+    BaseTapeTab.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const BaseTapePage(),
+      );
+    },
+    BaseHomeTab.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const BaseHomePage(),
+      );
+    },
+    BaseBasketTab.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const BaseBasketPage(),
+      );
+    },
+    BaseFavoriteTab.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const BaseFavoritePage(),
+      );
+    },
+    BaseDrawerTab.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const BaseDrawerPage(),
+      );
+    },
+    ViewAuthRegisterRoute.name: (routeData) {
+      final args = routeData.argsAs<ViewAuthRegisterRouteArgs>(
+          orElse: () => const ViewAuthRegisterRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ViewAuthRegisterPage(
+          BackButton: args.BackButton,
+          key: args.key,
+        ),
+      );
+    },
+    BasketRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const BasketPage(),
+      );
+    },
+    DrawerRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DrawerPage(),
+      );
+    },
+    FavoriteRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const FavoritePage(),
+      );
+    },
+    HomeRoute.name: (routeData) {
+      final args =
+          routeData.argsAs<HomeRouteArgs>(orElse: () => const HomeRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: HomePage(
+          globalKey: args.globalKey,
+          drawerCallback: args.drawerCallback,
+          key: args.key,
+        ),
+      );
+    },
+    DetailTapeCardRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailTapeCardRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DetailTapeCardPage(
+          index: args.index,
+          shopName: args.shopName,
+          key: args.key,
+        ),
+      );
+    },
+    TapeRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const TapePage(),
+      );
+    },
+  };
+}
+
+/// generated route for
+/// [ProfileBloggerTapePage]
+class ProfileBloggerTapeRoute
+    extends PageRouteInfo<ProfileBloggerTapeRouteArgs> {
+  ProfileBloggerTapeRoute({
+    required int bloggerId,
+    required String bloggerName,
+    required String bloggerAvatar,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ProfileBloggerTapeRoute.name,
+          args: ProfileBloggerTapeRouteArgs(
+            bloggerId: bloggerId,
+            bloggerName: bloggerName,
+            bloggerAvatar: bloggerAvatar,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileBloggerTapeRoute';
+
+  static const PageInfo<ProfileBloggerTapeRouteArgs> page =
+      PageInfo<ProfileBloggerTapeRouteArgs>(name);
+}
+
+class ProfileBloggerTapeRouteArgs {
+  const ProfileBloggerTapeRouteArgs({
+    required this.bloggerId,
+    required this.bloggerName,
+    required this.bloggerAvatar,
+    this.key,
+  });
+
+  final int bloggerId;
+
+  final String bloggerName;
+
+  final String bloggerAvatar;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ProfileBloggerTapeRouteArgs{bloggerId: $bloggerId, bloggerName: $bloggerName, bloggerAvatar: $bloggerAvatar, key: $key}';
+  }
+}
+
+/// generated route for
+/// [LauncherApp]
+class LauncherRoute extends PageRouteInfo<void> {
+  const LauncherRoute({List<PageRouteInfo>? children})
+      : super(
+          LauncherRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LauncherRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [BaseTapePage]
+class BaseTapeTab extends PageRouteInfo<void> {
+  const BaseTapeTab({List<PageRouteInfo>? children})
+      : super(
+          BaseTapeTab.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BaseTapeTab';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [BaseHomePage]
+class BaseHomeTab extends PageRouteInfo<void> {
+  const BaseHomeTab({List<PageRouteInfo>? children})
+      : super(
+          BaseHomeTab.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BaseHomeTab';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [BaseBasketPage]
+class BaseBasketTab extends PageRouteInfo<void> {
+  const BaseBasketTab({List<PageRouteInfo>? children})
+      : super(
+          BaseBasketTab.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BaseBasketTab';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [BaseFavoritePage]
+class BaseFavoriteTab extends PageRouteInfo<void> {
+  const BaseFavoriteTab({List<PageRouteInfo>? children})
+      : super(
+          BaseFavoriteTab.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BaseFavoriteTab';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [BaseDrawerPage]
+class BaseDrawerTab extends PageRouteInfo<void> {
+  const BaseDrawerTab({List<PageRouteInfo>? children})
+      : super(
+          BaseDrawerTab.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BaseDrawerTab';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ViewAuthRegisterPage]
+class ViewAuthRegisterRoute extends PageRouteInfo<ViewAuthRegisterRouteArgs> {
+  ViewAuthRegisterRoute({
+    bool? BackButton,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ViewAuthRegisterRoute.name,
+          args: ViewAuthRegisterRouteArgs(
+            BackButton: BackButton,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ViewAuthRegisterRoute';
+
+  static const PageInfo<ViewAuthRegisterRouteArgs> page =
+      PageInfo<ViewAuthRegisterRouteArgs>(name);
+}
+
+class ViewAuthRegisterRouteArgs {
+  const ViewAuthRegisterRouteArgs({
+    this.BackButton,
+    this.key,
+  });
+
+  final bool? BackButton;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ViewAuthRegisterRouteArgs{BackButton: $BackButton, key: $key}';
+  }
+}
+
+/// generated route for
+/// [BasketPage]
+class BasketRoute extends PageRouteInfo<void> {
+  const BasketRoute({List<PageRouteInfo>? children})
+      : super(
+          BasketRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BasketRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DrawerPage]
+class DrawerRoute extends PageRouteInfo<void> {
+  const DrawerRoute({List<PageRouteInfo>? children})
+      : super(
+          DrawerRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DrawerRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [FavoritePage]
+class FavoriteRoute extends PageRouteInfo<void> {
+  const FavoriteRoute({List<PageRouteInfo>? children})
+      : super(
+          FavoriteRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FavoriteRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [HomePage]
+class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
+  HomeRoute({
+    GlobalKey<ScaffoldState>? globalKey,
+    void Function()? drawerCallback,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          HomeRoute.name,
+          args: HomeRouteArgs(
+            globalKey: globalKey,
+            drawerCallback: drawerCallback,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeRoute';
+
+  static const PageInfo<HomeRouteArgs> page = PageInfo<HomeRouteArgs>(name);
+}
+
+class HomeRouteArgs {
+  const HomeRouteArgs({
+    this.globalKey,
+    this.drawerCallback,
+    this.key,
+  });
+
+  final GlobalKey<ScaffoldState>? globalKey;
+
+  final void Function()? drawerCallback;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'HomeRouteArgs{globalKey: $globalKey, drawerCallback: $drawerCallback, key: $key}';
+  }
+}
+
+/// generated route for
+/// [DetailTapeCardPage]
+class DetailTapeCardRoute extends PageRouteInfo<DetailTapeCardRouteArgs> {
+  DetailTapeCardRoute({
+    required int? index,
+    required String? shopName,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          DetailTapeCardRoute.name,
+          args: DetailTapeCardRouteArgs(
+            index: index,
+            shopName: shopName,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'DetailTapeCardRoute';
+
+  static const PageInfo<DetailTapeCardRouteArgs> page =
+      PageInfo<DetailTapeCardRouteArgs>(name);
+}
+
+class DetailTapeCardRouteArgs {
+  const DetailTapeCardRouteArgs({
+    required this.index,
+    required this.shopName,
+    this.key,
+  });
+
+  final int? index;
+
+  final String? shopName;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'DetailTapeCardRouteArgs{index: $index, shopName: $shopName, key: $key}';
+  }
+}
+
+/// generated route for
+/// [TapePage]
+class TapeRoute extends PageRouteInfo<void> {
+  const TapeRoute({List<PageRouteInfo>? children})
+      : super(
+          TapeRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TapeRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
