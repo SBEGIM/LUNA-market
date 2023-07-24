@@ -101,6 +101,7 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
 
               if (state is LoadedState) {
                 return GridView.builder(
+                  cacheExtent: 10000,
                   padding: const EdgeInsets.all(1),
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 150,
