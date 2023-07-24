@@ -26,6 +26,8 @@ import 'package:haji_market/features/drawer/data/repository/address_repo.dart';
 import 'package:haji_market/features/drawer/data/repository/bonus_repo.dart';
 import 'package:haji_market/features/drawer/data/repository/profit_repo.dart';
 import 'package:haji_market/features/drawer/data/repository/respublic_repo.dart';
+import 'package:haji_market/features/home/data/bloc/partner_cubit.dart';
+import 'package:haji_market/features/home/data/repository/partner_repo.dart';
 import 'package:haji_market/features/tape/presentation/ui/detail_tape_card_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -287,16 +289,16 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home: AppRouterBuilder(
-      createRouter: (context) => AppRouter(),
-      builder: (context, parser, delegate) => MaterialApp.router(
-        routeInformationParser: parser,
-        routerDelegate: delegate,
-        // onGenerateTitle: (context) => context.localized.appTitle,
-        // theme: ThemeData.light(),
-        // darkTheme: ThemeData.dark(),
-        // themeMode: themeMode,
+        createRouter: (context) => AppRouter(),
+        builder: (context, parser, delegate) => MaterialApp.router(
+          routeInformationParser: parser,
+          routerDelegate: delegate,
+          // onGenerateTitle: (context) => context.localized.appTitle,
+          // theme: ThemeData.light(),
+          // darkTheme: ThemeData.dark(),
+          // themeMode: themeMode,
+        ),
       ),
-    ),
 // const BaseAdmin()
       // const SelectCountryPage()
     );
@@ -509,6 +511,11 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (_) => TapeBloggerCubit(
             tapeRepository: TapeBloggerRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => PartnerCubit(
+            partnerRepository: PartnerRepository(),
           ),
         ),
       ],

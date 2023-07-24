@@ -7,8 +7,10 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class CreditWebviewPage extends StatefulWidget {
   String url;
+  String? title;
 
-  CreditWebviewPage({required this.url, Key? key}) : super(key: key);
+  CreditWebviewPage({this.title, required this.url, Key? key})
+      : super(key: key);
 
   @override
   State<CreditWebviewPage> createState() => _CreditWebviewPageState();
@@ -47,9 +49,9 @@ class _CreditWebviewPageState extends State<CreditWebviewPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text(
-          'Рассрочка',
-          style: TextStyle(
+        title: Text(
+          widget.title ?? 'Рассрочка',
+          style: const TextStyle(
             color: Colors.white,
           ),
         ),
