@@ -4,20 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart'
-    as productAdState;
-import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart'
-    as productCubit;
-import 'package:haji_market/features/drawer/data/bloc/product_state.dart'
-    as productState;
-import 'package:haji_market/features/drawer/data/bloc/shops_drawer_cubit.dart'
-    as shopsDrawerCubit;
-import 'package:haji_market/features/drawer/data/bloc/shops_drawer_state.dart'
-    as shopsDrawerState;
-import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart'
-    as subCatCubit;
-import 'package:haji_market/features/drawer/data/bloc/sub_cats_state.dart'
-    as subCatState;
+import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart' as productAdState;
+import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart' as productCubit;
+import 'package:haji_market/features/drawer/data/bloc/product_state.dart' as productState;
+import 'package:haji_market/features/drawer/data/bloc/shops_drawer_cubit.dart' as shopsDrawerCubit;
+import 'package:haji_market/features/drawer/data/bloc/shops_drawer_state.dart' as shopsDrawerState;
+import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart' as subCatCubit;
+import 'package:haji_market/features/drawer/data/bloc/sub_cats_state.dart' as subCatState;
 import 'package:haji_market/features/drawer/presentation/widgets/detail_card_product_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/filter_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/products_card_widget.dart';
@@ -26,8 +19,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../home/data/model/Cats.dart';
 import '../../../home/presentation/widgets/product_watching_card.dart';
 import '../../data/bloc/brand_cubit.dart' as brandCubit;
-import 'package:haji_market/features/drawer/data/bloc/brand_state.dart'
-    as brandState;
+import 'package:haji_market/features/drawer/data/bloc/brand_state.dart' as brandState;
 
 import '../../data/bloc/product_ad_cubit.dart';
 import '../../data/bloc/product_ad_state.dart';
@@ -74,8 +66,7 @@ class _ProductsPageState extends State<ProductsPage> {
     }
     GetStorage().remove('ratingFilter');
     GetStorage().remove('rating');
-    BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context)
-        .shopsDrawer(widget.cats.id);
+    BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context).shopsDrawer(widget.cats.id);
     BlocProvider.of<brandCubit.BrandCubit>(context).brands(subCatId: widget.cats.id);
     BlocProvider.of<ProductAdCubit>(context).adProducts(widget.cats.id);
     super.initState();
@@ -86,6 +77,24 @@ class _ProductsPageState extends State<ProductsPage> {
     scrollView!.call();
     GetStorage().remove('scrollView');
     super.dispose();
+  }
+
+  int page = 1;
+  RefreshController _refreshController = RefreshController();
+
+  Future<void> onLoading() async {
+    await BlocProvider.of<productCubit.ProductCubit>(context).productsPagination();
+    await Future.delayed(const Duration(milliseconds: 2000));
+    _refreshController.loadComplete();
+  }
+
+  Future<void> onRefresh() async {
+    await BlocProvider.of<productCubit.ProductCubit>(context).productsPagination();
+    await Future.delayed(const Duration(milliseconds: 1000));
+    if (mounted) {
+      setState(() {});
+    }
+    _refreshController.refreshCompleted();
   }
 
   @override
@@ -107,9 +116,7 @@ class _ProductsPageState extends State<ProductsPage> {
           width: 311,
           height: 40,
           margin: const EdgeInsets.only(right: 16),
-          decoration: BoxDecoration(
-              color: const Color(0xFFF8F8F8),
-              borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(color: const Color(0xFFF8F8F8), borderRadius: BorderRadius.circular(10)),
           child: TextField(
             controller: searchController,
             onChanged: (value) {
@@ -141,8 +148,6 @@ class _ProductsPageState extends State<ProductsPage> {
         // ],
       ),
       body: Column(
-        // shrinkWrap: false,
-        // physics: NeverScrollableScrollPhysics(),
         children: [
           widget.cats.name != ''
               ? Container(
@@ -151,129 +156,154 @@ class _ProductsPageState extends State<ProductsPage> {
                   padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
                   child: Text(
                     '${widget.cats.name}',
-                    style: const TextStyle(
-                        color: AppColors.kGray900,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600),
+                    style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 )
               : Container(),
           const SizedBox(
             height: 4,
           ),
-          (widget.cats.id != 0 && catsVisible == false)
-              ? Container(
-                  color: Colors.white,
-                  padding: const EdgeInsets.only(left: 16),
-                  child: const CatsProductPage(),
-                )
-              : Container(),
-          const SizedBox(
-            height: 1,
-          ),
           Container(
-            padding: const EdgeInsets.only(left: 16),
             color: Colors.white,
-            child: Stack(
-              children: [
-                SizedBox(
-                  width: 335,
-                  child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 10, right: 8, top: 12),
-                        child: Wrap(
-                          spacing: 6,
-                          runSpacing: 6,
-                          children: [
-                            const chipWithDropDown(label: 'Цена'),
-                            const chipWithDropDown(label: 'Бренд'),
-                            widget.shopId == null
-                                ? const chipWithDropDown(label: 'Продавцы')
-                                : Container(),
-                            const chipWithDropDown(label: 'Высокий рейтинг'),
-                          ],
-                        ),
-                      )),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Container(
-                    height: 55,
-                    color: Colors.white,
-                    child: IconButton(
-                      icon: SvgPicture.asset('assets/icons/filter.svg'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  FilterPage(shopId: widget.shopId)),
-                        );
-                      },
+            padding: const EdgeInsets.only(left: 16),
+            child: const CatsProductPage(),
+          ),
+          Expanded(
+            child: SmartRefresher(
+              controller: _refreshController,
+              enablePullDown: false,
+              enablePullUp: true,
+              onLoading: () {
+                onLoading();
+              },
+              onRefresh: () {
+                onRefresh();
+              },
+              child: CustomScrollView(
+                // shrinkWrap: false,
+                // physics: NeverScrollableScrollPhysics(),
+                slivers: [
+                  SliverAppBar(
+                    snap: true,
+                    floating: true,
+                    forceElevated: true,
+                    elevation: 0,
+                    backgroundColor: Colors.white,
+                    automaticallyImplyLeading: false,
+                    toolbarHeight: 70,
+                    flexibleSpace: Container(
+                      padding: const EdgeInsets.only(left: 16),
+                      color: Colors.white,
+                      child: Stack(
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 10, right: 8, top: 10),
+                                  child: Wrap(
+                                    spacing: 6,
+                                    runSpacing: 6,
+                                    children: [
+                                      const chipWithDropDown(label: 'Цена'),
+                                      const chipWithDropDown(label: 'Бренд'),
+                                      widget.shopId == null ? const chipWithDropDown(label: 'Продавцы') : Container(),
+                                      const chipWithDropDown(label: 'Высокий рейтинг'),
+                                    ],
+                                  ),
+                                )),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Container(
+                              height: 70,
+                              color: Colors.white,
+                              child: IconButton(
+                                icon: SvgPicture.asset('assets/icons/filter.svg'),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => FilterPage(shopId: widget.shopId)),
+                                  );
+                                },
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                )
-              ],
+                  SliverList.list(children: [
+                    BlocConsumer<ProductAdCubit, ProductAdState>(
+                        listener: (context, state) {},
+                        builder: (context, state) {
+                          if (state is ErrorState) {
+                            return Center(
+                              child: Text(
+                                state.message,
+                                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                              ),
+                            );
+                          }
+                          if (state is LoadingState) {
+                            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                          }
+
+                          if (state is LoadedState) {
+                            return state.productModel.length != 0
+                                ? SizedBox(
+                                    height: 260,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      // shrinkWrap: true,
+                                      itemCount: state.productModel.length < 4 ? state.productModel.length : 4,
+                                      itemBuilder: (BuildContext ctx, index) {
+                                        return GestureDetector(
+                                          onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailCardProductPage(product: state.productModel[index])),
+                                          ),
+                                          child: ProductAdCard(
+                                            product: state.productModel[index],
+                                          ),
+                                        );
+                                      },
+                                    ))
+                                : Container();
+                          } else {
+                            return Container();
+                          }
+                        }),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    BlocBuilder<productCubit.ProductCubit, productState.ProductState>(
+                      builder: (context, state) {
+                        if (state is productState.LoadedState) {
+                          return Container(
+                            padding: const EdgeInsets.only(left: 16, top: 11, bottom: 8),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Найдено ${state.productModel.length} товаров',
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500, color: Color.fromRGBO(144, 148, 153, 1)),
+                            ),
+                          );
+                        }
+                        return const SizedBox();
+                      },
+                    )
+                  ]),
+
+                  const Products(),
+
+                  // ProductCardWidget()
+                ],
+              ),
             ),
           ),
-          if (catsVisible == false)
-            BlocConsumer<ProductAdCubit, ProductAdState>(
-                listener: (context, state) {},
-                builder: (context, state) {
-                  if (state is ErrorState) {
-                    return Center(
-                      child: Text(
-                        state.message,
-                        style:
-                            const TextStyle(fontSize: 20.0, color: Colors.grey),
-                      ),
-                    );
-                  }
-                  if (state is LoadingState) {
-                    return const Center(
-                        child: CircularProgressIndicator(
-                            color: Colors.indigoAccent));
-                  }
-
-                  if (state is LoadedState) {
-                    return state.productModel.length != 0
-                        ? SizedBox(
-                            height: 260,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemCount: state.productModel.length < 4
-                                  ? state.productModel.length
-                                  : 4,
-                              itemBuilder: (BuildContext ctx, index) {
-                                return GestureDetector(
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailCardProductPage(
-                                                product:
-                                                    state.productModel[index])),
-                                  ),
-                                  child: ProductAdCard(
-                                    product: state.productModel[index],
-                                  ),
-                                );
-                              },
-                            ))
-                        : Container();
-                  } else {
-                    return Container();
-                  }
-                })
-          else
-            Container(),
-          const SizedBox(height: 20),
-          const Expanded(child: Products()),
-
-          // ProductCardWidget()
         ],
       ),
     );
@@ -314,8 +344,7 @@ Widget chipDate(
         color: AppColors.kGray900,
       ),
     ),
-    backgroundColor:
-        select != index ? const Color(0xFFEBEDF0) : AppColors.kPrimaryColor,
+    backgroundColor: select != index ? const Color(0xFFEBEDF0) : AppColors.kPrimaryColor,
     // elevation: 1.0,
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -336,26 +365,6 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-  int page = 1;
-  RefreshController _refreshController = RefreshController();
-
-  Future<void> onLoading() async {
-    await BlocProvider.of<productCubit.ProductCubit>(context)
-        .productsPagination();
-    await Future.delayed(const Duration(milliseconds: 2000));
-    _refreshController.loadComplete();
-  }
-
-  Future<void> onRefresh() async {
-    await BlocProvider.of<productCubit.ProductCubit>(context)
-        .productsPagination();
-    await Future.delayed(Duration(milliseconds: 1000));
-    if (mounted) {
-      setState(() {});
-    }
-    _refreshController.refreshCompleted();
-  }
-
   @override
   void initState() {
     BlocProvider.of<productCubit.ProductCubit>(context).products();
@@ -368,90 +377,56 @@ class _ProductsState extends State<Products> {
         listener: (context, state) {},
         builder: (context, state) {
           if (state is productState.ErrorState) {
-            return Center(
-              child: Text(
-                state.message,
-                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+            return SliverToBoxAdapter(
+              child: Center(
+                child: Text(
+                  state.message,
+                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                ),
               ),
             );
           }
           if (state is productState.LoadingState) {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return const SliverToBoxAdapter(
+              child: Center(child: CircularProgressIndicator(color: Colors.indigoAccent)),
+            );
           }
 
           if (state is productState.LoadedState) {
-            return Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(left: 16, top: 11, bottom: 8),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Найдено ${state.productModel.length} товаров',
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Color.fromRGBO(144, 148, 153, 1)),
-                  ),
-                ),
-                Expanded(
-                  //height: MediaQuery.of(context).size.height * 0.7,
-                  child: NotificationListener<UserScrollNotification>(
-                    onNotification: (notification) {
-                      if (notification.metrics.pixels ==
-                          notification.metrics.minScrollExtent) {
-                        Future.delayed(const Duration(milliseconds: 100), () {})
-                            .then((s) {
-                          GetStorage().write('scrollView', false);
-                        });
+            return NotificationListener<UserScrollNotification>(
+              onNotification: (notification) {
+                if (notification.metrics.pixels == notification.metrics.minScrollExtent) {
+                  Future.delayed(const Duration(milliseconds: 100), () {}).then((s) {
+                    GetStorage().write('scrollView', false);
+                  });
 
-                        // GetStorage().write('scrollView', false);
-                      } else if (notification.direction ==
-                          ScrollDirection.reverse) {
-                        Future.delayed(const Duration(milliseconds: 200), () {})
-                            .then((s) {
-                          GetStorage().write('scrollView', true);
-                        });
-                      }
-                      return true;
-                    },
-                    child: SmartRefresher(
-                      controller: _refreshController,
-                      enablePullDown: false,
-                      enablePullUp: true,
-                      onLoading: () {
-                        onLoading();
+                  // GetStorage().write('scrollView', false);
+                } else if (notification.direction == ScrollDirection.reverse) {
+                  Future.delayed(const Duration(milliseconds: 200), () {}).then((s) {
+                    GetStorage().write('scrollView', true);
+                  });
+                }
+                return true;
+              },
+              child: SliverList.builder(
+                itemCount: state.productModel.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailCardProductPage(product: state.productModel[index])),
+                        );
                       },
-                      onRefresh: () {
-                        onRefresh();
-                      },
-                      child: ListView.builder(
-                          // physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: state.productModel.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailCardProductPage(
-                                                product:
-                                                    state.productModel[index])),
-                                  );
-                                },
-                                child: ProductCardWidget(
-                                    product: state.productModel[index]));
-                          }),
-                    ),
-                  ),
-                )
-              ],
+                      child: ProductCardWidget(product: state.productModel[index]));
+                },
+              ),
             );
           } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return const SliverToBoxAdapter(
+              child: Center(child: CircularProgressIndicator(color: Colors.indigoAccent)),
+            );
           }
         });
   }
@@ -693,16 +668,13 @@ class _CatsProductPageState extends State<CatsProductPage> {
                           GetStorage().remove('subCatId');
                         } else {
                           GetStorage().write('subCatId', state.cats[index].id);
-                          GetStorage().write('subCatFilterId',
-                              [state.cats[index].id].toString());
+                          GetStorage().write('subCatFilterId', [state.cats[index].id].toString());
                           setState(() {
                             subCatName = state.cats[index].name.toString();
                           });
                         }
-                        BlocProvider.of<productCubit.ProductCubit>(context)
-                            .products();
-                        BlocProvider.of<brandCubit.BrandCubit>(context)
-                            .brands(subCatId: state.cats[index].id);
+                        BlocProvider.of<productCubit.ProductCubit>(context).products();
+                        BlocProvider.of<brandCubit.BrandCubit>(context).brands(subCatId: state.cats[index].id);
                       },
                       child: Container(
                         height: 28,
@@ -712,15 +684,11 @@ class _CatsProductPageState extends State<CatsProductPage> {
 
                           label: Text(
                             state.cats[index].name.toString(),
-                            style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400),
+                            style: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400),
                           ),
-                          backgroundColor:
-                              state.cats[index].name.toString() == subCatName
-                                  ? AppColors.kPrimaryColor
-                                  : AppColors.steelGray,
+                          backgroundColor: state.cats[index].name.toString() == subCatName
+                              ? AppColors.kPrimaryColor
+                              : AppColors.steelGray,
                           elevation: 1.0,
 
                           shape: const RoundedRectangleBorder(
@@ -737,8 +705,7 @@ class _CatsProductPageState extends State<CatsProductPage> {
                   }),
             );
           } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
         });
   }
@@ -769,8 +736,7 @@ class _PriceBottomSheetState extends State<PriceBottomSheet> {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       child: ListView(children: [
@@ -868,12 +834,10 @@ class _PriceBottomSheetState extends State<PriceBottomSheet> {
                     ),
                     Container(
                       color: Colors.white,
-                      padding: const EdgeInsets.only(
-                          left: 0, right: 0, top: 16, bottom: 26),
+                      padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 26),
                       child: InkWell(
                         onTap: () {
-                          BlocProvider.of<productCubit.ProductCubit>(context)
-                              .products();
+                          BlocProvider.of<productCubit.ProductCubit>(context).products();
 
                           Navigator.pop(context);
                         },
@@ -886,10 +850,7 @@ class _PriceBottomSheetState extends State<PriceBottomSheet> {
                             padding: const EdgeInsets.all(16),
                             child: const Text(
                               'Применить',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16),
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                               textAlign: TextAlign.center,
                             )),
                       ),
@@ -945,21 +906,17 @@ class _BrandBottomSheetState extends State<BrandBottomSheet> {
             return Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20)),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 child: Column(
                   children: [
                     Container(
                       color: Colors.white,
                       height: 360,
                       child: ListView.separated(
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
-                        shrinkWrap: true,
+                        separatorBuilder: (BuildContext context, int index) => const Divider(),
+                        // shrinkWrap: true,
                         itemCount: state.cats.length,
                         itemBuilder: (BuildContext context, int index) {
                           return SizedBox(
@@ -980,17 +937,13 @@ class _BrandBottomSheetState extends State<BrandBottomSheet> {
                                   //   GetStorage()
                                   //       .write('selectedIndexSort', index);
 
-                                  if (_selectedListSort
-                                      .contains(state.cats[index].id as int)) {
-                                    _selectedListSort
-                                        .remove(state.cats[index].id as int);
+                                  if (_selectedListSort.contains(state.cats[index].id as int)) {
+                                    _selectedListSort.remove(state.cats[index].id as int);
                                   } else {
-                                    _selectedListSort
-                                        .add(state.cats[index].id as int);
+                                    _selectedListSort.add(state.cats[index].id as int);
                                   }
 
-                                  GetStorage().write('brandFilterId',
-                                      _selectedListSort.toString());
+                                  GetStorage().write('brandFilterId', _selectedListSort.toString());
 
                                   setState(() {
                                     // устанавливаем индекс выделенного элемента
@@ -1003,14 +956,12 @@ class _BrandBottomSheetState extends State<BrandBottomSheet> {
                                   //     .products();
                                 },
                                 child: ListTile(
-                                  selected: _selectedListSort
-                                      .contains(state.cats[index].id),
+                                  selected: _selectedListSort.contains(state.cats[index].id),
                                   leading: Text(
                                     state.cats[index].name.toString(),
                                     style: AppTextStyles.appBarTextStyle,
                                   ),
-                                  trailing: _selectedListSort
-                                          .contains(state.cats[index].id)
+                                  trailing: _selectedListSort.contains(state.cats[index].id)
                                       ? SvgPicture.asset(
                                           'assets/icons/check_circle.svg',
                                         )
@@ -1024,12 +975,10 @@ class _BrandBottomSheetState extends State<BrandBottomSheet> {
                     ),
                     Container(
                       color: Colors.white,
-                      padding: const EdgeInsets.only(
-                          left: 0, right: 0, top: 16, bottom: 26),
+                      padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 26),
                       child: InkWell(
                         onTap: () {
-                          BlocProvider.of<productCubit.ProductCubit>(context)
-                              .products();
+                          BlocProvider.of<productCubit.ProductCubit>(context).products();
                           Navigator.pop(context);
                         },
                         child: Container(
@@ -1041,10 +990,7 @@ class _BrandBottomSheetState extends State<BrandBottomSheet> {
                             padding: const EdgeInsets.all(16),
                             child: const Text(
                               'Готово',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16),
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                               textAlign: TextAlign.center,
                             )),
                       ),
@@ -1052,8 +998,7 @@ class _BrandBottomSheetState extends State<BrandBottomSheet> {
                   ],
                 ));
           } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
         });
   }
@@ -1087,8 +1032,7 @@ class _ShopBottomSheetState extends State<ShopBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<shopsDrawerCubit.ShopsDrawerCubit,
-            shopsDrawerState.ShopsDrawerState>(
+    return BlocConsumer<shopsDrawerCubit.ShopsDrawerCubit, shopsDrawerState.ShopsDrawerState>(
         listener: (context, state) {},
         builder: (context, state) {
           if (state is shopsDrawerState.ErrorState) {
@@ -1100,29 +1044,24 @@ class _ShopBottomSheetState extends State<ShopBottomSheet> {
             );
           }
           if (state is shopsDrawerState.LoadingState) {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
 
           if (state is shopsDrawerState.LoadedState) {
             return Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20)),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 child: Column(
                   children: [
                     Container(
                       color: Colors.white,
                       height: 360,
                       child: ListView.separated(
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
-                        shrinkWrap: true,
+                        separatorBuilder: (BuildContext context, int index) => const Divider(),
+                        // shrinkWrap: true,
                         itemCount: state.shopsDrawer.length,
                         itemBuilder: (BuildContext context, int index) {
                           return SizedBox(
@@ -1155,31 +1094,25 @@ class _ShopBottomSheetState extends State<ShopBottomSheet> {
 
                                   // Get.back();
 
-                                  if (_selectedListSort
-                                      .contains(state.shopsDrawer[index].id)) {
-                                    _selectedListSort
-                                        .remove(state.shopsDrawer[index].id);
+                                  if (_selectedListSort.contains(state.shopsDrawer[index].id)) {
+                                    _selectedListSort.remove(state.shopsDrawer[index].id);
                                   } else {
-                                    _selectedListSort.add(
-                                        state.shopsDrawer[index].id as int);
+                                    _selectedListSort.add(state.shopsDrawer[index].id as int);
                                   }
 
-                                  GetStorage().write('shopFilterId',
-                                      _selectedListSort.toString());
+                                  GetStorage().write('shopFilterId', _selectedListSort.toString());
 
                                   setState(() {});
 
                                   // print(GetStorage().read('shopFilterId'));
                                 },
                                 child: ListTile(
-                                  selected: _selectedListSort
-                                      .contains(state.shopsDrawer[index].id),
+                                  selected: _selectedListSort.contains(state.shopsDrawer[index].id),
                                   leading: Text(
                                     state.shopsDrawer[index].name.toString(),
                                     style: AppTextStyles.appBarTextStyle,
                                   ),
-                                  trailing: _selectedListSort
-                                          .contains(state.shopsDrawer[index].id)
+                                  trailing: _selectedListSort.contains(state.shopsDrawer[index].id)
                                       ? SvgPicture.asset(
                                           'assets/icons/check_circle.svg',
                                         )
@@ -1193,12 +1126,10 @@ class _ShopBottomSheetState extends State<ShopBottomSheet> {
                     ),
                     Container(
                       color: Colors.white,
-                      padding: const EdgeInsets.only(
-                          left: 0, right: 0, top: 16, bottom: 26),
+                      padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 26),
                       child: InkWell(
                         onTap: () {
-                          BlocProvider.of<productCubit.ProductCubit>(context)
-                              .products();
+                          BlocProvider.of<productCubit.ProductCubit>(context).products();
                           Navigator.pop(context);
                         },
                         child: Container(
@@ -1210,10 +1141,7 @@ class _ShopBottomSheetState extends State<ShopBottomSheet> {
                             padding: const EdgeInsets.all(16),
                             child: const Text(
                               'Готово',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16),
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                               textAlign: TextAlign.center,
                             )),
                       ),
@@ -1221,8 +1149,7 @@ class _ShopBottomSheetState extends State<ShopBottomSheet> {
                   ],
                 ));
           } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
         });
   }
