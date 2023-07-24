@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/optom_price_dto.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
 
 import '../models/admin_products_model.dart';
 

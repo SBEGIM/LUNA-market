@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/admin/admin_app/bloc/admin_navigation_cubit/admin_navigation_cubit.dart';
 import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
 import 'package:haji_market/admin/tape_admin/presentation/ui/tape_admin_page.dart';
+import 'package:haji_market/bloger/tape/presentation/ui/tape_blogger_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 import '../../my_orders_admin/presentation/ui/my_products_blogger_page.dart';
 import '../../my_orders_admin/presentation/widgets/detail_tape_card_page.dart';
@@ -138,7 +139,7 @@ class _BaseBloggerState extends State<BaseBlogger> {
       body: BlocBuilder<AdminNavigationCubit, AdminNavigationState>(
         builder: (context, state) {
           if (state is TapeAdminState) {
-            return const TapeAdminPage();
+            return const TapeBloggerPage();
           } else if (state is MyOrderAdminState) {
             return const BlogShopsPage();
           } else if (state is DetailTapeAdminState) {
