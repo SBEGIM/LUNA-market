@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,13 +6,14 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/under_catalog_page.dart';
 
 import '../../../home/data/model/Cats.dart';
 import '../../data/bloc/sub_cats_cubit.dart';
 import '../../data/bloc/sub_cats_state.dart';
-
+@RoutePage()
 class SubCatalogPage extends StatefulWidget {
   final Cats cats;
 
@@ -40,7 +42,9 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {
-            Get.to(Base(index: 1));
+            
+            context.router.pop();
+            // Get.to(Base(index: 1));
           },
           icon: SvgPicture.asset('assets/icons/back_header.svg'),
         ),
@@ -150,10 +154,10 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                           GetStorage().write('subCatFilterId',
                               [state.cats[index].id].toString());
                           GetStorage().remove('shopFilterId');
-
-                          Get.to(() => ProductsPage(
-                                cats: state.cats[index],
-                              ));
+                          context.router.push(ProductsRoute(cats: state.cats[index],));
+                          // Get.to(() => ProductsPage(
+                          //       cats: state.cats[index],
+                          //     ));
                           // Navigator.push(
                           //     context,
                           //     MaterialPageRoute(

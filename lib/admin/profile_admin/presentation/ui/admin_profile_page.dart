@@ -332,7 +332,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
           ),
           GestureDetector(
             onTap: () {
-              BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppUserState()));
+              BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppUserState(index: 1)));
               // Navigator.push(
               //   context,
               //   MaterialPageRoute(builder: (context) => const Base(index: 1)),

@@ -40,8 +40,11 @@ class _LauncherAppState extends State<LauncherApp> {
         return state.maybeWhen(
           notAuthorizedState: () => const ViewAuthRegisterPage(),
           loadingState: () => const _Scaffold(child: CustomLoadingWidget()),
-          inAppBlogerState: () => const BaseBloggerNew(),
-          inAppAdminState: () => const BaseAdminNew(),
+          inAppBlogerState: (index) => const BaseBloggerNew(),
+          inAppAdminState: (index) => const BaseAdminNew(),
+          inAppUserState: (index) => BaseNew(
+            index: index,
+          ),
           orElse: () => const BaseNew(),
         );
       },

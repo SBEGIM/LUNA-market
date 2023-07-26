@@ -1,14 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
 import 'package:haji_market/features/home/data/model/Cats.dart';
 
 import '../../../home/data/bloc/popular_shops_cubit.dart';
 import '../../../home/data/bloc/popular_shops_state.dart';
-
+@RoutePage()
 class ShopsPage extends StatefulWidget {
   const ShopsPage({Key? key}) : super(key: key);
 
@@ -29,7 +31,7 @@ class _ShopsPageState extends State<ShopsPage> {
         leading: Padding(
           padding: const EdgeInsets.only(left: 16.0),
           child: CustomBackButton(onTap: () {
-            Navigator.pop(context);
+            context.router.pop();
           }),
         ),
         actions: [
@@ -102,12 +104,13 @@ class _ShopsPageState extends State<ShopsPage> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ProductsPage(cats: Cats(id: 0, name: '')),
-                              ));
+                          context.router.push(ProductsRoute(cats: Cats(id: 0, name: '')));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           ProductsPage(cats: Cats(id: 0, name: '')),
+                          //     ));
                         },
                         child: ShopsListTile(
                           title: '${state.popularShops[index].name}',

@@ -10,7 +10,8 @@ import 'package:haji_market/features/app/router/app_router.dart';
 const _tag = 'BaseNew';
 
 class BaseNew extends StatefulWidget {
-  const BaseNew({super.key});
+  final int? index;
+  const BaseNew({super.key, this.index});
 
   @override
   _BaseNewState createState() => _BaseNewState();
@@ -22,7 +23,11 @@ class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    tabController = TabController(length: 5, vsync: this);
+    tabController = TabController(length: 5, vsync: this,initialIndex: 2);
+    if(widget.index!=null){
+      tabController?.animateTo(widget.index!,duration: const Duration(milliseconds: 500));
+      log('message');
+    }
     super.initState();
   }
 
@@ -40,6 +45,7 @@ class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
         const BasketRoute(),
         const DrawerRoute(),
       ],
+      homeIndex: widget.index??-1,
       backgroundColor: tabController?.index != 0 ? Colors.white : null,
       extendBody: true,
       transitionBuilder: (context, child, animation) {

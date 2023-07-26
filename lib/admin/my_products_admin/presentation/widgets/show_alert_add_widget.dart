@@ -145,7 +145,7 @@ Future<dynamic> showAlertAddWidget(
                     setState(
                       () {},
                     );
-                    Get.to(() => PaymentWebviewWigdet(
+                    Get.to(() => PaymentWebviewPage(
                           url: data!,
                           role: 'shop',
                         ));

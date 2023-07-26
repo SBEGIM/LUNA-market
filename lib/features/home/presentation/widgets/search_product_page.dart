@@ -1,13 +1,15 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import '../../../drawer/data/bloc/product_state.dart';
 import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
-
+@RoutePage()
 class SearchProductPage extends StatefulWidget {
   const SearchProductPage({Key? key}) : super(key: key);
 
@@ -129,14 +131,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
                                 //       builder: (context) => ProductsPage(
                                 //           cats: state.productModel[index])),
                                 // );
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          DetailCardProductPage(
-                                              product:
-                                                  state.productModel[index]),
-                                    ));
+                                context.router.push(DetailCardProductRoute(product: state.productModel[index]));
                               },
                               child: UnderCatalogListTile(
                                 title:

@@ -1,23 +1,22 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:get/route_manager.dart';
-import 'package:haji_market/admin/admin_app/presentation/base_admin.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/app/presentaion/base.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class PaymentWebviewWigdet extends StatefulWidget {
-  String url;
-  String? role;
+@RoutePage()
+class PaymentWebviewPage extends StatefulWidget {
+  final String url;
+  final String? role;
 
-  PaymentWebviewWigdet({required this.url, this.role, super.key});
+  const PaymentWebviewPage({required this.url, this.role, super.key});
 
   @override
-  State<PaymentWebviewWigdet> createState() => _PaymentWebviewWigdetState();
+  State<PaymentWebviewPage> createState() => _PaymentWebviewPageState();
 }
 
-class _PaymentWebviewWigdetState extends State<PaymentWebviewWigdet> {
+class _PaymentWebviewPageState extends State<PaymentWebviewPage> {
   WebViewController _webViewController = WebViewController();
 
   @override
@@ -63,12 +62,18 @@ class _PaymentWebviewWigdetState extends State<PaymentWebviewWigdet> {
                 Icons.arrow_back_ios_new,
               ),
               onPressed: () {
+                context.router.pushAndPopUntil(
+                  const LauncherRoute(
+                    children: [BasketRoute()],
+                  ),
+                  predicate: (_) => false,
+                );
                 //  Navigator.pop(context);
-                if (widget.role == 'shop') {
-                  Get.to(const BaseAdmin(index: 1));
-                } else {
-                  Get.to(const Base(index: 1));
-                }
+                // if (widget.role == 'shop') {
+                //   Get.to(const BaseAdmin(index: 1));
+                // } else {
+                //   Get.to(const Base(index: 1));
+                // }
               }),
         ),
         body: WebViewWidget(

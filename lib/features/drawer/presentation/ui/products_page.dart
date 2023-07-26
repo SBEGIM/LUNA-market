@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart' as productAdState;
 import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart' as productCubit;
 import 'package:haji_market/features/drawer/data/bloc/product_state.dart' as productState;
@@ -24,7 +26,7 @@ import 'package:haji_market/features/drawer/data/bloc/brand_state.dart' as brand
 import '../../data/bloc/product_ad_cubit.dart';
 import '../../data/bloc/product_ad_state.dart';
 import '../widgets/product_ad_card.dart';
-
+@RoutePage()
 class ProductsPage extends StatefulWidget {
   final Cats cats;
   String? shopId;
@@ -108,7 +110,8 @@ class _ProductsPageState extends State<ProductsPage> {
         titleSpacing: 0,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            // Navigator.pop(context);
+            context.router.pop();
           },
           icon: SvgPicture.asset('assets/icons/back_header.svg'),
         ),
@@ -259,12 +262,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                       itemCount: state.productModel.length < 4 ? state.productModel.length : 4,
                                       itemBuilder: (BuildContext ctx, index) {
                                         return GestureDetector(
-                                          onTap: () => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DetailCardProductPage(product: state.productModel[index])),
-                                          ),
+                                          onTap: () =>context.router.push(DetailCardProductRoute(product: state.productModel[index])),
                                           child: ProductAdCard(
                                             product: state.productModel[index],
                                           ),
@@ -413,11 +411,7 @@ class _ProductsState extends State<Products> {
                 itemBuilder: (context, index) {
                   return InkWell(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DetailCardProductPage(product: state.productModel[index])),
-                        );
+                        context.router.push(DetailCardProductRoute(product: state.productModel[index]));
                       },
                       child: ProductCardWidget(product: state.productModel[index]));
                 },

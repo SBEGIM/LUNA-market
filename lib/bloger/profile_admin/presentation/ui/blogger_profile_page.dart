@@ -291,7 +291,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
           ),
           GestureDetector(
             onTap: () {
-              BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppUserState()));
+              BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppUserState(index: 1)));
             },
             child: Container(
               padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),

@@ -39,7 +39,7 @@ class AddressApi {
       "Authorization": "Bearer $token"
     }, body: {
       'city': city,
-      'florr': floor,
+      'floor': floor,
       'room': room,
       'porch': porch,
       'street': street,
@@ -59,7 +59,7 @@ class AddressApi {
     }, body: {
       'id': id.toString(),
       'city': city,
-      'florr': floor,
+      'floor': floor,
       'room': room,
       'porch': porch,
       'street': street,

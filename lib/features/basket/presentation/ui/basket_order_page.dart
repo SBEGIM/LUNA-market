@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../contract_of_sale.dart';
@@ -13,6 +15,7 @@ import '../../../drawer/data/bloc/basket_state.dart';
 import '../../../drawer/presentation/widgets/credit_info_detail_page.dart';
 import '../widgets/payment_webview_widget.dart';
 
+@RoutePage()
 class BasketOrderPage extends StatefulWidget {
   bool? fbs;
   BasketOrderPage({this.fbs, Key? key}) : super(key: key);
@@ -76,8 +79,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
   }
 
   Future<void> basketData() async {
-    final BasketDataCubit =
-        await BlocProvider.of<BasketCubit>(context).basketData();
+    final BasketDataCubit = await BlocProvider.of<BasketCubit>(context).basketData();
     basket(BasketDataCubit as List<BasketShowModel>);
   }
 
@@ -117,13 +119,11 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
           ],
           title: const Text(
             'Оплата',
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
           )),
       body: BlocConsumer<BasketCubit, BasketState>(listener: (context, state) {
         if (state is OrderState) {
-          BlocProvider.of<navCubit.NavigationCubit>(context)
-              .getNavBarItem(const navCubit.NavigationState.home());
+          BlocProvider.of<navCubit.NavigationCubit>(context).getNavBarItem(const navCubit.NavigationState.home());
           Get.to(const Base(index: 1));
         }
       }, builder: (context, state) {
@@ -163,10 +163,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                             const SizedBox(height: 6),
                             Text(
                               '$count товара',
-                              style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400),
+                              style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w400),
                             )
                           ],
                         ),
@@ -307,10 +304,8 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                                   value: isSwitched,
                                   activeColor: AppColors.kPrimaryColor,
                                   activeTrackColor: AppColors.kPrimaryColor,
-                                  inactiveThumbColor:
-                                      const Color.fromRGBO(245, 245, 245, 1),
-                                  inactiveTrackColor:
-                                      const Color.fromRGBO(237, 237, 237, 1),
+                                  inactiveThumbColor: const Color.fromRGBO(245, 245, 245, 1),
+                                  inactiveTrackColor: const Color.fromRGBO(237, 237, 237, 1),
                                 ),
                               ),
                               const Column(
@@ -611,8 +606,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                           ),
                         ),
                         Checkbox(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                           checkColor: Colors.white,
                           activeColor: AppColors.kPrimaryColor,
                           value: isCheckedOnline,
@@ -646,8 +640,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                           ),
                         ),
                         Checkbox(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                           checkColor: Colors.white,
                           activeColor: AppColors.kPrimaryColor,
                           value: isCheckedCash,
@@ -691,14 +684,12 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                           ],
                         ),
                         Checkbox(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                           checkColor: Colors.white,
                           activeColor: AppColors.kPrimaryColor,
                           value: isCheckedTinkoff,
                           onChanged: (bool? value) {
-                            Get.snackbar('Нет доступа',
-                                'данная оплата пока недоступно...',
+                            Get.snackbar('Нет доступа', 'данная оплата пока недоступно...',
                                 backgroundColor: Colors.orangeAccent);
                             // setState(() {
                             //   isCheckedTinkoff = value!;
@@ -737,14 +728,12 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                           ],
                         ),
                         Checkbox(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                           checkColor: Colors.white,
                           activeColor: AppColors.kPrimaryColor,
                           value: isCheckedPart,
                           onChanged: (bool? value) {
-                            Get.snackbar('Нет доступа',
-                                'данная оплата пока недоступно...',
+                            Get.snackbar('Нет доступа', 'данная оплата пока недоступно...',
                                 backgroundColor: Colors.orangeAccent);
 
                             // setState(() {
@@ -783,8 +772,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                           ],
                         ),
                         Checkbox(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                           checkColor: Colors.white,
                           activeColor: AppColors.kPrimaryColor,
                           value: isCheckedHalal,
@@ -819,15 +807,12 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                         style: TextStyle(fontSize: 16, color: Colors.black),
                         children: <TextSpan>[
                           TextSpan(
-                            text:
-                                "Нажимая «Оформить заказ», вы принимаете\nусловия ",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w400),
+                            text: "Нажимая «Оформить заказ», вы принимаете\nусловия ",
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                           ),
                           TextSpan(
                             text: "Типового договора купли-продажи\n",
-                            style: TextStyle(
-                                fontSize: 16, color: AppColors.kPrimaryColor),
+                            style: TextStyle(fontSize: 16, color: AppColors.kPrimaryColor),
                           ),
                         ],
                       ),
@@ -841,14 +826,12 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
             ),
           ]);
         } else {
-          return const Center(
-              child: CircularProgressIndicator(color: Colors.indigoAccent));
+          return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
         }
       }),
       bottomSheet: Container(
         color: Colors.white,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
         child: InkWell(
           onTap: () async {
             if (isCheckedHalal == true) {
@@ -856,9 +839,9 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                 title: 'Рассрочка Halal',
               ));
             } else {
-              final data =
-                  await BlocProvider.of<BasketCubit>(context).payment();
-              Get.to(() => PaymentWebviewWigdet(url: data!));
+              final data = await BlocProvider.of<BasketCubit>(context).payment();
+              context.router.push(PaymentWebviewRoute(url: data!));
+              // Get.to(() => PaymentWebviewPage(url: data!));
             }
 
             // Navigator.pop(context);
@@ -872,10 +855,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
               padding: const EdgeInsets.all(16),
               child: const Text(
                 'Оформить заказ',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                 textAlign: TextAlign.center,
               )),
         ),

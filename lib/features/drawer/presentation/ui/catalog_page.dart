@@ -1,12 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/under_catalog_page.dart';
 
 import '../../../home/data/bloc/cats_cubit.dart';
 import '../../../home/data/bloc/cats_state.dart';
-
+@RoutePage()
 class CatalogPage extends StatefulWidget {
   const CatalogPage({Key? key}) : super(key: key);
 
@@ -27,7 +29,7 @@ class _CatalogPageState extends State<CatalogPage> {
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.router.pop();
           },
           icon: SvgPicture.asset('assets/icons/back_header.svg'),
         ),
@@ -106,12 +108,13 @@ class _CatalogPageState extends State<CatalogPage> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    UnderCatalogPage(cats: state.cats[index])),
-                          );
+                          context.router.push(UnderCatalogRoute(cats: state.cats[index]));
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           UnderCatalogPage(cats: state.cats[index])),
+                          // );
                         },
                         child: CatalogListTile(
                           title: '${state.cats[index].name}',

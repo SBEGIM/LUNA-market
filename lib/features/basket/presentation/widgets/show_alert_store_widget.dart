@@ -25,18 +25,19 @@ Future<dynamic> showAlertStoreWidget(BuildContext context) async {
 
   return showCupertinoModalPopup(
     context: context,
-    builder: (BuildContext context) =>
-        StatefulBuilder(builder: (context, setState) {
+    builder: (BuildContext context) => StatefulBuilder(builder: (context, setState) {
       return Material(
           type: MaterialType.transparency,
           color: Colors.white,
           elevation: 0,
           child: Container(
-            padding: const EdgeInsets.only(top: 200),
+            constraints: BoxConstraints(maxHeight: (MediaQuery.of(context).size.height) * 0.85),
+            height: (MediaQuery.of(context).size.height) - 200,
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             alignment: Alignment.topCenter,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
+            child: ListView(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                // mainAxisSize: MainAxisSize.min,
                 children: [
                   CupertinoActionSheet(
                     actions: <Widget>[
@@ -46,10 +47,7 @@ Future<dynamic> showAlertStoreWidget(BuildContext context) async {
                           children: [
                             const Text(
                               '  Добавить',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16),
+                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
                               maxLines: 1,
                             ),
                             GestureDetector(
@@ -199,8 +197,7 @@ Future<dynamic> showAlertStoreWidget(BuildContext context) async {
                                   padding: const EdgeInsets.only(left: 16),
                                   child: Row(
                                     children: [
-                                      SvgPicture.asset(
-                                          'assets/icons/Door-open.svg'),
+                                      SvgPicture.asset('assets/icons/Door-open.svg'),
                                       const SizedBox(
                                         width: 21,
                                       ),
@@ -214,8 +211,7 @@ Future<dynamic> showAlertStoreWidget(BuildContext context) async {
                                             border: InputBorder.none,
                                             hintText: 'Подъезд',
                                             enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white),
+                                              borderSide: BorderSide(color: Colors.white),
                                               // borderRadius: BorderRadius.circular(3),
                                             ),
                                           ),
@@ -232,8 +228,7 @@ Future<dynamic> showAlertStoreWidget(BuildContext context) async {
                                   padding: const EdgeInsets.only(left: 16),
                                   child: Row(
                                     children: [
-                                      SvgPicture.asset(
-                                          'assets/icons/Stairs.svg'),
+                                      SvgPicture.asset('assets/icons/Stairs.svg'),
                                       const SizedBox(
                                         width: 21,
                                       ),
@@ -247,8 +242,7 @@ Future<dynamic> showAlertStoreWidget(BuildContext context) async {
                                             border: InputBorder.none,
                                             hintText: 'Этаж',
                                             enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white),
+                                              borderSide: BorderSide(color: Colors.white),
                                               // borderRadius: BorderRadius.circular(3),
                                             ),
                                           ),
@@ -319,10 +313,7 @@ Future<dynamic> showAlertStoreWidget(BuildContext context) async {
                         padding: EdgeInsets.all(16),
                         child: const Text(
                           'Сохранить',
-                          style: TextStyle(
-                              color: AppColors.kPrimaryColor,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
+                          style: TextStyle(color: AppColors.kPrimaryColor, fontWeight: FontWeight.w400, fontSize: 16),
                           textAlign: TextAlign.center,
                         )),
                   )

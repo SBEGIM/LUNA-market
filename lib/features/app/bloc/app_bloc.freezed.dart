@@ -587,9 +587,9 @@ mixin _$AppState {
   TResult when<TResult extends Object?>({
     required TResult Function() loadingState,
     required TResult Function() notAuthorizedState,
-    required TResult Function() inAppUserState,
-    required TResult Function() inAppBlogerState,
-    required TResult Function() inAppAdminState,
+    required TResult Function(int? index) inAppUserState,
+    required TResult Function(int? index) inAppBlogerState,
+    required TResult Function(int? index) inAppAdminState,
     required TResult Function(String message) errorState,
   }) =>
       throw _privateConstructorUsedError;
@@ -597,9 +597,9 @@ mixin _$AppState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadingState,
     TResult? Function()? notAuthorizedState,
-    TResult? Function()? inAppUserState,
-    TResult? Function()? inAppBlogerState,
-    TResult? Function()? inAppAdminState,
+    TResult? Function(int? index)? inAppUserState,
+    TResult? Function(int? index)? inAppBlogerState,
+    TResult? Function(int? index)? inAppAdminState,
     TResult? Function(String message)? errorState,
   }) =>
       throw _privateConstructorUsedError;
@@ -607,9 +607,9 @@ mixin _$AppState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadingState,
     TResult Function()? notAuthorizedState,
-    TResult Function()? inAppUserState,
-    TResult Function()? inAppBlogerState,
-    TResult Function()? inAppAdminState,
+    TResult Function(int? index)? inAppUserState,
+    TResult Function(int? index)? inAppBlogerState,
+    TResult Function(int? index)? inAppAdminState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) =>
@@ -704,9 +704,9 @@ class _$_LoadingState implements _LoadingState {
   TResult when<TResult extends Object?>({
     required TResult Function() loadingState,
     required TResult Function() notAuthorizedState,
-    required TResult Function() inAppUserState,
-    required TResult Function() inAppBlogerState,
-    required TResult Function() inAppAdminState,
+    required TResult Function(int? index) inAppUserState,
+    required TResult Function(int? index) inAppBlogerState,
+    required TResult Function(int? index) inAppAdminState,
     required TResult Function(String message) errorState,
   }) {
     return loadingState();
@@ -717,9 +717,9 @@ class _$_LoadingState implements _LoadingState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadingState,
     TResult? Function()? notAuthorizedState,
-    TResult? Function()? inAppUserState,
-    TResult? Function()? inAppBlogerState,
-    TResult? Function()? inAppAdminState,
+    TResult? Function(int? index)? inAppUserState,
+    TResult? Function(int? index)? inAppBlogerState,
+    TResult? Function(int? index)? inAppAdminState,
     TResult? Function(String message)? errorState,
   }) {
     return loadingState?.call();
@@ -730,9 +730,9 @@ class _$_LoadingState implements _LoadingState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadingState,
     TResult Function()? notAuthorizedState,
-    TResult Function()? inAppUserState,
-    TResult Function()? inAppBlogerState,
-    TResult Function()? inAppAdminState,
+    TResult Function(int? index)? inAppUserState,
+    TResult Function(int? index)? inAppBlogerState,
+    TResult Function(int? index)? inAppAdminState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) {
@@ -830,9 +830,9 @@ class _$_NotAuthorizedState implements _NotAuthorizedState {
   TResult when<TResult extends Object?>({
     required TResult Function() loadingState,
     required TResult Function() notAuthorizedState,
-    required TResult Function() inAppUserState,
-    required TResult Function() inAppBlogerState,
-    required TResult Function() inAppAdminState,
+    required TResult Function(int? index) inAppUserState,
+    required TResult Function(int? index) inAppBlogerState,
+    required TResult Function(int? index) inAppAdminState,
     required TResult Function(String message) errorState,
   }) {
     return notAuthorizedState();
@@ -843,9 +843,9 @@ class _$_NotAuthorizedState implements _NotAuthorizedState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadingState,
     TResult? Function()? notAuthorizedState,
-    TResult? Function()? inAppUserState,
-    TResult? Function()? inAppBlogerState,
-    TResult? Function()? inAppAdminState,
+    TResult? Function(int? index)? inAppUserState,
+    TResult? Function(int? index)? inAppBlogerState,
+    TResult? Function(int? index)? inAppAdminState,
     TResult? Function(String message)? errorState,
   }) {
     return notAuthorizedState?.call();
@@ -856,9 +856,9 @@ class _$_NotAuthorizedState implements _NotAuthorizedState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadingState,
     TResult Function()? notAuthorizedState,
-    TResult Function()? inAppUserState,
-    TResult Function()? inAppBlogerState,
-    TResult Function()? inAppAdminState,
+    TResult Function(int? index)? inAppUserState,
+    TResult Function(int? index)? inAppBlogerState,
+    TResult Function(int? index)? inAppAdminState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) {
@@ -921,6 +921,8 @@ abstract class _$$_InAppUserStateCopyWith<$Res> {
   factory _$$_InAppUserStateCopyWith(
           _$_InAppUserState value, $Res Function(_$_InAppUserState) then) =
       __$$_InAppUserStateCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int? index});
 }
 
 /// @nodoc
@@ -930,38 +932,62 @@ class __$$_InAppUserStateCopyWithImpl<$Res>
   __$$_InAppUserStateCopyWithImpl(
       _$_InAppUserState _value, $Res Function(_$_InAppUserState) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? index = freezed,
+  }) {
+    return _then(_$_InAppUserState(
+      index: freezed == index
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_InAppUserState implements _InAppUserState {
-  const _$_InAppUserState();
+  const _$_InAppUserState({this.index});
+
+  @override
+  final int? index;
 
   @override
   String toString() {
-    return 'AppState.inAppUserState()';
+    return 'AppState.inAppUserState(index: $index)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_InAppUserState);
+        (other.runtimeType == runtimeType &&
+            other is _$_InAppUserState &&
+            (identical(other.index, index) || other.index == index));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, index);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_InAppUserStateCopyWith<_$_InAppUserState> get copyWith =>
+      __$$_InAppUserStateCopyWithImpl<_$_InAppUserState>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadingState,
     required TResult Function() notAuthorizedState,
-    required TResult Function() inAppUserState,
-    required TResult Function() inAppBlogerState,
-    required TResult Function() inAppAdminState,
+    required TResult Function(int? index) inAppUserState,
+    required TResult Function(int? index) inAppBlogerState,
+    required TResult Function(int? index) inAppAdminState,
     required TResult Function(String message) errorState,
   }) {
-    return inAppUserState();
+    return inAppUserState(index);
   }
 
   @override
@@ -969,12 +995,12 @@ class _$_InAppUserState implements _InAppUserState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadingState,
     TResult? Function()? notAuthorizedState,
-    TResult? Function()? inAppUserState,
-    TResult? Function()? inAppBlogerState,
-    TResult? Function()? inAppAdminState,
+    TResult? Function(int? index)? inAppUserState,
+    TResult? Function(int? index)? inAppBlogerState,
+    TResult? Function(int? index)? inAppAdminState,
     TResult? Function(String message)? errorState,
   }) {
-    return inAppUserState?.call();
+    return inAppUserState?.call(index);
   }
 
   @override
@@ -982,14 +1008,14 @@ class _$_InAppUserState implements _InAppUserState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadingState,
     TResult Function()? notAuthorizedState,
-    TResult Function()? inAppUserState,
-    TResult Function()? inAppBlogerState,
-    TResult Function()? inAppAdminState,
+    TResult Function(int? index)? inAppUserState,
+    TResult Function(int? index)? inAppBlogerState,
+    TResult Function(int? index)? inAppAdminState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) {
     if (inAppUserState != null) {
-      return inAppUserState();
+      return inAppUserState(index);
     }
     return orElse();
   }
@@ -1039,7 +1065,12 @@ class _$_InAppUserState implements _InAppUserState {
 }
 
 abstract class _InAppUserState implements AppState {
-  const factory _InAppUserState() = _$_InAppUserState;
+  const factory _InAppUserState({final int? index}) = _$_InAppUserState;
+
+  int? get index;
+  @JsonKey(ignore: true)
+  _$$_InAppUserStateCopyWith<_$_InAppUserState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1047,6 +1078,8 @@ abstract class _$$_InAppBlogerStateCopyWith<$Res> {
   factory _$$_InAppBlogerStateCopyWith(
           _$_InAppBlogerState value, $Res Function(_$_InAppBlogerState) then) =
       __$$_InAppBlogerStateCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int? index});
 }
 
 /// @nodoc
@@ -1056,38 +1089,62 @@ class __$$_InAppBlogerStateCopyWithImpl<$Res>
   __$$_InAppBlogerStateCopyWithImpl(
       _$_InAppBlogerState _value, $Res Function(_$_InAppBlogerState) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? index = freezed,
+  }) {
+    return _then(_$_InAppBlogerState(
+      index: freezed == index
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_InAppBlogerState implements _InAppBlogerState {
-  const _$_InAppBlogerState();
+  const _$_InAppBlogerState({this.index});
+
+  @override
+  final int? index;
 
   @override
   String toString() {
-    return 'AppState.inAppBlogerState()';
+    return 'AppState.inAppBlogerState(index: $index)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_InAppBlogerState);
+        (other.runtimeType == runtimeType &&
+            other is _$_InAppBlogerState &&
+            (identical(other.index, index) || other.index == index));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, index);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_InAppBlogerStateCopyWith<_$_InAppBlogerState> get copyWith =>
+      __$$_InAppBlogerStateCopyWithImpl<_$_InAppBlogerState>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadingState,
     required TResult Function() notAuthorizedState,
-    required TResult Function() inAppUserState,
-    required TResult Function() inAppBlogerState,
-    required TResult Function() inAppAdminState,
+    required TResult Function(int? index) inAppUserState,
+    required TResult Function(int? index) inAppBlogerState,
+    required TResult Function(int? index) inAppAdminState,
     required TResult Function(String message) errorState,
   }) {
-    return inAppBlogerState();
+    return inAppBlogerState(index);
   }
 
   @override
@@ -1095,12 +1152,12 @@ class _$_InAppBlogerState implements _InAppBlogerState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadingState,
     TResult? Function()? notAuthorizedState,
-    TResult? Function()? inAppUserState,
-    TResult? Function()? inAppBlogerState,
-    TResult? Function()? inAppAdminState,
+    TResult? Function(int? index)? inAppUserState,
+    TResult? Function(int? index)? inAppBlogerState,
+    TResult? Function(int? index)? inAppAdminState,
     TResult? Function(String message)? errorState,
   }) {
-    return inAppBlogerState?.call();
+    return inAppBlogerState?.call(index);
   }
 
   @override
@@ -1108,14 +1165,14 @@ class _$_InAppBlogerState implements _InAppBlogerState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadingState,
     TResult Function()? notAuthorizedState,
-    TResult Function()? inAppUserState,
-    TResult Function()? inAppBlogerState,
-    TResult Function()? inAppAdminState,
+    TResult Function(int? index)? inAppUserState,
+    TResult Function(int? index)? inAppBlogerState,
+    TResult Function(int? index)? inAppAdminState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) {
     if (inAppBlogerState != null) {
-      return inAppBlogerState();
+      return inAppBlogerState(index);
     }
     return orElse();
   }
@@ -1165,7 +1222,12 @@ class _$_InAppBlogerState implements _InAppBlogerState {
 }
 
 abstract class _InAppBlogerState implements AppState {
-  const factory _InAppBlogerState() = _$_InAppBlogerState;
+  const factory _InAppBlogerState({final int? index}) = _$_InAppBlogerState;
+
+  int? get index;
+  @JsonKey(ignore: true)
+  _$$_InAppBlogerStateCopyWith<_$_InAppBlogerState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1173,6 +1235,8 @@ abstract class _$$_InAppAdminStateCopyWith<$Res> {
   factory _$$_InAppAdminStateCopyWith(
           _$_InAppAdminState value, $Res Function(_$_InAppAdminState) then) =
       __$$_InAppAdminStateCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int? index});
 }
 
 /// @nodoc
@@ -1182,38 +1246,62 @@ class __$$_InAppAdminStateCopyWithImpl<$Res>
   __$$_InAppAdminStateCopyWithImpl(
       _$_InAppAdminState _value, $Res Function(_$_InAppAdminState) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? index = freezed,
+  }) {
+    return _then(_$_InAppAdminState(
+      index: freezed == index
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_InAppAdminState implements _InAppAdminState {
-  const _$_InAppAdminState();
+  const _$_InAppAdminState({this.index});
+
+  @override
+  final int? index;
 
   @override
   String toString() {
-    return 'AppState.inAppAdminState()';
+    return 'AppState.inAppAdminState(index: $index)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_InAppAdminState);
+        (other.runtimeType == runtimeType &&
+            other is _$_InAppAdminState &&
+            (identical(other.index, index) || other.index == index));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, index);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_InAppAdminStateCopyWith<_$_InAppAdminState> get copyWith =>
+      __$$_InAppAdminStateCopyWithImpl<_$_InAppAdminState>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadingState,
     required TResult Function() notAuthorizedState,
-    required TResult Function() inAppUserState,
-    required TResult Function() inAppBlogerState,
-    required TResult Function() inAppAdminState,
+    required TResult Function(int? index) inAppUserState,
+    required TResult Function(int? index) inAppBlogerState,
+    required TResult Function(int? index) inAppAdminState,
     required TResult Function(String message) errorState,
   }) {
-    return inAppAdminState();
+    return inAppAdminState(index);
   }
 
   @override
@@ -1221,12 +1309,12 @@ class _$_InAppAdminState implements _InAppAdminState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadingState,
     TResult? Function()? notAuthorizedState,
-    TResult? Function()? inAppUserState,
-    TResult? Function()? inAppBlogerState,
-    TResult? Function()? inAppAdminState,
+    TResult? Function(int? index)? inAppUserState,
+    TResult? Function(int? index)? inAppBlogerState,
+    TResult? Function(int? index)? inAppAdminState,
     TResult? Function(String message)? errorState,
   }) {
-    return inAppAdminState?.call();
+    return inAppAdminState?.call(index);
   }
 
   @override
@@ -1234,14 +1322,14 @@ class _$_InAppAdminState implements _InAppAdminState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadingState,
     TResult Function()? notAuthorizedState,
-    TResult Function()? inAppUserState,
-    TResult Function()? inAppBlogerState,
-    TResult Function()? inAppAdminState,
+    TResult Function(int? index)? inAppUserState,
+    TResult Function(int? index)? inAppBlogerState,
+    TResult Function(int? index)? inAppAdminState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) {
     if (inAppAdminState != null) {
-      return inAppAdminState();
+      return inAppAdminState(index);
     }
     return orElse();
   }
@@ -1291,7 +1379,12 @@ class _$_InAppAdminState implements _InAppAdminState {
 }
 
 abstract class _InAppAdminState implements AppState {
-  const factory _InAppAdminState() = _$_InAppAdminState;
+  const factory _InAppAdminState({final int? index}) = _$_InAppAdminState;
+
+  int? get index;
+  @JsonKey(ignore: true)
+  _$$_InAppAdminStateCopyWith<_$_InAppAdminState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1360,9 +1453,9 @@ class _$_ErrorState implements _ErrorState {
   TResult when<TResult extends Object?>({
     required TResult Function() loadingState,
     required TResult Function() notAuthorizedState,
-    required TResult Function() inAppUserState,
-    required TResult Function() inAppBlogerState,
-    required TResult Function() inAppAdminState,
+    required TResult Function(int? index) inAppUserState,
+    required TResult Function(int? index) inAppBlogerState,
+    required TResult Function(int? index) inAppAdminState,
     required TResult Function(String message) errorState,
   }) {
     return errorState(message);
@@ -1373,9 +1466,9 @@ class _$_ErrorState implements _ErrorState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadingState,
     TResult? Function()? notAuthorizedState,
-    TResult? Function()? inAppUserState,
-    TResult? Function()? inAppBlogerState,
-    TResult? Function()? inAppAdminState,
+    TResult? Function(int? index)? inAppUserState,
+    TResult? Function(int? index)? inAppBlogerState,
+    TResult? Function(int? index)? inAppAdminState,
     TResult? Function(String message)? errorState,
   }) {
     return errorState?.call(message);
@@ -1386,9 +1479,9 @@ class _$_ErrorState implements _ErrorState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadingState,
     TResult Function()? notAuthorizedState,
-    TResult Function()? inAppUserState,
-    TResult Function()? inAppBlogerState,
-    TResult Function()? inAppAdminState,
+    TResult Function(int? index)? inAppUserState,
+    TResult Function(int? index)? inAppBlogerState,
+    TResult Function(int? index)? inAppAdminState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) {

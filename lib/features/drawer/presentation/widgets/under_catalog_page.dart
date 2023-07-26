@@ -1,14 +1,17 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/sub_cats_state.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
 
 import '../../../home/data/model/Cats.dart';
 
+@RoutePage()
 class UnderCatalogPage extends StatefulWidget {
   final Cats cats;
   const UnderCatalogPage({required this.cats, Key? key}) : super(key: key);
@@ -48,17 +51,14 @@ class _UnderCatalogPageState extends State<UnderCatalogPage> {
             width: 311,
             height: 40,
             margin: const EdgeInsets.only(right: 16),
-            decoration: BoxDecoration(
-                color: const Color(0xFFF8F8F8),
-                borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(color: const Color(0xFFF8F8F8), borderRadius: BorderRadius.circular(10)),
             child: TextField(
               controller: searchController,
               onChanged: (value) {
                 if (value.isEmpty) {
                   BlocProvider.of<SubCatsCubit>(context).subSave();
                 } else {
-                  BlocProvider.of<SubCatsCubit>(context)
-                      .searchSubCats(value, widget.cats.id);
+                  BlocProvider.of<SubCatsCubit>(context).searchSubCats(value, widget.cats.id);
                 }
                 // if (searchController.text.isEmpty)
                 //   BlocProvider.of<CityCubit>(context)
@@ -93,8 +93,7 @@ class _UnderCatalogPageState extends State<UnderCatalogPage> {
               );
             }
             if (state is LoadingState) {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
 
             if (state is LoadedState) {
@@ -102,26 +101,25 @@ class _UnderCatalogPageState extends State<UnderCatalogPage> {
                 Container(
                   width: MediaQuery.of(context).size.width,
                   color: AppColors.kBackgroundColor,
-                  padding: const EdgeInsets.only(
-                      left: 16, right: 16, top: 8, bottom: 8),
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
                   child: Text(
                     '${widget.cats.name}',
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.kGray900),
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: AppColors.kGray900),
                   ),
                 ),
                 const SizedBox(height: 5),
                 InkWell(
                     onTap: () {
                       GetStorage().write('CatId', widget.cats.id);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ProductsPage(cats: widget.cats)),
-                      );
+                      context.router.push(ProductsRoute(
+                        cats: widget.cats,
+                      ));
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) =>
+                      //           ProductsPage(cats: widget.cats)),
+                      // );
                     },
                     child: const UnderCatalogListTile(
                       title: 'Все товары',
@@ -138,14 +136,12 @@ class _UnderCatalogPageState extends State<UnderCatalogPage> {
                         children: [
                           InkWell(
                               onTap: () {
-                                GetStorage()
-                                    .write('CatId', state.cats[index].id);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ProductsPage(
-                                          cats: state.cats[index])),
-                                );
+                                GetStorage().write('CatId', state.cats[index].id);
+                                context.router.push(ProductsRoute(cats: state.cats[index]));
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(builder: (context) => ProductsPage(cats: state.cats[index])),
+                                // );
                               },
                               child: UnderCatalogListTile(
                                 title: state.cats[index].name.toString(),
@@ -158,8 +154,7 @@ class _UnderCatalogPageState extends State<UnderCatalogPage> {
                     }),
               ]);
             } else {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
     );
