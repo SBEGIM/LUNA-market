@@ -54,91 +54,87 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                         color: AppColors.kGray900),
                   ),
                 ),
-                Row(
-                  children: [
-                    PopupMenuButton(
-                      onSelected: (value) {
-                        if (value == 0) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const CategoryAdminPage()),
-                          );
-                        }
-                      },
-                      shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(15.0))),
-                      icon: SvgPicture.asset('assets/icons/plus.svg'),
-                      itemBuilder: (BuildContext bc) {
-                        return [
-                          PopupMenuItem(
-                              value: 0,
-                              child: Column(
+                PopupMenuButton(
+                  onSelected: (value) {
+                    if (value == 0) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const CategoryAdminPage()),
+                      );
+                    }
+                  },
+                  shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(15.0))),
+                  icon: SvgPicture.asset('assets/icons/plus.svg'),
+                  itemBuilder: (BuildContext bc) {
+                    return [
+                      PopupMenuItem(
+                          value: 0,
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text(
-                                        "Добавить товар",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      SvgPicture.asset(
-                                          'assets/icons/lenta1.svg'),
-                                    ],
+                                  const Text(
+                                    "Добавить товар",
+                                    style: TextStyle(color: Colors.black),
                                   ),
-                                  // const SizedBox(height: 4),
-                                  //  const Divider(),
+                                  SvgPicture.asset(
+                                      'assets/icons/lenta1.svg'),
                                 ],
-                              )),
-                          // PopupMenuItem(
-                          //   height: 20,
-                          //   value: 1,
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                          //       const Text("Добавить видео"),
-                          //       SvgPicture.asset('assets/icons/video.svg'),
-                          //     ],
-                          //   ),
-                          // ),
-                          // PopupMenuItem(
-                          //     height: 5, value: 1, child: Container()),
-                        ];
-                      },
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    SizedBox(
-                      height: 30,
-                      width: 200,
-                      child: TextField(
-                        controller: nameController,
-                        onChanged: (value) {
-                          BlocProvider.of<ProductAdminCubit>(context)
-                              .products(value);
-                        },
-                        keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Поиск продуктов',
-                          hintStyle: TextStyle(
-                              color: Color.fromRGBO(194, 197, 200, 1),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            // borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
+                              ),
+                              // const SizedBox(height: 4),
+                              //  const Divider(),
+                            ],
+                          )),
+                      // PopupMenuItem(
+                      //   height: 20,
+                      //   value: 1,
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       const Text("Добавить видео"),
+                      //       SvgPicture.asset('assets/icons/video.svg'),
+                      //     ],
+                      //   ),
+                      // ),
+                      // PopupMenuItem(
+                      //     height: 5, value: 1, child: Container()),
+                    ];
+                  },
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  // height: 30,
+                  // width: 200,
+                  child: TextField(
+                    controller: nameController,
+                    onChanged: (value) {
+                      BlocProvider.of<ProductAdminCubit>(context)
+                          .products(value);
+                    },
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Поиск продуктов',
+                      hintStyle: TextStyle(
+                          color: Color.fromRGBO(194, 197, 200, 1),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        // borderRadius: BorderRadius.circular(3),
                       ),
                     ),
-                    const SizedBox(width: 10)
-                  ],
-                )
+                  ),
+                ),
+                const SizedBox(width: 10)
               ],
             ),
           ),
