@@ -447,7 +447,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    colorName == '' ? 'Цвет' : colorName,
+                                    colorName == '' ? 'Размер' : colorName,
                                     style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400),
