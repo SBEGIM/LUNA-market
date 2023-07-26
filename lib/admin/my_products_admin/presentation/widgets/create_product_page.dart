@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/color_cubit.dart';
+import 'package:haji_market/admin/my_products_admin/data/bloc/size_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/brands_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/colors_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caats_admin_page.dart';
@@ -117,7 +118,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
   }
 
   void _colorsArray() async {
-    mockSizes = await BlocProvider.of<ColorCubit>(context).brands();
+    mockSizes = await BlocProvider.of<SizeCubit>(context).sizes();
   }
 
   @override
@@ -479,7 +480,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                         return PopupMenuItem(
                                           value: e,
                                           child: Text(
-                                            e.name!,
+                                            e.name ?? '',
                                             style: const TextStyle(
                                               color: Colors.black,
                                             ),
