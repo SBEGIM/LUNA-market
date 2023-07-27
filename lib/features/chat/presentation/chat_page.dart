@@ -67,7 +67,7 @@ class _ChatPageState extends State<ChatPage> {
           elevation: 0,
           leading: GestureDetector(
             onTap: () {
-              Get.back();
+              Navigator.pop(context);
             },
             child: const Icon(
               Icons.arrow_back_ios,

@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../tape/data/cubit/tape_blogger_cubit.dart';
 
@@ -17,13 +18,10 @@ import '../../../tape/data/cubit/tape_blogger_cubit.dart';
 class BloggerDetailTapeCardPage extends StatefulWidget {
   final int? index;
   final String? shopName;
-  const BloggerDetailTapeCardPage(
-      {required this.index, required this.shopName, Key? key})
-      : super(key: key);
+  const BloggerDetailTapeCardPage({required this.index, required this.shopName, Key? key}) : super(key: key);
 
   @override
-  State<BloggerDetailTapeCardPage> createState() =>
-      _BloggerDetailTapeCardPageState();
+  State<BloggerDetailTapeCardPage> createState() => _BloggerDetailTapeCardPageState();
 }
 
 class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
@@ -198,9 +196,7 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                 );
               }
               if (state is LoadingState) {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
 
               if (state is LoadedState) {
@@ -391,9 +387,7 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                   },
                 );
               } else {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }));
   }
@@ -415,8 +409,7 @@ class _VideosState extends State<Videos> {
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network(
-        'http://185.116.193.73/storage/${widget.tape.video}')
+    _controller = VideoPlayerController.network('http://185.116.193.73/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.play();
         setState(() {});
@@ -448,9 +441,7 @@ class _VideosState extends State<Videos> {
     return _controller!.value.isInitialized
         ? GestureDetector(
             onTap: () {
-              _controller!.value.isPlaying
-                  ? _controller!.pause()
-                  : _controller!.play();
+              _controller!.value.isPlaying ? _controller!.pause() : _controller!.play();
             },
             child: SizedBox(
                 height: double.infinity,
@@ -459,14 +450,21 @@ class _VideosState extends State<Videos> {
                     aspectRatio: _controller!.value.aspectRatio,
                     child: Stack(
                       children: [
-                        VideoPlayer(_controller!),
+                        VisibilityDetector(
+                            key: ObjectKey(_controller),
+                            onVisibilityChanged: (info) {
+                              if (!mounted) return;
+                              if (info.visibleFraction == 0) {
+                                _controller?.pause(); //pausing  functionality
+                              } else {
+                                _controller?.play();
+                              }
+                            },
+                            child: VideoPlayer(_controller!)),
                         Container(
                           alignment: Alignment.bottomCenter,
-                          padding: EdgeInsets.only(
-                              bottom:
-                                  MediaQuery.of(context).size.height * 0.10),
-                          child: VideoProgressIndicator(_controller!,
-                              allowScrubbing: true),
+                          padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.10),
+                          child: VideoProgressIndicator(_controller!, allowScrubbing: true),
                         ),
                         icon
                             ? Center(
@@ -477,7 +475,6 @@ class _VideosState extends State<Videos> {
                             : Container(),
                       ],
                     ))))
-        : const Center(
-            child: CircularProgressIndicator(color: Colors.blueAccent));
+        : const Center(child: CircularProgressIndicator(color: Colors.blueAccent));
   }
 }

@@ -99,7 +99,7 @@ class _BonusUserPageState extends State<BonusUserPage> {
                           children: [
                             Container(
                                 color: Colors.white,
-                                margin: EdgeInsets.only(top: 146),
+                                margin: const EdgeInsets.only(top: 146),
                                 child: Image.asset('assets/icons/no_data.png')),
                             const Text(
                               'У вас пока нет бонусов',
@@ -164,8 +164,13 @@ class _BonusUserPageState extends State<BonusUserPage> {
                         ],
                       );
                     } else {
-                      return const CircularProgressIndicator(
-                        color: Colors.blueAccent,
+                      return const SizedBox(
+                        height: 100,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.blueAccent,
+                          ),
+                        ),
                       );
                     }
                   })),

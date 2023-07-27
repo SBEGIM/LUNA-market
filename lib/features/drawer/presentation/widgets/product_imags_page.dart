@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 
 class ProductImages extends StatefulWidget {
   List<String>? images;
@@ -38,6 +39,7 @@ class _ProductImagesState extends State<ProductImages> {
                 ? Image.network(
                     "http://185.116.193.73/storage/${widget.images![imageIndex]}",
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => const ErrorImageWidget()
                   )
                 : Image.asset('assets/icons/no_data.png'),
           ),

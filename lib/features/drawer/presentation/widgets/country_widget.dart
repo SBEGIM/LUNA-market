@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/data/bloc/country_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/country_state.dart';
 
@@ -70,8 +71,7 @@ class _CountryWidgetState extends State<CountryWidget> {
                               countryIndex = index;
                               countryName = state.country[index].name;
                               _box.write('country_index', countryName);
-                              _box.write(
-                                  'user_country_id', state.country[index].id);
+                              _box.write('user_country_id', state.country[index].id);
                               setState(() {
                                 countryName;
                                 countryIndex;
@@ -79,8 +79,7 @@ class _CountryWidgetState extends State<CountryWidget> {
                             },
                             child: Container(
                               color: Colors.white,
-                              padding: const EdgeInsets.only(
-                                  left: 13, right: 13, top: 20),
+                              padding: const EdgeInsets.only(left: 13, right: 13, top: 20),
                               width: MediaQuery.of(context).size.width,
                               child: Row(
                                 children: [
@@ -88,6 +87,10 @@ class _CountryWidgetState extends State<CountryWidget> {
                                     'http://185.116.193.73/storage/${state.country[index].path}',
                                     height: 30,
                                     width: 30,
+                                    errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                                      height: 30,
+                                      width: 30,
+                                    ),
                                   ),
                                   const SizedBox(
                                     width: 20,
@@ -95,21 +98,17 @@ class _CountryWidgetState extends State<CountryWidget> {
                                   SizedBox(
                                       width: 280,
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             '${state.country[index].name}',
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400),
+                                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                                           ),
                                           countryIndex == index
                                               ? const Icon(
                                                   Icons.check,
                                                   size: 20,
-                                                  color:
-                                                      AppColors.kPrimaryColor,
+                                                  color: AppColors.kPrimaryColor,
                                                 )
                                               : Container()
                                         ],

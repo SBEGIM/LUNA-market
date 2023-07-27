@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:haji_market/features/app/bloc/navigation_cubit/navigation_cubit.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
+import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/data/bloc/profit_cubit.dart' as profitCubit;
 import 'package:haji_market/features/drawer/data/bloc/profit_state.dart' as profitState;
 import 'package:video_player/video_player.dart';
@@ -210,6 +211,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           width: 400,
                           "http://185.116.193.73/storage/${widget.product.path![imageIndex]}",
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                            height: 375,
+                            width: 400,
+                          ),
                         ),
                       ),
               ),
@@ -1535,6 +1540,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           child: ListView.builder(
                               itemCount: 5,
                               // scrollDirection: Axis.vertical,
+                              physics: const NeverScrollableScrollPhysics(),
                               reverse: true,
                               itemBuilder: (BuildContext context, int index) {
                                 return Row(
@@ -1599,6 +1605,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               height: state.reviewModel.isEmpty ? 20 : (100 * state.reviewModel.length.toDouble()),
                               padding: const EdgeInsets.all(16),
                               child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
                                 scrollDirection: Axis.vertical,
                                 itemCount: state.reviewModel.length,
                                 itemBuilder: (context, index) {
@@ -1923,21 +1930,23 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       }
 
                       if (state is LoadedState) {
-                        return SizedBox(
-                            height: 286,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: state.productModel.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () =>
-                                      context.router.push(DetailCardProductRoute(product: state.productModel[index])),
-                                  child: ProductMbInterestingCard(
-                                    product: state.productModel[index],
-                                  ),
-                                );
-                              },
-                            ));
+                        return state.productModel.isEmpty
+                            ? const Center(child: Text('Товары не найдены'))
+                            : SizedBox(
+                                height: 286,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: state.productModel.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () => context.router
+                                          .push(DetailCardProductRoute(product: state.productModel[index])),
+                                      child: ProductMbInterestingCard(
+                                        product: state.productModel[index],
+                                      ),
+                                    );
+                                  },
+                                ));
                       } else {
                         return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                       }
@@ -1977,24 +1986,29 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       }
 
                       if (state is LoadedState) {
-                        return SizedBox(
-                            height: 608,
-                            child: GridView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2, childAspectRatio: 1.6, crossAxisSpacing: 20, mainAxisSpacing: 2),
-                              itemCount: 4,
-                              itemBuilder: (BuildContext ctx, index) {
-                                return GestureDetector(
-                                  onTap: () =>
-                                      context.router.push(DetailCardProductRoute(product: state.productModel[index])),
-                                  child: ProductWatchingCard(
-                                    product: state.productModel[index],
-                                  ),
-                                );
-                              },
-                            ));
+                        return state.productModel.isEmpty
+                            ? const Center(child: Text('Товары не найдены'))
+                            : SizedBox(
+                                height: 608,
+                                child: GridView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 1.6,
+                                      crossAxisSpacing: 20,
+                                      mainAxisSpacing: 2),
+                                  itemCount: state.productModel.length <= 10 ? state.productModel.length : 10,
+                                  itemBuilder: (BuildContext ctx, index) {
+                                    return GestureDetector(
+                                      onTap: () => context.router
+                                          .push(DetailCardProductRoute(product: state.productModel[index])),
+                                      child: ProductWatchingCard(
+                                        product: state.productModel[index],
+                                      ),
+                                    );
+                                  },
+                                ));
                       } else {
                         return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                       }
@@ -2003,7 +2017,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             ),
           ),
           const SizedBox(
-            height: 70,
+            height: 120,
           ),
         ],
       ),

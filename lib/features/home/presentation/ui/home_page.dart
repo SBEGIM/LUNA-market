@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/contract_of_sale.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/core/util/url_util.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
@@ -395,7 +396,7 @@ class _HomePageState extends State<HomePage> {
               }
             }),
             const SizedBox(
-              height: 12,
+              height: 60,
             ),
           ],
         ),
@@ -814,6 +815,132 @@ class BannerImage extends StatelessWidget {
                     "${bonus.toString()}% Б",
                     style: AppTextStyles.bannerTextStyle,
                     textAlign: TextAlign.center,
+                  ),
+                ),
+                Positioned(
+                  right: 20,
+                  bottom: 20,
+                  child: GestureDetector(
+                    onTap: () async {
+                      await showModalBottomSheet(
+                        context: context,
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        // isDismissible: true,
+                        builder: (context) {
+                          return DraggableScrollableSheet(
+                            initialChildSize: 0.30, //set this as you want
+                            maxChildSize: 0.30, //set this as you want
+                            minChildSize: 0.30, //set this as you want
+                            builder: (context, scrollController) {
+                              return Container(
+                                padding: const EdgeInsets.all(16),
+                                color: Colors.white,
+                                child: ListView(
+                                  controller: scrollController,
+                                  children: [
+                                    const SizedBox(height: 16),
+                                    const Text(
+                                      'Рекламный баннер',
+                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    // GestureDetector(
+                                    //   onTap: () {
+                                    //     // Get.to(const ContractOfSale());
+                                    //   },
+                                    //   child: Container(
+                                    //     padding: const EdgeInsets.only(
+                                    //         top: 8, left: 16),
+                                    //     alignment: Alignment.centerLeft,
+                                    //     child: Text(
+                                    //       '${widget.description}',
+                                    //       style: const TextStyle(
+                                    //           fontSize: 14,
+                                    //           color:
+                                    //               AppColors.kPrimaryColor),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    // const Text(
+                                    //   'Мы помогаем нашим продавцам рассказать об их товарах на LUNA market.Для этого у нас есть разные способы продвижения. Узнать больше о рекламе на LUNA market',
+                                    //   style: TextStyle(
+                                    //       fontSize: 12,
+                                    //       fontWeight: FontWeight.w400),
+                                    //   textAlign: TextAlign.center,
+                                    // ),
+                                    // const SizedBox(height: 16),
+
+                                    Container(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Row(
+                                        children: [
+                                          const Text(
+                                            'Описание:',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            description,
+                                            style: const TextStyle(fontSize: 14, color: AppColors.kPrimaryColor),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+                                    const SizedBox(height: 50),
+
+                                    Container(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.link),
+                                          const SizedBox(width: 10),
+                                          const Text(
+                                            'Ссылка:',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 4),
+                                          InkWell(
+                                            onTap: () {
+                                              UrlUtil.launch(context, url: url);
+                                            },
+                                            child: Text(
+                                              url,
+                                              style: const TextStyle(fontSize: 14, color: AppColors.kPrimaryColor),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
+                      decoration:
+                          BoxDecoration(color: Colors.grey.withOpacity(0.2), borderRadius: BorderRadius.circular(6)),
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
+                        child: Text(
+                          'РЕКЛАМА',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],

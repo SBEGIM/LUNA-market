@@ -289,7 +289,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
           const Divider(
             color: AppColors.kGray400,
           ),
-          GestureDetector(
+          InkWell(
             onTap: () {
               BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppUserState(index: 1)));
             },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/admin/my_products_admin/data/models/admin_products_model.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import '../widgets/show_alert_statictics_widget.dart';
 
 class AdminProductCardWidget extends StatefulWidget {
@@ -66,6 +67,10 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                       : "http://185.116.193.73/storage/banners/2.png",
                   height: 104,
                   width: 104,
+                          errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                            height: 104,
+                            width: 104,
+                          ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(

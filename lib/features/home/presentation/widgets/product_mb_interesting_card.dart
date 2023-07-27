@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 
 import '../../../drawer/data/bloc/favorite_cubit.dart';
@@ -15,8 +16,7 @@ class ProductMbInterestingCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ProductMbInterestingCard> createState() =>
-      _ProductMbInterestingCardState();
+  State<ProductMbInterestingCard> createState() => _ProductMbInterestingCardState();
 }
 
 class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
@@ -33,9 +33,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
   void initState() {
     inFavorite = widget.product.inFavorite as bool;
     procentPrice =
-        ((widget.product.price?.toInt() ?? 0 - (widget.product.compound ?? 0)) /
-                widget.product.price!.toInt()) *
-            100;
+        ((widget.product.price?.toInt() ?? 0 - (widget.product.compound ?? 0)) / widget.product.price!.toInt()) * 100;
     super.initState();
   }
 
@@ -43,9 +41,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(right: 8.0),
-      decoration: BoxDecoration(
-          color: const Color.fromRGBO(250, 250, 250, 1),
-          borderRadius: BorderRadius.circular(10)),
+      decoration: BoxDecoration(color: const Color.fromRGBO(250, 250, 250, 1), borderRadius: BorderRadius.circular(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -57,17 +53,18 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                 height: 160,
                 width: 144,
                 child: Image.network(
-                  widget.product.path?.length != 0
-                      ? "http://185.116.193.73/storage/${widget.product.path?.first}"
-                      : '',
+                  widget.product.path?.length != 0 ? "http://185.116.193.73/storage/${widget.product.path?.first}" : '',
                   height: 160,
                   width: 160,
                   alignment: Alignment.center,
+                  errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                    height: 160,
+                    width: 160,
+                  ),
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.only(left: 8, right: 4, bottom: 8, top: 8),
+                padding: const EdgeInsets.only(left: 8, right: 4, bottom: 8, top: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -77,38 +74,29 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            decoration: BoxDecoration(
-                                color: AppColors.kPrimaryColor,
-                                borderRadius: BorderRadius.circular(6)),
+                            decoration:
+                                BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(6)),
                             child: const Padding(
-                              padding: EdgeInsets.only(
-                                  left: 8.0, right: 8, top: 4, bottom: 4),
+                              padding: EdgeInsets.only(left: 8.0, right: 8, top: 4, bottom: 4),
                               child: Text(
                                 '0·0·12',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
+                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                               ),
                             ),
                           ),
 
                           GestureDetector(
                             onTap: () async {
-                              final favorite =
-                                  BlocProvider.of<FavoriteCubit>(context);
-                              await favorite
-                                  .favorite(widget.product.id.toString());
+                              final favorite = BlocProvider.of<FavoriteCubit>(context);
+                              await favorite.favorite(widget.product.id.toString());
                               setState(() {
                                 inFavorite = !inFavorite;
                               });
                             },
                             child: SvgPicture.asset(
                               'assets/icons/heart_fill.svg',
-                              color: inFavorite == true
-                                  ? const Color.fromRGBO(255, 50, 72, 1)
-                                  : Colors.grey,
+                              color: inFavorite == true ? const Color.fromRGBO(255, 50, 72, 1) : Colors.grey,
                             ),
                           )
                           // IconButton(
@@ -130,37 +118,25 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                       height: 4,
                     ),
                     Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(4)),
+                      decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(4)),
                       child: const Padding(
-                        padding: EdgeInsets.only(
-                            left: 4.0, right: 4, top: 4, bottom: 4),
+                        padding: EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
                         child: Text(
                           '10% Б',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
+                          style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                         ),
                       ),
                     ),
                     const SizedBox(height: 66),
                     Container(
-                      decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(6)),
+                      decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(6)),
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 4.0, right: 4, top: 4, bottom: 4),
+                        padding: const EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
                         child: Text(
                           '-${procentPrice!.roundToDouble()}%',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
+                          style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                         ),
                       ),
                     ),
@@ -177,10 +153,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                 Text(
                   '${widget.product.name}',
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontSize: 14,
-                      color: AppColors.kGray900,
-                      fontWeight: FontWeight.w400),
+                  style: const TextStyle(fontSize: 14, color: AppColors.kGray900, fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(
                   height: 8,
@@ -188,10 +161,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                 const Text(
                   'Подкатегория',
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.kGray300,
-                      fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 14, color: AppColors.kGray300, fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(
                   height: 3,
@@ -223,18 +193,14 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                     ),
                     Text(
                       '(${widget.product.count} отзывов)',
-                      style: const TextStyle(
-                          color: AppColors.kGray300,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
+                      style: const TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
                 const SizedBox(
                   height: 6,
                 ),
-                (widget.product.compound != 0 ||
-                        widget.product.compound != null)
+                (widget.product.compound != 0 || widget.product.compound != null)
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -244,9 +210,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                               '${widget.product.price?.toInt() ?? 0 - (widget.product.compound ?? 0)} ₽',
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Color.fromRGBO(255, 50, 72, 1),
-                                  fontWeight: FontWeight.w700),
+                                  fontSize: 12, color: Color.fromRGBO(255, 50, 72, 1), fontWeight: FontWeight.w700),
                             ),
                           ),
                           Text(
@@ -264,10 +228,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                         '${widget.product.price} ₽',
                         textAlign: TextAlign.start,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF19191A),
-                            fontWeight: FontWeight.w700),
+                        style: const TextStyle(fontSize: 12, color: Color(0xFF19191A), fontWeight: FontWeight.w700),
                       ),
                 const SizedBox(
                   height: 4,
@@ -279,17 +240,13 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                       padding: const EdgeInsets.symmetric(horizontal: 4),
                       height: 16,
                       alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                          color: Colors.amber,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
+                      decoration:
+                          const BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Text(
                         '${widget.product.price?.toInt() ?? 0 ~/ 3}',
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontSize: 10,
-                            color: Color(0xFF19191A),
-                            fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontSize: 10, color: Color(0xFF19191A), fontWeight: FontWeight.w500),
                       ),
                     ),
                     const SizedBox(
@@ -298,10 +255,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                     const Text(
                       'х3',
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.kGray300,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(fontSize: 14, color: AppColors.kGray300, fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),

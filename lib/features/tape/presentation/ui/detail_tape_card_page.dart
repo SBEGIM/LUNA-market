@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
+import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,13 +14,12 @@ import 'package:haji_market/features/home/data/model/Cats.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/subs_cubit.dart';
 import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 //import 'package:video_player/video_player.dart';
-import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart';
 import '../../../chat/presentation/message.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart' as basCubit;
 import '../../../drawer/data/bloc/favorite_cubit.dart' as favCubit;
-import '../../../drawer/presentation/ui/products_page.dart';
 import '../data/bloc/tape_cubit.dart' as tapeCubit;
 import '../data/bloc/tape_state.dart' as tapeState;
 
@@ -431,6 +431,10 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                               'http://185.116.193.73/storage/${state.tapeModel[index].shop!.image}',
                                               height: 30.6,
                                               width: 30.6,
+                                              errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                                                height: 30.6,
+                                                width: 30.6,
+                                              ),
                                             ),
                                           ),
                                           const SizedBox(
@@ -1084,7 +1088,17 @@ class _VideosState extends State<Videos> {
                     aspectRatio: _controller!.value.aspectRatio,
                     child: Stack(
                       children: [
-                        VideoPlayer(_controller!),
+                        VisibilityDetector(
+                            key: ObjectKey(_controller),
+                            onVisibilityChanged: (info) {
+                              if (!mounted) return;
+                              if (info.visibleFraction == 0) {
+                                _controller?.pause(); //pausing  functionality
+                              } else {
+                                _controller?.play();
+                              }
+                            },
+                            child: VideoPlayer(_controller!)),
                         Container(
                           alignment: Alignment.bottomCenter,
                           padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11),

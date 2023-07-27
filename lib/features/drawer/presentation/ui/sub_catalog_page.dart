@@ -7,12 +7,14 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
+import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/under_catalog_page.dart';
 
 import '../../../home/data/model/Cats.dart';
 import '../../data/bloc/sub_cats_cubit.dart';
 import '../../data/bloc/sub_cats_state.dart';
+
 @RoutePage()
 class SubCatalogPage extends StatefulWidget {
   final Cats cats;
@@ -42,33 +44,27 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {
-            
             context.router.pop();
             // Get.to(Base(index: 1));
           },
           icon: SvgPicture.asset('assets/icons/back_header.svg'),
         ),
         actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 22.0),
-              child: SvgPicture.asset('assets/icons/share.svg'))
+          Padding(padding: const EdgeInsets.only(right: 22.0), child: SvgPicture.asset('assets/icons/share.svg'))
         ],
         titleSpacing: 0,
         // leadingWidth: 1,
         title: Container(
           height: 34,
           width: 279,
-          decoration: BoxDecoration(
-              color: const Color(0xFFF8F8F8),
-              borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(color: const Color(0xFFF8F8F8), borderRadius: BorderRadius.circular(10)),
           child: TextField(
               controller: searchController,
               onChanged: (value) {
                 if (value.isEmpty) {
                   BlocProvider.of<SubCatsCubit>(context).subSave();
                 } else {
-                  BlocProvider.of<SubCatsCubit>(context)
-                      .searchSubCats(value, widget.cats.id);
+                  BlocProvider.of<SubCatsCubit>(context).searchSubCats(value, widget.cats.id);
                 }
               },
               decoration: const InputDecoration(
@@ -100,8 +96,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
               );
             }
             if (state is LoadingState) {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
             // if (state is NoDataState) {
             //   return Container(
@@ -140,21 +135,18 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                     physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 0.65,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3, childAspectRatio: 0.65, crossAxisSpacing: 10, mainAxisSpacing: 10),
                     itemCount: state.cats.length,
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
                           GetStorage().write('CatId', widget.cats.id);
-                          GetStorage().write('subCatFilterId',
-                              [state.cats[index].id].toString());
+                          GetStorage().write('subCatFilterId', [state.cats[index].id].toString());
                           GetStorage().remove('shopFilterId');
-                          context.router.push(ProductsRoute(cats: state.cats[index],));
+                          context.router.push(ProductsRoute(
+                            cats: state.cats[index],
+                          ));
                           // Get.to(() => ProductsPage(
                           //       cats: state.cats[index],
                           //     ));
@@ -175,8 +167,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                           title: '${state.cats[index].name}',
                           credit: 0,
                           bonus: '0',
-                          url:
-                              "http://185.116.193.73/storage/${state.cats[index].icon ?? ''}",
+                          url: "http://185.116.193.73/storage/${state.cats[index].icon ?? ''}",
                         ),
                       );
                     }),
@@ -214,8 +205,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
               //},
               // );
             } else {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
     );
@@ -259,7 +249,11 @@ class CatalogListTile extends StatelessWidget {
                         image: NetworkImage(
                           "${url}",
                         ),
-                        fit: BoxFit.contain),
+                        fit: BoxFit.contain,
+                        onError: (exception, stackTrace) => const ErrorImageWidget(
+                              height: 90,
+                              width: 90,
+                            )),
                     color: const Color(0xFFF0F5F5)),
                 // child: Image.network(
                 //   "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",

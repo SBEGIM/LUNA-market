@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/statistics_page.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/basket/presentation/widgets/show_alert_edit_widget.dart';
 import 'package:haji_market/features/basket/presentation/widgets/show_alert_statictics_widget%20copy.dart';
 import 'package:haji_market/features/basket/presentation/widgets/show_alert_store_widget.dart';
@@ -12,7 +14,7 @@ import 'package:haji_market/features/drawer/data/bloc/address_state.dart';
 import '../../../../core/common/constants.dart';
 import '../ui/basket_order_address_page.dart';
 
-Future<dynamic> showAlertAddressWidget(BuildContext context) async {
+Future<dynamic> showAlertAddressWidget(BuildContext context, Function()? callBack) async {
   String? country;
   String? city;
   String? street;
@@ -176,9 +178,10 @@ Future<dynamic> showAlertAddressWidget(BuildContext context) async {
             floor != null ? GetStorage().write('floor', floor) : null;
             room != null ? GetStorage().write('home', room) : null;
 
+            // Get.back();
             Get.back();
-            Get.back();
-            Get.to(() => new BasketOrderAddressPage());
+            // Get.to(() => new BasketOrderAddressPage());
+            callBack?.call();
           },
         ),
       );

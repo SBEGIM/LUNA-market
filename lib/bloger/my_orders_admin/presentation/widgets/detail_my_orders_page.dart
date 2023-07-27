@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_orders_admin/data/models/basket_admin_order_model.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../data/bloc/basket_admin_cubit.dart';
@@ -141,16 +142,18 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                           fit: BoxFit.cover,
                           height: 104,
                           width: 104,
+                          errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                            height: 104,
+                            width: 104,
+                          ),
                         ),
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               '${widget.basket.product![index].productName}',
-                              style: const TextStyle(
-                                  color: AppColors.kGray900,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500),
+                              style:
+                                  const TextStyle(color: AppColors.kGray900, fontSize: 12, fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(
                               height: 8,
@@ -160,9 +163,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                 Text(
                                   '${widget.basket.product![index].price}',
                                   style: const TextStyle(
-                                      color: AppColors.kGray900,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400),
+                                      color: AppColors.kGray900, fontSize: 12, fontWeight: FontWeight.w400),
                                 ),
                                 const SizedBox(
                                   width: 10,
@@ -170,9 +171,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                 Text(
                                   '${widget.basket.product![index].count}x',
                                   style: const TextStyle(
-                                      color: AppColors.kPrimaryColor,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400),
+                                      color: AppColors.kPrimaryColor, fontSize: 12, fontWeight: FontWeight.w400),
                                 )
                               ],
                             ),
@@ -191,10 +190,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                             // ),
                             const Text(
                               'Доставка: сегодня',
-                              style: TextStyle(
-                                  color: AppColors.kGray900,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400),
+                              style: TextStyle(color: AppColors.kGray900, fontSize: 12, fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
@@ -214,10 +210,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   children: [
                     const Text(
                       'Инфо о заказе',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700),
+                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                     Container(
                       decoration: const BoxDecoration(color: AppColors.kGray1),
@@ -237,17 +230,11 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   children: [
                     const Text(
                       'Сумма без доставки ',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
                       '${widget.basket.summa} ₸ ',
-                      style: const TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
+                      style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -262,17 +249,11 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   children: [
                     const Text(
                       'Доставка',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
                       '${widget.basket.summa} ₸ ',
-                      style: const TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
+                      style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -287,17 +268,11 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   children: [
                     const Text(
                       'Сумма покупки ',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
                       '${widget.basket.summa} ₸ ',
-                      style: const TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
+                      style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -312,17 +287,11 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   children: [
                     const Text(
                       'Оплата бонусами  ',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
                       '${widget.basket.summa} ₸ ',
-                      style: const TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
+                      style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -337,17 +306,11 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   children: const [
                     Text(
                       'Способы оплаты ',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
                       'Master Card **** 5169',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
+                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -362,10 +325,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   children: const [
                     Text(
                       'Адрес доставки',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700),
+                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                   ],
                 ),
@@ -381,10 +341,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                 minLeadingWidth: 12,
                 title: Text(
                   '${widget.basket.product!.first.address}',
-                  style: const TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
+                  style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                 ),
               ),
             ]),
@@ -400,10 +357,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
               children: [
                 const Text(
                   'Клиент',
-                  style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700),
+                  style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(
                   height: 10,
@@ -420,10 +374,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                     ),
                     const Text(
                       'Қанат Тұрғанбай',
-                      style: TextStyle(
-                          color: AppColors.kGray700,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
+                      style: TextStyle(color: AppColors.kGray700, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
                 )
@@ -446,51 +397,37 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       widget.basket.id.toString(),
                       widget.basket.product!.first.id.toString(),
                     );
-                    BlocProvider.of<BasketAdminCubit>(context)
-                        .basketOrderShow();
+                    BlocProvider.of<BasketAdminCubit>(context).basketOrderShow();
 
                     Get.back();
                   },
                   child: Container(
-                    decoration: BoxDecoration(
-                        color: AppColors.kPrimaryColor,
-                        borderRadius: BorderRadius.circular(10)),
+                    decoration: BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(10)),
                     padding: const EdgeInsets.all(
                       13,
                     ),
                     child: Text(
                       buttonText,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
+                      style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
                     BlocProvider.of<BasketAdminCubit>(context).basketStatus(
-                        postStatus,
-                        widget.basket.id.toString(),
-                        widget.basket.product!.first.id.toString());
-                    BlocProvider.of<BasketAdminCubit>(context)
-                        .basketOrderShow();
+                        postStatus, widget.basket.id.toString(), widget.basket.product!.first.id.toString());
+                    BlocProvider.of<BasketAdminCubit>(context).basketOrderShow();
 
                     Get.back();
                   },
                   child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(10)),
+                    decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10)),
                     padding: const EdgeInsets.all(
                       13,
                     ),
                     child: Text(
                       buttonSecondText,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
+                      style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                   ),
                 )

@@ -29,14 +29,18 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
   bool point = false;
   bool shop = false;
   bool fbs = false;
+  String address = '';
 
   String? office;
 
-  String address =
-      "${(GetStorage().read('country') ?? '*') + ', г. ' + (GetStorage().read('city') ?? '*') + ', ул. ' + (GetStorage().read('street') ?? '*') + ', дом ' + (GetStorage().read('home') ?? '*') + ',подъезд ' + (GetStorage().read('porch') ?? '*') + ',этаж ' + (GetStorage().read('floor') ?? '*') + ',кв ' + (GetStorage().read('room') ?? '*')}";
+  void getAddress() {
+    address =
+        "${(GetStorage().read('country') ?? '*') + ', г. ' + (GetStorage().read('city') ?? '*') + ', ул. ' + (GetStorage().read('street') ?? '*') + ', дом ' + (GetStorage().read('home') ?? '*') + ',подъезд ' + (GetStorage().read('porch') ?? '*') + ',этаж ' + (GetStorage().read('floor') ?? '*') + ',кв ' + (GetStorage().read('room') ?? '*')}";
+  }
 
   @override
   void initState() {
+    getAddress();
     super.initState();
   }
 
@@ -140,8 +144,13 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                           const SizedBox(height: 8),
                           GestureDetector(
                             onTap: () async {
-                              await BlocProvider.of<AddressCubit>(context).address();
-                              showAlertAddressWidget(context);
+                              Future.wait([BlocProvider.of<AddressCubit>(context).address()]);
+                              showAlertAddressWidget(context, () {
+                                // context.router.pop();
+
+                                getAddress();
+                                setState(() {});
+                              });
 
                               // if (GetStorage().read('name') !=
                               //     'Не авторизированный') {
@@ -337,8 +346,13 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                           GestureDetector(
                             onTap: () async {
                               //  showAlertAddressWidget(context);
-                              await BlocProvider.of<AddressCubit>(context).address();
-                              showAlertAddressWidget(context);
+                              Future.wait([BlocProvider.of<AddressCubit>(context).address()]);
+                              showAlertAddressWidget(context, () {
+                                // context.router.pop();
+
+                                getAddress();
+                                setState(() {});
+                              });
                             },
                             child: const Text(
                               'Изменить адрес доставки',

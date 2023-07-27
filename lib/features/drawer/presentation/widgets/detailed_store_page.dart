@@ -7,6 +7,7 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/custom_switch_button.dart';
+import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/data/bloc/review_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/review_state.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
@@ -96,6 +97,10 @@ class _DetailStorePageState extends State<DetailStorePage> {
                       'http://80.87.202.73:8001/storage/${widget.shop.shop!.image}',
                       width: 50,
                       height: 50,
+                      errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                        height: 50,
+                        width: 50,
+                      ),
                     ),
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

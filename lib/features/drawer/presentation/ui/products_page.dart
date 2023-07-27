@@ -197,41 +197,39 @@ class _ProductsPageState extends State<ProductsPage> {
                     flexibleSpace: Container(
                       padding: const EdgeInsets.only(left: 16),
                       color: Colors.white,
-                      child: Stack(
+                      child: Row(
                         children: [
                           Expanded(
                             child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 10, right: 8, top: 10),
-                                  child: Wrap(
-                                    spacing: 6,
-                                    runSpacing: 6,
+                                  child: Row(
                                     children: [
                                       const chipWithDropDown(label: 'Цена'),
+                                      const SizedBox(width: 6,),
                                       const chipWithDropDown(label: 'Бренд'),
+                                      const SizedBox(width: 6,),
                                       widget.shopId == null ? const chipWithDropDown(label: 'Продавцы') : Container(),
+                                      const SizedBox(width: 6,),
                                       const chipWithDropDown(label: 'Высокий рейтинг'),
                                     ],
                                   ),
                                 )),
                           ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Container(
-                              height: 70,
-                              color: Colors.white,
-                              child: IconButton(
-                                icon: SvgPicture.asset('assets/icons/filter.svg'),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => FilterPage(shopId: widget.shopId)),
-                                  );
-                                },
-                              ),
+                          Container(
+                            height: 70,
+                            color: Colors.white,
+                            child: IconButton(
+                              icon: SvgPicture.asset('assets/icons/filter.svg'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => FilterPage(shopId: widget.shopId)),
+                                );
+                              },
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),

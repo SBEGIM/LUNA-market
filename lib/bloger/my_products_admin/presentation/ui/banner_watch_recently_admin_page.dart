@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 
 import '../../data/models/blogger_shop_products_model.dart';
 
@@ -13,9 +14,7 @@ class BannerWatcehRecentlyAdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          color: const Color(0xFFFAFAFA),
-          borderRadius: BorderRadius.circular(10)),
+      decoration: BoxDecoration(color: const Color(0xFFFAFAFA), borderRadius: BorderRadius.circular(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -24,17 +23,18 @@ class BannerWatcehRecentlyAdminPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 child: Image.network(
-                  product.path!.path != null
-                      ? "http://185.116.193.73/storage/${product.path!.path}"
-                      : '',
+                  product.path!.path != null ? "http://185.116.193.73/storage/${product.path!.path}" : '',
                   fit: BoxFit.cover,
                   height: 160,
                   width: 160,
+                  errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                    height: 160,
+                    width: 160,
+                  ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 12, right: 0, bottom: 8, top: 14),
+                padding: const EdgeInsets.only(left: 12, right: 0, bottom: 8, top: 14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -42,19 +42,14 @@ class BannerWatcehRecentlyAdminPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          decoration: BoxDecoration(
-                              color: AppColors.kPrimaryColor,
-                              borderRadius: BorderRadius.circular(4)),
+                          decoration:
+                              BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(4)),
                           child: const Padding(
-                            padding: EdgeInsets.only(
-                                left: 8.0, right: 8, top: 4, bottom: 4),
+                            padding: EdgeInsets.only(left: 8.0, right: 8, top: 4, bottom: 4),
                             child: Text(
                               '0.0.12',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400),
+                              style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                             ),
                           ),
                         ),
@@ -64,19 +59,13 @@ class BannerWatcehRecentlyAdminPage extends StatelessWidget {
                       height: 4,
                     ),
                     Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(4)),
+                      decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(4)),
                       child: const Padding(
-                        padding: EdgeInsets.only(
-                            left: 4.0, right: 4, top: 4, bottom: 4),
+                        padding: EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
                         child: Text(
                           '10% Б',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
+                          style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                         ),
                       ),
                     ),
@@ -93,10 +82,7 @@ class BannerWatcehRecentlyAdminPage extends StatelessWidget {
                 Text(
                   '${product.name}',
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontSize: 16,
-                      color: AppColors.kGray900,
-                      fontWeight: FontWeight.w400),
+                  style: const TextStyle(fontSize: 16, color: AppColors.kGray900, fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(
                   height: 8,
@@ -104,10 +90,7 @@ class BannerWatcehRecentlyAdminPage extends StatelessWidget {
                 const Text(
                   'Подкатегория',
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: AppColors.kGray300,
-                      fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 16, color: AppColors.kGray300, fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(
                   height: 8,
@@ -118,10 +101,7 @@ class BannerWatcehRecentlyAdminPage extends StatelessWidget {
                     Text(
                       '${product.price} ₸ ',
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700),
+                      style: const TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w700),
                     ),
                     Row(
                       children: [
@@ -133,10 +113,7 @@ class BannerWatcehRecentlyAdminPage extends StatelessWidget {
                           ),
                           child: Text(
                             '${product.price}',
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),
+                            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
                           ),
                         ),
                         const SizedBox(
@@ -144,8 +121,7 @@ class BannerWatcehRecentlyAdminPage extends StatelessWidget {
                         ),
                         const Text(
                           'х3',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, color: Colors.grey),
+                          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.grey),
                         ),
                         const SizedBox(
                           width: 4,
