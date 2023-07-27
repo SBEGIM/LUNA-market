@@ -640,11 +640,12 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   controller: heightController,
                   textInputNumber: true,
                 ),
-                const FieldsProductRequest(
+                FieldsProductRequest(
                   titleText: 'Глубина, мм ',
                   hintText: 'Введите глубину',
                   star: true,
                   arrow: false,
+                  controller: deepController,
                   textInputNumber: true,
                 ),
                 FieldsProductRequest(
