@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/optom_price_dto.dart';
+import 'package:haji_market/admin/my_products_admin/data/DTO/size_count_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/product_admin_state.dart';
 import '../models/admin_products_model.dart';
 import '../repository/ProductAdminRepo.dart';
@@ -92,6 +93,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       String deep,
       List<dynamic> image,
       List<optomPriceDto> optom,
+      List<sizeCountDto> size,
       String? video) async {
     try {
       emit(LoadingState());
@@ -112,6 +114,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
           deep,
           image,
           optom,
+          size,
           video);
 
       if (data == 200) {
