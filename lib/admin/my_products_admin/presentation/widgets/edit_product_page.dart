@@ -8,7 +8,8 @@ import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/optom_price_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/size_count_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/color_cubit.dart';
-import 'package:haji_market/admin/my_products_admin/data/bloc/delete_image_cubit.dart';
+import 'package:haji_market/admin/my_products_admin/data/bloc/delete_image_cubit.dart' as deleteImageCubit;
+import 'package:haji_market/admin/my_products_admin/data/bloc/product_admin_state.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/size_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caats_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
@@ -671,11 +672,11 @@ class _EditProductPageState extends State<EditProductPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-                child: BlocListener<DeleteImageCubit, DeleteImageState>(
+                child: BlocListener<deleteImageCubit.DeleteImageCubit, deleteImageCubit.DeleteImageState>(
                   listener: (context, state) {
-                    if (state is LoadedState) {
+                    if (state is deleteImageCubit.LoadedState) {
                       _networkImage.remove(state.deletingImagePath);
-                      BlocProvider.of<DeleteImageCubit>(context).toInit();
+                      BlocProvider.of<deleteImageCubit.DeleteImageCubit>(context).toInit();
                       setState(() {});
                     }
                   },
@@ -700,7 +701,7 @@ class _EditProductPageState extends State<EditProductPage> {
                                                   GestureDetector(
                                                     onTap: () {
                                                       if (widget.product.id != null) {
-                                                        BlocProvider.of<DeleteImageCubit>(context)
+                                                        BlocProvider.of<deleteImageCubit.DeleteImageCubit>(context)
                                                             .deleteImage(imagePath: e, productId: widget.product.id!);
                                                       }
                                                     },
@@ -891,52 +892,54 @@ class _EditProductPageState extends State<EditProductPage> {
             ],
           ),
         ),
-        bottomSheet: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
-          child: InkWell(
-            onTap: () async {
-              await BlocProvider.of<ProductAdminCubit>(context).update(
-                  priceController.text,
-                  countController.text,
-                  compoundController.text,
-                  cats?.id.toString() ?? cat_id.toString(),
-                  subCats?.id.toString() ?? sub_cat_id.toString(),
-                  brand_id.toString(),
-                  colors?.id.toString() ?? color_id.toString(),
-                  descriptionController.text,
-                  nameController.text,
-                  heightController.text,
-                  widthController.text,
-                  massaController.text,
-                  widget.product.id.toString(),
-                  articulController.text,
-                  '',
-                  deepController.text,
-                  _image,
-                  optomCount,
-                  sizeCount,
-                  _video != null ? _video!.path : null);
-
-              await BlocProvider.of<ProductAdminCubit>(context).products('');
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const BaseAdmin()),
-              );
-            },
-            child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: AppColors.kPrimaryColor,
-                ),
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.all(16),
-                child: const Text(
-                  'Сохранить',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
-                  textAlign: TextAlign.center,
-                )),
+        bottomSheet: BlocListener<ProductAdminCubit, ProductAdminState>(
+          listener: (context, state) {
+            if (state is ChangeState) {
+              BlocProvider.of<ProductAdminCubit>(context).products('');
+              int count = 0;
+              Navigator.of(context).popUntil((_) => count++ >= 2);
+            }
+          },
+          child: Container(
+            color: Colors.white,
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
+            child: InkWell(
+              onTap: () async {
+                await BlocProvider.of<ProductAdminCubit>(context).update(
+                    priceController.text,
+                    countController.text,
+                    compoundController.text,
+                    cats?.id.toString() ?? cat_id.toString(),
+                    subCats?.id.toString() ?? sub_cat_id.toString(),
+                    brand_id.toString(),
+                    colors?.id.toString() ?? color_id.toString(),
+                    descriptionController.text,
+                    nameController.text,
+                    heightController.text,
+                    widthController.text,
+                    massaController.text,
+                    widget.product.id.toString(),
+                    articulController.text,
+                    '',
+                    deepController.text,
+                    _image,
+                    optomCount,
+                    sizeCount,
+                    _video != null ? _video!.path : null);
+              },
+              child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: AppColors.kPrimaryColor,
+                  ),
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.all(16),
+                  child: const Text(
+                    'Сохранить',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
+                    textAlign: TextAlign.center,
+                  )),
+            ),
           ),
         ));
   }
