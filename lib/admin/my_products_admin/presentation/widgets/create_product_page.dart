@@ -1172,7 +1172,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 nameController.text.isNotEmpty &&
                 priceController.text.isNotEmpty &&
                 countController.text.isNotEmpty &&
-                brands?.id != 0) {
+                brands?.id != 0 &&
+                colors?.id != 0) {
               await BlocProvider.of<ProductAdminCubit>(context).store(
                   priceController.text,
                   countController.text,
@@ -1180,6 +1181,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   cats!.id.toString(),
                   subCats!.id.toString(),
                   brands!.id.toString(),
+                  colors!.id.toString(),
                   descriptionController.text,
                   nameController.text,
                   heightController.text,
