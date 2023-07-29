@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/admin/my_products_admin/data/DTO/size_count_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/color_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/size_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/brands_admin_page.dart';
@@ -46,6 +47,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
   TextEditingController massaController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController colorCountController = TextEditingController();
+  TextEditingController sizeCountController = TextEditingController();
+  TextEditingController sizePriceController = TextEditingController();
   TextEditingController optomPriceController = TextEditingController();
   TextEditingController optomCountController = TextEditingController();
   TextEditingController pointsController = TextEditingController();
@@ -62,12 +65,16 @@ class _CreateProductPageState extends State<CreateProductPage> {
 
   String colorName = '';
 
+  String sizeName = '';
+  String sizeId = '';
+
   String currencyName = 'Выберите валюту';
 
   List<colorCountDto> colorCount = [];
   List<Cats>? mockSizeAdds = [];
 
   List<optomPriceDto> optomCount = [];
+  List<sizeCountDto> sizeCount = [];
 
   List<Cats>? mockSizes = [];
 
@@ -299,12 +306,11 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   controller: pointsController,
                   textInputNumber: true,
                 ),
-
                 GestureDetector(
                   onTap: () {
                     Get.to(const BloggerAd());
                   },
-                  child: Container(
+                  child: SizedBox(
                     child: RichText(
                       textAlign: TextAlign.left,
                       text: const TextSpan(
@@ -448,7 +454,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    colorName == '' ? 'Размер' : colorName,
+                                    sizeName == '' ? 'Размер' : sizeName,
                                     style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400),
@@ -456,7 +462,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                   PopupMenuButton(
                                     onSelected: (value) {
                                       mockSizeAdds!.add(value as Cats);
-                                      colorName = value.name!;
+                                      sizeId = value.id.toString();
+                                      sizeName = value.name ?? 'Пустое';
 
                                       setState(() {});
 
@@ -480,7 +487,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                         return PopupMenuItem(
                                           value: e,
                                           child: Text(
-                                            e.name ?? '',
+                                            e.name ?? 'Пустое',
                                             style: const TextStyle(
                                               color: Colors.black,
                                             ),
@@ -505,7 +512,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                             height: 38,
                             child: TextField(
                               textAlign: TextAlign.center,
-                              controller: colorCountController,
+                              controller: sizeCountController,
                               keyboardType: TextInputType.text,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
@@ -521,28 +528,39 @@ class _CreateProductPageState extends State<CreateProductPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Cats? countColorLast = mockSizeAdds!.last;
+                              if (sizeCountController.text.isNotEmpty) {
+                                bool exists = false;
 
-                              bool exists = false;
-                              for (var element in colorCount) {
-                                if (element.name == countColorLast.name) {
-                                  exists = true;
-                                  setState(() {});
+                                sizeCountDto? sizeCountLast;
+                                // if (optomCount.isNotEmpty) {
+
+                                sizeCountLast = sizeCount.isNotEmpty
+                                    ? sizeCount.last
+                                    : null;
+                                for (var element in sizeCount) {
+                                  if (element.count ==
+                                      sizeCountController.text) {
+                                    exists = true;
+                                    setState(() {});
+                                  }
+                                  continue;
                                 }
-                                continue;
-                              }
+                                //   }
 
-                              if (!exists) {
-                                colorCount.add(colorCountDto(
-                                    color_id: countColorLast.id.toString(),
-                                    name: countColorLast.name.toString(),
-                                    count: colorCountController.text));
+                                if (!exists) {
+                                  sizeCount.add(sizeCountDto(
+                                      id: sizeId,
+                                      name: sizeName,
+                                      count: sizeCountController.text));
 
-                                setState(() {});
+                                  setState(() {});
+                                } else {
+                                  // Get.to(() => {})
+                                  Get.snackbar('Ошибка', 'Данные уже имеется!',
+                                      backgroundColor: Colors.redAccent);
+                                }
                               } else {
-                                // Get.to(() => {});
-                                Get.snackbar(
-                                    'Ошибка', 'Вы уже добавили этот цвет!',
+                                Get.snackbar('Ошибка', 'Нет данных!',
                                     backgroundColor: Colors.redAccent);
                               }
                             },
@@ -568,9 +586,10 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   ),
                 ),
                 SizedBox(
-                  height: 60 * colorCount.length.toDouble(),
+                  height: 60 * sizeCount.length.toDouble(),
                   child: ListView.builder(
-                      itemCount: colorCount.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: sizeCount.length,
                       itemBuilder: ((context, index) {
                         return Row(
                           children: [
@@ -583,7 +602,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               width: 102,
                               height: 38,
                               child: Text(
-                                colorCount[index].name,
+                                sizeCount[index].name,
                                 style: const TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.w400),
                               ),
@@ -597,14 +616,14 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               width: 102,
                               height: 38,
                               child: Text(
-                                colorCount[index].count,
+                                sizeCount[index].count,
                                 style: const TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.w400),
                               ),
                             ),
                             GestureDetector(
                               onTap: (() {
-                                colorCount.removeAt(index);
+                                sizeCount.removeAt(index);
                                 setState(() {});
                               }),
                               child: Container(
@@ -693,7 +712,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   ),
                 ),
                 const SizedBox(height: 28),
-                Container(
+                SizedBox(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -716,7 +735,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                             height: 38,
                             child: TextField(
                               onChanged: (value) {
-                                setState(() {});
+                                // setState(() {});
                               },
                               textAlign: TextAlign.center,
                               controller: optomCountController,
@@ -824,6 +843,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 SizedBox(
                   height: 60 * optomCount.length.toDouble(),
                   child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: optomCount.length,
                       itemBuilder: ((context, index) {
                         return Row(
@@ -1165,11 +1185,15 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   heightController.text,
                   widthController.text,
                   massaController.text,
+                  pointsController.text,
+                  pointsBloggerController.text,
                   articulController.text,
                   currencyName,
+                  isSwitchedBs,
                   deepController.text,
                   _image,
                   optomCount,
+                  sizeCount,
                   _video != null ? _video!.path : null);
             } else {
               Get.snackbar("Ошибка", "Заполните данные",

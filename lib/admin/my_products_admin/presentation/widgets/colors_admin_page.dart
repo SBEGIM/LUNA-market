@@ -56,7 +56,8 @@ class _ColorsAdminPageState extends State<ColorsAdminPage> {
                     return Center(
                       child: Text(
                         state.message,
-                        style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 20.0, color: Colors.grey),
                       ),
                     );
                   }

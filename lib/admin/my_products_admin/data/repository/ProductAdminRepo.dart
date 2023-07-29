@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/optom_price_dto.dart';
 import 'package:http/http.dart' as http;
 
+import '../DTO/size_count_dto.dart';
 import '../models/admin_products_model.dart';
 
 const baseUrl = 'http://185.116.193.73/api';
@@ -24,14 +25,38 @@ class ProductAdminRepository {
           String height,
           String width,
           String massa,
+          String point,
+          String pointBlogger,
           String articul,
           String currency,
+          bool isSwitchedBs,
           String deep,
           List<dynamic>? image,
           List<optomPriceDto> optom,
+          List<sizeCountDto> size,
           String? video) =>
-      _productToApi.store(price, count, compound, catId, subCatId, brandId, description, name, height, width, massa,
-          articul, currency, deep, image, optom, video);
+      _productToApi.store(
+          price,
+          count,
+          compound,
+          catId,
+          subCatId,
+          brandId,
+          description,
+          name,
+          height,
+          width,
+          massa,
+          point,
+          pointBlogger,
+          articul,
+          currency,
+          isSwitchedBs,
+          deep,
+          image,
+          optom,
+          size,
+          video);
 
   Future<dynamic> update(
           String price,
@@ -82,19 +107,25 @@ class ProductToApi {
       String height,
       String width,
       String massa,
+      String point,
+      String pointBlogger,
       String articul,
       String currency,
+      bool isSwitchedBs,
       String deep,
       List<dynamic>? image,
       List<optomPriceDto> optom,
+      List<sizeCountDto> size,
       String? video) async {
     try {
       final sellerId = _box.read('seller_id');
       final token = _box.read('seller_token');
+      String? pre_order;
 
-      Map<String, dynamic> bodys = {
+      isSwitchedBs == 'true' ? pre_order = '1' : pre_order = '0';
+
+      final bodys = {
         'shop_id': sellerId.toString(),
-        'token': token.toString(),
         'name': name,
         'price': price,
         'count': count,
@@ -106,6 +137,9 @@ class ProductToApi {
         'height': height,
         'width': width,
         'massa': massa,
+        'pre_order': pre_order,
+        'point': point,
+        'point_blogger': pointBlogger,
         'articul': articul,
         'deep': deep,
         'currency': currency,
@@ -113,24 +147,34 @@ class ProductToApi {
 
       Map<String, dynamic> queryParams = {};
       Map<String, dynamic> blocc = {};
+      Map<String, dynamic> sizes = {};
+
       List<Map<String, dynamic>> blocMapList = [];
 
       for (var i = 0; i < optom.length; i++) {
         blocc['bloc[$i][count]'] = optom[i].count;
         blocc['bloc[$i][price]'] = optom[i].price;
       }
+      for (var i = 0; i < size.length; i++) {
+        sizes['size[$i][id]'] = size[i].id;
+        sizes['size[$i][count]'] = size[i].count;
+      }
 
       queryParams.addAll(blocc);
-      queryParams.addAll(bodys);
+      queryParams.addAll(sizes);
 
       final request = http.MultipartRequest(
-          'POST', Uri.parse('$baseUrl/seller/product/store').replace(queryParameters: queryParams));
+          'POST',
+          Uri.parse(
+            '$baseUrl/seller/product/store',
+          ).replace(queryParameters: queryParams));
 
       final headers = {
         'Authorization': 'Bearer $token',
       };
 
       request.headers.addAll(headers);
+      request.fields.addAll(bodys);
 
       if (video != null) {
         request.files.add(
