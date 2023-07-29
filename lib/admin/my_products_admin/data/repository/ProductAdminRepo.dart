@@ -25,8 +25,11 @@ class ProductAdminRepository {
           String height,
           String width,
           String massa,
+          String point,
+          String pointBlogger,
           String articul,
           String currency,
+          bool isSwitchedBs,
           String deep,
           List<dynamic>? image,
           List<optomPriceDto> optom,
@@ -44,8 +47,11 @@ class ProductAdminRepository {
           height,
           width,
           massa,
+          point,
+          pointBlogger,
           articul,
           currency,
+          isSwitchedBs,
           deep,
           image,
           optom,
@@ -110,8 +116,11 @@ class ProductToApi {
       String height,
       String width,
       String massa,
+      String point,
+      String pointBlogger,
       String articul,
       String currency,
+      bool isSwitchedBs,
       String deep,
       List<dynamic>? image,
       List<optomPriceDto> optom,
@@ -120,10 +129,12 @@ class ProductToApi {
     try {
       final sellerId = _box.read('seller_id');
       final token = _box.read('seller_token');
+      String? pre_order;
 
-      Map<String, dynamic> bodys = {
+      isSwitchedBs == 'true' ? pre_order = '1' : pre_order = '0';
+
+      final bodys = {
         'shop_id': sellerId.toString(),
-        'token': token.toString(),
         'name': name,
         'price': price,
         'count': count,
@@ -135,6 +146,9 @@ class ProductToApi {
         'height': height,
         'width': width,
         'massa': massa,
+        'pre_order': pre_order,
+        'point': point,
+        'point_blogger': pointBlogger,
         'articul': articul,
         'deep': deep,
         'currency': currency,
@@ -160,14 +174,16 @@ class ProductToApi {
 
       final request = http.MultipartRequest(
           'POST',
-          Uri.parse('$baseUrl/seller/product/store')
-              .replace(queryParameters: queryParams));
+          Uri.parse(
+            '$baseUrl/seller/product/store',
+          ).replace(queryParameters: queryParams));
 
       final headers = {
         'Authorization': 'Bearer $token',
       };
 
       request.headers.addAll(headers);
+      request.fields.addAll(bodys);
 
       if (video != null) {
         request.files.add(
