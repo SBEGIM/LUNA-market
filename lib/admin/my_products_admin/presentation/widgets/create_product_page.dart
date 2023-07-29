@@ -157,10 +157,13 @@ class _CreateProductPageState extends State<CreateProductPage> {
       body: BlocConsumer<ProductAdminCubit, ProductAdminState>(
           listener: (context, state) {
         if (state is ChangeState && isChangeState) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const BaseAdmin()),
-          );
+          
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 2);
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const BaseAdmin()),
+          // );
           isChangeState = false;
         }
       }, builder: (context, state) {
