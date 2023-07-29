@@ -16,19 +16,8 @@ class ColorsAdminPage extends StatefulWidget {
 }
 
 class _ColorsAdminPageState extends State<ColorsAdminPage> {
-  List<int>? _selectedIndex = [];
-  List<Cats> _cat = [];
-
-  void addColor(List<Cats> cats) {
-    // for (int i = 0; i > cats.length; i++){
-    //     _selectedIndex.add(value)= cats[i].id!;
-
-    // }
-    cats.forEach((element) {
-      _selectedIndex!.add(0);
-    });
-    return;
-  }
+  int _selectedIndex = -1;
+  Cats? _cat;
 
   @override
   void initState() {
@@ -78,7 +67,6 @@ class _ColorsAdminPageState extends State<ColorsAdminPage> {
                             color: Colors.indigoAccent));
                   }
                   if (state is LoadedState) {
-                    addColor(state.cats);
                     return Column(children: [
                       Divider(
                         color: Colors.grey.shade400,
@@ -96,28 +84,20 @@ class _ColorsAdminPageState extends State<ColorsAdminPage> {
                             children: [
                               InkWell(
                                   onTap: () async {
-                                    print('qwe');
-                                    if (_selectedIndex?[index] ==
-                                        state.cats[index].id!) {
+                                    if (_selectedIndex == index) {
                                       setState(() {
-                                        _selectedIndex?[index] = -1;
-                                        // _cat.removeAt(index);
+                                        _selectedIndex = -1;
                                       });
                                     } else {
                                       setState(() {
                                         // устанавливаем индекс выделенного элемента
-                                        _selectedIndex?[index] =
-                                            state.cats[index].id!;
-                                        _cat.add(state.cats[index]);
+                                        _selectedIndex = index;
+                                        _cat = state.cats[index];
                                       });
-
-                                      print(state.cats[index]);
                                     }
                                   },
                                   child: ListTile(
-                                    selected: _selectedIndex?[index] ==
-                                        state.cats[index].id!,
-
+                                    selected: index == _selectedIndex,
                                     // leading: SvgPicture.asset('assets/temp/kaz.svg'),
                                     title: Text(
                                       state.cats[index].name.toString(),
