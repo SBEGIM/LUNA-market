@@ -1296,8 +1296,8 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                 controller: widget.controller,
                 readOnly:
                     (widget.hintColor == false || widget.hintColor == null)
-                        ? true
-                        : false,
+                        ? false
+                        : true,
                 keyboardType: (widget.textInputNumber == false ||
                         widget.textInputNumber == null)
                     ? TextInputType.text
