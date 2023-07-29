@@ -124,7 +124,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
     });
   }
 
-  void _colorsArray() async {
+  void _sizeArray() async {
     mockSizes = await BlocProvider.of<SizeCubit>(context).sizes();
   }
 
@@ -134,7 +134,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
     subCats = widget.subCat;
     brands = Cats(id: 0, name: 'Выберите бренд');
     colors = Cats(id: 0, name: 'Выберите цвет');
-    _colorsArray();
+    _sizeArray();
     super.initState();
   }
 
@@ -347,15 +347,16 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 FieldsProductRequest(
                   titleText: 'Категория',
                   hintText: cats!.name ?? 'Выберите категорию',
-                  star: false,
-                  arrow: true,
+                  star: true,
+                  arrow: false,
+                  hintColor: true,
                   onPressed: () async {
-                    final data = await Get.to(const CatsAdminPage());
-                    if (data != null) {
-                      final Cats cat = data;
-                      setState(() {});
-                      cats = cat;
-                    }
+                    // final data = await Get.to(const CatsAdminPage());
+                    // if (data != null) {
+                    //   final Cats cat = data;
+                    //   setState(() {});
+                    //   cats = cat;
+                    // }
                   },
                 ),
                 FieldsProductRequest(
@@ -395,15 +396,16 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 FieldsProductRequest(
                   titleText: 'Тип ',
                   hintText: subCats!.name.toString(),
-                  star: false,
-                  arrow: true,
+                  hintColor: true,
+                  star: true,
+                  arrow: false,
                   onPressed: () async {
-                    final data = await Get.to(SubCatsAdminPage(cats: cats));
-                    if (data != null) {
-                      final Cats cat = data;
-                      setState(() {});
-                      subCats = cat;
-                    }
+                    // final data = await Get.to(SubCatsAdminPage(cats: cats));
+                    // if (data != null) {
+                    //   final Cats cat = data;
+                    //   setState(() {});
+                    //   subCats = cat;
+                    // }
                   },
                 ),
                 FieldsProductRequest(
@@ -417,6 +419,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 FieldsProductRequest(
                   titleText: 'Цвет ',
                   hintText: colors!.name.toString(),
+                  hintColor: colors!.id != 0 ? true : false,
                   star: true,
                   arrow: true,
                   onPressed: () async {
@@ -1228,6 +1231,7 @@ class FieldsProductRequest extends StatefulWidget {
   final String hintText;
   final bool star;
   final bool arrow;
+  final bool? hintColor;
   final TextEditingController? controller;
   final Cats? cats;
   final bool? textInputNumber;
@@ -1238,6 +1242,7 @@ class FieldsProductRequest extends StatefulWidget {
     required this.titleText,
     required this.star,
     required this.arrow,
+    this.hintColor,
     this.controller,
     this.cats,
     this.textInputNumber,
@@ -1300,8 +1305,11 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: widget.hintText,
-                  hintStyle: const TextStyle(
-                      color: Color.fromRGBO(194, 197, 200, 1),
+                  hintStyle: TextStyle(
+                      color:
+                          (widget.hintColor == null || widget.hintColor != true)
+                              ? const Color.fromRGBO(194, 197, 200, 1)
+                              : Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.w400),
                   enabledBorder: const UnderlineInputBorder(
@@ -1313,7 +1321,7 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                     icon: widget.arrow == true
                         ? SvgPicture.asset('assets/icons/back_menu.svg',
                             color: Colors.grey)
-                        : SvgPicture.asset(''),
+                        : const SizedBox(),
                   ),
                 ),
               ),
