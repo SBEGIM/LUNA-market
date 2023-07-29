@@ -29,48 +29,51 @@ class ProductApi {
 
   Future<List<ProductModel>> product(int page) async {
     _box.listen(() {
-      if (_box.read('priceFilter') != null) {
+      if (_box.hasData('priceFilter')) {
         price = GetStorage().read('priceFilter');
         price_start = price.start;
         price_end = price.end;
       } else {
         price = const RangeValues(0, 0);
       }
-      if (_box.read('search') != null) {
+      if (_box.hasData('search')) {
         search = GetStorage().read('search');
       } else {
         search = '';
       }
-      if (_box.read('brandFilterId') != null) {
+      if (_box.hasData('brandFilterId')) {
         brandId = GetStorage().read('brandFilterId');
         brandIds.clear();
         var ab = json.decode(brandId).cast<int>().toList();
         brandIds.addAll(ab);
       } else {
         brandId = '';
+        brandIds.clear();
       }
-      if (_box.read('subCatFilterId') != null) {
+      if (_box.hasData('subCatFilterId')) {
         subCatId = GetStorage().read('subCatFilterId');
         subCatIds.clear();
         var ab = json.decode(subCatId).cast<int>().toList();
         subCatIds.addAll(ab);
       } else {
         subCatId = '';
+        subCatIds.clear();
       }
-      if (_box.read('CatId') != null) {
+      if (_box.hasData('CatId')) {
         CatId = GetStorage().read('CatId');
       } else {
         CatId = 0;
       }
-      if (_box.read('shopFilterId') != null) {
+      if (_box.hasData('shopFilterId')) {
         shopId = GetStorage().read('shopFilterId');
         shopIds.clear();
         var ab = json.decode(shopId).cast<int>().toList();
         shopIds.addAll(ab);
       } else {
         shopId = '';
+        shopIds.clear();
       }
-      if (_box.read('ratingFilter') != null) {
+      if (_box.hasData('ratingFilter')) {
         rating = GetStorage().read('ratingFilter');
       } else {
         rating = false;

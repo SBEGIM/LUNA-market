@@ -8,20 +8,20 @@ const baseUrl = 'http://185.116.193.73/api';
 class TapeRepository {
   final TapeApi _tapeApi = TapeApi();
 
-  Future<List<TapeModel>> tapes(inSub, inFav, search, bloggerId) =>
-      _tapeApi.tapes(inSub, inFav, search, bloggerId);
+  Future<List<TapeModel>> tapes(inSub, inFav, search, bloggerId, page) =>
+      _tapeApi.tapes(inSub, inFav, search, bloggerId, page);
 }
 
 class TapeApi {
   final _box = GetStorage();
 
   Future<List<TapeModel>> tapes(
-      bool? inSub, bool? inFav, String? search, int? bloggerId) async {
+      bool? inSub, bool? inFav, String? search, int? bloggerId, page) async {
     final String? token = _box.read('token');
 
     final response = await http.get(
         Uri.parse(
-            '$baseUrl/shop/tape?subscribes=$inSub&favorite=$inFav&search=$search&blogger_id=$bloggerId'),
+            '$baseUrl/shop/tape?subscribes=$inSub&favorite=$inFav&search=$search&blogger_id=$bloggerId&page=$page'),
         headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);
