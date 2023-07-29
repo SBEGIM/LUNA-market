@@ -50,21 +50,26 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
           icon: SvgPicture.asset('assets/icons/back_header.svg'),
         ),
         actions: [
-          Padding(padding: const EdgeInsets.only(right: 22.0), child: SvgPicture.asset('assets/icons/share.svg'))
+          Padding(
+              padding: const EdgeInsets.only(right: 22.0),
+              child: SvgPicture.asset('assets/icons/share.svg'))
         ],
         titleSpacing: 0,
         // leadingWidth: 1,
         title: Container(
           height: 34,
           width: 279,
-          decoration: BoxDecoration(color: const Color(0xFFF8F8F8), borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(
+              color: const Color(0xFFF8F8F8),
+              borderRadius: BorderRadius.circular(10)),
           child: TextField(
               controller: searchController,
               onChanged: (value) {
                 if (value.isEmpty) {
                   BlocProvider.of<SubCatsCubit>(context).subSave();
                 } else {
-                  BlocProvider.of<SubCatsCubit>(context).searchSubCats(value, widget.cats.id);
+                  BlocProvider.of<SubCatsCubit>(context)
+                      .searchSubCats(value, widget.cats.id);
                 }
               },
               decoration: const InputDecoration(
@@ -96,7 +101,8 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
               );
             }
             if (state is LoadingState) {
-              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
             // if (state is NoDataState) {
             //   return Container(
@@ -135,15 +141,20 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                     physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, childAspectRatio: 0.65, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.65,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10),
                     itemCount: state.cats.length,
                     itemBuilder: (context, index) {
                       return InkWell(
-                        onTap: () {
-                          GetStorage().write('CatId', widget.cats.id);
-                          GetStorage().write('subCatFilterId', [state.cats[index].id].toString());
-                          GetStorage().remove('shopFilterId');
+                        onTap: () async {
+                          await GetStorage().write('CatId', widget.cats.id);
+                          await GetStorage().write('subCatFilterId',
+                              [state.cats[index].id].toString());
+                          await GetStorage().remove('shopFilterId');
                           context.router.push(ProductsRoute(
                             cats: state.cats[index],
                           ));
@@ -167,7 +178,8 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                           title: '${state.cats[index].name}',
                           credit: 0,
                           bonus: '0',
-                          url: "http://185.116.193.73/storage/${state.cats[index].icon ?? ''}",
+                          url:
+                              "http://185.116.193.73/storage/${state.cats[index].icon ?? ''}",
                         ),
                       );
                     }),
@@ -205,7 +217,8 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
               //},
               // );
             } else {
-              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
     );
@@ -250,7 +263,8 @@ class CatalogListTile extends StatelessWidget {
                           "${url}",
                         ),
                         fit: BoxFit.contain,
-                        onError: (exception, stackTrace) => const ErrorImageWidget(
+                        onError: (exception, stackTrace) =>
+                            const ErrorImageWidget(
                               height: 90,
                               width: 90,
                             )),

@@ -9,13 +9,16 @@ import '../repository/tape_repo.dart';
 class TapeCubit extends Cubit<TapeState> {
   final TapeRepository tapeRepository;
   List<TapeModel> array = [];
+  int page = 1;
 
   TapeCubit({required this.tapeRepository}) : super(InitState());
   Future<void> tapes(
       bool? inSub, bool? inFav, String? search, int? blogger_id) async {
     try {
       emit(LoadingState());
-      final data = await tapeRepository.tapes(inSub, inFav, search, blogger_id);
+      page = 1;
+      final data =
+          await tapeRepository.tapes(inSub, inFav, search, blogger_id, page);
       if (data.isEmpty) {
         emit(NoDataState());
       } else {
@@ -31,6 +34,24 @@ class TapeCubit extends Cubit<TapeState> {
       }
     } catch (e) {
       log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  Future<void> tapePagination(
+      bool? inSub, bool? inFav, String? search, int? blogger_id) async {
+    try {
+      // emit(LoadingState());
+      page++;
+      final data =
+          await tapeRepository.tapes(inSub, inFav, search, blogger_id, page);
+
+      for (int i = 0; i < data.length; i++) {
+        array.add(data[i]);
+      }
+
+      emit(LoadedState(array));
+    } catch (e) {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }

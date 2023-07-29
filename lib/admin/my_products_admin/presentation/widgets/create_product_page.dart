@@ -67,15 +67,12 @@ class _CreateProductPageState extends State<CreateProductPage> {
 
   String sizeName = '';
   String sizeId = '';
-
   String currencyName = 'Выберите валюту';
 
   List<colorCountDto> colorCount = [];
   List<Cats>? mockSizeAdds = [];
-
   List<optomPriceDto> optomCount = [];
   List<sizeCountDto> sizeCount = [];
-
   List<Cats>? mockSizes = [];
 
   bool isSwitched = false;

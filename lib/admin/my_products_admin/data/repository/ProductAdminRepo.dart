@@ -87,9 +87,11 @@ class ProductAdminRepository {
 
   Future<dynamic> delete(String productId) => _productToApi.delete(productId);
 
-  Future<String?> ad(int productId, int price) => _productToApi.ad(productId, price);
+  Future<String?> ad(int productId, int price) =>
+      _productToApi.ad(productId, price);
 
-  Future<List<AdminProductsModel>> products(String? name) => _productToApi.products(name);
+  Future<List<AdminProductsModel>> products(String? name) =>
+      _productToApi.products(name);
 
   Future<dynamic> deleteImage({
     required int productId,
@@ -287,7 +289,8 @@ class ProductToApi {
   }
 
   Future<dynamic> delete(String productId) async {
-    final response = await http.post(Uri.parse('$baseUrl/seller/product/delete'), body: {
+    final response =
+        await http.post(Uri.parse('$baseUrl/seller/product/delete'), body: {
       'shop_id': _box.read('seller_id'),
       'token': _box.read('seller_token'),
       'product_id': productId,
@@ -301,12 +304,15 @@ class ProductToApi {
       final sellerId = _box.read('seller_id');
       final String? token = _box.read('token');
 
-      final response = await http.get(Uri.parse('$baseUrl/seller/products?shop_id=$sellerId&name=$name'),
+      final response = await http.get(
+          Uri.parse('$baseUrl/seller/products?shop_id=$sellerId&name=$name'),
           headers: {"Authorization": "Bearer $token"});
 
       final data = jsonDecode(response.body);
 
-      return (data['data'] as List).map((e) => AdminProductsModel.fromJson(e as Map<String, Object?>)).toList();
+      return (data['data'] as List)
+          .map((e) => AdminProductsModel.fromJson(e as Map<String, Object?>))
+          .toList();
     } catch (e) {
       log(e.toString());
       throw Exception(e.toString());
@@ -320,7 +326,8 @@ class ProductToApi {
       int view = 300;
 
       final response = await http.get(
-          Uri.parse('$baseUrl/seller/ad/payment/?product_id=$productId&price=$price&view=$view'),
+          Uri.parse(
+              '$baseUrl/seller/ad/payment/?product_id=$productId&price=$price&view=$view'),
           headers: {"Authorization": "Bearer $token"});
 
       final data = jsonDecode(response.body);
@@ -337,7 +344,8 @@ class ProductToApi {
     required String imagePath,
   }) async {
     try {
-      final response = await http.post(Uri.parse('$baseUrl/seller/product/delete/image'), body: {
+      final response = await http
+          .post(Uri.parse('$baseUrl/seller/product/delete/image'), body: {
         'product_id': productId.toString(),
         'path': imagePath,
       });
