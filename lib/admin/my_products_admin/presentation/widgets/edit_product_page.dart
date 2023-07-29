@@ -5,8 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/color_cubit.dart';
+import 'package:haji_market/admin/my_products_admin/data/bloc/delete_image_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caats_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart';
 import 'package:haji_market/features/home/data/bloc/cats_cubit.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,6 +34,7 @@ class _EditProductPageState extends State<EditProductPage> {
   // XFile? _image;
 
   List<XFile?> _image = [];
+  List<String> _networkImage = [];
 
   final ImagePicker _picker = ImagePicker();
   bool change = false;
@@ -66,17 +69,14 @@ class _EditProductPageState extends State<EditProductPage> {
   Cats? colors;
 
   Future<void> CatById() async {
-    cats = await BlocProvider.of<CatsCubit>(context)
-        .catById(widget.product.catId.toString());
-    brands = await BlocProvider.of<BrandCubit>(context)
-        .brandById(widget.product.brandId.toString());
-    subCats = await BlocProvider.of<SubCatsCubit>(context).subCatById(
-        widget.product.catId.toString(), widget.product.subCatId.toString());
+    cats = await BlocProvider.of<CatsCubit>(context).catById(widget.product.catId.toString());
+    brands = await BlocProvider.of<BrandCubit>(context).brandById(widget.product.brandId.toString());
+    subCats = await BlocProvider.of<SubCatsCubit>(context)
+        .subCatById(widget.product.catId.toString(), widget.product.subCatId.toString());
 
     if (widget.product.color!.isNotEmpty) {
       print('qweqwewqeq');
-      colors = await BlocProvider.of<ColorCubit>(context)
-          .ColorById(widget.product.color!.first);
+      colors = await BlocProvider.of<ColorCubit>(context).ColorById(widget.product.color!.first);
     } else {
       Cats colors = Cats(id: 0, name: 'Выберите цвет');
     }
@@ -94,30 +94,19 @@ class _EditProductPageState extends State<EditProductPage> {
     CatById();
     // BlocProvider.of<ProductAdminCubit>(context)
     articulController.text = widget.product.articul;
-    priceController.text =
-        widget.product.price != null ? widget.product.price.toString() : '0';
-    compoundController.text = widget.product.compound != null
-        ? widget.product.compound.toString()
-        : '0';
-    nameController.text =
-        widget.product.name != null ? widget.product.name.toString() : '';
-    countController.text =
-        widget.product.count != null ? widget.product.count.toString() : '0';
+    priceController.text = widget.product.price != null ? widget.product.price.toString() : '0';
+    compoundController.text = widget.product.compound != null ? widget.product.compound.toString() : '0';
+    nameController.text = widget.product.name != null ? widget.product.name.toString() : '';
+    countController.text = widget.product.count != null ? widget.product.count.toString() : '0';
     cat_id = widget.product.catId ?? 0;
     sub_cat_id = widget.product.subCatId ?? 0;
     brand_id = widget.product.brandId ?? 0;
-    heightController.text =
-        widget.product.height != null ? widget.product.height.toString() : '';
-    widthController.text =
-        widget.product.width != null ? widget.product.width.toString() : '';
-    massaController.text =
-        widget.product.massa != null ? widget.product.massa.toString() : '';
-    descriptionController.text = widget.product.description != null
-        ? widget.product.description.toString()
-        : '';
-    deepController.text =
-        widget.product.deep != null ? widget.product.deep.toString() : '';
-
+    heightController.text = widget.product.height != null ? widget.product.height.toString() : '';
+    widthController.text = widget.product.width != null ? widget.product.width.toString() : '';
+    massaController.text = widget.product.massa != null ? widget.product.massa.toString() : '';
+    descriptionController.text = widget.product.description != null ? widget.product.description.toString() : '';
+    deepController.text = widget.product.deep != null ? widget.product.deep.toString() : '';
+    _networkImage = widget.product.images ?? [];
     super.initState();
   }
 
@@ -206,10 +195,7 @@ class _EditProductPageState extends State<EditProductPage> {
               ),
               const Text(
                 'Общие характеристики',
-                style: TextStyle(
-                    color: AppColors.kGray900,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700),
+                style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
               ),
               const SizedBox(
                 height: 10,
@@ -290,120 +276,141 @@ class _EditProductPageState extends State<EditProductPage> {
               ),
               const Text(
                 'Изоброжения товара',
-                style: TextStyle(
-                    color: AppColors.kGray900,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700),
+                style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _image.length != 0
-                        ? SizedBox(
-                            height: 100,
-                            child: ListView.builder(
-                              shrinkWrap: false,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: _image.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Stack(children: [
-                                    CircleAvatar(
-                                      backgroundImage: FileImage(
-                                        File(_image[index]!.path),
-                                      ),
-                                      radius: 34,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        _image.removeAt(index);
-                                        setState(() {
-                                          _image;
-                                        });
-                                      },
-                                      child: const Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  ]),
-                                );
-                              },
-                            ),
-                          )
-                        : Container(),
-                    const Text(
-                      'Формат - jpg, png',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: AppColors.kGray900),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    GestureDetector(
-                        onTap: () {
-                          Get.defaultDialog(
-                              title: "Изменить фото",
-                              middleText: '',
-                              textConfirm: 'Камера',
-                              textCancel: 'Галерея',
-                              titlePadding: const EdgeInsets.only(top: 40),
-                              onConfirm: () {
-                                change = true;
-                                setState(() {
-                                  change;
-                                });
-                                _getImage();
-                              },
-                              onCancel: () {
-                                change = false;
-                                setState(() {
-                                  change;
-                                });
-                                _getImage();
-                              });
-                        },
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.camera_alt,
-                                color: change == false
-                                    ? AppColors.kGray300
-                                    : AppColors.kPrimaryColor,
+                child: BlocListener<DeleteImageCubit, DeleteImageState>(
+                  listener: (context, state) {
+                    if (state is LoadedState) {
+                      _networkImage.remove(state.deletingImagePath);
+                      BlocProvider.of<DeleteImageCubit>(context).toInit();
+                      setState(() {});
+                    }
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _image.isNotEmpty || _networkImage.isNotEmpty
+                          ? SizedBox(
+                              height: 100,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: [
+                                  Row(
+                                      children: (_networkImage)
+                                          .map((e) => Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Stack(children: [
+                                                  CircleAvatar(
+                                                    backgroundImage: NetworkImage("http://185.116.193.73/storage/$e"),
+                                                    radius: 34,
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      if (widget.product.id != null) {
+                                                        BlocProvider.of<DeleteImageCubit>(context)
+                                                            .deleteImage(imagePath: e, productId: widget.product.id!);
+                                                      }
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.delete,
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                ]),
+                                              ))
+                                          .toList()),
+                                  Row(
+                                      children: (_image)
+                                          .map(
+                                            (e) => Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Stack(children: [
+                                                CircleAvatar(
+                                                  backgroundImage: FileImage(
+                                                    File(e!.path),
+                                                  ),
+                                                  radius: 34,
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    _image.removeAt(_image.indexWhere((element) => element == e));
+                                                    setState(() {
+                                                      _image;
+                                                    });
+                                                  },
+                                                  child: const Icon(
+                                                    Icons.delete,
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                              ]),
+                                            ),
+                                          )
+                                          .toList()),
+                                ],
                               ),
-                              const SizedBox(width: 10),
-                              const Text(
-                                'Добавить изображение',
-                                style: TextStyle(
-                                    color: AppColors.kGray300,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
-                              )
-                            ],
-                          ),
-                        )),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    const Text(
-                      'Минимальный/максимальный размер одной из сторон: от 500 до 2000 пикселей;- Основная фотография должна быть студийного качества на белом фоне без водяных знаков;- Минимальное/максимальное количество фотографий в карточке: от 3 до 5',
-                      style: TextStyle(
-                          color: AppColors.kGray300,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
-                    )
-                  ],
+                            )
+                          : Container(),
+                      const Text(
+                        'Формат - jpg, png',
+                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            Get.defaultDialog(
+                                title: "Изменить фото",
+                                middleText: '',
+                                textConfirm: 'Камера',
+                                textCancel: 'Галерея',
+                                titlePadding: const EdgeInsets.only(top: 40),
+                                onConfirm: () {
+                                  change = true;
+                                  setState(() {
+                                    change;
+                                  });
+                                  _getImage();
+                                },
+                                onCancel: () {
+                                  change = false;
+                                  setState(() {
+                                    change;
+                                  });
+                                  _getImage();
+                                });
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.camera_alt,
+                                  color: change == false ? AppColors.kGray300 : AppColors.kPrimaryColor,
+                                ),
+                                const SizedBox(width: 10),
+                                const Text(
+                                  'Добавить изображение',
+                                  style:
+                                      TextStyle(color: AppColors.kGray300, fontSize: 16, fontWeight: FontWeight.w400),
+                                )
+                              ],
+                            ),
+                          )),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      const Text(
+                        'Минимальный/максимальный размер одной из сторон: от 500 до 2000 пикселей;- Основная фотография должна быть студийного качества на белом фоне без водяных знаков;- Минимальное/максимальное количество фотографий в карточке: от 3 до 5',
+                        style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                      )
+                    ],
+                  ),
                 ),
               ),
 
@@ -412,10 +419,7 @@ class _EditProductPageState extends State<EditProductPage> {
               ),
               const Text(
                 'Видео товара',
-                style: TextStyle(
-                    color: AppColors.kGray900,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700),
+                style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0, bottom: 10),
@@ -424,10 +428,7 @@ class _EditProductPageState extends State<EditProductPage> {
                   children: [
                     const Text(
                       'Формат - jpg, png',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: AppColors.kGray900),
+                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
                     ),
                     const SizedBox(
                       height: 10,
@@ -457,25 +458,18 @@ class _EditProductPageState extends State<EditProductPage> {
                       },
                       child: Container(
                         height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
+                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset(
                               'assets/icons/video.svg',
-                              color: change == false
-                                  ? AppColors.kGray300
-                                  : AppColors.kPrimaryColor,
+                              color: change == false ? AppColors.kGray300 : AppColors.kPrimaryColor,
                             ),
                             const SizedBox(width: 10),
                             const Text(
                               'Добавить видео',
-                              style: TextStyle(
-                                  color: AppColors.kGray300,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
+                              style: TextStyle(color: AppColors.kGray300, fontSize: 16, fontWeight: FontWeight.w400),
                             )
                           ],
                         ),
@@ -486,10 +480,7 @@ class _EditProductPageState extends State<EditProductPage> {
                     ),
                     const Text(
                       'Разрешение — 1080×1350 px — для горизонтального; 566×1080 px — для вертикального; Расширение — mov, mp4; jpg, png; Размер — 4 ГБ — для видео, 30 МБ — для фото; Длительность — от 3 до 60 секунд.',
-                      style: TextStyle(
-                          color: AppColors.kGray300,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
@@ -511,8 +502,7 @@ class _EditProductPageState extends State<EditProductPage> {
         ),
         bottomSheet: Container(
           color: Colors.white,
-          padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
           child: InkWell(
             onTap: () async {
               await BlocProvider.of<ProductAdminCubit>(context).update(
@@ -550,10 +540,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 padding: const EdgeInsets.all(16),
                 child: const Text(
                   'Сохранить',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                   textAlign: TextAlign.center,
                 )),
           ),
@@ -599,18 +586,12 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
             children: [
               Text(
                 widget.titleText,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: AppColors.kGray900),
+                style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
               ),
               widget.star != true
                   ? const Text(
                       '*',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: Colors.red),
+                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Colors.red),
                     )
                   : Container()
             ],
@@ -619,8 +600,7 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
             height: 4,
           ),
           Container(
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: Padding(
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
@@ -630,9 +610,7 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                   border: InputBorder.none,
                   hintText: widget.hintText,
                   hintStyle: const TextStyle(
-                      color: Color.fromRGBO(194, 197, 200, 1),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
+                      color: Color.fromRGBO(194, 197, 200, 1), fontSize: 16, fontWeight: FontWeight.w400),
                   enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                     // borderRadius: BorderRadius.circular(3),
@@ -640,8 +618,7 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                   suffixIcon: IconButton(
                       onPressed: widget.onPressed,
                       icon: widget.arrow == true
-                          ? SvgPicture.asset('assets/icons/back_menu.svg',
-                              color: Colors.grey)
+                          ? SvgPicture.asset('assets/icons/back_menu.svg', color: Colors.grey)
                           : SvgPicture.asset('')),
                 ),
               ),

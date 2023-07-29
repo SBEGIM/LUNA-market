@@ -85,6 +85,7 @@ import '../../../admin/chat/data/cubit/message_admin_cubit.dart';
 import '../../../admin/chat/data/repository/chat_admin_repo.dart';
 import '../../../admin/chat/data/repository/message_admin_repo.dart';
 import '../../../admin/my_products_admin/data/bloc/color_cubit.dart';
+import '../../../admin/my_products_admin/data/bloc/delete_image_cubit.dart';
 import '../../../admin/my_products_admin/data/bloc/product_admin_cubit.dart';
 import '../../../admin/my_products_admin/data/repository/ProductAdminRepo.dart';
 import '../../../admin/profile_admin/data/bloc/profile_edit_admin_cubit.dart';
@@ -523,6 +524,11 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (_) => SizeCubit(
             sizeRepository: SizeAdminRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => DeleteImageCubit(
+            colorRepository: ProductAdminRepository(),
           ),
         ),
       ],

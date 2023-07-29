@@ -20,6 +20,7 @@ class AdminProductsModel {
     List<String>? size,
     List<String>? color,
     Path? path,
+    List<String>? images,
   }) {
     _id = id;
     _catId = catId;
@@ -64,6 +65,7 @@ class AdminProductsModel {
     _size = json['size'] != null ? json['size'].cast<String>() : [];
     _color = json['color'] != null ? json['color'].cast<String>() : [];
     _path = json['path'] != null ? Path.fromJson(json['path']) : null;
+    _images = json['images'] != null ? json['images'].cast<String>() : [];
   }
   int? _id;
   int? _catId;
@@ -85,6 +87,7 @@ class AdminProductsModel {
   List<String>? _size;
   List<String>? _color;
   Path? _path;
+  List<String>? _images;
 
   int? get id => _id;
   int? get catId => _catId;
@@ -106,6 +109,7 @@ class AdminProductsModel {
   List<String>? get size => _size;
   List<String>? get color => _color;
   Path? get path => _path;
+  List<String>? get images => _images;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
