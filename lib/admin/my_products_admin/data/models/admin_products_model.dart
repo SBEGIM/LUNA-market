@@ -21,6 +21,8 @@ class AdminProductsModel {
     List<String>? color,
     Path? path,
     List<String>? images,
+    List<SizeDTO>? sizeV1,
+    List<BlocDTO>? bloc,
   }) {
     _id = id;
     _catId = catId;
@@ -42,6 +44,8 @@ class AdminProductsModel {
     _size = size;
     _color = color;
     _path = path;
+    _sizeV1 = sizeV1;
+    _bloc = bloc;
   }
 
   AdminProductsModel.fromJson(dynamic json) {
@@ -66,6 +70,8 @@ class AdminProductsModel {
     _color = json['color'] != null ? json['color'].cast<String>() : [];
     _path = json['path'] != null ? Path.fromJson(json['path']) : null;
     _images = json['images'] != null ? json['images'].cast<String>() : [];
+    _sizeV1 = json['size_v1'] != null ? (json['size_v1'] as List).map((e) => SizeDTO.fromJson(e)).toList() : [];
+    _bloc = json['bloc'] != null ? (json['bloc'] as List).map((e) => BlocDTO.fromJson(e)).toList() : [];
   }
   int? _id;
   int? _catId;
@@ -88,6 +94,8 @@ class AdminProductsModel {
   List<String>? _color;
   Path? _path;
   List<String>? _images;
+  List<SizeDTO>? _sizeV1;
+  List<BlocDTO>? _bloc;
 
   int? get id => _id;
   int? get catId => _catId;
@@ -110,6 +118,8 @@ class AdminProductsModel {
   List<String>? get color => _color;
   Path? get path => _path;
   List<String>? get images => _images;
+  List<SizeDTO>? get sizeV1 => _sizeV1;
+  List<BlocDTO>? get bloc => _bloc;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -156,6 +166,62 @@ class Path {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['path'] = _path;
+    return map;
+  }
+}
+
+class SizeDTO {
+  SizeDTO({
+    String? name,
+    int? count,
+  }) {
+    _name = name;
+    _count = count;
+  }
+
+  SizeDTO.fromJson(dynamic json) {
+    _name = json['name'];
+    _count = json['count'];
+  }
+
+  String? _name;
+  int? _count;
+
+  String? get name => _name;
+  int? get count => _count;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['name'] = _name;
+    map['count'] = _count;
+    return map;
+  }
+}
+
+class BlocDTO {
+  BlocDTO({
+    int? price,
+    int? count,
+  }) {
+    _price = price;
+    _count = count;
+  }
+
+  BlocDTO.fromJson(dynamic json) {
+    _price = json['price'];
+    _count = json['count'];
+  }
+
+  int? _price;
+  int? _count;
+
+  int? get price => _price;
+  int? get count => _count;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['price'] = _price;
+    map['count'] = _count;
     return map;
   }
 }

@@ -33,7 +33,11 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       String articul,
       String currency,
       String deep,
-      List<dynamic> image) async {
+      List<dynamic> image,
+      List<optomPriceDto> optom,
+      List<sizeCountDto> size,
+      String? video
+      ) async {
     try {
       emit(LoadingState());
       final data = await productAdminRepository.update(
@@ -54,6 +58,9 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
         currency,
         deep,
         image,
+        optom,
+        size,
+        video,
       );
 
       if (data == 200) {

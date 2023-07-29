@@ -77,9 +77,13 @@ class ProductAdminRepository {
           String articul,
           String currency,
           String deep,
-          List<dynamic>? image) =>
+          List<dynamic>? image,
+          
+      List<optomPriceDto> optom,
+      List<sizeCountDto> size,
+      String? video) =>
       _productToApi.update(price, count, compound, catId, subCatId, brandId, colorId, description, name, height, width,
-          massa, productId, articul, currency, deep, image);
+          massa, productId, articul, currency, deep, image,optom,size,video);
 
   Future<dynamic> delete(String productId) => _productToApi.delete(productId);
 
@@ -218,7 +222,12 @@ class ProductToApi {
       String articul,
       String currency,
       String deep,
-      List<dynamic>? image) async {
+      List<dynamic>? image,
+      
+      List<optomPriceDto> optom,
+      List<sizeCountDto> size,
+      String? video
+      ) async {
     final sellerId = _box.read('seller_id');
     final token = _box.read('seller_token');
 
@@ -256,6 +265,20 @@ class ProductToApi {
       });
     }
     request.fields.addAll(body);
+      Map<String, String> blocc = {};
+      Map<String, String> sizes = {};
+
+           for (var i = 0; i < optom.length; i++) {
+        blocc['bloc[$i][count]'] = optom[i].count;
+        blocc['bloc[$i][price]'] = optom[i].price;
+      }
+      for (var i = 0; i < size.length; i++) {
+        sizes['size[$i][id]'] = size[i].id;
+        sizes['size[$i][count]'] = size[i].count;
+      }
+      
+    request.fields.addAll(blocc);
+    request.fields.addAll(sizes);
 
     final http.StreamedResponse response = await request.send();
     final respStr = await response.stream.bytesToString();
