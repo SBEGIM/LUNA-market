@@ -14,7 +14,7 @@ import '../../../../features/tape/presentation/data/bloc/tape_state.dart' as tap
 
 import '../../../../features/app/presentaion/base.dart';
 import '../../../../features/tape/presentation/widgets/tape_card_widget.dart';
-import '../../../auth/presentation/ui/view_auth_register_page.dart';
+import '../../../auth/presentation/ui/blog_auth_register_page.dart';
 import '../../../my_orders_admin/presentation/widgets/tape_card_widget.dart';
 import '../../../my_products_admin/presentation/widgets/statistics_blogger_show_page.dart';
 import '../data/bloc/profile_statics_blogger_cubit.dart';

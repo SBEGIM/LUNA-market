@@ -3,16 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
-import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
 import 'package:haji_market/bloger/auth/data/bloc/login_blogger_cubit.dart';
 import 'package:haji_market/bloger/auth/data/bloc/login_blogger_state.dart';
 import 'package:haji_market/core/common/constants.dart';
 import '../../../../offer_for_the_seller.dart';
 import '../../../auth/data/DTO/register_blogger_dto.dart';
-import '../../../auth/presentation/ui/view_auth_register_page.dart';
 
 class BlogRequestPage extends StatefulWidget {
-  const BlogRequestPage({Key? key}) : super(key: key);
+  final Function()? onTap;
+  const BlogRequestPage({Key? key, this.onTap}) : super(key: key);
 
   @override
   State<BlogRequestPage> createState() => _BlogRequestPageState();
@@ -24,8 +23,7 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController iinController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
-  TextEditingController phoneController =
-      MaskedTextController(mask: '+7(000)-000-00-00');
+  TextEditingController phoneController = MaskedTextController(mask: '+7(000)-000-00-00');
   TextEditingController emailController = TextEditingController();
   TextEditingController socialNetworkController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -53,8 +51,7 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
       //         fontWeight: FontWeight.w500,
       //       ),
       //     )),
-      body: BlocConsumer<LoginBloggerCubit, LoginBloggerState>(
-          listener: (context, state) {
+      body: BlocConsumer<LoginBloggerCubit, LoginBloggerState>(listener: (context, state) {
         if (state is LoadedState) {}
       }, builder: (context, state) {
         if (state is LoadingState) {
@@ -63,18 +60,14 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
           );
         }
         return Container(
-          padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
           child: ListView(
             shrinkWrap: true,
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 'Укажите данные ип или физ.лица',
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    color: AppColors.kGray900),
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: AppColors.kGray900),
               ),
               const SizedBox(
                 height: 10,
@@ -136,8 +129,7 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                   Container(
                     alignment: Alignment.topLeft,
                     child: Checkbox(
-                      visualDensity:
-                          const VisualDensity(horizontal: 0, vertical: 0),
+                      visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
                       checkColor: Colors.white,
                       // fillColor: MaterialStateProperty.resolveWith(Colors.),
                       value: isChecked,
@@ -161,13 +153,11 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                           children: <TextSpan>[
                             TextSpan(
                               text: "принимаю ",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w400),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                             ),
                             TextSpan(
                               text: "Оферту для продавцов",
-                              style: TextStyle(
-                                  color: AppColors.kPrimaryColor, fontSize: 16),
+                              style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 16),
                             ),
                           ],
                         ),
@@ -206,15 +196,15 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                 final register = BlocProvider.of<LoginBloggerCubit>(context);
 
                 await register.register(data);
+                widget.onTap?.call();
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => BlogAuthRegisterPage()),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => BlogAuthRegisterPage()),
+                // );
               } else {
-                Get.snackbar('Ошибка', 'Заполните все данные *',
-                    backgroundColor: Colors.blueAccent);
+                Get.snackbar('Ошибка', 'Заполните все данные *', backgroundColor: Colors.blueAccent);
               }
 
               // Navigator.pop(context);
@@ -235,10 +225,7 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                         // padding: const EdgeInsets.only(left: 16, right: 16),
                         child: const Text(
                           'Продолжить',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                           textAlign: TextAlign.center,
                         )),
                   ],
@@ -282,18 +269,12 @@ class FieldsCoopRequest extends StatelessWidget {
             children: [
               Text(
                 titleText,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: AppColors.kGray900),
+                style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
               ),
               star != true
                   ? const Text(
                       '*',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: Colors.red),
+                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Colors.red),
                     )
                   : Container()
             ],
@@ -305,20 +286,16 @@ class FieldsCoopRequest extends StatelessWidget {
             height: 47,
             padding: const EdgeInsets.only(left: 12),
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: TextField(
-              keyboardType:
-                  number == true ? TextInputType.number : TextInputType.text,
+              keyboardType: number == true ? TextInputType.number : TextInputType.text,
               controller: controller,
               textAlign: TextAlign.left,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hintText,
-                hintStyle: const TextStyle(
-                    color: Color.fromRGBO(194, 197, 200, 1),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
+                hintStyle:
+                    const TextStyle(color: Color.fromRGBO(194, 197, 200, 1), fontSize: 16, fontWeight: FontWeight.w400),
                 enabledBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                   // borderRadius: BorderRadius.circular(3),
@@ -326,8 +303,7 @@ class FieldsCoopRequest extends StatelessWidget {
                 suffixIcon: IconButton(
                   onPressed: onPressed,
                   icon: arrow == true
-                      ? SvgPicture.asset('assets/icons/back_menu.svg',
-                          color: Colors.grey)
+                      ? SvgPicture.asset('assets/icons/back_menu.svg', color: Colors.grey)
                       : SvgPicture.asset(''),
                 ),
                 // suffixIcon: IconButton(

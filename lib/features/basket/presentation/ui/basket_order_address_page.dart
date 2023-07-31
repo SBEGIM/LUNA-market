@@ -69,7 +69,8 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
       body: BlocConsumer<BasketCubit, BasketState>(listener: (context, state) {
         if (state is OrderState) {
           BlocProvider.of<navCubit.NavigationCubit>(context).getNavBarItem(const navCubit.NavigationState.home());
-          Get.to(const Base(index: 1));
+          // Get.to(const Base(index: 1));
+          context.router.popUntil((route) => route.settings.name == LauncherRoute.name);
         }
       }, builder: (context, state) {
         if (state is ErrorState) {

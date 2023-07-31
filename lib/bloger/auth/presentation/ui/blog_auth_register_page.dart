@@ -1,6 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:haji_market/bloger/auth/presentation/ui/auth_page.dart';
+import 'package:haji_market/bloger/auth/presentation/ui/blog_auth_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
@@ -8,6 +9,7 @@ import 'package:haji_market/features/app/widgets/custom_switch_button.dart';
 
 import '../../../coop_request/presentation/ui/coop_request_page.dart';
 
+@RoutePage()
 class BlogAuthRegisterPage extends StatefulWidget {
   final bool? BackButton;
   const BlogAuthRegisterPage({this.BackButton, Key? key}) : super(key: key);
@@ -37,7 +39,8 @@ class _BlogAuthRegisterPageState extends State<BlogAuthRegisterPage> {
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
           child: CustomBackButton(onTap: () {
-            Get.to(() => const Base(index: 4));
+            // Get.to(() => const Base(index: 4));
+            context.router.pop();
           }),
         ),
         bottom: PreferredSize(
@@ -70,12 +73,8 @@ class _BlogAuthRegisterPageState extends State<BlogAuthRegisterPage> {
                         'Вход',
                         style: TextStyle(
                           fontSize: 15,
-                          fontWeight: segmentValue == 0
-                              ? FontWeight.w700
-                              : FontWeight.w500,
-                          color: segmentValue == 0
-                              ? Colors.black
-                              : const Color(0xff9B9B9B),
+                          fontWeight: segmentValue == 0 ? FontWeight.w700 : FontWeight.w500,
+                          color: segmentValue == 0 ? Colors.black : const Color(0xff9B9B9B),
                         ),
                       ),
                     ),
@@ -89,13 +88,9 @@ class _BlogAuthRegisterPageState extends State<BlogAuthRegisterPage> {
                       child: Text(
                         'Регистрация',
                         style: TextStyle(
-                          fontWeight: segmentValue == 1
-                              ? FontWeight.w700
-                              : FontWeight.w500,
+                          fontWeight: segmentValue == 1 ? FontWeight.w700 : FontWeight.w500,
                           fontSize: 14,
-                          color: segmentValue == 1
-                              ? Colors.black
-                              : const Color(0xff9B9B9B),
+                          color: segmentValue == 1 ? Colors.black : const Color(0xff9B9B9B),
                         ),
                       ),
                     ),
@@ -125,9 +120,14 @@ class _BlogAuthRegisterPageState extends State<BlogAuthRegisterPage> {
         color: AppColors.kBackgroundColor,
         child: IndexedStack(
           index: segmentValue,
-          children: const [
-            BlogAuthPage(),
-            BlogRequestPage(),
+          children: [
+            const BlogAuthPage(),
+            BlogRequestPage(
+              onTap: () {
+                segmentValue = 0;
+                setState(() {});
+              },
+            ),
             // ViewRegisterPage(),
             // AuthPage(),
           ],

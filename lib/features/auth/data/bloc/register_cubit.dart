@@ -18,8 +18,8 @@ class RegisterCubit extends Cubit<RegisterState> {
       emit(LoadingState());
       final data = await registerRepository.register(register);
       if (data == 200) {
-        // emit(InitState());
-        Get.offAll(() => const Base(index: 0));
+        emit(LoadedState());
+        // Get.offAll(() => const Base(index: 0));
       }
       if (data == 400) {
         emit(InitState());

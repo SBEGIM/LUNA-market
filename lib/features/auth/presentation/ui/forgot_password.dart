@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
@@ -11,7 +12,7 @@ import 'package:haji_market/features/auth/presentation/widgets/default_button.da
 
 import '../../data/bloc/sms_cubit.dart';
 import '../widgets/login_forget_password_modal_bottom.dart';
-
+@RoutePage()
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
 

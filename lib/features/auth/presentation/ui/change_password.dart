@@ -1,9 +1,11 @@
 import 'dart:developer';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/auth/data/bloc/sms_state.dart';
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
@@ -11,6 +13,7 @@ import 'package:haji_market/features/auth/presentation/widgets/default_button.da
 
 import '../../data/bloc/sms_cubit.dart';
 
+@RoutePage()
 class ChangePasswordPage extends StatefulWidget {
   final String textEditingController;
   const ChangePasswordPage({
@@ -70,7 +73,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       ),
       body: BlocConsumer<SmsCubit, SmsState>(listener: (context, state) {
         if (state is ResetSuccessState) {
-          Get.offAll(() => const ViewAuthRegisterPage());
+          context.router.popUntil((route) => route.settings.name == ForgotPasswordRoute.name);
+          context.router.pop();
+          // Get.offAll(() => const ViewAuthRegisterPage());
           // Navigator.push(
           //   context,
           //   MaterialPageRoute(builder: (context) => const Base()),
@@ -81,8 +86,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           return Container(
             color: AppColors.kBackgroundColor,
             child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 16.0, right: 16, top: 16, bottom: 45),
+              padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 45),
               child: Column(
                 children: [
                   Container(
@@ -108,9 +112,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               ),
                             ),
                             onChanged: (value) {
-                              passwordNew.text.length.toInt() == 0
-                                  ? _visibleIconView = false
-                                  : _visibleIconView = true;
+                              passwordNew.text.length.toInt() == 0 ? _visibleIconView = false : _visibleIconView = true;
                               setState(() {});
                             },
                           ),
@@ -122,11 +124,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             },
                             child: _visibleIconView == true
                                 ? Icon(
-                                    _passwordVisible
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color:
-                                        const Color.fromRGBO(177, 179, 181, 1),
+                                    _passwordVisible ? Icons.visibility_off : Icons.visibility,
+                                    color: const Color.fromRGBO(177, 179, 181, 1),
                                   )
                                 : const SizedBox(width: 5),
                           ),
@@ -164,11 +163,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             },
                             child: _visibleIconViewRepeat == true
                                 ? Icon(
-                                    _passwordVisible
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color:
-                                        const Color.fromRGBO(177, 179, 181, 1),
+                                    _passwordVisible ? Icons.visibility_off : Icons.visibility,
+                                    color: const Color.fromRGBO(177, 179, 181, 1),
                                   )
                                 : const SizedBox(width: 5),
                           ),
@@ -185,10 +181,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       child: Text(
                         textAlign: TextAlign.center,
                         'Для смены пароля введите новый пароль, а затем подтвердите',
-                        style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                        style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),
@@ -204,8 +197,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           log(widget.textEditingController);
                           log('1111');
                           final sms = BlocProvider.of<SmsCubit>(context);
-                          sms.passwordReset(widget.textEditingController,
-                              passwordRepeat.text);
+                          sms.passwordReset(widget.textEditingController, passwordRepeat.text);
                         },
                         color: Colors.white,
                         width: 343),
@@ -223,8 +215,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             ),
           );
         } else {
-          return const Center(
-              child: CircularProgressIndicator(color: Colors.indigoAccent));
+          return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
         }
       }),
     );

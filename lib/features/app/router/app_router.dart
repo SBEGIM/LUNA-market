@@ -9,12 +9,14 @@ import 'package:haji_market/admin/my_orders_admin/presentation/ui/my_orders_admi
 import 'package:haji_market/admin/my_products_admin/presentation/ui/my_products_admin_page.dart';
 import 'package:haji_market/admin/profile_admin/presentation/ui/admin_profile_page.dart';
 import 'package:haji_market/admin/tape_admin/presentation/ui/tape_admin_page.dart';
+import 'package:haji_market/bloger/auth/presentation/ui/blog_auth_register_page.dart';
 import 'package:haji_market/bloger/auth/presentation/ui/forgot_admin_password.dart';
 import 'package:haji_market/bloger/my_orders_admin/presentation/widgets/detail_tape_card_page.dart';
 import 'package:haji_market/bloger/profile_admin/presentation/ui/blogger_profile_page.dart';
 import 'package:haji_market/bloger/profile_admin/presentation/ui/blogger_tape_profile_page.dart';
 import 'package:haji_market/bloger/shops/BlogShopsPage.dart';
 import 'package:haji_market/bloger/tape/presentation/ui/tape_blogger_page.dart';
+import 'package:haji_market/features/auth/presentation/ui/change_password.dart';
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:haji_market/features/basket/presentation/ui/basket_order_address_page.dart';
 import 'package:haji_market/features/basket/presentation/ui/basket_order_page.dart';
@@ -37,6 +39,8 @@ import 'package:haji_market/features/tape/presentation/ui/tape_page.dart';
 import 'package:haji_market/features/app/presentaion/launcher.dart';
 
 import 'package:haji_market/features/tape/presentation/ui/detail_tape_card_page.dart';
+
+import '../../auth/presentation/ui/forgot_password.dart';
 
 part 'app_router.gr.dart';
 
@@ -107,6 +111,10 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: ChangePasswordAdminRoute.page),
         AutoRoute(page: ForgotPasswordAdminRoute.page),
         AutoRoute(page: RegisterShopRoute.page),
+        AutoRoute(page: BlogAuthRegisterRoute.page),
+        
+        AutoRoute(page: ChangePasswordRoute.page),
+        AutoRoute(page: ForgotPasswordRoute.page),
       ];
 }
 

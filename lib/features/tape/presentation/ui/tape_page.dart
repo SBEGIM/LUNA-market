@@ -59,11 +59,12 @@ class _TapePageState extends State<TapePage> {
           leading: title != 'Лента'
               ? GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => new Base(index: 0)),
-                    );
+                    context.router.pop();
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => new Base(index: 0)),
+                    // );
                     // BlocProvider.of<navCubit.NavigationCubit>(context)
                     //     .getNavBarItem(const navCubit.NavigationState.tape());
                     title = 'Лента';

@@ -1,10 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/route_manager.dart';
-import 'package:haji_market/bloger/admin_app/presentation/base_blogger.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/auth/presentation/ui/forgot_password.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -39,7 +40,7 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
     return BlocConsumer<LoginBloggerCubit, LoginBloggerState>(listener: (context, state) {
       if (state is LoadedState) {
         BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppBlogerState()));
-        Navigator.pop(context);
+        context.router.popUntil((route) => route.settings.name == LauncherRoute.name);
         // Get.to(() => ());
 
         // Get.to(() => const BaseBlogger(
@@ -177,7 +178,8 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                       // }else{
                       //   Get.snackbar('Заполните', 'Напишите полный номер' , backgroundColor: Colors.blueAccent);
                       // }
-                      Get.to(const ForgotPasswordPage());
+                      // Get.to(const ForgotPasswordPage());
+                      context.router.push(const ForgotPasswordRoute());
                     },
                     child: const Center(
                       child: Text(

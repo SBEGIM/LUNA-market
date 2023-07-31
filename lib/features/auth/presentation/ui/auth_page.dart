@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
@@ -5,6 +6,7 @@ import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:haji_market/features/app/presentaion/base.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/auth/presentation/ui/forgot_password.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -172,7 +174,8 @@ class _AuthPageState extends State<AuthPage> {
                       // }else{
                       //   Get.snackbar('Заполните', 'Напишите полный номер' , backgroundColor: Colors.blueAccent);
                       // }
-                      Get.to(const ForgotPasswordPage());
+                      // Get.to(const ForgotPasswordPage());
+                      context.router.push(const ForgotPasswordRoute());
                     },
                     child: const Center(
                       child: Text(

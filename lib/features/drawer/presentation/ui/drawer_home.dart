@@ -15,7 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../admin/admin_app/presentation/base_admin.dart';
 import '../../../../admin/auth/presentation/ui/admin_auth_page.dart';
 import '../../../../bloger/admin_app/presentation/base_blogger.dart';
-import '../../../../bloger/auth/presentation/ui/view_auth_register_page.dart';
+import '../../../../bloger/auth/presentation/ui/blog_auth_register_page.dart';
 import '../../../auth/presentation/ui/view_auth_register_page.dart';
 import '../../../chat/presentation/chat_page.dart';
 import '../../../my_order/presentation/ui/my_order_page.dart';
@@ -81,10 +81,11 @@ class _DrawerPageState extends State<DrawerPage> {
                     onTap: () {
                       if (_box.read('name') == 'Не авторизированный') {
                         GetStorage().remove('token');
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ViewAuthRegisterPage(BackButton: true)),
-                        );
+                        BlocProvider.of<AppBloc>(context).add(const AppEvent.exiting());
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => const ViewAuthRegisterPage(BackButton: true)),
+                        // );
                       } else {
                         Navigator.push(
                           context,
@@ -237,10 +238,7 @@ class _DrawerPageState extends State<DrawerPage> {
                     _box.read('blogger_token') != null
                         ? BlocProvider.of<AppBloc>(context)
                             .add(const AppEvent.chageState(state: AppState.inAppBlogerState()))
-                        : Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const BlogAuthRegisterPage()),
-                          );
+                        : context.router.push(BlogAuthRegisterRoute());
                   },
                   child: const DrawerListTile(
                     text: 'Кабинет блогера',
@@ -458,7 +456,8 @@ class _DrawerPageState extends State<DrawerPage> {
                 GestureDetector(
                   onTap: () {
                     GetStorage().erase();
-                    Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
+                    // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
+                    BlocProvider.of<AppBloc>(context).add(const AppEvent.exiting());
 
                     // Navigator.push(
                     //   context,
@@ -497,8 +496,8 @@ class _DrawerPageState extends State<DrawerPage> {
                   onTap: () async {
                     await BlocProvider.of<LoginCubit>(context).delete();
                     GetStorage().erase();
-
-                    Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
+                    BlocProvider.of<AppBloc>(context).add(const AppEvent.exiting());
+                    // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
 
                     Get.snackbar('Аккаунт удален', 'Account delete', backgroundColor: Colors.redAccent);
 

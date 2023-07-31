@@ -7,7 +7,7 @@ import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../features/app/presentaion/base.dart';
-import '../../../auth/presentation/ui/view_auth_register_page.dart';
+import '../../../auth/presentation/ui/blog_auth_register_page.dart';
 import '../../../my_products_admin/presentation/widgets/statistics_blogger_show_page.dart';
 import '../data/bloc/profile_statics_blogger_cubit.dart';
 import '../data/bloc/profile_statics_blogger_state.dart';
@@ -322,10 +322,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
           GestureDetector(
             onTap: () {
               GetStorage().remove('blogger_token');
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const BlogAuthRegisterPage()),
-              );
+              BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppUserState(index: 1)));
             },
             child: Container(
               padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
