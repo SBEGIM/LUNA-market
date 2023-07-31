@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import 'package:haji_market/features/app/widgets/custom_switch_button.dart';
 import '../../../../bloger/auth/presentation/ui/login_admin_page.dart';
 import '../../../coop_request/presentation/ui/coop_request_page.dart';
 
+@RoutePage()
 class AdminAuthPage extends StatefulWidget {
   final bool? BackButton;
   const AdminAuthPage({this.BackButton, Key? key}) : super(key: key);
@@ -40,7 +42,6 @@ class _AdminAuthPageState extends State<AdminAuthPage> {
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
           child: CustomBackButton(onTap: () {
-            BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppBlogerState()));
             Navigator.pop(context);
             // Get.to(() => const Base(index: 4));
           }),

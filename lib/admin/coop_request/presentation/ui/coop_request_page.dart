@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:haji_market/admin/auth/data/bloc/register_admin_cubit.dart';
 import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
 
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 
 import '../../../../features/home/data/model/Cats.dart';
 import '../../../../oferta.dart';
@@ -66,10 +68,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
           children: [
             const Text(
               'Укажите данные Вашего бизнеса',
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                  color: AppColors.kGray900),
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: AppColors.kGray900),
             ),
             const SizedBox(
               height: 10,
@@ -147,8 +146,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                 Container(
                   alignment: Alignment.topLeft,
                   child: Checkbox(
-                    visualDensity:
-                        const VisualDensity(horizontal: 0, vertical: 0),
+                    visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
                     checkColor: Colors.white,
                     // fillColor: MaterialStateProperty.resolveWith(Colors.),
                     value: isChecked,
@@ -168,36 +166,27 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                       children: <TextSpan>[
                         const TextSpan(
                           text: "принимаю ",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w400),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                         ),
                         TextSpan(
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => Get.to(const Oferta()),
+                          recognizer: TapGestureRecognizer()..onTap = () => Get.to(const Oferta()),
                           text: 'Пользовательское \nсоглашение ',
                           style: const TextStyle(
-                              color: AppColors.kPrimaryColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                              color: AppColors.kPrimaryColor, fontSize: 16, fontWeight: FontWeight.w400),
                         ),
                         const TextSpan(
                           text: "и даю согласие  на  \nперсональную ",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w400),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                         ),
                         const TextSpan(
                           text: "обработку соответсвии \nс ",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w400),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                         ),
                         TextSpan(
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => Get.to(const Politic()),
+                          recognizer: TapGestureRecognizer()..onTap = () => Get.to(const Politic()),
                           text: 'Политикой  Конфиденциальности',
                           style: const TextStyle(
-                              color: AppColors.kPrimaryColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                              color: AppColors.kPrimaryColor, fontSize: 16, fontWeight: FontWeight.w400),
                         ),
                       ],
                     ),
@@ -235,18 +224,15 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                     userName: userNameController.text,
                     check: checkController.text);
 
-                await BlocProvider.of<RegisterAdminCubit>(context)
-                    .register(registerDto);
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AuthAdminPage()),
-                );
-                Get.snackbar('Успешно', 'Заявка отправлено',
-                    backgroundColor: Colors.blueAccent);
+                await BlocProvider.of<RegisterAdminCubit>(context).register(registerDto);
+                context.router.push(AuthAdminRoute());
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => AuthAdminPage()),
+                // );
+                Get.snackbar('Успешно', 'Заявка отправлено', backgroundColor: Colors.blueAccent);
               } else {
-                Get.snackbar('Ошибка', 'Заполните все данные *',
-                    backgroundColor: Colors.blueAccent);
+                Get.snackbar('Ошибка', 'Заполните все данные *', backgroundColor: Colors.blueAccent);
               }
 
               // Navigator.pop(context);
@@ -267,10 +253,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                         // padding: const EdgeInsets.only(left: 16, right: 16),
                         child: const Text(
                           'Продолжить',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                           textAlign: TextAlign.center,
                         )),
                   ],
@@ -311,18 +294,12 @@ class FieldsCoopRequest extends StatelessWidget {
             children: [
               Text(
                 titleText,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: AppColors.kGray900),
+                style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
               ),
               star != true
                   ? const Text(
                       '*',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: Colors.red),
+                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Colors.red),
                     )
                   : Container()
             ],
@@ -334,8 +311,7 @@ class FieldsCoopRequest extends StatelessWidget {
             height: 47,
             padding: const EdgeInsets.only(left: 12),
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: TextField(
               keyboardType: TextInputType.text,
               controller: controller,
@@ -343,10 +319,8 @@ class FieldsCoopRequest extends StatelessWidget {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hintText,
-                hintStyle: const TextStyle(
-                    color: Color.fromRGBO(194, 197, 200, 1),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
+                hintStyle:
+                    const TextStyle(color: Color.fromRGBO(194, 197, 200, 1), fontSize: 16, fontWeight: FontWeight.w400),
                 enabledBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                   // borderRadius: BorderRadius.circular(3),
@@ -354,8 +328,7 @@ class FieldsCoopRequest extends StatelessWidget {
                 suffixIcon: IconButton(
                   onPressed: onPressed,
                   icon: arrow == true
-                      ? SvgPicture.asset('assets/icons/back_menu.svg',
-                          color: Colors.grey)
+                      ? SvgPicture.asset('assets/icons/back_menu.svg', color: Colors.grey)
                       : SvgPicture.asset(''),
                 ),
                 // suffixIcon: IconButton(

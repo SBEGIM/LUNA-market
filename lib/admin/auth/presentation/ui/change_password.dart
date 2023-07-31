@@ -1,14 +1,17 @@
 import 'dart:developer';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/admin/auth/data/bloc/sms_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/bloc/sms_admin_state.dart';
-import 'package:haji_market/admin/auth/presentation/ui/view_auth_register_page.dart';
+import 'package:haji_market/admin/auth/presentation/ui/admin_auth_page.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 
+@RoutePage()
 class ChangePasswordAdminPage extends StatefulWidget {
   final String textEditingController;
   const ChangePasswordAdminPage({
@@ -17,8 +20,7 @@ class ChangePasswordAdminPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ChangePasswordAdminPage> createState() =>
-      _ChangePasswordAdminPageState();
+  State<ChangePasswordAdminPage> createState() => _ChangePasswordAdminPageState();
 }
 
 class _ChangePasswordAdminPageState extends State<ChangePasswordAdminPage> {
@@ -67,22 +69,21 @@ class _ChangePasswordAdminPageState extends State<ChangePasswordAdminPage> {
         //   ),
         // ],
       ),
-      body: BlocConsumer<SmsAdminCubit, SmsAdminState>(
-          listener: (context, state) {
+      body: BlocConsumer<SmsAdminCubit, SmsAdminState>(listener: (context, state) {
         if (state is ResetSuccessState) {
           // Get.offAll(() => const LoginAdminPage());
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AdminAuthPage()),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const AdminAuthPage()),
+          // );
+          context.router.popUntil((route) => route.settings.name == AdminAuthRoute.name);
         }
       }, builder: (context, state) {
         if (state is InitState) {
           return Container(
             color: AppColors.kBackgroundColor,
             child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 16.0, right: 16, top: 16, bottom: 45),
+              padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 45),
               child: Column(
                 children: [
                   Container(
@@ -108,9 +109,7 @@ class _ChangePasswordAdminPageState extends State<ChangePasswordAdminPage> {
                               ),
                             ),
                             onChanged: (value) {
-                              passwordNew.text.length.toInt() == 0
-                                  ? _visibleIconView = false
-                                  : _visibleIconView = true;
+                              passwordNew.text.length.toInt() == 0 ? _visibleIconView = false : _visibleIconView = true;
                               setState(() {});
                             },
                           ),
@@ -122,11 +121,8 @@ class _ChangePasswordAdminPageState extends State<ChangePasswordAdminPage> {
                             },
                             child: _visibleIconView == true
                                 ? Icon(
-                                    _passwordVisible
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color:
-                                        const Color.fromRGBO(177, 179, 181, 1),
+                                    _passwordVisible ? Icons.visibility_off : Icons.visibility,
+                                    color: const Color.fromRGBO(177, 179, 181, 1),
                                   )
                                 : const SizedBox(width: 5),
                           ),
@@ -164,11 +160,8 @@ class _ChangePasswordAdminPageState extends State<ChangePasswordAdminPage> {
                             },
                             child: _visibleIconViewRepeat == true
                                 ? Icon(
-                                    _passwordVisible
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color:
-                                        const Color.fromRGBO(177, 179, 181, 1),
+                                    _passwordVisible ? Icons.visibility_off : Icons.visibility,
+                                    color: const Color.fromRGBO(177, 179, 181, 1),
                                   )
                                 : const SizedBox(width: 5),
                           ),
@@ -185,10 +178,7 @@ class _ChangePasswordAdminPageState extends State<ChangePasswordAdminPage> {
                       child: Text(
                         textAlign: TextAlign.center,
                         'Для смены пароля введите новый пароль, а затем подтвердите',
-                        style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                        style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),
@@ -204,8 +194,7 @@ class _ChangePasswordAdminPageState extends State<ChangePasswordAdminPage> {
                           log(widget.textEditingController);
                           log('1111');
                           final sms = BlocProvider.of<SmsAdminCubit>(context);
-                          sms.passwordReset(widget.textEditingController,
-                              passwordRepeat.text);
+                          sms.passwordReset(widget.textEditingController, passwordRepeat.text);
                         },
                         color: Colors.white,
                         width: 343),
@@ -223,8 +212,7 @@ class _ChangePasswordAdminPageState extends State<ChangePasswordAdminPage> {
             ),
           );
         } else {
-          return const Center(
-              child: CircularProgressIndicator(color: Colors.indigoAccent));
+          return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
         }
       }),
     );

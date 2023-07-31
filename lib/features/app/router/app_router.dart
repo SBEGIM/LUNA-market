@@ -1,10 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
+import 'package:haji_market/admin/auth/presentation/ui/change_password.dart';
+import 'package:haji_market/admin/auth/presentation/ui/register_shop_page.dart';
+import 'package:haji_market/admin/auth/presentation/ui/admin_auth_page.dart';
 import 'package:haji_market/admin/chat/presentation/chat_admin_page.dart';
 import 'package:haji_market/admin/my_orders_admin/presentation/ui/my_orders_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/ui/my_products_admin_page.dart';
 import 'package:haji_market/admin/profile_admin/presentation/ui/admin_profile_page.dart';
 import 'package:haji_market/admin/tape_admin/presentation/ui/tape_admin_page.dart';
+import 'package:haji_market/bloger/auth/presentation/ui/forgot_admin_password.dart';
 import 'package:haji_market/bloger/my_orders_admin/presentation/widgets/detail_tape_card_page.dart';
 import 'package:haji_market/bloger/profile_admin/presentation/ui/blogger_profile_page.dart';
 import 'package:haji_market/bloger/profile_admin/presentation/ui/blogger_tape_profile_page.dart';
@@ -96,6 +101,12 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: ProductsRoute.page),
         AutoRoute(page: SearchProductRoute.page),
         AutoRoute(page: DetailCardProductRoute.page),
+        ///Auth Routes
+        AutoRoute(page: AuthAdminRoute.page),
+        AutoRoute(page: AdminAuthRoute.page),
+        AutoRoute(page: ChangePasswordAdminRoute.page),
+        AutoRoute(page: ForgotPasswordAdminRoute.page),
+        AutoRoute(page: RegisterShopRoute.page),
       ];
 }
 

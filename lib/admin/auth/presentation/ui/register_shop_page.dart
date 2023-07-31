@@ -1,15 +1,20 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/admin/admin_app/presentation/base_admin.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/bloc/app_bloc.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../features/app/widgets/custom_back_button.dart';
 
+@RoutePage()
 class RegisterShopPage extends StatefulWidget {
   final String shopName;
   const RegisterShopPage({required this.shopName, Key? key}) : super(key: key);
@@ -112,8 +117,7 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
                                       ),
                                       radius: 34,
                                       child: Container())
-                                  : SvgPicture.asset(
-                                      'assets/icons/camera2.svg')),
+                                  : SvgPicture.asset('assets/icons/camera2.svg')),
                         ],
                       )),
                 ),
@@ -122,10 +126,7 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
                 ),
                 const Text(
                   'ЗАГРУЗИТЬ ЛОГОТИП',
-                  style: TextStyle(
-                      color: AppColors.kPrimaryColor,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500),
+                  style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 12, fontWeight: FontWeight.w500),
                 ),
               ],
             ),
@@ -133,8 +134,7 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
           Padding(
             padding: const EdgeInsets.all(16),
             child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: ListTile(
                 leading: SvgPicture.asset(
                   'assets/icons/shop1.svg',
@@ -149,10 +149,8 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Название магазина',
-                    hintStyle: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(170, 174, 179, 1)),
+                    hintStyle:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color.fromRGBO(170, 174, 179, 1)),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                       // borderRadius: BorderRadius.circular(3),
@@ -176,11 +174,9 @@ class _RegisterShopPageState extends State<RegisterShopPage> {
                 backgroundColor: AppColors.kPrimaryColor,
                 text: 'Войти',
                 press: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const BaseAdmin(index: 0)),
-                  );
+                  context.router.popUntil((route) => route.settings.name == LauncherRoute.name);
+                  BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppAdminState()));
+
                   //                    Navigator.push(
                   //   context,
                   //   MaterialPageRoute(builder: (context) => const HomePage()),

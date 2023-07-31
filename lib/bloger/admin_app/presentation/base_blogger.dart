@@ -4,10 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/admin/admin_app/bloc/admin_navigation_cubit/admin_navigation_cubit.dart';
 import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
-import 'package:haji_market/admin/tape_admin/presentation/ui/tape_admin_page.dart';
 import 'package:haji_market/bloger/tape/presentation/ui/tape_blogger_page.dart';
 import 'package:haji_market/core/common/constants.dart';
-import '../../my_orders_admin/presentation/ui/my_products_blogger_page.dart';
 import '../../my_orders_admin/presentation/widgets/detail_tape_card_page.dart';
 import '../../profile_admin/presentation/ui/blogger_profile_page.dart';
 import '../../shops/BlogShopsPage.dart';
@@ -27,8 +25,7 @@ class _BaseBloggerState extends State<BaseBlogger> {
   @override
   void initState() {
     if (widget.index == 0) {
-      BlocProvider.of<AdminNavigationCubit>(context)
-          .getNavBarItemAdmin(const AdminNavigationState.myOrderAdmin());
+      BlocProvider.of<AdminNavigationCubit>(context).getNavBarItemAdmin(const AdminNavigationState.myOrderAdmin());
 
       basePageIndex1 = 0;
     }
@@ -57,8 +54,7 @@ class _BaseBloggerState extends State<BaseBlogger> {
       backgroundColor: basePageIndex1 != 0 ? Colors.white : null,
       key: _key,
       extendBody: true,
-      bottomNavigationBar:
-          BlocConsumer<AdminNavigationCubit, AdminNavigationState>(
+      bottomNavigationBar: BlocConsumer<AdminNavigationCubit, AdminNavigationState>(
         listener: (context, state) {
           if (state is DetailTapeAdminState) {
             basePageIndex1 = 1;
@@ -72,13 +68,11 @@ class _BaseBloggerState extends State<BaseBlogger> {
               switch (index) {
                 case 0:
                   BlocProvider.of<AdminNavigationCubit>(context)
-                      .getNavBarItemAdmin(
-                          const AdminNavigationState.myOrderAdmin());
+                      .getNavBarItemAdmin(const AdminNavigationState.myOrderAdmin());
                   break;
                 case 1:
                   BlocProvider.of<AdminNavigationCubit>(context)
-                      .getNavBarItemAdmin(
-                          const AdminNavigationState.tapeAdmin());
+                      .getNavBarItemAdmin(const AdminNavigationState.tapeAdmin());
                   break;
                 case 2:
                   BlocProvider.of<AdminNavigationCubit>(context)
@@ -95,8 +89,7 @@ class _BaseBloggerState extends State<BaseBlogger> {
             elevation: 4,
             showSelectedLabels: true,
             showUnselectedLabels: true,
-            backgroundColor:
-                basePageIndex1 == 1 ? Colors.transparent : Colors.white,
+            backgroundColor: basePageIndex1 == 1 ? Colors.transparent : Colors.white,
             type: BottomNavigationBarType.fixed,
             items: [
               BottomNavigationBarItem(

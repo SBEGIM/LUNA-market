@@ -7,12 +7,13 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/auth/data/bloc/login_cubit.dart';
 import 'package:haji_market/features/drawer/presentation/ui/about_us_page.dart';
 import 'package:haji_market/features/drawer/presentation/ui/credit_info_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../admin/admin_app/presentation/base_admin.dart';
-import '../../../../admin/auth/presentation/ui/view_auth_register_page.dart';
+import '../../../../admin/auth/presentation/ui/admin_auth_page.dart';
 import '../../../../bloger/admin_app/presentation/base_blogger.dart';
 import '../../../../bloger/auth/presentation/ui/view_auth_register_page.dart';
 import '../../../auth/presentation/ui/view_auth_register_page.dart';
@@ -222,10 +223,7 @@ class _DrawerPageState extends State<DrawerPage> {
                     _box.read('seller_token') != null
                         ? BlocProvider.of<AppBloc>(context)
                             .add(const AppEvent.chageState(state: AppState.inAppAdminState()))
-                        : Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const AdminAuthPage()),
-                          );
+                        : context.router.push(AdminAuthRoute());
                   },
                   child: const DrawerListTile(
                     text: 'Кабинет продавца',

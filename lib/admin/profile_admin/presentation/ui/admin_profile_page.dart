@@ -13,7 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../bloger/auth/presentation/ui/login_admin_page.dart';
 import '../../../../features/drawer/presentation/ui/about_us_page.dart';
-import '../../../auth/presentation/ui/view_auth_register_page.dart';
+import '../../../auth/presentation/ui/admin_auth_page.dart';
 import '../../data/bloc/profile_statics_admin_cubit.dart';
 import '../../data/bloc/profile_statics_admin_state.dart';
 import '../widgets/reqirect_profile_page.dart';
@@ -103,7 +103,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
             height: 8,
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             alignment: Alignment.center,
             width: 500,
             height: 76,
@@ -309,11 +309,11 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                 MaterialPageRoute(builder: (context) => const AboutUsPage()),
               );
             },
-            child: Padding(
-              padding: const EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
+            child: const Padding(
+              padding: EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'О нас',
                     style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
@@ -332,7 +332,8 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
           ),
           GestureDetector(
             onTap: () {
-              BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppUserState(index: 1)));
+              BlocProvider.of<AppBloc>(context)
+                  .add(const AppEvent.chageState(state: AppState.inAppUserState(index: 1)));
               // Navigator.push(
               //   context,
               //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
@@ -340,19 +341,19 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
             },
             child: Container(
               padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         'Вернуться на маркет',
                         style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),
-                  const Icon(
+                  Icon(
                     Icons.arrow_forward_ios,
                     size: 20,
                     color: AppColors.kGray300,
@@ -371,10 +372,8 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
               GetStorage().remove('seller_name');
               GetStorage().remove('seller_image');
 
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AdminAuthPage()),
-              );
+              BlocProvider.of<AppBloc>(context)
+                  .add(const AppEvent.chageState(state: AppState.inAppUserState(index: 1)));
             },
             child: Container(
               padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),

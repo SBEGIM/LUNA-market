@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/admin/auth/data/bloc/sms_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/bloc/sms_admin_state.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -74,12 +76,13 @@ class _LoginForgotAdminPasswordModalBottom
         log(widget.textEditingController);
         // Get.to( () => ChangePasswordPage( textEditingController: widget.textEditingController));
         FocusScope.of(context).requestFocus(FocusNode());
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ChangePasswordAdminPage(
-                  textEditingController: widget.textEditingController)),
-        );
+        context.router.push(ChangePasswordAdminRoute(textEditingController: widget.textEditingController));
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) => ChangePasswordAdminPage(
+        //           textEditingController: widget.textEditingController)),
+        // );
       }
     }, builder: (context, state) {
       if (state is LoadingState) {

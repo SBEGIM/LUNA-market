@@ -1,14 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/admin/auth/presentation/ui/register_shop_page.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 
 import '../../data/bloc/login_admin_cubit.dart';
 import '../../data/bloc/login_admin_state.dart';
-
+@RoutePage()
 class AuthAdminPage extends StatefulWidget {
   const AuthAdminPage({Key? key}) : super(key: key);
 
@@ -59,12 +61,13 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
         body: BlocConsumer<LoginAdminCubit, LoginAdminState>(
             listener: (context, state) {
           if (state is LoadedState) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      RegisterShopPage(shopName: nameController.text)),
-            );
+            context.router.push(RegisterShopRoute(shopName: nameController.text));
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) =>
+            //           RegisterShopPage(shopName: nameController.text)),
+            // );
           }
         }, builder: (context, state) {
           if (state is InitState) {

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -5,6 +6,7 @@ import 'package:haji_market/admin/auth/data/bloc/login_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/bloc/login_admin_state.dart';
 import 'package:haji_market/admin/auth/presentation/ui/register_shop_page.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 
 import 'forgot_admin_password.dart';
@@ -59,12 +61,13 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
         body: BlocConsumer<LoginAdminCubit, LoginAdminState>(
             listener: (context, state) {
           if (state is LoadedState) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      RegisterShopPage(shopName: nameController.text)),
-            );
+            context.router.push(RegisterShopRoute(shopName: nameController.text));
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) =>
+            //           RegisterShopPage(shopName: nameController.text)),
+            // );
           }
         }, builder: (context, state) {
           if (state is InitState) {
@@ -164,12 +167,13 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const ForgotPasswordAdminPage()),
-                    );
+                    context.router.push(const ForgotPasswordAdminRoute());
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           const ForgotPasswordAdminPage()),
+                    // );
                   },
                   child: const Center(
                     child: Text(
