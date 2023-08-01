@@ -458,7 +458,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           Row(
                             children: [
                               Text(
-                                '${widget.product.price!.toInt() - widget.product.compound!.toInt()} ₽',
+                                '${(widget.product.price!.toInt() - (widget.product.price! / 100) * (widget.product.compound ?? 0)).toInt()} ₽',
                                 style: const TextStyle(
                                     color: Colors.red,
                                     fontSize: 16,
@@ -468,7 +468,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 width: 10,
                               ),
                               Text(
-                                '${widget.product.price!.toInt()} ₽',
+                                '${widget.product.price!} ₽',
                                 style: const TextStyle(
                                     decoration: TextDecoration.lineThrough,
                                     color: AppColors.kGray900,
@@ -496,7 +496,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
-                                  '${((widget.product.price!.toInt() - (widget.product.compound ?? 0).toInt()) / 3).roundToDouble()}',
+                                  '${((widget.product.price! - (widget.product.price! / 100) * (widget.product.compound ?? 0)) / 3).roundToDouble()}',
                                   style: const TextStyle(
                                       color: AppColors.kGray900,
                                       fontSize: 14,
@@ -683,7 +683,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             ),
                             alignment: Alignment.center,
                             child: Text(
-                              '${(widget.product.price!.toInt() - (widget.product.compound ?? 0)) ~/ selectedIndexMonth!.toInt()}',
+                              '${(widget.product.price! - (widget.product.price! / 100) * widget.product.compound!) ~/ selectedIndexMonth!.toInt()}',
                               style: const TextStyle(
                                   color: AppColors.kGray900,
                                   fontSize: 14,
