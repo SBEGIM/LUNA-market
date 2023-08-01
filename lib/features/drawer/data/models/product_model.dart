@@ -4,6 +4,7 @@ class ProductModel {
     String? name,
     int? price,
     int? compound,
+    int? point,
     String? description,
     String? catName,
     String? brandName,
@@ -28,6 +29,7 @@ class ProductModel {
     _name = name;
     _price = price;
     _compound = compound;
+    _point = point;
     _description = description;
     _catName = catName;
     _brandName = brandName;
@@ -54,6 +56,7 @@ class ProductModel {
     _name = json['name'];
     _price = json['price'];
     _compound = json['compound'];
+    _point = json['point'];
     _description = json['description'];
     _catName = json['cat_name'];
     _brandName = json['brand_name'];
@@ -88,6 +91,7 @@ class ProductModel {
   String? _name;
   int? _price;
   int? _compound;
+  int? _point;
   String? _description;
   String? _catName;
   String? _brandName;
@@ -112,6 +116,7 @@ class ProductModel {
   String? get name => _name;
   int? get price => _price;
   int? get compound => _compound;
+  int? get point => _point;
   String? get description => _description;
   String? get catName => _catName;
   String? get brandName => _brandName;
@@ -138,6 +143,7 @@ class ProductModel {
     map['name'] = _name;
     map['price'] = _price;
     map['compound'] = _compound;
+    map['point'] = _point;
     map['description'] = _description;
     map['catName'] = _catName;
     map['brandName'] = _brandName;

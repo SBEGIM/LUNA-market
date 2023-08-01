@@ -112,10 +112,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
     compoundPrice =
         (widget.product.price!.toInt() - widget.product.compound!.toInt());
-    procentPrice =
-        ((widget.product.price!.toInt() - widget.product.compound!.toInt()) /
-                widget.product.price!.toInt()) *
-            100;
 
     BlocProvider.of<reviewProductCubit.ReviewCubit>(context)
         .reviews(widget.product.id.toString());
@@ -284,18 +280,20 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(4)),
-                child: const Padding(
-                  padding:
-                      EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
-                  child: Text(
-                    '10% Б',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
-                  ),
-                ),
+                child: widget.product.point != 0
+                    ? Padding(
+                        padding: const EdgeInsets.only(
+                            left: 4.0, right: 4, top: 4, bottom: 4),
+                        child: Text(
+                          '${widget.product.point ?? 0}% Б',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      )
+                    : const SizedBox(),
               ),
               Container(
                 margin: const EdgeInsets.only(
@@ -306,7 +304,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   padding: const EdgeInsets.only(
                       left: 4.0, right: 4, top: 4, bottom: 4),
                   child: Text(
-                    '-${procentPrice.toInt()}%',
+                    '-${widget.product.compound ?? 0}%',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         color: Colors.white,
