@@ -1,16 +1,9 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dart';
-import 'package:video_player/video_player.dart';
-
-import '../../../app/bloc/navigation_cubit/navigation_cubit.dart';
 
 class TapeCardWidget extends StatefulWidget {
   final TapeModel tape;
@@ -30,7 +23,8 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network('http://185.116.193.73/storage/${widget.tape.video}')
+    _controller = VideoPlayerController.network(
+        'http://185.116.193.73/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.pause();
         // setState(() {});
@@ -51,12 +45,15 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
         Positioned.fill(
           child: AspectRatio(
             aspectRatio: _controller!.value.aspectRatio,
-            child: ClipRRect(borderRadius: BorderRadius.circular(12), child: VideoPlayer(_controller!)),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: VideoPlayer(_controller!)),
           ),
         ),
         InkWell(
           onTap: () {
-            context.router.push(DetailTapeCardRoute(index: widget.index, shopName: widget.tape.shop!.name!));
+            context.router.push(DetailTapeCardRoute(
+                index: widget.index, shopName: widget.tape.shop!.name!));
             // Navigator.push(
             //   context,
             //   MaterialPageRoute(
@@ -67,7 +64,9 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
           },
           child: Padding(
             padding: const EdgeInsets.only(right: 8.0, top: 8),
-            child: Align(alignment: Alignment.topRight, child: SvgPicture.asset('assets/icons/play.svg')),
+            child: Align(
+                alignment: Alignment.topRight,
+                child: SvgPicture.asset('assets/icons/play.svg')),
           ),
         ),
         // Container(

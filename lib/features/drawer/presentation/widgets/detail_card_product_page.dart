@@ -50,7 +50,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
   int count = 0;
   bool isvisible = false;
 
-  int? selectedIndex = 0;
+  int? selectedIndex = -1;
   int? selectedIndex2 = 0;
   int? selectedIndexMonth = 3;
 
@@ -95,6 +95,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
   TextEditingController _commentController = TextEditingController();
   VideoPlayerController? _controller;
+  PageController controller = PageController();
 
   @override
   void initState() {
@@ -173,66 +174,136 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
         children: [
           Stack(
             children: [
-              Container(
+              SizedBox(
                 height: 300,
-                color: Colors.white,
-                margin: const EdgeInsets.only(right: 8, left: 8),
-                child: imageIndex + 1 ==
-                        ((widget.product.path?.length ?? 0) + 1)
-                    ? GestureDetector(
-                        onTap: () {
-                          _controller!.value.isPlaying
-                              ? _controller!.pause()
-                              : _controller!.play();
-                        },
-                        child: Stack(children: [
-                          Container(
-                            width: 600,
-                            height: 300,
-                            child: AspectRatio(
-                              aspectRatio: _controller!.value.aspectRatio,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: VideoPlayer(_controller!)),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.bottomCenter,
-                            padding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).size.height * 0.01),
-                            child: VideoProgressIndicator(_controller!,
-                                allowScrubbing: true),
-                          ),
-                          icon
-                              ? Center(
-                                  child: SvgPicture.asset(
-                                  'assets/icons/play_tape.svg',
-                                  color: const Color.fromRGBO(29, 196, 207, 1),
-                                ))
-                              : Container(),
-                        ]),
-                      )
-                    : Container(
-                        margin:
-                            const EdgeInsets.only(top: 24, left: 8, right: 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        //color: Colors.red,
-                        child: Image.network(
-                          height: 375,
-                          width: 400,
-                          "http://185.116.193.73/storage/${widget.product.path![imageIndex]}",
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              const ErrorImageWidget(
-                            height: 375,
-                            width: 400,
-                          ),
-                        ),
-                      ),
+                child: PageView.builder(
+                    scrollDirection: Axis.horizontal,
+                    controller: controller,
+                    itemCount: (widget.product.path?.length ?? 0) +
+                        (widget.product.video != null ? 1 : 0),
+                    onPageChanged: (value) {
+                      imageIndex = value;
+                      setState(() {});
+                    },
+                    itemBuilder: (context, index) {
+                      // inFavorite = state.tapeModel[index].inFavorite;
+                      // inBasket = state.tapeModel[index].inBasket;
+                      return imageIndex + 1 ==
+                              ((widget.product.path?.length ?? 0) + 1)
+                          ? GestureDetector(
+                              onTap: () {
+                                _controller!.value.isPlaying
+                                    ? _controller!.pause()
+                                    : _controller!.play();
+                              },
+                              child: Stack(children: [
+                                Center(
+                                  child: AspectRatio(
+                                    aspectRatio: _controller!.value.aspectRatio,
+                                    child: VideoPlayer(_controller!),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.bottomCenter,
+                                  padding: EdgeInsets.only(
+                                      bottom:
+                                          MediaQuery.of(context).size.height *
+                                              0.01),
+                                  child: VideoProgressIndicator(_controller!,
+                                      allowScrubbing: true),
+                                ),
+                                icon
+                                    ? Center(
+                                        child: SvgPicture.asset(
+                                        'assets/icons/play_tape.svg',
+                                        color: const Color.fromRGBO(
+                                            29, 196, 207, 1),
+                                      ))
+                                    : const SizedBox(),
+                              ]),
+                            )
+                          : Container(
+                              margin: const EdgeInsets.only(
+                                  top: 24, left: 8, right: 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              //color: Colors.red,
+                              child: Image.network(
+                                height: 375,
+                                width: 400,
+                                "http://185.116.193.73/storage/${widget.product.path![imageIndex]}",
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const ErrorImageWidget(
+                                  height: 375,
+                                  width: 400,
+                                ),
+                              ),
+                            );
+                    }),
               ),
+
+              // Container(
+              //   height: 300,
+              //   color: Colors.white,
+              //   margin: const EdgeInsets.only(right: 8, left: 8),
+              //   child: imageIndex + 1 ==
+              //           ((widget.product.path?.length ?? 0) + 1)
+              //       ? GestureDetector(
+              //           onTap: () {
+              //             _controller!.value.isPlaying
+              //                 ? _controller!.pause()
+              //                 : _controller!.play();
+              //           },
+              //           child: Stack(children: [
+              //             Container(
+              //               width: 600,
+              //               height: 300,
+              //               child: AspectRatio(
+              //                 aspectRatio: _controller!.value.aspectRatio,
+              //                 child: ClipRRect(
+              //                     borderRadius: BorderRadius.circular(12),
+              //                     child: VideoPlayer(_controller!)),
+              //               ),
+              //             ),
+              //             Container(
+              //               alignment: Alignment.bottomCenter,
+              //               padding: EdgeInsets.only(
+              //                   bottom:
+              //                       MediaQuery.of(context).size.height * 0.01),
+              //               child: VideoProgressIndicator(_controller!,
+              //                   allowScrubbing: true),
+              //             ),
+              //             icon
+              //                 ? Center(
+              //                     child: SvgPicture.asset(
+              //                     'assets/icons/play_tape.svg',
+              //                     color: const Color.fromRGBO(29, 196, 207, 1),
+              //                   ))
+              //                 : Container(),
+              //           ]),
+              //         )
+              //       : Container(
+              //           margin:
+              //               const EdgeInsets.only(top: 24, left: 8, right: 8),
+              //           decoration: BoxDecoration(
+              //             borderRadius: BorderRadius.circular(8),
+              //           ),
+              //           //color: Colors.red,
+              //           child: Image.network(
+              //             height: 375,
+              //             width: 400,
+              //             "http://185.116.193.73/storage/${widget.product.path![imageIndex]}",
+              //             fit: BoxFit.cover,
+              //             errorBuilder: (context, error, stackTrace) =>
+              //                 const ErrorImageWidget(
+              //               height: 375,
+              //               width: 400,
+              //             ),
+              //           ),
+              //         ),
+              // ),
 
               // Container(
               //   height: 300,
@@ -313,19 +384,23 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   ),
                 ),
               ),
-              Container(
-                height: 12,
-                //  width: 12,
-                //  alignment: Alignment.r,
-                margin: const EdgeInsets.only(
-                    left: 154.0, right: 20, top: 260, bottom: 4),
-                child: Center(
-                  child: ListView.builder(
-                    itemCount: (widget.product.path?.length ?? 0) +
-                        (widget.product.video != null ? 1 : 0),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: ((context, index) {
-                      return GestureDetector(
+              Positioned(
+                bottom: 20,
+                right: 0,
+                left: 0,
+                child: SizedBox(
+                  height: 12,
+                  //  width: 12,
+                  //  alignment: Alignment.r,
+                  //     margin: const EdgeInsets.only(
+                  // left: 154.0, right: 20, top: 260, bottom: 4),
+                  child: Center(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      (widget.product.path?.length ?? 0) +
+                          (widget.product.video != null ? 1 : 0),
+                      (index) => GestureDetector(
                         onTap: () {
                           imageIndex = index;
                           setState(() {});
@@ -340,9 +415,35 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                   : Colors.grey,
                               borderRadius: BorderRadius.circular(100)),
                         ),
-                      );
-                    }),
-                  ),
+                      ),
+                    ),
+                  )
+
+                      // ListView.builder(
+                      //   itemCount: (widget.product.path?.length ?? 0) +
+                      //       (widget.product.video != null ? 1 : 0),
+                      //   scrollDirection: Axis.horizontal,
+
+                      //   itemBuilder: ((context, index) {
+                      //     return GestureDetector(
+                      //       onTap: () {
+                      //         imageIndex = index;
+                      //         setState(() {});
+                      //       },
+                      //       child: Container(
+                      //         margin: const EdgeInsets.only(left: 16),
+                      //         //  height: 1,
+                      //         width: 12,
+                      //         decoration: BoxDecoration(
+                      //             color: imageIndex == index
+                      //                 ? AppColors.kPrimaryColor
+                      //                 : Colors.grey,
+                      //             borderRadius: BorderRadius.circular(100)),
+                      //       ),
+                      //     );
+                      //   }),
+                      // ),
+                      ),
                 ),
               ),
               GestureDetector(
@@ -814,12 +915,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   height: 14,
                   child: Row(children: [
                     Text(
-                      '${selectedIndex3 != -1 ? "${widget.product.bloc![selectedIndex3!].price} тг " : ''} ',
+                      '${selectedIndex3 != -1 ? "${widget.product.bloc![selectedIndex3!].price} руб " : ''} ',
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${selectedIndex3 != -1 ? "( ${widget.product.bloc![selectedIndex3!].count}шт )" : 0}',
+                      '${selectedIndex3 != -1 ? "(за ${widget.product.bloc![selectedIndex3!].count}шт )" : 0}',
                       style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -853,16 +954,20 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           //     .basketMinus(
                           //         widget.product.id.toString(), '1');
                           if (count != 0) {
-                            count -= 1;
+                            if (selectedIndex3 != -1) {
+                              count -= 1;
+                              BlocProvider.of<BasketCubit>(context).basketMinus(
+                                  widget.product.id.toString(),
+                                  (widget.product.bloc![selectedIndex3!]
+                                          .count! *
+                                      count),
+                                  (widget.product.bloc![selectedIndex3!]
+                                          .price! *
+                                      count));
+                            }
                           } else {
                             isvisible = false;
                           }
-                          BlocProvider.of<BasketCubit>(context).basketMinus(
-                              widget.product.id.toString(),
-                              (widget.product.bloc![selectedIndex3!].count! *
-                                  count),
-                              (widget.product.bloc![selectedIndex3!].price! *
-                                  count));
 
                           setState(() {});
                         },
@@ -906,17 +1011,19 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           //     .basketAdd(
                           //         widget.product.id.toString(), '1');
 
-                          count += 1;
-                          isvisible = true;
+                          if (selectedIndex3 != -1) {
+                            count += 1;
+                            isvisible = true;
 
-                          BlocProvider.of<BasketCubit>(context).basketAdd(
-                              widget.product.id.toString(),
-                              (widget.product.bloc![selectedIndex3!].count! *
-                                  count),
-                              (widget.product.bloc![selectedIndex3!].price! *
-                                  count));
+                            BlocProvider.of<BasketCubit>(context).basketAdd(
+                                widget.product.id.toString(),
+                                (widget.product.bloc![selectedIndex3!].count! *
+                                    count),
+                                (widget.product.bloc![selectedIndex3!].price! *
+                                    count));
 
-                          setState(() {});
+                            setState(() {});
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.all(4),
@@ -995,7 +1102,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       width: 10,
                     ),
                     Text(
-                      'Экономия ${selectedIndex3 != -1 ? (((widget.product.price! * widget.product.bloc![selectedIndex3!].count!) - widget.product.bloc![selectedIndex3!].price!) * count) : 0}  тг',
+                      'Экономия ${selectedIndex3 != -1 ? ((((widget.product.price! - widget.product.price! / 100 * widget.product.compound!) * widget.product.bloc![selectedIndex3!].count!) - widget.product.bloc![selectedIndex3!].price!) * count) : 0}  руб',
                       style: const TextStyle(
                           color: AppColors.kPrimaryColor,
                           fontSize: 14,
@@ -1197,7 +1304,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       ),
                       // for (var item in imgList)
                       Container(
-                        height: 100,
+                        height: 40,
                         margin: const EdgeInsets.only(top: 1, bottom: 10),
                         child: ListView.builder(
                           shrinkWrap: true,
@@ -1213,17 +1320,20 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               child: Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: Container(
+                                  height: 40,
+                                  width: 40,
                                   padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
+                                      color: Color(AppColors.getColorFromHex(
+                                          widget.product.color![index])),
                                       borderRadius: BorderRadius.circular(8),
                                       border: selectedIndex == index
-                                          ? Border.all(
-                                              color: AppColors.kPrimaryColor)
-                                          : Border.all(color: Colors.grey)),
-                                  child: Image.asset(
-                                    'assets/images/black_wireles.png',
-                                    height: 80,
-                                  ),
+                                          ? Border.all(color: Colors.black)
+                                          : Border.all(color: Colors.white)),
+                                  // child: Image.asset(
+                                  //   'assets/images/black_wireles.png',
+                                  //   height: 80,
+                                  // ),
                                 ),
                               ),
                             );

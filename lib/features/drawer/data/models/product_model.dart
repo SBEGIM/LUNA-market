@@ -175,6 +175,7 @@ class Shops {
   Shops({
     Shop? shop,
     int? productId,
+    int? chatId,
     String? sizeTitle,
     bool? inSubs,
     List<String>? size,
@@ -183,6 +184,7 @@ class Shops {
     _shop = shop;
     _inSubs = inSubs;
     _productId = productId;
+    _chatId = chatId;
     _sizeTitle = sizeTitle;
     _size = size;
     _color = color;
@@ -192,6 +194,7 @@ class Shops {
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
     _inSubs = json['in_subscribes'];
     _productId = json['product_id'];
+    _chatId = json['chat_id'];
     _sizeTitle = json['size_title'];
     _size = json['size'] != null ? json['size'].cast<String>() : [];
     _color = json['color'] != null ? json['color'].cast<String>() : [];
@@ -199,6 +202,7 @@ class Shops {
   Shop? _shop;
   bool? _inSubs;
   int? _productId;
+  int? _chatId;
   String? _sizeTitle;
   List<String>? _size;
   List<String>? _color;
@@ -206,6 +210,7 @@ class Shops {
   Shop? get shop => _shop;
   bool? get inSubs => _inSubs;
   int? get productId => _productId;
+  int? get chatId => _chatId;
   String? get sizeTitle => _sizeTitle;
   List<String>? get size => _size;
   List<String>? get color => _color;
@@ -215,8 +220,9 @@ class Shops {
     if (_shop != null) {
       map['shop'] = _shop!.toJson();
     }
-    map['product_id'] = _inSubs;
+    map['in_subscribes'] = _inSubs;
     map['product_id'] = _productId;
+    map['chat_id'] = _chatId;
     map['size_title'] = _sizeTitle;
     map['size'] = _size;
     map['color'] = _color;
@@ -227,6 +233,7 @@ class Shops {
 class Shop {
   Shop({
     int? id,
+    int? chat_id,
     String? name,
     String? logo,
     String? image,
@@ -234,6 +241,7 @@ class Shop {
     String? updatedAt,
   }) {
     _id = id;
+    _chat_id = chat_id;
     _name = name;
     _logo = logo;
     _image = image;
@@ -243,6 +251,7 @@ class Shop {
 
   Shop.fromJson(dynamic json) {
     _id = json['id'];
+    _chat_id = json['chat_id'];
     _name = json['name'];
     _logo = json['logo'];
     _image = json['image'];
@@ -250,6 +259,7 @@ class Shop {
     _updatedAt = json['updated_at'];
   }
   int? _id;
+  int? _chat_id;
   String? _name;
   String? _logo;
   String? _image;
@@ -257,6 +267,7 @@ class Shop {
   String? _updatedAt;
 
   int? get id => _id;
+  int? get chat_id => _chat_id;
   String? get name => _name;
   String? get logo => _logo;
   String? get image => _image;
@@ -266,6 +277,7 @@ class Shop {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
+    map['chat_id'] = _chat_id;
     map['name'] = _name;
     map['logo'] = _logo;
     map['image'] = _image;

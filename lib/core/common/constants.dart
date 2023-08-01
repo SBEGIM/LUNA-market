@@ -24,6 +24,15 @@ mixin AppColors {
 
   ///
   static const Color kDark = Color(0xff404D61);
+
+  static int getColorFromHex(String hexColor) {
+    String newHexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (newHexColor.length == 6) {
+      newHexColor = "FF$newHexColor";
+    }
+    return int.parse(newHexColor, radix: 16);
+  }
+
   static const Color kCorrect = Color(0xff00BA88);
   // static const Color kCaption = Color(0xff4E4B66);
   // static const Color searchBg = Color.fromRGBO(239, 240, 247, 1.0);
