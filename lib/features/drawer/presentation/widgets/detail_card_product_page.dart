@@ -997,7 +997,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       width: 10,
                     ),
                     Text(
-                      'Экономия ${selectedIndex3 != -1 ? ((widget.product.price! * widget.product.bloc![selectedIndex3!].count!) - widget.product.bloc![selectedIndex3!].price!) : 0}  тг',
+                      'Экономия ${selectedIndex3 != -1 ? (((widget.product.price! * widget.product.bloc![selectedIndex3!].count!) - widget.product.bloc![selectedIndex3!].price!) * count) : 0}  тг',
                       style: const TextStyle(
                           color: AppColors.kPrimaryColor,
                           fontSize: 14,
