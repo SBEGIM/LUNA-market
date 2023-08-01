@@ -78,20 +78,38 @@ class ProductAdminRepository {
           String currency,
           String deep,
           List<dynamic>? image,
-          
-      List<optomPriceDto> optom,
-      List<sizeCountDto> size,
-      String? video) =>
-      _productToApi.update(price, count, compound, catId, subCatId, brandId, colorId, description, name, height, width,
-          massa, productId, articul, currency, deep, image,optom,size,video);
+          List<optomPriceDto> optom,
+          List<sizeCountDto> size,
+          String? video) =>
+      _productToApi.update(
+          price,
+          count,
+          compound,
+          catId,
+          subCatId,
+          brandId,
+          colorId,
+          description,
+          name,
+          height,
+          width,
+          massa,
+          productId,
+          articul,
+          currency,
+          deep,
+          image,
+          optom,
+          size,
+          video);
 
   Future<dynamic> delete(String productId) => _productToApi.delete(productId);
 
   Future<String?> ad(int productId, int price) =>
       _productToApi.ad(productId, price);
 
-  Future<List<AdminProductsModel>> products(String? name) =>
-      _productToApi.products(name);
+  Future<List<AdminProductsModel>> products(String? name, int page) =>
+      _productToApi.products(name, page);
 
   Future<dynamic> deleteImage({
     required int productId,
@@ -225,11 +243,9 @@ class ProductToApi {
       String currency,
       String deep,
       List<dynamic>? image,
-      
       List<optomPriceDto> optom,
       List<sizeCountDto> size,
-      String? video
-      ) async {
+      String? video) async {
     final sellerId = _box.read('seller_id');
     final token = _box.read('seller_token');
 
@@ -267,18 +283,18 @@ class ProductToApi {
       });
     }
     request.fields.addAll(body);
-      Map<String, String> blocc = {};
-      Map<String, String> sizes = {};
+    Map<String, String> blocc = {};
+    Map<String, String> sizes = {};
 
-           for (var i = 0; i < optom.length; i++) {
-        blocc['bloc[$i][count]'] = optom[i].count;
-        blocc['bloc[$i][price]'] = optom[i].price;
-      }
-      for (var i = 0; i < size.length; i++) {
-        sizes['size[$i][id]'] = size[i].id;
-        sizes['size[$i][count]'] = size[i].count;
-      }
-      
+    for (var i = 0; i < optom.length; i++) {
+      blocc['bloc[$i][count]'] = optom[i].count;
+      blocc['bloc[$i][price]'] = optom[i].price;
+    }
+    for (var i = 0; i < size.length; i++) {
+      sizes['size[$i][id]'] = size[i].id;
+      sizes['size[$i][count]'] = size[i].count;
+    }
+
     request.fields.addAll(blocc);
     request.fields.addAll(sizes);
 
@@ -299,13 +315,14 @@ class ProductToApi {
     return response.statusCode;
   }
 
-  Future<List<AdminProductsModel>> products(String? name) async {
+  Future<List<AdminProductsModel>> products(String? name, int page) async {
     try {
       final sellerId = _box.read('seller_id');
       final String? token = _box.read('token');
 
       final response = await http.get(
-          Uri.parse('$baseUrl/seller/products?shop_id=$sellerId&name=$name'),
+          Uri.parse(
+              '$baseUrl/seller/products?shop_id=$sellerId&name=$name&page=$page'),
           headers: {"Authorization": "Bearer $token"});
 
       final data = jsonDecode(response.body);

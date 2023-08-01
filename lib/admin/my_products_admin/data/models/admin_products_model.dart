@@ -10,6 +10,7 @@ class AdminProductsModel {
     String? name,
     int? price,
     int? compound,
+    int? point,
     int? bonus,
     String? description,
     dynamic articul,
@@ -34,6 +35,7 @@ class AdminProductsModel {
     _name = name;
     _price = price;
     _compound = compound;
+    _point = point;
     _bonus = bonus;
     _description = description;
     _articul = articul;
@@ -59,6 +61,7 @@ class AdminProductsModel {
     _name = json['name'];
     _price = json['price'];
     _compound = json['compound'];
+    _point = json['point'];
     _bonus = json['bonus'];
     _description = json['description'];
     _articul = json['articul'];
@@ -70,8 +73,12 @@ class AdminProductsModel {
     _color = json['color'] != null ? json['color'].cast<String>() : [];
     _path = json['path'] != null ? Path.fromJson(json['path']) : null;
     _images = json['images'] != null ? json['images'].cast<String>() : [];
-    _sizeV1 = json['size_v1'] != null ? (json['size_v1'] as List).map((e) => SizeDTO.fromJson(e)).toList() : [];
-    _bloc = json['bloc'] != null ? (json['bloc'] as List).map((e) => BlocDTO.fromJson(e)).toList() : [];
+    _sizeV1 = json['size_v1'] != null
+        ? (json['size_v1'] as List).map((e) => SizeDTO.fromJson(e)).toList()
+        : [];
+    _bloc = json['bloc'] != null
+        ? (json['bloc'] as List).map((e) => BlocDTO.fromJson(e)).toList()
+        : [];
   }
   int? _id;
   int? _catId;
@@ -83,6 +90,7 @@ class AdminProductsModel {
   String? _name;
   int? _price;
   int? _compound;
+  int? _point;
   int? _bonus;
   String? _description;
   dynamic _articul;
@@ -107,6 +115,7 @@ class AdminProductsModel {
   String? get name => _name;
   int? get price => _price;
   int? get compound => _compound;
+  int? get point => _point;
   int? get bonus => _bonus;
   String? get description => _description;
   dynamic get articul => _articul;
@@ -133,6 +142,7 @@ class AdminProductsModel {
     map['name'] = _name;
     map['price'] = _price;
     map['compound'] = _compound;
+    map['point'] = _point;
     map['bonus'] = _bonus;
     map['description'] = _description;
     map['articul'] = _articul;

@@ -7,6 +7,8 @@ import 'package:haji_market/core/common/constants.dart';
 import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/bloc/product_admin_state.dart';
 import 'admin_products_card_widget.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 @RoutePage()
 class MyProductsAdminPage extends StatefulWidget {
   const MyProductsAdminPage({Key? key}) : super(key: key);
@@ -17,6 +19,14 @@ class MyProductsAdminPage extends StatefulWidget {
 
 class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
   @override
+  RefreshController refreshController = RefreshController();
+
+  Future<void> onLoading() async {
+    await BlocProvider.of<ProductAdminCubit>(context).productsPaginate('');
+    await Future.delayed(const Duration(milliseconds: 2000));
+    refreshController.loadComplete();
+  }
+
   void initState() {
     BlocProvider.of<ProductAdminCubit>(context).products('');
 
@@ -60,14 +70,12 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                const CategoryAdminPage()),
+                            builder: (context) => const CategoryAdminPage()),
                       );
                     }
                   },
                   shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(15.0))),
+                      borderRadius: BorderRadius.all(Radius.circular(15.0))),
                   icon: SvgPicture.asset('assets/icons/plus.svg'),
                   itemBuilder: (BuildContext bc) {
                     return [
@@ -83,8 +91,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                                     "Добавить товар",
                                     style: TextStyle(color: Colors.black),
                                   ),
-                                  SvgPicture.asset(
-                                      'assets/icons/lenta1.svg'),
+                                  SvgPicture.asset('assets/icons/lenta1.svg'),
                                 ],
                               ),
                               // const SizedBox(height: 4),
@@ -158,15 +165,26 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
 
                 if (state is LoadedState) {
                   return Expanded(
-                    child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        // physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: state.productModel.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return AdminProductCardWidget(
-                              product: state.productModel[index]);
-                        }),
+                    child: SmartRefresher(
+                        controller: refreshController,
+                        enablePullUp: true,
+                        onLoading: () {
+                          onLoading();
+                        },
+                        onRefresh: () {
+                          BlocProvider.of<ProductAdminCubit>(context)
+                              .products('');
+                          refreshController.refreshCompleted();
+                        },
+                        child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            // physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: state.productModel.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return AdminProductCardWidget(
+                                  product: state.productModel[index]);
+                            })),
                   );
 
                   //   AdminProductCardWidget(

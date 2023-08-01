@@ -16,6 +16,8 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
 
   List<AdminProductsModel> productsList = [];
 
+  int page = 1;
+
   Future<void> update(
       String price,
       String count,
@@ -36,8 +38,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       List<dynamic> image,
       List<optomPriceDto> optom,
       List<sizeCountDto> size,
-      String? video
-      ) async {
+      String? video) async {
     try {
       emit(LoadingState());
       final data = await productAdminRepository.update(
@@ -154,12 +155,34 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
 
   Future<void> products(String? name) async {
     try {
+      page = 1;
       emit(LoadingState());
       final List<AdminProductsModel> data =
-          await productAdminRepository.products(name);
+          await productAdminRepository.products(name, page);
       productsList.clear();
-      productsList.addAll(data);
+      data.forEach((element) {
+        productsList.add(element);
+      });
       emit(LoadedState(data));
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  Future<void> productsPaginate(String? name) async {
+    try {
+      page++;
+      // emit(LoadingState());
+      final List<AdminProductsModel> data =
+          await productAdminRepository.products(name, page);
+      // productsList.clear();
+      // productsList.addAll(data);
+      for (int i = 0; i < data.length; i++) {
+        productsList.add(data[i]);
+      }
+
+      emit(LoadedState(productsList));
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));

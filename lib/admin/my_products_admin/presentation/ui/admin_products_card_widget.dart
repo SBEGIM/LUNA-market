@@ -20,7 +20,6 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
   bool isvisible = false;
   bool inFavorite = false;
   int compoundPrice = 0;
-  double procentPrice = 0;
 
   @override
   void initState() {
@@ -29,12 +28,10 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
     //   isvisible = true;
     // }
     // inFavorite = widget.product.inFavorite ?? false;
-    compoundPrice =
-        (widget.product.price!.toInt() - widget.product.compound!.toInt());
-    procentPrice =
-        ((widget.product.price!.toInt() - widget.product.compound!.toInt()) /
-                widget.product.price!.toInt()) *
-            100;
+    compoundPrice = widget.product.price! -
+        ((widget.product.price! / 100) * (widget.product.compound ?? 1))
+            .toInt();
+
     super.initState();
   }
 
@@ -67,10 +64,11 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                       : "http://185.116.193.73/storage/banners/2.png",
                   height: 104,
                   width: 104,
-                          errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
-                            height: 104,
-                            width: 104,
-                          ),
+                  errorBuilder: (context, error, stackTrace) =>
+                      const ErrorImageWidget(
+                    height: 104,
+                    width: 104,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -98,25 +96,27 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                       const SizedBox(
                         height: 4,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(4)),
-                        child: const Padding(
-                          padding: EdgeInsets.only(
-                              left: 4, right: 4, top: 2, bottom: 2),
-                          child: Text(
-                            '10% Б',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 9,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 22,
+                      widget.product.point != 0
+                          ? Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(4)),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 4, right: 4, top: 2, bottom: 2),
+                                child: Text(
+                                  '${widget.product.point ?? 0}% Б',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+                      SizedBox(
+                        height: widget.product.point != 0 ? 22 : 0,
                       ),
                       Container(
                         decoration: BoxDecoration(
@@ -126,7 +126,7 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                           padding: const EdgeInsets.only(
                               left: 4.0, right: 4, top: 2, bottom: 2),
                           child: Text(
-                            '-${procentPrice.toInt()}%',
+                            '-${widget.product.compound} %',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 color: Colors.white,
@@ -310,7 +310,7 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                               ),
                               alignment: Alignment.center,
                               child: Text(
-                                ' ${widget.product.price ?? 0 / 3} ',
+                                ' ${(compoundPrice / 3).roundToDouble()} ',
                                 style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 12,
