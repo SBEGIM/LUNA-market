@@ -109,7 +109,9 @@ Future<dynamic> showAlertAddressWidget(BuildContext context, Function()? callBac
                                           state.addressModel[index].home,
                                           state.addressModel[index].floor,
                                           state.addressModel[index].porch,
-                                          state.addressModel[index].room);
+                                          state.addressModel[index].room).whenComplete(() {
+                                            callBack?.call();
+                                          });
                                     },
                                     child: const Icon(
                                       Icons.more_horiz,

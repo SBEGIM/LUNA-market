@@ -9,6 +9,7 @@ import 'package:haji_market/contract_of_sale.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/core/util/url_util.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
+import 'package:haji_market/features/app/widgets/shimmer_box.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart' as productAdCubit;
 import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart' as productAdState;
 import 'package:haji_market/features/drawer/presentation/ui/catalog_page.dart';
@@ -376,7 +377,7 @@ class _HomePageState extends State<HomePage> {
                   enabled: true, //Default value
                   direction: const ShimmerDirection.fromLTRB(), //Default Value
                   child: Container(
-                    margin: EdgeInsets.all(16),
+                    margin: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: Colors.grey.withOpacity(0.6),
@@ -426,9 +427,9 @@ class _PopularCatsHompageState extends State<PopularCatsHompage> {
               ),
             );
           }
-          if (state is subCatState.LoadingState) {
-            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
+          // if (state is subCatState.LoadingState) {
+          //   return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+          // }
 
           if (state is subCatState.LoadedState) {
             return Container(
@@ -516,26 +517,37 @@ class _PopularCatsHompageState extends State<PopularCatsHompage> {
               ),
             );
           } else {
-            return Shimmer(
-              duration: const Duration(seconds: 3), //Default value
-              interval: const Duration(microseconds: 1), //Default value: Duration(seconds: 0)
-              color: Colors.white, //Default value
-              colorOpacity: 0, //Default value
-              enabled: true, //Default value
-              direction: const ShimmerDirection.fromLTRB(), //Default Value
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey.withOpacity(0.6),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
-                  child: SizedBox(
-                    height: 90,
-                    width: 90,
-                  ),
+            return Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const ShimmerBox(
+                      height: 22,
+                      radius: 10,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3, childAspectRatio: 0.65, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                        itemCount: 6,
+                        itemBuilder: (BuildContext ctx, index) {
+                          return const ShimmerBox(
+                            height: 90,
+                            width: 90,
+                            radius: 12,
+                          );
+                        }),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                  ],
                 ),
               ),
             );
@@ -565,9 +577,9 @@ class _CatsHomePageState extends State<CatsHomePage> {
               ),
             );
           }
-          if (state is catState.LoadingState) {
-            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
+          // if (state is catState.LoadingState) {
+          //   return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+          // }
 
           if (state is catState.LoadedState) {
             return Container(
@@ -618,26 +630,33 @@ class _CatsHomePageState extends State<CatsHomePage> {
               ),
             );
           } else {
-            return Shimmer(
-              duration: const Duration(seconds: 3), //Default value
-              interval: const Duration(microseconds: 1), //Default value: Duration(seconds: 0)
-              color: Colors.white, //Default value
-              colorOpacity: 0, //Default value
-              enabled: true, //Default value
-              direction: const ShimmerDirection.fromLTRB(), //Default Value
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey.withOpacity(0.6),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
-                  child: SizedBox(
-                    height: 196,
-                    width: MediaQuery.of(context).size.width - 32,
-                  ),
+            return Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0, top: 16, bottom: 16, right: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const ShimmerBox(
+                      height: 22,
+                      radius: 10,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    SizedBox(
+                      height: 196,
+                      child: GridView.builder(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, childAspectRatio: 90 / 80, crossAxisSpacing: 10, mainAxisSpacing: 8),
+                          itemCount: 10,
+                          itemBuilder: (BuildContext ctx, index) {
+                            return const ShimmerBox(height: 80, width: 90, radius: 16);
+                          }),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -669,10 +688,6 @@ class _BannersState extends State<Banners> {
               ),
             );
           }
-          if (state is bannerState.LoadingState) {
-            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
-
           if (state is bannerState.LoadedState) {
             //  return Container(
             //    height: 100,
@@ -710,29 +725,42 @@ class _BannersState extends State<Banners> {
               ),
             );
           } else {
-            return Shimmer(
-              duration: const Duration(seconds: 3), //Default value
-              interval: const Duration(microseconds: 1), //Default value: Duration(seconds: 0)
-              color: Colors.white, //Default value
-              colorOpacity: 0, //Default value
-              enabled: true, //Default value
-              direction: const ShimmerDirection.fromLTRB(), //Default Value
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey.withOpacity(0.6),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
-                  child: SizedBox(
-                    height: 218,
-                    width: MediaQuery.of(context).size.width - 32,
-                  ),
+            return Container(
+              color: Colors.white,
+              height: 273,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ShimmerBox(
+                  height: 218,
+                  width: MediaQuery.of(context).size.width - 32,
+                  radius: 8,
                 ),
               ),
             );
+
+            // Shimmer(
+            //   duration: const Duration(seconds: 3), //Default value
+            //   interval: const Duration(microseconds: 1), //Default value: Duration(seconds: 0)
+            //   color: Colors.white, //Default value
+            //   colorOpacity: 0, //Default value
+            //   enabled: true, //Default value
+            //   direction: const ShimmerDirection.fromLTRB(), //Default Value
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.circular(12),
+            //       color: Colors.grey.withOpacity(0.6),
+            //     ),
+            //     child: Padding(
+            //       padding: const EdgeInsets.symmetric(
+            //         vertical: 16,
+            //       ),
+            //       child: SizedBox(
+            //         height: 273,
+            //         width: MediaQuery.of(context).size.width - 32,
+            //       ),
+            //     ),
+            //   ),
+            // );
           }
         });
   }

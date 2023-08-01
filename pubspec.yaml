@@ -57,6 +57,7 @@ dependencies:
   firebase_messaging: ^14.6.2
   flutter_local_notifications: ^14.1.1
   shimmer_animation: ^2.1.0+1
+  shimmer: ^3.0.0
   qr_code_scanner: ^1.0.1
   qr_flutter: ^4.0.0
 
