@@ -12,12 +12,18 @@ class BasketCubit extends Cubit<BasketState> {
 
   BasketCubit({required this.basketRepository}) : super(InitState());
 
-  Future<void> basketAdd(productId, count, price) async {
+  Future<void> basketAdd(
+    productId,
+    count,
+    price,
+  ) async {
     try {
       final data = await basketRepository.basketAdd(productId, count, price);
       if (data != 200) {
-        Get.snackbar('Ошибка', 'Товар не добавлен',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка', 'Товар не добавлен', backgroundColor: Colors.redAccent);
+      }
+      if (data == 200) {
+        await basketShowWithoutLoading();
       }
     } catch (e) {
       log(e.toString());
@@ -29,8 +35,10 @@ class BasketCubit extends Cubit<BasketState> {
     try {
       final data = await basketRepository.basketMinus(productId, count, price);
       if (data != 200) {
-        Get.snackbar('Ошибка', 'Товар не убрань',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка', 'Товар не убрань', backgroundColor: Colors.redAccent);
+      }
+      if (data == 200) {
+        await basketShowWithoutLoading();
       }
     } catch (e) {
       log(e.toString());
@@ -41,6 +49,20 @@ class BasketCubit extends Cubit<BasketState> {
   Future<void> basketShow() async {
     try {
       emit(LoadingState());
+      final List<BasketShowModel> data = await basketRepository.basketShow();
+      if (data.length == 0) {
+        emit(NoDataState());
+      } else {
+        emit(LoadedState(data));
+      }
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  Future<void> basketShowWithoutLoading() async {
+    try {
       final List<BasketShowModel> data = await basketRepository.basketShow();
       if (data.length == 0) {
         emit(NoDataState());
@@ -69,11 +91,9 @@ class BasketCubit extends Cubit<BasketState> {
     try {
       final data = await basketRepository.basketOrder(id);
       if (data == 200) {
-        Get.snackbar('Успешно', 'Заказ оформлен',
-            backgroundColor: Colors.blueAccent);
+        Get.snackbar('Успешно', 'Заказ оформлен', backgroundColor: Colors.blueAccent);
       } else {
-        Get.snackbar('Ошибка', 'Заказ не оформлен',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка', 'Заказ не оформлен', backgroundColor: Colors.redAccent);
       }
       emit(OrderState());
     } catch (e) {
@@ -85,8 +105,7 @@ class BasketCubit extends Cubit<BasketState> {
   Future<void> basketOrderShow() async {
     try {
       emit(LoadingState());
-      final List<BasketOrderModel> data =
-          await basketRepository.basketOrderShow();
+      final List<BasketOrderModel> data = await basketRepository.basketOrderShow();
 
       emit(LoadedOrderState(data));
     } catch (e) {
@@ -121,8 +140,7 @@ class BasketCubit extends Cubit<BasketState> {
     }
   }
 
-  Future<int?> basketStatusUpdate(
-      String id, String status, String? text) async {
+  Future<int?> basketStatusUpdate(String id, String status, String? text) async {
     try {
       final data = await basketRepository.status(id, status, text);
 

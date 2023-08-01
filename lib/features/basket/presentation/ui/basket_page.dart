@@ -39,6 +39,30 @@ class _BasketPageState extends State<BasketPage> {
 
   List<BasketShowModel>? basket = [];
 
+  String getTotalCount(BasketState state) {
+    int totalCount = 0;
+    if (state is LoadedState) {
+      for (final BasketShowModel basketItem in state.basketShowModel) {
+        totalCount += basketItem.basketCount ?? 0;
+      }
+      return totalCount.toString();
+    } else {
+      return '....';
+    }
+  }
+
+  String getTotalPrice(BasketState state) {
+    int totalPrice = 0;
+    if (state is LoadedState) {
+      for (final BasketShowModel basketItem in state.basketShowModel) {
+        totalPrice += basketItem.price ?? 0;
+      }
+      return totalPrice.toString();
+    } else {
+      return '....';
+    }
+  }
+
   Future<void> basketData() async {
     basket = await BlocProvider.of<BasketCubit>(context).basketData();
     for (var element in basket!) {
@@ -248,7 +272,8 @@ class _BasketPageState extends State<BasketPage> {
                                       itemCount: state.productModel.length,
                                       itemBuilder: (context, index) {
                                         return GestureDetector(
-                                          onTap: () =>context.router.push(DetailCardProductRoute(product: state.productModel[index])),
+                                          onTap: () => context.router
+                                              .push(DetailCardProductRoute(product: state.productModel[index])),
                                           child: ProductAdCard(
                                             product: state.productModel[index],
                                           ),
@@ -276,55 +301,57 @@ class _BasketPageState extends State<BasketPage> {
           }
         }),
         bottomSheet: bootSheet == true
-            ? Container(
-                color: Colors.white,
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 100),
-                child: InkWell(
-                    onTap: () {
-                      if (count != 0) {
-                        context.router.push(const BasketOrderAddressRoute());
-                        // Get.to(const BasketOrderAddressPage());
-                      }
+            ? BlocBuilder<BasketCubit, BasketState>(builder: (context, state) {
+                return Container(
+                  color: Colors.white,
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 100),
+                  child: InkWell(
+                      onTap: () {
+                        if (count != 0) {
+                          context.router.push(const BasketOrderAddressRoute());
+                          // Get.to(const BasketOrderAddressPage());
+                        }
 
-                      // int bottomPrice = GetStorage().read('bottomPrice');
-                      // int bottomCount = GetStorage().read('bottomCount');
-                      // Navigator.pop(context);
-                    },
-                    child: SizedBox(
-                        height: 80,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "В корзине: $count товара",
-                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                                ),
-                                Text(
-                                  "Всего: $price",
-                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 12),
-                            Container(
-                                height: 46,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: count != 0 ? AppColors.kPrimaryColor : AppColors.kGray300,
-                                ),
-                                width: MediaQuery.of(context).size.width,
-                                alignment: Alignment.center,
-                                // padding: const EdgeInsets.only(left: 16, right: 16),
-                                child: const Text(
-                                  'Продолжить',
-                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
-                                  textAlign: TextAlign.center,
-                                )),
-                          ],
-                        ))),
-              )
+                        // int bottomPrice = GetStorage().read('bottomPrice');
+                        // int bottomCount = GetStorage().read('bottomCount');
+                        // Navigator.pop(context);
+                      },
+                      child: SizedBox(
+                          height: 80,
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "В корзине: ${getTotalCount(state)} товара",
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                  ),
+                                  Text(
+                                    "Всего: ${getTotalPrice(state)}",
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+                              Container(
+                                  height: 46,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: count != 0 ? AppColors.kPrimaryColor : AppColors.kGray300,
+                                  ),
+                                  width: MediaQuery.of(context).size.width,
+                                  alignment: Alignment.center,
+                                  // padding: const EdgeInsets.only(left: 16, right: 16),
+                                  child: const Text(
+                                    'Продолжить',
+                                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
+                                    textAlign: TextAlign.center,
+                                  )),
+                            ],
+                          ))),
+                );
+              })
             : null);
   }
 }
@@ -435,7 +462,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                   ? Row(
                                       children: [
                                         Text(
-                                          '${(widget.basketProducts.product!.price!.toInt() - widget.basketProducts.product!.compound!.toInt())} ₽ ',
+                                          '${(widget.basketProducts.product!.price!.toInt() * (((100 - widget.basketProducts.product!.compound!.toInt())) / 100))} ₽ ',
                                           style: const TextStyle(
                                               color: Colors.red, fontWeight: FontWeight.w500, fontSize: 16),
                                         ),
@@ -463,7 +490,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                 height: 8,
                               ),
                               Text(
-                                '$basketPrice ₽/$basketCount шт',
+                                '${(widget.basketProducts.product!.price!.toInt() - (widget.basketProducts.product!.price!.toInt() * (widget.basketProducts.product!.compound!.toInt() / 100))) * basketCount} ₽/$basketCount шт',
                                 style: const TextStyle(
                                   color: AppColors.kGray300,
                                   fontWeight: FontWeight.w400,
@@ -520,12 +547,15 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                               GetStorage().write('bottomCount', bottomCount);
 
                               basketPrice = (basketPrice -
-                                  (widget.basketProducts.product!.price!.toInt() -
-                                      widget.basketProducts.product!.compound!.toInt()));
+                                  ((widget.basketProducts.product!.price!.toInt() -
+                                      (widget.basketProducts.product!.price!.toInt() *
+                                              (widget.basketProducts.product!.compound!.toInt() / 100))
+                                          .toInt())));
 
-                              bottomPrice -= (widget.basketProducts.product!.price!.toInt() -
-                                  widget.basketProducts.product!.compound!.toInt());
-                              GetStorage().write('bottomPrice', bottomPrice);
+                              bottomPrice -= ((widget.basketProducts.product!.price!.toInt() -
+                                  (widget.basketProducts.product!.price!.toInt() *
+                                          (widget.basketProducts.product!.compound!.toInt() / 100))
+                                      .toInt()));
 
                               if (basketCount == 0) {
                                 await BlocProvider.of<BasketCubit>(context).basketShow();
@@ -572,8 +602,10 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                               setState(() {
                                 basketCount++;
                                 basketPrice = (basketPrice +
-                                    (widget.basketProducts.product!.price!.toInt() -
-                                        widget.basketProducts.product!.compound!.toInt()));
+                                    ((widget.basketProducts.product!.price!.toInt() -
+                                        (widget.basketProducts.product!.price!.toInt() *
+                                                (widget.basketProducts.product!.compound!.toInt() / 100))
+                                            .toInt())));
                               });
 
                               int bottomPrice = GetStorage().read('bottomPrice');
@@ -581,8 +613,10 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                               bottomCount++;
 
                               GetStorage().write('bottomCount', bottomCount);
-                              bottomPrice += (widget.basketProducts.product!.price!.toInt() -
-                                  widget.basketProducts.product!.compound!.toInt());
+                              bottomPrice += ((widget.basketProducts.product!.price!.toInt() -
+                                  (widget.basketProducts.product!.price!.toInt() *
+                                          (widget.basketProducts.product!.compound!.toInt() / 100))
+                                      .toInt()));
                               GetStorage().write('bottomPrice', bottomPrice);
                             },
                             child: Container(
