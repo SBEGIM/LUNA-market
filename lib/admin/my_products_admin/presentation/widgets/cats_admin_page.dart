@@ -95,7 +95,7 @@ class _CatsAdminPageState extends State<CatsAdminPage> {
                                     } else {
                                       await BlocProvider.of<
                                               subCatCubit.SubCatsCubit>(context)
-                                          .subCats(state.cats[index].id);
+                                          .subCats(state.cats[index].id,isAddAllProducts: false);
 
                                       setState(() {
                                         // устанавливаем индекс выделенного элемента

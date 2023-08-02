@@ -98,7 +98,7 @@ class _CategoryAdminPageState extends State<CategoryAdminPage> {
                                       _selectedIndex = -1;
                                     });
                                   }else{
-                                await BlocProvider.of<subCatCubit.SubCatsCubit>(context).subCats(state.cats[index].id);
+                                await BlocProvider.of<subCatCubit.SubCatsCubit>(context).subCats(state.cats[index].id,isAddAllProducts: false);
 
                                     setState(() {
                                       // устанавливаем индекс выделенного элемента
