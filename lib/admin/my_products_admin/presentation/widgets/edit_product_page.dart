@@ -17,6 +17,7 @@ import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart';
 import 'package:haji_market/features/home/data/bloc/cats_cubit.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/drawer/data/bloc/brand_cubit.dart';
 import '../../../../features/home/data/model/Cats.dart';
@@ -52,6 +53,14 @@ class _EditProductPageState extends State<EditProductPage> {
   String sizeId = '';
   final ImagePicker _picker = ImagePicker();
   bool change = false;
+  VideoPlayerController? _controller;
+  Future<void> initVideo(String path) async {
+    _controller = VideoPlayerController.file(File(path))
+      ..initialize().then((_) {
+        _controller!.pause();
+        setState(() {});
+      });
+  }
 
   Future<void> _getImage() async {
     final image = change == true
@@ -69,6 +78,8 @@ class _EditProductPageState extends State<EditProductPage> {
     setState(() {
       _video = video;
     });
+
+    initVideo(_video!.path);
   }
 
   TextEditingController articulController = TextEditingController();
@@ -819,9 +830,23 @@ class _EditProductPageState extends State<EditProductPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Формат - jpg, png',
+                      'Формат - mp4,mpeg',
                       style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
                     ),
+                    if (_video != null && _controller != null && _controller!.value.isInitialized)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Center(
+                          child: SizedBox(
+                            height: 200,
+                            child: AspectRatio(
+                              aspectRatio: _controller!.value.aspectRatio,
+                              child:
+                                  ClipRRect(borderRadius: BorderRadius.circular(12), child: VideoPlayer(_controller!)),
+                            ),
+                          ),
+                        ),
+                      ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -892,7 +917,7 @@ class _EditProductPageState extends State<EditProductPage> {
             ],
           ),
         ),
-        bottomSheet: BlocListener<ProductAdminCubit, ProductAdminState>(
+        bottomSheet: BlocConsumer<ProductAdminCubit, ProductAdminState>(
           listener: (context, state) {
             if (state is ChangeState) {
               BlocProvider.of<ProductAdminCubit>(context).products('');
@@ -900,47 +925,56 @@ class _EditProductPageState extends State<EditProductPage> {
               Navigator.of(context).popUntil((_) => count++ >= 2);
             }
           },
-          child: Container(
-            color: Colors.white,
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
-            child: InkWell(
-              onTap: () async {
-                await BlocProvider.of<ProductAdminCubit>(context).update(
-                    priceController.text,
-                    countController.text,
-                    compoundController.text,
-                    cats?.id.toString() ?? cat_id.toString(),
-                    subCats?.id.toString() ?? sub_cat_id.toString(),
-                    brand_id.toString(),
-                    colors?.id.toString() ?? color_id.toString(),
-                    descriptionController.text,
-                    nameController.text,
-                    heightController.text,
-                    widthController.text,
-                    massaController.text,
-                    widget.product.id.toString(),
-                    articulController.text,
-                    '',
-                    deepController.text,
-                    _image,
-                    optomCount,
-                    sizeCount,
-                    _video != null ? _video!.path : null);
-              },
-              child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColors.kPrimaryColor,
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.all(16),
-                  child: const Text(
-                    'Сохранить',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
-                    textAlign: TextAlign.center,
-                  )),
-            ),
-          ),
+          builder: (context, state) {
+            return Container(
+              color: Colors.white,
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
+              child: InkWell(
+                onTap: () async {
+                  if (state is! LoadingState) {
+                    BlocProvider.of<ProductAdminCubit>(context).update(
+                        priceController.text,
+                        countController.text,
+                        compoundController.text,
+                        cats?.id.toString() ?? cat_id.toString(),
+                        subCats?.id.toString() ?? sub_cat_id.toString(),
+                        brand_id.toString(),
+                        colors?.id.toString() ?? color_id.toString(),
+                        descriptionController.text,
+                        nameController.text,
+                        heightController.text,
+                        widthController.text,
+                        massaController.text,
+                        widget.product.id.toString(),
+                        articulController.text,
+                        '',
+                        deepController.text,
+                        _image,
+                        optomCount,
+                        sizeCount,
+                        _video != null ? _video!.path : null);
+                  }
+                },
+                child: Container(
+                    height: 51,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.kPrimaryColor,
+                    ),
+                    width: MediaQuery.of(context).size.width,
+                    child: state is LoadingState
+                        ? const Center(child:  CircularProgressIndicator.adaptive())
+                        : const Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Text(
+                              'Сохранить',
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
+                              textAlign: TextAlign.center,
+                            ),
+                          )),
+              ),
+            );
+          },
         ));
   }
 }

@@ -12,6 +12,7 @@ import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caa
 import 'package:haji_market/blogger_ad.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/home/data/model/Cats.dart';
 import '../../../admin_app/presentation/base_admin.dart';
@@ -58,6 +59,14 @@ class _CreateProductPageState extends State<CreateProductPage> {
 
   List<XFile?> _image = [];
   XFile? _video;
+    VideoPlayerController? _controller;
+  Future<void> initVideo(String path) async {
+    _controller = VideoPlayerController.file(File(path))
+      ..initialize().then((_) {
+        _controller!.pause();
+        setState(() {});
+      });
+  }
 
   final ImagePicker _picker = ImagePicker();
 
@@ -119,6 +128,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
     setState(() {
       _video = video;
     });
+    initVideo(_video!.path);
   }
 
   void _sizeArray() async {
@@ -1079,6 +1089,21 @@ class _CreateProductPageState extends State<CreateProductPage> {
                             fontSize: 12,
                             color: AppColors.kGray900),
                       ),
+                       if (_video != null && _controller != null && _controller!.value.isInitialized)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Center(
+                          child: SizedBox(
+                            height: 200,
+                            child: AspectRatio(
+                              aspectRatio: _controller!.value.aspectRatio,
+                              child:
+                                  ClipRRect(borderRadius: BorderRadius.circular(12), child: VideoPlayer(_controller!)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    
                       const SizedBox(
                         height: 10,
                       ),

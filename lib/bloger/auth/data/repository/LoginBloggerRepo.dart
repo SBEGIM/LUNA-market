@@ -45,6 +45,7 @@ class LoginToApi {
       _box.write('blogger_token', data['access_token'].toString());
       _box.write('blogger_id', data['id'].toString());
       _box.write('blogger_name', data['name'].toString());
+      _box.write('blogger_nick_name', data['nick_name'].toString());
       _box.write('blogger_avatar', data['avatar'].toString());
 
       // _box.write('card', data['user']['card'].toString());

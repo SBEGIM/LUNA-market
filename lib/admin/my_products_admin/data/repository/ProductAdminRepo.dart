@@ -282,6 +282,12 @@ class ProductToApi {
         );
       });
     }
+    
+      if (video != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('video', video),
+        );
+      }
     request.fields.addAll(body);
     Map<String, String> blocc = {};
     Map<String, String> sizes = {};
