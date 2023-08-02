@@ -10,8 +10,10 @@ const baseUrl = 'http://185.116.193.73/api';
 class BasketRepository {
   final Basket _basket = Basket();
 
-  Future<int> basketAdd(productId, count, price, size, color) =>
-      _basket.basketAdd(productId, count, price, size, color);
+  Future<int> basketAdd(productId, count, price, size, color,{
+    bool? isOptom,
+  }) =>
+      _basket.basketAdd(productId, count, price, size, color,isOptom: isOptom);
   Future<int> basketMinus(productId, count, price) =>
       _basket.basketMinus(productId, count, price);
   Future<List<BasketShowModel>> basketShow() => _basket.basketShow();
@@ -30,7 +32,9 @@ class BasketRepository {
 class Basket {
   final _box = GetStorage();
 
-  Future<int> basketAdd(productId, count, price, size, color) async {
+  Future<int> basketAdd(productId, count, price, size, color,{
+    bool? isOptom,
+  }) async {
     final String? token = _box.read('token');
 
     final response =
@@ -41,7 +45,8 @@ class Basket {
       'count': count.toString(),
       'price': price.toString(),
       'size': size,
-      'color': color
+      'color': color,
+      if(isOptom==true) 'optom':'true'
     });
 
     final data = response.statusCode;
