@@ -76,7 +76,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
     30,
     40,
   ];
-
+  String? sizeValue;
+  String? colorValue;
   List size = [
     'XS',
     'S',
@@ -1020,7 +1021,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 (widget.product.bloc![selectedIndex3!].count! *
                                     count),
                                 (widget.product.bloc![selectedIndex3!].price! *
-                                    count));
+                                    count),
+                                colorValue,
+                                sizeValue);
 
                             setState(() {});
                           }
@@ -1235,13 +1238,14 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         //     MediaQuery.of(context).size.width, // 229,
                         height: 28,
                         child: ListView.builder(
-                          itemCount: size.length,
+                          itemCount: widget.product.size?.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
                                 setState(() {
                                   selectedIndex4 = index;
+                                  sizeValue = widget.product.size![index];
                                 });
                               },
                               child: Padding(
@@ -1267,7 +1271,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                   // ),
                                   alignment: Alignment.center,
                                   child: Text(
-                                    size[index],
+                                    widget.product.size![index],
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: selectedIndex4 == index
@@ -1313,9 +1317,17 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () {
-                                setState(() {
-                                  selectedIndex = index;
-                                });
+                                if (selectedIndex != index) {
+                                  colorValue = widget.product.color![index];
+                                  setState(() {
+                                    selectedIndex = index;
+                                  });
+                                } else {
+                                  colorValue = '';
+                                  setState(() {
+                                    selectedIndex = -1;
+                                  });
+                                }
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(4.0),
@@ -1632,7 +1644,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                           widget
                                               .product.shops![index].productId,
                                           '1',
-                                          0);
+                                          0,
+                                          sizeValue,
+                                          colorValue);
                                   setState(() {
                                     isvisible = true;
                                   });
@@ -2374,8 +2388,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             InkWell(
               onTap: () async {
                 Future.wait<void>([
-                  BlocProvider.of<BasketCubit>(context)
-                      .basketAdd(widget.product.id.toString(), '1', 0),
+                  BlocProvider.of<BasketCubit>(context).basketAdd(
+                      widget.product.id.toString(),
+                      '1',
+                      0,
+                      sizeValue,
+                      colorValue),
                 ]);
 
                 if (BlocProvider.of<BasketCubit>(context).state
@@ -2421,8 +2439,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 // Navigator.pop(context);
 
                 if (isvisible == false && widget.product.inBasket == false) {
-                  BlocProvider.of<BasketCubit>(context)
-                      .basketAdd(widget.product.id.toString(), '1', 0);
+                  BlocProvider.of<BasketCubit>(context).basketAdd(
+                      widget.product.id.toString(),
+                      '1',
+                      0,
+                      sizeValue,
+                      colorValue);
                   setState(() {
                     isvisible = true;
                   });

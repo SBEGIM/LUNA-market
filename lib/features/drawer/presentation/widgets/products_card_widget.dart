@@ -414,7 +414,9 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                               .basketAdd(
                                                   widget.product.id.toString(),
                                                   '1',
-                                                  0);
+                                                  0,
+                                                  '',
+                                                  '');
 
                                           setState(() {
                                             count += 1;
@@ -454,7 +456,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                   onTap: () {
                                     BlocProvider.of<BasketCubit>(context)
                                         .basketAdd(widget.product.id.toString(),
-                                            '1', 0);
+                                            '1', 0, '', '');
                                     setState(() {
                                       count += 1;
                                       if (count == 0) {

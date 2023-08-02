@@ -1358,7 +1358,7 @@ class _inBasketsState extends State<inBaskets> {
       onTap: () async {
         inBasket == false
             ? BlocProvider.of<basCubit.BasketCubit>(context)
-                .basketAdd(widget.tape.id.toString(), '1', 0)
+                .basketAdd(widget.tape.id.toString(), '1', 0, '', '')
             : BlocProvider.of<basCubit.BasketCubit>(context)
                 .basketMinus(widget.tape.id.toString(), '1', 0);
 

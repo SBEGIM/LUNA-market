@@ -10,8 +10,8 @@ const baseUrl = 'http://185.116.193.73/api';
 class BasketRepository {
   final Basket _basket = Basket();
 
-  Future<int> basketAdd(productId, count, price) =>
-      _basket.basketAdd(productId, count, price);
+  Future<int> basketAdd(productId, count, price, size, color) =>
+      _basket.basketAdd(productId, count, price, size, color);
   Future<int> basketMinus(productId, count, price) =>
       _basket.basketMinus(productId, count, price);
   Future<List<BasketShowModel>> basketShow() => _basket.basketShow();
@@ -19,7 +19,10 @@ class BasketRepository {
   Future<int> basketOrder(List id) => _basket.basketOrder(id);
   Future<String> payment({
     String? address,
-  }) => _basket.payment(address: address,);
+  }) =>
+      _basket.payment(
+        address: address,
+      );
   Future<int> status(String id, String status, String? text) =>
       _basket.status(id, status, text);
 }
@@ -27,18 +30,19 @@ class BasketRepository {
 class Basket {
   final _box = GetStorage();
 
-  Future<int> basketAdd(productId, count, price) async {
+  Future<int> basketAdd(productId, count, price, size, color) async {
     final String? token = _box.read('token');
 
-    final response = await http.post(Uri.parse('$baseUrl/basket/add'),
-        headers: {
-          "Authorization": "Bearer $token"
-        },
-        body: {
-          'product_id': productId,
-          'count': count.toString(),
-          'price': price.toString()
-        });
+    final response =
+        await http.post(Uri.parse('$baseUrl/basket/add'), headers: {
+      "Authorization": "Bearer $token"
+    }, body: {
+      'product_id': productId,
+      'count': count.toString(),
+      'price': price.toString(),
+      'size': size,
+      'color': color
+    });
 
     final data = response.statusCode;
 
@@ -115,15 +119,15 @@ class Basket {
   }) async {
     final String? token = _box.read('token');
 
-    final response = await http.post(
-        Uri.parse('$baseUrl/payment/tinkoff/payment'),
-        headers: {"Authorization": "Bearer $token"},
-        body: {
-          'address':address,
-        }
-        //
-        // basketData ,
-        );
+    final response = await http
+        .post(Uri.parse('$baseUrl/payment/tinkoff/payment'), headers: {
+      "Authorization": "Bearer $token"
+    }, body: {
+      'address': address,
+    }
+            //
+            // basketData ,
+            );
 
     final data = jsonDecode(response.body);
 
