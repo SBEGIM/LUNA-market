@@ -162,15 +162,37 @@ class _BasketPageState extends State<BasketPage> {
           }
         }, builder: (context, state) {
           if (state is ErrorState) {
-            return Center(
-              child: Text(
-                state.message,
-                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+            return SmartRefresher(
+              controller: refreshController,
+              onRefresh: () {
+                BlocProvider.of<BasketCubit>(context).basketShow();
+                refreshController.refreshCompleted();
+              },
+              child: Column(
+                children: [
+                  Center(
+                    child: Text(
+                      state.message,
+                      style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                    ),
+                  ),
+                ],
               ),
             );
           }
           if (state is LoadingState) {
-            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return SmartRefresher(
+              controller: refreshController,
+              onRefresh: () {
+                BlocProvider.of<BasketCubit>(context).basketShow();
+                refreshController.refreshCompleted();
+              },
+              child: const Column(
+                children: [
+                  Center(child: CircularProgressIndicator(color: Colors.indigoAccent)),
+                ],
+              ),
+            );
           }
           if (state is NoDataState) {
             return SmartRefresher(
@@ -198,7 +220,6 @@ class _BasketPageState extends State<BasketPage> {
               ),
             );
           }
-
           if (state is LoadedState) {
             return SmartRefresher(
               controller: refreshController,
@@ -297,7 +318,18 @@ class _BasketPageState extends State<BasketPage> {
               ),
             );
           } else {
-            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return SmartRefresher(
+              controller: refreshController,
+              onRefresh: () {
+                BlocProvider.of<BasketCubit>(context).basketShow();
+                refreshController.refreshCompleted();
+              },
+              child: const Column(
+                children: [
+                  Center(child: CircularProgressIndicator(color: Colors.indigoAccent)),
+                ],
+              ),
+            );
           }
         }),
         bottomSheet: bootSheet == true
