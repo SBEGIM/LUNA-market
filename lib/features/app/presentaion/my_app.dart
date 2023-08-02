@@ -293,15 +293,18 @@ class _MyAppState extends State<MyApp> {
         //  fontFamily: 'Nunito',
         primarySwatch: Colors.blue,
       ),
-      home: AppRouterBuilder(
-        createRouter: (context) => AppRouter(),
-        builder: (context, parser, delegate) => MaterialApp.router(
-          routeInformationParser: parser,
-          routerDelegate: delegate,
-          // onGenerateTitle: (context) => context.localized.appTitle,
-          // theme: ThemeData.light(),
-          // darkTheme: ThemeData.dark(),
-          // themeMode: themeMode,
+      home: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: AppRouterBuilder(
+          createRouter: (context) => AppRouter(),
+          builder: (context, parser, delegate) => MaterialApp.router(
+            routeInformationParser: parser,
+            routerDelegate: delegate,
+            // onGenerateTitle: (context) => context.localized.appTitle,
+            // theme: ThemeData.light(),
+            // darkTheme: ThemeData.dark(),
+            // themeMode: themeMode,
+          ),
         ),
       ),
 // const BaseAdmin()

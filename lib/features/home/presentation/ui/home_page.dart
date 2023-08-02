@@ -447,6 +447,7 @@ class _PopularCatsHompageState extends State<PopularCatsHompage> {
                       height: 16,
                     ),
                     GridView.builder(
+                      padding: EdgeInsets.zero,
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -532,6 +533,7 @@ class _PopularCatsHompageState extends State<PopularCatsHompage> {
                       height: 16,
                     ),
                     GridView.builder(
+                      padding: EdgeInsets.zero,
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -1031,6 +1033,7 @@ class _PopularShopsState extends State<PopularShops> {
                       height: 16,
                     ),
                     GridView.builder(
+                      padding: EdgeInsets.zero,
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
