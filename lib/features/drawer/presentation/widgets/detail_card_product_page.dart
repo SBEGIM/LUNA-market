@@ -920,7 +920,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           fontSize: 12, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${selectedIndex3 != -1 ? "(за ${widget.product.bloc![selectedIndex3!].count}шт )" : 0}',
+                      '${selectedIndex3 != -1 ? "(цена за ${widget.product.bloc![selectedIndex3!].count}шт )" : 0}',
                       style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,

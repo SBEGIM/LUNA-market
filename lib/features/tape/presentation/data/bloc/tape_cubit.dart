@@ -22,15 +22,15 @@ class TapeCubit extends Cubit<TapeState> {
       if (data.isEmpty) {
         emit(NoDataState());
       } else {
+        array.clear();
+        data.forEach((element) {
+          array.add(element);
+        });
         if (blogger_id == 0) {
           emit(LoadedState(data));
         } else {
           emit(BloggerLoadedState(data));
         }
-        array.clear();
-        data.forEach((element) {
-          array.add(element);
-        });
       }
     } catch (e) {
       log(e.toString());
@@ -50,7 +50,11 @@ class TapeCubit extends Cubit<TapeState> {
         array.add(data[i]);
       }
 
-      emit(LoadedState(array));
+      if (blogger_id == 0) {
+        emit(LoadedState(array));
+      } else {
+        emit(BloggerLoadedState(array));
+      }
     } catch (e) {
       emit(ErrorState(message: 'Ошибка сервера'));
     }

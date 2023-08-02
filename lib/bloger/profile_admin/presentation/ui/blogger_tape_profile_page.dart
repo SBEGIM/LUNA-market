@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart' as tapeAdmin;
+import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart'
+    as tapeAdmin;
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart';
 import 'package:haji_market/features/tape/presentation/data/repository/tape_repo.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../features/app/bloc/navigation_cubit/navigation_cubit.dart';
-import '../../../../features/tape/presentation/data/bloc/tape_state.dart' as tapeState;
+import '../../../../features/tape/presentation/data/bloc/tape_state.dart'
+    as tapeState;
 
 import '../../../../features/app/presentaion/base.dart';
 import '../../../../features/tape/presentation/widgets/tape_card_widget.dart';
@@ -27,7 +30,11 @@ class ProfileBloggerTapePage extends StatefulWidget with AutoRouteWrapper {
   int bloggerId;
   String bloggerName;
   String bloggerAvatar;
-  ProfileBloggerTapePage({required this.bloggerId, required this.bloggerName, required this.bloggerAvatar, Key? key})
+  ProfileBloggerTapePage(
+      {required this.bloggerId,
+      required this.bloggerName,
+      required this.bloggerAvatar,
+      Key? key})
       : super(key: key);
 
   @override
@@ -44,11 +51,21 @@ class ProfileBloggerTapePage extends StatefulWidget with AutoRouteWrapper {
 
 class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
   final _box = GetStorage();
+  RefreshController refreshController = RefreshController();
+
+  Future<void> onLoading() async {
+    await BlocProvider.of<TapeCubit>(context)
+        .tapePagination(false, false, '', widget.bloggerId);
+    await Future.delayed(const Duration(milliseconds: 2000));
+    refreshController.loadComplete();
+  }
 
   @override
   void initState() {
-    BlocProvider.of<ProfileStaticsBloggerCubit>(context).statics(widget.bloggerId);
-    BlocProvider.of<tapeAdmin.TapeCubit>(context).tapes(false, false, '', widget.bloggerId);
+    BlocProvider.of<ProfileStaticsBloggerCubit>(context)
+        .statics(widget.bloggerId);
+    BlocProvider.of<tapeAdmin.TapeCubit>(context)
+        .tapes(false, false, '', widget.bloggerId);
 
     super.initState();
   }
@@ -74,7 +91,8 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
         centerTitle: true,
         title: const Text(
           'Профиль блогера',
-          style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+          style: TextStyle(
+              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
         ),
         // actions: [
         //   Padding(
@@ -98,21 +116,26 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                     borderRadius: BorderRadius.circular(60),
                     image: DecorationImage(
                       image: widget.bloggerAvatar != null
-                          ? NetworkImage("http://185.116.193.73/storage/${widget.bloggerAvatar}")
-                          : const AssetImage('assets/icons/profile2.png') as ImageProvider,
+                          ? NetworkImage(
+                              "http://185.116.193.73/storage/${widget.bloggerAvatar}")
+                          : const AssetImage('assets/icons/profile2.png')
+                              as ImageProvider,
                       fit: BoxFit.cover,
                     )),
               ),
               title: Text(
                 widget.bloggerName,
-                style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.kGray900, fontSize: 16),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.kGray900,
+                    fontSize: 16),
               ),
               trailing: InkWell(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ReqirectProfilePage()),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => const ReqirectProfilePage()),
+                  // );
                 },
                 child: Container(
                   padding: EdgeInsets.all(6),
@@ -125,7 +148,10 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                   ),
                   child: const Text(
                     'Подписаться',
-                    style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w400),
+                    style: TextStyle(
+                        color: AppColors.kPrimaryColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
                   ),
                 ),
               ),
@@ -138,7 +164,8 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
               alignment: Alignment.center,
               width: 500,
               height: 76,
-              child: BlocConsumer<ProfileStaticsBloggerCubit, ProfileStaticsBloggerState>(
+              child: BlocConsumer<ProfileStaticsBloggerCubit,
+                  ProfileStaticsBloggerState>(
                 listener: (context, state) {},
                 builder: (context, state) {
                   if (state is LoadedState) {
@@ -159,12 +186,17 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                               children: [
                                 Text(
                                   state.loadedProfile.videoReview.toString(),
-                                  style:
-                                      const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
                                 ),
                                 const Text(
                                   'Видео обзоров',
-                                  style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ],
                             ),
@@ -173,12 +205,17 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                               children: [
                                 Text(
                                   state.loadedProfile.subscribers.toString(),
-                                  style:
-                                      const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
                                 ),
                                 const Text(
                                   'Подписчиков',
-                                  style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ],
                             ),
@@ -187,19 +224,26 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                               children: [
                                 Text(
                                   state.loadedProfile.sales.toString(),
-                                  style:
-                                      const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
                                 ),
                                 const Text(
                                   'Продаж',
-                                  style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ],
                             ),
                           ]),
                     );
                   } else {
-                    return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                    return const Center(
+                        child: CircularProgressIndicator(
+                            color: Colors.indigoAccent));
                   }
                 },
               ),
@@ -215,39 +259,57 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                   listener: (context, state) {},
                   builder: (context, state) {
                     if (state is tapeState.BloggerLoadedState) {
-                      return GridView.builder(
-                        padding: const EdgeInsets.all(1),
-                        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 150,
-                          childAspectRatio: 1 / 2,
-                          mainAxisSpacing: 3,
-                          crossAxisSpacing: 3,
-                        ),
-                        itemCount: state.tapeModel.length,
-                        // children: const [],
-                        itemBuilder: (context, index) {
-                          return Shimmer(
-                            duration: const Duration(seconds: 3), //Default value
-                            interval: const Duration(microseconds: 1), //Default value: Duration(seconds: 0)
-                            color: Colors.white, //Default value
-                            colorOpacity: 0, //Default value
-                            enabled: true, //Default value
-                            direction: const ShimmerDirection.fromLTRB(), //Default Value
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.grey.withOpacity(0.6),
-                              ),
-                              child: TapeCardWidget(
-                                tape: state.tapeModel[index],
-                                index: index,
-                              ),
+                      return SmartRefresher(
+                          controller: refreshController,
+                          enablePullUp: true,
+                          onLoading: () {
+                            onLoading();
+                          },
+                          onRefresh: () {
+                            BlocProvider.of<tapeAdmin.TapeCubit>(context)
+                                .tapes(false, false, '', widget.bloggerId);
+                            refreshController.refreshCompleted();
+                          },
+                          child: GridView.builder(
+                            padding: const EdgeInsets.all(1),
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 150,
+                              childAspectRatio: 1 / 2,
+                              mainAxisSpacing: 3,
+                              crossAxisSpacing: 3,
                             ),
-                          );
-                        },
-                      );
+                            itemCount: state.tapeModel.length,
+                            // children: const [],
+                            itemBuilder: (context, index) {
+                              return Shimmer(
+                                duration:
+                                    const Duration(seconds: 3), //Default value
+                                interval: const Duration(
+                                    microseconds:
+                                        1), //Default value: Duration(seconds: 0)
+                                color: Colors.white, //Default value
+                                colorOpacity: 0, //Default value
+                                enabled: true, //Default value
+                                direction: const ShimmerDirection
+                                    .fromLTRB(), //Default Value
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.grey.withOpacity(0.6),
+                                  ),
+                                  child: TapeCardWidget(
+                                    tape: state.tapeModel[index],
+                                    index: index,
+                                  ),
+                                ),
+                              );
+                            },
+                          ));
                     } else {
-                      return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                      return const Center(
+                          child: CircularProgressIndicator(
+                              color: Colors.indigoAccent));
                     }
                   },
                 ),
