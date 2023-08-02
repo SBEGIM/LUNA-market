@@ -12,6 +12,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../features/app/bloc/navigation_cubit/navigation_cubit.dart';
+import '../../../../features/tape/presentation/data/bloc/subs_cubit.dart';
 import '../../../../features/tape/presentation/data/bloc/tape_state.dart'
     as tapeState;
 
@@ -51,6 +52,8 @@ class ProfileBloggerTapePage extends StatefulWidget with AutoRouteWrapper {
 
 class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
   final _box = GetStorage();
+
+  bool inSub = false;
   RefreshController refreshController = RefreshController();
 
   Future<void> onLoading() async {
@@ -136,6 +139,12 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                   //   context,
                   //   MaterialPageRoute(builder: (context) => const ReqirectProfilePage()),
                   // );
+
+                  BlocProvider.of<SubsCubit>(context).sub(widget.bloggerId);
+
+                  setState(() {
+                    inSub = !inSub;
+                  });
                 },
                 child: Container(
                   padding: EdgeInsets.all(6),
@@ -146,9 +155,9 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                       color: AppColors.kPrimaryColor,
                     ),
                   ),
-                  child: const Text(
-                    'Подписаться',
-                    style: TextStyle(
+                  child: Text(
+                    inSub != true ? 'Подписаться' : 'Отписаться',
+                    style: const TextStyle(
                         color: AppColors.kPrimaryColor,
                         fontSize: 14,
                         fontWeight: FontWeight.w400),
@@ -204,7 +213,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                             Column(
                               children: [
                                 Text(
-                                  state.loadedProfile.subscribers.toString(),
+                                  ' ${state.loadedProfile.subscribers}',
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 20,
@@ -266,7 +275,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                             onLoading();
                           },
                           onRefresh: () {
-                            BlocProvider.of<tapeAdmin.TapeCubit>(context)
+                            BlocProvider.of<TapeCubit>(context)
                                 .tapes(false, false, '', widget.bloggerId);
                             refreshController.refreshCompleted();
                           },

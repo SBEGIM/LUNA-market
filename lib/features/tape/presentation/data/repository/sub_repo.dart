@@ -12,11 +12,14 @@ class SubsRepository {
 class SubApi {
   final _box = GetStorage();
 
-  sub(shopId) async {
+  sub(bloggerID) async {
     final String? token = _box.read('token');
 
-    final response = await http.post(Uri.parse('$baseUrl/user/subs'),
-        headers: {"Authorization": "Bearer $token"}, body: {"shop_id": shopId});
+    final response = await http.post(Uri.parse('$baseUrl/user/subs'), headers: {
+      "Authorization": "Bearer $token"
+    }, body: {
+      "blogger_id": bloggerID.toString(),
+    });
 
     return response.statusCode;
   }
