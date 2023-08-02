@@ -33,8 +33,7 @@ class _TapePageState extends State<TapePage> {
   }
 
   Future<void> onLoading() async {
-    await BlocProvider.of<TapeCubit>(context)
-        .tapePagination(false, false, '', 0);
+    await BlocProvider.of<TapeCubit>(context).tapePagination(title == 'Подписки', title == 'Избранное', '', 0);
     await Future.delayed(const Duration(milliseconds: 2000));
     refreshController.loadComplete();
   }
@@ -51,9 +50,7 @@ class _TapePageState extends State<TapePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          iconTheme: title != 'Лента'
-              ? const IconThemeData(color: AppColors.kWhite)
-              : null,
+          iconTheme: title != 'Лента' ? const IconThemeData(color: AppColors.kWhite) : null,
           backgroundColor: Colors.white,
           elevation: 0,
           leading: title != 'Лента'
@@ -68,8 +65,7 @@ class _TapePageState extends State<TapePage> {
                     // BlocProvider.of<navCubit.NavigationCubit>(context)
                     //     .getNavBarItem(const navCubit.NavigationState.tape());
                     title = 'Лента';
-                    BlocProvider.of<TapeCubit>(context)
-                        .tapes(false, false, '', 0);
+                    BlocProvider.of<TapeCubit>(context).tapes(false, false, '', 0);
 
                     setState(() {});
                     // print(title);
@@ -85,14 +81,10 @@ class _TapePageState extends State<TapePage> {
               helpText: 'Поиск..',
               color: AppColors.kPrimaryColor,
               onChanged: (String? value) {
-                BlocProvider.of<TapeCubit>(context)
-                    .tapes(false, false, searchController.text, 0);
+                BlocProvider.of<TapeCubit>(context).tapes(false, false, searchController.text, 0);
                 setState(() {});
               },
-              style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
               textController: searchController,
               onSuffixTap: () {
                 searchController.clear();
@@ -122,9 +114,7 @@ class _TapePageState extends State<TapePage> {
                   children: [
                     PopupMenuButton(
                       color: const Color.fromRGBO(230, 231, 232, 1),
-                      shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(15.0))),
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
                       position: PopupMenuPosition.under,
                       offset: const Offset(0, 25),
                       itemBuilder: (BuildContext bc) {
@@ -132,8 +122,7 @@ class _TapePageState extends State<TapePage> {
                           PopupMenuItem(
                             onTap: () {
                               title = 'Подписки';
-                              BlocProvider.of<TapeCubit>(context)
-                                  .tapes(true, false, null, 0);
+                              BlocProvider.of<TapeCubit>(context).tapes(true, false, null, 0);
 
                               setState(() {});
                             },
@@ -151,8 +140,7 @@ class _TapePageState extends State<TapePage> {
                           ),
                           PopupMenuItem(
                             onTap: () {
-                              BlocProvider.of<TapeCubit>(context)
-                                  .tapes(false, true, null, 0);
+                              BlocProvider.of<TapeCubit>(context).tapes(false, true, null, 0);
 
                               title = 'Избранное';
                               setState(() {});
@@ -171,12 +159,10 @@ class _TapePageState extends State<TapePage> {
                       child: Row(
                         children: [
                           Text(
-                            '$title',
+                            title,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                color: AppColors.kGray900,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
+                            style:
+                                const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                           ),
                           const SizedBox(width: 5),
                           SvgPicture.asset(
@@ -203,9 +189,7 @@ class _TapePageState extends State<TapePage> {
                 );
               }
               if (state is LoadingState) {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
               if (state is NoDataState) {
                 return SizedBox(
@@ -213,8 +197,7 @@ class _TapePageState extends State<TapePage> {
                   child: SmartRefresher(
                     controller: refreshController,
                     onRefresh: () {
-                      BlocProvider.of<TapeCubit>(context)
-                          .tapes(false, false, '', 0);
+                      BlocProvider.of<TapeCubit>(context).tapes(title == 'Подписки', title == 'Избранное', '', 0);
                       refreshController.refreshCompleted();
                     },
                     child: Column(
@@ -222,20 +205,15 @@ class _TapePageState extends State<TapePage> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Container(
-                            margin: EdgeInsets.only(top: 146),
-                            child: Image.asset('assets/icons/no_data.png')),
+                            margin: const EdgeInsets.only(top: 146), child: Image.asset('assets/icons/no_data.png')),
                         const Text(
                           'В ленте нет данных',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                           textAlign: TextAlign.center,
                         ),
                         const Text(
                           'По вашему запросу ничего не найдено',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff717171)),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
                           textAlign: TextAlign.center,
                         )
                       ],
@@ -252,15 +230,13 @@ class _TapePageState extends State<TapePage> {
                     onLoading();
                   },
                   onRefresh: () {
-                    BlocProvider.of<TapeCubit>(context)
-                        .tapes(false, false, '', 0);
+                    BlocProvider.of<TapeCubit>(context).tapes(title == 'Подписки', title == 'Избранное', '', 0);
                     refreshController.refreshCompleted();
                   },
                   child: GridView.builder(
                     cacheExtent: 10000,
                     padding: const EdgeInsets.all(1),
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 150,
                       childAspectRatio: 1 / 2,
                       mainAxisSpacing: 3,
@@ -271,14 +247,11 @@ class _TapePageState extends State<TapePage> {
                     itemBuilder: (context, index) {
                       return Shimmer(
                         duration: const Duration(seconds: 3), //Default value
-                        interval: const Duration(
-                            microseconds:
-                                1), //Default value: Duration(seconds: 0)
+                        interval: const Duration(microseconds: 1), //Default value: Duration(seconds: 0)
                         color: Colors.white, //Default value
                         colorOpacity: 0, //Default value
                         enabled: true, //Default value
-                        direction:
-                            const ShimmerDirection.fromLTRB(), //Default Value
+                        direction: const ShimmerDirection.fromLTRB(), //Default Value
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
@@ -419,9 +392,7 @@ class _TapePageState extends State<TapePage> {
                 //   },
                 // );
               } else {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }));
   }
