@@ -8,6 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:haji_market/admin/auth/data/bloc/register_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/bloc/sms_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/repository/registerAdminRepo.dart';
+import 'package:haji_market/admin/my_orders_admin/data/bloc/order_status_admin_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/size_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/data/repository/SizeAdminRepo.dart';
 import 'package:haji_market/admin/tape_admin/data/repository/tape_admin_repo.dart';
@@ -368,6 +369,9 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
             create: (_) =>
                 BasketAdminCubit(basketRepository: BasketAdminRepository())),
+        BlocProvider(
+            create: (_) =>
+                OrderStatusAdminCubit(basketRepository: BasketAdminRepository())),
         BlocProvider(
             create: (_) => ColorCubit(colorRepository: ColorAdminRepository())),
         BlocProvider(

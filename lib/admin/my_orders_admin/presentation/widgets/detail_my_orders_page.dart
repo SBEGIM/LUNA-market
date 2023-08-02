@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/admin/my_orders_admin/data/bloc/order_status_admin_cubit.dart';
 import 'package:haji_market/admin/my_orders_admin/data/models/basket_admin_order_model.dart';
 import 'package:haji_market/admin/my_orders_admin/presentation/widgets/delivery_note_widget.dart';
 import 'package:haji_market/core/common/constants.dart';
@@ -423,56 +424,67 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
           const SizedBox(
             height: 15,
           ),
-          Container(
-            height: 65,
-            color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    BlocProvider.of<BasketAdminCubit>(context).basketStatus(
-                      postStatus,
-                      widget.basket.id.toString(),
-                      widget.basket.product!.first.id.toString(),
-                    );
-                    BlocProvider.of<BasketAdminCubit>(context).basketOrderShow();
-
-                    Get.back();
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.all(
-                      13,
-                    ),
-                    child: Text(
-                      buttonText,
-                      style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    BlocProvider.of<BasketAdminCubit>(context).basketStatus(
-                        postStatus, widget.basket.id.toString(), widget.basket.product!.first.id.toString());
-                    BlocProvider.of<BasketAdminCubit>(context).basketOrderShow();
-
-                    Get.back();
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.all(
-                      13,
-                    ),
-                    child: Text(
-                      buttonSecondText,
-                      style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
+          BlocConsumer<OrderStatusAdminCubit, OrderStatusAdminState>(listener: (context, state) {
+            if (state is LoadedState) {
+              BlocProvider.of<BasketAdminCubit>(context).basketOrderShow();
+              Navigator.pop(context);
+            } else if (state is ErrorState) {
+              Get.snackbar('Ошибка', state.message, backgroundColor: Colors.redAccent);
+            }
+          }, builder: (context, state) {
+            return Container(
+              height: 65,
+              color: Colors.white,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(
+                        postStatus,
+                        widget.basket.id.toString(),
+                        widget.basket.product!.first.id.toString(),
+                      );
+                    },
+                    child: Container(
+                      height: 42,
+                      decoration:
+                          BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(10)),
+                      padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 25),
+                      child: state is LoadingState
+                          ? const Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            )
+                          : Text(
+                              buttonText,
+                              style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
+                            ),
                     ),
                   ),
-                )
-              ],
-            ),
-          )
+
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     BlocProvider.of<BasketAdminCubit>(context).basketStatus(
+                  //         postStatus, widget.basket.id.toString(), widget.basket.product!.first.id.toString());
+                  //     BlocProvider.of<BasketAdminCubit>(context).basketOrderShow();
+
+                  //     Get.back();
+                  //   },
+                  //   child: Container(
+                  //     decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10)),
+                  //     padding: const EdgeInsets.all(
+                  //       13,
+                  //     ),
+                  //     child: Text(
+                  //       buttonSecondText,
+                  //       style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
+                  //     ),
+                  //   ),
+                  // )
+                ],
+              ),
+            );
+          })
         ],
       ),
     );
