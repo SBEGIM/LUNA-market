@@ -1,6 +1,7 @@
 class TapeModel {
   TapeModel({
     int? id,
+    int? tapeId,
     String? name,
     String? catName,
     int? price,
@@ -17,6 +18,7 @@ class TapeModel {
     Blogger? blogger,
   }) {
     _id = id;
+    _tapeId = tapeId;
     _name = name;
     _catName = catName;
     _price = price;
@@ -35,6 +37,7 @@ class TapeModel {
 
   TapeModel.fromJson(dynamic json) {
     _id = json['id'];
+    _tapeId = json['tape_id'];
     _name = json['name'];
     _catName = json['cat_name'];
     _price = json['price'];
@@ -52,6 +55,7 @@ class TapeModel {
         json['blogger'] != null ? Blogger.fromJson(json['blogger']) : null;
   }
   int? _id;
+  int? _tapeId;
   String? _name;
   String? _catName;
   int? _price;
@@ -68,6 +72,7 @@ class TapeModel {
   Blogger? _blogger;
 
   int? get id => _id;
+  int? get tapeId => _tapeId;
   String? get name => _name;
   String? get catName => _catName;
   int? get price => _price;
@@ -86,6 +91,7 @@ class TapeModel {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
+    map['tape_id'] = _tapeId;
     map['name'] = _name;
     map['cat_name'] = _catName;
     map['price'] = _price;

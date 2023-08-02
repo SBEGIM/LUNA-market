@@ -122,7 +122,7 @@ class _TapePageState extends State<TapePage> {
                           PopupMenuItem(
                             onTap: () {
                               title = 'Подписки';
-                              BlocProvider.of<TapeCubit>(context).tapes(true, false, null, 0);
+                              BlocProvider.of<TapeCubit>(context).tapes(true, false, '', 0);
 
                               setState(() {});
                             },
@@ -140,7 +140,7 @@ class _TapePageState extends State<TapePage> {
                           ),
                           PopupMenuItem(
                             onTap: () {
-                              BlocProvider.of<TapeCubit>(context).tapes(false, true, null, 0);
+                              BlocProvider.of<TapeCubit>(context).tapes(false, true, '', 0);
 
                               title = 'Избранное';
                               setState(() {});
