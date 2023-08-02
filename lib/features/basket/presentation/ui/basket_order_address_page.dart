@@ -460,7 +460,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                 return;
               }
             }
-            context.router.push(BasketOrderRoute(fbs: fbs));
+            context.router.push(BasketOrderRoute(fbs: fbs, address: point ? office : address));
             // Get.to(BasketOrderPage(
             //   fbs: fbs,
             // ));

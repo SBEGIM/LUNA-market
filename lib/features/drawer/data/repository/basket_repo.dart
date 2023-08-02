@@ -17,7 +17,9 @@ class BasketRepository {
   Future<List<BasketShowModel>> basketShow() => _basket.basketShow();
   Future<List<BasketOrderModel>> basketOrderShow() => _basket.basketOrderShow();
   Future<int> basketOrder(List id) => _basket.basketOrder(id);
-  Future<String> payment() => _basket.payment();
+  Future<String> payment({
+    String? address,
+  }) => _basket.payment(address: address,);
   Future<int> status(String id, String status, String? text) =>
       _basket.status(id, status, text);
 }
@@ -108,12 +110,17 @@ class Basket {
     return data;
   }
 
-  Future<String> payment() async {
+  Future<String> payment({
+    String? address,
+  }) async {
     final String? token = _box.read('token');
 
     final response = await http.post(
         Uri.parse('$baseUrl/payment/tinkoff/payment'),
-        headers: {"Authorization": "Bearer $token"}
+        headers: {"Authorization": "Bearer $token"},
+        body: {
+          'address':address,
+        }
         //
         // basketData ,
         );

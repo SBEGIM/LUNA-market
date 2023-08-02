@@ -18,6 +18,7 @@ import 'package:haji_market/features/drawer/data/bloc/address_cubit.dart';
 import 'package:haji_market/bloger/tape/data/cubit/tape_blogger_cubit.dart';
 import 'package:haji_market/bloger/tape/data/repository/tape_blogger_repo.dart';
 import 'package:haji_market/features/drawer/data/bloc/bonus_cubit.dart';
+import 'package:haji_market/features/drawer/data/bloc/order_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/profit_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/respublic_cubit.dart';
@@ -354,6 +355,8 @@ class MultiBlocWrapper extends StatelessWidget {
                 FavoriteCubit(favoriteRepository: FavoriteRepository())),
         BlocProvider(
             create: (_) => BasketCubit(basketRepository: BasketRepository())),
+        BlocProvider(
+            create: (_) => OrderCubit(basketRepository: BasketRepository())),
         BlocProvider(
             create: (_) => BrandCubit(brandRepository: BrandsRepository())),
         BlocProvider(

@@ -122,9 +122,11 @@ class BasketCubit extends Cubit<BasketState> {
     return price;
   }
 
-  Future<String?> payment() async {
+  Future<String?> payment({
+    String? address,
+  }) async {
     try {
-      final data = await basketRepository.payment();
+      final data = await basketRepository.payment(address: address,);
       // if (data == 200) {
       //   Get.snackbar('Успешно', 'Заказ оформлен',
       //       backgroundColor: Colors.blueAccent);
@@ -138,6 +140,7 @@ class BasketCubit extends Cubit<BasketState> {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
+    return null;
   }
 
   Future<int?> basketStatusUpdate(String id, String status, String? text) async {

@@ -4,21 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
-import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
+import 'package:haji_market/features/drawer/data/bloc/order_cubit.dart' as orderCubit;
 import 'package:share_plus/share_plus.dart';
 import '../../../../contract_of_sale.dart';
 import '../../../../core/common/constants.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
-import '../../../app/presentaion/base.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart';
 import '../../../drawer/data/bloc/basket_state.dart';
 import '../../../drawer/presentation/widgets/credit_info_detail_page.dart';
-import '../widgets/payment_webview_widget.dart';
 
 @RoutePage()
 class BasketOrderPage extends StatefulWidget {
+  final String? address;
   bool? fbs;
-  BasketOrderPage({this.fbs, Key? key}) : super(key: key);
+  BasketOrderPage({this.fbs, Key? key, this.address}) : super(key: key);
 
   @override
   _BasketOrderPageState createState() => _BasketOrderPageState();
@@ -66,27 +65,28 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
     }
   }
 
-  Future<void> basket(List<BasketShowModel>? basketShowModel) async {
-    for (var element in basketShowModel!) {
-      id.add(element.basketId!.toInt());
-      count += element.basketCount!.toInt();
-      price += element.price!.toInt();
-      if (widget.fbs != true) courier += element.priceCourier!.toInt();
-      productNames =
-          "${productNames != null ? "${productNames} ," : ''}  http://lunamarket.ru/?product_id\u003d${element.product!.id}";
+  Future<void> basket(BasketState state) async {
+    if (state is LoadedState) {
+      for (var element in state.basketShowModel) {
+        id.add(element.basketId!.toInt());
+        count += element.basketCount!.toInt();
+        price += element.price!.toInt();
+        if (widget.fbs != true) courier += element.priceCourier!.toInt();
+        productNames =
+            "${productNames != null ? "$productNames ," : ''}  http://lunamarket.ru/?product_id\u003d${element.product!.id}";
+      }
+      bs = (price * 0.05).toInt();
     }
-    bs = (price * 0.05).toInt();
   }
 
   Future<void> basketData() async {
-    final BasketDataCubit = await BlocProvider.of<BasketCubit>(context).basketData();
-    basket(BasketDataCubit as List<BasketShowModel>);
+    basket(BlocProvider.of<BasketCubit>(context).state);
   }
 
   @override
   void initState() {
     basketData();
-    BlocProvider.of<BasketCubit>(context).basketShow();
+    // BlocProvider.of<BasketCubit>(context).basketShow();
     super.initState();
   }
 
@@ -113,7 +113,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                 padding: const EdgeInsets.only(right: 22.0),
                 child: GestureDetector(
                     onTap: () async {
-                      await Share.share('${productNames}');
+                      await Share.share('$productNames');
                     },
                     child: SvgPicture.asset('assets/icons/share.svg')))
           ],
@@ -124,7 +124,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
       body: BlocConsumer<BasketCubit, BasketState>(listener: (context, state) {
         if (state is OrderState) {
           BlocProvider.of<navCubit.NavigationCubit>(context).getNavBarItem(const navCubit.NavigationState.home());
-          context.router.popUntil((route) => route.settings.name==LauncherRoute.name);
+          context.router.popUntil((route) => route.settings.name == LauncherRoute.name);
           // Get.to(const Base(index: 1));
         }
       }, builder: (context, state) {
@@ -830,37 +830,45 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
           return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
         }
       }),
-      bottomSheet: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
-        child: InkWell(
-          onTap: () async {
-            if (isCheckedHalal == true) {
-              Get.to(CreditInfoDetailPage(
-                title: 'Рассрочка Halal',
-              ));
-            } else {
-              final data = await BlocProvider.of<BasketCubit>(context).payment();
-              context.router.push(PaymentWebviewRoute(url: data!));
-              // Get.to(() => PaymentWebviewPage(url: data!));
-            }
+      bottomSheet: BlocConsumer<orderCubit.OrderCubit, orderCubit.OrderState>(listener: (context, state) {
+        if (state is orderCubit.LoadedState) {
+          context.router.push(PaymentWebviewRoute(url: state.url));
+        }
+      }, builder: (context, state) {
+        return Container(
+          color: Colors.white,
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+          child: InkWell(
+            onTap: () async {
+              if (isCheckedHalal == true) {
+                Get.to(CreditInfoDetailPage(
+                  title: 'Рассрочка Halal',
+                ));
+              } else {
+                BlocProvider.of<orderCubit.OrderCubit>(context).payment(address: widget.address);
+              }
 
-            // Navigator.pop(context);
-          },
-          child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.kPrimaryColor,
-              ),
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(16),
-              child: const Text(
-                'Оформить заказ',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
-                textAlign: TextAlign.center,
-              )),
-        ),
-      ),
+              // Navigator.pop(context);
+            },
+            child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppColors.kPrimaryColor,
+                ),
+                width: MediaQuery.of(context).size.width,
+                child: state is orderCubit.LoadingState
+                    ? const SizedBox(height: 51, child: Center(child: CircularProgressIndicator.adaptive()))
+                    : const Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          'Оформить заказ',
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
+                          textAlign: TextAlign.center,
+                        ),
+                      )),
+          ),
+        );
+      }),
     );
   }
 }
