@@ -128,17 +128,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
           // Get.to(const Base(index: 1));
         }
       }, builder: (context, state) {
-        if (state is ErrorState) {
-          return Center(
-            child: Text(
-              state.message,
-              style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-            ),
-          );
-        }
-
-        if (state is LoadedState) {
-          return ListView(children: [
+      return ListView(children: [
             Column(
               children: [
                 const SizedBox(height: 12),
@@ -826,9 +816,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
               ],
             ),
           ]);
-        } else {
-          return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
-        }
+      
       }),
       bottomSheet: BlocConsumer<orderCubit.OrderCubit, orderCubit.OrderState>(listener: (context, state) {
         if (state is orderCubit.LoadedState) {
