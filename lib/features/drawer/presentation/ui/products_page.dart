@@ -111,8 +111,7 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   Future<void> onRefresh() async {
-    await BlocProvider.of<productCubit.ProductCubit>(context)
-        .productsPagination();
+    await BlocProvider.of<productCubit.ProductCubit>(context).products();
     await Future.delayed(const Duration(milliseconds: 1000));
     if (mounted) {
       setState(() {});
