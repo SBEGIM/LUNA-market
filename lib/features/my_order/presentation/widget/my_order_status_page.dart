@@ -145,7 +145,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${widget.basketOrder.status == 'cancel' ? 'Отменен' : 'Доставка'}",
+                                widget.basketOrder.status == 'cancel' ? 'Отменен' : 'Доставка',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
@@ -349,10 +349,12 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               'assets/icons/location.svg',
                             ),
                             const SizedBox(width: 13),
-                            Text(
-                              '${widget.basketOrder.product?.first.address ?? 'Неизвестен'}',
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w400),
+                            Expanded(
+                              child: Text(
+                                widget.basketOrder.product?.first.address ?? 'Неизвестен',
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w400),
+                              ),
                             )
                           ],
                         )

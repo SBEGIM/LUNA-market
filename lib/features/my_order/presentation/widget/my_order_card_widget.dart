@@ -85,20 +85,18 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                       MaterialPageRoute(builder: (context) => MyOrderStatusPage(basketOrder: widget.basketOrder)),
                     );
                   },
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Детали заказа',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
                       ),
-                      Container(
-                          //  margin: const EdgeInsets.only(right: 11.75),
-                          child: const Icon(
+                      Icon(
                         Icons.arrow_forward_ios,
                         color: AppColors.kPrimaryColor,
                         size: 18,
-                      ))
+                      )
                     ],
                   ),
                 ),

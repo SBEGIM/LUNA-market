@@ -4,6 +4,7 @@ class BasketShowModel {
       List<String>? image,
       int? priceCourier,
       int? price,
+      int? optom,
       int? basketId,
       int? basketCount,
       String? basketColor,
@@ -14,6 +15,7 @@ class BasketShowModel {
     _image = image;
     _priceCourier = priceCourier;
     _price = price;
+    _optom = optom;
     _basketId = basketId;
     _basketCount = basketCount;
     _basketColor = basketColor;
@@ -27,6 +29,7 @@ class BasketShowModel {
     _image = json['image'] != null ? json['image'].cast<String>() : [];
     _priceCourier = json['price_courier'];
     _price = json['price'];
+    _optom = json['optom'];
     _basketId = json['basket_id'];
     _basketCount = json['basket_count'];
     _basketColor = json['basket_color'];
@@ -43,6 +46,7 @@ class BasketShowModel {
   List<String>? _image;
   int? _priceCourier;
   int? _price;
+  int? _optom;
   int? _basketId;
   int? _basketCount;
   String? _basketColor;
@@ -54,6 +58,7 @@ class BasketShowModel {
   List<String>? get image => _image;
   int? get priceCourier => _priceCourier;
   int? get price => _price;
+  int? get optom => _optom;
   int? get basketId => _basketId;
   int? get basketCount => _basketCount;
   String? get basketColor => _basketColor;
@@ -69,6 +74,7 @@ class BasketShowModel {
     map['image'] = _image;
     map['price_courier'] = _priceCourier;
     map['price'] = _price;
+    map['optom'] = _optom;
     map['basket_id'] = _basketId;
     map['basket_count'] = _basketCount;
     map['basket_color'] = _basketColor;

@@ -41,12 +41,12 @@ class Basket {
         await http.post(Uri.parse('$baseUrl/basket/add'), headers: {
       "Authorization": "Bearer $token"
     }, body: {
-      'product_id': productId,
+      'product_id': productId.toString(),
       'count': count.toString(),
       'price': price.toString(),
-      'size': size,
-      'color': color,
-      if(isOptom==true) 'optom':'true'
+      'size': size.toString(),
+      'color': color.toString(),
+      if(isOptom==true) 'optom':'1'.toString()
     });
 
     final data = response.statusCode;
