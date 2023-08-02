@@ -1,22 +1,19 @@
-
-
 import '../../../home/data/model/Cats.dart';
 
-abstract class BrandState{}
+abstract class BrandState {}
 
+class InitState extends BrandState {}
 
-class InitState extends BrandState{}
+class LoadingState extends BrandState {}
 
-class LoadingState extends BrandState{}
+class NoDataState extends BrandState {}
 
-class LoadedState extends BrandState{
+class LoadedState extends BrandState {
   List<Cats> cats;
   LoadedState(this.cats);
 }
 
-class ErrorState extends BrandState{
+class ErrorState extends BrandState {
   String message;
   ErrorState({required this.message});
-
 }
-

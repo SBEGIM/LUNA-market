@@ -966,6 +966,65 @@ class _BrandBottomSheetState extends State<BrandBottomSheet> {
               ),
             );
           }
+          if (state is brandState.NoDataState) {
+            return Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+              width: MediaQuery.of(context).size.height,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.only(top: 130),
+                      child: Image.asset('assets/icons/no_data.png')),
+                  const Text(
+                    'Нет данных',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Text(
+                    'Под эту категорию нет брендов',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff717171)),
+                    textAlign: TextAlign.center,
+                  ),
+                  Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.only(
+                        left: 0, right: 0, top: 22, bottom: 26),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColors.kPrimaryColor,
+                          ),
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.all(16),
+                          child: const Text(
+                            'Закрыть',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                            textAlign: TextAlign.center,
+                          )),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
           if (state is brandState.LoadedState) {
             return Container(
                 decoration: const BoxDecoration(

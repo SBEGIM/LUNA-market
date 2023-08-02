@@ -15,9 +15,14 @@ class BrandCubit extends Cubit<BrandState> {
   }) async {
     try {
       emit(LoadingState());
-      final List<Cats> data = await brandRepository.brandApi(subCatId: subCatId);
+      final List<Cats> data =
+          await brandRepository.brandApi(subCatId: subCatId);
       _brands = data;
-      emit(LoadedState(data));
+      if (_brands.isEmpty) {
+        emit(NoDataState());
+      } else {
+        emit(LoadedState(data));
+      }
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));

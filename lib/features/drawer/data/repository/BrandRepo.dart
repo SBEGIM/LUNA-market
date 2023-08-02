@@ -17,8 +17,8 @@ class BrandApi {
   Future<List<Cats>> brands({
     int? subCatId,
   }) async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/list/brands${subCatId != null ? '?sub_cat_id=$subCatId' : ''}'));
+    final response = await http.get(Uri.parse(
+        '$baseUrl/list/brands${subCatId != null ? '?sub_cat_id=$subCatId' : ''}'));
     final data = jsonDecode(response.body);
 
     return (data as List).map((e) => Cats.fromJson(e)).toList();
