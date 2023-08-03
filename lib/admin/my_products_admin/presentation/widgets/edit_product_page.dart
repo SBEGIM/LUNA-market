@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,7 +12,6 @@ import 'package:haji_market/admin/my_products_admin/data/bloc/product_admin_stat
 import 'package:haji_market/admin/my_products_admin/data/bloc/size_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caats_admin_page.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart';
 import 'package:haji_market/features/home/data/bloc/cats_cubit.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,7 +19,6 @@ import 'package:video_player/video_player.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/drawer/data/bloc/brand_cubit.dart';
 import '../../../../features/home/data/model/Cats.dart';
-import '../../../admin_app/presentation/base_admin.dart';
 import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/models/admin_products_model.dart';
 import 'brands_admin_page.dart';

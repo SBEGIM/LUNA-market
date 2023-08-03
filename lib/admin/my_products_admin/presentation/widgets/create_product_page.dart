@@ -4,23 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/size_count_dto.dart';
-import 'package:haji_market/admin/my_products_admin/data/bloc/color_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/size_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/brands_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/colors_admin_page.dart';
-import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caats_admin_page.dart';
 import 'package:haji_market/blogger_ad.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/home/data/model/Cats.dart';
-import '../../../admin_app/presentation/base_admin.dart';
 import '../../data/DTO/color_count_dto.dart';
 import '../../data/DTO/optom_price_dto.dart';
 import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/bloc/product_admin_state.dart';
-import 'cats_admin_page.dart';
 
 class CreateProductPage extends StatefulWidget {
   final Cats cat;

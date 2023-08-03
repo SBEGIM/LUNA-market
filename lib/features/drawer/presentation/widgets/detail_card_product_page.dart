@@ -2394,7 +2394,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
                 Future.wait<void>(
                     [BlocProvider.of<ProductCubit>(context).products()]);
-                context.router.push(const BasketOrderAddressRoute());
+                context.router.push(BasketOrderAddressRoute());
 
                 // Navigator.popUntil(context, (route) => route.isFirst);
                 // BlocProvider.of<NavigationCubit>(context)

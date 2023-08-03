@@ -18,7 +18,8 @@ import 'map_picker.dart';
 
 @RoutePage()
 class BasketOrderAddressPage extends StatefulWidget {
-  const BasketOrderAddressPage({Key? key}) : super(key: key);
+  final String? fulfillment;
+  const BasketOrderAddressPage({this.fulfillment, Key? key}) : super(key: key);
 
   @override
   _BasketOrderAddressPageState createState() => _BasketOrderAddressPageState();
@@ -64,13 +65,16 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
           ),
           title: const Text(
             'Способ доставки',
-            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(
+                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
           )),
       body: BlocConsumer<BasketCubit, BasketState>(listener: (context, state) {
         if (state is OrderState) {
-          BlocProvider.of<navCubit.NavigationCubit>(context).getNavBarItem(const navCubit.NavigationState.home());
+          BlocProvider.of<navCubit.NavigationCubit>(context)
+              .getNavBarItem(const navCubit.NavigationState.home());
           // Get.to(const Base(index: 1));
-          context.router.popUntil((route) => route.settings.name == LauncherRoute.name);
+          context.router
+              .popUntil((route) => route.settings.name == LauncherRoute.name);
         }
       }, builder: (context, state) {
         if (state is ErrorState) {
@@ -108,7 +112,8 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Checkbox(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
                           checkColor: Colors.white,
                           activeColor: AppColors.kPrimaryColor,
                           value: courier,
@@ -144,7 +149,8 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                 ),
                                 const SizedBox(height: 8),
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width / 1.2,
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.2,
                                   child: Text(
                                     '$address',
                                     // 'г. Алматы , Шевченко 90 (БЦ Каратал)',
@@ -157,7 +163,10 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                 const SizedBox(height: 8),
                                 GestureDetector(
                                   onTap: () async {
-                                    Future.wait([BlocProvider.of<AddressCubit>(context).address()]);
+                                    Future.wait([
+                                      BlocProvider.of<AddressCubit>(context)
+                                          .address()
+                                    ]);
                                     showAlertAddressWidget(context, () {
                                       // context.router.pop();
 
@@ -205,7 +214,9 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                   child: const Text(
                                     'Изменить адрес доставки',
                                     style: TextStyle(
-                                        fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.kPrimaryColor),
                                   ),
                                 ),
                                 const SizedBox(height: 24),
@@ -242,7 +253,8 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Checkbox(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
                           checkColor: Colors.white,
                           activeColor: AppColors.kPrimaryColor,
                           value: point,
@@ -278,7 +290,8 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                 ),
                                 const SizedBox(height: 8),
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width / 1.2,
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.2,
                                   child: Text(
                                     office ?? 'Выберите пунк доставки',
                                     maxLines: 2,
@@ -292,14 +305,17 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                 const SizedBox(height: 8),
                                 GestureDetector(
                                   onTap: () async {
-                                    final data = await Get.to(() => const Mapp());
+                                    final data =
+                                        await Get.to(() => const Mapp());
                                     office = data;
                                     setState(() {});
                                   },
                                   child: const Text(
                                     'Изменить адрес самовывоза',
                                     style: TextStyle(
-                                        fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.kPrimaryColor),
                                   ),
                                 ),
                                 const SizedBox(height: 24),
@@ -316,17 +332,23 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
             ),
             Container(
               alignment: Alignment.center,
-              color: Colors.white,
-              height: 155,
+              color: widget.fulfillment != 'realFbs'
+                  ? Colors.red[200]
+                  : Colors.white,
+              height: widget.fulfillment != 'realFbs' ? 99 : 155,
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () {
-                    courier = false;
-                    point = false;
-                    shop = true;
-                    fbs = true;
-                    setState(() {});
+                    if (widget.fulfillment != 'realFbs') {
+                      Get.snackbar('Нет доступа', 'Пока что не доступно');
+                    } else {
+                      courier = false;
+                      point = false;
+                      shop = true;
+                      fbs = true;
+                      setState(() {});
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16),
@@ -336,89 +358,144 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Checkbox(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
                           checkColor: Colors.white,
                           activeColor: AppColors.kPrimaryColor,
                           value: shop,
                           onChanged: (bool? value) {
-                            setState(() {
+                            if (widget.fulfillment != 'realFbs') {
+                              Get.snackbar(
+                                  'Нет доступа', 'Пока что не доступно',
+                                  backgroundColor: Colors.orangeAccent);
+                            } else {
                               courier = false;
                               point = false;
-                              shop = value!;
+                              shop = true;
                               fbs = true;
-                            });
+                              setState(() {});
+                            }
                           },
                         ),
-                        Container(
-                          padding: const EdgeInsets.only(top: 12),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'real FBS (доставка силами продавца)',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  maxLines: 1,
-                                ),
-                                const SizedBox(height: 8),
-                                const Text(
-                                  '3 августа, бесплатно',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width / 1.2,
-                                  child: Text(
-                                    '$address',
-                                    // 'г. Алматы , Шевченко 90 (БЦ Каратал)',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                GestureDetector(
-                                  onTap: () async {
-                                    //  showAlertAddressWidget(context);
-                                    Future.wait([BlocProvider.of<AddressCubit>(context).address()]);
-                                    showAlertAddressWidget(context, () {
-                                      // context.router.pop();
+                        widget.fulfillment != 'realFbs'
+                            ? Container(
+                                padding: const EdgeInsets.only(top: 12),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'real FBS (доставка силами продавца)',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        maxLines: 1,
+                                      ),
+                                      widget.fulfillment != 'realFbs'
+                                          ? const SizedBox(height: 12)
+                                          : const SizedBox(),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.2,
+                                        child: const Text(
+                                          'Пока что не доступно',
+                                          // 'г. Алматы , Шевченко 90 (БЦ Каратал)',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ]),
+                              )
+                            : Container(
+                                padding: const EdgeInsets.only(top: 12),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'real FBS (доставка силами продавца)',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        maxLines: 1,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      const Text(
+                                        '3 августа, бесплатно',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.2,
+                                        child: Text(
+                                          '$address',
+                                          // 'г. Алматы , Шевченко 90 (БЦ Каратал)',
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          //  showAlertAddressWidget(context);
+                                          Future.wait([
+                                            BlocProvider.of<AddressCubit>(
+                                                    context)
+                                                .address()
+                                          ]);
+                                          showAlertAddressWidget(context, () {
+                                            // context.router.pop();
 
-                                      getAddress();
-                                      setState(() {});
-                                    });
-                                  },
-                                  child: const Text(
-                                    'Изменить адрес доставки',
-                                    style: TextStyle(
-                                        fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(() => Message(
-                                        userId: state.basketShowModel.first.product?.shopId,
-                                        name: state.basketShowModel.first.shopName,
-                                        avatar: state.basketShowModel.first.image?.first ?? '',
-                                        chatId: null));
-                                  },
-                                  child: const Text(
-                                    'Уточнить цену',
-                                    style: TextStyle(
-                                        fontSize: 14, fontWeight: FontWeight.w400, color: Colors.orangeAccent),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                              ]),
-                        )
+                                            getAddress();
+                                            setState(() {});
+                                          });
+                                        },
+                                        child: const Text(
+                                          'Изменить адрес доставки',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.kPrimaryColor),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.to(() => Message(
+                                              userId: state.basketShowModel
+                                                  .first.product?.shopId,
+                                              name: state.basketShowModel.first
+                                                  .shopName,
+                                              avatar: state.basketShowModel
+                                                      .first.image?.first ??
+                                                  '',
+                                              chatId: null));
+                                        },
+                                        child: const Text(
+                                          'Уточнить цену',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.orangeAccent),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                    ]),
+                              )
                       ],
                     ),
                   ),
@@ -427,40 +504,47 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
             ),
           ]);
         } else {
-          return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+          return const Center(
+              child: CircularProgressIndicator(color: Colors.indigoAccent));
         }
       }),
       bottomSheet: Container(
         color: Colors.white,
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
         child: InkWell(
           onTap: () {
             if (point == false && courier == false && shop == false) {
-              Get.snackbar('Ошибка', 'Выберите способ доставки', backgroundColor: Colors.redAccent);
+              Get.snackbar('Ошибка', 'Выберите способ доставки',
+                  backgroundColor: Colors.redAccent);
               return;
             }
 
             if (point == true) {
               if (office == null) {
-                Get.snackbar('Ошибка', 'Выберите адрес самовывоза', backgroundColor: Colors.redAccent);
+                Get.snackbar('Ошибка', 'Выберите адрес самовывоза',
+                    backgroundColor: Colors.redAccent);
                 return;
               }
             }
 
             if (courier == true) {
               if (address.isEmpty) {
-                Get.snackbar('Ошибка', 'Напишите адрес для курьера', backgroundColor: Colors.redAccent);
+                Get.snackbar('Ошибка', 'Напишите адрес для курьера',
+                    backgroundColor: Colors.redAccent);
                 return;
               }
             }
 
             if (shop == true) {
               if (address.isEmpty) {
-                Get.snackbar('Ошибка', 'Напишите адрес для курьера', backgroundColor: Colors.redAccent);
+                Get.snackbar('Ошибка', 'Напишите адрес для курьера',
+                    backgroundColor: Colors.redAccent);
                 return;
               }
             }
-            context.router.push(BasketOrderRoute(fbs: fbs, address: point ? office : address));
+            context.router.push(
+                BasketOrderRoute(fbs: fbs, address: point ? office : address));
             // Get.to(BasketOrderPage(
             //   fbs: fbs,
             // ));
@@ -476,7 +560,10 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
               padding: const EdgeInsets.all(16),
               child: const Text(
                 'Оформить заказ',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16),
                 textAlign: TextAlign.center,
               )),
         ),
