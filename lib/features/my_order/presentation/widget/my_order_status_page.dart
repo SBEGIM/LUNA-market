@@ -145,7 +145,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.basketOrder.status == 'cancel' ? 'Отменен' : 'Доставка',
+                                widget.basketOrder.status == 'cancel'
+                                    ? 'Отменен'
+                                    : 'Доставка',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
@@ -351,7 +353,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             const SizedBox(width: 13),
                             Expanded(
                               child: Text(
-                                widget.basketOrder.product?.first.address ?? 'Неизвестен',
+                                widget.basketOrder.product?.first.address ??
+                                    'Неизвестен',
                                 style: const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w400),
                               ),
@@ -368,7 +371,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                 // width: 200,
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: widget.basketOrder.product!.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: widget.basketOrder.product?.length,
                   scrollDirection: Axis.vertical,
                   itemBuilder: (context, index) {
                     return Container(
@@ -382,7 +386,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Image.network(
-                              "http://185.116.193.73/storage/${widget.basketOrder.product![index].path!.first.toString()}",
+                              "${widget.basketOrder.product![index].path!.length != 0 ? "http://185.116.193.73/storage/${widget.basketOrder.product?[index].path?.first}" : ''}",
                               width: 120,
                               height: 120,
                               errorBuilder: (context, error, stackTrace) =>
