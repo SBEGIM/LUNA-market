@@ -12,6 +12,7 @@ class AdminProductsModel {
     int? compound,
     int? point,
     int? bonus,
+    String? fulfillment,
     String? description,
     dynamic articul,
     dynamic height,
@@ -37,6 +38,7 @@ class AdminProductsModel {
     _compound = compound;
     _point = point;
     _bonus = bonus;
+    _fulfillment = fulfillment;
     _description = description;
     _articul = articul;
     _height = height;
@@ -63,6 +65,7 @@ class AdminProductsModel {
     _compound = json['compound'];
     _point = json['point'];
     _bonus = json['bonus'];
+    _fulfillment = json['fulfillment'];
     _description = json['description'];
     _articul = json['articul'];
     _height = json['height'];
@@ -92,6 +95,7 @@ class AdminProductsModel {
   int? _compound;
   int? _point;
   int? _bonus;
+  String? _fulfillment;
   String? _description;
   dynamic _articul;
   dynamic _height;
@@ -117,6 +121,7 @@ class AdminProductsModel {
   int? get compound => _compound;
   int? get point => _point;
   int? get bonus => _bonus;
+  String? get fulfillment => _fulfillment;
   String? get description => _description;
   dynamic get articul => _articul;
   dynamic get height => _height;
@@ -144,6 +149,7 @@ class AdminProductsModel {
     map['compound'] = _compound;
     map['point'] = _point;
     map['bonus'] = _bonus;
+    map['fulfillment'] = _fulfillment;
     map['description'] = _description;
     map['articul'] = _articul;
     map['height'] = _height;

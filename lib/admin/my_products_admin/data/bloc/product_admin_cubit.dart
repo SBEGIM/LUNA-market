@@ -38,6 +38,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       List<dynamic> image,
       List<optomPriceDto> optom,
       List<sizeCountDto> size,
+      fulfillment,
       String? video) async {
     try {
       emit(LoadingState());
@@ -61,6 +62,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
         image,
         optom,
         size,
+        fulfillment,
         video,
       );
 
@@ -106,6 +108,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       List<dynamic> image,
       List<optomPriceDto> optom,
       List<sizeCountDto> size,
+      fulfillment,
       String? video) async {
     try {
       emit(LoadingState());
@@ -131,6 +134,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
           image,
           optom,
           size,
+          fulfillment,
           video);
 
       if (data == 200) {

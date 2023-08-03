@@ -35,6 +35,7 @@ class ProductAdminRepository {
           List<dynamic>? image,
           List<optomPriceDto> optom,
           List<sizeCountDto> size,
+          fulfillment,
           String? video) =>
       _productToApi.store(
           price,
@@ -58,6 +59,7 @@ class ProductAdminRepository {
           image,
           optom,
           size,
+          fulfillment,
           video);
 
   Future<dynamic> update(
@@ -80,6 +82,7 @@ class ProductAdminRepository {
           List<dynamic>? image,
           List<optomPriceDto> optom,
           List<sizeCountDto> size,
+          fulfillment,
           String? video) =>
       _productToApi.update(
           price,
@@ -101,6 +104,7 @@ class ProductAdminRepository {
           image,
           optom,
           size,
+          fulfillment,
           video);
 
   Future<dynamic> delete(String productId) => _productToApi.delete(productId);
@@ -143,6 +147,7 @@ class ProductToApi {
       List<dynamic>? image,
       List<optomPriceDto> optom,
       List<sizeCountDto> size,
+      String fulfillment,
       String? video) async {
     try {
       final sellerId = _box.read('seller_id');
@@ -171,6 +176,7 @@ class ProductToApi {
         'articul': articul,
         'deep': deep,
         'currency': currency,
+        'fulfillment': fulfillment
       };
 
       Map<String, dynamic> queryParams = {};
@@ -245,6 +251,7 @@ class ProductToApi {
       List<dynamic>? image,
       List<optomPriceDto> optom,
       List<sizeCountDto> size,
+      String fulfillment,
       String? video) async {
     final sellerId = _box.read('seller_id');
     final token = _box.read('seller_token');
@@ -268,6 +275,7 @@ class ProductToApi {
       'articul': articul,
       'deep': deep,
       'currency': currency,
+      'fulfillment': fulfillment
     };
 
     final request = http.MultipartRequest(
@@ -282,12 +290,12 @@ class ProductToApi {
         );
       });
     }
-    
-      if (video != null) {
-        request.files.add(
-          await http.MultipartFile.fromPath('video', video),
-        );
-      }
+
+    if (video != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath('video', video),
+      );
+    }
     request.fields.addAll(body);
     Map<String, String> blocc = {};
     Map<String, String> sizes = {};

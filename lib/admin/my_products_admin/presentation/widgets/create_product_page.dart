@@ -59,7 +59,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
 
   List<XFile?> _image = [];
   XFile? _video;
-    VideoPlayerController? _controller;
+  VideoPlayerController? _controller;
   Future<void> initVideo(String path) async {
     _controller = VideoPlayerController.file(File(path))
       ..initialize().then((_) {
@@ -77,6 +77,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
   String sizeName = '';
   String sizeId = '';
   String currencyName = 'Выберите валюту';
+  String fulfillment = 'fbs';
 
   List<colorCountDto> colorCount = [];
   List<Cats>? mockSizeAdds = [];
@@ -86,6 +87,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
 
   bool isSwitched = false;
   bool isSwitchedBs = false;
+  bool isSwitchedFBS = false;
   bool isChangeState = false;
 
   void toggleSwitch(bool value) {
@@ -108,6 +110,20 @@ class _CreateProductPageState extends State<CreateProductPage> {
     } else {
       setState(() {
         isSwitchedBs = false;
+      });
+    }
+  }
+
+  void toggleSwitchFBS(bool value) {
+    if (isSwitchedFBS == false) {
+      setState(() {
+        isSwitchedFBS = true;
+        fulfillment = 'realFBS';
+      });
+    } else {
+      setState(() {
+        isSwitchedFBS = false;
+        fulfillment = 'fbs';
       });
     }
   }
@@ -167,7 +183,6 @@ class _CreateProductPageState extends State<CreateProductPage> {
       body: BlocConsumer<ProductAdminCubit, ProductAdminState>(
           listener: (context, state) {
         if (state is ChangeState && isChangeState) {
-          
           int count = 0;
           Navigator.of(context).popUntil((_) => count++ >= 2);
           // Navigator.push(
@@ -724,6 +739,72 @@ class _CreateProductPageState extends State<CreateProductPage> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 166,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8)),
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Real FBS',
+                            style: TextStyle(
+                                color: AppColors.kPrimaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          Switch(
+                            onChanged: toggleSwitchFBS,
+                            value: isSwitchedFBS,
+                            activeColor: AppColors.kPrimaryColor,
+                            activeTrackColor: AppColors.kPrimaryColor,
+                            inactiveThumbColor:
+                                const Color.fromRGBO(245, 245, 245, 1),
+                            inactiveTrackColor:
+                                const Color.fromRGBO(237, 237, 237, 1),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: 166,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8)),
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'FBS',
+                            style: TextStyle(
+                                color: AppColors.kPrimaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          Switch(
+                            onChanged: toggleSwitchFBS,
+                            value: !isSwitchedFBS,
+                            activeColor: AppColors.kPrimaryColor,
+                            activeTrackColor: AppColors.kPrimaryColor,
+                            inactiveThumbColor:
+                                const Color.fromRGBO(245, 245, 245, 1),
+                            inactiveTrackColor:
+                                const Color.fromRGBO(237, 237, 237, 1),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 28),
                 SizedBox(
                   child: Column(
@@ -1069,7 +1150,6 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 const SizedBox(
                   height: 10,
                 ),
-
                 const Text(
                   'Видео товара',
                   style: TextStyle(
@@ -1089,21 +1169,23 @@ class _CreateProductPageState extends State<CreateProductPage> {
                             fontSize: 12,
                             color: AppColors.kGray900),
                       ),
-                       if (_video != null && _controller != null && _controller!.value.isInitialized)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Center(
-                          child: SizedBox(
-                            height: 200,
-                            child: AspectRatio(
-                              aspectRatio: _controller!.value.aspectRatio,
-                              child:
-                                  ClipRRect(borderRadius: BorderRadius.circular(12), child: VideoPlayer(_controller!)),
+                      if (_video != null &&
+                          _controller != null &&
+                          _controller!.value.isInitialized)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Center(
+                            child: SizedBox(
+                              height: 200,
+                              child: AspectRatio(
+                                aspectRatio: _controller!.value.aspectRatio,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: VideoPlayer(_controller!)),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    
                       const SizedBox(
                         height: 10,
                       ),
@@ -1202,6 +1284,18 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 countController.text.isNotEmpty &&
                 brands?.id != 0 &&
                 colors?.id != 0) {
+              if (fulfillment == 'fbs') {
+                if (widthController.text.isEmpty ||
+                    heightController.text.isEmpty ||
+                    deepController.text.isEmpty ||
+                    massaController.text.isEmpty) {
+                  Get.snackbar(
+                      "Ошибка Доставка", "Заполните данные для доставки",
+                      backgroundColor: Colors.orangeAccent);
+                  return;
+                }
+              }
+
               await BlocProvider.of<ProductAdminCubit>(context).store(
                   priceController.text,
                   countController.text,
@@ -1224,6 +1318,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   _image,
                   optomCount,
                   sizeCount,
+                  fulfillment,
                   _video != null ? _video!.path : null);
             } else {
               Get.snackbar("Ошибка", "Заполните данные",

@@ -20,6 +20,7 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
   bool isvisible = false;
   bool inFavorite = false;
   int compoundPrice = 0;
+  int optomCount = 0;
 
   @override
   void initState() {
@@ -31,6 +32,10 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
     compoundPrice = widget.product.price! -
         ((widget.product.price! / 100) * (widget.product.compound ?? 1))
             .toInt();
+
+    widget.product.bloc?.forEach((element) {
+      optomCount += element.count ?? 0;
+    });
 
     super.initState();
   }
@@ -80,13 +85,13 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                         decoration: BoxDecoration(
                             color: AppColors.kPrimaryColor,
                             borderRadius: BorderRadius.circular(4)),
-                        child: const Padding(
-                          padding: EdgeInsets.only(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
                               left: 4, right: 4, top: 2, bottom: 2),
                           child: Text(
-                            '0·0·12',
+                            '${widget.product.fulfillment ?? 'Доставка'}',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 9,
                                 fontWeight: FontWeight.w400),
@@ -293,47 +298,31 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                   height: 7,
                 ),
                 Container(
-                    height: 32,
-                    padding: const EdgeInsets.only(right: 12),
+                    // height: 100,
+                    padding: const EdgeInsets.only(right: 12, top: 6),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              margin: const EdgeInsets.only(top: 6),
-                              //width: ,
-                              height: 32,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFFFC107),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                ' ${(compoundPrice / 3).roundToDouble()} ',
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                              ),
+                            Text(
+                              'В наличии: ${widget.product.count} шт',
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500),
                             ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 6),
-                              //width: ,
-                              height: 32,
-
-                              alignment: Alignment.center,
-                              child: const Text(
-                                'х3',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color.fromRGBO(197, 200, 204, 1)),
-                              ),
+                            const SizedBox(height: 6),
+                            Text(
+                              'Оптом: $optomCount шт',
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
