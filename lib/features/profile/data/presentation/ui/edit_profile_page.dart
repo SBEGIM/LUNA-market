@@ -411,250 +411,250 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               //   width: 24,
                               // ),
                             ),
-                            GestureDetector(
-                              onTap: () async {
-                                final data =
-                                    await Get.to(() => CountryWidget());
-                                countryController.text = data;
-                                setState(() {});
-                              },
-                              child: ListTile(
-                                horizontalTitleGap: 0,
-                                leading: SvgPicture.asset(
-                                  'assets/icons/country.svg',
-                                  height: 24,
-                                  width: 24,
-                                ),
-                                trailing: Image.asset(
-                                  'assets/icons/down.png',
-                                  height: 16.5,
-                                  width: 9.5,
-                                ),
-                                title: TextField(
-                                  controller: countryController,
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Страна',
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.white),
-                                      // borderRadius: BorderRadius.circular(3),
-                                    ),
-                                  ),
-                                ),
-                                // trailing: SvgPicture.asset(
-                                //   'assets/icons/delete_circle.svg',
-                                //   height: 24,
-                                //   width: 24,
-                                // ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                final data =
-                                    await Get.to(() => const CityPage());
+                            // GestureDetector(
+                            //   onTap: () async {
+                            //     final data =
+                            //         await Get.to(() => CountryWidget());
+                            //     countryController.text = data;
+                            //     setState(() {});
+                            //   },
+                            //   child: ListTile(
+                            //     horizontalTitleGap: 0,
+                            //     leading: SvgPicture.asset(
+                            //       'assets/icons/country.svg',
+                            //       height: 24,
+                            //       width: 24,
+                            //     ),
+                            //     trailing: Image.asset(
+                            //       'assets/icons/down.png',
+                            //       height: 16.5,
+                            //       width: 9.5,
+                            //     ),
+                            //     title: TextField(
+                            //       controller: countryController,
+                            //       decoration: const InputDecoration(
+                            //         border: InputBorder.none,
+                            //         hintText: 'Страна',
+                            //         enabledBorder: UnderlineInputBorder(
+                            //           borderSide:
+                            //               BorderSide(color: Colors.white),
+                            //           // borderRadius: BorderRadius.circular(3),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     // trailing: SvgPicture.asset(
+                            //     //   'assets/icons/delete_circle.svg',
+                            //     //   height: 24,
+                            //     //   width: 24,
+                            //     // ),
+                            //   ),
+                            // ),
+                            // GestureDetector(
+                            //   onTap: () async {
+                            //     final data =
+                            //         await Get.to(() => const CityPage());
 
-                                cityController.text = data;
-                                setState(() {});
-                              },
-                              child: ListTile(
-                                horizontalTitleGap: 0,
-                                leading: SvgPicture.asset(
-                                  'assets/icons/location.svg',
-                                  height: 24,
-                                  width: 24,
-                                ),
-                                trailing: Image.asset(
-                                  'assets/icons/down.png',
-                                  height: 16.5,
-                                  width: 9.5,
-                                ),
-                                title: TextField(
-                                  controller: cityController,
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Город',
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.white),
-                                      // borderRadius: BorderRadius.circular(3),
-                                    ),
-                                  ),
-                                ),
-                                // trailing: SvgPicture.asset(
-                                //   'assets/icons/delete_circle.svg',
-                                //   height: 24,
-                                //   width: 24,
-                                // ),
-                              ),
-                            ),
-                            ListTile(
-                              horizontalTitleGap: 0,
-                              leading: SvgPicture.asset(
-                                'assets/icons/street.svg',
-                                height: 24,
-                                width: 24,
-                              ),
-                              title: TextField(
-                                controller: streetController,
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Улица',
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    // borderRadius: BorderRadius.circular(3),
-                                  ),
-                                ),
-                              ),
-                              // trailing: SvgPicture.asset(
-                              //   'assets/icons/delete_circle.svg',
-                              //   height: 24,
-                              //   width: 24,
-                              // ),
-                            ),
-                            ListTile(
-                              horizontalTitleGap: 0,
-                              leading: SvgPicture.asset(
-                                'assets/icons/Route.svg',
-                                height: 24,
-                                width: 24,
-                              ),
-                              title: TextField(
-                                controller: homeController,
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Дом',
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    // borderRadius: BorderRadius.circular(3),
-                                  ),
-                                ),
-                              ),
-                              // trailing: SvgPicture.asset(
-                              //   'assets/icons/delete_circle.svg',
-                              //   height: 24,
-                              //   width: 24,
-                              // ),
-                            ),
-                            SizedBox(
-                              height: 48,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                        padding:
-                                            const EdgeInsets.only(left: 16),
-                                        child: Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                                'assets/icons/Door-open.svg'),
-                                            const SizedBox(
-                                              width: 21,
-                                            ),
-                                            Expanded(
-                                              child: TextField(
-                                                controller: doorController,
-                                                decoration:
-                                                    const InputDecoration(
-                                                  border: InputBorder.none,
-                                                  hintText: 'Подъезд',
-                                                  enabledBorder:
-                                                      UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Colors.white),
-                                                    // borderRadius: BorderRadius.circular(3),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                        padding:
-                                            const EdgeInsets.only(left: 16),
-                                        child: Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                                'assets/icons/Stairs.svg'),
-                                            const SizedBox(
-                                              width: 21,
-                                            ),
-                                            Expanded(
-                                              child: TextField(
-                                                controller: spaceController,
-                                                decoration:
-                                                    const InputDecoration(
-                                                  border: InputBorder.none,
-                                                  hintText: 'Этаж',
-                                                  enabledBorder:
-                                                      UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Colors.white),
-                                                    // borderRadius: BorderRadius.circular(3),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            //  const Text('3 этаж'),
-                                          ],
-                                        )),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            ListTile(
-                              horizontalTitleGap: 0,
-                              leading: SvgPicture.asset(
-                                'assets/icons/Key.svg',
-                                height: 24,
-                                width: 24,
-                              ),
-                              title: TextField(
-                                controller: kvController,
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Квартира',
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    // borderRadius: BorderRadius.circular(3),
-                                  ),
-                                ),
-                              ),
-                              // trailing: SvgPicture.asset(
-                              //   'assets/icons/delete_circle.svg',
-                              //   height: 24,
-                              //   width: 24,
-                              // ),
-                            ),
-                            ListTile(
-                              horizontalTitleGap: 0,
-                              leading: SvgPicture.asset(
-                                'assets/icons/ion_mail-outline.svg',
-                                height: 24,
-                                width: 24,
-                              ),
-                              title: TextField(
-                                controller: emailController,
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Почта',
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    // borderRadius: BorderRadius.circular(3),
-                                  ),
-                                ),
-                              ),
-                              // trailing: SvgPicture.asset(
-                              //   'assets/icons/delete_circle.svg',
-                              //   height: 24,
-                              //   width: 24,
-                              // ),
-                            ),
+                            //     cityController.text = data;
+                            //     setState(() {});
+                            //   },
+                            //   child: ListTile(
+                            //     horizontalTitleGap: 0,
+                            //     leading: SvgPicture.asset(
+                            //       'assets/icons/location.svg',
+                            //       height: 24,
+                            //       width: 24,
+                            //     ),
+                            //     trailing: Image.asset(
+                            //       'assets/icons/down.png',
+                            //       height: 16.5,
+                            //       width: 9.5,
+                            //     ),
+                            //     title: TextField(
+                            //       controller: cityController,
+                            //       decoration: const InputDecoration(
+                            //         border: InputBorder.none,
+                            //         hintText: 'Город',
+                            //         enabledBorder: UnderlineInputBorder(
+                            //           borderSide:
+                            //               BorderSide(color: Colors.white),
+                            //           // borderRadius: BorderRadius.circular(3),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     // trailing: SvgPicture.asset(
+                            //     //   'assets/icons/delete_circle.svg',
+                            //     //   height: 24,
+                            //     //   width: 24,
+                            //     // ),
+                            //   ),
+                            // ),
+                            // ListTile(
+                            //   horizontalTitleGap: 0,
+                            //   leading: SvgPicture.asset(
+                            //     'assets/icons/street.svg',
+                            //     height: 24,
+                            //     width: 24,
+                            //   ),
+                            //   title: TextField(
+                            //     controller: streetController,
+                            //     decoration: const InputDecoration(
+                            //       border: InputBorder.none,
+                            //       hintText: 'Улица',
+                            //       enabledBorder: UnderlineInputBorder(
+                            //         borderSide: BorderSide(color: Colors.white),
+                            //         // borderRadius: BorderRadius.circular(3),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // trailing: SvgPicture.asset(
+                            //   'assets/icons/delete_circle.svg',
+                            //   height: 24,
+                            //   width: 24,
+                            // ),
+                            //),
+                            // ListTile(
+                            //   horizontalTitleGap: 0,
+                            //   leading: SvgPicture.asset(
+                            //     'assets/icons/Route.svg',
+                            //     height: 24,
+                            //     width: 24,
+                            //   ),
+                            //   title: TextField(
+                            //     controller: homeController,
+                            //     decoration: const InputDecoration(
+                            //       border: InputBorder.none,
+                            //       hintText: 'Дом',
+                            //       enabledBorder: UnderlineInputBorder(
+                            //         borderSide: BorderSide(color: Colors.white),
+                            //         // borderRadius: BorderRadius.circular(3),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // trailing: SvgPicture.asset(
+                            //   'assets/icons/delete_circle.svg',
+                            //   height: 24,
+                            //   width: 24,
+                            // ),
+                            // ),
+                            // SizedBox(
+                            //   height: 48,
+                            //   child: Row(
+                            //     children: [
+                            //       Expanded(
+                            //         child: Container(
+                            //             padding:
+                            //                 const EdgeInsets.only(left: 16),
+                            //             child: Row(
+                            //               children: [
+                            //                 SvgPicture.asset(
+                            //                     'assets/icons/Door-open.svg'),
+                            //                 const SizedBox(
+                            //                   width: 21,
+                            //                 ),
+                            //                 Expanded(
+                            //                   child: TextField(
+                            //                     controller: doorController,
+                            //                     decoration:
+                            //                         const InputDecoration(
+                            //                       border: InputBorder.none,
+                            //                       hintText: 'Подъезд',
+                            //                       enabledBorder:
+                            //                           UnderlineInputBorder(
+                            //                         borderSide: BorderSide(
+                            //                             color: Colors.white),
+                            //                         // borderRadius: BorderRadius.circular(3),
+                            //                       ),
+                            //                     ),
+                            //                   ),
+                            //                 ),
+                            //               ],
+                            //             )),
+                            //       ),
+                            //       const SizedBox(
+                            //         width: 10,
+                            //       ),
+                            //       Expanded(
+                            //         child: Container(
+                            //             padding:
+                            //                 const EdgeInsets.only(left: 16),
+                            //             child: Row(
+                            //               children: [
+                            //                 SvgPicture.asset(
+                            //                     'assets/icons/Stairs.svg'),
+                            //                 const SizedBox(
+                            //                   width: 21,
+                            //                 ),
+                            //                 Expanded(
+                            //                   child: TextField(
+                            //                     controller: spaceController,
+                            //                     decoration:
+                            //                         const InputDecoration(
+                            //                       border: InputBorder.none,
+                            //                       hintText: 'Этаж',
+                            //                       enabledBorder:
+                            //                           UnderlineInputBorder(
+                            //                         borderSide: BorderSide(
+                            //                             color: Colors.white),
+                            //                         // borderRadius: BorderRadius.circular(3),
+                            //                       ),
+                            //                     ),
+                            //                   ),
+                            //                 ),
+                            //                 //  const Text('3 этаж'),
+                            //               ],
+                            //             )),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
+                            // ListTile(
+                            //   horizontalTitleGap: 0,
+                            //   leading: SvgPicture.asset(
+                            //     'assets/icons/Key.svg',
+                            //     height: 24,
+                            //     width: 24,
+                            //   ),
+                            //   title: TextField(
+                            //     controller: kvController,
+                            //     decoration: const InputDecoration(
+                            //       border: InputBorder.none,
+                            //       hintText: 'Квартира',
+                            //       enabledBorder: UnderlineInputBorder(
+                            //         borderSide: BorderSide(color: Colors.white),
+                            //         // borderRadius: BorderRadius.circular(3),
+                            //       ),
+                            //     ),
+                            //   ),
+                            //   // trailing: SvgPicture.asset(
+                            //   //   'assets/icons/delete_circle.svg',
+                            //   //   height: 24,
+                            //   //   width: 24,
+                            //   // ),
+                            // ),
+                            // ListTile(
+                            //   horizontalTitleGap: 0,
+                            //   leading: SvgPicture.asset(
+                            //     'assets/icons/ion_mail-outline.svg',
+                            //     height: 24,
+                            //     width: 24,
+                            //   ),
+                            //   title: TextField(
+                            //     controller: emailController,
+                            //     decoration: const InputDecoration(
+                            //       border: InputBorder.none,
+                            //       hintText: 'Почта',
+                            //       enabledBorder: UnderlineInputBorder(
+                            //         borderSide: BorderSide(color: Colors.white),
+                            //         // borderRadius: BorderRadius.circular(3),
+                            //       ),
+                            //     ),
+                            //   ),
+                            //   // trailing: SvgPicture.asset(
+                            //   //   'assets/icons/delete_circle.svg',
+                            //   //   height: 24,
+                            //   //   width: 24,
+                            //   // ),
+                            // ),
                             ListTile(
                                 horizontalTitleGap: 0,
                                 leading: SvgPicture.asset(

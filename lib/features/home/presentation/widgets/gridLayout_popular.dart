@@ -25,7 +25,7 @@ class GridOptionsPopular extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0x0fff9f9f),
+        color: Color.fromARGB(15, 227, 9, 9),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

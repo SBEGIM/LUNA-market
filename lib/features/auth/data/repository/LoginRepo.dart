@@ -114,7 +114,7 @@ class LoginToApi {
   ) async {
     final String? token = _box.read('token');
 
-    final cityId = _box.read('user_city_id');
+    // final String cityId = _box.read('user_city_id');
 
     var replace = '';
     if (phone != '') {
@@ -141,7 +141,7 @@ class LoginToApi {
       'floor': floor,
       'room': room,
       'email': email,
-      'city_id': cityId.toString(),
+      // 'city_id': cityId,
     };
 
     final request = http.MultipartRequest(
@@ -177,6 +177,7 @@ class LoginToApi {
       _box.write('floor', jsonResponse['floor'].toString());
       _box.write('room', jsonResponse['room'].toString());
       _box.write('email', jsonResponse['email'].toString());
+      _box.write('phone', jsonResponse['phone'].toString());
 
       return true;
     } else {

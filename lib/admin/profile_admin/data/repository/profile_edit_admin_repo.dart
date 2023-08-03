@@ -66,6 +66,8 @@ class ProfileEditAdminToApi {
       'check': check ?? ''
     };
 
+    final header = {"Authorization": "Bearer $token"};
+
     final request = http.MultipartRequest(
       'POST',
       Uri.parse('$baseUrl/seller/edit'),
@@ -77,6 +79,7 @@ class ProfileEditAdminToApi {
       );
     }
     request.fields.addAll(body);
+    request.headers.addAll(header);
 
     final http.StreamedResponse response = await request.send();
     final respStr = await response.stream.bytesToString();
