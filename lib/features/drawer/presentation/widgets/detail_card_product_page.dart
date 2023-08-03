@@ -1978,7 +1978,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                       ],
                                     ),
                                   );
-                                  ;
                                 },
                               ));
                         } else {
