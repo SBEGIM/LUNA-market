@@ -23,17 +23,18 @@ class _MyOrdersAdminPageState extends State<MyOrdersAdminPage> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
+          automaticallyImplyLeading: false,
           centerTitle: true,
           title: const Text(
             'Мои заказы',
             style: AppTextStyles.appBarTextStyle,
           ),
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 22.0),
-            child: CustomBackButton(onTap: () {
-              Navigator.pop(context);
-            }),
-          ),
+          // leading: Padding(
+          //   padding: const EdgeInsets.only(left: 22.0),
+          //   child: CustomBackButton(onTap: () {
+          //     Navigator.pop(context);
+          //   }),
+          // ),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(60),
             child: Column(
