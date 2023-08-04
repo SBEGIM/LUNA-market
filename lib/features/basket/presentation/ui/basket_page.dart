@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
@@ -13,15 +12,10 @@ import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart'
     as productAdState;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
-
 import '../../../drawer/data/bloc/basket_cubit.dart';
 import '../../../drawer/data/bloc/basket_state.dart';
-import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
 import '../../../drawer/presentation/widgets/product_ad_card.dart';
-import '../../../home/presentation/widgets/product_mb_interesting_card.dart';
 import '../../data/DTO/basketOrderDto.dart';
-import 'basket_order_address_page.dart';
-import 'basket_order_page.dart';
 
 @RoutePage()
 class BasketPage extends StatefulWidget {
@@ -72,7 +66,7 @@ class _BasketPageState extends State<BasketPage> {
       count += element.basketCount!.toInt();
       price += element.price!.toInt();
 
-      fulfillment = element.product!.name!;
+      fulfillment = element.product!.fulfillment ?? 'fbs';
 
       productNames =
           "${productNames != null ? "${productNames} ," : ''}  http://lunamarket.ru/?product_id\u003d${element.product!.id}";

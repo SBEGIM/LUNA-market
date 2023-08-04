@@ -19,6 +19,7 @@ class AdminProductsModel {
     dynamic width,
     dynamic deep,
     dynamic massa,
+    String? created_at,
     List<String>? size,
     List<String>? color,
     Path? path,
@@ -45,6 +46,7 @@ class AdminProductsModel {
     _width = width;
     _deep = deep;
     _massa = massa;
+    _created_at = created_at;
     _size = size;
     _color = color;
     _path = path;
@@ -72,6 +74,7 @@ class AdminProductsModel {
     _width = json['width'];
     _deep = json['deep'];
     _massa = json['massa'];
+    _created_at = json['created_at'];
     _size = json['size'] != null ? json['size'].cast<String>() : [];
     _color = json['color'] != null ? json['color'].cast<String>() : [];
     _path = json['path'] != null ? Path.fromJson(json['path']) : null;
@@ -102,6 +105,7 @@ class AdminProductsModel {
   dynamic _width;
   dynamic _deep;
   dynamic _massa;
+  String? _created_at;
   List<String>? _size;
   List<String>? _color;
   Path? _path;
@@ -128,6 +132,7 @@ class AdminProductsModel {
   dynamic get width => _width;
   dynamic get deep => _deep;
   dynamic get massa => _massa;
+  String? get created_at => _created_at;
   List<String>? get size => _size;
   List<String>? get color => _color;
   Path? get path => _path;
@@ -156,6 +161,7 @@ class AdminProductsModel {
     map['width'] = _width;
     map['deep'] = _deep;
     map['massa'] = _massa;
+    map['created_at'] = _created_at;
     map['size'] = _size;
     map['color'] = _color;
     if (_path != null) {

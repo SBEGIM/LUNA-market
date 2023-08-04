@@ -1,36 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:haji_market/admin/my_products_admin/data/bloc/statistics_product_state.dart';
 import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
-
 import '../../../../core/common/constants.dart';
+import '../../../../features/app/widgets/error_image_widget.dart';
+import '../../data/bloc/statistics_product_cubit.dart';
+import '../../data/models/admin_products_model.dart';
 
 class StatisticsPage extends StatefulWidget {
-  const StatisticsPage({Key? key}) : super(key: key);
+  final AdminProductsModel product;
+
+  StatisticsPage({required this.product, Key? key}) : super(key: key);
 
   @override
   State<StatisticsPage> createState() => _StatisticsPageState();
 }
 
-List<String> months = [
-  'Январь',
-  'Февраль',
-  'Март',
-  'Апрель',
-  'Май',
-];
-List<String> monthsSecond = [
-  'Июнь',
-  'Июль',
-  'Август',
-  'Сентябрь',
-  'Ноябрь',
-  'Декабрь',
-];
-
-int _selectIndex = -1;
-int _SelectSecondIndex = -1;
-
 class _StatisticsPageState extends State<StatisticsPage> {
+  List<String> months = [
+    'Январь',
+    'Февраль',
+    'Март',
+    'Апрель',
+    'Май',
+    'Июнь',
+    'Июль',
+    'Август',
+    'Сентябрь',
+    'Ноябрь',
+    'Декабрь',
+  ];
+  int _summBonus = 0;
+  int year = 2023;
+  int _selectIndex = -1;
+
+  @override
+  void initState() {
+    BlocProvider.of<StatisticsProductCubit>(context)
+        .statistics(widget.product.id, year, 1);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,37 +70,46 @@ class _StatisticsPageState extends State<StatisticsPage> {
                 color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: Row(
               children: [
-                Image.asset('assets/images/mac.png'),
+                SizedBox(
+                  height: 106,
+                  width: 106,
+                  child: Image.network(
+                    'http://185.116.193.73/storage/${widget.product.images?.first}',
+                    errorBuilder: (context, error, stackTrace) {
+                      return const ErrorImageWidget();
+                    },
+                  ),
+                ),
                 const SizedBox(
                   width: 16,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      'Silver MacBook M1 13.1in. Apple\n256GB',
+                      '${widget.product.name}',
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: AppColors.kGray900,
                           fontSize: 12,
                           fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Text(
-                      'Артикул: 1920983974',
-                      style: TextStyle(
+                      'Артикул: ${widget.product.id}',
+                      style: const TextStyle(
                           color: AppColors.kGray900,
                           fontSize: 12,
                           fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Text(
-                      'Дата добавления:',
-                      style: TextStyle(
+                      'Дата добавления: ${widget.product.created_at}',
+                      style: const TextStyle(
                           color: AppColors.kGray900,
                           fontSize: 12,
                           fontWeight: FontWeight.w500),
@@ -98,6 +118,60 @@ class _StatisticsPageState extends State<StatisticsPage> {
                 )
               ],
             ),
+          ),
+        ),
+        Container(
+          // color: Colors.white,
+          padding: const EdgeInsets.all(16),
+
+          child: Row(
+            children: [
+              const Text(
+                'Год',
+                style: TextStyle(
+                    color: AppColors.kGray900,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+              ),
+              const SizedBox(
+                width: 15,
+              ),
+              GestureDetector(
+                onTap: () {
+                  year--;
+                  setState(() {});
+                },
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                  size: 15.0,
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                '$year',
+                style: const TextStyle(
+                    color: AppColors.kGray900,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              GestureDetector(
+                onTap: () {
+                  year++;
+                  setState(() {});
+                },
+                child: const Icon(
+                  Icons.arrow_forward,
+                  color: Colors.black,
+                  size: 15.0,
+                ),
+              ),
+            ],
           ),
         ),
         Container(
@@ -123,8 +197,13 @@ class _StatisticsPageState extends State<StatisticsPage> {
                     return GestureDetector(
                       onTap: () {
                         _selectIndex = index;
+                        BlocProvider.of<StatisticsProductCubit>(context)
+                            .statistics(widget.product.id, year, index + 1);
+
+                        _summBonus = 0;
                         setState(() {
                           _selectIndex;
+                          _summBonus;
                         });
                       },
                       child: Padding(
@@ -136,107 +215,60 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           _selectIndex,
                         ),
                       ),
-
-                      // GestureDetector(
-                      //   child: chipDate('Январь', false),
-                      // ),
-                      // chipDate('Февраль', false),
-                      // chipDate('Март', false),
-                      // chipDate('Апрель', false),
-                      // chipDate('Май', false),
-                      // chipDate('Июнь', false),
                     );
                   },
                 ),
               ),
-              SizedBox(
-                height: 50,
-                width: 500,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: monthsSecond.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        _SelectSecondIndex = index;
-                        setState(() {
-                          _SelectSecondIndex;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 8.0, bottom: 4, left: 4, right: 4),
-                        child: chipDate(
-                          monthsSecond[index],
-                          index,
-                          _SelectSecondIndex,
+              const SizedBox(
+                height: 20,
+              ),
+              BlocBuilder<StatisticsProductCubit, StatisticsProductState>(
+                builder: (context, state) {
+                  if (state is LoadedState) {
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            StatisticWidgetContainer(
+                              text: state.stats.count_click.toString(),
+                              subText: 'Количество кликов',
+                              url: 'assets/icons/click1.svg',
+                            ),
+                            StatisticWidgetContainer(
+                              text: state.stats.count_favorite.toString(),
+                              subText: 'Добавлен в\nизбранное',
+                              url: 'assets/icons/click2.svg',
+                            )
+                          ],
                         ),
-                        // GestureDetector(
-                        //   child: chipDate('Январь', false),
-                        // ),
-                        // chipDate('Февраль', false),
-                        // chipDate('Март', false),
-                        // chipDate('Апрель', false),
-                        // chipDate('Май', false),
-                        // chipDate('Июнь', false),
-                      ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            StatisticWidgetContainer(
+                              text: state.stats.count_basket.toString(),
+                              subText: 'Добавлен в корзину ',
+                              url: 'assets/icons/click3.svg',
+                            ),
+                            StatisticWidgetContainer(
+                              text: state.stats.count_buy.toString(),
+                              subText: 'Количество покупок',
+                              url: 'assets/icons/click4.svg',
+                            )
+                          ],
+                        )
+                      ],
                     );
-                  },
-                ),
+                  } else {
+                    return const Center(
+                        child: CircularProgressIndicator(
+                            color: Colors.blueAccent));
+                  }
+                },
               ),
-              // SingleChildScrollView(
-              //     scrollDirection: Axis.horizontal,
-              //     child: Padding(
-              //       padding: const EdgeInsets.only(bottom: 8),
-              //       child: Wrap(
-              //         spacing: 6,
-              //         runSpacing: 6,
-              //         children: [
-              //           chipDate('Июль', true),
-              //           chipDate('Август', false),
-              //           chipDate('Сентябрь', false),
-              //           chipDate('Октябрь', false),
-              //           chipDate('Ноябрь', false),
-              //           chipDate('Декабрь', false),
-              //         ],
-              //       ),
-              //     )),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  StatisticWidgetContainer(
-                    text: '129',
-                    subText: 'Количество кликов',
-                    url: 'assets/icons/click1.svg',
-                  ),
-                  StatisticWidgetContainer(
-                    text: '110',
-                    subText: 'Добавлен в\nизбранное',
-                    url: 'assets/icons/click2.svg',
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  StatisticWidgetContainer(
-                    text: '110',
-                    subText: 'Добавлен в корзину ',
-                    url: 'assets/icons/click3.svg',
-                  ),
-                  StatisticWidgetContainer(
-                    text: '129',
-                    subText: 'Количество покупок',
-                    url: 'assets/icons/click4.svg',
-                  )
-                ],
-              )
             ],
           ),
         ),

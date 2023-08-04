@@ -40,7 +40,8 @@ Future<dynamic> showAlertStaticticsWidget(
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const StatisticsPage()),
+              MaterialPageRoute(
+                  builder: (context) => StatisticsPage(product: product)),
             );
           },
         ),

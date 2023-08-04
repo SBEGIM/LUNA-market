@@ -1,16 +1,17 @@
 class BasketShowModel {
   BasketShowModel({
-      Product? product,
-      List<String>? image,
-      int? priceCourier,
-      int? price,
-      int? optom,
-      int? basketId,
-      int? basketCount,
-      String? basketColor,
-      String? basketSize,
-      String? shopName,
-      List<String>? address,}){
+    Product? product,
+    List<String>? image,
+    int? priceCourier,
+    int? price,
+    int? optom,
+    int? basketId,
+    int? basketCount,
+    String? basketColor,
+    String? basketSize,
+    String? shopName,
+    List<String>? address,
+  }) {
     _product = product;
     _image = image;
     _priceCourier = priceCourier;
@@ -22,10 +23,11 @@ class BasketShowModel {
     _basketSize = basketSize;
     _shopName = shopName;
     _address = address;
-}
+  }
 
   BasketShowModel.fromJson(dynamic json) {
-    _product = json['product'] != null ? Product.fromJson(json['product']) : null;
+    _product =
+        json['product'] != null ? Product.fromJson(json['product']) : null;
     _image = json['image'] != null ? json['image'].cast<String>() : [];
     _priceCourier = json['price_courier'];
     _price = json['price'];
@@ -85,24 +87,26 @@ class BasketShowModel {
     }
     return map;
   }
-
 }
 
 class Product {
   Product({
-      int? id,
-      int? shopId,
-      String? name,
-      int? price,
-      int? compound,
-      int? courierPrice,}){
+    int? id,
+    int? shopId,
+    String? name,
+    int? price,
+    int? compound,
+    String? fulfillment,
+    int? courierPrice,
+  }) {
     _id = id;
     _shopId = shopId;
     _name = name;
     _price = price;
     _compound = compound;
+    _fulfillment = fulfillment;
     _courierPrice = courierPrice;
-}
+  }
 
   Product.fromJson(dynamic json) {
     _id = json['id'];
@@ -110,6 +114,7 @@ class Product {
     _name = json['name'];
     _price = json['price'];
     _compound = json['compound'];
+    _fulfillment = json['fulfillment'];
     _courierPrice = json['courier_price'];
   }
   int? _id;
@@ -117,6 +122,7 @@ class Product {
   String? _name;
   int? _price;
   int? _compound;
+  String? _fulfillment;
   int? _courierPrice;
 
   int? get id => _id;
@@ -124,6 +130,7 @@ class Product {
   String? get name => _name;
   int? get price => _price;
   int? get compound => _compound;
+  String? get fulfillment => _fulfillment;
   int? get courierPrice => _courierPrice;
 
   Map<String, dynamic> toJson() {
@@ -133,8 +140,8 @@ class Product {
     map['name'] = _name;
     map['price'] = _price;
     map['compound'] = _compound;
+    map['fulfillment'] = _fulfillment;
     map['courier_price'] = _courierPrice;
     return map;
   }
-
 }

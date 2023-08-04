@@ -89,7 +89,9 @@ import '../../../admin/chat/data/repository/message_admin_repo.dart';
 import '../../../admin/my_products_admin/data/bloc/color_cubit.dart';
 import '../../../admin/my_products_admin/data/bloc/delete_image_cubit.dart';
 import '../../../admin/my_products_admin/data/bloc/product_admin_cubit.dart';
+import '../../../admin/my_products_admin/data/bloc/statistics_product_cubit.dart';
 import '../../../admin/my_products_admin/data/repository/ProductAdminRepo.dart';
+import '../../../admin/my_products_admin/data/repository/StatisticsProductAdminRepo.dart';
 import '../../../admin/profile_admin/data/bloc/profile_edit_admin_cubit.dart';
 import '../../../admin/profile_admin/data/bloc/profile_statics_admin_cubit.dart';
 import '../../../admin/profile_admin/data/repository/profile_edit_admin_repo.dart';
@@ -373,8 +375,8 @@ class MultiBlocWrapper extends StatelessWidget {
             create: (_) =>
                 BasketAdminCubit(basketRepository: BasketAdminRepository())),
         BlocProvider(
-            create: (_) =>
-                OrderStatusAdminCubit(basketRepository: BasketAdminRepository())),
+            create: (_) => OrderStatusAdminCubit(
+                basketRepository: BasketAdminRepository())),
         BlocProvider(
             create: (_) => ColorCubit(colorRepository: ColorAdminRepository())),
         BlocProvider(
@@ -539,6 +541,11 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (_) => DeleteImageCubit(
             colorRepository: ProductAdminRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => StatisticsProductCubit(
+            statisticsProductAdminRepo: StatisticsProductAdminRepository(),
           ),
         ),
       ],
