@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/features/app/widgets/custom_cupertino_action_sheet.dart';
 import 'package:haji_market/features/drawer/data/bloc/address_cubit.dart';
 
 import '../../../../core/common/constants.dart';
@@ -94,7 +95,7 @@ class _AddressEditBottomSheetState extends State<AddressEditBottomSheet> {
               // mainAxisAlignment: MainAxisAlignment.center,
               // mainAxisSize: MainAxisSize.min,
               children: [
-                CupertinoActionSheet(
+                CustomCupertinoActionSheet(
                   actions: <Widget>[
                     CupertinoActionSheetAction(
                       child: Row(

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:haji_market/features/app/widgets/custom_cupertino_action_sheet.dart';
 import 'package:haji_market/features/basket/presentation/widgets/show_alert_edit_widget.dart';
 
 import '../../../drawer/data/bloc/address_cubit.dart';
@@ -9,9 +10,9 @@ Future<dynamic> showAlertEditDestroyWidget(BuildContext context, int id,
     country, city, street, home, floor, porch, room) async {
   return showCupertinoModalPopup(
     context: context,
-    builder: (BuildContext context) => CupertinoActionSheet(
+    builder: (BuildContext context) => CustomCupertinoActionSheet(
       actions: <Widget>[
-        CupertinoActionSheetAction(
+        CustomCupertinoActionSheetAction(
           child: const Row(
             children: [
               Icon(
@@ -40,7 +41,7 @@ Future<dynamic> showAlertEditDestroyWidget(BuildContext context, int id,
                 context, id, country, city, street, home, floor, porch, room);
           },
         ),
-        CupertinoActionSheetAction(
+        CustomCupertinoActionSheetAction(
           child: const Row(
             children: [
               Icon(
@@ -70,7 +71,7 @@ Future<dynamic> showAlertEditDestroyWidget(BuildContext context, int id,
           },
         ),
       ],
-      cancelButton: CupertinoActionSheetAction(
+      cancelButton: CustomCupertinoActionSheetAction(
         child: const Text(
           'Отмена',
           style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),

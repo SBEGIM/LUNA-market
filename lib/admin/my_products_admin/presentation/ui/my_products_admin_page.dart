@@ -20,6 +20,7 @@ class MyProductsAdminPage extends StatefulWidget {
 class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
   @override
   RefreshController refreshController = RefreshController();
+  RefreshController refreshController1 = RefreshController();
 
   Future<void> onLoading() async {
     await BlocProvider.of<ProductAdminCubit>(context).productsPaginate('');
@@ -58,10 +59,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                   padding: EdgeInsets.only(left: 16.0),
                   child: Text(
                     'LUNA market',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.kGray900),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.kGray900),
                   ),
                 ),
                 PopupMenuButton(
@@ -69,13 +67,11 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                     if (value == 0) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const CategoryAdminPage()),
+                        MaterialPageRoute(builder: (context) => const CategoryAdminPage()),
                       );
                     }
                   },
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
                   icon: SvgPicture.asset('assets/icons/plus.svg'),
                   itemBuilder: (BuildContext bc) {
                     return [
@@ -84,8 +80,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   const Text(
                                     "Добавить товар",
@@ -123,17 +118,14 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                   child: TextField(
                     controller: nameController,
                     onChanged: (value) {
-                      BlocProvider.of<ProductAdminCubit>(context)
-                          .products(value);
+                      BlocProvider.of<ProductAdminCubit>(context).products(value);
                     },
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Поиск продуктов',
                       hintStyle: TextStyle(
-                          color: Color.fromRGBO(194, 197, 200, 1),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                          color: Color.fromRGBO(194, 197, 200, 1), fontSize: 16, fontWeight: FontWeight.w400),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                         // borderRadius: BorderRadius.circular(3),
@@ -152,17 +144,10 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                   return Center(
                     child: Text(
                       state.message,
-                      style:
-                          const TextStyle(fontSize: 20.0, color: Colors.grey),
+                      style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                     ),
                   );
                 }
-                if (state is LoadingState) {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent));
-                }
-
                 if (state is LoadedState) {
                   return Expanded(
                     child: SmartRefresher(
@@ -172,8 +157,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                           onLoading();
                         },
                         onRefresh: () {
-                          BlocProvider.of<ProductAdminCubit>(context)
-                              .products('');
+                          BlocProvider.of<ProductAdminCubit>(context).products('');
                           refreshController.refreshCompleted();
                         },
                         child: ListView.builder(
@@ -182,8 +166,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                             shrinkWrap: true,
                             itemCount: state.productModel.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return AdminProductCardWidget(
-                                  product: state.productModel[index]);
+                              return AdminProductCardWidget(product: state.productModel[index]);
                             })),
                   );
 
@@ -243,9 +226,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                   //   );
                   // } else {
                 } else {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent));
+                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                 }
               })
         ],

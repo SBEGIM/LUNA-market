@@ -64,6 +64,7 @@ Future<dynamic> showAlertStaticticsWidget(
           onPressed: () async {
             await BlocProvider.of<ProductAdminCubit>(context)
                 .delete(product.id.toString());
+                 BlocProvider.of<ProductAdminCubit>(context).products('');
             Navigator.pop(context, 'Two');
           },
         ),

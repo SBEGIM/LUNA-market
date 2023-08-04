@@ -6,6 +6,7 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/statistics_page.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
+import 'package:haji_market/features/app/widgets/custom_cupertino_action_sheet.dart';
 import 'package:haji_market/features/basket/presentation/widgets/show_alert_edit_widget.dart';
 import 'package:haji_market/features/basket/presentation/widgets/show_alert_statictics_widget%20copy.dart';
 import 'package:haji_market/features/basket/presentation/widgets/show_alert_store_widget.dart';
@@ -26,7 +27,7 @@ Future<dynamic> showAlertAddressWidget(BuildContext context, Function()? callBac
   return showCupertinoModalPopup(
     context: context,
     builder: (BuildContext context) => StatefulBuilder(builder: (context, setState) {
-      return CupertinoActionSheet(
+      return CustomCupertinoActionSheet(
         actions: <Widget>[
           CupertinoActionSheetAction(
             child: const Text(
