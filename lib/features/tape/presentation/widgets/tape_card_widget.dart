@@ -43,11 +43,6 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
       child: Stack(
         children: [
           Positioned.fill(
-            child: Container(
-              color: Colors.black,
-            ),
-          ),
-          Positioned.fill(
             child: SizedBox.expand(
               child: FittedBox(
                 alignment: Alignment.center,
