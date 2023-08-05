@@ -1278,7 +1278,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 nameController.text.isNotEmpty &&
                 priceController.text.isNotEmpty &&
                 countController.text.isNotEmpty &&
-                brands?.id != 0 &&
+                // brands?.id != 0 &&
                 colors?.id != 0) {
               if (fulfillment == 'fbs') {
                 if (widthController.text.isEmpty ||

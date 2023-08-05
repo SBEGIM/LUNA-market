@@ -10,6 +10,8 @@ class TapeRepository {
 
   Future<List<TapeModel>> tapes(inSub, inFav, search, bloggerId, page) =>
       _tapeApi.tapes(inSub, inFav, search, bloggerId, page);
+
+  view(id) => _tapeApi.view(id);
 }
 
 class TapeApi {
@@ -27,5 +29,15 @@ class TapeApi {
     final data = jsonDecode(response.body);
 
     return (data['data'] as List).map((e) => TapeModel.fromJson(e)).toList();
+  }
+
+  view(int id) async {
+    final String? token = _box.read('token');
+
+    final response = await http.post(Uri.parse('$baseUrl/shop/tape/view'),
+        body: {'tape_id': id.toString()},
+        headers: {"Authorization": "Bearer $token"});
+
+    return response.statusCode;
   }
 }

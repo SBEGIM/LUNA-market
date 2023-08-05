@@ -109,8 +109,14 @@ class _EditProductPageState extends State<EditProductPage> {
   Future<void> CatById() async {
     cats = await BlocProvider.of<CatsCubit>(context)
         .catById(widget.product.catId.toString());
-    brands = await BlocProvider.of<BrandCubit>(context)
-        .brandById(widget.product.brandId.toString());
+
+    if (widget.product.brandId != null) {
+      brands = await BlocProvider.of<BrandCubit>(context)
+          .brandById(widget.product.brandId.toString());
+    } else {
+      brands = Cats(id: 0, name: 'Не выбрано');
+    }
+
     subCats = await BlocProvider.of<SubCatsCubit>(context).subCatById(
         widget.product.catId.toString(), widget.product.subCatId.toString());
 

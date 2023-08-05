@@ -92,4 +92,15 @@ class TapeCubit extends Cubit<TapeState> {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
+
+  view(int id) async {
+    // data!.removeAt(index);
+
+    try {
+      await tapeRepository.view(id);
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
 }
