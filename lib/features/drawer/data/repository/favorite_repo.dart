@@ -10,6 +10,7 @@ class FavoriteRepository {
 
   Future<List<ProductModel>> favorites() => _favoriteApi.favorites();
   Future<int> favorite(id) => _favoriteApi.favorite(id);
+  Future<int> favoriteTape(id) => _favoriteApi.favoriteTape(id);
 }
 
 class FavoriteApi {
@@ -27,6 +28,19 @@ class FavoriteApi {
   }
 
   Future<int> favorite(id) async {
+    final String? token = _box.read('token');
+
+    final response = await http.post(
+        Uri.parse('$baseUrl/shop/favorite/product/store'),
+        headers: {"Authorization": "Bearer $token"},
+        body: {'id': id});
+
+    final data = response.statusCode;
+
+    return data;
+  }
+
+  Future<int> favoriteTape(id) async {
     final String? token = _box.read('token');
 
     final response = await http.post(Uri.parse('$baseUrl/shop/favorite/store'),

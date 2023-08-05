@@ -280,17 +280,23 @@ class _HomePageState extends State<HomePage> {
 
                           if (state is productAdState.LoadedState) {
                             return SizedBox(
-                                height: 608,
+                                height:
+                                    state.productModel.length >= 2 ? 608 : 304,
                                 child: GridView.builder(
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount:
+                                              state.productModel.length >= 2
+                                                  ? 2
+                                                  : 1,
                                           childAspectRatio: 1.5,
                                           crossAxisSpacing: 20,
                                           mainAxisSpacing: 2),
-                                  itemCount: 4,
+                                  itemCount: state.productModel.length >= 4
+                                      ? 4
+                                      : state.productModel.length,
                                   itemBuilder: (BuildContext ctx, index) {
                                     return GestureDetector(
                                       onTap: () => context.router.push(

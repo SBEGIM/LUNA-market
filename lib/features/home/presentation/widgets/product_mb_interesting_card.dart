@@ -157,23 +157,25 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                     widget.product.point != 0
                         ? const SizedBox(height: 66)
                         : const SizedBox(),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(6)),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 4.0, right: 4, top: 4, bottom: 4),
-                        child: Text(
-                          '-${widget.product.compound}%',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
+                    widget.product.compound != 0
+                        ? Container(
+                            decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(6)),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 4.0, right: 4, top: 4, bottom: 4),
+                              child: Text(
+                                '-${widget.product.compound}%',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
                   ],
                 ),
               ),
@@ -243,7 +245,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                 const SizedBox(
                   height: 6,
                 ),
-                (widget.product.compound != 0 ||
+                (widget.product.compound != 0 &&
                         widget.product.compound != null)
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.start,

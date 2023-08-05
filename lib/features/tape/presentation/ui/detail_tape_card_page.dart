@@ -1320,7 +1320,7 @@ class _inFavoritesState extends State<inFavorites> {
     return GestureDetector(
       onTap: () async {
         final favorite = BlocProvider.of<favCubit.FavoriteCubit>(context);
-        await favorite.favorite(widget.tape.tapeId.toString());
+        await favorite.favoriteTape(widget.tape.tapeId.toString());
         BlocProvider.of<tapeCubit.TapeCubit>(context).update(
             widget.tape,
             widget.index,

@@ -300,7 +300,10 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 // setState(() {});
 
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const QRViewExample(),
+                                  builder: (context) => QRViewExample(
+                                      id: widget.basketOrder.id!,
+                                      product_id: widget
+                                          .basketOrder.product!.first.id!),
                                 ));
                               },
                               child: Container(
@@ -824,7 +827,10 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
 }
 
 class QRViewExample extends StatefulWidget {
-  const QRViewExample({Key? key}) : super(key: key);
+  int id;
+  int product_id;
+  QRViewExample({required this.id, required this.product_id, Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _QRViewExampleState();
@@ -860,8 +866,29 @@ class _QRViewExampleState extends State<QRViewExample> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   if (result != null)
-                    Text(
-                        'Формат: ${describeEnum(result!.format)}   Результат: ${result!.code}')
+                    Container(
+                        margin: const EdgeInsets.all(8),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            if (result!.code == widget.id.toString()) {
+                              Get.snackbar('Заказ', 'возврат оформлен',
+                                  backgroundColor: Colors.greenAccent);
+
+                              BlocProvider.of<OrderStatusAdminCubit>(context)
+                                  .basketStatus(
+                                'cancel',
+                                widget.id.toString(),
+                                widget.product_id.toString(),
+                              );
+                            } else {
+                              Get.snackbar('Заказ', 'код товара не совпал',
+                                  backgroundColor: Colors.greenAccent);
+                            }
+                          },
+                          child: Text(
+                              'Формат: ${describeEnum(result!.format)}   Результат: ${result!.code}',
+                              style: TextStyle(fontSize: 20)),
+                        ))
                   else
                     const Text('Сканирование...'),
                   Row(

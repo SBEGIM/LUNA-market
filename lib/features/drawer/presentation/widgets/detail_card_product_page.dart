@@ -1,6 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:haji_market/features/app/bloc/navigation_cubit/navigation_cubit.dart';
-import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/data/bloc/profit_cubit.dart'
@@ -16,25 +14,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/basket/presentation/ui/basket_order_page.dart';
 import 'package:haji_market/features/drawer/data/bloc/basket_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/review_cubit.dart'
     as reviewProductCubit;
 import 'package:haji_market/features/drawer/data/bloc/review_state.dart'
     as reviewProductState;
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
-import 'package:haji_market/features/drawer/presentation/widgets/detailed_store_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/product_imags_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/specifications_page.dart';
 import 'package:haji_market/features/home/data/model/Cats.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../../basket/presentation/ui/basket_order_address_page.dart';
 import '../../../home/presentation/widgets/product_mb_interesting_card.dart';
 import '../../../home/presentation/widgets/product_watching_card.dart';
 import '../../data/bloc/favorite_cubit.dart';
 import '../../data/bloc/product_cubit.dart';
 import '../../data/bloc/product_state.dart';
-import '../ui/products_page.dart';
 
 @RoutePage()
 class DetailCardProductPage extends StatefulWidget {
@@ -367,24 +361,28 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       )
                     : const SizedBox(),
               ),
-              Container(
-                margin: const EdgeInsets.only(
-                    left: 16.0, right: 4, top: 260, bottom: 4),
-                decoration: BoxDecoration(
-                    color: Colors.red, borderRadius: BorderRadius.circular(4)),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 4.0, right: 4, top: 4, bottom: 4),
-                  child: Text(
-                    '-${widget.product.compound ?? 0}%',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
-                  ),
-                ),
-              ),
+
+              widget.product.compound != 0
+                  ? Container(
+                      margin: const EdgeInsets.only(
+                          left: 16.0, right: 4, top: 260, bottom: 4),
+                      decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(4)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 4.0, right: 4, top: 4, bottom: 4),
+                        child: Text(
+                          '-${widget.product.compound ?? 0}%',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
               Positioned(
                 bottom: 20,
                 right: 0,
@@ -550,7 +548,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 const SizedBox(
                   height: 18.5,
                 ),
-                (widget.product.compound != 0 ||
+                (widget.product.compound != 0 &&
                         widget.product.compound != null)
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

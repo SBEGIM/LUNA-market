@@ -122,23 +122,25 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                               height: 22,
                             )
                           : const SizedBox(),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(4)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 4.0, right: 4, top: 2, bottom: 2),
-                          child: Text(
-                            '-${widget.product.compound}%',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 9,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      ),
+                      widget.product.compound != 0
+                          ? Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(4)),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 4.0, right: 4, top: 2, bottom: 2),
+                                child: Text(
+                                  '-${widget.product.compound}%',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                 ),
@@ -238,7 +240,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
               const SizedBox(
                 height: 8,
               ),
-              (compoundPrice != null || compoundPrice != 0)
+              widget.product.compound != 0
                   ?
                   // Row(
                   //     children: [

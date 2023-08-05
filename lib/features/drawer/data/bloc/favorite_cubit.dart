@@ -33,4 +33,13 @@ class FavoriteCubit extends Cubit<FavoriteState> {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
+
+  Future<void> favoriteTape(id) async {
+    try {
+      await favoriteRepository.favoriteTape(id);
+    } catch (e) {
+      log('${e.toString()}232');
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
 }
