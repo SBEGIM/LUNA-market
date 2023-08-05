@@ -19,6 +19,16 @@ class LoadedOrderState extends BasketAdminState {
   LoadedOrderState(this.basketOrderModel);
 }
 
+class LoadedOrderRealFbsState extends BasketAdminState {
+  List<BasketAdminOrderModel> basketOrderModel;
+  LoadedOrderRealFbsState(this.basketOrderModel);
+}
+
+class LoadedOrderEndState extends BasketAdminState {
+  List<BasketAdminOrderModel> basketOrderModel;
+  LoadedOrderEndState(this.basketOrderModel);
+}
+
 class ErrorState extends BasketAdminState {
   String message;
   ErrorState({required this.message});

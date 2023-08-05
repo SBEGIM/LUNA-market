@@ -92,7 +92,7 @@ class _DoneMyOrdersPageState extends State<DoneMyOrdersPage> {
                 );
               }
 
-              if (state is LoadedOrderState) {
+              if (state is LoadedOrderEndState) {
                 return SmartRefresher(
                   onRefresh: () {
                     BlocProvider.of<BasketAdminCubit>(context)
@@ -297,7 +297,7 @@ class _DoneMyOrdersPageState extends State<DoneMyOrdersPage> {
                 return SmartRefresher(
                   onRefresh: () {
                     BlocProvider.of<BasketAdminCubit>(context)
-                        .basketOrderShow();
+                        .basketOrderEndShow();
                     _controller.refreshCompleted();
                   },
                   controller: _controller,
@@ -305,8 +305,7 @@ class _DoneMyOrdersPageState extends State<DoneMyOrdersPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Center(
-                          child: CircularProgressIndicator(
-                              color: Colors.indigoAccent)),
+                          child: CircularProgressIndicator(color: Colors.red)),
                     ],
                   ),
                 );

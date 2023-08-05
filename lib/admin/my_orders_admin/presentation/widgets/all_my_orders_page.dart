@@ -9,7 +9,8 @@ import '../../data/bloc/basket_admin_cubit.dart';
 import '../../data/bloc/basket_admin_state.dart';
 
 class AllMyOrdersPage extends StatefulWidget {
-  const AllMyOrdersPage({Key? key}) : super(key: key);
+  String fulfillment;
+  AllMyOrdersPage({required this.fulfillment, Key? key}) : super(key: key);
 
   @override
   State<AllMyOrdersPage> createState() => _AllMyOrdersPageState();
@@ -72,7 +73,8 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
 
   @override
   void initState() {
-    BlocProvider.of<BasketAdminCubit>(context).basketOrderShow();
+    BlocProvider.of<BasketAdminCubit>(context)
+        .basketOrderShow(widget.fulfillment);
     super.initState();
   }
 
@@ -96,7 +98,7 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                 return SmartRefresher(
                   onRefresh: () {
                     BlocProvider.of<BasketAdminCubit>(context)
-                        .basketOrderShow();
+                        .basketOrderShow(widget.fulfillment);
                     _controller.refreshCompleted();
                   },
                   controller: _controller,
@@ -297,7 +299,7 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                 return SmartRefresher(
                   onRefresh: () {
                     BlocProvider.of<BasketAdminCubit>(context)
-                        .basketOrderShow();
+                        .basketOrderShow(widget.fulfillment);
                     _controller.refreshCompleted();
                   },
                   controller: _controller,

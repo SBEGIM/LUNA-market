@@ -485,7 +485,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
           BlocConsumer<OrderStatusAdminCubit, OrderStatusAdminState>(
               listener: (context, state) {
             if (state is LoadedState) {
-              BlocProvider.of<BasketAdminCubit>(context).basketOrderShow();
+              BlocProvider.of<BasketAdminCubit>(context).basketOrderShow('fbs');
               Navigator.pop(context);
             } else if (state is ErrorState) {
               Get.snackbar('Ошибка', state.message,
@@ -534,7 +534,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                           widget.basket.id.toString(),
                           widget.basket.product!.first.id.toString());
                       BlocProvider.of<BasketAdminCubit>(context)
-                          .basketOrderShow();
+                          .basketOrderShow('fbs');
 
                       Get.back();
                     },

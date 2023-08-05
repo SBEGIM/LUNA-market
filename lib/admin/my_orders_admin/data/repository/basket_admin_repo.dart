@@ -10,8 +10,8 @@ const baseUrl = 'http://185.116.193.73/api';
 class BasketAdminRepository {
   final Basket _basket = Basket();
 
-  Future<List<BasketAdminOrderModel>> basketOrderShow() =>
-      _basket.basketOrderShow();
+  Future<List<BasketAdminOrderModel>> basketOrderShow(fulfillment) =>
+      _basket.basketOrderShow(fulfillment);
 
   Future<List<BasketAdminOrderModel>> basketOrderEndShow() =>
       _basket.basketOrderEndShow();
@@ -23,11 +23,13 @@ class BasketAdminRepository {
 class Basket {
   final _box = GetStorage();
 
-  Future<List<BasketAdminOrderModel>> basketOrderShow() async {
-    final String? token = _box.read('token');
+  Future<List<BasketAdminOrderModel>> basketOrderShow(
+      String? fulfillment) async {
+    final String? token = _box.read('seller_token');
 
     final response = await http.get(
-        Uri.parse("$baseUrl/basket/order/status?status=active&page=1"),
+        Uri.parse(
+            "$baseUrl/basket/order/seller/status?status=active&page=1&fulfillment=$fulfillment"),
         headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);
@@ -38,10 +40,10 @@ class Basket {
   }
 
   Future<List<BasketAdminOrderModel>> basketOrderEndShow() async {
-    final String? token = _box.read('token');
+    final String? token = _box.read('seller_token');
 
     final response = await http.get(
-        Uri.parse("$baseUrl/basket/order/status?status=end&page=1"),
+        Uri.parse("$baseUrl/basket/order/seller/status?status=end&page=1"),
         headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);
