@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/contract_of_sale.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/core/util/url_util.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
@@ -14,7 +13,6 @@ import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart'
     as productAdCubit;
 import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart'
     as productAdState;
-import 'package:haji_market/features/drawer/presentation/ui/catalog_page.dart';
 import 'package:haji_market/features/home/data/bloc/banners_cubit.dart'
     as bannerCubit;
 import 'package:haji_market/features/home/data/bloc/banners_state.dart'
@@ -33,11 +31,7 @@ import '../../../drawer/data/bloc/product_cubit.dart' as productCubit;
 import '../../../drawer/data/bloc/product_state.dart' as productState;
 import '../../../drawer/data/bloc/sub_cats_cubit.dart' as subCatCubit;
 import '../../../drawer/data/bloc/sub_cats_state.dart' as subCatState;
-import '../../../drawer/presentation/ui/products_page.dart';
-import '../../../drawer/presentation/ui/shops_page.dart';
-import '../../../drawer/presentation/ui/sub_catalog_page.dart';
 import '../../../drawer/presentation/widgets/credit_webview.dart';
-import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
 import '../../../drawer/presentation/widgets/product_ad_card.dart';
 import '../../data/bloc/cats_cubit.dart' as catCubit;
 import '../../data/bloc/cats_state.dart' as catState;
