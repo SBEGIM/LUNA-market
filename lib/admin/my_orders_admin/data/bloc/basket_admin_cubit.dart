@@ -22,6 +22,19 @@ class BasketAdminCubit extends Cubit<BasketAdminState> {
     }
   }
 
+  Future<void> basketOrderEndShow() async {
+    try {
+      emit(LoadingState());
+      final List<BasketAdminOrderModel> data =
+          await basketRepository.basketOrderEndShow();
+
+      emit(LoadedOrderState(data));
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
   Future<void> basketStatus(String status, String id, productId) async {
     try {
       await basketRepository.basketStatus(status, id, productId);

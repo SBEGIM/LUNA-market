@@ -95,7 +95,8 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
               if (state is LoadedOrderState) {
                 return SmartRefresher(
                   onRefresh: () {
-                    BlocProvider.of<BasketAdminCubit>(context).basketOrderShow();
+                    BlocProvider.of<BasketAdminCubit>(context)
+                        .basketOrderShow();
                     _controller.refreshCompleted();
                   },
                   controller: _controller,
@@ -109,8 +110,10 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                         children: [
                           Text(
                             '${state.basketOrderModel[index].date}',
-                            style:
-                                const TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: AppColors.kGray300,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500),
                           ),
                           const SizedBox(
                             height: 10,
@@ -120,29 +123,36 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => DetailMyOrdersPage(basket: state.basketOrderModel[index])),
+                                    builder: (context) => DetailMyOrdersPage(
+                                        basket: state.basketOrderModel[index])),
                               );
                             },
                             child: Container(
-                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10)),
                               padding: const EdgeInsets.all(16),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
                                           Text(
                                             '№${state.basketOrderModel[index].id}',
                                             style: const TextStyle(
-                                                fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kGray700),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: AppColors.kGray700),
                                           ),
                                           const SizedBox(
                                             width: 8,
                                           ),
-                                          SvgPicture.asset('assets/icons/master_card.svg')
+                                          SvgPicture.asset(
+                                              'assets/icons/master_card.svg')
                                         ],
                                       ),
                                       const Icon(Icons.more_horiz),
@@ -163,7 +173,9 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                       Text(
                                         '${state.basketOrderModel[index].returnDate}',
                                         style: const TextStyle(
-                                            color: AppColors.kGray300, fontSize: 13, fontWeight: FontWeight.w400),
+                                            color: AppColors.kGray300,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w400),
                                       )
                                     ],
                                   ),
@@ -172,26 +184,42 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                   ),
                                   ListView.builder(
                                       shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: state.basketOrderModel[index].product!.length,
-                                      itemBuilder: (BuildContext context, int i) {
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: state.basketOrderModel[index]
+                                          .product!.length,
+                                      itemBuilder:
+                                          (BuildContext context, int i) {
                                         return Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              state.basketOrderModel[index].product![i].productName.toString(),
+                                              state.basketOrderModel[index]
+                                                  .product![i].productName
+                                                  .toString(),
                                               style: const TextStyle(
-                                                  color: AppColors.kGray750, fontSize: 14, fontWeight: FontWeight.w500),
+                                                  color: AppColors.kGray750,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                             Text(
-                                              state.basketOrderModel[index].product![i].count.toString(),
+                                              state.basketOrderModel[index]
+                                                  .product![i].count
+                                                  .toString(),
                                               style: const TextStyle(
-                                                  color: AppColors.kGray750, fontSize: 14, fontWeight: FontWeight.w500),
+                                                  color: AppColors.kGray750,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                             Text(
-                                              state.basketOrderModel[index].product![i].price.toString(),
+                                              state.basketOrderModel[index]
+                                                  .product![i].price
+                                                  .toString(),
                                               style: const TextStyle(
-                                                  color: AppColors.kGray750, fontSize: 14, fontWeight: FontWeight.w500),
+                                                  color: AppColors.kGray750,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500),
                                             )
                                           ],
                                         );
@@ -200,17 +228,22 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                     height: 10,
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       const Text(
                                         'Сумма заказа:',
                                         style: TextStyle(
-                                            color: AppColors.kGray400, fontSize: 12, fontWeight: FontWeight.w500),
+                                            color: AppColors.kGray400,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500),
                                       ),
                                       Text(
                                         '${state.basketOrderModel[index].summa.toString()} ₽',
                                         style: const TextStyle(
-                                            color: AppColors.kGray750, fontSize: 16, fontWeight: FontWeight.w500),
+                                            color: AppColors.kGray750,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
                                       )
                                     ],
                                   ),
@@ -226,7 +259,9 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                       Text(
                                         ' ${state.basketOrderModel[index].user!.name}',
                                         style: const TextStyle(
-                                            color: AppColors.kGray500, fontSize: 12, fontWeight: FontWeight.w500),
+                                            color: AppColors.kGray500,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -235,12 +270,15 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
-                                        color: const Color(0x104BB34B), borderRadius: BorderRadius.circular(4)),
+                                        color: const Color(0x104BB34B),
+                                        borderRadius: BorderRadius.circular(4)),
                                     padding: const EdgeInsets.all(5),
                                     child: Text(
                                       status,
                                       style: const TextStyle(
-                                          color: Color(0xFF4BB34B), fontSize: 12, fontWeight: FontWeight.w400),
+                                          color: Color(0xFF4BB34B),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
                                     ),
                                   )
                                 ],
@@ -258,14 +296,17 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
               } else {
                 return SmartRefresher(
                   onRefresh: () {
-                    BlocProvider.of<BasketAdminCubit>(context).basketOrderShow();
+                    BlocProvider.of<BasketAdminCubit>(context)
+                        .basketOrderShow();
                     _controller.refreshCompleted();
                   },
                   controller: _controller,
                   child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Center(child: CircularProgressIndicator(color: Colors.indigoAccent)),
+                      Center(
+                          child: CircularProgressIndicator(
+                              color: Colors.indigoAccent)),
                     ],
                   ),
                 );

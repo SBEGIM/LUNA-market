@@ -13,6 +13,9 @@ class BasketAdminRepository {
   Future<List<BasketAdminOrderModel>> basketOrderShow() =>
       _basket.basketOrderShow();
 
+  Future<List<BasketAdminOrderModel>> basketOrderEndShow() =>
+      _basket.basketOrderEndShow();
+
   Future<void> basketStatus(String status, id, productId) =>
       _basket.basketStatus(status, id, productId);
 }
@@ -25,6 +28,20 @@ class Basket {
 
     final response = await http.get(
         Uri.parse("$baseUrl/basket/order/status?status=active&page=1"),
+        headers: {"Authorization": "Bearer $token"});
+
+    final data = jsonDecode(response.body);
+
+    return (data['data'] as List)
+        .map((e) => BasketAdminOrderModel.fromJson(e))
+        .toList();
+  }
+
+  Future<List<BasketAdminOrderModel>> basketOrderEndShow() async {
+    final String? token = _box.read('token');
+
+    final response = await http.get(
+        Uri.parse("$baseUrl/basket/order/status?status=end&page=1"),
         headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);

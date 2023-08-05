@@ -12,6 +12,7 @@ import 'package:haji_market/features/basket/data/models/basket_order_model.dart'
 import 'package:haji_market/features/my_order/presentation/widget/cancel_order_widget.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import '../../../../admin/my_orders_admin/data/bloc/order_status_admin_cubit.dart';
 import '../../../chat/presentation/chat_page.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart';
 import '../../../drawer/data/bloc/review_cubit.dart';
@@ -86,13 +87,26 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                       ),
                       TimelineTile(
                         isFirst: true,
-                        indicatorStyle: IndicatorStyle(
-                          color: AppColors.kPrimaryColor,
-                          iconStyle: IconStyle(
-                            color: Colors.white,
-                            iconData: Icons.check,
-                          ),
-                        ),
+                        indicatorStyle: widget.basketOrder.status == 'order'
+                            ? IndicatorStyle(
+                                color: AppColors.kPrimaryColor,
+                                iconStyle: IconStyle(
+                                  color: Colors.white,
+                                  iconData: Icons.check,
+                                ),
+                              )
+                            : IndicatorStyle(
+                                color: Colors.grey,
+                                iconStyle: IconStyle(
+                                  color: Colors.white,
+                                  iconData:
+                                      (widget.basketOrder.status == 'end' ||
+                                              widget.basketOrder.status ==
+                                                  'courier')
+                                          ? Icons.check
+                                          : Icons.history_toggle_off,
+                                ),
+                              ),
                         beforeLineStyle: const LineStyle(
                           thickness: 1.4,
                         ),
@@ -123,14 +137,27 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         ),
                       ),
                       TimelineTile(
-                        isLast: true,
-                        indicatorStyle: IndicatorStyle(
-                          color: Colors.grey,
-                          iconStyle: IconStyle(
-                            color: Colors.grey,
-                            iconData: Icons.start,
-                          ),
-                        ),
+                        isFirst: false,
+                        indicatorStyle: widget.basketOrder.status == 'courier'
+                            ? IndicatorStyle(
+                                color: AppColors.kPrimaryColor,
+                                iconStyle: IconStyle(
+                                  color: Colors.white,
+                                  iconData: Icons.check,
+                                ),
+                              )
+                            : IndicatorStyle(
+                                color: Colors.grey,
+                                iconStyle: IconStyle(
+                                  color: Colors.white,
+                                  iconData:
+                                      (widget.basketOrder.status == 'end' ||
+                                              widget.basketOrder.status ==
+                                                  'courier')
+                                          ? Icons.check
+                                          : Icons.history_toggle_off,
+                                ),
+                              ),
                         beforeLineStyle: const LineStyle(
                           thickness: 1.4,
                         ),
@@ -162,6 +189,56 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           ),
                         ),
                       ),
+                      TimelineTile(
+                        isLast: true,
+                        indicatorStyle: widget.basketOrder.status == 'end'
+                            ? IndicatorStyle(
+                                color: AppColors.kPrimaryColor,
+                                iconStyle: IconStyle(
+                                  color: Colors.white,
+                                  iconData: Icons.check,
+                                ),
+                              )
+                            : IndicatorStyle(
+                                color: Colors.grey,
+                                iconStyle: IconStyle(
+                                  color: Colors.white,
+                                  iconData: widget.basketOrder.status == 'end'
+                                      ? Icons.check
+                                      : Icons.history_toggle_off,
+                                ),
+                              ),
+                        beforeLineStyle: const LineStyle(
+                          thickness: 1.4,
+                        ),
+                        lineXY: 0.4,
+                        endChild: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0, top: 10, bottom: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Выдан',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Text(
+                                widget.basketOrder.status == 'end'
+                                    ? 'Вы получили товар'
+                                    : 'Товар пока не получен',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  color: AppColors.kGray300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       const SizedBox(
                         height: 10,
                       ),
@@ -175,13 +252,28 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CancelOrderWidget(
-                                          id: widget.basketOrder.id
-                                              .toString())),
-                                );
+                                if (widget.basketOrder.status != 'courier') {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CancelOrderWidget(
+                                            id: widget.basketOrder.id
+                                                .toString())),
+                                  );
+                                } else {
+                                  BlocProvider.of<OrderStatusAdminCubit>(
+                                          context)
+                                      .basketStatus(
+                                    'end',
+                                    widget.basketOrder.id.toString(),
+                                    widget.basketOrder.product!.first.id
+                                        .toString(),
+                                  );
+
+                                  Get.snackbar('Заказ', 'Вы совершили заказ');
+
+                                  setState(() {});
+                                }
                               },
                               child: Container(
                                 height: 38,
@@ -191,9 +283,11 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   color: AppColors.kPrimaryColor,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: const Text(
-                                  'Отменить',
-                                  style: TextStyle(
+                                child: Text(
+                                  widget.basketOrder.status == 'courier'
+                                      ? 'Завершить'
+                                      : 'Отменить',
+                                  style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500),
