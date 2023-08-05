@@ -127,24 +127,27 @@ class _FavoriteProductsCardWidgetState
                           const SizedBox(
                             height: 18,
                           ),
-                          Container(
-                            height: 22,
-                            decoration: BoxDecoration(
-                                color: const Color.fromRGBO(255, 50, 72, 1),
-                                borderRadius: BorderRadius.circular(4)),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 4.0, right: 4, top: 4, bottom: 4),
-                              child: Text(
-                                '-${procentPrice.toInt()}%',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                          ),
+                          widget.product.compound != 0
+                              ? Container(
+                                  height: 22,
+                                  decoration: BoxDecoration(
+                                      color:
+                                          const Color.fromRGBO(255, 50, 72, 1),
+                                      borderRadius: BorderRadius.circular(4)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 4.0, right: 4, top: 4, bottom: 4),
+                                    child: Text(
+                                      '-${widget.product.compound}%',
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox(),
                         ],
                       ),
                     ),
@@ -241,7 +244,7 @@ class _FavoriteProductsCardWidgetState
                   const SizedBox(
                     height: 8,
                   ),
-                  (compoundPrice != null || compoundPrice != 0)
+                  widget.product.compound != 0
                       ?
                       // Row(
                       //     children: [

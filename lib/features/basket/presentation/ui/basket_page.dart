@@ -532,7 +532,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              (widget.basketProducts.product!.compound != 0 ||
+                              (widget.basketProducts.product!.compound != 0 &&
                                       widget.basketProducts.product!.compound !=
                                           null)
                                   ? Row(
@@ -546,7 +546,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                         ),
                                         const SizedBox(width: 8),
                                         Text(
-                                          '${widget.basketProducts.product!.price} ₽ ',
+                                          '${widget.basketProducts.product!.price!.toInt()} ₽ ',
                                           style: const TextStyle(
                                             color: AppColors.kGray900,
                                             fontWeight: FontWeight.w500,
