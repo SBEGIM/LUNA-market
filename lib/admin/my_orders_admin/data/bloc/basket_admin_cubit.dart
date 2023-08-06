@@ -11,24 +11,33 @@ class BasketAdminCubit extends Cubit<BasketAdminState> {
 
   List<BasketAdminOrderModel> activeOrders = [];
   List<BasketAdminOrderModel> activeOrdersRealFBS = [];
-
   List<BasketAdminOrderModel> endOrders = [];
 
   Future<void> basketOrderShow(fulfillment) async {
     try {
       emit(LoadingState());
       final List<BasketAdminOrderModel> data =
-          await basketRepository.basketOrderShow(fulfillment);
-      if (fulfillment == 'fbs') {
-        activeOrders.clear();
-        activeOrders.addAll(data);
-      } else if (fulfillment == 'realFBS') {
-        print('realFBS');
-        activeOrdersRealFBS.clear();
-        activeOrdersRealFBS.addAll(data);
-      }
-
+          await basketRepository.basketOrderShow('fbs');
+      activeOrders.clear();
+      activeOrders.addAll(data);
       emit(LoadedOrderState(activeOrders));
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  Future<void> basketOrderRealFBSshow(fulfillment) async {
+    try {
+      emit(LoadingState());
+
+      final List<BasketAdminOrderModel> data =
+          await basketRepository.basketOrderRealFbsShow('realFBS');
+      activeOrdersRealFBS.clear();
+      activeOrdersRealFBS.addAll(data);
+
+      print("data lenth ${activeOrdersRealFBS.length}");
+      emit(LoadedOrderRealFbsState(data));
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
@@ -57,14 +66,9 @@ class BasketAdminCubit extends Cubit<BasketAdminState> {
         emit(LoadingState());
         emit(LoadedOrderState(activeOrders));
       } else if (value == 1) {
-        print('qwewqeqweq');
         emit(LoadingState());
         print(activeOrdersRealFBS.length);
-        if (activeOrdersRealFBS.length == 0) {
-          print('weweq');
-          await basketOrderShow('realFBS');
-        }
-        emit(LoadedOrderState(activeOrdersRealFBS));
+        emit(LoadedOrderRealFbsState(activeOrdersRealFBS));
       } else {
         emit(LoadedOrderEndState(endOrders));
       }

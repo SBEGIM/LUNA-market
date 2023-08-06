@@ -270,9 +270,12 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         .toString(),
                                   );
 
-                                  Get.snackbar('Заказ', 'Вы совершили заказ');
+                                  BlocProvider.of<BasketCubit>(context)
+                                      .basketOrderShow();
 
-                                  setState(() {});
+                                  Get.snackbar('Заказ', 'Вы совершили заказ',
+                                      backgroundColor: Colors.blueAccent);
+                                  // Get.back();
                                 }
                               },
                               child: Container(

@@ -31,26 +31,29 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
         {
           status = 'Заказ оформлен';
           postStatus = 'courier';
-          postSecondStatus = 'courier';
+          postSecondStatus = 'cancel';
+
           buttonText = 'Передать курьеру';
-          buttonSecondText = 'Передать курьеру';
+          buttonSecondText = 'Отменить заказ';
         }
         break;
 
       case 'courier':
         {
           status = 'Передан службе доставка';
+          postStatus = '';
+          postSecondStatus = 'error';
           buttonText = 'Ожидание клиента';
-          buttonSecondText = 'Ожидание клиента';
+          buttonSecondText = 'Проблемы с заказом';
         }
         break;
       case 'error':
         {
           status = 'Ошибка';
-          postStatus = 'error';
-          postSecondStatus = 'error';
-          buttonText = 'Ошибка';
-          buttonSecondText = 'Ошибка';
+          postStatus = 'courier';
+          postSecondStatus = '';
+          buttonText = 'Передать курьеру';
+          buttonSecondText = 'Ошибка c заказом';
         }
         break;
       case 'cancel':
@@ -125,7 +128,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
             padding: const EdgeInsets.all(16),
             child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: widget.basket.product!.length,
+                itemCount: widget.basket.product?.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.all(10),
@@ -137,8 +140,8 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       ),
                       child: ListTile(
                         leading: Image.network(
-                          widget.basket.product![index].path!.first.isNotEmpty
-                              ? "http://185.116.193.73/storage/${widget.basket.product![index].path!.first}"
+                          widget.basket.product![index].path != null
+                              ? "http://185.116.193.73/storage/${widget.basket.product![index].path?.first}"
                               : '',
                           fit: BoxFit.cover,
                           height: 104,
@@ -153,7 +156,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${widget.basket.product![index].productName}',
+                              '${widget.basket.product?[index].productName}',
                               style: const TextStyle(
                                   color: AppColors.kGray900,
                                   fontSize: 12,
@@ -165,7 +168,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                             Row(
                               children: [
                                 Text(
-                                  '${widget.basket.product![index].price}',
+                                  '${widget.basket.product?[index].price}',
                                   style: const TextStyle(
                                       color: AppColors.kGray900,
                                       fontSize: 12,
@@ -175,7 +178,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                   width: 10,
                                 ),
                                 Text(
-                                  '${widget.basket.product![index].count}x',
+                                  '${widget.basket.product?[index].count}x',
                                   style: const TextStyle(
                                       color: AppColors.kPrimaryColor,
                                       fontSize: 12,
@@ -250,7 +253,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                           fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.product?.first.price ?? 0} ₽ ',
+                      '${widget.basket.product != null ? widget.basket.product?.first.price ?? 0 : 0} ₽ ',
                       style: const TextStyle(
                           color: AppColors.kGray900,
                           fontSize: 16,
@@ -500,12 +503,22 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      BlocProvider.of<OrderStatusAdminCubit>(context)
-                          .basketStatus(
-                        postStatus,
-                        widget.basket.id.toString(),
-                        widget.basket.product!.first.id.toString(),
-                      );
+                      if (postStatus != '') {
+                        BlocProvider.of<OrderStatusAdminCubit>(context)
+                            .basketStatus(
+                          postStatus,
+                          widget.basket.id.toString(),
+                          widget.basket.product!.first.id.toString(),
+                        );
+
+                        BlocProvider.of<BasketAdminCubit>(context)
+                            .basketOrderRealFBSshow('realFBS');
+
+                        Get.back();
+                      } else {
+                        Get.snackbar('Заказ', 'Невозможно изменить статус',
+                            backgroundColor: Colors.orangeAccent);
+                      }
                     },
                     child: Container(
                       height: 42,
@@ -529,14 +542,19 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      BlocProvider.of<BasketAdminCubit>(context).basketStatus(
-                          postStatus,
-                          widget.basket.id.toString(),
-                          widget.basket.product!.first.id.toString());
-                      BlocProvider.of<BasketAdminCubit>(context)
-                          .basketOrderShow('fbs');
+                      if (postSecondStatus != '') {
+                        BlocProvider.of<BasketAdminCubit>(context).basketStatus(
+                            postSecondStatus,
+                            widget.basket.id.toString(),
+                            widget.basket.product!.first.id.toString());
+                        BlocProvider.of<BasketAdminCubit>(context)
+                            .basketOrderRealFBSshow('realFBS');
 
-                      Get.back();
+                        Get.back();
+                      } else {
+                        Get.snackbar('Заказ', 'Невозможно изменить статус',
+                            backgroundColor: Colors.orangeAccent);
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(

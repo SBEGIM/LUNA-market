@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/admin/my_orders_admin/presentation/widgets/all_my_orders_page.dart';
 import 'package:haji_market/admin/my_orders_admin/presentation/widgets/done_my_orders_page.dart';
-import 'package:haji_market/bloger/my_orders_admin/data/bloc/upload_video_blogger_state.dart';
 import 'package:haji_market/core/common/constants.dart';
-
 import '../../../../admin/my_orders_admin/data/bloc/basket_admin_cubit.dart';
-import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/app/widgets/custom_switch_button.dart';
+import '../widgets/all_my_realFBS_orders_page.dart';
 
 @RoutePage()
 class MyOrdersAdminPage extends StatefulWidget {
@@ -130,7 +128,7 @@ class _MyOrdersAdminPageState extends State<MyOrdersAdminPage> {
             index: segmentValue,
             children: [
               AllMyOrdersPage(fulfillment: 'fbs'),
-              AllMyOrdersPage(fulfillment: 'realFBS'),
+              AllMyOrdersRealFBSPage(fulfillment: 'realFBS'),
               const DoneMyOrdersPage(),
             ],
           ),

@@ -8,15 +8,16 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../data/bloc/basket_admin_cubit.dart';
 import '../../data/bloc/basket_admin_state.dart';
 
-class AllMyOrdersPage extends StatefulWidget {
+class AllMyOrdersRealFBSPage extends StatefulWidget {
   String fulfillment;
-  AllMyOrdersPage({required this.fulfillment, Key? key}) : super(key: key);
+  AllMyOrdersRealFBSPage({required this.fulfillment, Key? key})
+      : super(key: key);
 
   @override
-  State<AllMyOrdersPage> createState() => _AllMyOrdersPageState();
+  State<AllMyOrdersRealFBSPage> createState() => _AllMyOrdersRealFBSPageState();
 }
 
-class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
+class _AllMyOrdersRealFBSPageState extends State<AllMyOrdersRealFBSPage> {
   final RefreshController _controller = RefreshController();
   String status = '';
 
@@ -73,7 +74,8 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
 
   @override
   void initState() {
-    BlocProvider.of<BasketAdminCubit>(context).basketOrderShow('fbs');
+    BlocProvider.of<BasketAdminCubit>(context)
+        .basketOrderRealFBSshow('realFBS');
     super.initState();
   }
 
@@ -93,24 +95,24 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                 );
               }
 
-              if (state is LoadedOrderState) {
+              if (state is LoadedOrderRealFbsState) {
                 return SmartRefresher(
                   onRefresh: () {
                     BlocProvider.of<BasketAdminCubit>(context)
-                        .basketOrderShow('fbs');
+                        .basketOrderRealFBSshow('realFBS');
                     _controller.refreshCompleted();
                   },
                   controller: _controller,
                   child: ListView.builder(
-                    itemCount: state.basketOrderModel.length,
+                    itemCount: state.basketOrderRealFbsModel.length,
                     itemBuilder: (context, index) {
-                      text(state.basketOrderModel[index].status);
+                      text(state.basketOrderRealFbsModel[index].status);
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${state.basketOrderModel[index].date}',
+                            '${state.basketOrderRealFbsModel[index].date}',
                             style: const TextStyle(
                                 color: AppColors.kGray300,
                                 fontSize: 12,
@@ -125,7 +127,8 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => DetailMyOrdersPage(
-                                        basket: state.basketOrderModel[index])),
+                                        basket: state
+                                            .basketOrderRealFbsModel[index])),
                               );
                             },
                             child: Container(
@@ -143,7 +146,7 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                       Row(
                                         children: [
                                           Text(
-                                            '№${state.basketOrderModel[index].id}',
+                                            '№${state.basketOrderRealFbsModel[index].id}',
                                             style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500,
@@ -172,7 +175,7 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                         width: 5,
                                       ),
                                       Text(
-                                        '${state.basketOrderModel[index].returnDate}',
+                                        '${state.basketOrderRealFbsModel[index].returnDate}',
                                         style: const TextStyle(
                                             color: AppColors.kGray300,
                                             fontSize: 13,
@@ -187,8 +190,10 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                       shrinkWrap: true,
                                       physics:
                                           const NeverScrollableScrollPhysics(),
-                                      itemCount: state.basketOrderModel[index]
-                                          .product!.length,
+                                      itemCount: state
+                                          .basketOrderRealFbsModel[index]
+                                          .product!
+                                          .length,
                                       itemBuilder:
                                           (BuildContext context, int i) {
                                         return Row(
@@ -196,8 +201,11 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              state.basketOrderModel[index]
-                                                  .product![i].productName
+                                              state
+                                                  .basketOrderRealFbsModel[
+                                                      index]
+                                                  .product![i]
+                                                  .productName
                                                   .toString(),
                                               style: const TextStyle(
                                                   color: AppColors.kGray750,
@@ -205,8 +213,11 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             Text(
-                                              state.basketOrderModel[index]
-                                                  .product![i].count
+                                              state
+                                                  .basketOrderRealFbsModel[
+                                                      index]
+                                                  .product![i]
+                                                  .count
                                                   .toString(),
                                               style: const TextStyle(
                                                   color: AppColors.kGray750,
@@ -214,8 +225,11 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             Text(
-                                              state.basketOrderModel[index]
-                                                  .product![i].price
+                                              state
+                                                  .basketOrderRealFbsModel[
+                                                      index]
+                                                  .product![i]
+                                                  .price
                                                   .toString(),
                                               style: const TextStyle(
                                                   color: AppColors.kGray750,
@@ -240,7 +254,7 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                             fontWeight: FontWeight.w500),
                                       ),
                                       Text(
-                                        '${state.basketOrderModel[index].summa.toString()} ₽',
+                                        '${state.basketOrderRealFbsModel[index].summa.toString()} ₽',
                                         style: const TextStyle(
                                             color: AppColors.kGray750,
                                             fontSize: 16,
@@ -258,7 +272,7 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                         color: AppColors.kGray400,
                                       ),
                                       Text(
-                                        ' ${state.basketOrderModel[index].user!.name}',
+                                        ' ${state.basketOrderRealFbsModel[index].user!.name}',
                                         style: const TextStyle(
                                             color: AppColors.kGray500,
                                             fontSize: 12,
@@ -298,7 +312,7 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                 return SmartRefresher(
                   onRefresh: () {
                     BlocProvider.of<BasketAdminCubit>(context)
-                        .basketOrderShow('fbs');
+                        .basketOrderRealFBSshow('realFBS');
                     _controller.refreshCompleted();
                   },
                   controller: _controller,
