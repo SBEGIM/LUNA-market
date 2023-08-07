@@ -22,7 +22,7 @@ class ProfileMonthStaticsBloggerToApi {
     final bloggerId = _box.read('blogger_id');
 
     final response = await http.get(Uri.parse(
-        '$baseUrl/blogger/profile/month/statics/?blogger=$bloggerId&month=$month&year=$year'));
+        '$baseUrl/blogger/profile/month/statics/?blogger_id=$bloggerId&month=$month&year=$year'));
 
     final data = jsonDecode(response.body);
 

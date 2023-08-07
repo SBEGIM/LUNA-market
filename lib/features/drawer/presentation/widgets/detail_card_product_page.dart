@@ -42,6 +42,7 @@ class DetailCardProductPage extends StatefulWidget {
 
 class _DetailCardProductPageState extends State<DetailCardProductPage> {
   int count = 0;
+  int optom = 0;
   bool isvisible = false;
 
   int? selectedIndex = -1;
@@ -128,6 +129,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
         setState(() {});
       });
     }
+    widget.product.bloc?.forEach((element) {
+      optom += element.count!.toInt();
+    });
 
     super.initState();
   }
@@ -1113,6 +1117,42 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   ],
                 ),
                 const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        SvgPicture.asset('assets/icons/bi_box-fill.svg'),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'В наличии: ${widget.product.product_count} шт',
+                          style: const TextStyle(
+                              // color: AppColors.kPrimaryColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                            'assets/icons/fluent_box-multiple-20-filled.svg'),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Оптом: $optom шт',
+                          style: const TextStyle(
+                              // color: AppColors.kPrimaryColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
                 // Container(
                 //   //padding: const EdgeInsets.all(16),
                 //   // color: Colors.grey,
@@ -1222,6 +1262,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
                       const Text(
                         'Выберите Размер',
                         style: TextStyle(

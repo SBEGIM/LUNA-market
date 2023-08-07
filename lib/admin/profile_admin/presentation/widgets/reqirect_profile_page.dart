@@ -257,6 +257,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                         ),
                         title: TextField(
                           controller: iinController,
+                          readOnly: true,
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'ИИН/БИН',

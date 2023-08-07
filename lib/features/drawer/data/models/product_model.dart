@@ -3,6 +3,7 @@ class ProductModel {
     int? id,
     String? name,
     int? price,
+    int? product_count,
     int? compound,
     int? point,
     String? description,
@@ -28,6 +29,8 @@ class ProductModel {
     _id = id;
     _name = name;
     _price = price;
+
+    _product_count = product_count;
     _compound = compound;
     _point = point;
     _description = description;
@@ -55,6 +58,7 @@ class ProductModel {
     _id = json['id'];
     _name = json['name'];
     _price = json['price'];
+    _product_count = json['product_count'];
     _compound = json['compound'];
     _point = json['point'];
     _description = json['description'];
@@ -90,6 +94,7 @@ class ProductModel {
   int? _id;
   String? _name;
   int? _price;
+  int? _product_count;
   int? _compound;
   int? _point;
   String? _description;
@@ -115,6 +120,7 @@ class ProductModel {
   int? get id => _id;
   String? get name => _name;
   int? get price => _price;
+  int? get product_count => _product_count;
   int? get compound => _compound;
   int? get point => _point;
   String? get description => _description;
@@ -142,6 +148,7 @@ class ProductModel {
     map['id'] = _id;
     map['name'] = _name;
     map['price'] = _price;
+    map['product_count'] = _product_count;
     map['compound'] = _compound;
     map['point'] = _point;
     map['description'] = _description;
