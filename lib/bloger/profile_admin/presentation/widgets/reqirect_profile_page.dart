@@ -24,6 +24,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   final nickNameController = TextEditingController();
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
+  final iinController = TextEditingController();
   final reapatPasswordController = TextEditingController();
 
   final _box = GetStorage();
@@ -39,6 +40,18 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     setState(() {
       _image = image;
     });
+  }
+
+  @override
+  void initState() {
+    nameController.text = GetStorage().read('blogger_name') ?? '';
+    nickNameController.text = GetStorage().read('blogger_nick_name') ?? '';
+    iinController.text = GetStorage().read('blogger_iin') != 'null'
+        ? (GetStorage().read('blogger_iin') ?? '')
+        : '';
+    phoneController.text = GetStorage().read('blogger_phone') ?? '';
+
+    super.initState();
   }
 
   @override
@@ -66,7 +79,9 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
       body: BlocConsumer<EditBloggerCubit, EditBloggerState>(
           listener: (context, state) {
         if (state is LoadedState) {
-          Get.to(() => const ProfileBloggerPage());
+          // Get.to(() => const ProfileBloggerPage());
+
+          Get.back();
         }
       }, builder: (context, state) {
         if (state is InitState) {
@@ -218,6 +233,25 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                             ),
                           ),
                           ListTile(
+                            leading: Image.asset(
+                              'assets/icons/bin.png',
+                              height: 24,
+                              width: 24,
+                            ),
+                            title: TextField(
+                              keyboardType: TextInputType.number,
+                              controller: iinController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'ИИН',
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  // borderRadius: BorderRadius.circular(3),
+                                ),
+                              ),
+                            ),
+                          ),
+                          ListTile(
                             leading: SvgPicture.asset(
                               'assets/icons/password.svg',
                               height: 24,
@@ -286,6 +320,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                   nickNameController.text,
                   phoneController.text,
                   passwordController.text,
+                  iinController.text,
                   _image != null ? _image!.path : null);
             }
           },
