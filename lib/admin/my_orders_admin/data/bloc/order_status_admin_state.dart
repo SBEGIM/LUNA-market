@@ -11,6 +11,7 @@ class LoadedState extends OrderStatusAdminState {
   // LoadedState(this.basketOrderModel);
 }
 
+class CancelState extends OrderStatusAdminState {}
 class ErrorState extends OrderStatusAdminState {
   String message;
   ErrorState({required this.message});

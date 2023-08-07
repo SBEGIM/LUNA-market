@@ -372,7 +372,7 @@ class MultiBlocWrapper extends StatelessWidget {
                 BasketAdminCubit(basketRepository: BasketAdminRepository())),
         BlocProvider(
             create: (_) => OrderStatusAdminCubit(
-                basketRepository: BasketAdminRepository())),
+                basketAdminRepository: BasketAdminRepository(),BasketRepository())),
         BlocProvider(
             create: (_) => ColorCubit(colorRepository: ColorAdminRepository())),
         BlocProvider(
