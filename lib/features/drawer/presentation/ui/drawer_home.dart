@@ -81,7 +81,8 @@ class _DrawerPageState extends State<DrawerPage> {
                     onTap: () {
                       if (_box.read('name') == 'Не авторизированный') {
                         GetStorage().remove('token');
-                        BlocProvider.of<AppBloc>(context).add(const AppEvent.exiting());
+                        BlocProvider.of<AppBloc>(context)
+                            .add(const AppEvent.exiting());
                         // Navigator.push(
                         //   context,
                         //   MaterialPageRoute(builder: (context) => const ViewAuthRegisterPage(BackButton: true)),
@@ -120,9 +121,13 @@ class _DrawerPageState extends State<DrawerPage> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(31),
                                         image: DecorationImage(
-                                          image: (_box.read('avatar') != null && _box.read('avatar') != "null")
-                                              ? NetworkImage("http://185.116.193.73/storage/${_box.read('avatar')}")
-                                              : const AssetImage('assets/icons/profile2.png') as ImageProvider,
+                                          image: (_box.read('avatar') != null &&
+                                                  _box.read('avatar') != "null")
+                                              ? NetworkImage(
+                                                  "http://185.116.193.73/storage/${_box.read('avatar')}")
+                                              : const AssetImage(
+                                                      'assets/icons/profile2.png')
+                                                  as ImageProvider,
                                           fit: BoxFit.cover,
                                         )),
                                   )
@@ -137,7 +142,9 @@ class _DrawerPageState extends State<DrawerPage> {
                             // ),
 
                             SizedBox(
-                              width: _box.read('name') != 'Не авторизированный' ? 10 : 0,
+                              width: _box.read('name') != 'Не авторизированный'
+                                  ? 10
+                                  : 0,
                             ),
                             Column(
                               mainAxisSize: MainAxisSize.min,
@@ -148,14 +155,20 @@ class _DrawerPageState extends State<DrawerPage> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 16,
-                                        color:
-                                            _box.read('name') == 'Не авторизированный' ? Colors.white : Colors.black)),
+                                        color: _box.read('name') ==
+                                                'Не авторизированный'
+                                            ? Colors.white
+                                            : Colors.black)),
                                 const SizedBox(height: 4),
-                                Text(_box.read('name') == 'Не авторизированный' ? '' : _box.read('city') ?? 'Алматы',
+                                Text(
+                                    _box.read('name') == 'Не авторизированный'
+                                        ? ''
+                                        : _box.read('city') ?? 'Алматы',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14,
-                                        color: Color.fromRGBO(145, 145, 145, 1))),
+                                        color:
+                                            Color.fromRGBO(145, 145, 145, 1))),
                               ],
                             )
                           ],
@@ -187,7 +200,9 @@ class _DrawerPageState extends State<DrawerPage> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const BonusUserPage()),
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const BonusUserPage()),
                                   );
                                 }),
                             topMenu(
@@ -196,7 +211,9 @@ class _DrawerPageState extends State<DrawerPage> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const MyOrderPage()),
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MyOrderPage()),
                                   );
                                   // print('123231');
                                 }),
@@ -206,7 +223,8 @@ class _DrawerPageState extends State<DrawerPage> {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const ChatPage()),
+                                  MaterialPageRoute(
+                                      builder: (context) => const ChatPage()),
                                 );
                               },
                             ),
@@ -222,8 +240,9 @@ class _DrawerPageState extends State<DrawerPage> {
                 InkWell(
                   onTap: () {
                     _box.read('seller_token') != null
-                        ? BlocProvider.of<AppBloc>(context)
-                            .add(const AppEvent.chageState(state: AppState.inAppAdminState()))
+                        ? BlocProvider.of<AppBloc>(context).add(
+                            const AppEvent.chageState(
+                                state: AppState.inAppAdminState()))
                         : context.router.push(AdminAuthRoute());
                   },
                   child: const DrawerListTile(
@@ -236,8 +255,9 @@ class _DrawerPageState extends State<DrawerPage> {
                 InkWell(
                   onTap: () {
                     _box.read('blogger_token') != null
-                        ? BlocProvider.of<AppBloc>(context)
-                            .add(const AppEvent.chageState(state: AppState.inAppBlogerState()))
+                        ? BlocProvider.of<AppBloc>(context).add(
+                            const AppEvent.chageState(
+                                state: AppState.inAppBlogerState()))
                         : context.router.push(BlogAuthRegisterRoute());
                   },
                   child: const DrawerListTile(
@@ -251,7 +271,8 @@ class _DrawerPageState extends State<DrawerPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const CreditInfoPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const CreditInfoPage()),
                     );
                   },
                   child: const DrawerListTile(
@@ -347,7 +368,8 @@ class _DrawerPageState extends State<DrawerPage> {
                   //   MaterialPageRoute(builder: (context) => AboutUsPage()),
                   // );
                   // },
-                  onTap: () => launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
+                  onTap: () => launch("https://t.me/LUNAmarketAdmin",
+                      forceSafariVC: false),
                   child: const SizedBox(
                     height: 55,
                     child: DrawerListTile(
@@ -434,11 +456,12 @@ class _DrawerPageState extends State<DrawerPage> {
                   color: AppColors.kGray200,
                   height: 0,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const AboutUsPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const AboutUsPage()),
                     );
                   },
                   child: const SizedBox(
@@ -457,7 +480,8 @@ class _DrawerPageState extends State<DrawerPage> {
                   onTap: () {
                     GetStorage().erase();
                     // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
-                    BlocProvider.of<AppBloc>(context).add(const AppEvent.exiting());
+                    BlocProvider.of<AppBloc>(context)
+                        .add(const AppEvent.exiting());
 
                     // Navigator.push(
                     //   context,
@@ -469,7 +493,8 @@ class _DrawerPageState extends State<DrawerPage> {
                   child: SizedBox(
                     height: 55,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 13.0, right: 20, top: 13, bottom: 13),
+                      padding: const EdgeInsets.only(
+                          left: 13.0, right: 20, top: 13, bottom: 13),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
@@ -496,10 +521,12 @@ class _DrawerPageState extends State<DrawerPage> {
                   onTap: () async {
                     await BlocProvider.of<LoginCubit>(context).delete();
                     GetStorage().erase();
-                    BlocProvider.of<AppBloc>(context).add(const AppEvent.exiting());
+                    BlocProvider.of<AppBloc>(context)
+                        .add(const AppEvent.exiting());
                     // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
 
-                    Get.snackbar('Аккаунт удален', 'Account delete', backgroundColor: Colors.redAccent);
+                    Get.snackbar('Аккаунт удален', 'Account delete',
+                        backgroundColor: Colors.redAccent);
 
                     // Navigator.push(
                     //   context,
@@ -511,7 +538,8 @@ class _DrawerPageState extends State<DrawerPage> {
                   child: const SizedBox(
                     height: 55,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 13.0, right: 20, top: 13, bottom: 13),
+                      padding: EdgeInsets.only(
+                          left: 13.0, right: 20, top: 13, bottom: 13),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
@@ -676,17 +704,20 @@ class _DrawerPageState extends State<DrawerPage> {
                       height: 34,
                       width: 54,
                       decoration: BoxDecoration(
-                          color: selected == false ? Colors.white : Colors.black,
+                          color:
+                              selected == false ? Colors.white : Colors.black,
                           border: Border.all(
                             color: AppColors.kGray900,
                           ),
-                          borderRadius: const BorderRadius.all(Radius.circular(10))),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10))),
                       child: Center(
                           child: Text(
                         'Қаз',
                         style: TextStyle(
                           fontSize: 17,
-                          color: selected == false ? Colors.black : Colors.white,
+                          color:
+                              selected == false ? Colors.black : Colors.white,
                           // AppColors.kLightBlackColor,
                           fontWeight: FontWeight.w500,
                         ),
@@ -710,7 +741,8 @@ class _DrawerPageState extends State<DrawerPage> {
                           border: Border.all(
                             color: AppColors.kGray900,
                           ),
-                          borderRadius: const BorderRadius.all(Radius.circular(10))),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10))),
                       child: Center(
                           child: Text(
                         'Рус',
@@ -807,7 +839,10 @@ class topMenu extends StatelessWidget {
             ),
             Text(
               text,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
+              style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white),
             ),
           ],
         ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/bloger/my_products_admin/data/bloc/blogger_shop_products_state.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../../core/common/constants.dart';
 import '../../../../features/tape/presentation/widgets/anim_search_widget.dart';
 import '../../data/bloc/blogger_shop_products_cubit.dart';
@@ -59,6 +61,22 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
               searchController.clear();
             },
             width: MediaQuery.of(context).size.width,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          GestureDetector(
+              onTap: () async {
+                await Share.share(
+                    'http://lunamarket.ru/blogger/shop_${widget.id}');
+              },
+              child: SvgPicture.asset(
+                'assets/icons/share.svg',
+                height: 28,
+                width: 28,
+              )),
+          const SizedBox(
+            width: 10,
           ),
         ],
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),

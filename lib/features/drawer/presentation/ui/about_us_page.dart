@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutUsPage extends StatefulWidget {
@@ -328,6 +329,18 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       child: SvgPicture.asset('assets/icons/tiktok.svg',
                           height: 34, width: 34),
                     ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    GestureDetector(
+                        onTap: () async {
+                          await Share.share('http://lunamarket.ru/');
+                        },
+                        child: SvgPicture.asset(
+                          'assets/icons/share.svg',
+                          height: 34,
+                          width: 34,
+                        ))
                   ],
                 )
               ],
