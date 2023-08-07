@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/admin/my_products_admin/data/models/admin_products_model.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
+import 'package:share_plus/share_plus.dart';
 import '../widgets/show_alert_statictics_widget.dart';
 
 class AdminProductCardWidget extends StatefulWidget {
@@ -166,24 +167,35 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                             color: AppColors.kGray900,
                             fontWeight: FontWeight.w500),
                       ),
-                      IconButton(
-                          onPressed: () async {
-                            // final favorite =
-                            //     BlocProvider.of<FavoriteCubit>(context);
-                            // await favorite.favorite(widget.product.id.toString());
-                            setState(() {
-                              inFavorite = !inFavorite;
-                            });
+
+                      GestureDetector(
+                          onTap: () async {
+                            await Share.share(
+                                'http://lunamarket.ru/product_id=${widget.product.id}');
                           },
-                          splashRadius: 1.00,
-                          icon: inFavorite == true
-                              ? SvgPicture.asset('assets/icons/heart_fill.svg')
-                              : SvgPicture.asset(
-                                  'assets/icons/favorite.svg',
-                                  color: inFavorite == true
-                                      ? Colors.red
-                                      : Colors.grey,
-                                ))
+                          child: SvgPicture.asset(
+                            'assets/icons/share.svg',
+                            height: 24,
+                            width: 24,
+                          ))
+                      // IconButton(
+                      //     onPressed: () async {
+                      //       // final favorite =
+                      //       //     BlocProvider.of<FavoriteCubit>(context);
+                      //       // await favorite.favorite(widget.product.id.toString());
+                      //       setState(() {
+                      //         inFavorite = !inFavorite;
+                      //       });
+                      //     },
+                      //     splashRadius: 1.00,
+                      //     icon: inFavorite == true
+                      //         ? SvgPicture.asset('assets/icons/heart_fill.svg')
+                      //         : SvgPicture.asset(
+                      //             'assets/icons/favorite.svg',
+                      //             color: inFavorite == true
+                      //                 ? Colors.red
+                      //                 : Colors.grey,
+                      //           ))
                     ],
                   ),
                 ),
