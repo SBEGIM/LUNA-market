@@ -1194,8 +1194,8 @@ class _VideosState extends State<Videos> {
   Widget build(BuildContext context) {
     return _controller!.value.isInitialized
         ? Stack(
-          children: [
-            SizedBox.expand(
+            children: [
+              SizedBox.expand(
                 child: FittedBox(
                   alignment: Alignment.center,
                   fit: BoxFit.fitWidth,
@@ -1227,26 +1227,25 @@ class _VideosState extends State<Videos> {
                                   Container(
                                     alignment: Alignment.bottomCenter,
                                     padding: EdgeInsets.only(
-                                        bottom: MediaQuery.of(context).size.height *
-                                            0.11),
+                                        bottom:
+                                            MediaQuery.of(context).size.height *
+                                                0.11),
                                     child: VideoProgressIndicator(_controller!,
                                         allowScrubbing: true),
                                   ),
-                             
                                 ],
                               )))),
                 ),
               ),
-                   icon
-                                  ? Center(
-                                      child: SvgPicture.asset(
-                                      'assets/icons/play_tape.svg',
-                                      color:
-                                          const Color.fromRGBO(29, 196, 207, 1),
-                                    ))
-                                  : Container(),
-          ],
-        )
+              icon
+                  ? Center(
+                      child: SvgPicture.asset(
+                      'assets/icons/play_tape.svg',
+                      color: const Color.fromRGBO(29, 196, 207, 1),
+                    ))
+                  : Container(),
+            ],
+          )
         : const Center(
             child: CircularProgressIndicator(color: Colors.blueAccent));
   }
@@ -1372,8 +1371,9 @@ class _inBasketsState extends State<inBaskets> {
     return GestureDetector(
       onTap: () async {
         inBasket == false
-            ? BlocProvider.of<basCubit.BasketCubit>(context)
-                .basketAdd(widget.tape.id.toString(), '1', 0, '', '')
+            ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(
+                widget.tape.id.toString(), '1', 0, '', '',
+                blogger_id: (widget.tape.blogger?.id.toString() ?? '0'))
             : BlocProvider.of<basCubit.BasketCubit>(context)
                 .basketMinus(widget.tape.id.toString(), '1', 0);
 
