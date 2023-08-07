@@ -178,7 +178,8 @@ class _TapePageState extends State<TapePage> {
               : null,
         ),
         body: BlocConsumer<TapeCubit, TapeState>(
-            listener: (context, state) {},
+            listener: (context, state) {
+            },
             builder: (context, state) {
               if (state is ErrorState) {
                 return Center(
