@@ -32,12 +32,20 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
   int _selectIndex = -1;
   final int _SelectSecondIndex = -1;
   int _summBonus = 0;
+  int _summBonusYear = 0;
 
   incrementSumm(List<int> Bonus) {
     Bonus.forEach((element) {
       _summBonus += element;
     });
 
+    setState(() {});
+  }
+
+  incrementSummYear(List<int> Bonus) {
+    Bonus.forEach((element) {
+      _summBonusYear += element;
+    });
     setState(() {});
   }
 
@@ -85,6 +93,8 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
               GestureDetector(
                 onTap: () {
                   year--;
+                  BlocProvider.of<ProfileMonthStaticsBloggerCubit>(context)
+                      .statics(_selectIndex + 1, year);
                   setState(() {});
                 },
                 child: const Icon(
@@ -109,6 +119,8 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
               GestureDetector(
                 onTap: () {
                   year++;
+                  BlocProvider.of<ProfileMonthStaticsBloggerCubit>(context)
+                      .statics(_selectIndex + 1, year);
                   setState(() {});
                 },
                 child: const Icon(
@@ -200,13 +212,14 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
               listener: (context, state) {
                 if (state is LoadedState) {
                   if (state.loadedProfile.isNotEmpty) {
-                    _summBonus = state.loadedProfile.first.total ?? 0;
-                    setState(() {});
+                    // _summBonus = state.loadedProfile.first.total ?? 0;
+                    _summBonusYear = state.loadedProfile.first.totalYear ?? 0;
+                    incrementSumm(state.loadedProfile.map((e) {
+                      return e.bonus ?? 1;
+                    }).toList());
                   }
-
-                  // incrementSumm(state.loadedProfile.map((e) {
-                  //   return e.bonus ?? 1;
-                  // }).toList());
+                  print(state.loadedProfile.first.totalYear);
+                  setState(() {});
                 }
               },
               builder: (context, state) {
@@ -217,96 +230,107 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                         scrollDirection: Axis.vertical,
                         itemCount: state.loadedProfile.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                            height: 80,
-                            width: 343,
-                            margin: const EdgeInsets.only(top: 10),
-                            child: Container(
-                              padding: const EdgeInsets.only(
-                                  top: 16, bottom: 10, left: 10, right: 20),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                      height: 60,
-                                      width: 60,
-                                      child:
-                                          Image.asset('assets/images/mac.png')),
-                                  const SizedBox(
-                                    width: 16,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        state.loadedProfile[index].name
-                                            .toString(),
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                            color: AppColors.kGray900,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      const Text(
-                                        'Магазин: Sulpak',
-                                        style: TextStyle(
-                                            color: AppColors.kGray900,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
+                          return state.loadedProfile[index].id != 0
+                              ? Container(
+                                  height: 80,
+                                  width: 343,
+                                  margin: const EdgeInsets.only(top: 10),
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                        top: 16,
+                                        bottom: 10,
+                                        left: 10,
+                                        right: 20),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                            height: 60,
+                                            width: 60,
+                                            child: Image.asset(
+                                                'assets/images/mac.png')),
+                                        const SizedBox(
+                                          width: 16,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              state.loadedProfile[index].name
+                                                  .toString(),
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                  color: AppColors.kGray900,
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            const Text(
+                                              'Магазин: Sulpak',
+                                              style: TextStyle(
+                                                  color: AppColors.kGray900,
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
 
-                                      Row(
-                                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Text(
-                                            state.loadedProfile[index].price
-                                                .toString(),
-                                            style: const TextStyle(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          const SizedBox(width: 45),
-                                          Text(
-                                              'x${state.loadedProfile[index].count.toString()}',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400)),
-                                          const SizedBox(width: 45),
-                                          Text(
-                                              '${state.loadedProfile[index].bonusPercent.toString()} %',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400)),
-                                          const SizedBox(width: 45),
-                                          Text(
-                                              '${state.loadedProfile[index].bonus.toString()}₽',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400)),
-                                        ],
-                                      )
-                                      // Text(
-                                      //   'Дата добавления:${widget.product.}',
-                                      //   style: TextStyle(
-                                      //       color: AppColors.kGray900,
-                                      //       fontSize: 12,
-                                      //       fontWeight: FontWeight.w500),
-                                      // )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
+                                            Row(
+                                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Text(
+                                                  state.loadedProfile[index]
+                                                      .price
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                                const SizedBox(width: 45),
+                                                Text(
+                                                    'x${state.loadedProfile[index].count.toString()}',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400)),
+                                                const SizedBox(width: 45),
+                                                Text(
+                                                    '${state.loadedProfile[index].bonusPercent.toString()} %',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400)),
+                                                const SizedBox(width: 45),
+                                                Text(
+                                                    '${state.loadedProfile[index].bonus.toString()}₽',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400)),
+                                              ],
+                                            )
+                                            // Text(
+                                            //   'Дата добавления:${widget.product.}',
+                                            //   style: TextStyle(
+                                            //       color: AppColors.kGray900,
+                                            //       fontSize: 12,
+                                            //       fontWeight: FontWeight.w500),
+                                            // )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox();
                         }),
                   );
                 } else {
@@ -330,6 +354,26 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   ),
                   Text('$_summBonus ₽',
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w400)),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              height: 36,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(6)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Заработок за ${year} год',
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w400),
+                  ),
+                  Text('$_summBonusYear ₽',
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w400)),
                 ],
