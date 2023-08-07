@@ -22,8 +22,9 @@ class BasketCubit extends Cubit<BasketState> {
     String? blogger_id,
   }) async {
     try {
-      final data = await basketRepository
-          .basketAdd(productId, count, price, size, color, isOptom: isOptom);
+      final data = await basketRepository.basketAdd(
+          productId, count, price, size, color,
+          isOptom: isOptom, blogger_id: blogger_id);
       if (data != 200) {
         Get.snackbar('Ошибка', 'Товар не добавлен',
             backgroundColor: Colors.redAccent);

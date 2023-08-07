@@ -1373,7 +1373,7 @@ class _inBasketsState extends State<inBaskets> {
         inBasket == false
             ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(
                 widget.tape.id.toString(), '1', 0, '', '',
-                blogger_id: (widget.tape.blogger?.id.toString() ?? '0'))
+                blogger_id: widget.tape.blogger?.id.toString() ?? '0')
             : BlocProvider.of<basCubit.BasketCubit>(context)
                 .basketMinus(widget.tape.id.toString(), '1', 0);
 
