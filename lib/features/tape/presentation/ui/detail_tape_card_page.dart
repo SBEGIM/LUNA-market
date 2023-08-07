@@ -383,7 +383,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         GestureDetector(
                                           onTap: () async {
                                             await Share.share(
-                                                "http://lunamarket.ru/?index\u003d${widget.index}&shop_name\u003d${widget.shopName}");
+                                                "http://lunamarket.info/?index\u003d${widget.index}&shop_name\u003d${widget.shopName}");
                                           },
                                           child: SvgPicture.asset(
                                             'assets/icons/share.svg',

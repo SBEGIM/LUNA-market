@@ -68,7 +68,7 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
           GestureDetector(
               onTap: () async {
                 await Share.share(
-                    'http://lunamarket.ru/blogger/shop_${widget.id}');
+                    'http://lunamarket.info/?blogger/shop_${widget.id}');
               },
               child: SvgPicture.asset(
                 'assets/icons/share.svg',

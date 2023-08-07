@@ -171,7 +171,7 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                       GestureDetector(
                           onTap: () async {
                             await Share.share(
-                                'http://lunamarket.info/product_id=${widget.product.id}');
+                                'http://lunamarket.info/?product_id=${widget.product.id}');
                           },
                           child: SvgPicture.asset(
                             'assets/icons/share.svg',

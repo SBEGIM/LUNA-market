@@ -334,7 +334,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                     ),
                     GestureDetector(
                         onTap: () async {
-                          await Share.share('http://lunamarket.ru/');
+                          await Share.share('http://lunamarket.info/');
                         },
                         child: SvgPicture.asset(
                           'assets/icons/share.svg',
