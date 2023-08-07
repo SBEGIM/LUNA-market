@@ -1210,40 +1210,41 @@ class _VideosState extends State<Videos> {
                           width: _controller?.value.size.width,
                           child: AspectRatio(
                               aspectRatio: _controller!.value.aspectRatio,
-                              child: Stack(
-                                children: [
-                                  VisibilityDetector(
-                                      key: ObjectKey(_controller),
-                                      onVisibilityChanged: (info) {
-                                        if (!mounted) return;
-                                        if (info.visibleFraction == 0) {
-                                          _controller
-                                              ?.pause(); //pausing  functionality
-                                        } else {
-                                          _controller?.play();
-                                        }
-                                      },
-                                      child: VideoPlayer(_controller!)),
-                                  Container(
-                                    alignment: Alignment.bottomCenter,
-                                    padding: EdgeInsets.only(
-                                        bottom:
-                                            MediaQuery.of(context).size.height *
-                                                0.11),
-                                    child: VideoProgressIndicator(_controller!,
-                                        allowScrubbing: true),
-                                  ),
-                                ],
-                              )))),
+                              child: VisibilityDetector(
+                                  key: ObjectKey(_controller),
+                                  onVisibilityChanged: (info) {
+                                    if (!mounted) return;
+                                    if (info.visibleFraction == 0) {
+                                      _controller
+                                          ?.pause(); //pausing  functionality
+                                    } else {
+                                      _controller?.play();
+                                    }
+                                  },
+                                  child: VideoPlayer(_controller!))))),
                 ),
               ),
               icon
-                  ? Center(
-                      child: SvgPicture.asset(
-                      'assets/icons/play_tape.svg',
-                      color: const Color.fromRGBO(29, 196, 207, 1),
-                    ))
+                  ? GestureDetector(
+                      onTap: () {
+                        _controller!.value.isPlaying
+                            ? _controller!.pause()
+                            : _controller!.play();
+                      },
+                      child: Center(
+                          child: SvgPicture.asset(
+                        'assets/icons/play_tape.svg',
+                        color: const Color.fromRGBO(29, 196, 207, 1),
+                      )),
+                    )
                   : Container(),
+              Container(
+                alignment: Alignment.bottomCenter,
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).size.height * 0.11),
+                child:
+                    VideoProgressIndicator(_controller!, allowScrubbing: true),
+              ),
             ],
           )
         : const Center(
