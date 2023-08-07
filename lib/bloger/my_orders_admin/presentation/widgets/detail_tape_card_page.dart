@@ -18,17 +18,20 @@ import '../../../tape/data/cubit/tape_blogger_cubit.dart';
 class BloggerDetailTapeCardPage extends StatefulWidget {
   final int? index;
   final String? shopName;
-  const BloggerDetailTapeCardPage({required this.index, required this.shopName, Key? key}) : super(key: key);
+  const BloggerDetailTapeCardPage(
+      {required this.index, required this.shopName, Key? key})
+      : super(key: key);
 
   @override
-  State<BloggerDetailTapeCardPage> createState() => _BloggerDetailTapeCardPageState();
+  State<BloggerDetailTapeCardPage> createState() =>
+      _BloggerDetailTapeCardPageState();
 }
 
 class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
   PageController controller = PageController();
   String? title;
   final TextEditingController searchController = TextEditingController();
-  // bool visible = true;
+  bool visible = true;
 
   // bool inSub = false;
 
@@ -52,138 +55,104 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
         extendBodyBehindAppBar: true,
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          // excludeHeaderSemantics: true,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: CustomBackButton(onTap: () {
-              context.router.pop();
+            iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            // excludeHeaderSemantics: true,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: CustomBackButton(onTap: () {
+                context.router.pop();
 
-              //Get.back();
+                //Get.back();
 
-              // BlocProvider.of<navCubit.AdminNavigationCubit>(context)
-              //     .emit(const navCubit.AdminNavigationState.tapeAdmin());
-            }),
-          ),
-          // toolbarHeight: 26,
-          // actions: [
-          //   GestureDetector(
-          //     onTap: () {
-          //       if (GetStorage().read('title_tape').toString() ==
-          //           'Отписаться') {
-          //         GetStorage().write('title_tape', 'Подписаться');
-          //       } else {
-          //         GetStorage().write('title_tape', 'Отписаться');
-          //       }
+                // BlocProvider.of<navCubit.AdminNavigationCubit>(context)
+                //     .emit(const navCubit.AdminNavigationState.tapeAdmin());
+              }),
+            ),
+            centerTitle: true,
+            title: visible == true
+                ? Text(
+                    '${widget.shopName}',
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500),
+                  )
+                : null
+            // ? Row(
+            //     mainAxisSize: MainAxisSize.min,
+            //     children: [
+            //       PopupMenuButton(
+            //         color: const Color.fromRGBO(230, 231, 232, 1),
+            //         shape: const RoundedRectangleBorder(
+            //             borderRadius:
+            //                 BorderRadius.all(Radius.circular(15.0))),
+            //         position: PopupMenuPosition.under,
+            //         offset: const Offset(0, 25),
+            //         itemBuilder: (BuildContext bc) {
+            //           return [
+            //             PopupMenuItem(
+            //               onTap: () {
+            //                 title = 'Подписки';
+            //                 BlocProvider.of<tapeCubit.TapeCubit>(context)
+            //                     .tapes(true, false, null);
+            //                 setState(() {});
+            //               },
+            //               value: 0,
+            //               child: Row(
+            //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //                 children: [
+            //                   const Text(
+            //                     "Подписки",
+            //                     style: TextStyle(color: Colors.black),
+            //                   ),
+            //                   SvgPicture.asset('assets/icons/lenta1.svg'),
+            //                 ],
+            //               ),
+            //             ),
+            //             PopupMenuItem(
+            //               onTap: () {
+            //                 BlocProvider.of<tapeCubit.TapeCubit>(context)
+            //                     .tapes(false, true, null);
 
-          //       // inSub = !inSub;
-          //       setState(() {});
-          //       // print('okkkwwww');
-          //     },
-          //     child: Container(
-          //       height: 26,
-          //       width: 98,
-          //       alignment: Alignment.center,
-          //       decoration: BoxDecoration(
-          //         borderRadius: BorderRadius.circular(8),
-          //         border: Border.all(
-          //           width: 0.3,
-          //           color: AppColors.kPrimaryColor,
-          //         ),
-          //       ),
-          //       child: Text(
-          //         GetStorage().read('title_tape').toString(),
-          //         style: const TextStyle(
-          //             color: AppColors.kPrimaryColor, fontSize: 12),
-          //       ),
-          //     ),
-          //   ),
-          // ],
-          // centerTitle: true,
-          // title: visible == true
-          //     ? Text(
-          //         '${widget.shop_name}',
-          //         style: const TextStyle(
-          //             color: Colors.white,
-          //             fontSize: 16,
-          //             fontWeight: FontWeight.w500),
-          //       )
-          //     : null
-          // ? Row(
-          //     mainAxisSize: MainAxisSize.min,
-          //     children: [
-          //       PopupMenuButton(
-          //         color: const Color.fromRGBO(230, 231, 232, 1),
-          //         shape: const RoundedRectangleBorder(
-          //             borderRadius:
-          //                 BorderRadius.all(Radius.circular(15.0))),
-          //         position: PopupMenuPosition.under,
-          //         offset: const Offset(0, 25),
-          //         itemBuilder: (BuildContext bc) {
-          //           return [
-          //             PopupMenuItem(
-          //               onTap: () {
-          //                 title = 'Подписки';
-          //                 BlocProvider.of<tapeCubit.TapeCubit>(context)
-          //                     .tapes(true, false, null);
-          //                 setState(() {});
-          //               },
-          //               value: 0,
-          //               child: Row(
-          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //                 children: [
-          //                   const Text(
-          //                     "Подписки",
-          //                     style: TextStyle(color: Colors.black),
-          //                   ),
-          //                   SvgPicture.asset('assets/icons/lenta1.svg'),
-          //                 ],
-          //               ),
-          //             ),
-          //             PopupMenuItem(
-          //               onTap: () {
-          //                 BlocProvider.of<tapeCubit.TapeCubit>(context)
-          //                     .tapes(false, true, null);
-
-          //                 title = 'Избранное';
-          //                 setState(() {});
-          //               },
-          //               value: 1,
-          //               child: Row(
-          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //                 children: [
-          //                   const Text("Избранное"),
-          //                   SvgPicture.asset('assets/icons/lenta2.svg'),
-          //                 ],
-          //               ),
-          //             ),
-          //           ];
-          //         },
-          //         child: Row(
-          //           children: [
-          //             Text(
-          //               '${title}',
-          //               textAlign: TextAlign.center,
-          //               style: const TextStyle(
-          //                   color: AppColors.kGray900,
-          //                   fontSize: 16,
-          //                   fontWeight: FontWeight.w500),
-          //             ),
-          //             const SizedBox(width: 5),
-          //             Image.asset(
-          //               'assets/icons/down.png',
-          //               height: 16.5,
-          //               width: 9.5,
-          //             )
-          //           ],
-          //         ), // Icon(Icons.done,color: AppColors.kPrimaryColor,size: 16,)
-          //       ),
-          //     ],
-          //   )
-          // : null,
-        ),
+            //                 title = 'Избранное';
+            //                 setState(() {});
+            //               },
+            //               value: 1,
+            //               child: Row(
+            //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //                 children: [
+            //                   const Text("Избранное"),
+            //                   SvgPicture.asset('assets/icons/lenta2.svg'),
+            //                 ],
+            //               ),
+            //             ),
+            //           ];
+            //         },
+            //         child: Row(
+            //           children: [
+            //             Text(
+            //               '${title}',
+            //               textAlign: TextAlign.center,
+            //               style: const TextStyle(
+            //                   color: AppColors.kGray900,
+            //                   fontSize: 16,
+            //                   fontWeight: FontWeight.w500),
+            //             ),
+            //             const SizedBox(width: 5),
+            //             Image.asset(
+            //               'assets/icons/down.png',
+            //               height: 16.5,
+            //               width: 9.5,
+            //             )
+            //           ],
+            //         ), // Icon(Icons.done,color: AppColors.kPrimaryColor,size: 16,)
+            //       ),
+            //     ],
+            //   )
+            // : null,
+            ),
         body: BlocConsumer<TapeBloggerCubit, TapeBloggerState>(
             listener: (context, state) {},
             builder: (context, state) {
@@ -196,7 +165,9 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                 );
               }
               if (state is LoadingState) {
-                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.indigoAccent));
               }
 
               if (state is LoadedState) {
@@ -219,84 +190,136 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                         //   alignment: Alignment.center,
                         // ),
 
-                        //   Container(
-                        //     margin: const EdgeInsets.only(left: 16, right: 16),
-                        //     child: Column(
-                        //       crossAxisAlignment: CrossAxisAlignment.start,
-                        //       children: [
-                        //         Container(
-                        //           width: 49,
-                        //           height: 28,
-                        //           decoration: BoxDecoration(
-                        //               color: const Color(0xFFFF3347),
-                        //               borderRadius: BorderRadius.circular(6)),
-                        //           margin: EdgeInsets.only(
-                        //             top:
-                        //                 MediaQuery.of(context).size.height * 0.15,
-                        //           ),
-                        //           alignment: Alignment.center,
-                        //           child: Text(
-                        //             '-${procentPrice(state.tapeModel[index].price, state.tapeModel[index].compound)}%',
-                        //             style: const TextStyle(
-                        //                 fontSize: 14,
-                        //                 fontWeight: FontWeight.w400,
-                        //                 color: Colors.white),
-                        //           ),
-                        //         ),
-                        //         Row(
-                        //           mainAxisAlignment: MainAxisAlignment.end,
-                        //           children: [
-                        //             // Column(
-                        //             //   children: [
-                        //             // Container(
-                        //             //   width: 61,
-                        //             //   height: 28,
-                        //             //   decoration: BoxDecoration(
-                        //             //       color: AppColors.kPrimaryColor,
-                        //             //       borderRadius:
-                        //             //           BorderRadius.circular(6)),
-                        //             //   margin: const EdgeInsets.only(top: 370),
-                        //             //   alignment: Alignment.center,
-                        //             //   child: const Text(
-                        //             //     '0·0·12',
-                        //             //     style: TextStyle(
-                        //             //         fontSize: 14,
-                        //             //         fontWeight: FontWeight.w400,
-                        //             //         color: Colors.white),
-                        //             //   ),
-                        //             // ),
-                        //             // Container(
-                        //             //   decoration: BoxDecoration(
-                        //             //       color: Colors.black,
-                        //             //       borderRadius:
-                        //             //           BorderRadius.circular(6)),
-                        //             //   // padding: const EdgeInsets.only(
-                        //             //   //     left: 4, right: 4, bottom: 2, top: 2),
-                        //             //   margin: const EdgeInsets.only(top: 370),
-                        //             //   width: 56,
-                        //             //   height: 28,
-                        //             //   // margin: const EdgeInsets.only(top: 4),
-                        //             //   alignment: Alignment.center,
-                        //             //   child: const Text(
-                        //             //     '10% Б',
-                        //             //     style: TextStyle(
-                        //             //         fontSize: 12,
-                        //             //         fontWeight: FontWeight.w400,
-                        //             //         color: Colors.white),
-                        //             //   ),
-                        //             // ),
-                        //             //   ],
-                        //             // ),
-                        //           ],
-                        //         ),
+                        Container(
+                            margin: EdgeInsets.only(
+                              left: 16,
+                              right: 16,
+                              top: MediaQuery.of(context).size.height * 0.78,
+                            ),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 28,
+                                              width: 90,
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xFFFF3347),
+                                                  borderRadius:
+                                                      BorderRadius.circular(6)),
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                '${state.tapeModel[index].price} руб.',
+                                                style: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 6),
+                                            Container(
+                                              height: 28,
+                                              width: 110,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.orangeAccent,
+                                                  borderRadius:
+                                                      BorderRadius.circular(6)),
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Артикул: ${state.tapeModel[index].id}',
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 28,
+                                          width: 110,
+                                          decoration: BoxDecoration(
+                                              color: Colors.green[700],
+                                              borderRadius:
+                                                  BorderRadius.circular(6)),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            '${state.tapeModel[index].name}',
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      ]),
+                                ])),
+                        //      Row(
+                        //    mainAxisAlignment: MainAxisAlignment.end,
+                        //   children: [
+                        // Column(
+                        //   children: [
+                        // Container(
+                        //   width: 61,
+                        //   height: 28,
+                        //   decoration: BoxDecoration(
+                        //       color: AppColors.kPrimaryColor,
+                        //       borderRadius:
+                        //           BorderRadius.circular(6)),
+                        //   margin: const EdgeInsets.only(top: 370),
+                        //   alignment: Alignment.center,
+                        //   child: const Text(
+                        //     '0·0·12',
+                        //     style: TextStyle(
+                        //         fontSize: 14,
+                        //         fontWeight: FontWeight.w400,
+                        //         color: Colors.white),
+                        //   ),
+                        // ),
+                        // Container(
+                        //   decoration: BoxDecoration(
+                        //       color: Colors.black,
+                        //       borderRadius:
+                        //           BorderRadius.circular(6)),
+                        //   // padding: const EdgeInsets.only(
+                        //   //     left: 4, right: 4, bottom: 2, top: 2),
+                        //   margin: const EdgeInsets.only(top: 370),
+                        //   width: 56,
+                        //   height: 28,
+                        //   // margin: const EdgeInsets.only(top: 4),
+                        //   alignment: Alignment.center,
+                        //   child: const Text(
+                        //     '10% Б',
+                        //     style: TextStyle(
+                        //         fontSize: 12,
+                        //         fontWeight: FontWeight.w400,
+                        //         color: Colors.white),
+                        //   ),
+                        // ),
+                        //   ],
+                        // ),
+                        //   ],
+                        //   ),
 
-                        //         // Text(
-                        //         //   'Артикул: ${state.tapeModel[index].id}',
-                        //         //   style: const TextStyle(
-                        //         //       fontSize: 12,
-                        //         //       fontWeight: FontWeight.w500,
-                        //         //       color: Colors.white),
-                        //         // ),
+                        // Text(
+                        //   'Артикул: ${state.tapeModel[index].id}',
+                        //   style: const TextStyle(
+                        //       fontSize: 12,
+                        //       fontWeight: FontWeight.w500,
+                        //       color: Colors.white),
+                        // ),
                         //         const SizedBox(
                         //           height: 8,
                         //         ),
@@ -387,7 +410,9 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                   },
                 );
               } else {
-                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }));
   }
@@ -409,7 +434,8 @@ class _VideosState extends State<Videos> {
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network('http://185.116.193.73/storage/${widget.tape.video}')
+    _controller = VideoPlayerController.network(
+        'http://185.116.193.73/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.play();
         setState(() {});
@@ -441,7 +467,9 @@ class _VideosState extends State<Videos> {
     return _controller!.value.isInitialized
         ? GestureDetector(
             onTap: () {
-              _controller!.value.isPlaying ? _controller!.pause() : _controller!.play();
+              _controller!.value.isPlaying
+                  ? _controller!.pause()
+                  : _controller!.play();
             },
             child: SizedBox(
                 height: double.infinity,
@@ -463,8 +491,11 @@ class _VideosState extends State<Videos> {
                             child: VideoPlayer(_controller!)),
                         Container(
                           alignment: Alignment.bottomCenter,
-                          padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.10),
-                          child: VideoProgressIndicator(_controller!, allowScrubbing: true),
+                          padding: EdgeInsets.only(
+                              bottom:
+                                  MediaQuery.of(context).size.height * 0.10),
+                          child: VideoProgressIndicator(_controller!,
+                              allowScrubbing: true),
                         ),
                         icon
                             ? Center(
@@ -475,6 +506,7 @@ class _VideosState extends State<Videos> {
                             : Container(),
                       ],
                     ))))
-        : const Center(child: CircularProgressIndicator(color: Colors.blueAccent));
+        : const Center(
+            child: CircularProgressIndicator(color: Colors.blueAccent));
   }
 }

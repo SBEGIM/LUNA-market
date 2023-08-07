@@ -9,29 +9,28 @@ const baseUrl = 'http://185.116.193.73/api';
 class EditBloggerRepository {
   final EditToApi _editToApi = EditToApi();
 
-  Future<dynamic> edit(
-          String? name, String? nick, String phone, String? password, avatar) =>
-      _editToApi.edit(name, nick, phone, password, avatar);
+  Future<dynamic> edit(String? name, String? nick, String phone,
+          String? password, String? iin, avatar) =>
+      _editToApi.edit(name, nick, phone, password, iin, avatar);
 }
 
 class EditToApi {
   final _box = GetStorage();
 
   Future<dynamic> edit(String? name, String? nick, String phone,
-      String? password, avatar) async {
+      String? password, String? iin, avatar) async {
     String result = '';
     if (phone.isNotEmpty) {
-      print('qweqweqw');
       result = phone.substring(2);
-
       phone = result.replaceAll(RegExp('[^0-9]'), '');
     }
 
     final body = {
       'phone': phone.toString(),
       'password': password ?? '',
+      'iin': iin ?? '',
       'name': name ?? '',
-      'nick_name': 'assda',
+      'nick_name': nick ?? '',
       'access_token': _box.read('blogger_token').toString(),
     };
 
@@ -57,6 +56,8 @@ class EditToApi {
       _box.write('blogger_token', data['access_token'].toString());
       _box.write('blogger_id', data['id'].toString());
       _box.write('blogger_name', data['name'].toString());
+      _box.write('blogger_phone', data['phone'].toString());
+      _box.write('blogger_iin', data['iin'].toString());
       _box.write('blogger_nick_name', data['nick_name'].toString());
       _box.write('blogger_avatar', data['avatar'].toString());
 
