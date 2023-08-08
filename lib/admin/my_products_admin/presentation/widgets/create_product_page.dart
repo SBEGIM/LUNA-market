@@ -736,71 +736,86 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 166,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8)),
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Real FBS',
-                            style: TextStyle(
-                                color: AppColors.kPrimaryColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          Switch(
-                            onChanged: toggleSwitchFBS,
-                            value: isSwitchedFBS,
-                            activeColor: AppColors.kPrimaryColor,
-                            activeTrackColor: AppColors.kPrimaryColor,
-                            inactiveThumbColor:
-                                const Color.fromRGBO(245, 245, 245, 1),
-                            inactiveTrackColor:
-                                const Color.fromRGBO(237, 237, 237, 1),
-                          ),
-                        ],
+                Container(
+                  width: 166,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8)),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Real FBS',
+                        style: TextStyle(
+                            color: AppColors.kPrimaryColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
                       ),
-                    ),
-                    Container(
-                      width: 166,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8)),
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'FBS',
-                            style: TextStyle(
-                                color: AppColors.kPrimaryColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          Switch(
-                            onChanged: toggleSwitchFBS,
-                            value: !isSwitchedFBS,
-                            activeColor: AppColors.kPrimaryColor,
-                            activeTrackColor: AppColors.kPrimaryColor,
-                            inactiveThumbColor:
-                                const Color.fromRGBO(245, 245, 245, 1),
-                            inactiveTrackColor:
-                                const Color.fromRGBO(237, 237, 237, 1),
-                          ),
-                        ],
+                      Switch(
+                        onChanged: toggleSwitchFBS,
+                        value: isSwitchedFBS,
+                        activeColor: AppColors.kPrimaryColor,
+                        activeTrackColor: AppColors.kPrimaryColor,
+                        inactiveThumbColor:
+                            const Color.fromRGBO(245, 245, 245, 1),
+                        inactiveTrackColor:
+                            const Color.fromRGBO(237, 237, 237, 1),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  width: 166,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8)),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'FBS',
+                        style: TextStyle(
+                            color: AppColors.kPrimaryColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      Switch(
+                        onChanged: toggleSwitchFBS,
+                        value: !isSwitchedFBS,
+                        activeColor: AppColors.kPrimaryColor,
+                        activeTrackColor: AppColors.kPrimaryColor,
+                        inactiveThumbColor:
+                            const Color.fromRGBO(245, 245, 245, 1),
+                        inactiveTrackColor:
+                            const Color.fromRGBO(237, 237, 237, 1),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                isSwitchedFBS == false
+                    ? const Text(
+                        'FBS - это схема продажи, при которой вы храните товары у себя на складе, следите за новыми заказами, собираете их и передаёте в доставку CDEK.',
+                        style: TextStyle(
+                            color: AppColors.kGray300,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
+                      )
+                    : const Text(
+                        'real FBS - это схема продажи, при которой вы храните товары у себя на складе, следите за новыми заказами, собираете их и передаёте в доставку CDEK.',
+                        style: TextStyle(
+                            color: AppColors.kGray300,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
+                      ),
                 const SizedBox(height: 28),
                 SizedBox(
                   child: Column(
