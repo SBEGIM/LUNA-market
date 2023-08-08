@@ -26,6 +26,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   final passwordController = TextEditingController();
   final iinController = TextEditingController();
   final reapatPasswordController = TextEditingController();
+  final checkController = TextEditingController();
 
   final _box = GetStorage();
   bool change = false;
@@ -49,7 +50,11 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     iinController.text = GetStorage().read('blogger_iin') != 'null'
         ? (GetStorage().read('blogger_iin') ?? '')
         : '';
-    phoneController.text = GetStorage().read('blogger_phone') ?? '';
+
+    checkController.text = GetStorage().read('blogger_invoice') != 'null'
+        ? (GetStorage().read('blogger_invoice') ?? '')
+        : '';
+    // phoneController.text = GetStorage().read('blogger_phone') ?? '';
 
     super.initState();
   }
@@ -213,6 +218,24 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                             // ),
                           ),
                           ListTile(
+                            leading: Image.asset(
+                              'assets/icons/check.png',
+                              height: 24,
+                              width: 24,
+                            ),
+                            title: TextField(
+                              controller: checkController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Счёт',
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  // borderRadius: BorderRadius.circular(3),
+                                ),
+                              ),
+                            ),
+                          ),
+                          ListTile(
                             leading: SvgPicture.asset(
                               'assets/icons/phone.svg',
                               height: 24,
@@ -321,6 +344,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                   phoneController.text,
                   passwordController.text,
                   iinController.text,
+                  checkController.text,
                   _image != null ? _image!.path : null);
             }
           },

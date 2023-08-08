@@ -23,10 +23,12 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController iinController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
-  TextEditingController phoneController = MaskedTextController(mask: '+7(000)-000-00-00');
+  TextEditingController phoneController =
+      MaskedTextController(mask: '+7(000)-000-00-00');
   TextEditingController emailController = TextEditingController();
   TextEditingController socialNetworkController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController checkController = TextEditingController();
 
   @override
   void initState() {
@@ -51,7 +53,8 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
       //         fontWeight: FontWeight.w500,
       //       ),
       //     )),
-      body: BlocConsumer<LoginBloggerCubit, LoginBloggerState>(listener: (context, state) {
+      body: BlocConsumer<LoginBloggerCubit, LoginBloggerState>(
+          listener: (context, state) {
         if (state is LoadedState) {}
       }, builder: (context, state) {
         if (state is LoadingState) {
@@ -60,14 +63,18 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
           );
         }
         return Container(
-          padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
+          padding:
+              const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
           child: ListView(
             shrinkWrap: true,
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 'Укажите данные ип или физ.лица',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: AppColors.kGray900),
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: AppColors.kGray900),
               ),
               const SizedBox(
                 height: 10,
@@ -92,6 +99,13 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                 star: false,
                 arrow: false,
                 controller: userNameController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Счет',
+                hintText: 'Введите счет',
+                star: false,
+                arrow: false,
+                controller: checkController,
               ),
               FieldsCoopRequest(
                 titleText: 'Ссылка на соц сеть',
@@ -129,7 +143,8 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                   Container(
                     alignment: Alignment.topLeft,
                     child: Checkbox(
-                      visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
+                      visualDensity:
+                          const VisualDensity(horizontal: 0, vertical: 0),
                       checkColor: Colors.white,
                       // fillColor: MaterialStateProperty.resolveWith(Colors.),
                       value: isChecked,
@@ -153,11 +168,13 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                           children: <TextSpan>[
                             TextSpan(
                               text: "принимаю ",
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w400),
                             ),
                             TextSpan(
                               text: "Оферту для продавцов",
-                              style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 16),
+                              style: TextStyle(
+                                  color: AppColors.kPrimaryColor, fontSize: 16),
                             ),
                           ],
                         ),
@@ -191,7 +208,8 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                     phone: phoneController.text,
                     email: emailController.text,
                     nick_name: nameController.text,
-                    password: passwordController.text);
+                    password: passwordController.text,
+                    check: checkController.text);
 
                 final register = BlocProvider.of<LoginBloggerCubit>(context);
 
@@ -204,7 +222,8 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                 //       builder: (context) => BlogAuthRegisterPage()),
                 // );
               } else {
-                Get.snackbar('Ошибка', 'Заполните все данные *', backgroundColor: Colors.blueAccent);
+                Get.snackbar('Ошибка', 'Заполните все данные *',
+                    backgroundColor: Colors.blueAccent);
               }
 
               // Navigator.pop(context);
@@ -225,7 +244,10 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                         // padding: const EdgeInsets.only(left: 16, right: 16),
                         child: const Text(
                           'Продолжить',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16),
                           textAlign: TextAlign.center,
                         )),
                   ],
@@ -269,12 +291,18 @@ class FieldsCoopRequest extends StatelessWidget {
             children: [
               Text(
                 titleText,
-                style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                    color: AppColors.kGray900),
               ),
               star != true
                   ? const Text(
                       '*',
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Colors.red),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          color: Colors.red),
                     )
                   : Container()
             ],
@@ -286,16 +314,20 @@ class FieldsCoopRequest extends StatelessWidget {
             height: 47,
             padding: const EdgeInsets.only(left: 12),
             alignment: Alignment.center,
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: TextField(
-              keyboardType: number == true ? TextInputType.number : TextInputType.text,
+              keyboardType:
+                  number == true ? TextInputType.number : TextInputType.text,
               controller: controller,
               textAlign: TextAlign.left,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hintText,
-                hintStyle:
-                    const TextStyle(color: Color.fromRGBO(194, 197, 200, 1), fontSize: 16, fontWeight: FontWeight.w400),
+                hintStyle: const TextStyle(
+                    color: Color.fromRGBO(194, 197, 200, 1),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
                 enabledBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                   // borderRadius: BorderRadius.circular(3),
@@ -303,7 +335,8 @@ class FieldsCoopRequest extends StatelessWidget {
                 suffixIcon: IconButton(
                   onPressed: onPressed,
                   icon: arrow == true
-                      ? SvgPicture.asset('assets/icons/back_menu.svg', color: Colors.grey)
+                      ? SvgPicture.asset('assets/icons/back_menu.svg',
+                          color: Colors.grey)
                       : SvgPicture.asset(''),
                 ),
                 // suffixIcon: IconButton(

@@ -49,6 +49,7 @@ class LoginToApi {
       _box.write('blogger_nick_name', data['nick_name'].toString());
       _box.write('blogger_iin', data['iin'].toString());
       _box.write('blogger_avatar', data['avatar'].toString());
+      _box.write('blogger_invoice', data['invoice'].toString());
 
       // _box.write('card', data['user']['card'].toString());
     }
@@ -76,6 +77,7 @@ class LoginToApi {
       'iin': register.iin,
       'nick_name': register.nick_name,
       'email': register.email,
+      'invoice': register.check,
       'social_network': register.social_network,
       'device_token': deviceToken.toString(),
       'device_type': deviceType
@@ -89,6 +91,7 @@ class LoginToApi {
       _box.write('blogger_phone', data['phone'].toString());
       _box.write('blogger_iin', data['iin'].toString());
       _box.write('blogger_avatar', data['avatar'].toString());
+      _box.write('blogger_invoice', data['invoice'].toString());
 
       // _box.write('card', data['user']['card'].toString());
     }

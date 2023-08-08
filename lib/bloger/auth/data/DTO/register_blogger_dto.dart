@@ -4,9 +4,9 @@ class RegisterBloggerDTO {
   final String social_network;
   final String email;
   final String nick_name;
-
   final String phone;
   final String password;
+  final String check;
 
   const RegisterBloggerDTO({
     required this.iin,
@@ -16,5 +16,6 @@ class RegisterBloggerDTO {
     required this.nick_name,
     required this.phone,
     required this.password,
+    required this.check,
   });
 }
