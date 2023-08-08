@@ -112,7 +112,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
     BlocProvider.of<reviewProductCubit.ReviewCubit>(context)
         .reviews(widget.product.id.toString());
-    BlocProvider.of<profitCubit.ProfitCubit>(context).profit();
+    BlocProvider.of<profitCubit.ProfitCubit>(context)
+        .profit(widget.product.id.toString());
 
     if (widget.product.video != null) {
       _controller = VideoPlayerController.network(

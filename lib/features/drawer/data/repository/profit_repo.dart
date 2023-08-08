@@ -7,12 +7,13 @@ const baseUrl = 'http://185.116.193.73/api';
 class ProfitRepository {
   final ProfitApi _profitApi = ProfitApi();
 
-  Future<String> profitApi() => _profitApi.profit();
+  Future<String> profitApi(id) => _profitApi.profit(id);
 }
 
 class ProfitApi {
-  Future<String> profit() async {
-    final response = await http.get(Uri.parse('$baseUrl/list/profitable'));
+  Future<String> profit(String id) async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/list/profitable?id=$id'));
 
     final data = jsonDecode(response.body);
 

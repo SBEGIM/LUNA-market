@@ -538,7 +538,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                   ? Row(
                                       children: [
                                         Text(
-                                          '${(widget.basketProducts.product!.price!.toInt() * (((100 - widget.basketProducts.product!.compound!.toInt())) / 100))} ₽ ',
+                                          '${(widget.basketProducts.product!.price!.toInt() * (((100 - widget.basketProducts.product!.compound!.toInt())) / 100)).toInt()} ₽ ',
                                           style: const TextStyle(
                                               color: Colors.red,
                                               fontWeight: FontWeight.w500,
@@ -569,7 +569,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                 height: 8,
                               ),
                               Text(
-                                '${(widget.basketProducts.product!.price!.toInt() - (widget.basketProducts.product!.price!.toInt() * (widget.basketProducts.product!.compound!.toInt() / 100))) * basketCount} ₽/$basketCount шт',
+                                '${(widget.basketProducts.product!.price!.toInt() - (widget.basketProducts.product!.price!.toInt() * (widget.basketProducts.product!.compound!.toInt() / 100))).toInt() * basketCount} ₽/$basketCount шт',
                                 style: const TextStyle(
                                   color: AppColors.kGray300,
                                   fontWeight: FontWeight.w400,

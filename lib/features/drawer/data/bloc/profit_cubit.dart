@@ -9,13 +9,11 @@ class ProfitCubit extends Cubit<ProfitState> {
 
   ProfitCubit({required this.profitRepository}) : super(InitState());
 
-  Future<void> profit() async {
+  Future<void> profit(String id) async {
     try {
       emit(LoadingState());
-      final data = await profitRepository.profitApi();
+      final data = await profitRepository.profitApi(id);
       emit(LoadedState(path: data));
-
-      print('success');
     } catch (e) {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
