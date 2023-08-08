@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:auto_route/auto_route.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:haji_market/admin/auth/data/bloc/register_admin_cubit.dart';
@@ -136,8 +137,7 @@ class _MyAppState extends State<MyApp> {
   ProductModel? product;
 
   Future<void> checkInitialMessage() async {
-    final RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
+    final RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
       final RemoteMessage message = initialMessage;
       log('checkInitialMessage:: ${initialMessage.data}');
@@ -147,8 +147,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    initUniLinks();
-    initUniLinkss();
 
     checkInitialMessage();
 
@@ -176,112 +174,8 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<void> initUniLinks() async {
-    try {
-      final initialLink = await getInitialLink();
 
-      print('$initialLink deeplink');
-
-      if (initialLink != null) {
-        // print(bloggerId + '222');
-        // print(productId + 'wwww');
-
-        String bloggerId = Uri.parse(initialLink.toString())
-            .queryParameters['blogger_id']
-            .toString();
-        String productId = Uri.parse(initialLink.toString())
-            .queryParameters['product_id']
-            .toString();
-
-        String shopName = Uri.parse(initialLink.toString())
-            .queryParameters['shop_name']
-            .toString();
-        String index = Uri.parse(initialLink.toString())
-            .queryParameters['index']
-            .toString();
-
-        if (productId != '' && productId != 'null') {
-          print('wwww Success product');
-
-          GetStorage().write('deep_blogger_id', bloggerId);
-          GetStorage().write('deep_product_id', productId);
-          getProductById(productId);
-        }
-        if (shopName != '' && shopName != 'null') {
-          BlocProvider.of<NavigationCubit>(context)
-              .emit(DetailTapeState(int.parse(index), shopName));
-        }
-      }
-    } on PlatformException {}
-  }
-
-  late StreamSubscription _sub;
-
-  Future<void> initUniLinkss() async {
-    _sub = linkStream.listen((String? link) async {
-      if (link != null) {
-        String bloggerId =
-            Uri.parse(link).queryParameters['blogger_id'].toString();
-        String productId =
-            Uri.parse(link).queryParameters['product_id'].toString();
-        String shopName =
-            Uri.parse(link).queryParameters['shop_name'].toString();
-        String index = Uri.parse(link).queryParameters['index'].toString();
-
-        if (productId != '' && productId != 'null') {
-          GetStorage().write('deep_blogger_id', bloggerId);
-          GetStorage().write('deep_product_id', productId);
-
-          getProductById(productId);
-        }
-
-        if (shopName != '' && shopName != 'null') {
-          // BlocProvider.of<NavigationCubit>(context)
-          //     .getNavBarItem(NavigationState.tape())
-          //     .whenComplete(
-          //   () {
-          //     Get.to(() => DetailTapeCardPage(
-          //           index: int.parse(index),
-          //           shop_name: shopName,
-          //         ));
-          //   },
-          // );
-
-          BlocProvider.of<NavigationCubit>(context)
-              .emit(DetailTapeState(int.parse(index), shopName));
-        }
-      }
-    }, onError: (err) {});
-  }
-
-  Future<void> getProductById(productId) async {
-    const baseUrl = 'http://185.116.193.73/api';
-
-    final String? authToken = GetStorage().read('token');
-
-    final response = await http.get(
-      Uri.parse(
-        '$baseUrl/shop/show?id=$productId',
-      ),
-      headers: {"Authorization": "Bearer $authToken"},
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-
-      product = ProductModel.fromJson(data['data']);
-
-      Get.to(() => DetailCardProductPage(product: product!));
-
-      // Get.snackbar('Промокод активирован',
-      //     'покупайте товары и получайте скидку от Блогера',
-      //     backgroundColor: Colors.blueAccent);
-    } else {
-      // Get.snackbar('Ошибка промокод', 'продукт или блогер не найден',
-      //     backgroundColor: Colors.redAccent);
-    }
-  }
-
+  AppRouter appRouter = AppRouter();
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -294,8 +188,69 @@ class _MyAppState extends State<MyApp> {
       home: MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: AppRouterBuilder(
-          createRouter: (context) => AppRouter(),
+          createRouter: (context) => appRouter,
           builder: (context, parser, delegate) => MaterialApp.router(
+            // builder: (context, child) => SizedBox(),
+            // backButtonDispatcher:RootBackButtonDispatcher(),
+            // routeInformationProvider: appRouter.routeInfoProvider(),
+            // routerConfig: appRouter.config(
+            //   deepLinkBuilder: (deepLink) async {
+            //     return DeepLink.single(DetailCardProductRoute(product: ProductModel()));
+            //     String bloggerId = Uri.parse(deepLink.path.toString()).queryParameters['blogger_id'].toString();
+            //     String productId = Uri.parse(deepLink.path.toString()).queryParameters['product_id'].toString();
+
+            //     String shopName = Uri.parse(deepLink.path.toString()).queryParameters['shop_name'].toString();
+            //     String index = Uri.parse(deepLink.path.toString()).queryParameters['index'].toString();
+            //     print(deepLink.path,);
+            //     print(shopName,);
+            //     print(index,);
+            //     // if (productId != '' && productId != 'null') {
+            //     //   print('wwww Success product');
+            //     //   GetStorage().write('deep_blogger_id', bloggerId);
+            //     //   GetStorage().write('deep_product_id', productId);
+            //     //   const baseUrl = 'http://185.116.193.73/api';
+
+            //     //   final String? authToken = GetStorage().read('token');
+
+            //     //   final response = await http.get(
+            //     //     Uri.parse(
+            //     //       '$baseUrl/shop/show?id=$productId',
+            //     //     ),
+            //     //     headers: {"Authorization": "Bearer $authToken"},
+            //     //   );
+
+            //     //   if (response.statusCode == 200) {
+            //     //     final data = jsonDecode(response.body);
+
+            //     //     product = ProductModel.fromJson(data['data']);
+            //     //     return DeepLink([DetailCardProductRoute(product: product!)]);
+            //     //     // Get.to(() => DetailCardProductPage(product: product!));
+
+            //     //     // Get.snackbar('Промокод активирован',
+            //     //     //     'покупайте товары и получайте скидку от Блогера',
+            //     //     //     backgroundColor: Colors.blueAccent);
+            //     //   } else {
+            //     //     // Get.snackbar('Ошибка промокод', 'продукт или блогер не найден',
+            //     //     //     backgroundColor: Colors.redAccent);
+            //     //   }
+            //     // }
+            //     if (shopName != '' && shopName != 'null') {
+                  
+            //       return const DeepLink([LauncherRoute(children: [BasketRoute()])]);
+            //       // return DeepLink([
+            //       //   LauncherRoute(children: [
+            //       //     BaseTapeTab(children: [DetailTapeCardRoute(index: int.parse(index), shopName: shopName)])
+            //       //   ])
+            //       // ]);
+            //       // BlocProvider.of<NavigationCubit>(context)
+            //       //     .emit(DetailTapeState(int.parse(index), shopName));
+            //     } else {
+            //       return const DeepLink([LauncherRoute(children: [BasketRoute()])]);
+            //     }
+            //   },
+            // ),
+           
+           
             routeInformationParser: parser,
             routerDelegate: delegate,
             // onGenerateTitle: (context) => context.localized.appTitle,
@@ -332,61 +287,32 @@ class MultiBlocWrapper extends StatelessWidget {
             loginBloggerRepository: LoginBloggerRepository(),
           ),
         ),
+        BlocProvider(create: (_) => SmsCubit(registerRepository: RegisterRepository())),
+        BlocProvider(create: (_) => RegisterCubit(registerRepository: RegisterRepository())),
+        BlocProvider(create: (_) => CatsCubit(listRepository: ListRepository())),
+        BlocProvider(create: (_) => SubCatsCubit(subCatRepository: SubCatsRepository())),
+        BlocProvider(create: (_) => BannersCubit(listRepository: ListRepository())),
+        BlocProvider(create: (_) => PopularShopsCubit(popularShopsRepository: PopularShopsRepository())),
+        BlocProvider(create: (_) => ShopsDrawerCubit(shopsDrawerRepository: ShopsDrawerRepository())),
+        BlocProvider(create: (_) => ProductCubit(productRepository: ProductRepository())),
+        BlocProvider(create: (_) => FavoriteCubit(favoriteRepository: FavoriteRepository())),
+        BlocProvider(create: (_) => BasketCubit(basketRepository: BasketRepository())),
+        BlocProvider(create: (_) => OrderCubit(basketRepository: BasketRepository())),
+        BlocProvider(create: (_) => BrandCubit(brandRepository: BrandsRepository())),
+        BlocProvider(create: (_) => LoginAdminCubit(loginAdminRepository: LoginAdminRepository())),
+        BlocProvider(create: (_) => ProductAdminCubit(productAdminRepository: ProductAdminRepository())),
+        BlocProvider(create: (_) => BasketAdminCubit(basketRepository: BasketAdminRepository())),
         BlocProvider(
-            create: (_) => SmsCubit(registerRepository: RegisterRepository())),
-        BlocProvider(
-            create: (_) =>
-                RegisterCubit(registerRepository: RegisterRepository())),
-        BlocProvider(
-            create: (_) => CatsCubit(listRepository: ListRepository())),
-        BlocProvider(
-            create: (_) => SubCatsCubit(subCatRepository: SubCatsRepository())),
-        BlocProvider(
-            create: (_) => BannersCubit(listRepository: ListRepository())),
-        BlocProvider(
-            create: (_) => PopularShopsCubit(
-                popularShopsRepository: PopularShopsRepository())),
-        BlocProvider(
-            create: (_) => ShopsDrawerCubit(
-                shopsDrawerRepository: ShopsDrawerRepository())),
-        BlocProvider(
-            create: (_) =>
-                ProductCubit(productRepository: ProductRepository())),
-        BlocProvider(
-            create: (_) =>
-                FavoriteCubit(favoriteRepository: FavoriteRepository())),
-        BlocProvider(
-            create: (_) => BasketCubit(basketRepository: BasketRepository())),
-        BlocProvider(
-            create: (_) => OrderCubit(basketRepository: BasketRepository())),
-        BlocProvider(
-            create: (_) => BrandCubit(brandRepository: BrandsRepository())),
+            create: (_) => OrderStatusAdminCubit(basketAdminRepository: BasketAdminRepository(), BasketRepository())),
+        BlocProvider(create: (_) => ColorCubit(colorRepository: ColorAdminRepository())),
+        BlocProvider(create: (_) => TapeCubit(tapeRepository: TapeRepository())),
+        BlocProvider(create: (_) => SubsCubit(subsRepository: SubsRepository())),
         BlocProvider(
             create: (_) =>
-                LoginAdminCubit(loginAdminRepository: LoginAdminRepository())),
-        BlocProvider(
-            create: (_) => ProductAdminCubit(
-                productAdminRepository: ProductAdminRepository())),
-        BlocProvider(
-            create: (_) =>
-                BasketAdminCubit(basketRepository: BasketAdminRepository())),
-        BlocProvider(
-            create: (_) => OrderStatusAdminCubit(
-                basketAdminRepository: BasketAdminRepository(),BasketRepository())),
-        BlocProvider(
-            create: (_) => ColorCubit(colorRepository: ColorAdminRepository())),
-        BlocProvider(
-            create: (_) => TapeCubit(tapeRepository: TapeRepository())),
-        BlocProvider(
-            create: (_) => SubsCubit(subsRepository: SubsRepository())),
-        BlocProvider(
-            create: (_) => ProfileStaticsBloggerCubit(
-                profileStaticsBloggerRepository:
-                    ProfileStaticsBloggerRepository())),
+                ProfileStaticsBloggerCubit(profileStaticsBloggerRepository: ProfileStaticsBloggerRepository())),
         BlocProvider(
             create: (_) => ProfileMonthStaticsBloggerCubit(
-                profileMonthStaticsBloggerRepository:
-                    ProfileMonthStaticsBloggerRepository())),
+                profileMonthStaticsBloggerRepository: ProfileMonthStaticsBloggerRepository())),
         BlocProvider(
           create: (_) => EditBloggerCubit(
             editBloggerRepository: EditBloggerRepository(),
@@ -394,8 +320,7 @@ class MultiBlocWrapper extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => BloggerProductStatisticsCubit(
-            bloggerProductStatisticsRepository:
-                BloggerProductsStatisticsRepository(),
+            bloggerProductStatisticsRepository: BloggerProductsStatisticsRepository(),
           ),
         ),
         BlocProvider(
@@ -404,13 +329,10 @@ class MultiBlocWrapper extends StatelessWidget {
           ),
         ),
         BlocProvider(
-            create: (_) => BloggerVideoProductsCubit(
-                bloggerShopProductsRepository:
-                    BloggerVideoProductsRepository())),
+            create: (_) => BloggerVideoProductsCubit(bloggerShopProductsRepository: BloggerVideoProductsRepository())),
         BlocProvider(
           create: (_) => UploadVideoBLoggerCubit(
-            uploadVideoBloggerCubitRepository:
-                UploadVideoBloggerCubitRepository(),
+            uploadVideoBloggerCubitRepository: UploadVideoBloggerCubitRepository(),
           ),
         ),
         BlocProvider(
@@ -435,8 +357,7 @@ class MultiBlocWrapper extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => ProfileMonthStaticsAdminCubit(
-            profileMonthStaticsBloggerRepository:
-                ProfileMonthStaticsAdminRepository(),
+            profileMonthStaticsBloggerRepository: ProfileMonthStaticsAdminRepository(),
           ),
         ),
         BlocProvider(
