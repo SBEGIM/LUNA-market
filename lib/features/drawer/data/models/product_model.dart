@@ -56,6 +56,64 @@ class ProductModel {
     _total = total;
   }
 
+  ProductModel copyWith({
+    int? id,
+    String? name,
+    int? price,
+    int? product_count,
+    int? compound,
+    int? point,
+    String? description,
+    String? catName,
+    String? brandName,
+    String? sizeTitle,
+    List<String>? size,
+    List<String>? color,
+    List<Bloc>? bloc,
+    List<String>? path,
+    String? video,
+    Shop? shop,
+    int? rating,
+    int? count,
+    bool? inBasket,
+    bool? buyed,
+    bool? optom,
+    int? basketCount,
+    bool? inFavorite,
+    List<Shops>? shops,
+    List<int>? review,
+    int? total,
+  }) {
+    return ProductModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      price: price ?? this.price,
+      product_count: product_count ?? this.product_count,
+      compound: compound ?? this.compound,
+      point: point ?? this.point,
+      description: description ?? this.description,
+      catName: catName ?? this.catName,
+      brandName: brandName ?? this.brandName,
+      sizeTitle: sizeTitle ?? this.sizeTitle,
+      size: size ?? this.size,
+      color: color ?? this.color,
+      bloc: bloc ?? this.bloc,
+      path: path ?? this.path,
+      video: video ?? this.video,
+      shop: shop ?? this.shop,
+      rating: rating ?? this.rating,
+      count: count ?? this.count,
+      inBasket: inBasket ?? this.inBasket,
+      buyed: buyed ?? this.buyed,
+      optom: optom ?? this.optom,
+      basketCount: basketCount ?? this.basketCount,
+      inFavorite: inFavorite ?? this.inFavorite,
+      shops: shops ?? this.shops,
+      review: review ?? this.review,
+      total: total ?? this.total,
+    );
+  }
+
   ProductModel.fromJson(dynamic json) {
     _id = json['id'];
     _name = json['name'];

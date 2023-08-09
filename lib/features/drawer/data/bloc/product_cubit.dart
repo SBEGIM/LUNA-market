@@ -52,4 +52,14 @@ class ProductCubit extends Cubit<ProductState> {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
+
+  void updateProductByIndex({
+    required int index,
+    required ProductModel updatedProduct,
+  }) {
+    if (index < _products.length) {
+      _products[index] = updatedProduct;
+      emit(LoadedState(_products));
+    }
+  }
 }
