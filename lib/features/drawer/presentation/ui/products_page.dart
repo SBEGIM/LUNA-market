@@ -199,7 +199,7 @@ class _ProductsPageState extends State<ProductsPage> {
           Expanded(
             child: SmartRefresher(
               controller: _refreshController,
-              enablePullDown: false,
+              enablePullDown: true,
               enablePullUp: true,
               onLoading: () {
                 onLoading();

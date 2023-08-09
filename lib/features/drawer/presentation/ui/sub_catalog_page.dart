@@ -151,10 +151,10 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () async {
-                          await GetStorage().write('CatId', widget.cats.id);
-                          await GetStorage().write('subCatFilterId',
+                          GetStorage().write('CatId', widget.cats.id);
+                          GetStorage().write('subCatFilterId',
                               [state.cats[index].id].toString());
-                          await GetStorage().remove('shopFilterId');
+                          GetStorage().remove('shopFilterId');
                           context.router.push(ProductsRoute(
                             cats: state.cats[index],
                           ));

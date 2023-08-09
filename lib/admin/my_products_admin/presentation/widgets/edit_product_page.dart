@@ -351,7 +351,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 },
               ),
 
-              Container(
+              SizedBox(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -562,7 +562,210 @@ class _EditProductPageState extends State<EditProductPage> {
                       );
                     })),
               ),
+              const SizedBox(height: 20),
+              SizedBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Характиристика',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
+                          width: 111,
+                          height: 38,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  sizeName == '' ? 'Размер' : sizeName,
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                PopupMenuButton(
+                                  onSelected: (value) {
+                                    mockSizeAdds!.add(value as Cats);
+                                    sizeId = value.id.toString();
+                                    sizeName = value.name ?? 'Пустое';
+                                    setState(() {});
+                                  },
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(15.0),
+                                    ),
+                                  ),
+                                  icon: SvgPicture.asset(
+                                      'assets/icons/dropdown.svg'),
+                                  position: PopupMenuPosition.under,
+                                  offset: const Offset(0, 0),
+                                  itemBuilder: (
+                                    BuildContext bc,
+                                  ) {
+                                    return mockSizes!.map<PopupMenuItem>((e) {
+                                      return PopupMenuItem(
+                                        value: e,
+                                        child: Text(
+                                          e.name ?? 'Пустое',
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList();
+                                  },
+                                )
+                              ]),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(bottom: 6),
+                          margin: const EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
+                          width: 102,
+                          height: 38,
+                          child: TextField(
+                            textAlign: TextAlign.center,
+                            controller: sizeCountController,
+                            keyboardType: TextInputType.text,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Введите количество',
+                              hintStyle: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                                // borderRadius: BorderRadius.circular(3),
+                              ),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            if (sizeCountController.text.isNotEmpty) {
+                              bool exists = false;
 
+                              sizeCountDto? sizeCountLast;
+                              // if (optomCount.isNotEmpty) {
+
+                              sizeCountLast =
+                                  sizeCount.isNotEmpty ? sizeCount.last : null;
+                              for (var element in sizeCount) {
+                                if (element.count == sizeCountController.text) {
+                                  exists = true;
+                                  setState(() {});
+                                }
+                                continue;
+                              }
+                              //   }
+
+                              if (!exists) {
+                                sizeCount.add(sizeCountDto(
+                                    id: sizeId,
+                                    name: sizeName,
+                                    count: sizeCountController.text));
+
+                                setState(() {});
+                              } else {
+                                // Get.to(() => {})
+                                Get.snackbar('Ошибка', 'Данные уже имеется!',
+                                    backgroundColor: Colors.redAccent);
+                              }
+                            } else {
+                              Get.snackbar('Ошибка', 'Нет данных!',
+                                  backgroundColor: Colors.redAccent);
+                            }
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                                color: AppColors.kPrimaryColor,
+                                borderRadius: BorderRadius.circular(8)),
+                            alignment: Alignment.center,
+                            width: 102,
+                            height: 38,
+                            child: const Text(
+                              '+',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 60 * sizeCount.length.toDouble(),
+                child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: sizeCount.length,
+                    itemBuilder: ((context, index) {
+                      return Row(
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.only(right: 10, top: 15),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
+                            width: 102,
+                            height: 38,
+                            child: Text(
+                              sizeCount[index].name,
+                              style: const TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.only(right: 10, top: 15),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
+                            width: 102,
+                            height: 38,
+                            child: Text(
+                              sizeCount[index].count,
+                              style: const TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: (() {
+                              sizeCount.removeAt(index);
+                              setState(() {});
+                            }),
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                  right: 10, top: 15, left: 10),
+                              decoration: BoxDecoration(
+                                  // color: AppColors.kPrimaryColor,
+                                  borderRadius: BorderRadius.circular(8)),
+                              alignment: Alignment.center,
+                              width: 102,
+                              height: 38,
+                              child:
+                                  SvgPicture.asset('assets/icons/basket_1.svg'),
+                            ),
+                          )
+                        ],
+                      );
+                    })),
+              ),
+              const SizedBox(height: 10),
               FieldsProductRequest(
                 titleText: 'Ширина, мм ',
                 hintText: 'Введите ширину',
@@ -628,72 +831,87 @@ class _EditProductPageState extends State<EditProductPage> {
                 ),
               ),
               const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 166,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8)),
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Real FBS',
-                          style: TextStyle(
-                              color: AppColors.kPrimaryColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        Switch(
-                          onChanged: toggleSwitchFBS,
-                          value: isSwitchedFBS,
-                          activeColor: AppColors.kPrimaryColor,
-                          activeTrackColor: AppColors.kPrimaryColor,
-                          inactiveThumbColor:
-                              const Color.fromRGBO(245, 245, 245, 1),
-                          inactiveTrackColor:
-                              const Color.fromRGBO(237, 237, 237, 1),
-                        ),
-                      ],
+              const SizedBox(height: 10),
+              Container(
+                width: 166,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8)),
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Real FBS',
+                      style: TextStyle(
+                          color: AppColors.kPrimaryColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
                     ),
-                  ),
-                  Container(
-                    width: 166,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8)),
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'FBS',
-                          style: TextStyle(
-                              color: AppColors.kPrimaryColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        Switch(
-                          onChanged: toggleSwitchFBS,
-                          value: !isSwitchedFBS,
-                          activeColor: AppColors.kPrimaryColor,
-                          activeTrackColor: AppColors.kPrimaryColor,
-                          inactiveThumbColor:
-                              const Color.fromRGBO(245, 245, 245, 1),
-                          inactiveTrackColor:
-                              const Color.fromRGBO(237, 237, 237, 1),
-                        ),
-                      ],
+                    Switch(
+                      onChanged: toggleSwitchFBS,
+                      value: isSwitchedFBS,
+                      activeColor: AppColors.kPrimaryColor,
+                      activeTrackColor: AppColors.kPrimaryColor,
+                      inactiveThumbColor:
+                          const Color.fromRGBO(245, 245, 245, 1),
+                      inactiveTrackColor:
+                          const Color.fromRGBO(237, 237, 237, 1),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              const SizedBox(height: 28),
+              const SizedBox(
+                height: 8,
+              ),
+              Container(
+                width: 166,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8)),
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'FBS',
+                      style: TextStyle(
+                          color: AppColors.kPrimaryColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    Switch(
+                      onChanged: toggleSwitchFBS,
+                      value: !isSwitchedFBS,
+                      activeColor: AppColors.kPrimaryColor,
+                      activeTrackColor: AppColors.kPrimaryColor,
+                      inactiveThumbColor:
+                          const Color.fromRGBO(245, 245, 245, 1),
+                      inactiveTrackColor:
+                          const Color.fromRGBO(237, 237, 237, 1),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              isSwitchedFBS == false
+                  ? const Text(
+                      'FBS - это схема продажи, при которой вы храните товары у себя на складе, следите за новыми заказами, собираете их и передаёте в доставку CDEK.',
+                      style: TextStyle(
+                          color: AppColors.kGray300,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400),
+                    )
+                  : const Text(
+                      'real FBS - это схема продажи, при которой вы храните товары у себя на складе, следите за новыми заказами, собираете их и передаёте в доставку CDEK.',
+                      style: TextStyle(
+                          color: AppColors.kGray300,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400),
+                    ),
 
               const SizedBox(height: 28),
               SizedBox(

@@ -1591,7 +1591,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '${widget.product.price} ₽',
+                                '${widget.product.price! - ((widget.product.price! * widget.product.compound!) / 100).toInt()} ₽',
                                 style: const TextStyle(
                                     color: AppColors.kGray900,
                                     fontSize: 17,
@@ -1609,7 +1609,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Text(
-                                      '${(widget.product.price!.toInt() / 3).round()}',
+                                      '${(widget.product.price! - ((widget.product.price! * widget.product.compound!) / 100).toInt() / 3).round()}',
                                       style: const TextStyle(
                                           color: AppColors.kGray900,
                                           fontSize: 14,

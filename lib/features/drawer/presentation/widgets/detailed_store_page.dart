@@ -136,11 +136,11 @@ class _DetailStorePageState extends State<DetailStorePage> {
                             ),
                             half: const Icon(
                               Icons.star,
-                              color: Color(0xFFFFC107),
+                              color: Colors.grey,
                             ),
                             empty: const Icon(
                               Icons.star,
-                              color: Color(0xFFFFC107),
+                              color: Colors.grey,
                             ),
                           ),
                           onRatingUpdate: (double value) {},
@@ -345,80 +345,80 @@ class _DetailStorePageState extends State<DetailStorePage> {
                   height: 1,
                   color: AppColors.kGray300,
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: CustomSwitchButton<int>(
-                    groupValue: segmentValue,
-                    children: {
-                      0: Container(
-                        width: MediaQuery.of(context).size.width,
-                        alignment: Alignment.center,
-                        height: 39,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: const Text(
-                          'Пункты самовывоза',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                              color: Colors.black
-                              // : const Color(0xff9B9B9B),
-                              ),
-                        ),
-                      ),
-                      1: Container(
-                        alignment: Alignment.center,
-                        height: 39,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: const Text(
-                          'Отзывы ',
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w400,
-                              color:
-                                  // segmentValue == 0
-                                  Colors.black
-                              // : const Color(0xff9B9B9B),
-                              ),
-                        ),
-                      ),
-                    },
-                    onValueChanged: (int? value) async {
-                      if (value != null && value != 1) {
-                        segmentValue = value;
-                      } else {
-                        Get.snackbar('Нет доступа', 'временно не доступен',
-                            backgroundColor: Colors.orangeAccent);
-                      }
-                      setState(() {});
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                )
+                // const SizedBox(
+                //   height: 16,
+                // ),
+                // Container(
+                //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                //   child: CustomSwitchButton<int>(
+                //     groupValue: segmentValue,
+                //     children: {
+                //       0: Container(
+                //         width: MediaQuery.of(context).size.width,
+                //         alignment: Alignment.center,
+                //         height: 39,
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(4),
+                //         ),
+                //         child: const Text(
+                //           'Пункты самовывоза',
+                //           style: TextStyle(
+                //               fontWeight: FontWeight.w400,
+                //               fontSize: 14,
+                //               color: Colors.black
+                //               // : const Color(0xff9B9B9B),
+                //               ),
+                //         ),
+                //       ),
+                //       1: Container(
+                //         alignment: Alignment.center,
+                //         height: 39,
+                //         width: MediaQuery.of(context).size.width,
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(4),
+                //         ),
+                //         child: const Text(
+                //           'Отзывы ',
+                //           style: TextStyle(
+                //               fontSize: 15,
+                //               fontWeight: FontWeight.w400,
+                //               color:
+                //                   // segmentValue == 0
+                //                   Colors.black
+                //               // : const Color(0xff9B9B9B),
+                //               ),
+                //         ),
+                //       ),
+                //     },
+                //     onValueChanged: (int? value) async {
+                //       if (value != null && value != 1) {
+                //         segmentValue = value;
+                //       } else {
+                //         Get.snackbar('Нет доступа', 'временно не доступен',
+                //             backgroundColor: Colors.orangeAccent);
+                //       }
+                //       setState(() {});
+                //     },
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 20,
+                // )
               ],
             ),
           ),
 
-          const SizedBox(
-            height: 10,
-          ),
-          IndexedStack(
-            index: segmentValue,
-            children: const [
-              PunktsWidget(),
-              SizedBox()
-              // ReviewsWidget(),
-            ],
-          )
+          // const SizedBox(
+          //   height: 10,
+          // ),
+          // IndexedStack(
+          //   index: segmentValue,
+          //   children: const [
+          //     PunktsWidget(),
+          //     SizedBox()
+          //     // ReviewsWidget(),
+          //   ],
+          // )
 
           // ReviewsWidget(),
 
