@@ -25,14 +25,16 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 
   @override
   void initState() {
-    count += widget.product.basketCount ?? 0;
-    if (count > 0) {
-      isvisible = true;
-    }
-    inFavorite = widget.product.inFavorite ?? false;
-    compoundPrice = widget.product.price! -
-        ((widget.product.price! / 100) * (widget.product.compound ?? 1))
-            .toInt();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      count += widget.product.basketCount ?? 0;
+      if (count > 0) {
+        isvisible = true;
+      }
+      inFavorite = widget.product.inFavorite ?? false;
+      compoundPrice = widget.product.price! -
+          ((widget.product.price! / 100) * (widget.product.compound ?? 1))
+              .toInt();
+    });
 
     super.initState();
   }
@@ -343,74 +345,143 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          count < 1
-                              ? const SizedBox()
-                              : Visibility(
-                                  visible: isvisible,
-                                  child: Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          BlocProvider.of<BasketCubit>(context)
-                                              .basketMinus(
-                                                  widget.product.id.toString(),
-                                                  '1',
-                                                  0);
-                                          setState(() {
-                                            if (count == 0) {
-                                              isvisible = false;
-                                            } else {
-                                              isvisible = true;
-                                            }
-                                            count -= 1;
-                                          });
-                                        },
-                                        child: Container(
-                                          height: 32,
-                                          width: 32,
-                                          padding: const EdgeInsets.all(4),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(6),
-                                            color: Colors.white,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.1),
-                                                spreadRadius: 1,
-                                                blurRadius: 1,
-                                                offset: const Offset(0,
-                                                    1), // changes position of shadow
+                      widget.product.optom == true
+                          ? Container(
+                              width: 99,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF1DC4CF),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Оптом ${count} шт',
+                                // textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            )
+                          : Row(
+                              children: [
+                                count < 1
+                                    ? const SizedBox()
+                                    : Visibility(
+                                        visible: isvisible,
+                                        child: Row(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                BlocProvider.of<BasketCubit>(
+                                                        context)
+                                                    .basketMinus(
+                                                        widget.product.id
+                                                            .toString(),
+                                                        '1',
+                                                        0);
+                                                setState(() {
+                                                  if (count == 0) {
+                                                    isvisible = false;
+                                                  } else {
+                                                    isvisible = true;
+                                                  }
+                                                  count -= 1;
+                                                });
+                                              },
+                                              child: Container(
+                                                height: 32,
+                                                width: 32,
+                                                padding:
+                                                    const EdgeInsets.all(4),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(6),
+                                                  color: Colors.white,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.1),
+                                                      spreadRadius: 1,
+                                                      blurRadius: 1,
+                                                      offset: const Offset(0,
+                                                          1), // changes position of shadow
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: count == 1
+                                                    ? SvgPicture.asset(
+                                                        'assets/icons/basket_1.svg',
+                                                        width: 3.12,
+                                                        height: 15,
+                                                      )
+                                                    : const Icon(
+                                                        Icons.remove,
+                                                        color: AppColors
+                                                            .kPrimaryColor,
+                                                      ),
                                               ),
-                                            ],
-                                          ),
-                                          child: count == 1
-                                              ? SvgPicture.asset(
-                                                  'assets/icons/basket_1.svg',
-                                                  width: 3.12,
-                                                  height: 15,
-                                                )
-                                              : const Icon(
-                                                  Icons.remove,
+                                            ),
+                                            // const SizedBox(
+                                            //   width: 14,
+                                            // ),
+                                            Container(
+                                              width: 28,
+                                              alignment: Alignment.center,
+                                              child: Text('$count'),
+                                            ),
+                                            // const SizedBox(
+                                            //   width: 14,
+                                            // ),
+                                            InkWell(
+                                              onTap: () {
+                                                BlocProvider.of<BasketCubit>(
+                                                        context)
+                                                    .basketAdd(
+                                                        widget.product.id
+                                                            .toString(),
+                                                        '1',
+                                                        0,
+                                                        '',
+                                                        '');
+
+                                                setState(() {
+                                                  count += 1;
+                                                });
+                                              },
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(4),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  color: Colors.white,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.1),
+                                                      spreadRadius: 1,
+                                                      blurRadius: 1,
+                                                      offset: const Offset(0,
+                                                          1), // changes position of shadow
+                                                    ),
+                                                  ],
+                                                ),
+                                                // child: SvgPicture.asset(
+                                                //     'assets/icons/add_1.svg'),
+                                                child: const Icon(
+                                                  Icons.add,
                                                   color:
                                                       AppColors.kPrimaryColor,
                                                 ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      // const SizedBox(
-                                      //   width: 14,
-                                      // ),
-                                      Container(
-                                        width: 28,
-                                        alignment: Alignment.center,
-                                        child: Text('$count'),
-                                      ),
-                                      // const SizedBox(
-                                      //   width: 14,
-                                      // ),
-                                      InkWell(
+                                count >= 1
+                                    ? const SizedBox()
+                                    : GestureDetector(
                                         onTap: () {
                                           BlocProvider.of<BasketCubit>(context)
                                               .basketAdd(
@@ -419,75 +490,36 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                                   0,
                                                   '',
                                                   '');
-
                                           setState(() {
                                             count += 1;
+                                            if (count == 0) {
+                                              isvisible = false;
+                                            } else {
+                                              isvisible = true;
+                                            }
                                           });
                                         },
                                         child: Container(
-                                          padding: const EdgeInsets.all(4),
+                                          width: 99,
+                                          height: 32,
                                           decoration: BoxDecoration(
+                                            color: const Color(0xFF1DC4CF),
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            color: Colors.white,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.1),
-                                                spreadRadius: 1,
-                                                blurRadius: 1,
-                                                offset: const Offset(0,
-                                                    1), // changes position of shadow
-                                              ),
-                                            ],
                                           ),
-                                          // child: SvgPicture.asset(
-                                          //     'assets/icons/add_1.svg'),
-                                          child: const Icon(
-                                            Icons.add,
-                                            color: AppColors.kPrimaryColor,
+                                          alignment: Alignment.center,
+                                          child: const Text(
+                                            'В корзину',
+                                            // textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600),
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                          count >= 1
-                              ? const SizedBox()
-                              : GestureDetector(
-                                  onTap: () {
-                                    BlocProvider.of<BasketCubit>(context)
-                                        .basketAdd(widget.product.id.toString(),
-                                            '1', 0, '', '');
-                                    setState(() {
-                                      count += 1;
-                                      if (count == 0) {
-                                        isvisible = false;
-                                      } else {
-                                        isvisible = true;
-                                      }
-                                    });
-                                  },
-                                  child: Container(
-                                    width: 99,
-                                    height: 32,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFF1DC4CF),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: const Text(
-                                      'В корзину',
-                                      // textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
-                                ),
-                        ],
-                      )
+                              ],
+                            )
                     ],
                   )),
             ],

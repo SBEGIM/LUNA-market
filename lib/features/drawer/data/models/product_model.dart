@@ -20,6 +20,7 @@ class ProductModel {
     int? count,
     bool? inBasket,
     bool? buyed,
+    bool? optom,
     int? basketCount,
     bool? inFavorite,
     List<Shops>? shops,
@@ -47,6 +48,7 @@ class ProductModel {
     _count = count;
     _inBasket = inBasket;
     _buyed = buyed;
+    _optom = optom;
     _basketCount = basketCount;
     _inFavorite = inFavorite;
     _shops = shops;
@@ -81,6 +83,7 @@ class ProductModel {
     _total = json['total'];
     _inBasket = json['in_basket'];
     _buyed = json['buyed'];
+    _optom = json['optom'];
     _basketCount = json['basket_count'];
     _inFavorite = json['in_favorite'];
     if (json['shops'] != null) {
@@ -112,6 +115,7 @@ class ProductModel {
   int? _total;
   bool? _inBasket;
   bool? _buyed;
+  bool? _optom;
   int? _basketCount;
   bool? _inFavorite;
   List<Shops>? _shops;
@@ -138,6 +142,7 @@ class ProductModel {
   int? get total => _total;
   bool? get inBasket => _inBasket;
   bool? get buyed => _buyed;
+  bool? get optom => _optom;
   int? get basketCount => _basketCount;
   bool? get inFavorite => _inFavorite;
   List<Shops>? get shops => _shops;
@@ -168,6 +173,7 @@ class ProductModel {
     map['total'] = _total;
     map['in_basket'] = _inBasket;
     map['buyed'] = _buyed;
+    map['optom'] = _optom;
     map['basket_count'] = _basketCount;
     map['in_favorite'] = _inFavorite;
     if (_shops != null) {
