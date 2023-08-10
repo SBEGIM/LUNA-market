@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart' as tapeAdmin;
 import 'package:haji_market/core/common/constants.dart';
@@ -11,27 +8,21 @@ import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart
 import 'package:haji_market/features/tape/presentation/data/repository/tape_repo.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../../../../features/app/bloc/navigation_cubit/navigation_cubit.dart';
 import '../../../../features/tape/presentation/data/bloc/subs_cubit.dart';
 import '../../../../features/tape/presentation/data/bloc/tape_state.dart' as tapeState;
 
-import '../../../../features/app/presentaion/base.dart';
 import '../../../../features/tape/presentation/widgets/tape_card_widget.dart';
-import '../../../auth/presentation/ui/blog_auth_register_page.dart';
-import '../../../my_orders_admin/presentation/widgets/tape_card_widget.dart';
-import '../../../my_products_admin/presentation/widgets/statistics_blogger_show_page.dart';
 import '../data/bloc/profile_statics_blogger_cubit.dart';
 import '../data/bloc/profile_statics_blogger_state.dart';
-import '../widgets/reqirect_profile_page.dart';
-import 'blogger_cards_page.dart';
 
 @RoutePage()
 class ProfileBloggerTapePage extends StatefulWidget with AutoRouteWrapper {
-  int bloggerId;
-  String bloggerName;
-  String bloggerAvatar;
-  ProfileBloggerTapePage({required this.bloggerId, required this.bloggerName, required this.bloggerAvatar, Key? key})
+  final int bloggerId;
+  final String bloggerName;
+  final String bloggerAvatar;
+  final bool inSubscribe;
+  final Function(bool)? onSubChanged;
+  ProfileBloggerTapePage({required this.bloggerId, required this.bloggerName, required this.bloggerAvatar, Key? key, required this.inSubscribe, this.onSubChanged})
       : super(key: key);
 
   @override
@@ -53,7 +44,6 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
   RefreshController refreshController = RefreshController();
 
   Future<void> onLoading() async {
-    log(widget.bloggerId.toString(), name: 'BLOGGERID');
     await BlocProvider.of<TapeCubit>(context).tapePagination(false, false, '', widget.bloggerId);
     await Future.delayed(const Duration(milliseconds: 2000));
     refreshController.loadComplete();
@@ -61,6 +51,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
 
   @override
   void initState() {
+    inSub = widget.inSubscribe;
     BlocProvider.of<ProfileStaticsBloggerCubit>(context).statics(widget.bloggerId);
     BlocProvider.of<tapeAdmin.TapeCubit>(context).tapes(false, false, '', widget.bloggerId);
     BlocProvider.of<tapeAdmin.TapeCubit>(context).toBloggerLoadedState();
@@ -134,10 +125,11 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                     // );
 
                     BlocProvider.of<SubsCubit>(context).sub(widget.bloggerId);
-
                     setState(() {
                       inSub = !inSub;
                     });
+                    
+                    widget.onSubChanged?.call(inSub);
                   },
                   child: Container(
                     padding: EdgeInsets.all(6),
@@ -247,7 +239,6 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                               onLoading();
                             },
                             onRefresh: () {
-                              log(widget.bloggerId.toString(), name: 'BLOGGERID');
                               BlocProvider.of<TapeCubit>(context).tapes(false, false, '', widget.bloggerId);
                               refreshController.refreshCompleted();
                             },

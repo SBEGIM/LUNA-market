@@ -30,9 +30,10 @@ import '../data/bloc/tape_state.dart' as tapeState;
 @RoutePage()
 class DetailTapeCardPage extends StatefulWidget with AutoRouteWrapper {
   final int? index;
+  final int? tapeId;
   final String? shopName;
   final tapeCubit.TapeCubit tapeBloc;
-  const DetailTapeCardPage({required this.index, required this.shopName, Key? key, required this.tapeBloc})
+  const DetailTapeCardPage({required this.index, required this.shopName, Key? key, required this.tapeBloc, this.tapeId})
       : super(key: key);
 
   @override
@@ -75,6 +76,13 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
     if (widget.index != null) {
       currentIndex = widget.index!;
       controller = PageController(initialPage: widget.index!);
+    }
+    final tape = BlocProvider.of<tapeCubit.TapeCubit>(context);
+    if (tape.state is tapeState.LoadedState) {
+      if ((tape.state as tapeState.LoadedState).tapeModel[currentIndex].tapeId != null) {
+        BlocProvider.of<TapeCheckCubit>(context)
+            .tapeCheck(tapeId: (tape.state as tapeState.LoadedState).tapeModel[currentIndex].tapeId!);
+      }
     }
     title = 'Лента';
     // GetStorage().write('title_tape', 'Отписаться');
@@ -181,6 +189,13 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                             bloggerAvatar: state.tapeModel[currentIndex].blogger?.image ?? '',
                             bloggerId: state.tapeModel[currentIndex].blogger!.id!,
                             bloggerName: state.tapeModel[currentIndex].blogger?.nickName ?? '',
+                            inSubscribe: state.tapeModel[currentIndex].inSubscribe ?? false,
+                            onSubChanged: (value) {
+                              BlocProvider.of<tapeCubit.TapeCubit>(context).updateTapeByIndex(
+                                  index: currentIndex,
+                                  updatedTape: state.tapeModel[currentIndex]
+                                      .copyWith(tapeId: state.tapeModel[currentIndex].tapeId, inSubscribe: value));
+                            },
                           ))
                               .whenComplete(() {
                             stop = false;
