@@ -5,6 +5,7 @@ class BasketShowModel {
     int? priceCourier,
     int? price,
     int? optom,
+    int? userBonus,
     int? basketId,
     int? basketCount,
     String? basketColor,
@@ -17,6 +18,7 @@ class BasketShowModel {
     _priceCourier = priceCourier;
     _price = price;
     _optom = optom;
+    _userBonus = userBonus;
     _basketId = basketId;
     _basketCount = basketCount;
     _basketColor = basketColor;
@@ -26,12 +28,12 @@ class BasketShowModel {
   }
 
   BasketShowModel.fromJson(dynamic json) {
-    _product =
-        json['product'] != null ? Product.fromJson(json['product']) : null;
+    _product = json['product'] != null ? Product.fromJson(json['product']) : null;
     _image = json['image'] != null ? json['image'].cast<String>() : [];
     _priceCourier = json['price_courier'];
     _price = json['price'];
     _optom = json['optom'];
+    _userBonus = json['user_bonus'];
     _basketId = json['basket_id'];
     _basketCount = json['basket_count'];
     _basketColor = json['basket_color'];
@@ -49,6 +51,7 @@ class BasketShowModel {
   int? _priceCourier;
   int? _price;
   int? _optom;
+  int? _userBonus;
   int? _basketId;
   int? _basketCount;
   String? _basketColor;
@@ -61,6 +64,7 @@ class BasketShowModel {
   int? get priceCourier => _priceCourier;
   int? get price => _price;
   int? get optom => _optom;
+  int? get userBonus => _userBonus;
   int? get basketId => _basketId;
   int? get basketCount => _basketCount;
   String? get basketColor => _basketColor;
@@ -77,6 +81,7 @@ class BasketShowModel {
     map['price_courier'] = _priceCourier;
     map['price'] = _price;
     map['optom'] = _optom;
+    map['userBonus'] = _userBonus;
     map['basket_id'] = _basketId;
     map['basket_count'] = _basketCount;
     map['basket_color'] = _basketColor;
