@@ -31,7 +31,6 @@ import '../../data/bloc/cats_cubit.dart' as catCubit;
 import '../../data/bloc/cats_state.dart' as catState;
 import '../../data/bloc/popular_shops_cubit.dart' as popShopsCubit;
 import '../../data/bloc/popular_shops_state.dart' as popShopsState;
-import '../widgets/search_product_page.dart';
 
 @RoutePage()
 class HomePage extends StatefulWidget {

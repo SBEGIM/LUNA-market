@@ -4,8 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
-import 'package:haji_market/features/drawer/presentation/widgets/under_catalog_page.dart';
-
 import '../../../home/data/bloc/cats_cubit.dart';
 import '../../../home/data/bloc/cats_state.dart';
 

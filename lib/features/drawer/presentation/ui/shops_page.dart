@@ -5,9 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
-import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
 import 'package:haji_market/features/home/data/model/Cats.dart';
-
 import '../../../home/data/bloc/popular_shops_cubit.dart';
 import '../../../home/data/bloc/popular_shops_state.dart';
 

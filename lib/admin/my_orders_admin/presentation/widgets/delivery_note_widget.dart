@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/home/data/bloc/popular_shops_state.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
 import '../../data/models/basket_admin_order_model.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -130,28 +128,21 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                         onTap: () {
                           imageFile();
                         },
-                        child: const Icon(Icons.share,
-                            color: AppColors.kPrimaryColor, size: 24),
+                        child: const Icon(Icons.share, color: AppColors.kPrimaryColor, size: 24),
                       )
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         'Откуда',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
                       ),
                       Text(
                         'Куда',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
                       )
                     ],
                   ),
@@ -161,13 +152,11 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                     children: [
                       Text(
                         '${widget.basketOrder.product!.first.shopName}',
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w400),
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                       Text(
                         '${GetStorage().read('city')}',
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w400),
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -175,40 +164,30 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        width: 180,
+                      Expanded(
                         child: Text(
                           '${widget.basketOrder.product!.first.address}',
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w400),
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                         ),
                       ),
-                      SizedBox(
-                          width: 180,
+                      Expanded(
                           child: Text(
-                            '${address}',
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w400),
-                          )),
+                        '${address}',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      )),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         'Отправитель',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
                       ),
                       Text(
                         'Получатель',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
                       )
                     ],
                   ),
@@ -217,14 +196,12 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${widget.basketOrder.product!.first.shopName}',
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w400),
+                        '${widget.basketOrder.product?.first.shopName ?? 'Неизвестно'}',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        '${widget.basketOrder.user!.name}',
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w400),
+                        '${widget.basketOrder.user?.name ?? 'Неизвестно'}',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -234,17 +211,11 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                     children: [
                       Text(
                         'Номер отправителя',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
                       ),
                       Text(
                         'Номер получателя',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
                       )
                     ],
                   ),
@@ -253,14 +224,12 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${widget.basketOrder.product!.first.shopPhone}',
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w400),
+                        '${widget.basketOrder.product?.first.shopPhone ?? 'Неизвестно'}',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                       const Text(
                         '***********',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w400),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                       // Text(
                       //   '${widget.basketOrder.user!.phone}',
@@ -272,10 +241,7 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                   const SizedBox(height: 12),
                   const Text(
                     'Дата доставки',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
                   ),
                   const SizedBox(height: 12),
                   Text(
@@ -284,16 +250,14 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                   const SizedBox(height: 12),
                   const Text(
                     'Посылка',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
                   ),
                   const SizedBox(height: 12),
                   SizedBox(
-                    height: widget.basketOrder.product!.length * 30,
+                    height: widget.basketOrder.product!.length * 25,
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: widget.basketOrder.product!.length,
                       shrinkWrap: false,
                       itemBuilder: (context, index) {
@@ -301,14 +265,12 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '${widget.basketOrder.product![index].productName}',
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w400),
+                              '${widget.basketOrder.product![0].productName}',
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                             ),
                             Text(
-                              '${widget.basketOrder.product![index].count} шт',
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w400),
+                              '${widget.basketOrder.product![0].count} шт',
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                             ),
                           ],
                         );
@@ -316,26 +278,24 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    'Вес посылки',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Вес посылки',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+                      ),
+                      Text(
+                        ' ${(widget.basketOrder.product!.first.count! * 1.4).round()} кг',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.grey),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 12),
-                  Text(
-                    ' ${(widget.basketOrder.product!.first.count! * 1.4).toInt()} кг',
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w400),
-                  ),
+
                   const SizedBox(height: 12),
                   const Text(
                     'Дополнительные комментарий',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
                   ),
                   const SizedBox(height: 12),
                   const TextField(
@@ -343,10 +303,8 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Напишите комментарий',
-                      hintStyle: TextStyle(
-                          color: Color.fromRGBO(194, 197, 200, 1),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      hintStyle:
+                          TextStyle(color: Color.fromRGBO(194, 197, 200, 1), fontSize: 16, fontWeight: FontWeight.w400),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                         // borderRadius: BorderRadius.circular(3),
