@@ -9,6 +9,7 @@ import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import '../../../drawer/data/bloc/product_state.dart';
 import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
+
 @RoutePage()
 class SearchProductPage extends StatefulWidget {
   const SearchProductPage({Key? key}) : super(key: key);
@@ -46,9 +47,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
             width: 311,
             height: 40,
             padding: const EdgeInsets.only(right: 16),
-            decoration: BoxDecoration(
-                color: const Color(0xFFF8F8F8),
-                borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(color: const Color(0xFFF8F8F8), borderRadius: BorderRadius.circular(10)),
             child: TextField(
               controller: searchController,
               onChanged: (value) async {
@@ -97,8 +96,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
               );
             }
             if (state is LoadingState) {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
 
             if (state is LoadedState) {
@@ -131,11 +129,17 @@ class _SearchProductPageState extends State<SearchProductPage> {
                                 //       builder: (context) => ProductsPage(
                                 //           cats: state.productModel[index])),
                                 // );
+
+                                GetStorage().remove('CatId');
+                                GetStorage().remove('subCatFilterId');
+                                GetStorage().remove('shopFilterId');
+                                // context.router.push(ProductsRoute(
+                                //   // cats: state.cats[index],
+                                // ));
                                 context.router.push(DetailCardProductRoute(product: state.productModel[index]));
                               },
                               child: UnderCatalogListTile(
-                                title:
-                                    state.productModel[index].name.toString(),
+                                title: state.productModel[index].name.toString(),
                                 product: state.productModel[index],
                               )),
                           const Divider(
@@ -146,8 +150,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
                     }),
               ]);
             } else {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
     );
