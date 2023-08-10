@@ -9,28 +9,26 @@ import '../repository/tape_repo.dart';
 class TapeCubit extends Cubit<TapeState> {
   final TapeRepository tapeRepository;
   List<TapeModel> array = [];
+  List<TapeModel> arrayForBlogger = [];
   int page = 1;
 
   TapeCubit({required this.tapeRepository}) : super(InitState());
-  Future<void> tapes(
-      bool? inSub, bool? inFav, String? search, int? blogger_id) async {
+  Future<void> tapes(bool? inSub, bool? inFav, String? search, int? blogger_id) async {
     try {
       emit(LoadingState());
       page = 1;
-      final data =
-          await tapeRepository.tapes(inSub, inFav, search, blogger_id, page);
+      final data = await tapeRepository.tapes(inSub, inFav, search, blogger_id, page);
       if (data.isEmpty) {
         emit(NoDataState());
       } else {
-        array.clear();
-        data.forEach((element) {
-          array.add(element);
-        });
         if (blogger_id == 0) {
-          emit(LoadedState(data));
+          array = data;
+          emit(LoadedState(array));
         } else {
-          emit(BloggerLoadedState(data));
+          arrayForBlogger = data;
+          emit(BloggerLoadedState(arrayForBlogger));
         }
+        page++;
       }
     } catch (e) {
       log(e.toString());
@@ -38,30 +36,31 @@ class TapeCubit extends Cubit<TapeState> {
     }
   }
 
-  Future<void> tapePagination(
-      bool? inSub, bool? inFav, String? search, int? blogger_id) async {
+  Future<void> tapePagination(bool? inSub, bool? inFav, String? search, int? blogger_id) async {
     try {
       // emit(LoadingState());
-      page++;
-      final data =
-          await tapeRepository.tapes(inSub, inFav, search, blogger_id, page);
+      final data = await tapeRepository.tapes(inSub, inFav, search, blogger_id, page);
 
-      for (int i = 0; i < data.length; i++) {
-        array.add(data[i]);
+      // for (int i = 0; i < data.length; i++) {
+      //   array.add(data[i]);
+      // }
+      if (data.isNotEmpty) {
+        page++;
       }
 
       if (blogger_id == 0) {
+        array += data;
         emit(LoadedState(array));
       } else {
-        emit(BloggerLoadedState(array));
+        arrayForBlogger += data;
+        emit(BloggerLoadedState(arrayForBlogger));
       }
     } catch (e) {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
 
-  update(TapeModel tape, int index, bool? inSub, bool? inBas, bool? inFav,
-      bool? inReport) {
+  update(TapeModel tape, int index, bool? inSub, bool? inBas, bool? inFav, bool? inReport, {bool isBlogger = false}) {
     // data!.removeAt(index);
 
     try {
@@ -84,13 +83,26 @@ class TapeCubit extends Cubit<TapeState> {
       // data!.removeAt(index);
       //data!.u(index);
 
-      array[index] = tapeModel;
+      if (isBlogger == true) {
+        arrayForBlogger[index] = tapeModel;
 
-      emit(LoadedState(array));
+        emit(BloggerLoadedState(arrayForBlogger));
+      } else {
+        array[index] = tapeModel;
+
+        emit(LoadedState(array));
+      }
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
+  }
+
+  void toBloggerLoadedState(){
+    emit(BloggerLoadedState(arrayForBlogger));
+  }
+    void toLoadedState(){
+    emit(LoadedState(array));
   }
 
   view(int id) async {

@@ -11,7 +11,7 @@ import 'package:haji_market/admin/profile_admin/presentation/ui/admin_profile_pa
 import 'package:haji_market/admin/tape_admin/presentation/ui/tape_admin_page.dart';
 import 'package:haji_market/bloger/auth/presentation/ui/blog_auth_register_page.dart';
 import 'package:haji_market/bloger/auth/presentation/ui/forgot_admin_password.dart';
-import 'package:haji_market/bloger/my_orders_admin/presentation/widgets/detail_tape_card_page.dart';
+import 'package:haji_market/bloger/my_orders_admin/presentation/widgets/blogger_detail_tape_card_page.dart';
 import 'package:haji_market/bloger/profile_admin/presentation/ui/blogger_profile_page.dart';
 import 'package:haji_market/bloger/profile_admin/presentation/ui/blogger_tape_profile_page.dart';
 import 'package:haji_market/bloger/shops/BlogShopsPage.dart';

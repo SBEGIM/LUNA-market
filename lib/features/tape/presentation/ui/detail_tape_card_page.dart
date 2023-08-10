@@ -376,6 +376,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         inFavorites(
                                           tape: state.tapeModel[index],
                                           index: index,
+                                          isBlogger: false,
                                         ),
                                         const SizedBox(
                                           height: 15,
@@ -797,6 +798,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         inReport(
                                           tape: state.tapeModel[index],
                                           index: index,
+                                          isBlogger: true,
                                         ),
                                         const SizedBox(
                                           height: 15,
@@ -804,6 +806,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         inBaskets(
                                           tape: state.tapeModel[index],
                                           index: index,
+                                          isBlogger: true,
                                         ),
                                         const SizedBox(
                                           height: 15,
@@ -811,6 +814,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         inFavorites(
                                           tape: state.tapeModel[index],
                                           index: index,
+                                          isBlogger:true,
                                         ),
                                         const SizedBox(
                                           height: 15,
@@ -1278,7 +1282,7 @@ class _inSubsState extends State<inSubs> {
             !inSub!,
             widget.tape.inBasket,
             widget.tape.inFavorite,
-            widget.tape.inReport);
+            widget.tape.inReport,);
 
         setState(() {
           inSub = !inSub!;
@@ -1299,7 +1303,8 @@ class _inSubsState extends State<inSubs> {
 class inFavorites extends StatefulWidget {
   final TapeModel tape;
   final int index;
-  const inFavorites({required this.tape, required this.index, super.key});
+  final bool isBlogger;
+  const inFavorites({required this.tape, required this.index, super.key, required this.isBlogger});
 
   @override
   State<inFavorites> createState() => _inFavoritesState();
@@ -1326,7 +1331,7 @@ class _inFavoritesState extends State<inFavorites> {
             widget.tape.inSubscribe,
             widget.tape.inBasket,
             !inFavorite!,
-            widget.tape.inReport);
+            widget.tape.inReport,isBlogger: widget.isBlogger);
 
         inFavorite = !inFavorite!;
 
@@ -1346,7 +1351,8 @@ class _inFavoritesState extends State<inFavorites> {
 class inBaskets extends StatefulWidget {
   final TapeModel tape;
   final int index;
-  const inBaskets({required this.tape, required this.index, super.key});
+  final bool isBlogger;
+  const inBaskets({required this.tape, required this.index, super.key,  this.isBlogger = false});
 
   @override
   State<inBaskets> createState() => _inBasketsState();
@@ -1378,10 +1384,10 @@ class _inBasketsState extends State<inBaskets> {
             widget.tape.inSubscribe,
             !inBasket!,
             widget.tape.inFavorite,
-            widget.tape.inReport);
+            widget.tape.inReport,isBlogger:widget.isBlogger);
         setState(() {
           inBasket = !inBasket!;
-        });
+        },);
       },
       child: SvgPicture.asset(
         inBasket != true
@@ -1397,7 +1403,8 @@ class _inBasketsState extends State<inBaskets> {
 class inReport extends StatefulWidget {
   final TapeModel tape;
   final int index;
-  const inReport({required this.tape, required this.index, super.key});
+  final bool isBlogger;
+  const inReport({required this.tape, required this.index, super.key,  this.isBlogger = false});
 
   @override
   State<inReport> createState() => _inReportState();
@@ -1431,6 +1438,7 @@ class _inReportState extends State<inReport> {
           widget.tape.inBasket,
           widget.tape.inFavorite,
           !inReport!,
+          isBlogger: widget.isBlogger,
         );
         setState(() {
           inReport = !inReport!;
