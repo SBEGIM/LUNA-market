@@ -27,7 +27,7 @@ import '../widgets/reqirect_profile_page.dart';
 import 'blogger_cards_page.dart';
 
 @RoutePage()
-class ProfileBloggerTapePage extends StatefulWidget {
+class ProfileBloggerTapePage extends StatefulWidget with AutoRouteWrapper {
   int bloggerId;
   String bloggerName;
   String bloggerAvatar;
@@ -37,13 +37,13 @@ class ProfileBloggerTapePage extends StatefulWidget {
   @override
   State<ProfileBloggerTapePage> createState() => _ProfileBloggerTapePageState();
 
-  // @override
-  // Widget wrappedRoute(BuildContext context) {
-  //   return BlocProvider<TapeCubit>(
-  //     create: (context) => TapeCubit(tapeRepository: TapeRepository()),
-  //     child: this,
-  //   );
-  // }
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return BlocProvider<TapeCubit>(
+      create: (context) => TapeCubit(tapeRepository: TapeRepository()),
+      child: this,
+    );
+  }
 }
 
 class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
@@ -98,7 +98,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
       ),
       body: WillPopScope(
         onWillPop: () async {
-          BlocProvider.of<tapeAdmin.TapeCubit>(context).toLoadedState();
+          // BlocProvider.of<tapeAdmin.TapeCubit>(context).toLoadedState();
           return true;
         },
         child: Padding(

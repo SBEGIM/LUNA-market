@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
+import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -60,7 +62,7 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
           ),
           InkWell(
             onTap: () {
-              context.router.push(DetailTapeCardRoute(index: widget.index, shopName: widget.tape.shop!.name!));
+              context.router.push(DetailTapeCardRoute(index: widget.index, shopName: widget.tape.shop!.name!,tapeBloc: BlocProvider.of<TapeCubit>(context)));
               // Navigator.push(
               //   context,
               //   MaterialPageRoute(

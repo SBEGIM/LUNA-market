@@ -12,6 +12,7 @@ import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/detail_card_product_page.dart';
+import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart';
 import 'package:http/http.dart' as http;
 import 'package:haji_market/features/app/presentaion/base_new.dart';
 import 'package:haji_market/features/app/widgets/custom_loading_widget.dart';
@@ -63,7 +64,7 @@ class _LauncherAppState extends State<LauncherApp> {
         if (shopName != '' && shopName != 'null') {
           appBloc.state.maybeWhen(
             inAppUserState: (i) {
-              context.router.push(DetailTapeCardRoute(index: int.parse(index), shopName: shopName));
+              context.router.push(DetailTapeCardRoute(index: int.parse(index), shopName: shopName,tapeBloc: BlocProvider.of<TapeCubit>(context)));
             },
             orElse: () {},
           );
@@ -105,7 +106,7 @@ class _LauncherAppState extends State<LauncherApp> {
 
           appBloc.state.maybeWhen(
             inAppUserState: (i) {
-              context.router.push(DetailTapeCardRoute(index: int.parse(index), shopName: shopName));
+              context.router.push(DetailTapeCardRoute(index: int.parse(index), shopName: shopName,tapeBloc: BlocProvider.of<TapeCubit>(context)));
             },
             orElse: () {},
           );

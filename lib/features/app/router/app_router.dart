@@ -35,6 +35,7 @@ import 'package:haji_market/features/favorite/presentation/ui/favorite_page.dart
 import 'package:haji_market/features/home/data/model/Cats.dart';
 import 'package:haji_market/features/home/presentation/ui/home_page.dart';
 import 'package:haji_market/features/home/presentation/widgets/search_product_page.dart';
+import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart';
 import 'package:haji_market/features/tape/presentation/ui/tape_page.dart';
 import 'package:haji_market/features/app/presentaion/launcher.dart';
 
