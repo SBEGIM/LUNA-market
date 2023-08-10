@@ -79,6 +79,7 @@ class Product {
     List<String>? path,
     int? count,
     int? price,
+    int? optom,
     String? status,
     String? address,
     String? shopSchedule,
@@ -91,6 +92,7 @@ class Product {
     _path = path;
     _count = count;
     _price = price;
+    _optom = optom;
     _status = status;
     _address = address;
     _shopSchedule = shopSchedule;
@@ -105,6 +107,7 @@ class Product {
     _path = json['path'] != null ? json['path'].cast<String>() : [];
     _count = json['count'];
     _price = json['price'];
+    _optom = json['optom'];
     _status = json['status'];
     _address = json['address'];
     _shopSchedule = json['shop_schedule'];
@@ -117,6 +120,7 @@ class Product {
   List<String>? _path;
   int? _count;
   int? _price;
+  int? _optom;
   String? _status;
   String? _address;
   String? _shopSchedule;
@@ -129,6 +133,7 @@ class Product {
   List<String>? get path => _path;
   int? get count => _count;
   int? get price => _price;
+  int? get optom => _optom;
   String? get status => _status;
   String? get address => _address;
   String? get shopSchedule => _shopSchedule;
@@ -143,6 +148,7 @@ class Product {
     map['path'] = _path;
     map['count'] = _count;
     map['price'] = _price;
+    map['optom'] = _optom;
     map['status'] = _status;
     map['address'] = _address;
     map['shop_schedule'] = _shopSchedule;
