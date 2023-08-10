@@ -2,24 +2,19 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/app/presentaion/base.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
-import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
-import 'package:haji_market/features/drawer/presentation/widgets/under_catalog_page.dart';
-
 import '../../../home/data/model/Cats.dart';
 import '../../data/bloc/sub_cats_cubit.dart';
 import '../../data/bloc/sub_cats_state.dart';
 
 @RoutePage()
 class SubCatalogPage extends StatefulWidget {
-  final Cats cats;
+  final Cats? cats;
 
-  const SubCatalogPage({Key? key, required this.cats}) : super(key: key);
+  const SubCatalogPage({Key? key, this.cats}) : super(key: key);
 
   @override
   State<SubCatalogPage> createState() => _SubCatalogPageState();
@@ -30,7 +25,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
 
   @override
   void initState() {
-    BlocProvider.of<SubCatsCubit>(context).subCats(widget.cats.id);
+    BlocProvider.of<SubCatsCubit>(context).subCats(widget.cats?.id ?? 0);
     super.initState();
   }
 
@@ -50,26 +45,21 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
           icon: SvgPicture.asset('assets/icons/back_header.svg'),
         ),
         actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 22.0),
-              child: SvgPicture.asset('assets/icons/share.svg'))
+          Padding(padding: const EdgeInsets.only(right: 22.0), child: SvgPicture.asset('assets/icons/share.svg'))
         ],
         titleSpacing: 0,
         // leadingWidth: 1,
         title: Container(
           height: 34,
           width: 279,
-          decoration: BoxDecoration(
-              color: const Color(0xFFF8F8F8),
-              borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(color: const Color(0xFFF8F8F8), borderRadius: BorderRadius.circular(10)),
           child: TextField(
               controller: searchController,
               onChanged: (value) {
                 if (value.isEmpty) {
                   BlocProvider.of<SubCatsCubit>(context).subSave();
                 } else {
-                  BlocProvider.of<SubCatsCubit>(context)
-                      .searchSubCats(value, widget.cats.id);
+                  BlocProvider.of<SubCatsCubit>(context).searchSubCats(value, widget.cats?.id ?? 0);
                 }
               },
               decoration: const InputDecoration(
@@ -101,8 +91,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
               );
             }
             if (state is LoadingState) {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
             // if (state is NoDataState) {
             //   return Container(
@@ -135,54 +124,52 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
             // }
 
             if (state is LoadedState) {
-              return Container(
-                margin: const EdgeInsets.only(top: 12, left: 15, right: 15),
-                child: GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 0.65,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10),
-                    itemCount: state.cats.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () async {
-                          GetStorage().write('CatId', widget.cats.id);
-                          GetStorage().write('subCatFilterId',
-                              [state.cats[index].id].toString());
-                          GetStorage().remove('shopFilterId');
-                          context.router.push(ProductsRoute(
-                            cats: state.cats[index],
-                          ));
-                          // Get.to(() => ProductsPage(
-                          //       cats: state.cats[index],
-                          //     ));
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => ProductsPage(
-                          //               cats: state.cats[index],
-                          //             )));
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           UnderCatalogPage(cats: state.cats[index])),
-                          // );
-                        },
-                        child: CatalogListTile(
-                          title: '${state.cats[index].name}',
-                          credit: 0,
-                          bonus: '0',
-                          url:
-                              "http://185.116.193.73/storage/${state.cats[index].icon ?? ''}",
-                        ),
-                      );
-                    }),
+              return ListView(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 12, left: 15, right: 15),
+                    child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3, childAspectRatio: 0.65, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                        itemCount: state.cats.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () async {
+                              GetStorage().write('CatId', widget.cats?.id ?? 0);
+                              GetStorage().write('subCatFilterId', [state.cats[index].id].toString());
+                              GetStorage().remove('shopFilterId');
+                              context.router.push(ProductsRoute(
+                                cats: state.cats[index],
+                              ));
+                              // Get.to(() => ProductsPage(
+                              //       cats: state.cats[index],
+                              //     ));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => ProductsPage(
+                              //               cats: state.cats[index],
+                              //             )));
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) =>
+                              //           UnderCatalogPage(cats: state.cats[index])),
+                              // );
+                            },
+                            child: CatalogListTile(
+                              title: '${state.cats[index].name}',
+                              credit: 0,
+                              bonus: '0',
+                              url: "http://185.116.193.73/storage/${state.cats[index].icon ?? ''}",
+                            ),
+                          );
+                        }),
+                  ),
+                ],
               );
 
               // ListView.builder(
@@ -217,8 +204,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
               //},
               // );
             } else {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
     );
@@ -263,8 +249,7 @@ class CatalogListTile extends StatelessWidget {
                           "${url}",
                         ),
                         fit: BoxFit.contain,
-                        onError: (exception, stackTrace) =>
-                            const ErrorImageWidget(
+                        onError: (exception, stackTrace) => const ErrorImageWidget(
                               height: 90,
                               width: 90,
                             )),
