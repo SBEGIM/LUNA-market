@@ -8,6 +8,7 @@ import 'package:haji_market/features/drawer/presentation/widgets/under_catalog_p
 
 import '../../../home/data/bloc/cats_cubit.dart';
 import '../../../home/data/bloc/cats_state.dart';
+
 @RoutePage()
 class CatalogPage extends StatefulWidget {
   const CatalogPage({Key? key}) : super(key: key);
@@ -34,18 +35,14 @@ class _CatalogPageState extends State<CatalogPage> {
           icon: SvgPicture.asset('assets/icons/back_header.svg'),
         ),
         actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 22.0),
-              child: SvgPicture.asset('assets/icons/share.svg'))
+          Padding(padding: const EdgeInsets.only(right: 22.0), child: SvgPicture.asset('assets/icons/share.svg'))
         ],
         titleSpacing: 0,
         // leadingWidth: 1,
         title: Container(
           height: 34,
           width: 279,
-          decoration: BoxDecoration(
-              color: const Color(0xFFF8F8F8),
-              borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(color: const Color(0xFFF8F8F8), borderRadius: BorderRadius.circular(10)),
           child: TextField(
               controller: searchController,
               onChanged: (value) {
@@ -88,43 +85,41 @@ class _CatalogPageState extends State<CatalogPage> {
               );
             }
             if (state is LoadingState) {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
 
             if (state is LoadedState) {
-              return Container(
-                margin: const EdgeInsets.only(top: 12, left: 15, right: 15),
-                child: GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 0.65,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10),
-                    itemCount: state.cats.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          context.router.push(UnderCatalogRoute(cats: state.cats[index]));
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           UnderCatalogPage(cats: state.cats[index])),
-                          // );
-                        },
-                        child: CatalogListTile(
-                          title: '${state.cats[index].name}',
-                          credit: state.cats[index].credit!,
-                          bonus: '${state.cats[index].bonus}',
-                          url:
-                              "http://185.116.193.73/storage/${state.cats[index].image!}",
-                        ),
-                      );
-                    }),
+              return ListView(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 12, left: 15, right: 15),
+                    child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3, childAspectRatio: 0.65, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                        itemCount: state.cats.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              context.router.push(UnderCatalogRoute(cats: state.cats[index]));
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) =>
+                              //           UnderCatalogPage(cats: state.cats[index])),
+                              // );
+                            },
+                            child: CatalogListTile(
+                              title: '${state.cats[index].name}',
+                              credit: state.cats[index].credit!,
+                              bonus: '${state.cats[index].bonus}',
+                              url: "http://185.116.193.73/storage/${state.cats[index].image!}",
+                            ),
+                          );
+                        }),
+                  ),
+                ],
               );
 
               // ListView.builder(
@@ -159,8 +154,7 @@ class _CatalogPageState extends State<CatalogPage> {
               //},
               // );
             } else {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
     );
@@ -186,7 +180,7 @@ class CatalogListTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0x0fff9f9f),
+        color: Color.fromARGB(15, 227, 9, 9),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

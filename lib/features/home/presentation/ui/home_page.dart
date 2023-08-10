@@ -1050,16 +1050,15 @@ class _PopularShopsState extends State<PopularShops> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                               onTap: () {
+                                GetStorage().write('shopFilter', state.popularShops[index].name!);
+                                GetStorage().write('shopFilterId', state.popularShops[index].id);
+                                GetStorage().write('shopSelectedIndexSort', index);
                                 context.router.push(ProductsRoute(
                                   cats: Cats(id: 0, name: ''),
                                 ));
                                 // Get.to(ProductsPage(
                                 //   cats: Cats(id: 0, name: ''),
                                 // ));
-
-                                GetStorage().write('shopFilter', state.popularShops[index].name!);
-                                GetStorage().write('shopFilterId', state.popularShops[index].id);
-                                GetStorage().write('shopSelectedIndexSort', index);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -1162,25 +1161,24 @@ class _PopularShopsState extends State<PopularShops> {
                     const SizedBox(
                       height: 16,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Все предложения',
-                          style: AppTextStyles.kcolorPrimaryTextStyle,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            context.router.push(const ShopsRoute());
-                            // Get.to(const ShopsPage());
-                          },
-                          child: const Icon(
+                    InkWell(
+                      onTap: () {
+                        context.router.push(const ShopsRoute());
+                      },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Все предложения',
+                            style: AppTextStyles.kcolorPrimaryTextStyle,
+                          ),
+                          Icon(
                             Icons.arrow_forward_ios,
                             color: AppColors.kPrimaryColor,
                             size: 16,
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                     const SizedBox(
                       height: 4,

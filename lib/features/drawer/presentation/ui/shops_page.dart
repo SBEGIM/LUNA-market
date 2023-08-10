@@ -10,6 +10,7 @@ import 'package:haji_market/features/home/data/model/Cats.dart';
 
 import '../../../home/data/bloc/popular_shops_cubit.dart';
 import '../../../home/data/bloc/popular_shops_state.dart';
+
 @RoutePage()
 class ShopsPage extends StatefulWidget {
   const ShopsPage({Key? key}) : super(key: key);
@@ -35,17 +36,13 @@ class _ShopsPageState extends State<ShopsPage> {
           }),
         ),
         actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 22.0),
-              child: SvgPicture.asset('assets/icons/share.svg'))
+          Padding(padding: const EdgeInsets.only(right: 22.0), child: SvgPicture.asset('assets/icons/share.svg'))
         ],
         // leadingWidth: 1,
         title: Container(
           height: 34,
           width: 279,
-          decoration: BoxDecoration(
-              color: const Color(0xFFF8F8F8),
-              borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(color: const Color(0xFFF8F8F8), borderRadius: BorderRadius.circular(10)),
           child: TextField(
               controller: searchController,
               onChanged: (value) {
@@ -84,8 +81,7 @@ class _ShopsPageState extends State<ShopsPage> {
               );
             }
             if (state is LoadingState) {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
 
             if (state is LoadedState) {
@@ -94,12 +90,8 @@ class _ShopsPageState extends State<ShopsPage> {
                 child: GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 0.65,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3, childAspectRatio: 0.65, crossAxisSpacing: 10, mainAxisSpacing: 10),
                     itemCount: state.popularShops.length,
                     itemBuilder: (context, index) {
                       return InkWell(
@@ -114,10 +106,9 @@ class _ShopsPageState extends State<ShopsPage> {
                         },
                         child: ShopsListTile(
                           title: '${state.popularShops[index].name}',
-                          credit: state.popularShops[index].credit!,
+                          credit: state.popularShops[index].credit ?? false,
                           bonus: '${state.popularShops[index].bonus}',
-                          url:
-                              "http://185.116.193.73/storage/${state.popularShops[index].image!}",
+                          url: "http://185.116.193.73/storage/${state.popularShops[index].image ?? ''}",
                         ),
                       );
                     }),
@@ -145,8 +136,7 @@ class _ShopsPageState extends State<ShopsPage> {
               //   },
               // );
             } else {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
     );
@@ -172,7 +162,7 @@ class ShopsListTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0x0f9f9f9),
+        color: const Color.fromARGB(15, 227, 9, 9),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

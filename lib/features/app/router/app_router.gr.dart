@@ -203,11 +203,13 @@ abstract class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<DetailTapeCardRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: DetailTapeCardPage(
+        child: WrappedRoute(
+            child: DetailTapeCardPage(
           index: args.index,
           shopName: args.shopName,
           key: args.key,
-        ),
+          tapeBloc: args.tapeBloc,
+        )),
       );
     },
     ProfileAdminRoute.name: (routeData) {
@@ -281,12 +283,13 @@ abstract class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<ProfileBloggerTapeRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: ProfileBloggerTapePage(
+        child: WrappedRoute(
+            child: ProfileBloggerTapePage(
           bloggerId: args.bloggerId,
           bloggerName: args.bloggerName,
           bloggerAvatar: args.bloggerAvatar,
           key: args.key,
-        ),
+        )),
       );
     },
     ProfileBloggerRoute.name: (routeData) {
@@ -937,6 +940,7 @@ class DetailTapeCardRoute extends PageRouteInfo<DetailTapeCardRouteArgs> {
     required int? index,
     required String? shopName,
     Key? key,
+    required TapeCubit tapeBloc,
     List<PageRouteInfo>? children,
   }) : super(
           DetailTapeCardRoute.name,
@@ -944,6 +948,7 @@ class DetailTapeCardRoute extends PageRouteInfo<DetailTapeCardRouteArgs> {
             index: index,
             shopName: shopName,
             key: key,
+            tapeBloc: tapeBloc,
           ),
           initialChildren: children,
         );
@@ -959,6 +964,7 @@ class DetailTapeCardRouteArgs {
     required this.index,
     required this.shopName,
     this.key,
+    required this.tapeBloc,
   });
 
   final int? index;
@@ -967,9 +973,11 @@ class DetailTapeCardRouteArgs {
 
   final Key? key;
 
+  final TapeCubit tapeBloc;
+
   @override
   String toString() {
-    return 'DetailTapeCardRouteArgs{index: $index, shopName: $shopName, key: $key}';
+    return 'DetailTapeCardRouteArgs{index: $index, shopName: $shopName, key: $key, tapeBloc: $tapeBloc}';
   }
 }
 
