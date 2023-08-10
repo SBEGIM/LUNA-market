@@ -35,6 +35,43 @@ class TapeModel {
     _blogger = blogger;
   }
 
+    TapeModel copyWith({
+      int? id,
+    int? tapeId,
+    String? name,
+    String? catName,
+    int? price,
+    String? description,
+    int? compound,
+    String? video,
+    String? image,
+    bool? inBasket,
+    int? chatId,
+    bool? inReport,
+    bool? inFavorite,
+    bool? inSubscribe,
+    Shop? shop,
+    Blogger? blogger,
+  }) {
+    return TapeModel(
+      id: id??this.id,
+      tapeId: tapeId??this.tapeId,
+      name: name??this.name,
+      catName: catName??this.catName,
+      price: price??this.price,
+      description: description??this.description,
+      compound: compound??this.compound,
+      video: video??this.video,
+      image: image??this.image,
+      inBasket: inBasket??this.inBasket,
+      inFavorite: inFavorite??this.inFavorite,
+      inSubscribe: inSubscribe??this.inSubscribe,
+      shop: shop??this.shop,
+      blogger: blogger??this.blogger,
+    );
+  }
+
+
   TapeModel.fromJson(dynamic json) {
     _id = json['id'];
     _tapeId = json['tape_id'];
