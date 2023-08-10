@@ -5,24 +5,19 @@ import 'package:haji_market/features/drawer/data/repository/basket_repo.dart';
 class OrderCubit extends Cubit<OrderState> {
   final BasketRepository basketRepository;
 
-
   OrderCubit({required this.basketRepository}) : super(InitState());
 
-  Future<void> payment({
-    String? address,
-  }) async {
+  Future<void> payment({String? address, String? bonus}) async {
     try {
       emit(LoadingState());
-      final data = await basketRepository.payment(address: address);
+      final data = await basketRepository.payment(address: address, bonus: bonus);
       emit(LoadedState(url: data));
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
-
 }
-
 
 abstract class OrderState {}
 
