@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
+import 'package:haji_market/features/tape/presentation/data/bloc/tape_check_cubit.dart';
+import 'package:haji_market/features/tape/presentation/data/repository/tape_repo.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,17 +30,26 @@ import '../data/bloc/tape_state.dart' as tapeState;
 @RoutePage()
 class DetailTapeCardPage extends StatefulWidget with AutoRouteWrapper {
   final int? index;
+  final int? tapeId;
   final String? shopName;
   final tapeCubit.TapeCubit tapeBloc;
-  const DetailTapeCardPage({required this.index, required this.shopName, Key? key,required this.tapeBloc}) : super(key: key);
+  const DetailTapeCardPage({required this.index, required this.shopName, Key? key, required this.tapeBloc, this.tapeId})
+      : super(key: key);
 
   @override
   State<DetailTapeCardPage> createState() => _DetailTapeCardPageState();
-  
+
   @override
   Widget wrappedRoute(BuildContext context) {
-    return BlocProvider<tapeCubit.TapeCubit>.value(
-      value: tapeBloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<tapeCubit.TapeCubit>.value(
+          value: tapeBloc,
+        ),
+        BlocProvider(
+          create: (context) => TapeCheckCubit(tapeRepository: TapeRepository()),
+        )
+      ],
       child: this,
     );
   }
@@ -63,6 +76,13 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
     if (widget.index != null) {
       currentIndex = widget.index!;
       controller = PageController(initialPage: widget.index!);
+    }
+    final tape = BlocProvider.of<tapeCubit.TapeCubit>(context);
+    if (tape.state is tapeState.LoadedState) {
+      if ((tape.state as tapeState.LoadedState).tapeModel[currentIndex].tapeId != null) {
+        BlocProvider.of<TapeCheckCubit>(context)
+            .tapeCheck(tapeId: (tape.state as tapeState.LoadedState).tapeModel[currentIndex].tapeId!);
+      }
     }
     title = 'Лента';
     // GetStorage().write('title_tape', 'Отписаться');
@@ -94,44 +114,61 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
             BlocBuilder<tapeCubit.TapeCubit, tapeState.TapeState>(
               builder: (context, state) {
                 if (state is tapeState.LoadedState) {
-                  return GestureDetector(
-                    onTap: () async {
-                      // if (GetStorage().read('title_tape').toString() ==
-                      //     'Отписаться') {
-                      //   GetStorage().write('title_tape', 'Подписаться');
-                      // } else {
-                      //   GetStorage().write('title_tape', 'Отписаться');
-                      // }
-
-                      BlocProvider.of<SubsCubit>(context).sub(state.tapeModel[currentIndex].blogger?.id.toString());
-
-                      await BlocProvider.of<tapeCubit.TapeCubit>(context).update(
-                          state.tapeModel[currentIndex],
-                          currentIndex,
-                          !(state.tapeModel[currentIndex].inSubscribe ?? true),
-                          state.tapeModel[currentIndex].inBasket,
-                          state.tapeModel[currentIndex].inFavorite,
-                          state.tapeModel[currentIndex].inReport);
-
-                      setState(() {
-                        // inSub = !(state.tapeModel[currentIndex].inSubscribe ??
-                        //     true);
-                      });
+                  return BlocConsumer<TapeCheckCubit, TapeCheckState>(
+                    listener: (context, stateCheck) {
+                      if (stateCheck is LoadedState) {
+                        log(state.tapeModel[currentIndex].tapeId.toString());
+                        BlocProvider.of<tapeCubit.TapeCubit>(context).updateTapeByIndex(
+                            index: currentIndex,
+                            updatedTape: state.tapeModel[currentIndex].copyWith(
+                                tapeId: state.tapeModel[currentIndex].tapeId,
+                                inBasket: stateCheck.tapeCheckModel.inBasket,
+                                inSubscribe: stateCheck.tapeCheckModel.inSubs));
+                      }
                     },
-                    child: Container(
-                      height: 26,
-                      width: 98,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          width: 0.3,
-                          color: AppColors.kPrimaryColor,
+                    builder: (context, stateCheck) => GestureDetector(
+                      onTap: () async {
+                        // if (GetStorage().read('title_tape').toString() ==
+                        //     'Отписаться') {
+                        //   GetStorage().write('title_tape', 'Подписаться');
+                        // } else {
+                        //   GetStorage().write('title_tape', 'Отписаться');
+                        // }
+
+                        BlocProvider.of<SubsCubit>(context).sub(state.tapeModel[currentIndex].blogger?.id.toString());
+
+                        await BlocProvider.of<tapeCubit.TapeCubit>(context).update(
+                            state.tapeModel[currentIndex],
+                            currentIndex,
+                            !(state.tapeModel[currentIndex].inSubscribe ?? true),
+                            state.tapeModel[currentIndex].inBasket,
+                            state.tapeModel[currentIndex].inFavorite,
+                            state.tapeModel[currentIndex].inReport);
+
+                        setState(() {
+                          // inSub = !(state.tapeModel[currentIndex].inSubscribe ??
+                          //     true);
+                        });
+                      },
+                      child: Container(
+                        height: 26,
+                        width: 98,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            width: 0.3,
+                            color: AppColors.kPrimaryColor,
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        state.tapeModel[currentIndex].inSubscribe == true ? 'Отписаться' : 'Подписаться',
-                        style: const TextStyle(color: AppColors.kPrimaryColor, fontSize: 12),
+                        child: Text(
+                          stateCheck is LoadingState
+                              ? ''
+                              : state.tapeModel[currentIndex].inSubscribe == true
+                                  ? 'Отписаться'
+                                  : 'Подписаться',
+                          style: const TextStyle(color: AppColors.kPrimaryColor, fontSize: 12),
+                        ),
                       ),
                     ),
                   );
@@ -147,16 +184,23 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                 return visible == true && (state.tapeModel[currentIndex].blogger != null)
                     ? GestureDetector(
                         onTap: () {
-                          context.router.push(ProfileBloggerTapeRoute(
+                          context.router
+                              .push(ProfileBloggerTapeRoute(
                             bloggerAvatar: state.tapeModel[currentIndex].blogger?.image ?? '',
                             bloggerId: state.tapeModel[currentIndex].blogger!.id!,
                             bloggerName: state.tapeModel[currentIndex].blogger?.nickName ?? '',
-                          )).whenComplete(() {
+                            inSubscribe: state.tapeModel[currentIndex].inSubscribe ?? false,
+                            onSubChanged: (value) {
+                              BlocProvider.of<tapeCubit.TapeCubit>(context).updateTapeByIndex(
+                                  index: currentIndex,
+                                  updatedTape: state.tapeModel[currentIndex]
+                                      .copyWith(tapeId: state.tapeModel[currentIndex].tapeId, inSubscribe: value));
+                            },
+                          ))
+                              .whenComplete(() {
                             stop = false;
                             BlocProvider.of<tapeCubit.TapeCubit>(context).toLoadedState();
-                            setState(() {
-                              
-                            });
+                            setState(() {});
                           });
                           stop = true;
                         },
@@ -265,6 +309,9 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                   itemCount: state.tapeModel.length,
                   onPageChanged: (value) {
                     currentIndex = value;
+                    if (state.tapeModel[value].tapeId != null) {
+                      BlocProvider.of<TapeCheckCubit>(context).tapeCheck(tapeId: state.tapeModel[value].tapeId!);
+                    }
                     setState(() {});
                   },
                   itemBuilder: (context, index) {
@@ -669,7 +716,10 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                     return Stack(
                       children: [
                         //VideoPlayer(_controller!)5,
-                        Videos(tape: state.tapeModel[index],stop: stop,),
+                        Videos(
+                          tape: state.tapeModel[index],
+                          stop: stop,
+                        ),
                         // Image.network(
                         //   'http://80.87.202.73:8001/storage/${widget.tape.image}',
                         //   fit: BoxFit.cover,
@@ -1273,27 +1323,58 @@ class _inBasketsState extends State<inBaskets> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        inBasket == false
-            ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(widget.tape.id.toString(), '1', 0, '', '',
-                blogger_id: widget.tape.blogger?.id.toString() ?? '0')
-            : BlocProvider.of<basCubit.BasketCubit>(context).basketMinus(widget.tape.id.toString(), '1', 0);
+    return BlocBuilder<tapeCubit.TapeCubit, tapeState.TapeState>(
+      builder: (context, state) {
+        if (state is tapeState.LoadedState) {
+          return GestureDetector(
+            onTap: () {
+              state.tapeModel[widget.index].inBasket == false
+                  ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(widget.tape.id.toString(), '1', 0, '', '',
+                      blogger_id: widget.tape.blogger?.id.toString() ?? '0')
+                  : BlocProvider.of<basCubit.BasketCubit>(context).basketMinus(widget.tape.id.toString(), '1', 0);
 
-        BlocProvider.of<tapeCubit.TapeCubit>(context).update(widget.tape, widget.index, widget.tape.inSubscribe,
-            !inBasket!, widget.tape.inFavorite, widget.tape.inReport,
-            isBlogger: widget.isBlogger);
-        setState(
-          () {
-            inBasket = !inBasket!;
-          },
-        );
+              BlocProvider.of<tapeCubit.TapeCubit>(context).update(widget.tape, widget.index, widget.tape.inSubscribe,
+                  !state.tapeModel[widget.index].inBasket!, widget.tape.inFavorite, widget.tape.inReport,
+                  isBlogger: widget.isBlogger);
+              setState(
+                () {
+                  inBasket = !inBasket!;
+                },
+              );
+            },
+            child: SvgPicture.asset(
+              state.tapeModel[widget.index].inBasket != true
+                  ? 'assets/icons/shop_cart.svg'
+                  : 'assets/icons/shop_cart_white.svg',
+              height: 30,
+              //  color: inBasket == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
+            ),
+          );
+        } else {
+          return GestureDetector(
+            onTap: () {
+              inBasket == false
+                  ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(widget.tape.id.toString(), '1', 0, '', '',
+                      blogger_id: widget.tape.blogger?.id.toString() ?? '0')
+                  : BlocProvider.of<basCubit.BasketCubit>(context).basketMinus(widget.tape.id.toString(), '1', 0);
+
+              BlocProvider.of<tapeCubit.TapeCubit>(context).update(widget.tape, widget.index, widget.tape.inSubscribe,
+                  !inBasket!, widget.tape.inFavorite, widget.tape.inReport,
+                  isBlogger: widget.isBlogger);
+              setState(
+                () {
+                  inBasket = !inBasket!;
+                },
+              );
+            },
+            child: SvgPicture.asset(
+              inBasket != true ? 'assets/icons/shop_cart.svg' : 'assets/icons/shop_cart_white.svg',
+              height: 30,
+              //  color: inBasket == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
+            ),
+          );
+        }
       },
-      child: SvgPicture.asset(
-        inBasket != true ? 'assets/icons/shop_cart.svg' : 'assets/icons/shop_cart_white.svg',
-        height: 30,
-        //  color: inBasket == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
-      ),
     );
   }
 }

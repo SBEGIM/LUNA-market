@@ -84,11 +84,39 @@ class TapeCubit extends Cubit<TapeState> {
       //data!.u(index);
 
       if (isBlogger == true) {
-        arrayForBlogger[index] = tapeModel;
+        arrayForBlogger[index] = arrayForBlogger[index].copyWith(
+            id: tapeModel.id,
+            name: tapeModel.name,
+            catName: tapeModel.name,
+            price: tapeModel.price,
+            description: tapeModel.description,
+            compound: tapeModel.compound,
+            video: tapeModel.video,
+            image: tapeModel.image,
+            blogger: tapeModel.blogger,
+            inBasket: inBas ?? tape.inBasket,
+            inReport: inReport ?? tape.inReport,
+            inFavorite: inFav ?? tape.inFavorite,
+            inSubscribe: inSub ?? tape.inSubscribe,
+            shop: tape.shop);
 
         emit(BloggerLoadedState(arrayForBlogger));
       } else {
-        array[index] = tapeModel;
+        array[index] = array[index].copyWith(
+            id: tapeModel.id,
+            name: tapeModel.name,
+            catName: tapeModel.name,
+            price: tapeModel.price,
+            description: tapeModel.description,
+            compound: tapeModel.compound,
+            video: tapeModel.video,
+            image: tapeModel.image,
+            blogger: tapeModel.blogger,
+            inBasket: inBas ?? tape.inBasket,
+            inReport: inReport ?? tape.inReport,
+            inFavorite: inFav ?? tape.inFavorite,
+            inSubscribe: inSub ?? tape.inSubscribe,
+            shop: tape.shop);
 
         emit(LoadedState(array));
       }
@@ -98,10 +126,11 @@ class TapeCubit extends Cubit<TapeState> {
     }
   }
 
-  void toBloggerLoadedState(){
+  void toBloggerLoadedState() {
     emit(BloggerLoadedState(arrayForBlogger));
   }
-    void toLoadedState(){
+
+  void toLoadedState() {
     emit(LoadedState(array));
   }
 
@@ -114,5 +143,14 @@ class TapeCubit extends Cubit<TapeState> {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
+  }
+
+  void updateTapeByIndex({
+    required int index,
+    required TapeModel updatedTape,
+  }) {
+    log(updatedTape.tapeId.toString());
+    array[index] = updatedTape;
+    emit(LoadedState(array));
   }
 }
