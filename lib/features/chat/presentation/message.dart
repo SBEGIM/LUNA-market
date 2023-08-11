@@ -24,12 +24,7 @@ class Message extends StatefulWidget {
   String? avatar;
   int? chatId;
 
-  Message(
-      {required this.userId,
-      this.name,
-      required this.avatar,
-      this.chatId,
-      super.key});
+  Message({required this.userId, this.name, required this.avatar, this.chatId, super.key});
 
   @override
   State<Message> createState() => _MessageState();
@@ -57,13 +52,7 @@ class _MessageState extends State<Message> {
       _image != null ? _image!.path : "",
     );
 
-    String text = jsonEncode({
-      'action': 'file',
-      'text': null,
-      'path': data,
-      'type': 'image',
-      'to': widget.userId
-    });
+    String text = jsonEncode({'action': 'file', 'text': null, 'path': data, 'type': 'image', 'to': widget.userId});
 
     channel.sink.add(text);
   }
@@ -75,11 +64,8 @@ class _MessageState extends State<Message> {
 
   void SendData() {
     if (_chatTextController.text.isNotEmpty) {
-      String text = jsonEncode({
-        'action': 'message',
-        'text': '${_chatTextController.text.toString()}',
-        'to': widget.userId
-      });
+      String text =
+          jsonEncode({'action': 'message', 'text': '${_chatTextController.text.toString()}', 'to': widget.userId});
 
       channel.sink.add(text);
       // BlocProvider.of<MessageCubit>(context)
@@ -95,8 +81,7 @@ class _MessageState extends State<Message> {
 
   bool ready = false;
 
-  final GroupedItemScrollController itemScrollController =
-      GroupedItemScrollController();
+  final GroupedItemScrollController itemScrollController = GroupedItemScrollController();
 
   // Future<void> onRefresh() async {
   //   channel.sink.close();
@@ -109,8 +94,7 @@ class _MessageState extends State<Message> {
   // }
 
   Future<void> onLoading() async {
-    await BlocProvider.of<MessageCubit>(context)
-        .paginationMessage(widget.chatId??0,widget.userId??0);
+    await BlocProvider.of<MessageCubit>(context).paginationMessage(widget.chatId ?? 0, widget.userId ?? 0);
     await Future.delayed(const Duration(milliseconds: 2000));
     _refreshController.loadComplete();
   }
@@ -127,9 +111,8 @@ class _MessageState extends State<Message> {
 
   @override
   void initState() {
-    BlocProvider.of<MessageCubit>(context).getMessage(widget.chatId ?? 0,widget.userId??0);
-    channel =
-        IOWebSocketChannel.connect("ws://185.116.193.73:1995/?user_id=$myId");
+    BlocProvider.of<MessageCubit>(context).getMessage(widget.chatId ?? 0, widget.userId ?? 0);
+    channel = IOWebSocketChannel.connect("ws://185.116.193.73:1995/?user_id=$myId");
 
     channel.ready.then((value) {
       ready = true;
@@ -138,8 +121,6 @@ class _MessageState extends State<Message> {
 
     channel.stream.listen((event) {
       final data = jsonDecode(event);
-      print(data);
-
       if (data['action'] == 'ping') {
         String text = jsonEncode({
           'action': 'pong',
@@ -148,8 +129,7 @@ class _MessageState extends State<Message> {
       }
 
       if (data['action'] == 'message' || data['action'] == 'file') {
-        BlocProvider.of<MessageCubit>(context)
-            .newMessage(MessageDto.fromJson(data));
+        BlocProvider.of<MessageCubit>(context).newMessage(MessageDto.fromJson(data));
       }
     });
 
@@ -177,10 +157,8 @@ class _MessageState extends State<Message> {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: widget.avatar != null
-                      ? NetworkImage(
-                          'http://185.116.193.73/storage/${widget.avatar}')
-                      : null,
+                  backgroundImage:
+                      widget.avatar != null ? NetworkImage('http://185.116.193.73/storage/${widget.avatar}') : null,
                   backgroundColor: Colors.grey,
                   radius: 16,
                 ),
@@ -226,8 +204,7 @@ class _MessageState extends State<Message> {
                           // },
                           child: StickyGroupedListView<dynamic, String>(
                             elements: state.chat,
-                            groupBy: (dynamic element) =>
-                                element.createdAt ?? '1',
+                            groupBy: (dynamic element) => element.createdAt ?? '1',
                             floatingHeader: true,
                             itemScrollController: itemScrollController,
 
@@ -237,41 +214,29 @@ class _MessageState extends State<Message> {
                             // optional
                             order: StickyGroupedListOrder.DESC, // optional
                             reverse: true,
-                            groupSeparatorBuilder: (dynamic element) =>
-                                Container(
+                            groupSeparatorBuilder: (dynamic element) => Container(
                               margin: const EdgeInsets.only(top: 8, bottom: 8),
                               alignment: Alignment.center,
                               height: 20,
                               child: Text(
                                 element.createdAt ?? '01.01.2023 00:00:00',
-                                style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500),
+                                style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
                               ),
                             ),
                             itemBuilder: (context, dynamic element) => Align(
-                              alignment: element.userId != int.parse(myId)
-                                  ? Alignment.centerLeft
-                                  : Alignment.centerRight,
+                              alignment:
+                                  element.userId != int.parse(myId) ? Alignment.centerLeft : Alignment.centerRight,
                               child: Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12)),
-                                margin: const EdgeInsets.only(
-                                    top: 4, bottom: 4, left: 16, right: 16),
-                                color: element.userId == int.parse(myId)
-                                    ? Colors.white
-                                    : AppColors.kPrimaryColor,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                margin: const EdgeInsets.only(top: 4, bottom: 4, left: 16, right: 16),
+                                color: element.userId == int.parse(myId) ? Colors.white : AppColors.kPrimaryColor,
                                 child: element.type == 'message'
                                     ? Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
                                           element.text ?? '2',
                                           style: TextStyle(
-                                              color: element.userId ==
-                                                      int.parse(myId)
-                                                  ? Colors.black
-                                                  : Colors.white),
+                                              color: element.userId == int.parse(myId) ? Colors.black : Colors.white),
                                         ))
                                     : Container(
                                         // margin: const EdgeInsets.only(
@@ -287,8 +252,7 @@ class _MessageState extends State<Message> {
                                                 "http://185.116.193.73/storage/${element.path ?? ''}",
                                               ),
                                               fit: BoxFit.cover),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
+                                          borderRadius: BorderRadius.circular(12),
 
                                           //color: const Color(0xFFF0F5F5))),
                                         ),
@@ -301,8 +265,7 @@ class _MessageState extends State<Message> {
                       ),
                       Container(
                         height: 40,
-                        margin: const EdgeInsets.only(
-                            left: 16, right: 16, bottom: 36),
+                        margin: const EdgeInsets.only(left: 16, right: 16, bottom: 36),
                         //  padding: EdgeInsets.only(left: 16, right: 16, bottom: 36),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -317,8 +280,7 @@ class _MessageState extends State<Message> {
                                       middleText: '',
                                       textConfirm: 'Камера',
                                       textCancel: 'Галлерея',
-                                      titlePadding:
-                                          const EdgeInsets.only(top: 40),
+                                      titlePadding: const EdgeInsets.only(top: 40),
                                       onConfirm: () {
                                         change = true;
                                         setState(() {
@@ -352,13 +314,11 @@ class _MessageState extends State<Message> {
                               // ),
                             ),
                             Container(
-                              margin:
-                                  const EdgeInsets.only(left: 10, right: 10),
+                              margin: const EdgeInsets.only(left: 10, right: 10),
                               padding: const EdgeInsets.only(left: 16),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
-                                  border: Border.all(
-                                      width: 0.3, color: Colors.grey)),
+                                  border: Border.all(width: 0.3, color: Colors.grey)),
                               height: 40,
                               width: 243,
                               child: TextField(
@@ -389,8 +349,7 @@ class _MessageState extends State<Message> {
                   );
                 }
               } else {
-                return const Center(
-                    child: CircularProgressIndicator(color: Colors.red));
+                return const Center(child: CircularProgressIndicator(color: Colors.red));
               }
             }));
   }

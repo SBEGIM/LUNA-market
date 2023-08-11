@@ -49,13 +49,7 @@ class _MessageAdminState extends State<MessageAdmin> {
       _image != null ? _image!.path : "",
     );
 
-    String text = jsonEncode({
-      'action': 'file',
-      'text': null,
-      'path': data,
-      'type': 'image',
-      'to': widget.userId
-    });
+    String text = jsonEncode({'action': 'file', 'text': null, 'path': data, 'type': 'image', 'to': widget.userId});
 
     channel.sink.add(text);
   }
@@ -67,11 +61,8 @@ class _MessageAdminState extends State<MessageAdmin> {
 
   void SendData() {
     if (_chatTextController.text.isNotEmpty) {
-      String text = jsonEncode({
-        'action': 'message',
-        'text': '${_chatTextController.text.toString()}',
-        'to': widget.userId
-      });
+      String text =
+          jsonEncode({'action': 'message', 'text': '${_chatTextController.text.toString()}', 'to': widget.userId});
 
       channel.sink.add(text);
       _chatTextController.clear();
@@ -83,8 +74,7 @@ class _MessageAdminState extends State<MessageAdmin> {
   String sellerId = GetStorage().read('seller_id');
   bool ready = false;
 
-  final GroupedItemScrollController itemScrollController =
-      GroupedItemScrollController();
+  final GroupedItemScrollController itemScrollController = GroupedItemScrollController();
 
   // Future<void> onRefresh() async {
   //   channel.sink.close();
@@ -97,8 +87,7 @@ class _MessageAdminState extends State<MessageAdmin> {
   // }
 
   Future<void> onLoading() async {
-    await BlocProvider.of<MessageAdminCubit>(context)
-        .paginationMessage(widget.chatId!);
+    await BlocProvider.of<MessageAdminCubit>(context).paginationMessage(widget.chatId ?? 0, widget.userId ?? 0);
     await Future.delayed(const Duration(milliseconds: 2000));
     _refreshController.loadComplete();
   }
@@ -116,9 +105,8 @@ class _MessageAdminState extends State<MessageAdmin> {
 
   @override
   void initState() {
-    BlocProvider.of<MessageAdminCubit>(context).getMessage(widget.chatId!);
-    channel = IOWebSocketChannel.connect(
-        "ws://185.116.193.73:1995/?user_id=$sellerId");
+    BlocProvider.of<MessageAdminCubit>(context).getMessage(widget.chatId ?? 0, widget.userId ?? 0);
+    channel = IOWebSocketChannel.connect("ws://185.116.193.73:1995/?user_id=$sellerId");
 
     channel.ready.then((value) {
       ready = true;
@@ -136,8 +124,7 @@ class _MessageAdminState extends State<MessageAdmin> {
       }
 
       if (data['action'] == 'message' || data['action'] == 'file') {
-        BlocProvider.of<MessageAdminCubit>(context)
-            .newMessage(MessageAdminDto.fromJson(data));
+        BlocProvider.of<MessageAdminCubit>(context).newMessage(MessageAdminDto.fromJson(data));
       }
     });
     super.initState();
@@ -196,8 +183,7 @@ class _MessageAdminState extends State<MessageAdmin> {
                               // },
                               child: StickyGroupedListView<dynamic, String>(
                                 elements: state.chat,
-                                groupBy: (dynamic element) =>
-                                    element.createdAt ?? '1',
+                                groupBy: (dynamic element) => element.createdAt ?? '1',
                                 floatingHeader: true,
                                 itemScrollController: itemScrollController,
 
@@ -207,43 +193,32 @@ class _MessageAdminState extends State<MessageAdmin> {
                                 // optional
                                 order: StickyGroupedListOrder.DESC, // optional
                                 reverse: true,
-                                groupSeparatorBuilder: (dynamic element) =>
-                                    Container(
-                                  margin:
-                                      const EdgeInsets.only(top: 8, bottom: 8),
+                                groupSeparatorBuilder: (dynamic element) => Container(
+                                  margin: const EdgeInsets.only(top: 8, bottom: 8),
                                   alignment: Alignment.center,
                                   height: 20,
                                   child: Text(
                                     element.createdAt ?? '08.02.2023 13:40:23',
-                                    style: const TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500),
+                                    style:
+                                        const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
                                   ),
                                 ),
-                                itemBuilder: (context, dynamic element) =>
-                                    Align(
-                                  alignment:
-                                      element.userId != int.parse(sellerId)
-                                          ? Alignment.centerLeft
-                                          : Alignment.centerRight,
+                                itemBuilder: (context, dynamic element) => Align(
+                                  alignment: element.userId != int.parse(sellerId)
+                                      ? Alignment.centerLeft
+                                      : Alignment.centerRight,
                                   child: Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    margin: const EdgeInsets.only(
-                                        top: 4, bottom: 4, left: 16, right: 16),
-                                    color: element.userId == int.parse(sellerId)
-                                        ? Colors.white
-                                        : AppColors.kPrimaryColor,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                    margin: const EdgeInsets.only(top: 4, bottom: 4, left: 16, right: 16),
+                                    color:
+                                        element.userId == int.parse(sellerId) ? Colors.white : AppColors.kPrimaryColor,
                                     child: element.type == 'message'
                                         ? Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text(
                                               element.text ?? '2',
                                               style: TextStyle(
-                                                  color: element.userId ==
-                                                          int.parse(sellerId)
+                                                  color: element.userId == int.parse(sellerId)
                                                       ? Colors.black
                                                       : Colors.white),
                                             ),
@@ -264,8 +239,7 @@ class _MessageAdminState extends State<MessageAdmin> {
                                                 ),
                                                 fit: BoxFit.cover,
                                               ),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
+                                              borderRadius: BorderRadius.circular(12),
 
                                               //color: const Color(0xFFF0F5F5))),
                                             ),
@@ -278,8 +252,7 @@ class _MessageAdminState extends State<MessageAdmin> {
                           ),
                           Container(
                             height: 40,
-                            margin: const EdgeInsets.only(
-                                left: 16, right: 16, bottom: 36),
+                            margin: const EdgeInsets.only(left: 16, right: 16, bottom: 36),
                             //  padding: EdgeInsets.only(left: 16, right: 16, bottom: 36),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -294,8 +267,7 @@ class _MessageAdminState extends State<MessageAdmin> {
                                           middleText: '',
                                           textConfirm: 'Камера',
                                           textCancel: 'Галлерея',
-                                          titlePadding:
-                                              const EdgeInsets.only(top: 40),
+                                          titlePadding: const EdgeInsets.only(top: 40),
                                           onConfirm: () {
                                             change = true;
                                             setState(() {
@@ -329,13 +301,11 @@ class _MessageAdminState extends State<MessageAdmin> {
                                   // ),
                                 ),
                                 Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 10, right: 10),
+                                  margin: const EdgeInsets.only(left: 10, right: 10),
                                   padding: const EdgeInsets.only(left: 16),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(30),
-                                      border: Border.all(
-                                          width: 0.3, color: Colors.grey)),
+                                      border: Border.all(width: 0.3, color: Colors.grey)),
                                   height: 40,
                                   width: 243,
                                   child: TextField(
@@ -361,12 +331,10 @@ class _MessageAdminState extends State<MessageAdmin> {
                         ],
                       )
                     : const Center(
-                        child:
-                            CircularProgressIndicator(color: Colors.blueAccent),
+                        child: CircularProgressIndicator(color: Colors.blueAccent),
                       );
               } else {
-                return const Center(
-                    child: CircularProgressIndicator(color: Colors.red));
+                return const Center(child: CircularProgressIndicator(color: Colors.red));
               }
             })
 

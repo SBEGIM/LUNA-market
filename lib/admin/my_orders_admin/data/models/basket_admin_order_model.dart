@@ -3,6 +3,7 @@ class BasketAdminOrderModel {
     int? id,
     List<Product>? product,
     User? user,
+    int? chatId,
     int? summa,
     String? status,
     String? date,
@@ -12,6 +13,7 @@ class BasketAdminOrderModel {
     _id = id;
     _product = product;
     _user = user!;
+    _chatId = chatId;
     _summa = summa;
     _status = status;
     _date = date;
@@ -27,6 +29,7 @@ class BasketAdminOrderModel {
       });
     }
     _user = json['user'] != null ? User.fromJson(json['user']) : null;
+    _chatId = json['chat_id'];
     _summa = json['summa'];
     _status = json['status'];
     _date = json['date'];
@@ -36,6 +39,7 @@ class BasketAdminOrderModel {
   int? _id;
   List<Product>? _product;
   User? _user;
+  int? _chatId;
   int? _summa;
   String? _status;
   String? _date;
@@ -45,6 +49,7 @@ class BasketAdminOrderModel {
   int? get id => _id;
   List<Product>? get product => _product;
   User? get user => _user;
+  int? get chatId => _chatId;
   int? get summa => _summa;
   String? get status => _status;
   String? get date => _date;
@@ -60,6 +65,7 @@ class BasketAdminOrderModel {
     if (_user != null) {
       map['user'] = _user?.toJson();
     }
+    map['chatId'] = _chatId;
     map['summa'] = _summa;
     map['status'] = _status;
     map['date'] = _date;

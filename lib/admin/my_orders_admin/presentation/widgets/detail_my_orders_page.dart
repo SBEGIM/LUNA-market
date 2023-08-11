@@ -7,6 +7,7 @@ import 'package:haji_market/admin/my_orders_admin/presentation/widgets/delivery_
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
+import '../../../chat/presentation/message_admin_page.dart';
 import '../../data/bloc/basket_admin_cubit.dart';
 
 class DetailMyOrdersPage extends StatefulWidget {
@@ -383,9 +384,47 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                     const SizedBox(
                       width: 20,
                     ),
-                    Text(
-                      '${widget.basket.user!.name}',
-                      style: const TextStyle(color: AppColors.kGray700, fontSize: 16, fontWeight: FontWeight.w500),
+                    Container(
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${widget.basket.user!.name}',
+                            style:
+                                const TextStyle(color: AppColors.kGray700, fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(height: 10),
+                          InkWell(
+                            onTap: () {
+                              Get.to(MessageAdmin(
+                                  userId: widget.basket.user!.id,
+                                  userName: widget.basket.user!.name,
+                                  // avatar: state.tapeModel[index].shop!.image,
+                                  chatId: widget.basket.chatId));
+                            },
+                            child: const Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.chat_bubble,
+                                  color: AppColors.kPrimaryColor,
+                                  size: 20,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  'написать в чат',
+                                  style: TextStyle(
+                                      color: AppColors.kPrimaryColor, fontSize: 16, fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     )
                   ],
                 )

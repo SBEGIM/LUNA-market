@@ -15,7 +15,7 @@ const _tag = 'messageRepository';
 class MessageRepository {
   final Message _message = Message();
 
-  Future<List<MessageDto>> messageList(int page, int chatId, int userId) => _message.messageList(page, chatId,userId);
+  Future<List<MessageDto>> messageList(int page, int chatId, int userId) => _message.messageList(page, chatId, userId);
   Future<String> imageStore(String avatar) => _message.imageStore(avatar);
 }
 
@@ -28,7 +28,7 @@ class Message {
 
       final response = await http.get(
         Uri.parse("$baseUrl/chat/message?page=$page& ${chatId == 0 ? 'user_id=$userId' : 'chat_id=$chatId'} "),
-        headers: {"Authorization": "Bearer 204|qjptPdGTnA87ADzbexEk0TTUzKYHzk8Yq8FrUcHC"},
+        headers: {"Authorization": "Bearer $token"},
       );
       print('ok');
 

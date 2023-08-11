@@ -10,26 +10,26 @@ const _tag = 'messageRepository';
 class MessageAdminRepository {
   final Message _message = Message();
 
-  Future<List<MessageAdminDto>> messageList(int page, int chatId) =>
-      _message.messageList(page, chatId);
+  Future<List<MessageAdminDto>> messageList(int page, int chatId, int userId) =>
+      _message.messageList(page, chatId, userId);
 }
 
 class Message {
   final _box = GetStorage();
 
-  Future<List<MessageAdminDto>> messageList(int page, int chatId) async {
+  Future<List<MessageAdminDto>> messageList(int page, int chatId, int userId) async {
     try {
       final String? token = _box.read('token');
 
-      final response = await http.get(
-          Uri.parse("$baseUrl/chat/message?page=$page&chat_id=$chatId"),
-          headers: {"Authorization": "Bearer $token"});
+      final response = await http
+          .get(Uri.parse("$baseUrl/chat/message?page=$page& ${chatId == 0 ? 'user_id=$userId' : 'chat_id=$chatId'} "),
+
+              //    Uri.parse("$baseUrl/chat/message?page=$page&chat_id=$chatId"),
+              headers: {"Authorization": "Bearer $token"});
 
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 
-      return (data['data'] as List)
-          .map((e) => MessageAdminDto.fromJson(e as Map<String, dynamic>))
-          .toList();
+      return (data['data'] as List).map((e) => MessageAdminDto.fromJson(e as Map<String, dynamic>)).toList();
     } catch (e) {
       log('messageList::: $e', name: _tag);
       throw Exception(e);
