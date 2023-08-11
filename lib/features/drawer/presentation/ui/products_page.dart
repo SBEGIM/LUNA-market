@@ -32,10 +32,10 @@ import '../widgets/product_ad_card.dart';
 @RoutePage()
 class ProductsPage extends StatefulWidget {
   final Cats cats;
-  int? brand_id;
+  int? brandId;
   String? shopId;
 
-  ProductsPage({required this.cats, this.brand_id, this.shopId, Key? key}) : super(key: key);
+  ProductsPage({required this.cats, this.brandId, this.shopId, Key? key}) : super(key: key);
 
   @override
   State<ProductsPage> createState() => _ProductsPageState();
@@ -61,7 +61,7 @@ class _ProductsPageState extends State<ProductsPage> {
     }
 
     GetStorage().remove('priceFilter');
-    if (widget.brand_id != null) {
+    if (widget.brandId != null) {
       GetStorage().remove('brandFilterId');
     }
     GetStorage().remove('subCatId');

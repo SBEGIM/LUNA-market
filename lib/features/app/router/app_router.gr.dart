@@ -56,7 +56,7 @@ abstract class _$AppRouter extends RootStackRouter {
         routeData: routeData,
         child: ProductsPage(
           cats: args.cats,
-          brandid: args.brandid,
+          brandId: args.brandId,
           shopId: args.shopId,
           key: args.key,
         ),
@@ -459,7 +459,7 @@ class SubCatalogRouteArgs {
 class ProductsRoute extends PageRouteInfo<ProductsRouteArgs> {
   ProductsRoute({
     required Cats cats,
-    int? brandid,
+    int? brandId,
     String? shopId,
     Key? key,
     List<PageRouteInfo>? children,
@@ -467,7 +467,7 @@ class ProductsRoute extends PageRouteInfo<ProductsRouteArgs> {
           ProductsRoute.name,
           args: ProductsRouteArgs(
             cats: cats,
-            brandid: brandid,
+            brandId: brandId,
             shopId: shopId,
             key: key,
           ),
@@ -483,14 +483,14 @@ class ProductsRoute extends PageRouteInfo<ProductsRouteArgs> {
 class ProductsRouteArgs {
   const ProductsRouteArgs({
     required this.cats,
-    this.brandid,
+    this.brandId,
     this.shopId,
     this.key,
   });
 
   final Cats cats;
 
-  final int? brandid;
+  final int? brandId;
 
   final String? shopId;
 
@@ -498,7 +498,7 @@ class ProductsRouteArgs {
 
   @override
   String toString() {
-    return 'ProductsRouteArgs{cats: $cats, brandid: $brandid, shopId: $shopId, key: $key}';
+    return 'ProductsRouteArgs{cats: $cats, brandId: $brandId, shopId: $shopId, key: $key}';
   }
 }
 
