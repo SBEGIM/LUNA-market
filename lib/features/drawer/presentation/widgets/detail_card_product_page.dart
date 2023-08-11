@@ -2032,7 +2032,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         GetStorage().write('brandFilterId', _selectedListSort.toString());
 
                         context.router
-                            .push(ProductsRoute(cats: Cats(id: 0, name: ''), brandid: widget.product.brandId));
+                            .push(ProductsRoute(cats: Cats(id: 0, name: ''), brandId: widget.product.brandId));
                         // Get.to(() => ProductsPage(
                         //       cats: Cats(id: 0, name: ''),
                         //     ));

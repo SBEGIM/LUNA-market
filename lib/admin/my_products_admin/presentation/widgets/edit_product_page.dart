@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/optom_price_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/size_count_dto.dart';
+import 'package:haji_market/admin/my_products_admin/data/bloc/characteristics_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/color_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/delete_image_cubit.dart' as deleteImageCubit;
 import 'package:haji_market/admin/my_products_admin/data/bloc/product_admin_state.dart';
@@ -41,6 +42,9 @@ class _EditProductPageState extends State<EditProductPage> {
 
   List<optomPriceDto> optomCount = [];
   List<sizeCountDto> sizeCount = [];
+
+  List<Cats>? characteristics = [];
+  List<Cats>? characteristicsValue = [];
 
   List<Cats>? mockSizes = [];
   List<Cats>? mockSizeAdds = [];
@@ -118,7 +122,6 @@ class _EditProductPageState extends State<EditProductPage> {
         .subCatById(widget.product.catId.toString(), widget.product.subCatId.toString());
 
     if (widget.product.color!.isNotEmpty) {
-      print('qweqwewqeq');
       colors = await BlocProvider.of<ColorCubit>(context).ColorById(widget.product.color!.first);
     } else {
       Cats colors = Cats(id: 0, name: 'Выберите цвет');
@@ -161,6 +164,9 @@ class _EditProductPageState extends State<EditProductPage> {
   @override
   void initState() {
     CatById();
+    _sizeArray();
+    _charactisticsArray();
+
     // BlocProvider.of<ProductAdminCubit>(context)
     articulController.text = widget.product.articul;
     priceController.text = widget.product.price != null ? widget.product.price.toString() : '0';
@@ -176,7 +182,6 @@ class _EditProductPageState extends State<EditProductPage> {
     descriptionController.text = widget.product.description != null ? widget.product.description.toString() : '';
     deepController.text = widget.product.deep != null ? widget.product.deep.toString() : '';
     _networkImage = widget.product.images ?? [];
-    _sizeArray();
     if (widget.product.bloc != null && widget.product.bloc!.isNotEmpty) {
       for (final BlocDTO e in widget.product.bloc!) {
         optomCount.add(optomPriceDto(price: (e.price ?? 0).toString(), count: (e.count ?? 0).toString()));
@@ -198,6 +203,21 @@ class _EditProductPageState extends State<EditProductPage> {
       }
     }
     // setState(() {});
+  }
+
+  void _charactisticsArray() async {
+    characteristics = await BlocProvider.of<CharacteristicsCubit>(context).characteristic();
+    setState(() {});
+    // if ((widget.product.sizeV1 ?? []).isNotEmpty) {
+    //   for (final SizeDTO e in widget.product.sizeV1 ?? []) {
+    //     sizeCount.add(sizeCountDto(
+    //         id: mockSizes!.where((element) => element.name == e.name).isNotEmpty
+    //             ? mockSizes!.where((element) => element.name == e.name).first.id.toString()
+    //             : '-1',
+    //         name: e.name ?? '',
+    //         count: (e.count ?? 0).toString()));
+    //   }
+    // }
   }
 
   @override
@@ -538,7 +558,7 @@ class _EditProductPageState extends State<EditProductPage> {
                             ),
                             PopupMenuButton(
                               onSelected: (value) {
-                                mockSizeAdds!.add(value as Cats);
+                                characteristicsValue!.add(value as Cats);
                                 sizeId = value.id.toString();
                                 sizeName = value.name ?? 'Пустое';
                                 setState(() {});
@@ -554,7 +574,7 @@ class _EditProductPageState extends State<EditProductPage> {
                               itemBuilder: (
                                 BuildContext bc,
                               ) {
-                                return mockSizes!.map<PopupMenuItem>((e) {
+                                return characteristics!.map<PopupMenuItem>((e) {
                                   return PopupMenuItem(
                                     value: e,
                                     child: Text(

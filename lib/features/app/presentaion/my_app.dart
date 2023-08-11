@@ -10,6 +10,7 @@ import 'package:haji_market/admin/auth/data/bloc/sms_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/repository/registerAdminRepo.dart';
 import 'package:haji_market/admin/my_orders_admin/data/bloc/order_status_admin_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/size_cubit.dart';
+import 'package:haji_market/admin/my_products_admin/data/repository/CharacteristicAdminRepo.dart';
 import 'package:haji_market/admin/my_products_admin/data/repository/SizeAdminRepo.dart';
 import 'package:haji_market/admin/tape_admin/data/repository/tape_admin_repo.dart';
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
@@ -84,6 +85,7 @@ import '../../../admin/chat/data/cubit/chat_admin_cubit.dart';
 import '../../../admin/chat/data/cubit/message_admin_cubit.dart';
 import '../../../admin/chat/data/repository/chat_admin_repo.dart';
 import '../../../admin/chat/data/repository/message_admin_repo.dart';
+import '../../../admin/my_products_admin/data/bloc/characteristics_cubit.dart';
 import '../../../admin/my_products_admin/data/bloc/color_cubit.dart';
 import '../../../admin/my_products_admin/data/bloc/delete_image_cubit.dart';
 import '../../../admin/my_products_admin/data/bloc/product_admin_cubit.dart';
@@ -174,7 +176,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-
   AppRouter appRouter = AppRouter();
   @override
   Widget build(BuildContext context) {
@@ -235,7 +236,7 @@ class _MyAppState extends State<MyApp> {
             //     //   }
             //     // }
             //     if (shopName != '' && shopName != 'null') {
-                  
+
             //       return const DeepLink([LauncherRoute(children: [BasketRoute()])]);
             //       // return DeepLink([
             //       //   LauncherRoute(children: [
@@ -249,8 +250,7 @@ class _MyAppState extends State<MyApp> {
             //     }
             //   },
             // ),
-           
-           
+
             routeInformationParser: parser,
             routerDelegate: delegate,
             // onGenerateTitle: (context) => context.localized.appTitle,
@@ -463,6 +463,11 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (_) => StatisticsProductCubit(
             statisticsProductAdminRepo: StatisticsProductAdminRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => CharacteristicsCubit(
+            characteristicRepository: CharacteristicAdminRepo(),
           ),
         ),
       ],
