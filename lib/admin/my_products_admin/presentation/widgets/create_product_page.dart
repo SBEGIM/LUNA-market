@@ -13,8 +13,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/home/data/model/Cats.dart';
+import '../../../../features/home/data/model/Characteristics.dart';
 import '../../data/DTO/color_count_dto.dart';
 import '../../data/DTO/optom_price_dto.dart';
+import '../../data/bloc/characteristics_cubit.dart';
 import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/bloc/product_admin_state.dart';
 
@@ -79,6 +81,20 @@ class _CreateProductPageState extends State<CreateProductPage> {
   List<optomPriceDto> optomCount = [];
   List<sizeCountDto> sizeCount = [];
   List<Cats>? mockSizes = [];
+
+  List<Characteristics>? characteristics = [];
+  List<Characteristics>? characteristicsValue = [];
+  Characteristics? characteristicsValuelast;
+
+  List<Characteristics>? subCharacteristics = [];
+  List<Characteristics>? subCharacteristicsValue = [];
+  Characteristics? subCharacteristicsValueLast;
+
+  String characteristicName = '';
+  String characteristicId = '';
+
+  String subCharacteristicName = '';
+  String subCharacteristicId = '';
 
   bool isSwitched = false;
   bool isSwitchedBs = false;
@@ -146,6 +162,14 @@ class _CreateProductPageState extends State<CreateProductPage> {
     mockSizes = await BlocProvider.of<SizeCubit>(context).sizes();
   }
 
+  void _charactisticsArray() async {
+    characteristics = await BlocProvider.of<CharacteristicsCubit>(context).characteristic();
+
+    subCharacteristics = await BlocProvider.of<CharacteristicsCubit>(context).subCharacteristic();
+
+    setState(() {});
+  }
+
   @override
   void initState() {
     cats = widget.cat;
@@ -153,6 +177,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
     brands = Cats(id: 0, name: 'Выберите бренд');
     colors = Cats(id: 0, name: 'Выберите цвет');
     _sizeArray();
+    _charactisticsArray();
+
     super.initState();
   }
 
@@ -612,6 +638,259 @@ class _CreateProductPageState extends State<CreateProductPage> {
                           ],
                         );
                       })),
+                ),
+                const SizedBox(height: 10),
+                const SizedBox(height: 20),
+                SizedBox(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Характиристика',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        alignment: Alignment.centerLeft,
+                                        margin: const EdgeInsets.only(right: 10),
+                                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                                        decoration:
+                                            BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                                        // width: 111,
+                                        height: 38,
+                                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                          Text(
+                                            characteristicName == '' ? 'Параметр' : characteristicName,
+                                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                                          ),
+                                          PopupMenuButton(
+                                            onSelected: (value) {
+                                              characteristicsValuelast = Characteristics(id: value.id, key: value.key);
+                                              //sizeId = value.id.toString();
+                                              characteristicId = value.id.toString();
+                                              characteristicName = value.key ?? 'Пустое';
+                                              setState(() {});
+                                            },
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(15.0),
+                                              ),
+                                            ),
+                                            icon: SvgPicture.asset('assets/icons/dropdown.svg'),
+                                            position: PopupMenuPosition.under,
+                                            offset: const Offset(0, 0),
+                                            itemBuilder: (
+                                              BuildContext bc,
+                                            ) {
+                                              return characteristics!.map<PopupMenuItem>((e) {
+                                                return PopupMenuItem(
+                                                  value: e,
+                                                  child: Text(
+                                                    e.key ?? 'Пустое',
+                                                    style: const TextStyle(
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                );
+                                              }).toList();
+                                            },
+                                          )
+                                        ]),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        alignment: Alignment.centerLeft,
+                                        margin: const EdgeInsets.only(right: 10),
+                                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                                        decoration:
+                                            BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                                        // width: 111,
+                                        height: 38,
+                                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                          Text(
+                                            subCharacteristicName == '' ? 'Значение' : subCharacteristicName,
+                                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                                          ),
+                                          PopupMenuButton(
+                                            onSelected: (value) {
+                                              subCharacteristicsValueLast =
+                                                  Characteristics(id: value.id, value: value.value);
+
+                                              // subCharacteristicsValue!.add(value as Characteristics);
+                                              //sizeId = value.id.toString();
+                                              subCharacteristicId = value.id.toString();
+                                              subCharacteristicName = value.value ?? 'Пустое';
+                                              setState(() {});
+                                            },
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(15.0),
+                                              ),
+                                            ),
+                                            icon: SvgPicture.asset('assets/icons/dropdown.svg'),
+                                            position: PopupMenuPosition.under,
+                                            offset: const Offset(0, 0),
+                                            itemBuilder: (
+                                              BuildContext bc,
+                                            ) {
+                                              return subCharacteristics!.map<PopupMenuItem>((e) {
+                                                return PopupMenuItem(
+                                                  value: e,
+                                                  child: Text(
+                                                    e.value ?? 'Пустое',
+                                                    style: const TextStyle(
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                );
+                                              }).toList();
+                                            },
+                                          )
+                                        ]),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              if (subCharacteristicsValueLast != null && characteristicsValuelast != null) {
+                                bool exists = false;
+
+                                for (int index = 0; index < characteristicsValue!.length; index++) {
+                                  if (characteristicsValue![index].key == characteristicsValuelast!.key) {
+                                    if (subCharacteristicsValue![index].value == subCharacteristicsValueLast!.value) {
+                                      exists = true;
+                                      setState(() {});
+                                    }
+                                  }
+                                  continue;
+                                }
+
+                                if (!exists) {
+                                  characteristicsValue!.add(Characteristics(
+                                      id: characteristicsValuelast!.id!, key: characteristicsValuelast!.key));
+                                  subCharacteristicsValue!.add(Characteristics(
+                                      id: subCharacteristicsValueLast!.id!, value: subCharacteristicsValueLast!.value));
+
+                                  setState(() {});
+                                } else {
+                                  // Get.to(() => {})
+                                  Get.snackbar('Ошибка', 'Данные уже имеется!', backgroundColor: Colors.redAccent);
+                                }
+                              } else {
+                                Get.snackbar('Ошибка', 'Нет данных!', backgroundColor: Colors.redAccent);
+                              }
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 10),
+                              decoration:
+                                  BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(8)),
+                              alignment: Alignment.center,
+                              width: 102,
+                              height: 38,
+                              child: const Text(
+                                '+',
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 15),
+                SizedBox(
+                  height: 70 * (characteristicsValue?.length.toDouble() ?? 0),
+                  child: ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: characteristicsValue?.length ?? 0,
+                    separatorBuilder: (context, index) => const SizedBox(height: 15),
+                    itemBuilder: (context, index) {
+                      return ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxHeight: 60,
+                          minHeight: 40,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                                child: Text(
+                                  characteristicsValue?[index].key ?? 'Пустое',
+                                  maxLines: 3,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                                child: Text(
+                                  subCharacteristicsValue?[index].value ?? 'Пустое',
+                                  maxLines: 3,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            GestureDetector(
+                              onTap: (() {
+                                subCharacteristicsValue?.removeAt(index);
+                                characteristicsValue?.removeAt(index);
+
+                                setState(() {});
+                              }),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  // color: AppColors.kPrimaryColor,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                alignment: Alignment.center,
+                                width: 102,
+                                height: 38,
+                                child: SvgPicture.asset('assets/icons/basket_1.svg'),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
                 const SizedBox(height: 10),
                 const Text(
