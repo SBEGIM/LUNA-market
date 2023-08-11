@@ -238,7 +238,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.product != null ? widget.basket.product?.first.price ?? 0 : 0} ₽ ',
+                      '${widget.basket.summa} ₽ ',
                       style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
@@ -276,7 +276,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.summa} ₽ ',
+                      '${widget.basket.summa! + (widget.basket.product?.first.optom == 1 ? (widget.basket.product?.first.shopCourier ?? 0) : 0)} ₽ ',
                       style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
@@ -295,7 +295,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.summa} ₽ ',
+                      '0 ₽ ',
                       style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
