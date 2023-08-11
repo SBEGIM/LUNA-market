@@ -13,11 +13,13 @@ class BasketRepository {
   Future<int> basketAdd(productId, count, price, size, color, {bool? isOptom, String? blogger_id}) =>
       _basket.basketAdd(productId, count, price, size, color, isOptom: isOptom, blogger_id: blogger_id);
   Future<int> basketMinus(productId, count, price) => _basket.basketMinus(productId, count, price);
+  Future<int> basketDelete(productId) => _basket.basketDelete(productId);
   Future<List<BasketShowModel>> basketShow() => _basket.basketShow();
   Future<List<BasketOrderModel>> basketOrderShow() => _basket.basketOrderShow();
   Future<int> basketOrder(List id) => _basket.basketOrder(id);
   Future<String> payment({String? address, String? bonus}) => _basket.payment(address: address, bonus: bonus);
   Future<int> status(String id, String status, String? text) => _basket.status(id, status, text);
+  
 }
 
 class Basket {
@@ -49,6 +51,18 @@ class Basket {
     final response = await http.post(Uri.parse('$baseUrl/basket/minus'),
         headers: {"Authorization": "Bearer $token"},
         body: {'product_id': productId, 'count': count.toString(), 'price': price.toString()});
+
+    final data = response.statusCode;
+
+    return data;
+  }
+
+    Future<int> basketDelete(productId,) async {
+    final String? token = _box.read('token');
+
+    final response = await http.post(Uri.parse('$baseUrl/basket/delete'),
+        headers: {"Authorization": "Bearer $token"},
+        body: {'product_id': productId,});
 
     final data = response.statusCode;
 

@@ -801,9 +801,9 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                               widget.basketProducts.product!.id.toString(),
                               basketCount.toString(),
                               0);
-                          isVisible = false;
+                          // isVisible = false;
 
-                          setState(() {});
+                          // setState(() {});
                         },
                         child: const Text(
                           'Удалить',
