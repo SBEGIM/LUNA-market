@@ -6,19 +6,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
-import 'package:haji_market/features/app/widgets/custom_switch_button.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/data/bloc/review_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/review_state.dart';
-import 'package:haji_market/features/drawer/presentation/ui/products_page.dart';
-import 'package:haji_market/features/drawer/presentation/widgets/punkts_widget.dart';
 import 'package:haji_market/features/home/data/model/Cats.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../../../core/common/constants.dart';
-import '../../../chat/presentation/chat_page.dart';
 import '../../../chat/presentation/message.dart';
-import '../../../tape/presentation/data/bloc/subs_cubit.dart';
 import '../../data/models/product_model.dart';
 
 @RoutePage()
@@ -161,86 +155,44 @@ class _DetailStorePageState extends State<DetailStorePage> {
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          //  Get.to(() => const ChatPage());
+                  InkWell(
+                    onTap: () {
+                      //  Get.to(() => const ChatPage());
 
-                          Get.to(Message(
-                              userId: widget.shop.shop?.id,
-                              name: widget.shop.shop?.name,
-                              avatar: widget.shop.shop?.image,
-                              chatId: widget.shop.chatId));
+                      Get.to(Message(
+                          userId: widget.shop.shop?.id,
+                          name: widget.shop.shop?.name,
+                          avatar: widget.shop.shop?.image,
+                          chatId: widget.shop.chatId));
 
-                          // Get.to(Message(
-                          //                   userId: widget.shop.shop?.id!
-                          //                       .tapeModel[index].shop!.id,
-                          //                   name: state.tapeModel[index]
-                          //                       .shop!.name,
-                          //                   avatar: state.tapeModel[index]
-                          //                       .shop!.image,
-                          //                   chatId: state
-                          //                       .tapeModel[index].chatId));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: Container(
-                            width: 168,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.kPrimaryColor),
-                              borderRadius: BorderRadius.circular(10),
-                              color: const Color(0x331DC4CF),
-                              // : const Color.fromRGBO(29, 196, 207, 0.2),
-                            ),
-                            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
-                            child: const Text(
-                              ' Написать',
-                              textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
-                            ),
-                          ),
+                      // Get.to(Message(
+                      //                   userId: widget.shop.shop?.id!
+                      //                       .tapeModel[index].shop!.id,
+                      //                   name: state.tapeModel[index]
+                      //                       .shop!.name,
+                      //                   avatar: state.tapeModel[index]
+                      //                       .shop!.image,
+                      //                   chatId: state
+                      //                       .tapeModel[index].chatId));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Container(
+                        width: 400,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.kPrimaryColor),
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color(0x331DC4CF),
+                          // : const Color.fromRGBO(29, 196, 207, 0.2),
+                        ),
+                        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+                        child: const Text(
+                          'Перейти в чат',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
                         ),
                       ),
-                      //   InkWell(
-                      //     onTap: () {
-                      //       setState(() {
-                      //         BlocProvider.of<SubsCubit>(context)
-                      //             .sub(widget.shop.shop!.id.toString());
-                      //         isSelected = !isSelected;
-                      //       });
-                      //     },
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.only(right: 16.0),
-                      //       child: Container(
-                      //         width: 168,
-                      //         decoration: BoxDecoration(
-                      //           border:
-                      //               Border.all(color: AppColors.kPrimaryColor),
-                      //           borderRadius: BorderRadius.circular(10),
-                      //           color: isSelected == true
-                      //               ? Colors.white
-                      //               : const Color(0x331DC4CF),
-                      //           // : const Color.fromRGBO(29, 196, 207, 0.2),
-                      //         ),
-                      //         padding: const EdgeInsets.only(
-                      //             left: 16, right: 16, top: 16, bottom: 16),
-                      //         child: Text(
-                      //           isSelected == true
-                      //               ? 'Подписаться'
-                      //               : 'Вы подписаны',
-                      //           textAlign: TextAlign.center,
-                      //           style: const TextStyle(
-                      //               fontSize: 15,
-                      //               fontWeight: FontWeight.w400,
-                      //               color: AppColors.kPrimaryColor),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                    ],
+                    ),
                   ),
                   const SizedBox(
                     height: 10,

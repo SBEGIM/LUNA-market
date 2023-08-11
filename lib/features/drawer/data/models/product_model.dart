@@ -1,6 +1,8 @@
 class ProductModel {
   ProductModel({
     int? id,
+    int? catId,
+    int? brandId,
     String? name,
     int? price,
     int? product_count,
@@ -28,9 +30,10 @@ class ProductModel {
     int? total,
   }) {
     _id = id;
+    _catId = catId;
+    _brandId = brandId;
     _name = name;
     _price = price;
-
     _product_count = product_count;
     _compound = compound;
     _point = point;
@@ -58,6 +61,8 @@ class ProductModel {
 
   ProductModel copyWith({
     int? id,
+    int? catId,
+    int? brandId,
     String? name,
     int? price,
     int? product_count,
@@ -86,6 +91,8 @@ class ProductModel {
   }) {
     return ProductModel(
       id: id ?? this.id,
+      catId: catId ?? this.catId,
+      brandId: brandId ?? this.brandId,
       name: name ?? this.name,
       price: price ?? this.price,
       product_count: product_count ?? this.product_count,
@@ -116,6 +123,8 @@ class ProductModel {
 
   ProductModel.fromJson(dynamic json) {
     _id = json['id'];
+    _catId = json['cat_id'];
+    _brandId = json['brand_id'];
     _name = json['name'];
     _price = json['price'];
     _product_count = json['product_count'];
@@ -153,6 +162,8 @@ class ProductModel {
     _review = json['review'] != null ? json['review'].cast<int>() : [];
   }
   int? _id;
+  int? _catId;
+  int? _brandId;
   String? _name;
   int? _price;
   int? _product_count;
@@ -180,6 +191,8 @@ class ProductModel {
   List<int>? _review;
 
   int? get id => _id;
+  int? get catId => _catId;
+  int? get brandId => _brandId;
   String? get name => _name;
   int? get price => _price;
   int? get product_count => _product_count;
@@ -209,6 +222,8 @@ class ProductModel {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
+    map['catId'] = _catId;
+    map['brandId'] = _brandId;
     map['name'] = _name;
     map['price'] = _price;
     map['product_count'] = _product_count;
