@@ -408,7 +408,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               ),
               GestureDetector(
                 onTap: (() {
-                  Get.to(() => ProductImages(images: widget.product.path));
+                  Get.to(() => ProductImages(images: widget.product.path,video: widget.product.video,));
                 }),
                 child: Container(
                     margin: const EdgeInsets.only(left: 335.0, right: 4, top: 260, bottom: 4),

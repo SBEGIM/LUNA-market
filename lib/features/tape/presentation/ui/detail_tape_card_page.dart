@@ -1294,7 +1294,7 @@ class _inFavoritesState extends State<inFavorites> {
         setState(() {});
       },
       child: SvgPicture.asset(
-        inFavorite == true ? 'assets/icons/save_tape.svg' : 'assets/icons/save_tape_full.svg',
+        inFavorite == false ? 'assets/icons/save_tape.svg' : 'assets/icons/save_tape_full.svg',
         height: 30,
         colorBlendMode: BlendMode.colorDodge,
       ),
