@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/admin/my_products_admin/data/DTO/characteristic_count_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/optom_price_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/size_count_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/characteristics_cubit.dart';
@@ -19,6 +21,7 @@ import 'package:video_player/video_player.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/drawer/data/bloc/brand_cubit.dart';
 import '../../../../features/home/data/model/Cats.dart';
+import '../../../../features/home/data/model/Characteristics.dart';
 import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/models/admin_products_model.dart';
 import 'brands_admin_page.dart';
@@ -43,13 +46,25 @@ class _EditProductPageState extends State<EditProductPage> {
   List<optomPriceDto> optomCount = [];
   List<sizeCountDto> sizeCount = [];
 
-  List<Cats>? characteristics = [];
-  List<Cats>? characteristicsValue = [];
+  List<Characteristics>? characteristics = [];
+  List<Characteristics>? characteristicsValue = [];
+  Characteristics? characteristicsValuelast;
+
+  List<Characteristics>? subCharacteristics = [];
+  List<Characteristics>? subCharacteristicsValue = [];
+  Characteristics? subCharacteristicsValueLast;
+
+  String characteristicName = '';
+  String characteristicId = '';
+
+  String subCharacteristicName = '';
+  String subCharacteristicId = '';
 
   List<Cats>? mockSizes = [];
   List<Cats>? mockSizeAdds = [];
 
   String sizeName = '';
+
   String sizeId = '';
   String fulfillment = 'fbs';
   bool isSwitchedBs = false;
@@ -207,6 +222,9 @@ class _EditProductPageState extends State<EditProductPage> {
 
   void _charactisticsArray() async {
     characteristics = await BlocProvider.of<CharacteristicsCubit>(context).characteristic();
+
+    subCharacteristics = await BlocProvider.of<CharacteristicsCubit>(context).subCharacteristic();
+
     setState(() {});
     // if ((widget.product.sizeV1 ?? []).isNotEmpty) {
     //   for (final SizeDTO e in widget.product.sizeV1 ?? []) {
@@ -483,7 +501,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 ),
               ),
               SizedBox(
-                height: 60 * sizeCount.length.toDouble(),
+                height: 70 * sizeCount.length.toDouble(),
                 child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: sizeCount.length,
@@ -543,94 +561,148 @@ class _EditProductPageState extends State<EditProductPage> {
                     ),
                     const SizedBox(height: 10),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
-                          alignment: Alignment.center,
-                          margin: const EdgeInsets.only(right: 10),
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
-                          width: 111,
-                          height: 38,
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                            Text(
-                              sizeName == '' ? 'Размер' : sizeName,
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                            ),
-                            PopupMenuButton(
-                              onSelected: (value) {
-                                characteristicsValue!.add(value as Cats);
-                                sizeId = value.id.toString();
-                                sizeName = value.name ?? 'Пустое';
-                                setState(() {});
-                              },
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(15.0),
-                                ),
-                              ),
-                              icon: SvgPicture.asset('assets/icons/dropdown.svg'),
-                              position: PopupMenuPosition.under,
-                              offset: const Offset(0, 0),
-                              itemBuilder: (
-                                BuildContext bc,
-                              ) {
-                                return characteristics!.map<PopupMenuItem>((e) {
-                                  return PopupMenuItem(
-                                    value: e,
-                                    child: Text(
-                                      e.name ?? 'Пустое',
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                      ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      margin: const EdgeInsets.only(right: 10),
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      decoration:
+                                          BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                                      // width: 111,
+                                      height: 38,
+                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                        Text(
+                                          characteristicName == '' ? 'Параметр' : characteristicName,
+                                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                                        ),
+                                        PopupMenuButton(
+                                          onSelected: (value) {
+                                            characteristicsValuelast = Characteristics(id: value.id, key: value.key);
+                                            //sizeId = value.id.toString();
+                                            characteristicId = value.id.toString();
+                                            characteristicName = value.key ?? 'Пустое';
+                                            setState(() {});
+                                          },
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(15.0),
+                                            ),
+                                          ),
+                                          icon: SvgPicture.asset('assets/icons/dropdown.svg'),
+                                          position: PopupMenuPosition.under,
+                                          offset: const Offset(0, 0),
+                                          itemBuilder: (
+                                            BuildContext bc,
+                                          ) {
+                                            return characteristics!.map<PopupMenuItem>((e) {
+                                              return PopupMenuItem(
+                                                value: e,
+                                                child: Text(
+                                                  e.key ?? 'Пустое',
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList();
+                                          },
+                                        )
+                                      ]),
                                     ),
-                                  );
-                                }).toList();
-                              },
-                            )
-                          ]),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 6),
-                          margin: const EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
-                          width: 102,
-                          height: 38,
-                          child: TextField(
-                            textAlign: TextAlign.center,
-                            controller: sizeCountController,
-                            keyboardType: TextInputType.text,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Введите количество',
-                              hintStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                // borderRadius: BorderRadius.circular(3),
+                                  ),
+                                ],
                               ),
-                            ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      margin: const EdgeInsets.only(right: 10),
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      decoration:
+                                          BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                                      // width: 111,
+                                      height: 38,
+                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                        Text(
+                                          subCharacteristicName == '' ? 'Значение' : subCharacteristicName,
+                                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                                        ),
+                                        PopupMenuButton(
+                                          onSelected: (value) {
+                                            subCharacteristicsValueLast =
+                                                Characteristics(id: value.id, value: value.value);
+
+                                            // subCharacteristicsValue!.add(value as Characteristics);
+                                            //sizeId = value.id.toString();
+                                            subCharacteristicId = value.id.toString();
+                                            subCharacteristicName = value.value ?? 'Пустое';
+                                            setState(() {});
+                                          },
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(15.0),
+                                            ),
+                                          ),
+                                          icon: SvgPicture.asset('assets/icons/dropdown.svg'),
+                                          position: PopupMenuPosition.under,
+                                          offset: const Offset(0, 0),
+                                          itemBuilder: (
+                                            BuildContext bc,
+                                          ) {
+                                            return subCharacteristics!.map<PopupMenuItem>((e) {
+                                              return PopupMenuItem(
+                                                value: e,
+                                                child: Text(
+                                                  e.value ?? 'Пустое',
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList();
+                                          },
+                                        )
+                                      ]),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (sizeCountController.text.isNotEmpty) {
+                            if (subCharacteristicsValueLast != null && characteristicsValuelast != null) {
                               bool exists = false;
 
-                              sizeCountDto? sizeCountLast;
-                              // if (optomCount.isNotEmpty) {
-
-                              sizeCountLast = sizeCount.isNotEmpty ? sizeCount.last : null;
-                              for (var element in sizeCount) {
-                                if (element.count == sizeCountController.text) {
-                                  exists = true;
-                                  setState(() {});
+                              for (int index = 0; index < characteristicsValue!.length; index++) {
+                                if (characteristicsValue![index].key == characteristicsValuelast!.key) {
+                                  if (subCharacteristicsValue![index].value == subCharacteristicsValueLast!.value) {
+                                    exists = true;
+                                    setState(() {});
+                                  }
                                 }
                                 continue;
                               }
-                              //   }
 
                               if (!exists) {
-                                sizeCount
-                                    .add(sizeCountDto(id: sizeId, name: sizeName, count: sizeCountController.text));
+                                characteristicsValue!.add(Characteristics(
+                                    id: characteristicsValuelast!.id!, key: characteristicsValuelast!.key));
+                                subCharacteristicsValue!.add(Characteristics(
+                                    id: subCharacteristicsValueLast!.id!, value: subCharacteristicsValueLast!.value));
 
                                 setState(() {});
                               } else {
@@ -659,46 +731,65 @@ class _EditProductPageState extends State<EditProductPage> {
                   ],
                 ),
               ),
+              const SizedBox(height: 15),
               SizedBox(
-                height: 60 * sizeCount.length.toDouble(),
-                child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: sizeCount.length,
-                    itemBuilder: ((context, index) {
-                      return Row(
+                height: 60 * (characteristicsValue?.length.toDouble() ?? 0),
+                child: ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: characteristicsValue?.length ?? 0,
+                  separatorBuilder: (context, index) => const SizedBox(height: 15),
+                  itemBuilder: (context, index) {
+                    return ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxHeight: 60,
+                        minHeight: 40,
+                      ),
+                      child: Row(
                         children: [
-                          Container(
-                            alignment: Alignment.center,
-                            margin: const EdgeInsets.only(right: 10, top: 15),
-                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
-                            width: 102,
-                            height: 38,
-                            child: Text(
-                              sizeCount[index].name,
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                              child: Text(
+                                characteristicsValue?[index].key ?? 'Пустое',
+                                maxLines: 3,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
                             ),
                           ),
-                          Container(
-                            alignment: Alignment.center,
-                            margin: const EdgeInsets.only(right: 10, top: 15),
-                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
-                            width: 102,
-                            height: 38,
-                            child: Text(
-                              sizeCount[index].count,
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                              child: Text(
+                                subCharacteristicsValue?[index].value ?? 'Пустое',
+                                maxLines: 3,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
                             ),
                           ),
+                          const SizedBox(width: 10),
                           GestureDetector(
                             onTap: (() {
-                              sizeCount.removeAt(index);
+                              subCharacteristicsValue?.removeAt(index);
+                              characteristicsValue?.removeAt(index);
+
                               setState(() {});
                             }),
                             child: Container(
-                              margin: const EdgeInsets.only(right: 10, top: 15, left: 10),
                               decoration: BoxDecoration(
-                                  // color: AppColors.kPrimaryColor,
-                                  borderRadius: BorderRadius.circular(8)),
+                                // color: AppColors.kPrimaryColor,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                               alignment: Alignment.center,
                               width: 102,
                               height: 38,
@@ -706,8 +797,10 @@ class _EditProductPageState extends State<EditProductPage> {
                             ),
                           )
                         ],
-                      );
-                    })),
+                      ),
+                    );
+                  },
+                ),
               ),
               const SizedBox(height: 10),
               const Text(

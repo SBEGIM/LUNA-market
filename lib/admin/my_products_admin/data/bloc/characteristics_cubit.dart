@@ -1,20 +1,34 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
-import '../../../../features/home/data/model/Cats.dart';
+import 'package:haji_market/admin/my_products_admin/data/bloc/characteristics_state.dart';
+import '../../../../features/home/data/model/Characteristics.dart';
 import '../repository/CharacteristicAdminRepo.dart';
-import 'color_state.dart';
 
-class CharacteristicsCubit extends Cubit<ColorState> {
+class CharacteristicsCubit extends Cubit<CharacteristicsState> {
   final CharacteristicAdminRepo characteristicRepository;
 
   CharacteristicsCubit({required this.characteristicRepository}) : super(InitState());
 
-  List<Cats> _characteristics = [];
+  List<Characteristics> _characteristics = [];
 
-  Future<List<Cats>?> characteristic() async {
+  Future<List<Characteristics>?> characteristic() async {
     try {
       emit(LoadingState());
-      final List<Cats> data = await characteristicRepository.get();
+      final List<Characteristics> data = await characteristicRepository.get();
+      _characteristics = data;
+      emit(LoadedState(data));
+      return _characteristics;
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+    return null;
+  }
+
+  Future<List<Characteristics>?> subCharacteristic() async {
+    try {
+      emit(LoadingState());
+      final List<Characteristics> data = await characteristicRepository.subGet();
       _characteristics = data;
       emit(LoadedState(data));
       return _characteristics;
@@ -34,9 +48,9 @@ class CharacteristicsCubit extends Cubit<ColorState> {
       // final List<City> data = await listRepository.cities();
       // _cities = data;
     }
-    Cats color = Cats(id: 0, name: 'Выберите характеристику');
+    Characteristics color = Characteristics(id: 0, key: 'Выберите характеристику');
     for (int i = 0; i < _characteristics.length; i++) {
-      if (_characteristics[i].name == name) {
+      if (_characteristics[i].key == name) {
         color = _characteristics[i];
       }
     }
