@@ -226,98 +226,99 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   controller: articulController,
                   textInputNumber: true,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 4.0, bottom: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Row(
-                        children: [
-                          Text(
-                            'Валюта',
-                            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
-                          ),
-                          Text(
-                            '*',
-                            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Colors.red),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 14.0),
-                          child: TextField(
-                            // controller: ,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: currencyName,
-                                hintStyle: const TextStyle(
-                                    color: Color.fromRGBO(194, 197, 200, 1), fontSize: 16, fontWeight: FontWeight.w400),
-                                enabledBorder: const UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
-                                // suffixIcon: IconButton(
-                                //   onPressed: widget.onPressed,
-                                //   icon: widget.arrow == true
-                                //       ? SvgPicture.asset('assets/icons/back_menu.svg',
-                                //           color: Colors.grey)
-                                //       : SvgPicture.asset(''),
-                                // ),
-                                suffixIcon: PopupMenuButton(
-                                  onSelected: (value) {
-                                    currencyName = value;
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 4.0, bottom: 10),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       const Row(
+                //         children: [
+                //           Text(
+                //             'Валюта',
+                //             style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
+                //           ),
+                //           Text(
+                //             '*',
+                //             style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Colors.red),
+                //           )
+                //         ],
+                //       ),
+                //       const SizedBox(
+                //         height: 4,
+                //       ),
+                //       Container(
+                //         decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                //         child: Padding(
+                //           padding: const EdgeInsets.only(left: 14.0),
+                //           child: TextField(
+                //             // controller: ,
+                //             keyboardType: TextInputType.text,
+                //             decoration: InputDecoration(
+                //                 border: InputBorder.none,
+                //                 hintText: currencyName,
+                //                 hintStyle: const TextStyle(
+                //                     color: Color.fromRGBO(194, 197, 200, 1), fontSize: 16, fontWeight: FontWeight.w400),
+                //                 enabledBorder: const UnderlineInputBorder(
+                //                   borderSide: BorderSide(color: Colors.white),
+                //                   // borderRadius: BorderRadius.circular(3),
+                //                 ),
+                //                 // suffixIcon: IconButton(
+                //                 //   onPressed: widget.onPressed,
+                //                 //   icon: widget.arrow == true
+                //                 //       ? SvgPicture.asset('assets/icons/back_menu.svg',
+                //                 //           color: Colors.grey)
+                //                 //       : SvgPicture.asset(''),
+                //                 // ),
+                //                 suffixIcon: PopupMenuButton(
+                //                   onSelected: (value) {
+                //                     currencyName = value;
 
-                                    setState(() {});
+                //                     setState(() {});
 
-                                    // mockSizeAdds!.forEach((element) {
-                                    //   return print(element.name);
-                                    // });
-                                  },
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
-                                    ),
-                                  ),
-                                  icon: SvgPicture.asset('assets/icons/dropdown.svg'),
-                                  position: PopupMenuPosition.under,
-                                  offset: const Offset(0, 0),
-                                  itemBuilder: (
-                                    BuildContext bc,
-                                  ) {
-                                    return const [
-                                      PopupMenuItem(
-                                        value: 'KZT',
-                                        child: Text(
-                                          'KZT',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        value: 'RUB',
-                                        child: Text(
-                                          'RUB',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ];
-                                  },
-                                )),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                //                     // mockSizeAdds!.forEach((element) {
+                //                     //   return print(element.name);
+                //                     // });
+                //                   },
+                //                   shape: const RoundedRectangleBorder(
+                //                     borderRadius: BorderRadius.all(
+                //                       Radius.circular(15.0),
+                //                     ),
+                //                   ),
+                //                   icon: SvgPicture.asset('assets/icons/dropdown.svg'),
+                //                   position: PopupMenuPosition.under,
+                //                   offset: const Offset(0, 0),
+                //                   itemBuilder: (
+                //                     BuildContext bc,
+                //                   ) {
+                //                     return const [
+                //                       PopupMenuItem(
+                //                         value: 'KZT',
+                //                         child: Text(
+                //                           'KZT',
+                //                           style: TextStyle(
+                //                             color: Colors.black,
+                //                           ),
+                //                         ),
+                //                       ),
+                //                       PopupMenuItem(
+                //                         value: 'RUB',
+                //                         child: Text(
+                //                           'RUB',
+                //                           style: TextStyle(
+                //                             color: Colors.black,
+                //                           ),
+                //                         ),
+                //                       ),
+                //                     ];
+                //                   },
+                //                 )),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+              
                 FieldsProductRequest(
                     titleText: 'Цена товара ',
                     hintText: 'Введите цену  ',
@@ -1273,7 +1274,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                 title: "Изменить фото",
                                 middleText: '',
                                 textConfirm: 'Камера',
-                                textCancel: 'Галерея',
+                                textCancel: 'Фото',
                                 titlePadding: const EdgeInsets.only(top: 40),
                                 onConfirm: () {
                                   change = true;
@@ -1358,7 +1359,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               title: "Изменить видео",
                               middleText: '',
                               textConfirm: 'Камера',
-                              textCancel: 'Галерея',
+                              textCancel: 'Фото',
                               titlePadding: const EdgeInsets.only(top: 40),
                               onConfirm: () {
                                 change = true;

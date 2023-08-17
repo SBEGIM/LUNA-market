@@ -74,8 +74,8 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
               height: 10,
             ),
             FieldsCoopRequest(
-              titleText: 'ИИН/БИН ',
-              hintText: 'Введите ИИН/БИН',
+              titleText: 'ИНН ',
+              hintText: 'Введите ИНН',
               star: false,
               arrow: false,
               controller: iinController,

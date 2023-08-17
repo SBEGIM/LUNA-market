@@ -69,7 +69,7 @@ class _BasketPageState extends State<BasketPage> {
       fulfillment = element.product!.fulfillment ?? 'fbs';
 
       productNames =
-          "${productNames != null ? "${productNames} ," : ''}  http://lunamarket.info/?product_id\u003d${element.product!.id}";
+          "${productNames != null ? "${productNames} ," : ''}  $kDeepLinkUrl/?product_id\u003d${element.product!.id}";
     }
 
     GetStorage().write('bottomCount', count);

@@ -11,35 +11,37 @@ import '../repository/ProductAdminRepo.dart';
 class ProductAdminCubit extends Cubit<ProductAdminState> {
   final ProductAdminRepository productAdminRepository;
 
-  ProductAdminCubit({required this.productAdminRepository})
-      : super(InitState());
+  ProductAdminCubit({required this.productAdminRepository}) : super(InitState());
 
   List<AdminProductsModel> productsList = [];
 
   int page = 1;
 
   Future<void> update(
-      String price,
-      String count,
-      String compound,
-      String catId,
-      String subCatId,
-      String brandId,
-      String colorId,
-      String description,
-      String name,
-      String height,
-      String width,
-      String massa,
-      String productId,
-      String articul,
-      String currency,
-      String deep,
-      List<dynamic> image,
-      List<optomPriceDto> optom,
-      List<sizeCountDto> size,
-      fulfillment,
-      String? video) async {
+    String price,
+    String count,
+    String compound,
+    String catId,
+    String subCatId,
+    String brandId,
+    String colorId,
+    String description,
+    String name,
+    String height,
+    String width,
+    String massa,
+    String productId,
+    String articul,
+    String currency,
+    String deep,
+    List<dynamic> image,
+    List<optomPriceDto> optom,
+    List<sizeCountDto> size,
+    fulfillment,
+    String? video,
+    String point,
+    String pointBlogger,
+  ) async {
     try {
       emit(LoadingState());
       final data = await productAdminRepository.update(
@@ -64,6 +66,8 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
         size,
         fulfillment,
         video,
+        point,
+        pointBlogger,
       );
 
       if (data == 200) {
@@ -72,13 +76,11 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль', backgroundColor: Colors.redAccent);
       }
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());
@@ -143,13 +145,11 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       }
       if (data == 400) {
         emit(LoadedState(productsList));
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль', backgroundColor: Colors.redAccent);
       }
       if (data == 500) {
         emit(LoadedState(productsList));
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());
@@ -161,8 +161,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
     try {
       page = 1;
       emit(LoadingState());
-      final List<AdminProductsModel> data =
-          await productAdminRepository.products(name, page);
+      final List<AdminProductsModel> data = await productAdminRepository.products(name, page);
       productsList.clear();
       data.forEach((element) {
         productsList.add(element);
@@ -178,8 +177,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
     try {
       page++;
       // emit(LoadingState());
-      final List<AdminProductsModel> data =
-          await productAdminRepository.products(name, page);
+      final List<AdminProductsModel> data = await productAdminRepository.products(name, page);
       // productsList.clear();
       // productsList.addAll(data);
       for (int i = 0; i < data.length; i++) {
@@ -205,8 +203,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
 
     if (data == 500) {
       emit(InitState());
-      Get.snackbar('Ошибка удаление', 'У продукта есть заказы',
-          backgroundColor: Colors.redAccent);
+      Get.snackbar('Ошибка удаление', 'У продукта есть заказы', backgroundColor: Colors.redAccent);
     }
 
     return data;

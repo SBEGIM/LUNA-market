@@ -26,6 +26,7 @@ class AdminProductsModel {
     List<String>? images,
     List<SizeDTO>? sizeV1,
     List<BlocDTO>? bloc,
+    int? pointBlogger,
   }) {
     _id = id;
     _catId = catId;
@@ -52,6 +53,7 @@ class AdminProductsModel {
     _path = path;
     _sizeV1 = sizeV1;
     _bloc = bloc;
+    _pointBlogger = pointBlogger;
   }
 
   AdminProductsModel.fromJson(dynamic json) {
@@ -85,6 +87,7 @@ class AdminProductsModel {
     _bloc = json['bloc'] != null
         ? (json['bloc'] as List).map((e) => BlocDTO.fromJson(e)).toList()
         : [];
+        _pointBlogger = json['point_blogger'];
   }
   int? _id;
   int? _catId;
@@ -112,6 +115,7 @@ class AdminProductsModel {
   List<String>? _images;
   List<SizeDTO>? _sizeV1;
   List<BlocDTO>? _bloc;
+    int? _pointBlogger;
 
   int? get id => _id;
   int? get catId => _catId;
@@ -139,6 +143,7 @@ class AdminProductsModel {
   List<String>? get images => _images;
   List<SizeDTO>? get sizeV1 => _sizeV1;
   List<BlocDTO>? get bloc => _bloc;
+  int? get pointBlogger => _pointBlogger;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -167,6 +172,7 @@ class AdminProductsModel {
     if (_path != null) {
       map['path'] = _path?.toJson();
     }
+    map['point_blogger'] = _pointBlogger;
     return map;
   }
 }

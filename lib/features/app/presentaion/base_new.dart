@@ -76,12 +76,12 @@ class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
           items: [
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                'assets/icons/tape.svg',
+                'assets/icons/reels.svg',
                 color: AppColors.kGray200,
               ),
               label: 'Лента',
               activeIcon: SvgPicture.asset(
-                'assets/icons/tape.svg',
+                'assets/icons/reels.svg',
                 color: AppColors.kPrimaryColor,
               ),
             ),

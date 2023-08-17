@@ -79,7 +79,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
 
         if (widget.fbs != true) courier += element.priceCourier!.toInt();
         productNames =
-            "${productNames != null ? "$productNames ," : ''}  http://lunamarket.info/?product_id\u003d${element.product!.id}";
+            "${productNames != null ? "$productNames ," : ''}  $kDeepLinkUrl/?product_id\u003d${element.product!.id}";
       }
       bs = (price * 0.05).toInt();
     }
@@ -621,128 +621,128 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                   )),
               const SizedBox(height: 1),
 
-              Container(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  height: 55,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Наличными',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Checkbox(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                        checkColor: Colors.white,
-                        activeColor: AppColors.kPrimaryColor,
-                        value: isCheckedCash,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            isCheckedTinkoff = false;
-                            isCheckedOnline = false;
-                            isCheckedCash = value!;
-                            isCheckedPart = false;
-                            isCheckedHalal = false;
-                          });
-                        },
-                      ),
-                    ],
-                  )),
-              const SizedBox(height: 1),
+              // Container(
+              //     padding: const EdgeInsets.only(left: 16, right: 16),
+              //     alignment: Alignment.center,
+              //     color: Colors.white,
+              //     height: 55,
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         const Text(
+              //           'Наличными',
+              //           style: TextStyle(
+              //             fontSize: 16,
+              //             fontWeight: FontWeight.w400,
+              //           ),
+              //         ),
+              //         Checkbox(
+              //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+              //           checkColor: Colors.white,
+              //           activeColor: AppColors.kPrimaryColor,
+              //           value: isCheckedCash,
+              //           onChanged: (bool? value) {
+              //             setState(() {
+              //               isCheckedTinkoff = false;
+              //               isCheckedOnline = false;
+              //               isCheckedCash = value!;
+              //               isCheckedPart = false;
+              //               isCheckedHalal = false;
+              //             });
+              //           },
+              //         ),
+              //       ],
+              //     )),
+              // const SizedBox(height: 1),
 
-              Container(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  height: 55,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Image.asset(
-                            'assets/icons/tinkoff2.png',
-                            height: 34,
-                            width: 34,
-                          ),
-                          const SizedBox(width: 8),
-                          const Text(
-                            'Рассрочка Тинькофф',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Checkbox(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                        checkColor: Colors.white,
-                        activeColor: AppColors.kPrimaryColor,
-                        value: isCheckedTinkoff,
-                        onChanged: (bool? value) {
-                          Get.snackbar('Нет доступа', 'данная оплата пока недоступно...',
-                              backgroundColor: Colors.orangeAccent);
-                          // setState(() {
-                          //   isCheckedTinkoff = value!;
-                          //   isCheckedPart = false;
-                          //   isCheckedHalal = false;
-                          // });
-                        },
-                      ),
-                    ],
-                  )),
-              const SizedBox(height: 1),
+              // Container(
+              //     padding: const EdgeInsets.only(left: 16, right: 16),
+              //     alignment: Alignment.center,
+              //     color: Colors.white,
+              //     height: 55,
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         Row(
+              //           children: [
+              //             Image.asset(
+              //               'assets/icons/tinkoff2.png',
+              //               height: 34,
+              //               width: 34,
+              //             ),
+              //             const SizedBox(width: 8),
+              //             const Text(
+              //               'Рассрочка Тинькофф',
+              //               style: TextStyle(
+              //                 fontSize: 16,
+              //                 fontWeight: FontWeight.w400,
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //         Checkbox(
+              //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+              //           checkColor: Colors.white,
+              //           activeColor: AppColors.kPrimaryColor,
+              //           value: isCheckedTinkoff,
+              //           onChanged: (bool? value) {
+              //             Get.snackbar('Нет доступа', 'данная оплата пока недоступно...',
+              //                 backgroundColor: Colors.orangeAccent);
+              //             // setState(() {
+              //             //   isCheckedTinkoff = value!;
+              //             //   isCheckedPart = false;
+              //             //   isCheckedHalal = false;
+              //             // });
+              //           },
+              //         ),
+              //       ],
+              //     )),
+              // const SizedBox(height: 1),
 
-              Container(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  height: 55,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Image.asset(
-                            'assets/icons/part.png',
-                            height: 34,
-                            width: 34,
-                          ),
-                          const SizedBox(width: 8),
-                          const Text(
-                            'Долями',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Checkbox(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                        checkColor: Colors.white,
-                        activeColor: AppColors.kPrimaryColor,
-                        value: isCheckedPart,
-                        onChanged: (bool? value) {
-                          Get.snackbar('Нет доступа', 'данная оплата пока недоступно...',
-                              backgroundColor: Colors.orangeAccent);
+              // Container(
+              //     padding: const EdgeInsets.only(left: 16, right: 16),
+              //     alignment: Alignment.center,
+              //     color: Colors.white,
+              //     height: 55,
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         Row(
+              //           children: [
+              //             Image.asset(
+              //               'assets/icons/part.png',
+              //               height: 34,
+              //               width: 34,
+              //             ),
+              //             const SizedBox(width: 8),
+              //             const Text(
+              //               'Долями',
+              //               style: TextStyle(
+              //                 fontSize: 16,
+              //                 fontWeight: FontWeight.w400,
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //         Checkbox(
+              //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+              //           checkColor: Colors.white,
+              //           activeColor: AppColors.kPrimaryColor,
+              //           value: isCheckedPart,
+              //           onChanged: (bool? value) {
+              //             Get.snackbar('Нет доступа', 'данная оплата пока недоступно...',
+              //                 backgroundColor: Colors.orangeAccent);
 
-                          // setState(() {
-                          //   isCheckedTinkoff = false;
-                          //   isCheckedPart = value!;
-                          //   isCheckedHalal = false;
-                          // });
-                        },
-                      ),
-                    ],
-                  )),
-              const SizedBox(height: 1),
+              //             // setState(() {
+              //             //   isCheckedTinkoff = false;
+              //             //   isCheckedPart = value!;
+              //             //   isCheckedHalal = false;
+              //             // });
+              //           },
+              //         ),
+              //       ],
+              //     )),
+              // const SizedBox(height: 1),
               Container(
                   padding: const EdgeInsets.only(left: 16, right: 16),
                   alignment: Alignment.center,
@@ -837,9 +837,11 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                 Get.to(CreditInfoDetailPage(
                   title: 'Рассрочка Halal',
                 ));
-              } else {
+              } else if (isCheckedOnline == true) {
                 BlocProvider.of<orderCubit.OrderCubit>(context)
                     .payment(address: widget.address.toString(), bonus: isSwitched == true ? bonus.toString() : '0');
+              } else {
+                Get.snackbar('Ошибка', 'Выберите способ оплаты', backgroundColor: Colors.redAccent);
               }
 
               // Navigator.pop(context);

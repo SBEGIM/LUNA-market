@@ -73,43 +73,43 @@ class _AboutUsPageState extends State<AboutUsPage> {
           const SizedBox(
             height: 10,
           ),
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Адрес',
-                  style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                // Container(
-                //   // height: 150,
-                //   color: AppColors.kBackgroundColor,
-                //   child: Image.asset('assets/images/map.png'),
-                // ),
-                // const SizedBox(
-                //   height: 8,
-                // ),
-                const Text(
-                  'Россия Чеченская республика, Грозный.',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.kGray700),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
+          // Container(
+          //   color: Colors.white,
+          //   padding: const EdgeInsets.all(16),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       const Text(
+          //         'Адрес',
+          //         style: TextStyle(
+          //             color: AppColors.kGray900,
+          //             fontSize: 16,
+          //             fontWeight: FontWeight.w700),
+          //       ),
+          //       const SizedBox(
+          //         height: 8,
+          //       ),
+          //       // Container(
+          //       //   // height: 150,
+          //       //   color: AppColors.kBackgroundColor,
+          //       //   child: Image.asset('assets/images/map.png'),
+          //       // ),
+          //       // const SizedBox(
+          //       //   height: 8,
+          //       // ),
+          //       const Text(
+          //         'Россия Чеченская республика, Грозный.',
+          //         style: TextStyle(
+          //             fontSize: 16,
+          //             fontWeight: FontWeight.w500,
+          //             color: AppColors.kGray700),
+          //       )
+          //     ],
+          //   ),
+          // ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
           Container(
             color: Colors.white,
             padding: const EdgeInsets.all(16),
@@ -334,7 +334,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                     ),
                     GestureDetector(
                         onTap: () async {
-                          await Share.share('http://lunamarket.info/');
+                          await Share.share('$kDeepLinkUrl/');
                         },
                         child: SvgPicture.asset(
                           'assets/icons/share.svg',

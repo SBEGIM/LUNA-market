@@ -31,7 +31,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
     count += widget.product.basketCount ?? 0;
     inFavorite = widget.product.inFavorite ?? false;
-    compoundPrice = widget.product.price! - ((widget.product.price! / 100) * (widget.product.compound ?? 1)).toInt();
+    compoundPrice = (widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100;
 
     setState(() {});
     // });
@@ -165,11 +165,11 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 0, bottom: 3),
+              Padding(
+                padding: const EdgeInsets.only(top: 0, bottom: 3),
                 child: Text(
-                  'Ноутбук',
-                  style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                  widget.product.catName ?? '',
+                  style: const TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
                 ),
               ),
               Row(
@@ -283,7 +283,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            ' ${widget.product.price ?? 0 / 3} ',
+                            ' ${compoundPrice ~/ 3} ',
                             style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
                           ),
                         ),

@@ -98,7 +98,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
     isvisible = widget.product.inBasket ?? false;
     inFavorite = widget.product.inFavorite ?? false;
 
-    productNames = "http://lunamarket.info/?product_id\u003d${widget.product!.id}";
+    productNames = "$kDeepLinkUrl/?product_id\u003d${widget.product!.id}";
     super.initState();
 
     compoundPrice = (widget.product.price!.toInt() - widget.product.compound!.toInt());
@@ -1459,7 +1459,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '${widget.product.price! - ((widget.product.price! * widget.product.compound!) / 100).toInt()} ₽',
+                                '${(widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100} ₽',
                                 style: const TextStyle(
                                     color: AppColors.kGray900, fontSize: 17, fontWeight: FontWeight.w700),
                               ),
@@ -1475,7 +1475,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Text(
-                                      '${(widget.product.price! - ((widget.product.price! * widget.product.compound!) / 100).toInt() / 3).round()}',
+                                      '${((widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100.toInt() / 3).round()}',
                                       style: const TextStyle(
                                           color: AppColors.kGray900, fontSize: 14, fontWeight: FontWeight.w500),
                                     ),

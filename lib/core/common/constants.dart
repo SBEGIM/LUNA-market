@@ -153,3 +153,5 @@ mixin AppDecorations {
     ),
   ];
 }
+
+const kDeepLinkUrl = 'http://lunamarket.ru';

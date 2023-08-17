@@ -118,6 +118,8 @@ class _EditProductPageState extends State<EditProductPage> {
   TextEditingController sizePriceController = TextEditingController();
   TextEditingController optomPriceController = TextEditingController();
   TextEditingController optomCountController = TextEditingController();
+  TextEditingController pointsController = TextEditingController();
+  TextEditingController pointsBloggerController = TextEditingController();
 
   Cats? cats;
   Cats? subCats;
@@ -202,6 +204,8 @@ class _EditProductPageState extends State<EditProductPage> {
         optomCount.add(optomPriceDto(price: (e.price ?? 0).toString(), count: (e.count ?? 0).toString()));
       }
     }
+    pointsController.text = widget.product.point != null ? widget.product.point.toString() : '0';
+    pointsBloggerController.text = widget.product.pointBlogger != null ? widget.product.pointBlogger.toString() : '0';
     super.initState();
   }
 
@@ -268,6 +272,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 star: false,
                 arrow: false,
                 controller: articulController,
+                readOnly: true,
               ),
               FieldsProductRequest(
                 titleText: 'Цена товара ',
@@ -283,6 +288,21 @@ class _EditProductPageState extends State<EditProductPage> {
                 arrow: false,
                 controller: compoundController,
               ),
+              FieldsProductRequest(
+                titleText: 'Накопительные баллы ,% ',
+                hintText: 'Введите размер балла',
+                star: true,
+                arrow: false,
+                controller: pointsController,
+                textInputNumber: true,
+              ),
+              FieldsProductRequest(
+                  titleText: 'Вознаграждение блогеру ,% ',
+                  hintText: 'Введите вознаграждение ',
+                  star: true,
+                  arrow: false,
+                  controller: pointsBloggerController,
+                  textInputNumber: true),
               FieldsProductRequest(
                 titleText: 'Категория ',
                 hintText: cats?.name ?? "",
@@ -1180,7 +1200,7 @@ class _EditProductPageState extends State<EditProductPage> {
                                 title: "Изменить фото",
                                 middleText: '',
                                 textConfirm: 'Камера',
-                                textCancel: 'Галерея',
+                                textCancel: 'Фото',
                                 titlePadding: const EdgeInsets.only(top: 40),
                                 onConfirm: () {
                                   change = true;
@@ -1267,7 +1287,7 @@ class _EditProductPageState extends State<EditProductPage> {
                             title: "Изменить видео",
                             middleText: '',
                             textConfirm: 'Камера',
-                            textCancel: 'Галерея',
+                            textCancel: 'Фото',
                             titlePadding: const EdgeInsets.only(top: 40),
                             onConfirm: () {
                               change = true;
@@ -1355,27 +1375,30 @@ class _EditProductPageState extends State<EditProductPage> {
                     }
 
                     BlocProvider.of<ProductAdminCubit>(context).update(
-                        priceController.text,
-                        countController.text,
-                        compoundController.text,
-                        cats?.id.toString() ?? cat_id.toString(),
-                        subCats?.id.toString() ?? sub_cat_id.toString(),
-                        brand_id.toString(),
-                        colors?.id.toString() ?? color_id.toString(),
-                        descriptionController.text,
-                        nameController.text,
-                        heightController.text,
-                        widthController.text,
-                        massaController.text,
-                        widget.product.id.toString(),
-                        articulController.text,
-                        '',
-                        deepController.text,
-                        _image,
-                        optomCount,
-                        sizeCount,
-                        fulfillment,
-                        _video != null ? _video!.path : null);
+                      priceController.text,
+                      countController.text,
+                      compoundController.text,
+                      cats?.id.toString() ?? cat_id.toString(),
+                      subCats?.id.toString() ?? sub_cat_id.toString(),
+                      brand_id.toString(),
+                      colors?.id.toString() ?? color_id.toString(),
+                      descriptionController.text,
+                      nameController.text,
+                      heightController.text,
+                      widthController.text,
+                      massaController.text,
+                      widget.product.id.toString(),
+                      articulController.text,
+                      '',
+                      deepController.text,
+                      _image,
+                      optomCount,
+                      sizeCount,
+                      fulfillment,
+                      _video != null ? _video!.path : null,
+                      pointsController.text,
+                      pointsBloggerController.text,
+                    );
                   }
                 },
                 child: Container(
@@ -1409,6 +1432,8 @@ class FieldsProductRequest extends StatefulWidget {
   final bool arrow;
   final TextEditingController? controller;
   final void Function()? onPressed;
+  final bool readOnly;
+  final bool? textInputNumber;
   const FieldsProductRequest({
     required this.hintText,
     required this.titleText,
@@ -1417,6 +1442,8 @@ class FieldsProductRequest extends StatefulWidget {
     this.controller,
     this.onPressed,
     Key? key,
+    this.readOnly = false,
+    this.textInputNumber,
   }) : super(key: key);
 
   @override
@@ -1458,8 +1485,11 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
             child: Padding(
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
+                readOnly: widget.readOnly,
                 controller: widget.controller,
-                keyboardType: TextInputType.text,
+                keyboardType: (widget.textInputNumber == false || widget.textInputNumber == null)
+                    ? TextInputType.text
+                    : const TextInputType.numberWithOptions(signed: true, decimal: true),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: widget.hintText,

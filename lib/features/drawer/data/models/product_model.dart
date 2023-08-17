@@ -28,6 +28,7 @@ class ProductModel {
     List<Shops>? shops,
     List<int>? review,
     int? total,
+    int? bloggerPoint,
   }) {
     _id = id;
     _catId = catId;
@@ -57,6 +58,7 @@ class ProductModel {
     _shops = shops;
     _review = review;
     _total = total;
+    _bloggerPoint = bloggerPoint;
   }
 
   ProductModel copyWith({
@@ -88,6 +90,7 @@ class ProductModel {
     List<Shops>? shops,
     List<int>? review,
     int? total,
+    int? bloggerPoint,
   }) {
     return ProductModel(
       id: id ?? this.id,
@@ -118,6 +121,7 @@ class ProductModel {
       shops: shops ?? this.shops,
       review: review ?? this.review,
       total: total ?? this.total,
+      bloggerPoint: bloggerPoint ?? this.bloggerPoint,
     );
   }
 
@@ -160,6 +164,7 @@ class ProductModel {
       });
     }
     _review = json['review'] != null ? json['review'].cast<int>() : [];
+    _bloggerPoint = json['point_blogger'];
   }
   int? _id;
   int? _catId;
@@ -189,6 +194,7 @@ class ProductModel {
   bool? _inFavorite;
   List<Shops>? _shops;
   List<int>? _review;
+  int? _bloggerPoint;
 
   int? get id => _id;
   int? get catId => _catId;
@@ -218,6 +224,7 @@ class ProductModel {
   bool? get inFavorite => _inFavorite;
   List<Shops>? get shops => _shops;
   List<int>? get review => _review;
+  int? get bloggerPoint => _bloggerPoint;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -253,6 +260,7 @@ class ProductModel {
       map['shops'] = _shops!.map((v) => v.toJson()).toList();
     }
     map['review'] = _review;
+    map['blogger_point'] = _bloggerPoint;
     return map;
   }
 }

@@ -104,7 +104,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           title: "Изменить фото",
                           middleText: '',
                           textConfirm: 'Камера',
-                          textCancel: 'Галерея',
+                          textCancel: 'Фото',
                           titlePadding: const EdgeInsets.only(top: 40),
                           onConfirm: () {
                             change = true;

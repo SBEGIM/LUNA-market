@@ -148,7 +148,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       title: "Изменить фото",
                       middleText: '',
                       textConfirm: 'Камера',
-                      textCancel: 'Галерея',
+                      textCancel: 'Фото',
                       titlePadding: const EdgeInsets.only(top: 40),
                       onConfirm: () {
                         change = true;
