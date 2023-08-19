@@ -22,7 +22,7 @@ class _BrandsAdminPageState extends State<BrandsAdminPage> {
 
   @override
   void initState() {
-    BlocProvider.of<BrandCubit>(context).brands();
+    BlocProvider.of<BrandCubit>(context).brands(hasNotSpecified: true);
     super.initState();
   }
 

@@ -465,47 +465,53 @@ class _VideosState extends State<Videos> {
   @override
   Widget build(BuildContext context) {
     return _controller!.value.isInitialized
-        ? GestureDetector(
-            onTap: () {
-              _controller!.value.isPlaying
-                  ? _controller!.pause()
-                  : _controller!.play();
-            },
-            child: SizedBox(
-                height: double.infinity,
-                width: double.infinity,
-                child: AspectRatio(
-                    aspectRatio: _controller!.value.aspectRatio,
-                    child: Stack(
-                      children: [
-                        VisibilityDetector(
-                            key: ObjectKey(_controller),
-                            onVisibilityChanged: (info) {
-                              if (!mounted) return;
-                              if (info.visibleFraction == 0) {
-                                _controller?.pause(); //pausing  functionality
-                              } else {
-                                _controller?.play();
-                              }
-                            },
-                            child: VideoPlayer(_controller!)),
-                        Container(
-                          alignment: Alignment.bottomCenter,
-                          padding: EdgeInsets.only(
-                              bottom:
-                                  MediaQuery.of(context).size.height * 0.10),
-                          child: VideoProgressIndicator(_controller!,
-                              allowScrubbing: true),
-                        ),
-                        icon
-                            ? Center(
-                                child: SvgPicture.asset(
-                                'assets/icons/play_tape.svg',
-                                color: const Color.fromRGBO(29, 196, 207, 1),
-                              ))
-                            : Container(),
-                      ],
-                    ))))
+        ?Stack(
+            children: [
+              SizedBox.expand(
+                child: FittedBox(
+                  alignment: Alignment.center,
+                  fit: BoxFit.fitWidth,
+                  child: GestureDetector(
+                      onTap: () {
+                        _controller!.value.isPlaying ? _controller!.pause() : _controller!.play();
+                      },
+                      child: SizedBox(
+                          height: _controller?.value.size.height,
+                          width: _controller?.value.size.width,
+                          child: AspectRatio(
+                              aspectRatio: _controller!.value.aspectRatio,
+                              child: VisibilityDetector(
+                                  key: ObjectKey(_controller),
+                                  onVisibilityChanged: (info) {
+                                    if (!mounted) return;
+                                    if (info.visibleFraction == 0) {
+                                      _controller?.pause(); //pausing  functionality
+                                    } else {
+                                      _controller?.play();
+                                    }
+                                  },
+                                  child: VideoPlayer(_controller!))))),
+                ),
+              ),
+              icon
+                  ? GestureDetector(
+                      onTap: () {
+                        _controller!.value.isPlaying ? _controller!.pause() : _controller!.play();
+                      },
+                      child: Center(
+                          child: SvgPicture.asset(
+                        'assets/icons/play_tape.svg',
+                        color: const Color.fromRGBO(29, 196, 207, 1),
+                      )),
+                    )
+                  : Container(),
+              Container(
+                alignment: Alignment.bottomCenter,
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11),
+                child: VideoProgressIndicator(_controller!, allowScrubbing: true),
+              ),
+            ],
+          )
         : const Center(
             child: CircularProgressIndicator(color: Colors.blueAccent));
   }

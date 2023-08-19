@@ -11,6 +11,7 @@ import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/shimmer_box.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart' as productAdCubit;
 import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart' as productAdState;
+import 'package:haji_market/features/drawer/presentation/widgets/advert_bottom_sheet.dart';
 import 'package:haji_market/features/home/data/bloc/banners_cubit.dart' as bannerCubit;
 import 'package:haji_market/features/home/data/bloc/banners_state.dart' as bannerState;
 import 'package:haji_market/features/home/data/bloc/partner_cubit.dart' as partnerCubit;
@@ -106,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
 //Get.to(const SearchProductPage());
 
-                    context.router.push(SearchProductRoute());
+                    context.router.push(const SearchProductRoute());
                   },
                   child: SvgPicture.asset('assets/icons/search.svg')))
         ],
@@ -737,7 +738,7 @@ class _BannersState extends State<Banners> {
 
             // Shimmer(
             //   duration: const Duration(seconds: 3), //Default value
-            //   interval: const Duration(microseconds: 1), //Default value: Duration(seconds: 0)
+            //   interval: const Duration(microseconds: 1), //Default Рекvalue: Duration(seconds: 0)
             //   color: Colors.white, //Default value
             //   colorOpacity: 0, //Default value
             //   enabled: true, //Default value
@@ -842,6 +843,46 @@ class BannerImage extends StatelessWidget {
                 //     textAlign: TextAlign.center,
                 //   ),
                 // ),
+
+
+                Positioned(
+                  right: 20,
+                  bottom: 20,
+                  child: 
+                    GestureDetector(
+                      onTap: () async {
+                        await showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          isScrollControlled: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          isDismissible: true,
+                          builder: (context) {
+                            return const AdvertBottomSheet();
+                          },
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(6)),
+                        child: const Padding(
+                          padding: EdgeInsets.only(
+                              left: 4.0, right: 4, top: 4, bottom: 4),
+                          child: Text(
+                            'РЕКЛАМА',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                      ),
+                    ),
+                )
                 //   Positioned(
                 //     right: 20,
                 //     bottom: 20,
@@ -1062,7 +1103,7 @@ class _PopularShopsState extends State<PopularShops> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  color: Color.fromARGB(15, 227, 9, 9),
+                                  color: const Color.fromARGB(15, 227, 9, 9),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

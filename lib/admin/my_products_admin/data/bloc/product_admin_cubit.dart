@@ -94,7 +94,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       String compound,
       String catId,
       String subCatId,
-      String brandId,
+      String? brandId,
       String colorId,
       String description,
       String name,

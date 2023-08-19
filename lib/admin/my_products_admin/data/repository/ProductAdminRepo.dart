@@ -17,7 +17,7 @@ class ProductAdminRepository {
           String compound,
           String catId,
           String subCatId,
-          String brandId,
+          String? brandId,
           String colorId,
           String description,
           String name,
@@ -64,7 +64,7 @@ class ProductAdminRepository {
     String pointBlogger,
   ) =>
       _productToApi.update(price, count, compound, catId, subCatId, brandId, colorId, description, name, height, width,
-          massa, productId, articul, currency, deep, image, optom, size, fulfillment, video,point,pointBlogger);
+          massa, productId, articul, currency, deep, image, optom, size, fulfillment, video, point, pointBlogger);
 
   Future<dynamic> delete(String productId) => _productToApi.delete(productId);
 
@@ -88,7 +88,7 @@ class ProductToApi {
       String compound,
       String catId,
       String subCatId,
-      String brandId,
+      String? brandId,
       String colorId,
       String description,
       String name,
@@ -122,7 +122,7 @@ class ProductToApi {
         'cat_id': catId,
         'sub_cat_id': subCatId,
         'color_id': colorId,
-        'brand_id': brandId,
+        if (brandId != null) 'brand_id': brandId,
         'description': description,
         'height': height,
         'width': width,

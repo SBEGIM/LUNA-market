@@ -1453,7 +1453,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   compoundController.text,
                   cats!.id.toString(),
                   subCats!.id.toString(),
-                  brands!.id.toString(),
+                  brands?.id==null?null:brands?.id.toString(),
                   colors!.id.toString(),
                   descriptionController.text,
                   nameController.text,

@@ -12,16 +12,20 @@ class BrandCubit extends Cubit<BrandState> {
 
   Future<void> brands({
     int? subCatId,
+    bool hasNotSpecified = false,
   }) async {
     try {
       emit(LoadingState());
       final List<Cats> data =
           await brandRepository.brandApi(subCatId: subCatId);
       _brands = data;
+      if(hasNotSpecified){
+        _brands.insert(0, Cats(name: 'Не определен'));
+      }
       if (_brands.isEmpty) {
         emit(NoDataState());
       } else {
-        emit(LoadedState(data));
+        emit(LoadedState(_brands));
       }
     } catch (e) {
       log(e.toString());
