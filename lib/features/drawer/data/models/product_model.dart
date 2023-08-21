@@ -15,6 +15,7 @@ class ProductModel {
     List<String>? size,
     List<String>? color,
     List<Bloc>? bloc,
+    List<Characteristic>? characteristics,
     List<String>? path,
     String? video,
     Shop? shop,
@@ -45,6 +46,7 @@ class ProductModel {
     _size = size;
     _color = color;
     _bloc = bloc;
+    _characteristics = characteristics;
     _path = path;
     _video = video;
     _shop = shop;
@@ -77,6 +79,7 @@ class ProductModel {
     List<String>? size,
     List<String>? color,
     List<Bloc>? bloc,
+    List<Characteristic>? characteristics,
     List<String>? path,
     String? video,
     Shop? shop,
@@ -108,6 +111,7 @@ class ProductModel {
       size: size ?? this.size,
       color: color ?? this.color,
       bloc: bloc ?? this.bloc,
+      characteristics: characteristics ?? this.characteristics,
       path: path ?? this.path,
       video: video ?? this.video,
       shop: shop ?? this.shop,
@@ -146,6 +150,13 @@ class ProductModel {
         _bloc!.add(Bloc.fromJson(v));
       });
     }
+    if (json['characteristics'] != null) {
+      _characteristics = [];
+      json['characteristics'].forEach((v) {
+        _characteristics!.add(Characteristic.fromJson(v));
+      });
+    }
+
     _path = json['path'] != null ? json['path'].cast<String>() : [];
     _video = json['video'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
@@ -181,6 +192,7 @@ class ProductModel {
   List<String>? _size;
   List<String>? _color;
   List<Bloc>? _bloc;
+  List<Characteristic>? _characteristics;
   List<String>? _path;
   String? _video;
   Shop? _shop;
@@ -211,6 +223,7 @@ class ProductModel {
   List<String>? get size => _size;
   List<String>? get color => _color;
   List<Bloc>? get bloc => _bloc;
+  List<Characteristic>? get characteristics => _characteristics;
   List<String>? get path => _path;
   String? get video => _video;
   Shop? get shop => _shop;
@@ -243,6 +256,7 @@ class ProductModel {
     map['size'] = _size;
     map['color'] = _color;
     map['bloc'] = _bloc;
+    map['characteristics'] = _characteristics;
     map['path'] = _path;
     if (_shop != null) {
       map['shop'] = _shop!.toJson();
@@ -404,6 +418,40 @@ class Bloc {
     final map = <String, dynamic>{};
     map['count'] = _count;
     map['price'] = _price;
+
+    return map;
+  }
+}
+
+class Characteristic {
+  Characteristic({
+    int? id,
+    String? name,
+    String? value,
+  }) {
+    _id = id;
+    _name = name;
+    _value = value;
+  }
+
+  Characteristic.fromJson(dynamic json) {
+    _id = json['id'];
+    _name = json['name'];
+    _value = json['value'];
+  }
+  int? _id;
+  String? _name;
+  String? _value;
+
+  int? get id => _id;
+  String? get name => _name;
+  String? get value => _value;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['name'] = _name;
+    map['value'] = _value;
 
     return map;
   }

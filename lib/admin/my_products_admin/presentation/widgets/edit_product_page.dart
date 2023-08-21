@@ -204,6 +204,7 @@ class _EditProductPageState extends State<EditProductPage> {
     }
     pointsController.text = widget.product.point != null ? widget.product.point.toString() : '0';
     pointsBloggerController.text = widget.product.pointBlogger != null ? widget.product.pointBlogger.toString() : '0';
+
     super.initState();
   }
 
@@ -227,6 +228,10 @@ class _EditProductPageState extends State<EditProductPage> {
 
     subCharacteristics = await BlocProvider.of<CharacteristicsCubit>(context).subCharacteristic();
 
+    widget.product.characteristics?.forEach((element) {
+      characteristicsValue?.add(Characteristics(id: element.id, key: element.name));
+      subCharacteristicsValue?.add(Characteristics(id: element.id, value: element.value));
+    });
     setState(() {});
     // if ((widget.product.sizeV1 ?? []).isNotEmpty) {
     //   for (final SizeDTO e in widget.product.sizeV1 ?? []) {
@@ -1408,7 +1413,7 @@ class _EditProductPageState extends State<EditProductPage> {
                       _video != null ? _video!.path : null,
                       pointsController.text,
                       pointsBloggerController.text,
-                      subCharacteristicsValue?.map((e) => e.id ?? 0).toList(),
+                      subIds,
                     );
                   }
                 },

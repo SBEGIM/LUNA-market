@@ -185,6 +185,7 @@ class ProductToApi {
         'fulfillment': fulfillment
       };
 
+      Map<String, String> tokenSeller = {"Authorization": "Bearer $token"};
       Map<String, dynamic> queryParams = {};
       Map<String, dynamic> blocc = {};
       Map<String, dynamic> sizes = {};
@@ -206,6 +207,7 @@ class ProductToApi {
         }
       }
 
+      queryParams.addAll(tokenSeller);
       queryParams.addAll(blocc);
       queryParams.addAll(sizes);
       queryParams.addAll(subCharacteristicIds);
@@ -300,6 +302,9 @@ class ProductToApi {
       'POST',
       Uri.parse('$baseUrl/seller/product/update'),
     );
+    Map<String, String> tokenSeller = {"Authorization": "Bearer $token"};
+
+    request.headers.addAll(tokenSeller);
 
     if (image != null) {
       image.forEach((element) async {
@@ -317,15 +322,16 @@ class ProductToApi {
     request.fields.addAll(body);
     Map<String, String> blocc = {};
     Map<String, String> sizes = {};
-    Map<String, String> subIds = {};
+    Map<String, String> subCharacteristicIds = {};
 
     for (var i = 0; i < optom.length; i++) {
       blocc['bloc[$i][count]'] = optom[i].count;
       blocc['bloc[$i][price]'] = optom[i].price;
     }
     if (subIds?.isNotEmpty ?? false) {
+      print('subIDs');
       for (var i = 0; i < subIds!.length; i++) {
-        subIds['sub_characteristic_ids[]'] = subIds[i]!;
+        subCharacteristicIds['sub_characteristic_ids[]'] = subIds[i].toString();
       }
     }
 
@@ -336,7 +342,7 @@ class ProductToApi {
 
     request.fields.addAll(blocc);
     request.fields.addAll(sizes);
-    request.fields.addAll(subIds);
+    request.fields.addAll(subCharacteristicIds);
 
     final http.StreamedResponse response = await request.send();
     final respStr = await response.stream.bytesToString();
