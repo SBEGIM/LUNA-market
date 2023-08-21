@@ -318,7 +318,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 //     ],
                 //   ),
                 // ),
-              
+
                 FieldsProductRequest(
                     titleText: 'Цена товара ',
                     hintText: 'Введите цену  ',
@@ -676,11 +676,13 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                             style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                                           ),
                                           PopupMenuButton(
-                                            onSelected: (value) {
+                                            onSelected: (value) async {
                                               characteristicsValuelast = Characteristics(id: value.id, key: value.key);
                                               //sizeId = value.id.toString();
                                               characteristicId = value.id.toString();
                                               characteristicName = value.key ?? 'Пустое';
+                                              subCharacteristics = await BlocProvider.of<CharacteristicsCubit>(context)
+                                                  .subCharacteristic(id: value.id.toString());
                                               setState(() {});
                                             },
                                             shape: const RoundedRectangleBorder(
@@ -1429,6 +1431,13 @@ class _CreateProductPageState extends State<CreateProductPage> {
         padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
         child: InkWell(
           onTap: () async {
+            List<int> subIds = [];
+
+            if (subCharacteristicsValue?.isNotEmpty ?? false) {
+              subCharacteristicsValue!.forEach((e) => {subIds.add(e.id!)});
+              print(subIds.toString());
+            }
+
             isChangeState = true;
             if (_image.isNotEmpty &&
                 nameController.text.isNotEmpty &&
@@ -1453,7 +1462,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   compoundController.text,
                   cats!.id.toString(),
                   subCats!.id.toString(),
-                  brands?.id==null?null:brands?.id.toString(),
+                  brands?.id == null ? null : brands?.id.toString(),
                   colors!.id.toString(),
                   descriptionController.text,
                   nameController.text,
@@ -1470,6 +1479,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   optomCount,
                   sizeCount,
                   fulfillment,
+                  subIds,
                   _video != null ? _video!.path : null);
             } else {
               Get.snackbar("Ошибка", "Заполните данные", backgroundColor: Colors.orangeAccent);

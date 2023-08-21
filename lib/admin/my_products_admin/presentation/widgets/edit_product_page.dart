@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/admin/my_products_admin/data/DTO/characteristic_count_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/optom_price_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/size_count_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/characteristics_cubit.dart';
@@ -605,11 +603,14 @@ class _EditProductPageState extends State<EditProductPage> {
                                           style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                                         ),
                                         PopupMenuButton(
-                                          onSelected: (value) {
+                                          onSelected: (value) async {
                                             characteristicsValuelast = Characteristics(id: value.id, key: value.key);
                                             //sizeId = value.id.toString();
                                             characteristicId = value.id.toString();
                                             characteristicName = value.key ?? 'Пустое';
+                                            subCharacteristics = await BlocProvider.of<CharacteristicsCubit>(context)
+                                                .subCharacteristic(id: value.id.toString());
+
                                             setState(() {});
                                           },
                                           shape: const RoundedRectangleBorder(
@@ -667,8 +668,11 @@ class _EditProductPageState extends State<EditProductPage> {
 
                                             // subCharacteristicsValue!.add(value as Characteristics);
                                             //sizeId = value.id.toString();
+
                                             subCharacteristicId = value.id.toString();
                                             subCharacteristicName = value.value ?? 'Пустое';
+
+                                            subCharacteristics;
                                             setState(() {});
                                           },
                                           shape: const RoundedRectangleBorder(

@@ -25,10 +25,10 @@ class CharacteristicsCubit extends Cubit<CharacteristicsState> {
     return null;
   }
 
-  Future<List<Characteristics>?> subCharacteristic() async {
+  Future<List<Characteristics>?> subCharacteristic({id}) async {
     try {
       emit(LoadingState());
-      final List<Characteristics> data = await characteristicRepository.subGet();
+      final List<Characteristics> data = await characteristicRepository.subGet(id);
       _characteristics = data;
       emit(LoadedState(data));
       return _characteristics;

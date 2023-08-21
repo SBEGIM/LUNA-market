@@ -111,6 +111,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
       List<optomPriceDto> optom,
       List<sizeCountDto> size,
       fulfillment,
+      List<int>? subIds,
       String? video) async {
     try {
       emit(LoadingState());
@@ -137,6 +138,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
           optom,
           size,
           fulfillment,
+          subIds,
           video);
 
       if (data == 200) {

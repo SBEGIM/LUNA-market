@@ -3,17 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/admin/profile_admin/presentation/widgets/about_shop_admin_page.dart';
 import 'package:haji_market/admin/profile_admin/presentation/widgets/statistics_admin_show_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
-import 'package:haji_market/features/app/presentaion/base.dart';
-import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../../bloger/auth/presentation/ui/login_admin_page.dart';
 import '../../../../features/drawer/presentation/ui/about_us_page.dart';
-import '../../../auth/presentation/ui/admin_auth_page.dart';
 import '../../data/bloc/profile_statics_admin_cubit.dart';
 import '../../data/bloc/profile_statics_admin_state.dart';
 import '../widgets/reqirect_profile_page.dart';
@@ -93,9 +87,31 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                   MaterialPageRoute(builder: (context) => const ReqirectProfilePage()),
                 );
               },
-              child: const Text(
-                'Редактирование',
-                style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w400),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 5),
+                  Text(
+                    'Редактирование',
+                    style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Color(0xff42BB5D),
+                        size: 18,
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        'Партнер',
+                        style: TextStyle(color: Color(0xff42BB5D), fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

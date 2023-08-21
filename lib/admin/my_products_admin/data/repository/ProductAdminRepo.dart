@@ -34,9 +34,33 @@ class ProductAdminRepository {
           List<optomPriceDto> optom,
           List<sizeCountDto> size,
           fulfillment,
+          List<int>? subIds,
           String? video) =>
-      _productToApi.store(price, count, compound, catId, subCatId, brandId, colorId, description, name, height, width,
-          massa, point, pointBlogger, articul, currency, isSwitchedBs, deep, image, optom, size, fulfillment, video);
+      _productToApi.store(
+          price,
+          count,
+          compound,
+          catId,
+          subCatId,
+          brandId,
+          colorId,
+          description,
+          name,
+          height,
+          width,
+          massa,
+          point,
+          pointBlogger,
+          articul,
+          currency,
+          isSwitchedBs,
+          deep,
+          image,
+          optom,
+          size,
+          fulfillment,
+          subIds,
+          video);
 
   Future<dynamic> update(
     String price,
@@ -105,6 +129,7 @@ class ProductToApi {
       List<optomPriceDto> optom,
       List<sizeCountDto> size,
       String fulfillment,
+      List<int>? subIds,
       String? video) async {
     try {
       final sellerId = _box.read('seller_id');
@@ -139,6 +164,7 @@ class ProductToApi {
       Map<String, dynamic> queryParams = {};
       Map<String, dynamic> blocc = {};
       Map<String, dynamic> sizes = {};
+      Map<String, dynamic> subCharacteristicIds = {};
 
       List<Map<String, dynamic>> blocMapList = [];
 
@@ -150,9 +176,15 @@ class ProductToApi {
         sizes['size[$i][id]'] = size[i].id;
         sizes['size[$i][count]'] = size[i].count;
       }
+      if (subIds?.isNotEmpty ?? false) {
+        for (var i = 0; i < subCharacteristicIds!.length; i++) {
+          subCharacteristicIds['sub_characteristic_ids[]'] = subCharacteristicIds[i];
+        }
+      }
 
       queryParams.addAll(blocc);
       queryParams.addAll(sizes);
+      queryParams.addAll(subCharacteristicIds);
 
       final request = http.MultipartRequest(
           'POST',
