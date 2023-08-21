@@ -1435,7 +1435,6 @@ class _CreateProductPageState extends State<CreateProductPage> {
 
             if (subCharacteristicsValue?.isNotEmpty ?? false) {
               subCharacteristicsValue!.forEach((e) => {subIds.add(e.id!)});
-              print(subIds.toString());
             }
 
             isChangeState = true;

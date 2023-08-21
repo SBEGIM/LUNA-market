@@ -86,9 +86,33 @@ class ProductAdminRepository {
     String? video,
     String point,
     String pointBlogger,
+    List<int>? subIds,
   ) =>
-      _productToApi.update(price, count, compound, catId, subCatId, brandId, colorId, description, name, height, width,
-          massa, productId, articul, currency, deep, image, optom, size, fulfillment, video, point, pointBlogger);
+      _productToApi.update(
+          price,
+          count,
+          compound,
+          catId,
+          subCatId,
+          brandId,
+          colorId,
+          description,
+          name,
+          height,
+          width,
+          massa,
+          productId,
+          articul,
+          currency,
+          deep,
+          image,
+          optom,
+          size,
+          fulfillment,
+          video,
+          point,
+          pointBlogger,
+          subIds);
 
   Future<dynamic> delete(String productId) => _productToApi.delete(productId);
 
@@ -177,8 +201,8 @@ class ProductToApi {
         sizes['size[$i][count]'] = size[i].count;
       }
       if (subIds?.isNotEmpty ?? false) {
-        for (var i = 0; i < subCharacteristicIds!.length; i++) {
-          subCharacteristicIds['sub_characteristic_ids[]'] = subCharacteristicIds[i];
+        for (var i = 0; i < subIds!.length; i++) {
+          subCharacteristicIds['sub_characteristic_ids[]'] = subIds[i];
         }
       }
 
@@ -221,30 +245,30 @@ class ProductToApi {
   }
 
   Future<dynamic> update(
-    String price,
-    String count,
-    String compound,
-    String catId,
-    String subCatId,
-    String brandId,
-    String colorId,
-    String description,
-    String name,
-    String height,
-    String width,
-    String massa,
-    String productId,
-    String articul,
-    String currency,
-    String deep,
-    List<dynamic>? image,
-    List<optomPriceDto> optom,
-    List<sizeCountDto> size,
-    String fulfillment,
-    String? video,
-    String point,
-    String pointBlogger,
-  ) async {
+      String price,
+      String count,
+      String compound,
+      String catId,
+      String subCatId,
+      String brandId,
+      String colorId,
+      String description,
+      String name,
+      String height,
+      String width,
+      String massa,
+      String productId,
+      String articul,
+      String currency,
+      String deep,
+      List<dynamic>? image,
+      List<optomPriceDto> optom,
+      List<sizeCountDto> size,
+      String fulfillment,
+      String? video,
+      String point,
+      String pointBlogger,
+      List<int>? subIds) async {
     final sellerId = _box.read('seller_id');
     final token = _box.read('seller_token');
 
@@ -293,11 +317,18 @@ class ProductToApi {
     request.fields.addAll(body);
     Map<String, String> blocc = {};
     Map<String, String> sizes = {};
+    Map<String, String> subIds = {};
 
     for (var i = 0; i < optom.length; i++) {
       blocc['bloc[$i][count]'] = optom[i].count;
       blocc['bloc[$i][price]'] = optom[i].price;
     }
+    if (subIds?.isNotEmpty ?? false) {
+      for (var i = 0; i < subIds!.length; i++) {
+        subIds['sub_characteristic_ids[]'] = subIds[i]!;
+      }
+    }
+
     for (var i = 0; i < size.length; i++) {
       sizes['size[$i][id]'] = size[i].id;
       sizes['size[$i][count]'] = size[i].count;
@@ -305,6 +336,7 @@ class ProductToApi {
 
     request.fields.addAll(blocc);
     request.fields.addAll(sizes);
+    request.fields.addAll(subIds);
 
     final http.StreamedResponse response = await request.send();
     final respStr = await response.stream.bytesToString();

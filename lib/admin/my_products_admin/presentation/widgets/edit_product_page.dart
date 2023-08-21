@@ -1378,6 +1378,12 @@ class _EditProductPageState extends State<EditProductPage> {
                       }
                     }
 
+                    List<int> subIds = [];
+
+                    if (subCharacteristicsValue?.isNotEmpty ?? false) {
+                      subCharacteristicsValue!.forEach((e) => {subIds.add(e.id!)});
+                    }
+
                     BlocProvider.of<ProductAdminCubit>(context).update(
                       priceController.text,
                       countController.text,
@@ -1402,6 +1408,7 @@ class _EditProductPageState extends State<EditProductPage> {
                       _video != null ? _video!.path : null,
                       pointsController.text,
                       pointsBloggerController.text,
+                      subCharacteristicsValue?.map((e) => e.id ?? 0).toList(),
                     );
                   }
                 },
