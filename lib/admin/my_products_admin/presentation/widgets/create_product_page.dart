@@ -1110,6 +1110,11 @@ class _CreateProductPageState extends State<CreateProductPage> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              if (GetStorage().read('seller_partner') != '1') {
+                                Get.snackbar('Ошибка оптом', 'У вас нет партнерство',
+                                    backgroundColor: Colors.redAccent);
+                                return;
+                              }
                               if (optomPriceController.text.isNotEmpty) {
                                 bool exists = false;
 
@@ -1141,8 +1146,11 @@ class _CreateProductPageState extends State<CreateProductPage> {
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(horizontal: 10),
-                              decoration:
-                                  BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(8)),
+                              decoration: BoxDecoration(
+                                  color: GetStorage().read('seller_partner') == '1'
+                                      ? AppColors.kPrimaryColor
+                                      : Colors.grey,
+                                  borderRadius: BorderRadius.circular(8)),
                               alignment: Alignment.center,
                               width: 102,
                               height: 38,
