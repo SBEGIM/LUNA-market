@@ -87,30 +87,32 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                   MaterialPageRoute(builder: (context) => const ReqirectProfilePage()),
                 );
               },
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 5),
-                  Text(
+                  const SizedBox(height: 5),
+                  const Text(
                     'Редактирование',
                     style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w400),
                   ),
-                  SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.check_circle,
-                        color: Color(0xff42BB5D),
-                        size: 18,
-                      ),
-                      SizedBox(width: 5),
-                      Text(
-                        'Партнер',
-                        style: TextStyle(color: Color(0xff42BB5D), fontSize: 14, fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
+                  const SizedBox(height: 5),
+                  GetStorage().read('seller_partner') == '1'
+                      ? const Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle,
+                              color: Color(0xff42BB5D),
+                              size: 18,
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              'Партнер',
+                              style: TextStyle(color: Color(0xff42BB5D), fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        )
+                      : const SizedBox(),
                 ],
               ),
             ),

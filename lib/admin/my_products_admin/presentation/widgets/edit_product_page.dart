@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/optom_price_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/size_count_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/characteristics_cubit.dart';
@@ -967,6 +968,29 @@ class _EditProductPageState extends State<EditProductPage> {
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 10),
+                    GetStorage().read('seller_partner') == '1'
+                        ? Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(color: Color(0xff42BB5D), borderRadius: BorderRadius.circular(8)),
+                            alignment: Alignment.center,
+                            // width: 343,
+                            height: 38,
+                            child: const Row(
+                              children: [
+                                Icon(
+                                  Icons.check_circle,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  'У вас есть партнерство с этой компанией.',
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          )
+                        : const SizedBox(),
                     Row(
                       children: [
                         Container(
@@ -1116,7 +1140,7 @@ class _EditProductPageState extends State<EditProductPage> {
                       );
                     })),
               ),
-
+              const SizedBox(height: 10),
               const Text(
                 'Изоброжения товара',
                 style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),

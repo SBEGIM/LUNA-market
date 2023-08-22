@@ -9,8 +9,7 @@ const baseUrl = 'http://185.116.193.73/api';
 class LoginAdminRepository {
   final LoginToApi _loginToApi = LoginToApi();
 
-  Future<dynamic> login(String name, String password) =>
-      _loginToApi.login(name, password);
+  Future<dynamic> login(String name, String password) => _loginToApi.login(name, password);
 }
 
 class LoginToApi {
@@ -25,12 +24,8 @@ class LoginToApi {
       deviceType = 'android';
     }
 
-    final response = await http.post(Uri.parse('$baseUrl/seller/login'), body: {
-      'name': name,
-      'password': password,
-      'device_token': deviceToken.toString(),
-      'device_type': deviceType
-    });
+    final response = await http.post(Uri.parse('$baseUrl/seller/login'),
+        body: {'name': name, 'password': password, 'device_token': deviceToken.toString(), 'device_type': deviceType});
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       _box.write('seller_token', data['token'].toString());
@@ -45,6 +40,7 @@ class LoginToApi {
       _box.write('seller_street', data['street'].toString());
       _box.write('seller_iin', data['iin'].toString());
       _box.write('seller_check', data['check'].toString());
+      _box.write('seller_partner', data['partner'].toString());
       _box.write('seller_userName', data['user_name'].toString());
     }
     return response.statusCode;
