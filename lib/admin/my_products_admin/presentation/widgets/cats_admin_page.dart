@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
-import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart'
-    as subCatCubit;
-
+import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart' as subCatCubit;
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../../features/home/data/bloc/cats_cubit.dart';
 import '../../../../features/home/data/bloc/cats_state.dart';
@@ -66,9 +64,7 @@ class _CatsAdminPageState extends State<CatsAdminPage> {
                     );
                   }
                   if (state is LoadingState) {
-                    return const Center(
-                        child: CircularProgressIndicator(
-                            color: Colors.indigoAccent));
+                    return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                   }
                   if (state is LoadedState) {
                     return Column(children: [
@@ -76,8 +72,7 @@ class _CatsAdminPageState extends State<CatsAdminPage> {
                         color: Colors.grey.shade400,
                       ),
                       ListView.separated(
-                        separatorBuilder: (BuildContext context, int index) =>
-                            Divider(
+                        separatorBuilder: (BuildContext context, int index) => Divider(
                           color: Colors.grey.shade400,
                         ),
                         physics: const NeverScrollableScrollPhysics(),
@@ -93,9 +88,8 @@ class _CatsAdminPageState extends State<CatsAdminPage> {
                                         _selectedIndex = -1;
                                       });
                                     } else {
-                                      await BlocProvider.of<
-                                              subCatCubit.SubCatsCubit>(context)
-                                          .subCats(state.cats[index].id,isAddAllProducts: false);
+                                      await BlocProvider.of<subCatCubit.SubCatsCubit>(context)
+                                          .subCats(state.cats[index].id, isAddAllProducts: false);
 
                                       setState(() {
                                         // устанавливаем индекс выделенного элемента
@@ -110,9 +104,7 @@ class _CatsAdminPageState extends State<CatsAdminPage> {
                                     title: Text(
                                       state.cats[index].name.toString(),
                                       style: const TextStyle(
-                                          color: AppColors.kGray900,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400),
+                                          color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                                     ),
                                     trailing: _selectedIndex == index
                                         ? SvgPicture.asset(
@@ -128,9 +120,7 @@ class _CatsAdminPageState extends State<CatsAdminPage> {
                       ),
                     ]);
                   } else {
-                    return const Center(
-                        child: CircularProgressIndicator(
-                            color: Colors.indigoAccent));
+                    return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                   }
                 }),
           ),
@@ -138,8 +128,7 @@ class _CatsAdminPageState extends State<CatsAdminPage> {
       ),
       bottomSheet: Container(
         color: Colors.white,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
         child: InkWell(
           onTap: () {
             if (_cat != null) {
@@ -151,18 +140,13 @@ class _CatsAdminPageState extends State<CatsAdminPage> {
           child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: (_cat != null)
-                    ? AppColors.kPrimaryColor
-                    : AppColors.steelGray,
+                color: (_cat != null) ? AppColors.kPrimaryColor : AppColors.steelGray,
               ),
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.all(16),
               child: const Text(
                 'Готово',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                 textAlign: TextAlign.center,
               )),
         ),
