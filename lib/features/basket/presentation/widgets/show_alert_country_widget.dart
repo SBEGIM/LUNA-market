@@ -43,7 +43,6 @@ Future<dynamic> showAlertCountryWidget(BuildContext context, Function()? callBac
                             child: GestureDetector(
                               onTap: () {
                                 country = index;
-
                                 countryId = state.country[index].id;
                                 countryCode = state.country[index].code;
                                 setState(() {});

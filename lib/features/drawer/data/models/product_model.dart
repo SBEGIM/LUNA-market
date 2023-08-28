@@ -285,6 +285,8 @@ class Shops {
     int? productId,
     int? chatId,
     String? sizeTitle,
+    int? deliveryDay,
+    int? deliveryPrice,
     bool? inSubs,
     List<String>? size,
     List<String>? color,
@@ -294,6 +296,8 @@ class Shops {
     _productId = productId;
     _chatId = chatId;
     _sizeTitle = sizeTitle;
+    _deliveryDay = deliveryDay;
+    _deliveryPrice = deliveryPrice;
     _size = size;
     _color = color;
   }
@@ -304,6 +308,8 @@ class Shops {
     _productId = json['product_id'];
     _chatId = json['chat_id'];
     _sizeTitle = json['size_title'];
+    _deliveryDay = json['delivery_day'];
+    _deliveryPrice = json['delivery_price'];
     _size = json['size'] != null ? json['size'].cast<String>() : [];
     _color = json['color'] != null ? json['color'].cast<String>() : [];
   }
@@ -312,6 +318,8 @@ class Shops {
   int? _productId;
   int? _chatId;
   String? _sizeTitle;
+  int? _deliveryDay;
+  int? _deliveryPrice;
   List<String>? _size;
   List<String>? _color;
 
@@ -320,6 +328,8 @@ class Shops {
   int? get productId => _productId;
   int? get chatId => _chatId;
   String? get sizeTitle => _sizeTitle;
+  int? get deliveryDay => _deliveryDay;
+  int? get deliveryPrice => _deliveryPrice;
   List<String>? get size => _size;
   List<String>? get color => _color;
 
@@ -332,6 +342,8 @@ class Shops {
     map['product_id'] = _productId;
     map['chat_id'] = _chatId;
     map['size_title'] = _sizeTitle;
+    map['deliveryDay'] = _deliveryDay;
+    map['deliveryPrice'] = _deliveryPrice;
     map['size'] = _size;
     map['color'] = _color;
     return map;

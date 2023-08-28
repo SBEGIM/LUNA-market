@@ -1512,7 +1512,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                           color: AppColors.kGray900, fontSize: 14, fontWeight: FontWeight.w400),
                                       children: <TextSpan>[
                                         TextSpan(
-                                          text: '${widget.product.name}, ',
+                                          text: '${widget.product.shops![index].deliveryDay ?? ''} дня ,',
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
@@ -1522,7 +1522,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                           ),
                                         ),
                                         TextSpan(
-                                          text: '${widget.product.name}',
+                                          text: '${widget.product.shops![index].deliveryPrice ?? ''} руб',
                                         ),
                                       ],
                                     ),
