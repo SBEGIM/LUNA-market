@@ -2,9 +2,14 @@ import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
+import 'package:haji_market/features/drawer/data/bloc/country_cubit.dart' as countryCubit;
+import '../../basket/presentation/widgets/show_alert_country_widget.dart';
 
 // ignore: unused_element
 const _tag = 'BaseNew';
@@ -20,12 +25,18 @@ class BaseNew extends StatefulWidget {
 class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
   TabController? tabController;
   int? previousIndex;
+  String? address;
+
+  void getAddress() {
+    address =
+        "${(GetStorage().read('country') ?? '*') + ', г. ' + (GetStorage().read('city') ?? '*') + ', ул. ' + (GetStorage().read('street') ?? '*') + ', дом ' + (GetStorage().read('home') ?? '*') + ',подъезд ' + (GetStorage().read('porch') ?? '*') + ',этаж ' + (GetStorage().read('floor') ?? '*') + ',кв ' + (GetStorage().read('room') ?? '*')}";
+  }
 
   @override
   void initState() {
-    tabController = TabController(length: 5, vsync: this,initialIndex: 2);
-    if(widget.index!=null){
-      tabController?.animateTo(widget.index!,duration: const Duration(milliseconds: 500));
+    tabController = TabController(length: 5, vsync: this, initialIndex: 2);
+    if (widget.index != null) {
+      tabController?.animateTo(widget.index!, duration: const Duration(milliseconds: 500));
       log('message');
     }
     super.initState();
@@ -45,7 +56,7 @@ class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
         const BasketRoute(),
         const DrawerRoute(),
       ],
-      homeIndex: widget.index??-1,
+      homeIndex: widget.index ?? -1,
       backgroundColor: tabController?.index != 0 ? Colors.white : null,
       extendBody: true,
       transitionBuilder: (context, child, animation) {
@@ -62,6 +73,31 @@ class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
               tabsRouter.popTop();
             } else {
               tabsRouter.setActiveIndex(index);
+
+              bool exists = GetStorage().hasData('user_location_code');
+              String? city = GetStorage().read('city');
+
+              if (!exists && index == 1 || index == 3) {
+                // Get.showSnackbar(
+                Get.snackbar(
+                  'СДЕК',
+                  city != null ? 'Ваш город $city?' : 'Ваш город неизвестен для доставки!',
+                  icon: const Icon(Icons.add_location_sharp),
+                  duration: const Duration(seconds: 30),
+                  backgroundColor: Colors.orangeAccent,
+                  onTap: (snack) {
+                    Get.closeCurrentSnackbar();
+
+                    Future.wait([BlocProvider.of<countryCubit.CountryCubit>(context).country()]);
+                    showAlertCountryWidget(context, () {
+                      // context.router.pop();
+                      getAddress();
+                      setState(() {});
+                    });
+                  },
+                );
+                //  / );
+              }
             }
           },
           selectedItemColor: AppColors.kPrimaryColor,
@@ -70,8 +106,7 @@ class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
           elevation: 4,
           showSelectedLabels: true,
           showUnselectedLabels: true,
-          backgroundColor:
-              tabsRouter.activeIndex == 0 ? Colors.transparent : Colors.white,
+          backgroundColor: tabsRouter.activeIndex == 0 ? Colors.transparent : Colors.white,
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(

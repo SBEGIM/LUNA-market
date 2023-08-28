@@ -8,7 +8,7 @@ import 'package:haji_market/admin/my_products_admin/presentation/widgets/statist
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/custom_cupertino_action_sheet.dart';
 import 'package:haji_market/features/basket/presentation/widgets/show_alert_edit_widget.dart';
-import 'package:haji_market/features/basket/presentation/widgets/show_alert_statictics_widget%20copy.dart';
+import 'package:haji_market/features/basket/presentation/widgets/show_alert_statictics_edit_destroy_widget.dart';
 import 'package:haji_market/features/basket/presentation/widgets/show_alert_store_widget.dart';
 import 'package:haji_market/features/drawer/data/bloc/address_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/address_state.dart';
@@ -102,17 +102,18 @@ Future<dynamic> showAlertAddressWidget(BuildContext context, Function()? callBac
                                       Navigator.pop(context);
 
                                       showAlertEditDestroyWidget(
-                                          context,
-                                          state.addressModel[index].id!,
-                                          state.addressModel[index].country,
-                                          state.addressModel[index].city,
-                                          state.addressModel[index].street,
-                                          state.addressModel[index].home,
-                                          state.addressModel[index].floor,
-                                          state.addressModel[index].porch,
-                                          state.addressModel[index].room).whenComplete(() {
-                                            callBack?.call();
-                                          });
+                                              context,
+                                              state.addressModel[index].id!,
+                                              state.addressModel[index].country,
+                                              state.addressModel[index].city,
+                                              state.addressModel[index].street,
+                                              state.addressModel[index].home,
+                                              state.addressModel[index].floor,
+                                              state.addressModel[index].porch,
+                                              state.addressModel[index].room)
+                                          .whenComplete(() {
+                                        callBack?.call();
+                                      });
                                     },
                                     child: const Icon(
                                       Icons.more_horiz,

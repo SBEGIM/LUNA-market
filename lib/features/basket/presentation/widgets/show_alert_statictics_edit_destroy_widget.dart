@@ -6,8 +6,8 @@ import 'package:haji_market/features/basket/presentation/widgets/show_alert_edit
 
 import '../../../drawer/data/bloc/address_cubit.dart';
 
-Future<dynamic> showAlertEditDestroyWidget(BuildContext context, int id,
-    country, city, street, home, floor, porch, room) async {
+Future<dynamic> showAlertEditDestroyWidget(
+    BuildContext context, int id, country, city, street, home, floor, porch, room) async {
   return showCupertinoModalPopup(
     context: context,
     builder: (BuildContext context) => CustomCupertinoActionSheet(
@@ -25,10 +25,7 @@ Future<dynamic> showAlertEditDestroyWidget(BuildContext context, int id,
                 width: 270,
                 child: Text(
                   'Редактировать',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16),
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
                   maxLines: 1,
                 ),
               ),
@@ -37,8 +34,7 @@ Future<dynamic> showAlertEditDestroyWidget(BuildContext context, int id,
           onPressed: () {
             // GetStorage().write('basket_address_box', 1);
             // Navigator.pop(context);
-            showAlertEditWidget(
-                context, id, country, city, street, home, floor, porch, room);
+            showAlertEditWidget(context, id, country, city, street, home, floor, porch, room);
           },
         ),
         CustomCupertinoActionSheetAction(
@@ -54,10 +50,7 @@ Future<dynamic> showAlertEditDestroyWidget(BuildContext context, int id,
                 width: 270,
                 child: Text(
                   'Удалить',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16),
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
                   maxLines: 1,
                 ),
               ),
