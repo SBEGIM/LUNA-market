@@ -9,26 +9,14 @@ const baseUrl = 'http://185.116.193.73/api';
 class LoginRepository {
   final LoginToApi _loginToApi = LoginToApi();
 
-  Future<dynamic> login(String phone, String password) =>
-      _loginToApi.login(phone, password);
+  Future<dynamic> login(String phone, String password) => _loginToApi.login(phone, password);
   Future<dynamic> delete() => _loginToApi.delete();
+  Future<dynamic> code(code) => _loginToApi.code(code);
+
   Future<dynamic> lateAuth() => _loginToApi.lateAuth();
-  Future<dynamic> edit(
-          String name,
-          String phone,
-          String Avatar,
-          String gender,
-          String birthday,
-          String country,
-          String city,
-          String street,
-          String home,
-          String porch,
-          String floor,
-          String room,
-          String email) =>
-      _loginToApi.edit(name, phone, Avatar, gender, birthday, country, city,
-          street, home, porch, floor, room, email);
+  Future<dynamic> edit(String name, String phone, String Avatar, String gender, String birthday, String country,
+          String city, String street, String home, String porch, String floor, String room, String email) =>
+      _loginToApi.edit(name, phone, Avatar, gender, birthday, country, city, street, home, porch, floor, room, email);
 }
 
 class LoginToApi {
@@ -84,8 +72,7 @@ class LoginToApi {
     // final device_token = _box.read('device_token');
 
 //Removes everything after first '.'
-    final response =
-        await http.post(Uri.parse('$baseUrl/user/late/auth'), body: {});
+    final response = await http.post(Uri.parse('$baseUrl/user/late/auth'), body: {});
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       print(data.toString());
@@ -185,10 +172,32 @@ class LoginToApi {
     }
   }
 
+  Future<dynamic> code(
+    code,
+  ) async {
+    final String? token = _box.read('token');
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/user/edit'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      body: {
+        'code': code.toString(),
+      },
+    );
+    // print(jsonResponse.toString());
+    if (response.statusCode == 200) {
+      _box.write('user_location_code', code.toString());
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<dynamic> delete() async {
     final String? token = _box.read('token');
-    final response =
-        await http.post(Uri.parse('$baseUrl/user/delete'), headers: {
+    final response = await http.post(Uri.parse('$baseUrl/user/delete'), headers: {
       'Authorization': 'Bearer $token',
     });
 

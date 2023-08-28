@@ -27,11 +27,6 @@ class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
   int? previousIndex;
   String? address;
 
-  void getAddress() {
-    address =
-        "${(GetStorage().read('country') ?? '*') + ', г. ' + (GetStorage().read('city') ?? '*') + ', ул. ' + (GetStorage().read('street') ?? '*') + ', дом ' + (GetStorage().read('home') ?? '*') + ',подъезд ' + (GetStorage().read('porch') ?? '*') + ',этаж ' + (GetStorage().read('floor') ?? '*') + ',кв ' + (GetStorage().read('room') ?? '*')}";
-  }
-
   @override
   void initState() {
     tabController = TabController(length: 5, vsync: this, initialIndex: 2);
@@ -77,7 +72,7 @@ class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
               bool exists = GetStorage().hasData('user_location_code');
               String? city = GetStorage().read('city');
 
-              if (!exists && index == 1 || index == 3) {
+              if (!exists && (index == 1 || index == 3)) {
                 // Get.showSnackbar(
                 Get.snackbar(
                   'СДЕК',
@@ -91,9 +86,8 @@ class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
                     Future.wait([BlocProvider.of<countryCubit.CountryCubit>(context).country()]);
                     showAlertCountryWidget(context, () {
                       // context.router.pop();
-                      getAddress();
-                      setState(() {});
-                    });
+                      //  setState(() {});
+                    }, false);
                   },
                 );
                 //  / );

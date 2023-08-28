@@ -25,8 +25,10 @@ class ProfileEditAdminRepository {
     String? check,
     String? email,
   ) =>
-      _profileEditAdminToApi.edit(name, phone, logo, password_new, password_old,
-          country, city, home, street, shopName, iin, check, email);
+      _profileEditAdminToApi.edit(
+          name, phone, logo, password_new, password_old, country, city, home, street, shopName, iin, check, email);
+
+  Future<void> code(int? code) => _profileEditAdminToApi.code(code);
 }
 
 class ProfileEditAdminToApi {
@@ -99,5 +101,15 @@ class ProfileEditAdminToApi {
     _box.write('seller_iin', data['iin'].toString());
     _box.write('seller_check', data['check'].toString());
     _box.write('seller_userName', data['user_name'].toString());
+  }
+
+  Future<void> code(int? code) async {
+    final token = _box.read('seller_token').toString();
+
+    final response = await http.post(Uri.parse('$baseUrl/seller/edit'),
+        headers: {"Authorization": "Bearer $token"}, body: {'code': code.toString()});
+    if (response.statusCode == 200) {
+      _box.write('shop_location_code', code.toString());
+    }
   }
 }

@@ -2,9 +2,15 @@ import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
+
+import '../../../features/basket/presentation/widgets/show_alert_country_widget.dart';
+import '../../../features/drawer/data/bloc/country_cubit.dart' as countryCubit;
 
 // ignore: unused_element
 const _tag = 'BaseNew';
@@ -57,6 +63,30 @@ class _BaseAdminNewState extends State<BaseAdminNew> with TickerProviderStateMix
             if (tabsRouter.activeIndex == index) {
               tabsRouter.popTop();
             } else {
+              bool exists = GetStorage().hasData('shop_location_code');
+              String? city = GetStorage().read('city_shop');
+
+              if (!exists && (index != 1)) {
+                // Get.showSnackbar(
+                Get.closeCurrentSnackbar();
+                Get.snackbar(
+                  'СДЕК магазин',
+                  city != null ? 'Ваш город $city?' : 'Ваш город неизвестен для cрока доставки!',
+                  icon: const Icon(Icons.add_location_sharp),
+                  duration: const Duration(seconds: 30),
+                  backgroundColor: Colors.orangeAccent,
+                  onTap: (snack) {
+                    Get.closeCurrentSnackbar();
+
+                    Future.wait([BlocProvider.of<countryCubit.CountryCubit>(context).country()]);
+                    showAlertCountryWidget(context, () {
+                      // context.router.pop();
+                      // setState(() {});
+                    }, true);
+                  },
+                );
+                //  / );
+              }
               tabsRouter.setActiveIndex(index);
             }
           },

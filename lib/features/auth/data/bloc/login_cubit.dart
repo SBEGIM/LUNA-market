@@ -23,13 +23,11 @@ class LoginCubit extends Cubit<LoginState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль', backgroundColor: Colors.redAccent);
       }
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());
@@ -48,13 +46,11 @@ class LoginCubit extends Cubit<LoginState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль', backgroundColor: Colors.redAccent);
       }
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());
@@ -62,27 +58,24 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  Future<void> edit(
-      String name,
-      String phone,
-      String avatar,
-      String gender,
-      String birthday,
-      String country,
-      String city,
-      String street,
-      String home,
-      String porch,
-      String floor,
-      String room,
-      String email) async {
+  Future<void> edit(String name, String phone, String avatar, String gender, String birthday, String country,
+      String city, String street, String home, String porch, String floor, String room, String email) async {
     try {
       emit(LoadingState());
-      await loginRepository.edit(name, phone, avatar, gender, birthday, country,
-          city, street, home, porch, floor, room, email);
+      await loginRepository.edit(
+          name, phone, avatar, gender, birthday, country, city, street, home, porch, floor, room, email);
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: e.toString()));
+    }
+  }
+
+  Future<void> cityCode(code) async {
+    try {
+      await loginRepository.code(code);
+    } catch (e) {
+      log(e.toString());
+      // emit(ErrorState(message: 'Ошибка'));
     }
   }
 

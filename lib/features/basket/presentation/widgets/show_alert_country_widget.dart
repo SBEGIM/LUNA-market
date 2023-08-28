@@ -10,7 +10,7 @@ import 'package:haji_market/features/drawer/data/bloc/country_state.dart';
 import '../../../../core/common/constants.dart';
 import '../../../drawer/data/bloc/country_cubit.dart';
 
-Future<dynamic> showAlertCountryWidget(BuildContext context, Function()? callBack) async {
+Future<dynamic> showAlertCountryWidget(BuildContext context, Function()? callBack, bool shop) async {
   int? country;
   int? countryId;
   String? countryCode;
@@ -161,7 +161,7 @@ Future<dynamic> showAlertCountryWidget(BuildContext context, Function()? callBac
 
             Future.wait([BlocProvider.of<cityCubit.CityCubit>(context).citiesCdek(countryCode ?? 'KZ')]);
 
-            showAlertCityWidget(context);
+            showAlertCityWidget(context, shop);
           },
         ),
       );

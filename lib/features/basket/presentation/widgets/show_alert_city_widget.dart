@@ -6,10 +6,13 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/features/app/widgets/custom_cupertino_action_sheet.dart';
 import 'package:haji_market/features/drawer/data/bloc/city_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/city_state.dart';
+import '../../../../admin/profile_admin/data/bloc/profile_edit_admin_cubit.dart';
 import '../../../../core/common/constants.dart';
+import '../../../auth/data/bloc/login_cubit.dart';
 
-Future<dynamic> showAlertCityWidget(BuildContext context) async {
+Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
   int? city;
+  int? cityCode;
 
   return showCupertinoModalPopup(
     context: context,
@@ -44,6 +47,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context) async {
                             child: GestureDetector(
                               onTap: () {
                                 city = index;
+                                cityCode = state.city[index].code;
                                 setState(() {});
                               },
                               child: Row(
@@ -112,7 +116,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context) async {
                           textAlign: TextAlign.center,
                         ),
                         const Text(
-                          'Для этой страны не добавлены города',
+                          'Для этой страны не найдены города',
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
                           textAlign: TextAlign.center,
                         )
@@ -143,9 +147,16 @@ Future<dynamic> showAlertCityWidget(BuildContext context) async {
             'Выбрать',
             style: TextStyle(color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
           ),
-          onPressed: () {
+          onPressed: () async {
             // city != null ? GetStorage().write('country', country) : null;
             // Get.back();
+            if (!shop) {
+              final edit = BlocProvider.of<LoginCubit>(context);
+              await edit.cityCode(cityCode);
+            } else {
+              await BlocProvider.of<ProfileEditAdminCubit>(context).cityCode(cityCode);
+            }
+
             Get.back();
             // Get.to(() => new BasketOrderAddressPage());
             // callBack?.call();

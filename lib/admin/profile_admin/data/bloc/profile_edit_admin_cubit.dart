@@ -8,8 +8,7 @@ import '../repository/profile_edit_admin_repo.dart';
 class ProfileEditAdminCubit extends Cubit<ProfileEditAdminState> {
   final ProfileEditAdminRepository profileEditAdminRepository;
 
-  ProfileEditAdminCubit({required this.profileEditAdminRepository})
-      : super(InitState());
+  ProfileEditAdminCubit({required this.profileEditAdminRepository}) : super(InitState());
 
   Future<void> edit(
     String? name,
@@ -29,19 +28,33 @@ class ProfileEditAdminCubit extends Cubit<ProfileEditAdminState> {
     try {
       //  emit(LoadingState());
       await profileEditAdminRepository.edit(
-          name,
-          phone,
-          logo,
-          password_new,
-          password_old,
-          country,
-          city,
-          home,
-          street,
-          shopName,
-          iin,
-          check,
-          email);
+          name, phone, logo, password_new, password_old, country, city, home, street, shopName, iin, check, email);
+
+      // if (data != null) {
+      //  emit(LoadedState(loadedProfile: data));
+      // }
+      // if (data == 400) {
+      //   emit(InitState());
+      //   Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
+      //       backgroundColor: Colors.redAccent);
+      // }
+      // if (data == 500) {
+      //   emit(InitState());
+      //   Get.snackbar('500', 'Ошибка сервера',
+      //       backgroundColor: Colors.redAccent);
+      // }
+    } catch (e) {
+      log(e.toString());
+      // emit(ErrorState(message: 'Ошибка'));
+    }
+  }
+
+  Future<void> cityCode(
+    int? code,
+  ) async {
+    try {
+      //  emit(LoadingState());
+      await profileEditAdminRepository.code(code);
 
       // if (data != null) {
       //  emit(LoadedState(loadedProfile: data));
