@@ -130,6 +130,7 @@ class _HomePageState extends State<HomePage> {
           refreshController.refreshCompleted();
         },
         child: ListView(
+          cacheExtent: 3000,
           shrinkWrap: true,
           children: [
             const Banners(),
@@ -844,44 +845,37 @@ class BannerImage extends StatelessWidget {
                 //   ),
                 // ),
 
-
                 Positioned(
                   right: 20,
                   bottom: 20,
-                  child: 
-                    GestureDetector(
-                      onTap: () async {
-                        await showModalBottomSheet(
-                          context: context,
-                          backgroundColor: Colors.transparent,
-                          isScrollControlled: true,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          isDismissible: true,
-                          builder: (context) {
-                            return const AdvertBottomSheet();
-                          },
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(6)),
-                        child: const Padding(
-                          padding: EdgeInsets.only(
-                              left: 4.0, right: 4, top: 4, bottom: 4),
-                          child: Text(
-                            'РЕКЛАМА',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400),
-                          ),
+                  child: GestureDetector(
+                    onTap: () async {
+                      await showModalBottomSheet(
+                        context: context,
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        isDismissible: true,
+                        builder: (context) {
+                          return const AdvertBottomSheet();
+                        },
+                      );
+                    },
+                    child: Container(
+                      decoration:
+                          BoxDecoration(color: Colors.grey.withOpacity(0.2), borderRadius: BorderRadius.circular(6)),
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
+                        child: Text(
+                          'РЕКЛАМА',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w400),
                         ),
                       ),
                     ),
+                  ),
                 )
                 //   Positioned(
                 //     right: 20,

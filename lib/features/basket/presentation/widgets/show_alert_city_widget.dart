@@ -26,7 +26,6 @@ Future<dynamic> showAlertCityWidget(BuildContext context) async {
           CupertinoActionSheetAction(
             child: BlocConsumer<CityCubit, CityState>(
               listener: (context, state) {
-                print(state);
                 if (state is LoadedState) {
                   setState(() {});
                 }
@@ -37,6 +36,7 @@ Future<dynamic> showAlertCityWidget(BuildContext context) async {
                     constraints: BoxConstraints(maxHeight: (MediaQuery.of(context).size.height) * 0.85),
                     height: state.city.length * 50,
                     child: ListView.builder(
+                        padding: EdgeInsets.zero,
                         itemCount: state.city.length,
                         itemBuilder: (context, int index) {
                           return SizedBox(
@@ -47,7 +47,8 @@ Future<dynamic> showAlertCityWidget(BuildContext context) async {
                                 setState(() {});
                               },
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Icon(
@@ -56,49 +57,21 @@ Future<dynamic> showAlertCityWidget(BuildContext context) async {
                                     size: 24.0,
                                   ),
                                   const SizedBox(width: 6),
-                                  SizedBox(
-                                    width: 300,
+                                  Expanded(
                                     child: Text(
-                                      "${state.city[index].name ?? ''}",
+                                      "${state.city[index].city ?? ''}",
                                       style: const TextStyle(
                                           color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
                                       maxLines: 1,
                                     ),
                                   ),
-                                  // SizedBox(
-                                  //   height: 270,
-                                  //   child: ListView.builder(
-
-                                  //     itemCount: 3,
-                                  //     itemBuilder: (context, state) {
-                                  //       return
-                                  //     },
-                                  //   ),
-                                  // ),
-                                  //   GestureDetector(
-                                  //     onTap: () {
-                                  //       Navigator.pop(context);
-
-                                  //       // showAlertEditDestroyWidget(
-                                  //       //         context,
-                                  //       //         state.addressModel[index].id!,
-                                  //       //         state.addressModel[index].country,
-                                  //       //         state.addressModel[index].city,
-                                  //       //         state.addressModel[index].street,
-                                  //       //         state.addressModel[index].home,
-                                  //       //         state.addressModel[index].floor,
-                                  //       //         state.addressModel[index].porch,
-                                  //       //         state.addressModel[index].room)
-                                  //       //     .whenComplete(() {
-                                  //       //   callBack?.call();
-                                  //       // });
-                                  //     },
-                                  //     child: const Icon(
-                                  //       Icons.more_horiz,
-                                  //       color: AppColors.kPrimaryColor,
-                                  //       size: 24.0,
-                                  //     ),
-                                  //   ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    "${state.city[index].code ?? '--'}",
+                                    style:
+                                        const TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
+                                    maxLines: 1,
+                                  ),
                                 ],
                               ),
                             ),
@@ -126,10 +99,28 @@ Future<dynamic> showAlertCityWidget(BuildContext context) async {
                   //     ),
                   //   );
                   // }
-                } else {
-                  return const CircularProgressIndicator(
-                    backgroundColor: Colors.blueAccent,
+                } else if (state is NodataState) {
+                  return SizedBox(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Image.asset('assets/icons/no_data.png'),
+                        const Text(
+                          'Нет данных',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),
+                          textAlign: TextAlign.center,
+                        ),
+                        const Text(
+                          'Для этой страны не добавлены города',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
                   );
+                } else {
+                  return const CircularProgressIndicator.adaptive();
                 }
               },
             ),

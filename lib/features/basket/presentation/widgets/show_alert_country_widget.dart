@@ -13,6 +13,7 @@ import '../../../drawer/data/bloc/country_cubit.dart';
 Future<dynamic> showAlertCountryWidget(BuildContext context, Function()? callBack) async {
   int? country;
   int? countryId;
+  String? countryCode;
 
   return showCupertinoModalPopup(
     context: context,
@@ -44,6 +45,7 @@ Future<dynamic> showAlertCountryWidget(BuildContext context, Function()? callBac
                                 country = index;
 
                                 countryId = state.country[index].id;
+                                countryCode = state.country[index].code;
                                 setState(() {});
                               },
                               child: Row(
@@ -157,7 +159,7 @@ Future<dynamic> showAlertCountryWidget(BuildContext context, Function()? callBac
             GetStorage().write('country', 'Казахстан');
             GetStorage().write('user_country_id', countryId.toString());
 
-            Future.wait([BlocProvider.of<cityCubit.CityCubit>(context).cities()]);
+            Future.wait([BlocProvider.of<cityCubit.CityCubit>(context).citiesCdek(countryCode ?? 'KZ')]);
 
             showAlertCityWidget(context);
           },

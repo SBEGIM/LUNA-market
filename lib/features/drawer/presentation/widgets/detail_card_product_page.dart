@@ -161,6 +161,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
         ],
       ),
       body: ListView(
+        cacheExtent: 10000,
         shrinkWrap: true,
         children: [
           Stack(
@@ -1505,14 +1506,14 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   RichText(
-                                    text: const TextSpan(
+                                    text: TextSpan(
                                       text: "Доставка ",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: AppColors.kGray900, fontSize: 14, fontWeight: FontWeight.w400),
                                       children: <TextSpan>[
                                         TextSpan(
-                                          text: 'завтра, ',
-                                          style: TextStyle(
+                                          text: '${widget.product.name}, ',
+                                          style: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w700,
                                             // decoration: TextDecoration.underline,
@@ -1521,7 +1522,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                           ),
                                         ),
                                         TextSpan(
-                                          text: 'бесплатно',
+                                          text: '${widget.product.name}',
                                         ),
                                       ],
                                     ),
@@ -1533,11 +1534,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                   //         fontSize: 14,
                                   //         fontWeight: FontWeight.w400),
                                   //   ),
-                                  const Text(
-                                    'Самовывоз: завтра',
-                                    style:
-                                        TextStyle(color: AppColors.kGray900, fontSize: 14, fontWeight: FontWeight.w400),
-                                  )
+                                  // const Text(
+                                  //   'Самовывоз: завтра',
+                                  //   style:
+                                  //       TextStyle(color: AppColors.kGray900, fontSize: 14, fontWeight: FontWeight.w400),
+                                  // )
                                 ],
                               ),
                               InkWell(

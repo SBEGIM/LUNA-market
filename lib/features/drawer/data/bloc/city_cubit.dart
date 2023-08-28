@@ -28,6 +28,23 @@ class CityCubit extends Cubit<CityState> {
     }
   }
 
+  Future<void> citiesCdek(String? countryCode) async {
+    try {
+      emit(LoadingState());
+      final List<City> data = await cityRepository.cityCdekApi(countryCode);
+      _cities = data;
+
+      if (_cities.length == 0) {
+        emit(NodataState());
+      } else {
+        emit(LoadedState(data));
+      }
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
   cityById(String id) async {
     if (id.isEmpty) return;
     if (_cities.isEmpty) {
