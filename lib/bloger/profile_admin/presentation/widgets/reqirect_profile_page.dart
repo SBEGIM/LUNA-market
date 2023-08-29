@@ -47,13 +47,10 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   void initState() {
     nameController.text = GetStorage().read('blogger_name') ?? '';
     nickNameController.text = GetStorage().read('blogger_nick_name') ?? '';
-    iinController.text = GetStorage().read('blogger_iin') != 'null'
-        ? (GetStorage().read('blogger_iin') ?? '')
-        : '';
+    iinController.text = GetStorage().read('blogger_iin') != 'null' ? (GetStorage().read('blogger_iin') ?? '') : '';
 
-    checkController.text = GetStorage().read('blogger_invoice') != 'null'
-        ? (GetStorage().read('blogger_invoice') ?? '')
-        : '';
+    checkController.text =
+        GetStorage().read('blogger_invoice') != 'null' ? (GetStorage().read('blogger_invoice') ?? '') : '';
     // phoneController.text = GetStorage().read('blogger_phone') ?? '';
 
     super.initState();
@@ -76,13 +73,10 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
           ),
         ),
         actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: SvgPicture.asset('assets/icons/notification.svg'))
+          Padding(padding: const EdgeInsets.only(right: 16.0), child: SvgPicture.asset('assets/icons/notification.svg'))
         ],
       ),
-      body: BlocConsumer<EditBloggerCubit, EditBloggerState>(
-          listener: (context, state) {
+      body: BlocConsumer<EditBloggerCubit, EditBloggerState>(listener: (context, state) {
         if (state is LoadedState) {
           // Get.to(() => const ProfileBloggerPage());
 
@@ -129,20 +123,15 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                         borderRadius: BorderRadius.circular(60),
                         image: DecorationImage(
                           image: _box.read('blogger_avatar') != null
-                              ? NetworkImage(
-                                  "http://185.116.193.73/storage/${_box.read('blogger_avatar')}")
-                              : const AssetImage('assets/icons/profile2.png')
-                                  as ImageProvider,
+                              ? NetworkImage("http://185.116.193.73/storage/${_box.read('blogger_avatar')}")
+                              : const AssetImage('assets/icons/profile2.png') as ImageProvider,
                           fit: BoxFit.cover,
                         )),
                   ),
                 ),
                 title: Text(
                   _box.read('blogger_nick_name') ?? 'Никнэйм не найден',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.kGray900,
-                      fontSize: 16),
+                  style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.kGray900, fontSize: 16),
                 ),
               ),
               const SizedBox(
@@ -157,18 +146,13 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                   children: [
                     const Text(
                       'Чтобы поменять текущий пароль, необходимо сначала ввести старый правильно, а затем придумать новый',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.kGray300),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.kGray300),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
                     Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
+                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                       child: Column(
                         children: [
                           ListTile(
@@ -323,22 +307,19 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
             ],
           );
         } else {
-          return const Center(
-              child: CircularProgressIndicator(color: Colors.indigoAccent));
+          return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
         }
       }),
       bottomSheet: Container(
         color: Colors.transparent,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
         child: InkWell(
           onTap: () async {
-            if (nameController.text.isNotEmpty ||
-                nickNameController.text.isNotEmpty) {
+            if (nameController.text.isNotEmpty || nickNameController.text.isNotEmpty) {
               if (passwordController.text == reapatPasswordController.text) {}
 
-              final register = BlocProvider.of<EditBloggerCubit>(context);
-              await register.edit(
+              final edit = BlocProvider.of<EditBloggerCubit>(context);
+              await edit.edit(
                   nameController.text,
                   nickNameController.text,
                   phoneController.text,
@@ -357,10 +338,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
               padding: const EdgeInsets.all(16),
               child: const Text(
                 'Сохранить',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                 textAlign: TextAlign.center,
               )),
         ),
