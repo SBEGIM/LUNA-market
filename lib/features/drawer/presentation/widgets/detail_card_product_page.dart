@@ -1505,28 +1505,51 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      text: "Доставка ",
-                                      style: const TextStyle(
-                                          color: AppColors.kGray900, fontSize: 14, fontWeight: FontWeight.w400),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: '${widget.product.shops![index].deliveryDay ?? ''} дня ,',
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            // decoration: TextDecoration.underline,
-                                            // decorationColor: Colors.red,
-                                            decorationStyle: TextDecorationStyle.wavy,
+                                  widget.product.shops?[index].shop?.code != null
+                                      ? RichText(
+                                          text: TextSpan(
+                                            text: "Доставка ",
+                                            style: const TextStyle(
+                                                color: AppColors.kGray900, fontSize: 14, fontWeight: FontWeight.w400),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text:
+                                                    '${widget.product.shops![index].deliveryDay ?? 'Неизвестно'} дня ,',
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w700,
+                                                  // decoration: TextDecoration.underline,
+                                                  // decorationColor: Colors.red,
+                                                  decorationStyle: TextDecorationStyle.wavy,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text:
+                                                    '${widget.product.shops![index].deliveryPrice ?? 'Неизвестно'} руб',
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : RichText(
+                                          text: const TextSpan(
+                                            text: "Доставка: ",
+                                            style: TextStyle(
+                                                color: AppColors.kGray900, fontSize: 14, fontWeight: FontWeight.w400),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: 'не найден адрес магазина (СДЕК)',
+                                                style: TextStyle(
+                                                  color: Colors.orangeAccent,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  // decoration: TextDecoration.underline,
+                                                  // decorationColor: Colors.red,
+                                                  decorationStyle: TextDecorationStyle.wavy,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        TextSpan(
-                                          text: '${widget.product.shops![index].deliveryPrice ?? ''} руб',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
                                   //  const Text(
                                   //     'Доставка завтра, бесплатно \n',
                                   //     style: TextStyle(

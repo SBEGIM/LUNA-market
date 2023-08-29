@@ -357,6 +357,7 @@ class Shop {
     String? name,
     String? logo,
     String? image,
+    int? code,
     String? createdAt,
     String? updatedAt,
   }) {
@@ -365,6 +366,7 @@ class Shop {
     _name = name;
     _logo = logo;
     _image = image;
+    _code = code;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
   }
@@ -375,6 +377,7 @@ class Shop {
     _name = json['name'];
     _logo = json['logo'];
     _image = json['image'];
+    _code = code;
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
   }
@@ -383,6 +386,7 @@ class Shop {
   String? _name;
   String? _logo;
   String? _image;
+  int? _code;
   String? _createdAt;
   String? _updatedAt;
 
@@ -391,6 +395,7 @@ class Shop {
   String? get name => _name;
   String? get logo => _logo;
   String? get image => _image;
+  int? get code => _code;
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
 
@@ -401,6 +406,7 @@ class Shop {
     map['name'] = _name;
     map['logo'] = _logo;
     map['image'] = _image;
+    map['code'] = _code;
     map['created_at'] = _createdAt;
     map['updated_at'] = _updatedAt;
     return map;

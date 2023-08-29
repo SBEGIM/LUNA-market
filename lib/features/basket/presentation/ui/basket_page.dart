@@ -548,9 +548,12 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                               const SizedBox(
                                 height: 8,
                               ),
-                              const Text(
-                                'Доставка: неизвестно',
-                                style: TextStyle(fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w600),
+                              Text(
+                                widget.basketProducts.deliveryDay != null
+                                    ? 'Доставка: ${widget.basketProducts.deliveryDay} дня'
+                                    : 'Доставка: Ошибка у магазина нет данных для срока доставки СДЕК',
+                                style: const TextStyle(
+                                    fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
