@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_storage/get_storage.dart';
 import '../../../../../core/common/constants.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../auth/data/bloc/edit_blogger_cubit.dart';
@@ -126,7 +125,7 @@ class _BloggerCardPageState extends State<BloggerCardPage> {
         padding: const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
         child: InkWell(
           onTap: () async {
-            print('object');
+            // print('object');
             final edit = BlocProvider.of<EditBloggerCubit>(context);
             await edit.edit('', '', '', '', checkController.text, '', null);
 

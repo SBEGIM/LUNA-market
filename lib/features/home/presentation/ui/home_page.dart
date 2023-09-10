@@ -594,7 +594,7 @@ class _CatsHomePageState extends State<CatsHomePage> {
                       height: 16,
                     ),
                     SizedBox(
-                      height: 196,
+                      height: 225,
                       child: GridView.builder(
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,

@@ -22,23 +22,21 @@ class GridOptionsCategory extends StatelessWidget {
     return InkWell(
       onTap: layout.onTap,
       child: Container(
-        height: 80,
-        width: 90,
-        decoration: BoxDecoration(
-            color: const Color.fromRGBO(249, 249, 249, 1),
-            borderRadius: BorderRadius.circular(16)),
+        // height: 80,
+        // width: 90,
+        decoration:
+            BoxDecoration(color: const Color.fromRGBO(249, 249, 249, 1), borderRadius: BorderRadius.circular(16)),
         child: Center(
-          child: Stack(
+          child: Column(
             // mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: 90,
+                height: 80,
                 //width: 128.05,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
-                      image: NetworkImage(
-                          "http://185.116.193.73/storage/${layout.image}"),
+                      image: NetworkImage("http://185.116.193.73/storage/${layout.image}"),
                       fit: BoxFit.cover,
                     )),
               ),
@@ -47,13 +45,12 @@ class GridOptionsCategory extends StatelessWidget {
               // ),
               Container(
                   height: 26,
-                  margin: EdgeInsets.only(top: 64),
-                  padding: EdgeInsets.symmetric(vertical: 6, horizontal: 3),
+                  //  margin: const EdgeInsets.only(top: 69),
+                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
                   // width: 128,
                   decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(8),
-                        bottomRight: Radius.circular(8)),
+                    borderRadius:
+                        const BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
                     border: Border.all(
                       width: 0.1,
                     ),
