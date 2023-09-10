@@ -6,9 +6,11 @@ class ProductModel {
     String? name,
     int? price,
     int? product_count,
+    int? pre_order,
     int? compound,
     int? point,
     String? description,
+    String? fulfillment,
     String? catName,
     String? brandName,
     String? sizeTitle,
@@ -37,9 +39,11 @@ class ProductModel {
     _name = name;
     _price = price;
     _product_count = product_count;
+    _pre_order = pre_order;
     _compound = compound;
     _point = point;
     _description = description;
+    _fulfillment = fulfillment;
     _catName = catName;
     _brandName = brandName;
     _sizeTitle = sizeTitle;
@@ -70,9 +74,11 @@ class ProductModel {
     String? name,
     int? price,
     int? product_count,
+    int? pre_order,
     int? compound,
     int? point,
     String? description,
+    String? fulfillment,
     String? catName,
     String? brandName,
     String? sizeTitle,
@@ -102,9 +108,11 @@ class ProductModel {
       name: name ?? this.name,
       price: price ?? this.price,
       product_count: product_count ?? this.product_count,
+      pre_order: pre_order ?? this.pre_order,
       compound: compound ?? this.compound,
       point: point ?? this.point,
       description: description ?? this.description,
+      fulfillment: fulfillment ?? this.fulfillment,
       catName: catName ?? this.catName,
       brandName: brandName ?? this.brandName,
       sizeTitle: sizeTitle ?? this.sizeTitle,
@@ -136,9 +144,11 @@ class ProductModel {
     _name = json['name'];
     _price = json['price'];
     _product_count = json['product_count'];
+    _pre_order = json['pre_order'];
     _compound = json['compound'];
     _point = json['point'];
     _description = json['description'];
+    _fulfillment = json['fulfillment'];
     _catName = json['cat_name'];
     _brandName = json['brand_name'];
     _sizeTitle = json['size_title'];
@@ -183,9 +193,11 @@ class ProductModel {
   String? _name;
   int? _price;
   int? _product_count;
+  int? _pre_order;
   int? _compound;
   int? _point;
   String? _description;
+  String? _fulfillment;
   String? _catName;
   String? _brandName;
   String? _sizeTitle;
@@ -214,9 +226,11 @@ class ProductModel {
   String? get name => _name;
   int? get price => _price;
   int? get product_count => _product_count;
+  int? get pre_order => _pre_order;
   int? get compound => _compound;
   int? get point => _point;
   String? get description => _description;
+  String? get fulfillment => _fulfillment;
   String? get catName => _catName;
   String? get brandName => _brandName;
   String? get sizeTitle => _sizeTitle;
@@ -247,9 +261,11 @@ class ProductModel {
     map['name'] = _name;
     map['price'] = _price;
     map['product_count'] = _product_count;
+    map['pre_order'] = _pre_order;
     map['compound'] = _compound;
     map['point'] = _point;
     map['description'] = _description;
+    map['fulfillment'] = _fulfillment;
     map['catName'] = _catName;
     map['brandName'] = _brandName;
     map['size_title'] = _sizeTitle;

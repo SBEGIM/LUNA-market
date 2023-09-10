@@ -596,7 +596,6 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                print('s');
                                 await BlocProvider.of<BasketCubit>(context)
                                     .basketMinus(widget.basketProducts.product!.id.toString(), '1', 0);
 

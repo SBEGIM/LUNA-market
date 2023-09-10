@@ -1505,7 +1505,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  widget.product.shops?[index].shop?.code != null
+                                  (widget.product.shops?[index].shop?.code != null ||
+                                          widget.product.fulfillment == 'realFBS')
                                       ? RichText(
                                           text: TextSpan(
                                             text: "Доставка ",
@@ -2277,6 +2278,16 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             InkWell(
               onTap: () {
                 // Navigator.pop(context);
+
+                if (widget.product.count == 0 && widget.product.pre_order == 1) {
+                  Get.snackbar('Нет в наличии', 'только предзаказ');
+                  return;
+                }
+
+                if (widget.product.count == 0 && widget.product.pre_order == 1) {
+                  Get.snackbar('Нет в наличии', '');
+                  return;
+                }
 
                 if (isvisible == false && widget.product.inBasket == false) {
                   BlocProvider.of<BasketCubit>(context)
