@@ -9,8 +9,7 @@ const baseUrl = 'http://185.116.193.73/api';
 class BloggerTapeUploadRepository {
   final UploadApi _uploadVideoApi = UploadApi();
 
-  Future<void> uploadVideo(String product_id, video) =>
-      _uploadVideoApi.uploadVideo(product_id, video);
+  Future<void> uploadVideo(String product_id, video) => _uploadVideoApi.uploadVideo(product_id, video);
 }
 
 class UploadApi {
@@ -20,11 +19,14 @@ class UploadApi {
     String token = _box.read('blogger_token');
 
     final body = {"product_id": product_id, "access_token": token};
+    final header = {"Authorization": "Bearer $token"};
 
     final request = http.MultipartRequest(
       'POST',
       Uri.parse('$baseUrl/blogger/upload/video'),
     );
+
+    request.headers.addAll(header);
 
     request.files.add(
       await http.MultipartFile.fromPath('video', video),
