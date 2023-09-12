@@ -6,7 +6,7 @@ class MessageDto {
     String? name,
     String? text,
     String? path,
-    String? createdAt,
+    DateTime? createdAt,
     int? userId,
     dynamic avatar,
   }) {
@@ -28,7 +28,7 @@ class MessageDto {
     _name = json['name'];
     _text = json['text'];
     _path = json['path'];
-    _createdAt = json['created_at'];
+    _createdAt = json['created_at'] == null ? null : DateTime.parse(json['created_at'] as String);
     _userId = json['user_id'];
     _avatar = json['avatar'];
   }
@@ -38,7 +38,7 @@ class MessageDto {
   String? _name;
   String? _text;
   String? _path;
-  String? _createdAt;
+  DateTime? _createdAt;
   int? _userId;
   dynamic _avatar;
 
@@ -48,7 +48,7 @@ class MessageDto {
   String? get name => _name;
   String? get text => _text;
   String? get path => _path;
-  String? get createdAt => _createdAt;
+  DateTime? get createdAt => _createdAt;
   int? get userId => _userId;
   dynamic get avatar => _avatar;
 

@@ -340,13 +340,31 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 decoration: BoxDecoration(
                                     color: const Color(0xFFFF3347), borderRadius: BorderRadius.circular(6)),
                                 margin: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height * 0.15,
+                                  top: MediaQuery.of(context).size.height * 0.14,
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
                                   '-${state.tapeModel[index].compound}%',
                                   style:
                                       const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(6)),
+                                // padding: const EdgeInsets.only(
+                                //     left: 4, right: 4, bottom: 2, top: 2),
+                                // margin: const EdgeInsets.only(top: 370),
+                                width: 56,
+                                height: 28,
+                                // margin: const EdgeInsets.only(top: 4),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '${state.tapeModel[index].compound}% Б',
+                                  style:
+                                      const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
                                 ),
                               ),
                               Row(
@@ -479,10 +497,10 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                     // else
                                     GestureDetector(
                                       onTap: (() {
-                                        final List<int> _selectedListSort = [];
+                                        final List<int> selectedListSort = [];
 
-                                        _selectedListSort.add(state.tapeModel[index].shop!.id!);
-                                        GetStorage().write('shopFilterId', _selectedListSort.toString());
+                                        selectedListSort.add(state.tapeModel[index].shop!.id!);
+                                        GetStorage().write('shopFilterId', selectedListSort.toString());
 
                                         context.router.push(ProductsRoute(
                                           cats: Cats(id: 0, name: ''),
@@ -751,47 +769,39 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  // Column(
-                                  //   children: [
-                                  // Container(
-                                  //   width: 61,
-                                  //   height: 28,
-                                  //   decoration: BoxDecoration(
-                                  //       color: AppColors.kPrimaryColor,
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(6)),
-                                  //   margin: const EdgeInsets.only(top: 370),
-                                  //   alignment: Alignment.center,
-                                  //   child: const Text(
-                                  //     '0·0·12',
-                                  //     style: TextStyle(
-                                  //         fontSize: 14,
-                                  //         fontWeight: FontWeight.w400,
-                                  //         color: Colors.white),
-                                  //   ),
-                                  // ),
-                                  // Container(
-                                  //   decoration: BoxDecoration(
-                                  //       color: Colors.black,
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(6)),
-                                  //   // padding: const EdgeInsets.only(
-                                  //   //     left: 4, right: 4, bottom: 2, top: 2),
-                                  //   margin: const EdgeInsets.only(top: 370),
-                                  //   width: 56,
-                                  //   height: 28,
-                                  //   // margin: const EdgeInsets.only(top: 4),
-                                  //   alignment: Alignment.center,
-                                  //   child: const Text(
-                                  //     '10% Б',
-                                  //     style: TextStyle(
-                                  //         fontSize: 12,
-                                  //         fontWeight: FontWeight.w400,
-                                  //         color: Colors.white),
-                                  //   ),
-                                  // ),
-                                  //   ],
-                                  // ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        width: 61,
+                                        height: 28,
+                                        decoration: BoxDecoration(
+                                            color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(6)),
+                                        margin: const EdgeInsets.only(top: 370),
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          '0·0·12',
+                                          style:
+                                              TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration:
+                                            BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(6)),
+                                        // padding: const EdgeInsets.only(
+                                        //     left: 4, right: 4, bottom: 2, top: 2),
+                                        margin: const EdgeInsets.only(top: 370),
+                                        width: 56,
+                                        height: 28,
+                                        // margin: const EdgeInsets.only(top: 4),
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          '10% Б',
+                                          style:
+                                              TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                   Container(
                                     margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.36),
                                     child: Column(
@@ -880,10 +890,10 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                     // else
                                     GestureDetector(
                                       onTap: (() {
-                                        final List<int> _selectedListSort = [];
+                                        final List<int> selectedListSort = [];
 
-                                        _selectedListSort.add(state.tapeModel[index].shop!.id!);
-                                        GetStorage().write('shopFilterId', _selectedListSort.toString());
+                                        selectedListSort.add(state.tapeModel[index].shop!.id!);
+                                        GetStorage().write('shopFilterId', selectedListSort.toString());
 
                                         context.router.push(ProductsRoute(
                                           cats: Cats(id: 0, name: ''),

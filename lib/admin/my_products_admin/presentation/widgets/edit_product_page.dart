@@ -38,7 +38,7 @@ class EditProductPage extends StatefulWidget {
 class _EditProductPageState extends State<EditProductPage> {
   // XFile? _image;
 
-  List<XFile?> _image = [];
+  final List<XFile?> _image = [];
   XFile? _video;
   List<String> _networkImage = [];
 
@@ -293,7 +293,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 controller: compoundController,
               ),
               FieldsProductRequest(
-                titleText: 'Накопительные баллы ,% ',
+                titleText: 'Накопительные бонусы ,% ',
                 hintText: 'Введите размер балла',
                 star: true,
                 arrow: false,
@@ -972,7 +972,8 @@ class _EditProductPageState extends State<EditProductPage> {
                         ? Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             margin: const EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(color: Color(0xff42BB5D), borderRadius: BorderRadius.circular(8)),
+                            decoration:
+                                BoxDecoration(color: const Color(0xff42BB5D), borderRadius: BorderRadius.circular(8)),
                             alignment: Alignment.center,
                             // width: 343,
                             height: 38,
@@ -1417,7 +1418,9 @@ class _EditProductPageState extends State<EditProductPage> {
                     List<int> subIds = [];
 
                     if (subCharacteristicsValue?.isNotEmpty ?? false) {
-                      subCharacteristicsValue!.forEach((e) => {subIds.add(e.id!)});
+                      for (var e in subCharacteristicsValue!) {
+                        subIds.add(e.id!);
+                      }
                     }
 
                     BlocProvider.of<ProductAdminCubit>(context).update(

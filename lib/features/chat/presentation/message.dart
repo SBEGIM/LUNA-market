@@ -6,12 +6,14 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/features/chat/data/DTO/DTO/message_dto.dart';
 import 'package:haji_market/features/chat/data/cubit/message_cubit.dart';
 import 'package:haji_market/features/chat/data/cubit/message_state.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 import 'package:web_socket_channel/io.dart';
@@ -60,12 +62,11 @@ class _MessageState extends State<Message> {
   late WebSocketChannel channel;
 
   final TextEditingController _chatTextController = TextEditingController();
-  RefreshController _refreshController = RefreshController();
+  final RefreshController _refreshController = RefreshController();
 
   void SendData() {
     if (_chatTextController.text.isNotEmpty) {
-      String text =
-          jsonEncode({'action': 'message', 'text': '${_chatTextController.text.toString()}', 'to': widget.userId});
+      String text = jsonEncode({'action': 'message', 'text': _chatTextController.text.toString(), 'to': widget.userId});
 
       channel.sink.add(text);
       // BlocProvider.of<MessageCubit>(context)
@@ -77,7 +78,7 @@ class _MessageState extends State<Message> {
 
   messageDTO? messageText;
   String myId = GetStorage().read('user_id');
-  ScrollController _scrollController = new ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   bool ready = false;
 
@@ -202,24 +203,34 @@ class _MessageState extends State<Message> {
                           // onRefresh: () {
                           //   onRefresh();
                           // },
-                          child: StickyGroupedListView<dynamic, String>(
+                          child: GroupedListView<MessageDto, DateTime>(
                             elements: state.chat,
-                            groupBy: (dynamic element) => element.createdAt ?? '1',
+                            groupBy: (message) => DateTime(
+                              message.createdAt?.year ?? DateTime.now().year,
+                              message.createdAt?.month ?? DateTime.now().month,
+                              message.createdAt?.day ?? DateTime.now().day,
+                            ),
+                            reverse: true,
+                            sort: false,
                             floatingHeader: true,
-                            itemScrollController: itemScrollController,
+                            // itemScrollController: itemScrollController,
+                            // sort: false,
 
                             // initialScrollIndex: 1,
                             // elementIdentifier: (element) => element.
                             //     , // optional - see below for usage
                             // optional
-                            order: StickyGroupedListOrder.DESC, // optional
-                            reverse: true,
-                            groupSeparatorBuilder: (dynamic element) => Container(
+                            // order: StickyGroupedListOrder.DESC, // optional
+                            // reverse: true,
+                            groupSeparatorBuilder: (DateTime element) => Container(
                               margin: const EdgeInsets.only(top: 8, bottom: 8),
                               alignment: Alignment.center,
                               height: 20,
                               child: Text(
-                                element.createdAt ?? '01.01.2023 00:00:00',
+                                DateFormat("dd.MM.yyyy").format(
+                                  element,
+                                ),
+                                // element.createdAt ?? '01.01.2023 00:00:00',
                                 style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
                               ),
                             ),

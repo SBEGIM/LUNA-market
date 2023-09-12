@@ -55,7 +55,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
   TextEditingController feeController = TextEditingController();
   TextEditingController deepController = TextEditingController();
 
-  List<XFile?> _image = [];
+  final List<XFile?> _image = [];
   XFile? _video;
   VideoPlayerController? _controller;
   Future<void> initVideo(String path) async {
@@ -335,7 +335,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                     controller: compoundController,
                     textInputNumber: true),
                 FieldsProductRequest(
-                  titleText: 'Накопительные баллы ,% ',
+                  titleText: 'Накопительные бонусы ,% ',
                   hintText: 'Введите размер балла',
                   star: true,
                   arrow: false,
@@ -1039,7 +1039,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               padding: const EdgeInsets.symmetric(horizontal: 10),
                               margin: const EdgeInsets.only(bottom: 10),
                               decoration:
-                                  BoxDecoration(color: Color(0xff42BB5D), borderRadius: BorderRadius.circular(8)),
+                                  BoxDecoration(color: const Color(0xff42BB5D), borderRadius: BorderRadius.circular(8)),
                               alignment: Alignment.center,
                               // width: 343,
                               height: 38,
@@ -1261,7 +1261,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _image.length != 0
+                      _image.isNotEmpty
                           ? SizedBox(
                               height: 100,
                               child: ListView.builder(
@@ -1467,7 +1467,9 @@ class _CreateProductPageState extends State<CreateProductPage> {
             List<int> subIds = [];
 
             if (subCharacteristicsValue?.isNotEmpty ?? false) {
-              subCharacteristicsValue!.forEach((e) => {subIds.add(e.id!)});
+              for (var e in subCharacteristicsValue!) {
+                subIds.add(e.id!);
+              }
             }
 
             isChangeState = true;

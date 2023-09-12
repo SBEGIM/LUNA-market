@@ -1549,17 +1549,17 @@ class _ActionButtonParentDataWidget extends ParentDataWidget<_ActionButtonParent
 
   @override
   void applyParentData(RenderObject renderObject) {
-    assert(renderObject.parentData is _ActionButtonParentData);
-    final _ActionButtonParentData parentData = renderObject.parentData! as _ActionButtonParentData;
-    if (parentData.isPressed != isPressed) {
-      parentData.isPressed = isPressed;
+    // assert(renderObject.parentData is _ActionButtonParentData);
+    // final _ActionButtonParentData parentData = renderObject.parentData! as _ActionButtonParentData;
+    // if (parentData.isPressed != isPressed) {
+    //   parentData.isPressed = isPressed;
 
-      // Force a repaint.
-      final AbstractNode? targetParent = renderObject.parent;
-      if (targetParent is RenderObject) {
-        targetParent.markNeedsPaint();
-      }
-    }
+    //   // Force a repaint.
+    //   final AbstractNode? targetParent = renderObject.parent;
+    //   if (targetParent is RenderObject) {
+    //     targetParent.markNeedsPaint();
+    //   }
+    // }
   }
 
   @override
