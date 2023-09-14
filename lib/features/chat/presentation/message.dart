@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -130,6 +131,7 @@ class _MessageState extends State<Message> {
       }
 
       if (data['action'] == 'message' || data['action'] == 'file') {
+        log(data.toString());
         BlocProvider.of<MessageCubit>(context).newMessage(MessageDto.fromJson(data));
       }
     });
@@ -206,9 +208,9 @@ class _MessageState extends State<Message> {
                           child: GroupedListView<MessageDto, DateTime>(
                             elements: state.chat,
                             groupBy: (message) => DateTime(
-                              message.createdAt?.year ?? DateTime.now().year,
-                              message.createdAt?.month ?? DateTime.now().month,
-                              message.createdAt?.day ?? DateTime.now().day,
+                              (message.createdAt ?? DateTime.now()).year,
+                              (message.createdAt ?? DateTime.now()).month,
+                              (message.createdAt ?? DateTime.now()).day,
                             ),
                             reverse: true,
                             sort: false,
