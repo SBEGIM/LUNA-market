@@ -42,10 +42,7 @@ class _BonusUserPageState extends State<BonusUserPage> {
         backgroundColor: Colors.white,
         title: const Text(
           'Мои бонусы',
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 16,
-              fontWeight: FontWeight.w500),
+          style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
         ),
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
@@ -62,11 +59,8 @@ class _BonusUserPageState extends State<BonusUserPage> {
             margin: const EdgeInsets.only(top: 16, left: 16, bottom: 8),
             height: 23,
             child: const Text(
-              'Ваши накопленные скидки',
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.kGray900),
+              'Ваши накопленные бонусы',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kGray900),
             ),
           ),
           Container(
@@ -76,10 +70,7 @@ class _BonusUserPageState extends State<BonusUserPage> {
             color: Colors.white,
             child: const Text(
               'Магазины',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.kGray900),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.kGray900),
             ),
           ),
           Container(
@@ -103,16 +94,12 @@ class _BonusUserPageState extends State<BonusUserPage> {
                                 child: Image.asset('assets/icons/no_data.png')),
                             const Text(
                               'У вас пока нет бонусов',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w600),
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                               textAlign: TextAlign.center,
                             ),
                             const Text(
                               'Для выбора вещей перейдите в маркет',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff717171)),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -125,9 +112,7 @@ class _BonusUserPageState extends State<BonusUserPage> {
                         children: [
                           ListView.separated(
                               shrinkWrap: true,
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      const Divider(),
+                              separatorBuilder: (BuildContext context, int index) => const Divider(),
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: state.bonusModel.length,
                               itemBuilder: (BuildContext context, int index) {
@@ -138,9 +123,7 @@ class _BonusUserPageState extends State<BonusUserPage> {
                                     leading: Text(
                                       '${state.bonusModel[index].name}',
                                       style: const TextStyle(
-                                          color: AppColors.kGray900,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400),
+                                          color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                                     ),
                                     trailing: ClipPath(
                                       clipper: TrapeziumClipper(),
@@ -148,13 +131,10 @@ class _BonusUserPageState extends State<BonusUserPage> {
                                         height: 16,
                                         width: 60,
                                         alignment: Alignment.center,
-                                        decoration: const BoxDecoration(
-                                            color: AppColors.kPrimaryColor),
+                                        decoration: const BoxDecoration(color: AppColors.kPrimaryColor),
                                         child: Text(
                                           '${state.bonusModel[index].bonus} $currency',
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500),
+                                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                                         ),
                                       ),
                                     ),
