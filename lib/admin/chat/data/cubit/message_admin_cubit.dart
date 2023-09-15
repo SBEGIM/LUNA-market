@@ -35,7 +35,7 @@ class MessageAdminCubit extends Cubit<MessageAdminState> {
       // emit(LoadingState());
 
       final List<MessageAdminDto> data = await messageRepository.messageList(_page, chatId, userId);
-      if (data.length == 0) {
+      if (data.isEmpty) {
         _page--;
       }
       for (int i = 0; i < data.length; i++) {
@@ -54,7 +54,7 @@ class MessageAdminCubit extends Cubit<MessageAdminState> {
       //  print(_page++);
       // emit(LoadingState());
 
-      _message.add(message);
+      _message.insert(0, message);
 
       emit(LoadedState(_message));
     } catch (e) {

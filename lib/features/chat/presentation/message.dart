@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -77,7 +75,6 @@ class _MessageState extends State<Message> {
 
   messageDTO? messageText;
   String myId = GetStorage().read('user_id');
-  final ScrollController _scrollController = ScrollController();
 
   bool ready = false;
 
