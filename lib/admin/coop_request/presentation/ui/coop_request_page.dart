@@ -175,11 +175,11 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                               color: AppColors.kPrimaryColor, fontSize: 16, fontWeight: FontWeight.w400),
                         ),
                         const TextSpan(
-                          text: "и даю согласие  на  \nперсональную ",
+                          text: "и даю согласие  на  обработку \nперсональных ",
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                         ),
                         const TextSpan(
-                          text: "обработку соответсвии \nс ",
+                          text: "данных в  соответсвии \nс ",
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                         ),
                         TextSpan(

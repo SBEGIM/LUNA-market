@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/features/app/widgets/custom_cupertino_action_sheet.dart';
@@ -13,6 +14,7 @@ import '../../../auth/data/bloc/login_cubit.dart';
 Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
   int? city;
   int? cityCode;
+  TextEditingController controller = TextEditingController();
 
   return showCupertinoModalPopup(
     context: context,
@@ -35,52 +37,66 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
               },
               builder: (context, state) {
                 if (state is LoadedState) {
-                  return Container(
-                    constraints: BoxConstraints(maxHeight: (MediaQuery.of(context).size.height) * 0.85),
-                    height: state.city.length * 50,
-                    child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemCount: state.city.length,
-                        itemBuilder: (context, int index) {
-                          return SizedBox(
-                            height: 50,
-                            child: GestureDetector(
-                              onTap: () {
-                                city = index;
-                                cityCode = state.city[index].code;
-                                setState(() {});
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    city == index ? Icons.check_circle : Icons.check_box_outline_blank,
-                                    color: AppColors.kPrimaryColor,
-                                    size: 24.0,
+                  return Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        child: CupertinoTextField(
+                          controller: controller,
+                          onChanged: (value) {
+                            print('$value');
+                            BlocProvider.of<CityCubit>(context).searchCdekCity(value);
+                          },
+                        ),
+                      ),
+                      Container(
+                        constraints: BoxConstraints(maxHeight: (MediaQuery.of(context).size.height) * 0.85),
+                        height: state.city.length * 50,
+                        child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            itemCount: state.city.length,
+                            itemBuilder: (context, int index) {
+                              return SizedBox(
+                                height: 50,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    city = index;
+                                    cityCode = state.city[index].code;
+                                    setState(() {});
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        city == index ? Icons.check_circle : Icons.check_box_outline_blank,
+                                        color: AppColors.kPrimaryColor,
+                                        size: 24.0,
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Expanded(
+                                        child: Text(
+                                          "${state.city[index].city ?? ''}",
+                                          style: const TextStyle(
+                                              color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
+                                          maxLines: 1,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        "${state.city[index].code ?? '--'}",
+                                        style: const TextStyle(
+                                            color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
+                                        maxLines: 1,
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(width: 6),
-                                  Expanded(
-                                    child: Text(
-                                      "${state.city[index].city ?? ''}",
-                                      style: const TextStyle(
-                                          color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    "${state.city[index].code ?? '--'}",
-                                    style:
-                                        const TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
-                                    maxLines: 1,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
+                                ),
+                              );
+                            }),
+                      ),
+                    ],
                   );
                   // } else if (state is NoDataState) {
                   //   return SizedBox(

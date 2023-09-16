@@ -45,6 +45,18 @@ class CityCubit extends Cubit<CityState> {
     }
   }
 
+  Future<void> searchCdekCity(String cats) async {
+    if (cats.isEmpty) return;
+
+    List<City> temp = [];
+    for (int i = 0; i < _cities.length; i++) {
+      if (_cities[i].city != null && _cities[i].city!.toLowerCase().contains(cats.toLowerCase())) {
+        temp.add(_cities[i]);
+      }
+    }
+    emit(LoadedState(temp));
+  }
+
   cityById(String id) async {
     if (id.isEmpty) return;
     if (_cities.isEmpty) {
