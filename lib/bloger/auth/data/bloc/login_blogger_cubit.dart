@@ -9,8 +9,7 @@ import '../repository/LoginBloggerRepo.dart';
 class LoginBloggerCubit extends Cubit<LoginBloggerState> {
   final LoginBloggerRepository loginBloggerRepository;
 
-  LoginBloggerCubit({required this.loginBloggerRepository})
-      : super(InitState());
+  LoginBloggerCubit({required this.loginBloggerRepository}) : super(InitState());
 
   Future<void> login(String phone, String password) async {
     try {
@@ -23,13 +22,11 @@ class LoginBloggerCubit extends Cubit<LoginBloggerState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль', backgroundColor: Colors.redAccent);
       }
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());
@@ -48,13 +45,11 @@ class LoginBloggerCubit extends Cubit<LoginBloggerState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль', backgroundColor: Colors.redAccent);
       }
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());
