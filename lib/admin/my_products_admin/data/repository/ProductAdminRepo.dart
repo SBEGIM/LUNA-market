@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/optom_price_dto.dart';
+import 'package:haji_market/admin/my_products_admin/data/models/ad_model.dart';
 import 'package:http/http.dart' as http;
 import '../DTO/size_count_dto.dart';
 import '../models/admin_products_model.dart';
@@ -127,6 +128,8 @@ class ProductAdminRepository {
       _productToApi.deleteImage(productId: productId, imagePath: imagePath);
 
   Future<int> getLastArticul() => _productToApi.getLastArticul();
+
+  Future<List<AdDTO>> getAdsList() => _productToApi.getAdsList();
 }
 
 class ProductToApi {
@@ -431,6 +434,23 @@ class ProductToApi {
       final data = jsonDecode(response.body);
 
       return data['last_articul'];
+    } catch (e) {
+      log(e.toString());
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<List<AdDTO>> getAdsList() async {
+    try {
+      // final sellerId = _box.read('seller_id');
+      final String? token = _box.read('token');
+      // int view = 300;
+
+      final response = await http.get(Uri.parse('$baseUrl/list/ads'), headers: {"Authorization": "Bearer $token"});
+
+      final data = jsonDecode(response.body);
+
+      return ((data as List?) ?? []).map((e) => AdDTO.fromJson(e as Map<String, Object?>)).toList();
     } catch (e) {
       log(e.toString());
       throw Exception(e.toString());

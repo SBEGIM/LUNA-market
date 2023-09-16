@@ -81,7 +81,7 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 4, right: 4, top: 2, bottom: 2),
                           child: Text(
-                            '${widget.product.fulfillment ?? 'Доставка'}',
+                            widget.product.fulfillment ?? 'Доставка',
                             textAlign: TextAlign.center,
                             style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w400),
                           ),
@@ -172,10 +172,10 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 0, bottom: 3),
+                  padding: const EdgeInsets.only(top: 0, bottom: 3),
                   child: Text(
                     '${widget.product.catName}',
-                    style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                    style: const TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
                   ),
                 ),
                 // Row(
