@@ -34,7 +34,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
 
   int rating = 0;
 
-  TextEditingController _commentController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -257,7 +257,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               if (state is LoadedState) {
                                 BlocProvider.of<BasketCubit>(context).basketOrderShow();
                                 Navigator.pop(context);
-                                Get.snackbar('Заказ', 'Вы совершили заказ', backgroundColor: Colors.blueAccent);
+                                Get.snackbar('Заказ', 'Вы совершили покупку', backgroundColor: Colors.blueAccent);
                               }
                             }, builder: (context, state) {
                               return Expanded(
@@ -465,7 +465,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 widget.basketOrder.product![index].path != null &&
                                 widget.basketOrder.product![index].path!.isNotEmpty)
                               Image.network(
-                                "${widget.basketOrder.product![index].path!.length != 0 ? "http://185.116.193.73/storage/${widget.basketOrder.product?[index].path?.first}" : ''}",
+                                widget.basketOrder.product![index].path!.isNotEmpty
+                                    ? "http://185.116.193.73/storage/${widget.basketOrder.product?[index].path?.first}"
+                                    : '',
                                 width: 120,
                                 height: 120,
                                 errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
@@ -606,7 +608,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                       maxLines: 5,
                       keyboardType: TextInputType.text,
                       decoration:
-                          InputDecoration(hintText: 'Напишите отзывь для ${productName}', border: InputBorder.none),
+                          InputDecoration(hintText: 'Напишите отзывь для $productName', border: InputBorder.none),
                     ),
                     GestureDetector(
                       onTap: () async {

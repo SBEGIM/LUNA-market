@@ -92,7 +92,7 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   int page = 1;
-  RefreshController _refreshController = RefreshController();
+  final RefreshController _refreshController = RefreshController();
 
   Future<void> onLoading() async {
     await BlocProvider.of<productCubit.ProductCubit>(context).productsPagination();
@@ -267,7 +267,7 @@ class _ProductsPageState extends State<ProductsPage> {
                           }
 
                           if (state is LoadedState) {
-                            return state.productModel.length != 0
+                            return state.productModel.isNotEmpty
                                 ? SizedBox(
                                     height: 260,
                                     child: ListView.builder(

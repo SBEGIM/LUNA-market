@@ -7,6 +7,7 @@ class TapeModel {
     int? price,
     String? description,
     int? compound,
+    int? point,
     String? video,
     String? image,
     bool? inBasket,
@@ -24,6 +25,7 @@ class TapeModel {
     _price = price;
     _description = description;
     _compound = compound;
+    _point = point;
     _video = video;
     _image = image;
     _inBasket = inBasket;
@@ -35,14 +37,15 @@ class TapeModel {
     _blogger = blogger;
   }
 
-    TapeModel copyWith({
-      int? id,
+  TapeModel copyWith({
+    int? id,
     int? tapeId,
     String? name,
     String? catName,
     int? price,
     String? description,
     int? compound,
+    int? point,
     String? video,
     String? image,
     bool? inBasket,
@@ -54,23 +57,23 @@ class TapeModel {
     Blogger? blogger,
   }) {
     return TapeModel(
-      id: id??this.id,
-      tapeId: tapeId??this.tapeId,
-      name: name??this.name,
-      catName: catName??this.catName,
-      price: price??this.price,
-      description: description??this.description,
-      compound: compound??this.compound,
-      video: video??this.video,
-      image: image??this.image,
-      inBasket: inBasket??this.inBasket,
-      inFavorite: inFavorite??this.inFavorite,
-      inSubscribe: inSubscribe??this.inSubscribe,
-      shop: shop??this.shop,
-      blogger: blogger??this.blogger,
+      id: id ?? this.id,
+      tapeId: tapeId ?? this.tapeId,
+      name: name ?? this.name,
+      catName: catName ?? this.catName,
+      price: price ?? this.price,
+      description: description ?? this.description,
+      compound: compound ?? this.compound,
+      point: point ?? this.point,
+      video: video ?? this.video,
+      image: image ?? this.image,
+      inBasket: inBasket ?? this.inBasket,
+      inFavorite: inFavorite ?? this.inFavorite,
+      inSubscribe: inSubscribe ?? this.inSubscribe,
+      shop: shop ?? this.shop,
+      blogger: blogger ?? this.blogger,
     );
   }
-
 
   TapeModel.fromJson(dynamic json) {
     _id = json['id'];
@@ -80,6 +83,7 @@ class TapeModel {
     _price = json['price'];
     _description = json['description'];
     _compound = json['compound'];
+    _point = json['point'];
     _video = json['video'];
     _image = json['image'];
     _inBasket = json['in_basket'];
@@ -88,8 +92,7 @@ class TapeModel {
     _inFavorite = json['in_favorite'];
     _inSubscribe = json['in_subscribe'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
-    _blogger =
-        json['blogger'] != null ? Blogger.fromJson(json['blogger']) : null;
+    _blogger = json['blogger'] != null ? Blogger.fromJson(json['blogger']) : null;
   }
   int? _id;
   int? _tapeId;
@@ -98,6 +101,7 @@ class TapeModel {
   int? _price;
   String? _description;
   int? _compound;
+  int? _point;
   String? _video;
   String? _image;
   bool? _inBasket;
@@ -115,6 +119,7 @@ class TapeModel {
   int? get price => _price;
   String? get description => _description;
   int? get compound => _compound;
+  int? get point => _point;
   String? get video => _video;
   String? get image => _image;
   bool? get inBasket => _inBasket;
@@ -134,6 +139,7 @@ class TapeModel {
     map['price'] = _price;
     map['description'] = _description;
     map['compound'] = _compound;
+    map['point'] = _point;
     map['video'] = _video;
     map['image'] = _image;
     map['in_basket'] = _inBasket;

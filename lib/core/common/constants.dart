@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 mixin AppColors {
@@ -152,6 +154,22 @@ mixin AppDecorations {
       color: Color.fromRGBO(0, 0, 0, 0.08),
     ),
   ];
+}
+
+String getFormattedArticle(String article) {
+  final articleChars = article.split('');
+  if (articleChars.length >= 12) {
+    return article;
+  } else {
+    StringBuffer newArticle = StringBuffer();
+    for (int i = 0; i < (12 - (article.length)); i++) {
+      articleChars.insert(0, '0');
+    }
+    for (final String chars in articleChars) {
+      newArticle.write(chars);
+    }
+    return newArticle.toString();
+  }
 }
 
 const kDeepLinkUrl = 'http://lunamarket.ru';

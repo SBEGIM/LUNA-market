@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/optom_price_dto.dart';
+import 'package:haji_market/admin/my_products_admin/data/models/ad_model.dart';
 import 'package:http/http.dart' as http;
 import '../DTO/size_count_dto.dart';
 import '../models/admin_products_model.dart';
@@ -125,6 +126,10 @@ class ProductAdminRepository {
     required String imagePath,
   }) =>
       _productToApi.deleteImage(productId: productId, imagePath: imagePath);
+
+  Future<int> getLastArticul() => _productToApi.getLastArticul();
+
+  Future<List<AdDTO>> getAdsList() => _productToApi.getAdsList();
 }
 
 class ProductToApi {
@@ -158,9 +163,9 @@ class ProductToApi {
     try {
       final sellerId = _box.read('seller_id');
       final token = _box.read('seller_token');
-      String? pre_order;
+      String? preOrder;
 
-      isSwitchedBs == 'true' ? pre_order = '1' : pre_order = '0';
+      isSwitchedBs == 'true' ? preOrder = '1' : preOrder = '0';
 
       final bodys = {
         'shop_id': sellerId.toString(),
@@ -176,7 +181,7 @@ class ProductToApi {
         'height': height,
         'width': width,
         'massa': massa,
-        'pre_order': pre_order,
+        'pre_order': preOrder,
         'point': point,
         'point_blogger': pointBlogger,
         'articul': articul,
@@ -346,12 +351,16 @@ class ProductToApi {
 
     final http.StreamedResponse response = await request.send();
     final respStr = await response.stream.bytesToString();
-    log(response.statusCode.toString() + 'we');
+    log('${response.statusCode}we');
     return response.statusCode;
   }
 
   Future<dynamic> delete(String productId) async {
-    final response = await http.post(Uri.parse('$baseUrl/seller/product/delete'), body: {
+    final token = _box.read('seller_token');
+    final headers = {
+      'Authorization': 'Bearer $token',
+    };
+    final response = await http.post(Uri.parse('$baseUrl/seller/product/delete'), headers: headers, body: {
       'shop_id': _box.read('seller_id'),
       'token': _box.read('seller_token'),
       'product_id': productId,
@@ -407,6 +416,41 @@ class ProductToApi {
       });
 
       return response.statusCode;
+    } catch (e) {
+      log(e.toString());
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<int> getLastArticul() async {
+    try {
+      // final sellerId = _box.read('seller_id');
+      final String? token = _box.read('token');
+      // int view = 300;
+
+      final response =
+          await http.get(Uri.parse('$baseUrl/seller/last/articul'), headers: {"Authorization": "Bearer $token"});
+
+      final data = jsonDecode(response.body);
+
+      return data['last_articul'];
+    } catch (e) {
+      log(e.toString());
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<List<AdDTO>> getAdsList() async {
+    try {
+      // final sellerId = _box.read('seller_id');
+      final String? token = _box.read('token');
+      // int view = 300;
+
+      final response = await http.get(Uri.parse('$baseUrl/list/ads'), headers: {"Authorization": "Bearer $token"});
+
+      final data = jsonDecode(response.body);
+
+      return ((data as List?) ?? []).map((e) => AdDTO.fromJson(e as Map<String, Object?>)).toList();
     } catch (e) {
       log(e.toString());
       throw Exception(e.toString());

@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/data/bloc/profit_cubit.dart' as profitCubit;
 import 'package:haji_market/features/drawer/data/bloc/profit_state.dart' as profitState;
+import 'package:haji_market/features/drawer/presentation/widgets/pre_order_dialog.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +86,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
   String? productNames;
 
-  TextEditingController _commentController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
   VideoPlayerController? _controller;
   PageController controller = PageController();
 
@@ -98,7 +100,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
     isvisible = widget.product.inBasket ?? false;
     inFavorite = widget.product.inFavorite ?? false;
 
-    productNames = "$kDeepLinkUrl/?product_id\u003d${widget.product!.id}";
+    productNames = "$kDeepLinkUrl/?product_id\u003d${widget.product.id}";
     super.initState();
 
     compoundPrice = (widget.product.price!.toInt() - widget.product.compound!.toInt());
@@ -155,7 +157,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               padding: const EdgeInsets.only(right: 22.0),
               child: GestureDetector(
                   onTap: () async {
-                    await Share.share('${productNames}');
+                    await Share.share('$productNames');
                   },
                   child: SvgPicture.asset('assets/icons/share.svg')))
         ],
@@ -1147,7 +1149,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 // const SizedBox(
                 //   height: 20,
                 // ),
-                if (widget.product.size?.length != 0)
+                if ((widget.product.size ?? []).isNotEmpty)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1213,7 +1215,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       ),
                     ],
                   ),
-                if (widget.product.color?.length != 0)
+                if ((widget.product.color ?? []).isNotEmpty)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1620,7 +1622,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -2049,11 +2051,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   return GestureDetector(
                     onTap: () {
                       if (index == 0) {
-                        List<int> _selectedListSort = [];
+                        List<int> selectedListSort = [];
 
-                        _selectedListSort.add(widget.product.shop!.id as int);
+                        selectedListSort.add(widget.product.shop!.id as int);
 
-                        GetStorage().write('shopFilterId', _selectedListSort.toString());
+                        GetStorage().write('shopFilterId', selectedListSort.toString());
 
                         context.router.push(ProductsRoute(
                           cats: Cats(id: 0, name: ''),
@@ -2064,10 +2066,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         //       cats: Cats(id: 0, name: ''),
                         //     ));
                       } else if (index == 1) {
-                        List<int> _selectedListSort = [];
+                        List<int> selectedListSort = [];
 
-                        _selectedListSort.add(widget.product.brandId ?? 0);
-                        GetStorage().write('brandFilterId', _selectedListSort.toString());
+                        selectedListSort.add(widget.product.brandId ?? 0);
+                        GetStorage().write('brandFilterId', selectedListSort.toString());
 
                         context.router
                             .push(ProductsRoute(cats: Cats(id: 0, name: ''), brandId: widget.product.brandId));
@@ -2236,6 +2238,32 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           children: [
             InkWell(
               onTap: () async {
+                if (widget.product.count == 0 && widget.product.pre_order == 1) {
+                  showCupertinoModalPopup<void>(
+                    context: context,
+                    builder: (context) => PreOrderDialog(
+                      onYesTap: () {
+                        Future.wait<void>([
+                          BlocProvider.of<BasketCubit>(context)
+                              .basketAdd(widget.product.id.toString(), '1', 0, sizeValue, colorValue),
+                        ]);
+
+                        if (BlocProvider.of<BasketCubit>(context).state is! LoadedState) {
+                          Future.wait<void>([
+                            BlocProvider.of<BasketCubit>(context).basketShow(),
+                          ]);
+                        }
+
+                        Future.wait<void>([BlocProvider.of<ProductCubit>(context).products()]);
+                        context.router.push(BasketOrderAddressRoute(
+                          fulfillment: 'fbs',
+                        ));
+                        context.router.pop();
+                      },
+                    ),
+                  );
+                  return;
+                }
                 Future.wait<void>([
                   BlocProvider.of<BasketCubit>(context)
                       .basketAdd(widget.product.id.toString(), '1', 0, sizeValue, colorValue),
@@ -2280,12 +2308,27 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 // Navigator.pop(context);
 
                 if (widget.product.count == 0 && widget.product.pre_order == 1) {
-                  Get.snackbar('Нет в наличии', 'только предзаказ');
-                  return;
-                }
-
-                if (widget.product.count == 0 && widget.product.pre_order == 1) {
-                  Get.snackbar('Нет в наличии', '');
+                  showCupertinoModalPopup<void>(
+                    context: context,
+                    builder: (context) => PreOrderDialog(
+                      onYesTap: () {
+                        if (isvisible == false && widget.product.inBasket == false) {
+                          BlocProvider.of<BasketCubit>(context)
+                              .basketAdd(widget.product.id.toString(), '1', 0, sizeValue, colorValue);
+                          setState(() {
+                            isvisible = true;
+                          });
+                          BlocProvider.of<ProductCubit>(context).products();
+                        } else {
+                          context.router.pushAndPopUntil(
+                            const LauncherRoute(children: [BasketRoute()]),
+                            predicate: (route) => false,
+                          );
+                        }
+                        context.router.pop();
+                      },
+                    ),
+                  );
                   return;
                 }
 

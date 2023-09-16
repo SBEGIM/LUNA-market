@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/chat/data/DTO/DTO/message_dto.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 import 'package:web_socket_channel/io.dart';
@@ -61,8 +63,7 @@ class _MessageAdminState extends State<MessageAdmin> {
 
   void SendData() {
     if (_chatTextController.text.isNotEmpty) {
-      String text =
-          jsonEncode({'action': 'message', 'text': '${_chatTextController.text.toString()}', 'to': widget.userId});
+      String text = jsonEncode({'action': 'message', 'text': _chatTextController.text.toString(), 'to': widget.userId});
 
       channel.sink.add(text);
       _chatTextController.clear();
@@ -181,24 +182,34 @@ class _MessageAdminState extends State<MessageAdmin> {
                               // onRefresh: () {
                               //   onRefresh();
                               // },
-                              child: StickyGroupedListView<dynamic, String>(
+                              child: GroupedListView<MessageAdminDto, DateTime>(
+                                // elements: state.chat,
+                                // groupBy: (dynamic element) => element.createdAt ?? '1',
                                 elements: state.chat,
-                                groupBy: (dynamic element) => element.createdAt ?? '1',
+                                groupBy: (message) => DateTime(
+                                  (message.createdAt ?? DateTime.now()).year,
+                                  (message.createdAt ?? DateTime.now()).month,
+                                  (message.createdAt ?? DateTime.now()).day,
+                                ),
+                                reverse: true,
+                                sort: false,
                                 floatingHeader: true,
-                                itemScrollController: itemScrollController,
+                                // itemScrollController: itemScrollController,
 
                                 // initialScrollIndex: 1,
                                 // elementIdentifier: (element) => element.
                                 //     , // optional - see below for usage
                                 // optional
-                                order: StickyGroupedListOrder.DESC, // optional
-                                reverse: true,
+                                // order: StickyGroupedListOrder.DESC, // optional
+                                // reverse: true,
                                 groupSeparatorBuilder: (dynamic element) => Container(
                                   margin: const EdgeInsets.only(top: 8, bottom: 8),
                                   alignment: Alignment.center,
                                   height: 20,
                                   child: Text(
-                                    element.createdAt ?? '08.02.2023 13:40:23',
+                                    DateFormat("dd.MM.yyyy").format(
+                                      element,
+                                    ),
                                     style:
                                         const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
                                   ),
@@ -266,7 +277,7 @@ class _MessageAdminState extends State<MessageAdmin> {
                                           title: "Отправить фото",
                                           middleText: '',
                                           textConfirm: 'Камера',
-                                          textCancel: 'Галлерея',
+                                          textCancel: 'Фото',
                                           titlePadding: const EdgeInsets.only(top: 40),
                                           onConfirm: () {
                                             change = true;

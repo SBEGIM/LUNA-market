@@ -50,8 +50,7 @@ class _UpdateProductVideoPageState extends State<UpdateProductVideoPage> {
         // iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         title: const Text(
           'Загрузить видео',
-          style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
         ),
         elevation: 0,
       ),
@@ -83,7 +82,7 @@ class _UpdateProductVideoPageState extends State<UpdateProductVideoPage> {
                       title: "Загрузить видео",
                       middleText: '',
                       textConfirm: 'Камера',
-                      textCancel: 'Галлерея',
+                      textCancel: 'Фото',
                       titlePadding: const EdgeInsets.only(top: 40),
                       onConfirm: () {
                         change = true;
@@ -105,26 +104,19 @@ class _UpdateProductVideoPageState extends State<UpdateProductVideoPage> {
                   width: 343,
                   height: 56,
                   //  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12)),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
                   child: Row(
                     //crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SvgPicture.asset(
                         'assets/icons/video.svg',
-                        color: _video != null
-                            ? AppColors.kPrimaryColor
-                            : Colors.grey,
+                        color: _video != null ? AppColors.kPrimaryColor : Colors.grey,
                       ),
                       const SizedBox(width: 10),
                       const Text(
                         'Добавить видео',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.grey),
                       ),
                     ],
                   )),
@@ -132,10 +124,7 @@ class _UpdateProductVideoPageState extends State<UpdateProductVideoPage> {
             const SizedBox(height: 12),
             const Text(
               'Разрешение — 1080×1350 px — для горизонтального; 566×1080 px — для вертикального; Расширение — mov, mp4; jpg, png; Размер — 4 ГБ — для видео, 30 МБ — для фото; Длительность — от 3 до 60 секунд.',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey),
             ),
           ],
         ),
@@ -148,8 +137,7 @@ class _UpdateProductVideoPageState extends State<UpdateProductVideoPage> {
               // Get.to(BasketOrderPage());
 
               final fileVideo = _video != null ? _video!.path : null;
-              BlocProvider.of<UploadVideoBLoggerCubit>(context)
-                  .upload(fileVideo, widget.product_id);
+              BlocProvider.of<UploadVideoBLoggerCubit>(context).upload(fileVideo, widget.product_id);
 
               Navigator.pop(context);
             },
@@ -169,10 +157,7 @@ class _UpdateProductVideoPageState extends State<UpdateProductVideoPage> {
                         // padding: const EdgeInsets.only(left: 16, right: 16),
                         child: const Text(
                           'Готово',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                           textAlign: TextAlign.center,
                         )),
                   ],
