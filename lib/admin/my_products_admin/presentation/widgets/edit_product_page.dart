@@ -12,6 +12,7 @@ import 'package:haji_market/admin/my_products_admin/data/bloc/delete_image_cubit
 import 'package:haji_market/admin/my_products_admin/data/bloc/product_admin_state.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/size_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caats_admin_page.dart';
+import 'package:haji_market/blogger_ad.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart';
 import 'package:haji_market/features/home/data/bloc/cats_cubit.dart';
@@ -285,21 +286,45 @@ class _EditProductPageState extends State<EditProductPage> {
                 arrow: false,
                 controller: priceController,
               ),
-              FieldsProductRequest(
-                titleText: 'Скидка при оплате наличными, % ',
-                hintText: 'Введите размер скидки',
-                star: true,
-                arrow: false,
-                controller: compoundController,
-              ),
+              // FieldsProductRequest(
+              //   titleText: 'Скидка при оплате наличными, % ',
+              //   hintText: 'Введите размер скидки',
+              //   star: true,
+              //   arrow: false,
+              //   controller: compoundController,
+              // ),
               FieldsProductRequest(
                 titleText: 'Накопительные бонусы ,% ',
-                hintText: 'Введите размер балла',
+                hintText: 'Введите размер бонуса',
                 star: true,
                 arrow: false,
                 controller: pointsController,
                 textInputNumber: true,
               ),
+              GestureDetector(
+                onTap: () {
+                  Get.to(const BloggerAd());
+                },
+                child: SizedBox(
+                  child: RichText(
+                    textAlign: TextAlign.left,
+                    text: const TextSpan(
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: "Предлагая вознаграждение блогеру, вы принимаете условия ",
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey),
+                        ),
+                        TextSpan(
+                          text: "Типового договора на оказание рекламных услуг\n",
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
               FieldsProductRequest(
                   titleText: 'Вознаграждение блогеру ,% ',
                   hintText: 'Введите вознаграждение ',

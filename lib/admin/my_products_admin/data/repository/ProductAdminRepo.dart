@@ -125,6 +125,8 @@ class ProductAdminRepository {
     required String imagePath,
   }) =>
       _productToApi.deleteImage(productId: productId, imagePath: imagePath);
+
+  Future<int> getLastArticul() => _productToApi.getLastArticul();
 }
 
 class ProductToApi {
@@ -158,9 +160,9 @@ class ProductToApi {
     try {
       final sellerId = _box.read('seller_id');
       final token = _box.read('seller_token');
-      String? pre_order;
+      String? preOrder;
 
-      isSwitchedBs == 'true' ? pre_order = '1' : pre_order = '0';
+      isSwitchedBs == 'true' ? preOrder = '1' : preOrder = '0';
 
       final bodys = {
         'shop_id': sellerId.toString(),
@@ -176,7 +178,7 @@ class ProductToApi {
         'height': height,
         'width': width,
         'massa': massa,
-        'pre_order': pre_order,
+        'pre_order': preOrder,
         'point': point,
         'point_blogger': pointBlogger,
         'articul': articul,
@@ -346,12 +348,16 @@ class ProductToApi {
 
     final http.StreamedResponse response = await request.send();
     final respStr = await response.stream.bytesToString();
-    log(response.statusCode.toString() + 'we');
+    log('${response.statusCode}we');
     return response.statusCode;
   }
 
   Future<dynamic> delete(String productId) async {
-    final response = await http.post(Uri.parse('$baseUrl/seller/product/delete'), body: {
+    final token = _box.read('seller_token');
+    final headers = {
+      'Authorization': 'Bearer $token',
+    };
+    final response = await http.post(Uri.parse('$baseUrl/seller/product/delete'), headers: headers, body: {
       'shop_id': _box.read('seller_id'),
       'token': _box.read('seller_token'),
       'product_id': productId,
@@ -407,6 +413,24 @@ class ProductToApi {
       });
 
       return response.statusCode;
+    } catch (e) {
+      log(e.toString());
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<int> getLastArticul() async {
+    try {
+      // final sellerId = _box.read('seller_id');
+      final String? token = _box.read('token');
+      // int view = 300;
+
+      final response =
+          await http.get(Uri.parse('$baseUrl/seller/last/articul'), headers: {"Authorization": "Bearer $token"});
+
+      final data = jsonDecode(response.body);
+
+      return data['last_articul'];
     } catch (e) {
       log(e.toString());
       throw Exception(e.toString());

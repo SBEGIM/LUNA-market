@@ -287,7 +287,7 @@ class _MessageState extends State<Message> {
                                       title: "Отправить фото",
                                       middleText: '',
                                       textConfirm: 'Камера',
-                                      textCancel: 'Галлерея',
+                                      textCancel: 'Фото',
                                       titlePadding: const EdgeInsets.only(top: 40),
                                       onConfirm: () {
                                         change = true;

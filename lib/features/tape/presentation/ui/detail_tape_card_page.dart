@@ -344,29 +344,30 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  '-${state.tapeModel[index].compound}%',
+                                  '${state.tapeModel[index].point}% Б',
                                   style:
                                       const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
                                 ),
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(6)),
-                                // padding: const EdgeInsets.only(
-                                //     left: 4, right: 4, bottom: 2, top: 2),
-                                // margin: const EdgeInsets.only(top: 370),
-                                width: 56,
-                                height: 28,
-                                // margin: const EdgeInsets.only(top: 4),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  '${state.tapeModel[index].compound}% Б',
-                                  style:
-                                      const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
-                                ),
-                              ),
+                              // const SizedBox(
+                              //   height: 10,
+                              // ),
+                              // Container(
+                              //   decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(6)),
+                              //   // padding: const EdgeInsets.only(
+                              //   //     left: 4, right: 4, bottom: 2, top: 2),
+                              //   // margin: const EdgeInsets.only(top: 370),
+                              //   width: 56,
+                              //   height: 28,
+                              //   // margin: const EdgeInsets.only(top: 4),
+                              //   alignment: Alignment.center,
+                              //   child: Text(
+                              //     '${state.tapeModel[index].point}% Б',
+                              //     style:
+                              //         const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
+                              //   ),
+                              // ),
+
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [

@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/my_products_admin/data/DTO/size_count_dto.dart';
+import 'package:haji_market/admin/my_products_admin/data/bloc/last_articul_cubit.dart' as lastArticul;
 import 'package:haji_market/admin/my_products_admin/data/bloc/size_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/brands_admin_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/colors_admin_page.dart';
@@ -179,7 +180,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
     colors = Cats(id: 0, name: 'Выберите цвет');
     _sizeArray();
     _charactisticsArray();
-
+    BlocProvider.of<lastArticul.LastArticulCubit>(context).getLastArticul();
     super.initState();
   }
 
@@ -219,13 +220,21 @@ class _CreateProductPageState extends State<CreateProductPage> {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                FieldsProductRequest(
-                  titleText: 'Артикул ',
-                  hintText: 'Введите артикул  ',
-                  star: false,
-                  arrow: false,
-                  controller: articulController,
-                  textInputNumber: true,
+                BlocListener<lastArticul.LastArticulCubit, lastArticul.LastArticulState>(
+                  listener: (context, stateArticul) {
+                    if (stateArticul is lastArticul.LoadedState) {
+                      articulController.text = getFormattedArticle(stateArticul.articul.toString());
+                    }
+                  },
+                  child: FieldsProductRequest(
+                    titleText: 'Артикул ',
+                    hintText: 'Введите артикул  ',
+                    star: false,
+                    arrow: false,
+                    controller: articulController,
+                    textInputNumber: true,
+                    readOnly: true,
+                  ),
                 ),
                 // Padding(
                 //   padding: const EdgeInsets.only(top: 4.0, bottom: 10),
@@ -327,16 +336,16 @@ class _CreateProductPageState extends State<CreateProductPage> {
                     arrow: false,
                     controller: priceController,
                     textInputNumber: true),
-                FieldsProductRequest(
-                    titleText: 'Скидка  % ',
-                    hintText: 'Введите размер скидки',
-                    star: true,
-                    arrow: false,
-                    controller: compoundController,
-                    textInputNumber: true),
+                // FieldsProductRequest(
+                //     titleText: 'Скидка  % ',
+                //     hintText: 'Введите размер скидки',
+                //     star: true,
+                //     arrow: false,
+                //     controller: compoundController,
+                //     textInputNumber: true),
                 FieldsProductRequest(
                   titleText: 'Накопительные бонусы ,% ',
-                  hintText: 'Введите размер балла',
+                  hintText: 'Введите размер бонуса',
                   star: true,
                   arrow: false,
                   controller: pointsController,
@@ -1546,6 +1555,7 @@ class FieldsProductRequest extends StatefulWidget {
   final TextEditingController? controller;
   final Cats? cats;
   final bool? textInputNumber;
+  final bool readOnly;
   final void Function()? onPressed;
 
   const FieldsProductRequest({
@@ -1559,6 +1569,7 @@ class FieldsProductRequest extends StatefulWidget {
     this.textInputNumber,
     Key? key,
     this.onPressed,
+    this.readOnly = false,
   }) : super(key: key);
 
   @override
@@ -1601,7 +1612,7 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
                 controller: widget.controller,
-                readOnly: (widget.hintColor == false || widget.hintColor == null) ? false : true,
+                readOnly: (widget.hintColor == false || widget.hintColor == null) ? widget.readOnly : true,
                 keyboardType: (widget.textInputNumber == false || widget.textInputNumber == null)
                     ? TextInputType.text
                     : const TextInputType.numberWithOptions(signed: true, decimal: true),

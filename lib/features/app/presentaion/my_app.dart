@@ -9,6 +9,7 @@ import 'package:haji_market/admin/auth/data/bloc/register_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/bloc/sms_admin_cubit.dart';
 import 'package:haji_market/admin/auth/data/repository/registerAdminRepo.dart';
 import 'package:haji_market/admin/my_orders_admin/data/bloc/order_status_admin_cubit.dart';
+import 'package:haji_market/admin/my_products_admin/data/bloc/last_articul_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/size_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/data/repository/CharacteristicAdminRepo.dart';
 import 'package:haji_market/admin/my_products_admin/data/repository/SizeAdminRepo.dart';
@@ -156,7 +157,7 @@ class _MyAppState extends State<MyApp> {
       RemoteNotification? notification = message.notification;
       print(notification!.title.toString());
 
-      if (notification != null && Platform.isAndroid) {
+      if (Platform.isAndroid) {
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
           notification.title,
@@ -299,6 +300,7 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(create: (_) => BasketCubit(basketRepository: BasketRepository())),
         BlocProvider(create: (_) => OrderCubit(basketRepository: BasketRepository())),
         BlocProvider(create: (_) => BrandCubit(brandRepository: BrandsRepository())),
+        BlocProvider(create: (_) => LastArticulCubit(repository: ProductAdminRepository())),
         BlocProvider(create: (_) => LoginAdminCubit(loginAdminRepository: LoginAdminRepository())),
         BlocProvider(create: (_) => ProductAdminCubit(productAdminRepository: ProductAdminRepository())),
         BlocProvider(create: (_) => BasketAdminCubit(basketRepository: BasketAdminRepository())),
