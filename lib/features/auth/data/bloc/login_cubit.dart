@@ -70,6 +70,16 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
+  Future<void> editPush(int pushStatus) async {
+    try {
+      emit(LoadingState());
+      await loginRepository.editPush(pushStatus);
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: e.toString()));
+    }
+  }
+
   Future<void> cityCode(code) async {
     try {
       await loginRepository.code(code);

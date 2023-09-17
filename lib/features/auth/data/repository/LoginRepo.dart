@@ -14,6 +14,7 @@ class LoginRepository {
   Future<dynamic> code(code) => _loginToApi.code(code);
 
   Future<dynamic> lateAuth() => _loginToApi.lateAuth();
+  Future<dynamic> editPush(int pushStatus) => _loginToApi.editPush(pushStatus);
   Future<dynamic> edit(String name, String phone, String Avatar, String gender, String birthday, String country,
           String city, String street, String home, String porch, String floor, String room, String email) =>
       _loginToApi.edit(name, phone, Avatar, gender, birthday, country, city, street, home, porch, floor, room, email);
@@ -48,6 +49,7 @@ class LoginToApi {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       _box.write('token', data['access_token'].toString());
+      _box.write('push', data['push'].toString());
       _box.write('user_id', data['id'].toString());
       _box.write('name', data['name'].toString());
       _box.write('phone', data['phone'].toString());
@@ -82,6 +84,37 @@ class LoginToApi {
       // _box.write('card', data['user']['card'].toString());
     }
     return response.statusCode;
+  }
+
+  Future<dynamic> editPush(int pushStatus) async {
+    final String? token = _box.read('token');
+
+    final headers = {
+      'Authorization': 'Bearer $token',
+    };
+    final body = {
+      'push': pushStatus.toString(),
+      // 'city_id': cityId,
+    };
+
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseUrl/user/edit'),
+    );
+
+    request.headers.addAll(headers);
+    request.fields.addAll(body);
+    final http.StreamedResponse response = await request.send();
+    final respStr = await response.stream.bytesToString();
+
+    final jsonResponse = jsonDecode(respStr);
+    // print(jsonResponse.toString());
+    if (response.statusCode == 200) {
+      _box.write('push', jsonResponse['push'].toString());
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<dynamic> edit(
