@@ -136,7 +136,8 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       ),
                       child: ListTile(
                         leading: Image.network(
-                          widget.basket.product![index].path!.first.isNotEmpty
+                          widget.basket.product![index].path!.isNotEmpty &&
+                                  widget.basket.product![index].path!.first.isNotEmpty
                               ? "http://185.116.193.73/storage/${widget.basket.product![index].path!.first}"
                               : '',
                           fit: BoxFit.cover,
@@ -299,11 +300,11 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
               const Divider(
                 color: AppColors.kGray400,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0, right: 16, top: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text(
                       'Способы оплаты ',
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
@@ -318,11 +319,11 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
               const Divider(
                 color: AppColors.kGray400,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0, right: 16, top: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text(
                       'Адрес доставки',
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),

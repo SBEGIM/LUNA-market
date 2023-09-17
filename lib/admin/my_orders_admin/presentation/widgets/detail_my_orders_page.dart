@@ -141,7 +141,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       ),
                       child: ListTile(
                         leading: Image.network(
-                          widget.basket.product![index].path != null
+                          widget.basket.product![index].path != null && widget.basket.product![index].path!.isNotEmpty
                               ? "http://185.116.193.73/storage/${widget.basket.product![index].path?.first}"
                               : '',
                           fit: BoxFit.cover,
@@ -285,18 +285,18 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
               const Divider(
                 color: AppColors.kGray400,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0, right: 16, top: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'Оплата бонусами  ',
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
                       '0 ₽ ',
-                      style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -433,7 +433,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
           ),
           GestureDetector(
             onTap: () {
-              Get.to(DeliveryNoteAdmin(basketOrder: widget.basket as BasketAdminOrderModel));
+              Get.to(DeliveryNoteAdmin(basketOrder: widget.basket));
             },
             child: SizedBox(
               height: 35,

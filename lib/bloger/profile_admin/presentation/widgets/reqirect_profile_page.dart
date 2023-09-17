@@ -250,7 +250,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                               controller: iinController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
-                                hintText: 'ИИН',
+                                hintText: 'ИНН',
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white),
                                   // borderRadius: BorderRadius.circular(3),

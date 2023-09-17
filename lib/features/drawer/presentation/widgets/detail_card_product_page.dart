@@ -2238,11 +2238,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           children: [
             InkWell(
               onTap: () async {
-                if (widget.product.count == 0 && widget.product.pre_order == 1) {
+                if (widget.product.product_count == 0 && widget.product.pre_order == 1) {
                   showCupertinoModalPopup<void>(
                     context: context,
                     builder: (context) => PreOrderDialog(
                       onYesTap: () {
+                        Navigator.pop(context);
                         Future.wait<void>([
                           BlocProvider.of<BasketCubit>(context)
                               .basketAdd(widget.product.id.toString(), '1', 0, sizeValue, colorValue),
@@ -2255,10 +2256,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         }
 
                         Future.wait<void>([BlocProvider.of<ProductCubit>(context).products()]);
-                        context.router.push(BasketOrderAddressRoute(
-                          fulfillment: 'fbs',
-                        ));
-                        context.router.pop();
+                        this.context.router.push(BasketOrderAddressRoute(
+                              fulfillment: 'fbs',
+                            ));
                       },
                     ),
                   );
@@ -2307,11 +2307,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               onTap: () {
                 // Navigator.pop(context);
 
-                if (widget.product.count == 0 && widget.product.pre_order == 1) {
+                if (widget.product.product_count == 0 && widget.product.pre_order == 1) {
                   showCupertinoModalPopup<void>(
                     context: context,
                     builder: (context) => PreOrderDialog(
                       onYesTap: () {
+                        Navigator.pop(context);
                         if (isvisible == false && widget.product.inBasket == false) {
                           BlocProvider.of<BasketCubit>(context)
                               .basketAdd(widget.product.id.toString(), '1', 0, sizeValue, colorValue);
@@ -2320,12 +2321,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           });
                           BlocProvider.of<ProductCubit>(context).products();
                         } else {
-                          context.router.pushAndPopUntil(
-                            const LauncherRoute(children: [BasketRoute()]),
-                            predicate: (route) => false,
-                          );
+                          this.context.router.pushAndPopUntil(
+                                const LauncherRoute(children: [BasketRoute()]),
+                                predicate: (route) => false,
+                              );
                         }
-                        context.router.pop();
                       },
                     ),
                   );

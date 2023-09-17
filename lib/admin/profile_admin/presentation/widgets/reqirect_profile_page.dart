@@ -240,7 +240,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           readOnly: true,
                           decoration: const InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'ИИН/БИН',
+                            hintText: 'ИНН/БИН',
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
                               // borderRadius: BorderRadius.circular(3),
@@ -308,7 +308,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          final data = await Get.to(() => CountryWidget());
+                          final data = await Get.to(() => const CountryWidget());
                           countryController.text = data;
                           setState(() {});
                         },

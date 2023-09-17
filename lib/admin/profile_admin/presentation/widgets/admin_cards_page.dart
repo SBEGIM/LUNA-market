@@ -23,8 +23,8 @@ class _AdminCardPageState extends State<AdminCardPage> {
 
   @override
   void initState() {
-    checkController.text = widget.check != 'null' ? widget.check! : '';
-    cardController.text = widget.card != 'null' ? widget.card! : '';
+    checkController.text = widget.check != null ? widget.check! : '';
+    cardController.text = widget.card != null ? widget.card! : '';
 
     super.initState();
   }

@@ -1,4 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:haji_market/bloger/my_orders_admin/data/bloc/upload_video_blogger_cubit.dart';
+import 'package:haji_market/bloger/my_orders_admin/data/bloc/upload_video_blogger_state.dart';
+import 'package:haji_market/bloger/my_orders_admin/presentation/widgets/delete_video_dialog.dart';
+import 'package:haji_market/bloger/tape/data/cubit/tape_blogger_cubit.dart';
 import 'package:haji_market/bloger/tape/data/model/TapeBloggerModel.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:video_player/video_player.dart';
@@ -20,11 +26,11 @@ class BloggerTapeCardWidget extends StatefulWidget {
 
 class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
   VideoPlayerController? _controller;
+  bool isLoaded = false;
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network(
-        'http://185.116.193.73/storage/${widget.tape.video}')
+    _controller = VideoPlayerController.network('http://185.116.193.73/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.pause();
         // setState(() {});
@@ -45,15 +51,13 @@ class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
         Positioned.fill(
           child: AspectRatio(
             aspectRatio: _controller!.value.aspectRatio,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: VideoPlayer(_controller!)),
+            child: ClipRRect(borderRadius: BorderRadius.circular(12), child: VideoPlayer(_controller!)),
           ),
         ),
         InkWell(
           onTap: () {
-            context.router.push(BloggerDetailTapeCardRoute(
-                index: widget.index, shopName: widget.tape.shop?.name ?? ''));
+            context.router
+                .push(BloggerDetailTapeCardRoute(index: widget.index, shopName: widget.tape.shop?.name ?? ''));
             // BlocProvider.of<AdminNavigationCubit>(context).emit(
             //     DetailTapeAdminState(widget.index, widget.tape.shop!.name!));
             // Navigator.push(
@@ -66,11 +70,50 @@ class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
           },
           child: Padding(
             padding: const EdgeInsets.only(right: 8.0, top: 8),
-            child: Align(
-                alignment: Alignment.topRight,
-                child: SvgPicture.asset('assets/icons/play.svg')),
+            child: Align(alignment: Alignment.topRight, child: SvgPicture.asset('assets/icons/play.svg')),
           ),
         ),
+        BlocListener<UploadVideoBLoggerCubit, UploadVideoBloggerCubitState>(
+          listener: (context, state) {
+            if (state is LoadedOrderState) {
+              if (isLoaded) {
+                BlocProvider.of<TapeBloggerCubit>(context).tapes(false, false, '');
+                isLoaded = false;
+              }
+            }
+          },
+          child: Positioned(
+              top: 4,
+              left: 4,
+              child: Material(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(15),
+                  onTap: () {
+                    showCupertinoModalPopup<void>(
+                      context: context,
+                      builder: (context) => DeleteVideoDialog(
+                        onYesTap: () {
+                          if (widget.tape.tapeId != null) {
+                            BlocProvider.of<UploadVideoBLoggerCubit>(context).delete(tapeId: widget.tape.tapeId!);
+                            isLoaded = true;
+                            Navigator.pop(context);
+                          }
+                        },
+                      ),
+                    );
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(6.0),
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              )),
+        )
         // Container(
         //   alignment: Alignment.center,
         //   margin: const EdgeInsets.only(top: 225),

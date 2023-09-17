@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../../my_orders_admin/presentation/widgets/tape_card_widget.dart';
 import '../../data/cubit/tape_blogger_cubit.dart';
@@ -17,8 +18,7 @@ class TapeBloggerPage extends StatefulWidget {
 }
 
 class _TapeBloggerPageState extends State<TapeBloggerPage> {
-  final List<Map> myProducts =
-      List.generate(6, (index) => {"id": index, "name": "Product "}).toList();
+  final List<Map> myProducts = List.generate(6, (index) => {"id": index, "name": "Product "}).toList();
 
   final int _value = 1;
 
@@ -27,6 +27,8 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
     BlocProvider.of<TapeBloggerCubit>(context).tapes(false, false, '');
     super.initState();
   }
+
+  RefreshController refreshController = RefreshController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,32 +67,25 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
                 );
               }
               if (state is LoadingState) {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
               if (state is NoDataState) {
-                return Container(
+                return SizedBox(
                   width: MediaQuery.of(context).size.height,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Container(
-                          margin: EdgeInsets.only(top: 146),
-                          child: Image.asset('assets/icons/no_data.png')),
+                          margin: const EdgeInsets.only(top: 146), child: Image.asset('assets/icons/no_data.png')),
                       const Text(
                         'В ленте нет данных',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                         textAlign: TextAlign.center,
                       ),
                       const Text(
                         'По вашему запросу ничего не найдено',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff717171)),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
                         textAlign: TextAlign.center,
                       )
                     ],
@@ -99,40 +94,44 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
               }
 
               if (state is LoadedState) {
-                return GridView.builder(
-                  cacheExtent: 10000,
-                  padding: const EdgeInsets.all(1),
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 150,
-                    childAspectRatio: 1 / 2,
-                    mainAxisSpacing: 3,
-                    crossAxisSpacing: 3,
-                  ),
-                  itemCount: state.tapeModel.length,
-                  // children: const [],
-                  itemBuilder: (context, index) {
-                    return Shimmer(
-                      duration: const Duration(seconds: 3), //Default value
-                      interval: const Duration(
-                          microseconds:
-                              1), //Default value: Duration(seconds: 0)
-                      color: Colors.white, //Default value
-                      colorOpacity: 0, //Default value
-                      enabled: true, //Default value
-                      direction:
-                          const ShimmerDirection.fromLTRB(), //Default Value
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.grey.withOpacity(0.6),
-                        ),
-                        child: BloggerTapeCardWidget(
-                          tape: state.tapeModel[index],
-                          index: index,
-                        ),
-                      ),
-                    );
+                return SmartRefresher(
+                  controller: refreshController,
+                  onRefresh: () {
+                    BlocProvider.of<TapeBloggerCubit>(context).tapes(false, false, '');
+                    refreshController.refreshCompleted();
                   },
+                  child: GridView.builder(
+                    cacheExtent: 10000,
+                    padding: const EdgeInsets.all(1),
+                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 150,
+                      childAspectRatio: 1 / 2,
+                      mainAxisSpacing: 3,
+                      crossAxisSpacing: 3,
+                    ),
+                    itemCount: state.tapeModel.length,
+                    // children: const [],
+                    itemBuilder: (context, index) {
+                      return Shimmer(
+                        duration: const Duration(seconds: 3), //Default value
+                        interval: const Duration(microseconds: 1), //Default value: Duration(seconds: 0)
+                        color: Colors.white, //Default value
+                        colorOpacity: 0, //Default value
+                        enabled: true, //Default value
+                        direction: const ShimmerDirection.fromLTRB(), //Default Value
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.grey.withOpacity(0.6),
+                          ),
+                          child: BloggerTapeCardWidget(
+                            tape: state.tapeModel[index],
+                            index: index,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 );
 
                 // return GridView.builder(
@@ -192,9 +191,7 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
                 //   },
                 // );
               } else {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }));
 

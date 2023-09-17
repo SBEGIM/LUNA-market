@@ -81,7 +81,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
               controller: iinController,
             ),
             FieldsCoopRequest(
-              titleText: 'Название компании или физ лицо ',
+              titleText: 'Название компании или ИП ',
               hintText: 'Введите название компании',
               star: false,
               arrow: false,
@@ -225,7 +225,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                     check: checkController.text);
 
                 await BlocProvider.of<RegisterAdminCubit>(context).register(registerDto);
-                context.router.push(AuthAdminRoute());
+                context.router.push(const AuthAdminRoute());
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(builder: (context) => AuthAdminPage()),

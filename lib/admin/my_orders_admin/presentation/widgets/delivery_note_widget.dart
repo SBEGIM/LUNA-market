@@ -36,13 +36,12 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
     String? floor = widget.basketOrder.user!.floor;
     String? room = widget.basketOrder.user!.room;
 
-    address =
-        "${'ул. ' + (street ?? '*') + ', дом ' + (home ?? '*') + ',подъезд ' + (porch ?? '*') + ',этаж ' + (floor ?? '*') + ',кв ' + (room ?? '*')}";
+    address = 'ул. ${street ?? '*'}, дом ${home ?? '*'},подъезд ${porch ?? '*'},этаж ${floor ?? '*'},кв ${room ?? '*'}';
   }
 
   ScreenshotController screenshotController = ScreenshotController();
 
-  int _counter = 0;
+  final int _counter = 0;
   Uint8List? _imageFile;
   XFile? imageF;
 
@@ -172,7 +171,7 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                       ),
                       Expanded(
                           child: Text(
-                        '${address}',
+                        address,
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                       )),
                     ],
@@ -196,11 +195,11 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${widget.basketOrder.product?.first.shopName ?? 'Неизвестно'}',
+                        widget.basketOrder.product?.first.shopName ?? 'Неизвестно',
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        '${widget.basketOrder.user?.name ?? 'Неизвестно'}',
+                        widget.basketOrder.user?.name ?? 'Неизвестно',
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                     ],
@@ -224,12 +223,12 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${widget.basketOrder.product?.first.shopPhone ?? 'Неизвестно'}',
+                        widget.basketOrder.product?.first.shopPhone ?? 'Неизвестно',
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                       ),
-                      const Text(
-                        '***********',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      Text(
+                        widget.basketOrder.user?.phone.toString() ?? 'Неизвестно',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                       // Text(
                       //   '${widget.basketOrder.user!.phone}',
