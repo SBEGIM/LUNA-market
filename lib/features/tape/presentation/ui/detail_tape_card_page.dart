@@ -334,39 +334,40 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // Column(
+                              //   children: [
                               Container(
-                                width: 49,
+                                width: 61,
                                 height: 28,
                                 decoration: BoxDecoration(
-                                    color: const Color(0xFFFF3347), borderRadius: BorderRadius.circular(6)),
-                                margin: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height * 0.14,
-                                ),
+                                    color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(6)),
+                                margin: const EdgeInsets.only(top: 130),
                                 alignment: Alignment.center,
-                                child: Text(
-                                  '${state.tapeModel[index].point}% Б',
-                                  style:
-                                      const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
+                                child: const Text(
+                                  '0·0·12',
+                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
                                 ),
                               ),
-                              // const SizedBox(
-                              //   height: 10,
-                              // ),
-                              // Container(
-                              //   decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(6)),
-                              //   // padding: const EdgeInsets.only(
-                              //   //     left: 4, right: 4, bottom: 2, top: 2),
-                              //   // margin: const EdgeInsets.only(top: 370),
-                              //   width: 56,
-                              //   height: 28,
-                              //   // margin: const EdgeInsets.only(top: 4),
-                              //   alignment: Alignment.center,
-                              //   child: Text(
-                              //     '${state.tapeModel[index].point}% Б',
-                              //     style:
-                              //         const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
-                              //   ),
-                              // ),
+                              state.tapeModel[index].point != 0
+                                  ? Container(
+                                      decoration:
+                                          BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(6)),
+                                      // padding: const EdgeInsets.only(
+                                      //     left: 4, right: 4, bottom: 2, top: 2),
+                                      // margin: const EdgeInsets.only(top: 370),
+                                      width: 56,
+                                      height: 28,
+                                      margin: const EdgeInsets.only(top: 4),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '${state.tapeModel[index].point}% Б',
+                                        style: const TextStyle(
+                                            fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
+                                      ),
+                                    )
+                                  : const SizedBox(
+                                      height: 28,
+                                    ),
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -753,56 +754,56 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: 49,
+                                width: 61,
                                 height: 28,
                                 decoration: BoxDecoration(
-                                    color: const Color(0xFFFF3347), borderRadius: BorderRadius.circular(6)),
-                                margin: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height * 0.15,
-                                ),
+                                    color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(6)),
+                                margin: const EdgeInsets.only(top: 130),
                                 alignment: Alignment.center,
-                                child: Text(
-                                  '-${state.tapeModel[index].compound}%',
-                                  style:
-                                      const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
+                                child: const Text(
+                                  '0·0·12',
+                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
                                 ),
                               ),
+                              state.tapeModel[index].point != 0
+                                  ? Container(
+                                      decoration:
+                                          BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(6)),
+                                      // padding: const EdgeInsets.only(
+                                      //     left: 4, right: 4, bottom: 2, top: 2),
+                                      margin: const EdgeInsets.only(top: 10),
+                                      width: 56,
+                                      height: 28,
+                                      // margin: const EdgeInsets.only(top: 4),
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        '10% Б',
+                                        style:
+                                            TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
+                                      ),
+                                    )
+                                  : const SizedBox(
+                                      height: 28,
+                                    ),
+
+                              // Container(
+                              //   width: 49,
+                              //   height: 28,
+                              //   decoration: BoxDecoration(
+                              //       color: const Color(0xFFFF3347), borderRadius: BorderRadius.circular(6)),
+                              //   margin: EdgeInsets.only(
+                              //     top: MediaQuery.of(context).size.height * 0.15,
+                              //   ),
+                              //   alignment: Alignment.center,
+                              //   child: Text(
+                              //     '-${state.tapeModel[index].compound}%',
+                              //     style:
+                              //         const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
+                              //   ),
+                              // ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Column(
-                                    children: [
-                                      Container(
-                                        width: 61,
-                                        height: 28,
-                                        decoration: BoxDecoration(
-                                            color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(6)),
-                                        margin: const EdgeInsets.only(top: 370),
-                                        alignment: Alignment.center,
-                                        child: const Text(
-                                          '0·0·12',
-                                          style:
-                                              TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration:
-                                            BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(6)),
-                                        // padding: const EdgeInsets.only(
-                                        //     left: 4, right: 4, bottom: 2, top: 2),
-                                        margin: const EdgeInsets.only(top: 370),
-                                        width: 56,
-                                        height: 28,
-                                        // margin: const EdgeInsets.only(top: 4),
-                                        alignment: Alignment.center,
-                                        child: const Text(
-                                          '10% Б',
-                                          style:
-                                              TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                                   Container(
                                     margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.36),
                                     child: Column(
