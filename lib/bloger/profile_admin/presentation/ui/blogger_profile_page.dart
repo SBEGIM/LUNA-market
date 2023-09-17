@@ -252,7 +252,11 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BloggerCardPage(check: _box.read('blogger_invoice'))),
+                  MaterialPageRoute(
+                      builder: (context) => BloggerCardPage(
+                            check: _box.read('blogger_invoice') ?? '',
+                            card: _box.read('blogger_card') ?? '',
+                          )),
                 );
               },
               child: const Padding(

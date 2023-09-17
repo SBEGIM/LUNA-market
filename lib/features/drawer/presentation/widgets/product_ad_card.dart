@@ -35,9 +35,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
   void initState() {
     inFavorite = widget.product.inFavorite as bool;
     procentPrice =
-        ((widget.product.price!.toInt() - widget.product.compound!.toInt()) /
-                widget.product.price!.toInt()) *
-            100;
+        ((widget.product.price!.toInt() - widget.product.compound!.toInt()) / widget.product.price!.toInt()) * 100;
     super.initState();
   }
 
@@ -47,9 +45,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
       // width: 152,
       height: 250,
       margin: const EdgeInsets.only(right: 8.0, top: 10, left: 8.0),
-      decoration: BoxDecoration(
-          color: const Color.fromRGBO(250, 250, 250, 1),
-          borderRadius: BorderRadius.circular(10)),
+      decoration: BoxDecoration(color: const Color.fromRGBO(250, 250, 250, 1), borderRadius: BorderRadius.circular(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -61,20 +57,16 @@ class _ProductAdCardState extends State<ProductAdCard> {
                 // width: 160,
                 alignment: Alignment.center,
                 child: Image.network(
-                  widget.product.path!.isNotEmpty
-                      ? "http://185.116.193.73/storage/${widget.product.path!.first}"
-                      : '',
+                  widget.product.path!.isNotEmpty ? "http://185.116.193.73/storage/${widget.product.path!.first}" : '',
                   fit: BoxFit.cover,
                   height: 160,
                   width: 160,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const ErrorImageWidget(height: 160, width: 160),
+                  errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(height: 160, width: 160),
                   //alignment: Alignment.center,
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.only(left: 8, right: 4, bottom: 8, top: 8),
+                padding: const EdgeInsets.only(left: 8, right: 4, bottom: 8, top: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -84,38 +76,29 @@ class _ProductAdCardState extends State<ProductAdCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            decoration: BoxDecoration(
-                                color: AppColors.kPrimaryColor,
-                                borderRadius: BorderRadius.circular(6)),
+                            decoration:
+                                BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(6)),
                             child: const Padding(
-                              padding: EdgeInsets.only(
-                                  left: 8.0, right: 8, top: 4, bottom: 4),
+                              padding: EdgeInsets.only(left: 8.0, right: 8, top: 4, bottom: 4),
                               child: Text(
                                 '0·0·12',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
+                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                               ),
                             ),
                           ),
 
                           GestureDetector(
                             onTap: () async {
-                              final favorite =
-                                  BlocProvider.of<FavoriteCubit>(context);
-                              await favorite
-                                  .favorite(widget.product.id.toString());
+                              final favorite = BlocProvider.of<FavoriteCubit>(context);
+                              await favorite.favorite(widget.product.id.toString());
                               setState(() {
                                 inFavorite = !inFavorite;
                               });
                             },
                             child: SvgPicture.asset(
                               'assets/icons/heart_fill.svg',
-                              color: inFavorite == true
-                                  ? const Color.fromRGBO(255, 50, 72, 1)
-                                  : Colors.grey,
+                              color: inFavorite == true ? const Color.fromRGBO(255, 50, 72, 1) : Colors.grey,
                             ),
                           )
                           // IconButton(
@@ -138,44 +121,31 @@ class _ProductAdCardState extends State<ProductAdCard> {
                     ),
                     widget.product.point != 0
                         ? Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(4)),
+                            decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(4)),
                             child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 4.0, right: 4, top: 4, bottom: 4),
+                              padding: const EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
                               child: Text(
                                 '${widget.product.point}% Б',
                                 textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
+                                style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                               ),
                             ),
                           )
                         : const SizedBox(),
-                    widget.product.point != 0
-                        ? const SizedBox(height: 66)
-                        : const SizedBox(),
+                    widget.product.point != 0 ? const SizedBox(height: 66) : const SizedBox(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         widget.product.compound != 0
                             ? Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(6)),
+                                decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(6)),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 4.0, right: 4, top: 4, bottom: 4),
+                                  padding: const EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
                                   child: Text(
                                     '-${widget.product.compound}%',
                                     textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400),
+                                    style:
+                                        const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                                   ),
                                 ),
                               )
@@ -198,16 +168,12 @@ class _ProductAdCardState extends State<ProductAdCard> {
                 Text(
                   '${widget.product.name}',
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontSize: 14,
-                      color: AppColors.kGray900,
-                      fontWeight: FontWeight.w400),
+                  style: const TextStyle(fontSize: 14, color: AppColors.kGray900, fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
-                (widget.product.compound != 0 &&
-                        widget.product.compound != null)
+                (widget.product.compound != 0 && widget.product.compound != null)
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -215,9 +181,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                             '${widget.product.price!.toInt() - (widget.product.price! / 100 * widget.product.compound!.toInt()).toInt()} ₽ ',
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                                fontSize: 12,
-                                color: Color.fromRGBO(255, 50, 72, 1),
-                                fontWeight: FontWeight.w700),
+                                fontSize: 12, color: Color.fromRGBO(255, 50, 72, 1), fontWeight: FontWeight.w700),
                           ),
                           const SizedBox(width: 10),
                           Text(
@@ -235,10 +199,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                         '${widget.product.price} ₽',
                         textAlign: TextAlign.start,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF19191A),
-                            fontWeight: FontWeight.w700),
+                        style: const TextStyle(fontSize: 12, color: Color(0xFF19191A), fontWeight: FontWeight.w700),
                       ),
                 const SizedBox(
                   height: 4,
@@ -247,19 +208,14 @@ class _ProductAdCardState extends State<ProductAdCard> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      padding: const EdgeInsets.only(
-                          left: 4, right: 4, top: 4, bottom: 4),
+                      padding: const EdgeInsets.only(left: 4, right: 4, top: 4, bottom: 4),
                       margin: const EdgeInsets.only(right: 4),
-                      decoration: const BoxDecoration(
-                          color: Colors.amber,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
+                      decoration:
+                          const BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Text(
                         '${widget.product.price!.toInt() ~/ 3}',
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            fontSize: 10,
-                            color: Color(0xFF19191A),
-                            fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontSize: 10, color: Color(0xFF19191A), fontWeight: FontWeight.w500),
                       ),
                     ),
                     // const SizedBox(
@@ -268,10 +224,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                     const Text(
                       'х3',
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.kGray300,
-                          fontWeight: FontWeight.w400),
+                      style: TextStyle(fontSize: 14, color: AppColors.kGray300, fontWeight: FontWeight.w400),
                     ),
                     const SizedBox(width: 30),
                     GestureDetector(
@@ -285,24 +238,19 @@ class _ProductAdCardState extends State<ProductAdCard> {
                           ),
                           isDismissible: true,
                           builder: (context) {
-                            return const AdvertBottomSheet();
+                            return AdvertBottomSheet();
                           },
                         );
                       },
                       child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(6)),
+                        decoration:
+                            BoxDecoration(color: Colors.grey.withOpacity(0.2), borderRadius: BorderRadius.circular(6)),
                         child: const Padding(
-                          padding: EdgeInsets.only(
-                              left: 4.0, right: 4, top: 4, bottom: 4),
+                          padding: EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
                           child: Text(
                             'РЕКЛАМА',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400),
+                            style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w400),
                           ),
                         ),
                       ),

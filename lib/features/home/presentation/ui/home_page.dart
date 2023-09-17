@@ -859,7 +859,7 @@ class BannerImage extends StatelessWidget {
                         ),
                         isDismissible: true,
                         builder: (context) {
-                          return const AdvertBottomSheet();
+                          return AdvertBottomSheet(url: url, description: description);
                         },
                       );
                     },

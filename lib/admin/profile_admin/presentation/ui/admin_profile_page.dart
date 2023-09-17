@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/admin/profile_admin/presentation/widgets/admin_cards_page.dart';
 import 'package:haji_market/admin/profile_admin/presentation/widgets/statistics_admin_show_page.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
@@ -21,6 +22,8 @@ class ProfileAdminPage extends StatefulWidget {
 }
 
 class _ProfileAdminPageState extends State<ProfileAdminPage> {
+  final _box = GetStorage();
+
   @override
   void initState() {
     BlocProvider.of<ProfileStaticsAdminCubit>(context).statics();
@@ -282,7 +285,39 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Мои счета',
+                    'Мой заработок',
+                    style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                    color: AppColors.kGray300,
+                  )
+                ],
+              ),
+            ),
+          ),
+          const Divider(
+            color: AppColors.kGray400,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AdminCardPage(
+                          check: _box.read('seller_check'),
+                          card: _box.read('seller_card'),
+                        )),
+              );
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(top: 15.0, bottom: 15, right: 15, left: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Способ оплаты',
                     style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   Icon(

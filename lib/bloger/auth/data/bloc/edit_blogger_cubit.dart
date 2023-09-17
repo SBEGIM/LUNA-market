@@ -10,12 +10,11 @@ class EditBloggerCubit extends Cubit<EditBloggerState> {
 
   EditBloggerCubit({required this.editBloggerRepository}) : super(InitState());
 
-  Future<void> edit(String? name, String? nick, String phone, String? password,
-      String? check, String? iin, avatar) async {
+  Future<void> edit(String? name, String? nick, String phone, String? password, String? check, String? iin, avatar,
+      String? card) async {
     try {
       emit(LoadingState());
-      final data = await editBloggerRepository.edit(
-          name, nick, phone, password, iin, check, avatar);
+      final data = await editBloggerRepository.edit(name, nick, phone, password, iin, check, avatar, card);
 
       if (data == 200) {
         emit(LoadedState());
@@ -23,13 +22,11 @@ class EditBloggerCubit extends Cubit<EditBloggerState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль', backgroundColor: Colors.redAccent);
       }
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -6,7 +5,11 @@ import 'package:haji_market/contract_of_sale.dart';
 import 'package:haji_market/core/common/constants.dart';
 
 class AdvertBottomSheet extends StatelessWidget {
-  const AdvertBottomSheet({
+  String? url;
+  String? description;
+  AdvertBottomSheet({
+    this.url,
+    this.description,
     super.key,
   });
 
@@ -25,9 +28,7 @@ class AdvertBottomSheet extends StatelessWidget {
               const SizedBox(height: 16),
               const Text(
                 'Рекламное объявление',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
@@ -36,31 +37,21 @@ class AdvertBottomSheet extends StatelessWidget {
                   Get.to(const ContractOfSale());
                 },
                 child: Container(
-                  padding: const EdgeInsets.only(
-                      top: 8, left: 16),
+                  padding: const EdgeInsets.only(top: 8, left: 16),
                   alignment: Alignment.centerLeft,
                   child: RichText(
                     textAlign: TextAlign.left,
                     text: const TextSpan(
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black),
+                      style: TextStyle(fontSize: 16, color: Colors.black),
                       children: <TextSpan>[
                         TextSpan(
                           text:
                               "Мы помогаем нашим продавцам рассказать об их товарах на LUNA market.Для этого у нас есть разные способы продвижения. Узнать больше о ",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight:
-                                  FontWeight.w400),
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                         ),
                         TextSpan(
-                          text:
-                              "рекламе на LUNA market",
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: AppColors
-                                  .kPrimaryColor),
+                          text: "рекламе на LUNA market",
+                          style: TextStyle(fontSize: 14, color: AppColors.kPrimaryColor),
                         ),
                       ],
                     ),
@@ -75,26 +66,20 @@ class AdvertBottomSheet extends StatelessWidget {
               //   textAlign: TextAlign.center,
               // ),
               const SizedBox(height: 16),
-              const Row(
+              Row(
                 children: [
-                  Icon(Icons.info_outline_rounded),
-                  SizedBox(width: 10),
+                  const Icon(Icons.info_outline_rounded),
+                  const SizedBox(width: 10),
                   Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'О рекламодателе',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.kGray1000),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.kGray1000),
                       ),
                       Text(
-                        'Luna Market TOO',
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey),
+                        ' ${description ?? 'Market TOO'}',
+                        style: const TextStyle(fontSize: 12, color: Colors.grey),
                       )
                     ],
                   ),
@@ -107,9 +92,7 @@ class AdvertBottomSheet extends StatelessWidget {
                   SizedBox(width: 10),
                   Text(
                     'Скопировать ссылку',
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: AppColors.kPrimaryColor),
+                    style: TextStyle(fontSize: 14, color: AppColors.kPrimaryColor),
                   ),
                 ],
               )

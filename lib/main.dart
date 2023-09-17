@@ -9,14 +9,12 @@ import 'package:haji_market/features/app/presentaion/my_app.dart';
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
-  description:
-      'This channel is used for important notifications.', // description
+  description: 'This channel is used for important notifications.', // description
   importance: Importance.low,
   playSound: true,
 );
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
@@ -38,8 +36,7 @@ void main() async {
 
     await Firebase.initializeApp();
 
-    const initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/launcher_icon');
+    const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/launcher_icon');
     const initializationSettingsIOs = DarwinInitializationSettings();
     const initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
@@ -51,8 +48,7 @@ void main() async {
     //     .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
     //     ?.createNotificationChannel(channel);
 
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
       sound: true,

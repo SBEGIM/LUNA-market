@@ -11,22 +11,22 @@ class ProfileEditAdminRepository {
   final ProfileEditAdminToApi _profileEditAdminToApi = ProfileEditAdminToApi();
 
   Future<void> edit(
-    String? name,
-    String? phone,
-    String? logo,
-    String? password_new,
-    String? password_old,
-    String? country,
-    String? city,
-    String? home,
-    String? street,
-    String? shopName,
-    String? iin,
-    String? check,
-    String? email,
-  ) =>
-      _profileEditAdminToApi.edit(
-          name, phone, logo, password_new, password_old, country, city, home, street, shopName, iin, check, email);
+          String? name,
+          String? phone,
+          String? logo,
+          String? password_new,
+          String? password_old,
+          String? country,
+          String? city,
+          String? home,
+          String? street,
+          String? shopName,
+          String? iin,
+          String? check,
+          String? email,
+          String? card) =>
+      _profileEditAdminToApi.edit(name, phone, logo, password_new, password_old, country, city, home, street, shopName,
+          iin, check, email, card);
 
   Future<void> code(int? code) => _profileEditAdminToApi.code(code);
 }
@@ -48,6 +48,7 @@ class ProfileEditAdminToApi {
     String? iin,
     String? check,
     String? email,
+    String? card,
   ) async {
     // seller_name = _box.read('seller_name').toString();
     final token = _box.read('seller_token').toString();
@@ -65,7 +66,8 @@ class ProfileEditAdminToApi {
       'home': home ?? '',
       'street': street ?? '',
       'iin': iin ?? '',
-      'check': check ?? ''
+      'check': check ?? '',
+      'card': card ?? ''
     };
 
     final header = {"Authorization": "Bearer $token"};
@@ -100,6 +102,7 @@ class ProfileEditAdminToApi {
     _box.write('seller_street', data['street'].toString());
     _box.write('seller_iin', data['iin'].toString());
     _box.write('seller_check', data['check'].toString());
+    _box.write('seller_card', data['card'].toString());
     _box.write('seller_userName', data['user_name'].toString());
   }
 

@@ -9,16 +9,16 @@ const baseUrl = 'http://185.116.193.73/api';
 class EditBloggerRepository {
   final EditToApi _editToApi = EditToApi();
 
-  Future<dynamic> edit(String? name, String? nick, String phone,
-          String? password, String? iin, String? check, avatar) =>
-      _editToApi.edit(name, nick, phone, password, iin, check, avatar);
+  Future<dynamic> edit(String? name, String? nick, String phone, String? password, String? iin, String? check, avatar,
+          String? card) =>
+      _editToApi.edit(name, nick, phone, password, iin, check, avatar, card);
 }
 
 class EditToApi {
   final _box = GetStorage();
 
-  Future<dynamic> edit(String? name, String? nick, String phone,
-      String? password, String? iin, String? check, avatar) async {
+  Future<dynamic> edit(String? name, String? nick, String phone, String? password, String? iin, String? check, avatar,
+      String? card) async {
     String result = '';
     if (phone.isNotEmpty) {
       result = phone.substring(2);
@@ -32,6 +32,7 @@ class EditToApi {
       'name': name ?? '',
       'nick_name': nick ?? '',
       'invoice': check ?? '',
+      'card': card ?? '',
       'access_token': _box.read('blogger_token').toString(),
     };
 
@@ -62,6 +63,7 @@ class EditToApi {
       _box.write('blogger_nick_name', data['nick_name'].toString());
       _box.write('blogger_avatar', data['avatar'].toString());
       _box.write('blogger_invoice', data['invoice'].toString());
+      _box.write('blogger_card', data['card'].toString());
 
       // _box.write('card', data['user']['card'].toString());
     }

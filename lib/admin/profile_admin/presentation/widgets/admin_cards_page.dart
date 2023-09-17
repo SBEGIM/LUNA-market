@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:get_storage/get_storage.dart';
 import '../../../../../core/common/constants.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
-import '../../../auth/data/bloc/edit_blogger_cubit.dart';
+import '../../data/bloc/profile_edit_admin_cubit.dart';
 
-class BloggerCardPage extends StatefulWidget {
-  String check;
-  String card;
-
-  BloggerCardPage({required this.check, required this.card, Key? key}) : super(key: key);
+class AdminCardPage extends StatefulWidget {
+  String? check;
+  String? card;
+  AdminCardPage({required this.check, required this.card, Key? key}) : super(key: key);
 
   @override
-  State<BloggerCardPage> createState() => _BloggerCardPageState();
+  State<AdminCardPage> createState() => _AdminCardPageState();
 }
 
-class _BloggerCardPageState extends State<BloggerCardPage> {
-  TextEditingController cardController = MaskedTextController(mask: '0000-0000-0000-0000');
+class _AdminCardPageState extends State<AdminCardPage> {
+  final _box = GetStorage();
 
   TextEditingController checkController = TextEditingController();
+  TextEditingController cardController = MaskedTextController(mask: '****-0000-0000-0000');
 
   @override
   void initState() {
-    checkController.text = widget.check;
-    cardController.text = widget.card;
+    checkController.text = widget.check != 'null' ? widget.check! : '';
+    cardController.text = widget.card != 'null' ? widget.card! : '';
 
     super.initState();
   }
@@ -149,9 +149,11 @@ class _BloggerCardPageState extends State<BloggerCardPage> {
         padding: const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
         child: InkWell(
           onTap: () async {
+            await BlocProvider.of<ProfileEditAdminCubit>(context)
+                .edit('', '', "", '', '', '', '', '', '', '', '', checkController.text, '', cardController.text);
             // print('object');
-            final edit = BlocProvider.of<EditBloggerCubit>(context);
-            await edit.edit('', '', '', '', checkController.text, '', null, cardController.text);
+            //  final edit = BlocProvider.of<EditAdminCubit>(context);
+            // await edit.edit('', '', '', '', checkController.text, '', null);
 
             //Get.to(const BloggerNewCardPage());
             // GetStorage().write('blogger_invoice', checkController.text);

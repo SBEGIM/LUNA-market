@@ -326,7 +326,8 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                   passwordController.text,
                   iinController.text,
                   checkController.text,
-                  _image != null ? _image!.path : null);
+                  _image != null ? _image!.path : null,
+                  '');
             }
           },
           child: Container(
