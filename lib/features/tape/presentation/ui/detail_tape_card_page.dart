@@ -369,6 +369,27 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                       height: 28,
                                     ),
 
+                              state.tapeModel[index].compound != 0
+                                  ? Container(
+                                      decoration:
+                                          BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(6)),
+                                      // padding: const EdgeInsets.only(
+                                      //     left: 4, right: 4, bottom: 2, top: 2),
+                                      // margin: const EdgeInsets.only(top: 370),
+                                      width: 48,
+                                      height: 28,
+                                      margin: const EdgeInsets.only(top: 4),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '-${state.tapeModel[index].compound}%',
+                                        style: const TextStyle(
+                                            fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
+                                      ),
+                                    )
+                                  : const SizedBox(
+                                      height: 28,
+                                    ),
+
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
@@ -780,6 +801,27 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         '10% Б',
                                         style:
                                             TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
+                                      ),
+                                    )
+                                  : const SizedBox(
+                                      height: 28,
+                                    ),
+
+                              state.tapeModel[index].compound != 0
+                                  ? Container(
+                                      decoration:
+                                          BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(6)),
+                                      // padding: const EdgeInsets.only(
+                                      //     left: 4, right: 4, bottom: 2, top: 2),
+                                      // margin: const EdgeInsets.only(top: 370),
+                                      width: 48,
+                                      height: 28,
+                                      margin: const EdgeInsets.only(top: 4),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '-${state.tapeModel[index].compound}%',
+                                        style: const TextStyle(
+                                            fontSize: 12, fontWeight: FontWeight.w400, color: Colors.white),
                                       ),
                                     )
                                   : const SizedBox(
