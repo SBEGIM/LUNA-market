@@ -253,6 +253,25 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
+                      'Размер',
+                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                    Text(
+                      '${widget.basket.size != 'null' ? (widget.basket.size ?? 'Не выбран') : 'Не выбран'} ',
+                      style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+              ),
+              const Divider(
+                color: AppColors.kGray400,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
                       'Доставка',
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),

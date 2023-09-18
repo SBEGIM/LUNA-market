@@ -8,6 +8,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../core/common/constants.dart';
 import '../data/cubit/chat_admin_cubit.dart';
 import '../data/cubit/chat_admin_state.dart';
+
 @RoutePage()
 class ChatAdminPage extends StatefulWidget {
   const ChatAdminPage({super.key});
@@ -17,8 +18,7 @@ class ChatAdminPage extends StatefulWidget {
 }
 
 class _ChatAdminPageState extends State<ChatAdminPage> {
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   TextEditingController searchController = TextEditingController();
 
@@ -72,8 +72,7 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
           ),
           title: const Text(
             'Сообщение',
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
           ),
         ),
         body: BlocConsumer<ChatAdminCubit, ChatAdminState>(
@@ -108,8 +107,7 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                           }),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(width: 1)),
+                                borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(width: 1)),
 
                             prefixIcon: searchController.text.isEmpty
                                 ? Transform.translate(
@@ -121,14 +119,10 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                   )
                                 : null,
                             hintText: 'Поиск клиентов',
-                            hintStyle: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
+                            hintStyle: const TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w400),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(
-                                    width: 0.3, color: Colors.grey)),
+                                borderSide: const BorderSide(width: 0.3, color: Colors.grey)),
                             // suffixIcon: IconButton(
                             //     onPressed: () {},
                             //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',
@@ -161,16 +155,13 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                         userId: state.chat[index].userId,
                                         userName: state.chat[index].name)),
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16),
+                                      padding: const EdgeInsets.symmetric(horizontal: 16),
                                       height: 100,
                                       //  width: 400,
                                       child: Row(
                                         children: [
                                           CircleAvatar(
-                                            backgroundImage: state
-                                                        .chat[index].avatar !=
-                                                    null
+                                            backgroundImage: state.chat[index].avatar != null
                                                 ? NetworkImage(
                                                     'http://185.116.193.73/storage/${state.chat[index].avatar}')
                                                 : null,
@@ -179,48 +170,37 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                           ),
                                           const SizedBox(width: 12),
                                           Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
                                               Container(
-                                                padding: const EdgeInsets.only(
-                                                    top: 20.5),
+                                                padding: const EdgeInsets.only(top: 20.5),
                                                 width: 275,
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Text(
                                                       '${state.chat[index].name}',
-                                                      style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w500),
+                                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                                                     ),
                                                     Text(
                                                       ' ${parseDate(state.chat[index].createdAt)}',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: Colors.grey,
                                                           fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w400),
+                                                          fontWeight: FontWeight.w400),
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                               Container(
-                                                padding: const EdgeInsets.only(
-                                                    top: 20.5, left: 0),
+                                                padding: const EdgeInsets.only(top: 20.5, left: 0),
                                                 // alignment: Alignment.bottomLeft,
                                                 width: 275,
                                                 child: Text(
                                                   '${state.chat[index].lastMessage != null ? state.chat[index].lastMessage!.text : ''}',
                                                   style: const TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                                      color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w400),
+                                                  overflow: TextOverflow.ellipsis,
                                                 ),
                                               ),
                                             ],
@@ -237,9 +217,7 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                       ),
                     ]);
               } else {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }));
   }

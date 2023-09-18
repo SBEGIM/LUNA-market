@@ -41,7 +41,8 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(borderRadius: BorderRadius.circular(12),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
       child: Stack(
         children: [
           Positioned.fill(
@@ -50,8 +51,8 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
                 alignment: Alignment.center,
                 fit: BoxFit.fitHeight,
                 child: SizedBox(
-        height: _controller!.value.size.height,
-        width: _controller!.value.size.width,
+                  height: _controller!.value.size.height,
+                  width: _controller!.value.size.width,
                   child: AspectRatio(
                     aspectRatio: _controller!.value.aspectRatio,
                     child: VideoPlayer(_controller!),
@@ -62,7 +63,10 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
           ),
           InkWell(
             onTap: () {
-              context.router.push(DetailTapeCardRoute(index: widget.index, shopName: widget.tape.shop!.name!,tapeBloc: BlocProvider.of<TapeCubit>(context)));
+              context.router.push(DetailTapeCardRoute(
+                  index: widget.index,
+                  shopName: widget.tape.shop!.name!,
+                  tapeBloc: BlocProvider.of<TapeCubit>(context)));
               // Navigator.push(
               //   context,
               //   MaterialPageRoute(

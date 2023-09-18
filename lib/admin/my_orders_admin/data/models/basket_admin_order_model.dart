@@ -6,6 +6,7 @@ class BasketAdminOrderModel {
     int? chatId,
     int? summa,
     String? status,
+    String? size,
     String? date,
     String? comment,
     String? returnDate,
@@ -15,6 +16,7 @@ class BasketAdminOrderModel {
     _user = user!;
     _chatId = chatId;
     _summa = summa;
+    _size = size;
     _status = status;
     _date = date;
     _returnDate = returnDate;
@@ -32,6 +34,7 @@ class BasketAdminOrderModel {
     _chatId = json['chat_id'];
     _summa = json['summa'];
     _status = json['status'];
+    _size = json['size'];
     _date = json['date'];
     _comment = json['comment'];
     _returnDate = json['return_date'];
@@ -42,6 +45,7 @@ class BasketAdminOrderModel {
   int? _chatId;
   int? _summa;
   String? _status;
+  String? _size;
   String? _date;
   String? _comment;
   String? _returnDate;
@@ -52,6 +56,7 @@ class BasketAdminOrderModel {
   int? get chatId => _chatId;
   int? get summa => _summa;
   String? get status => _status;
+  String? get size => _size;
   String? get date => _date;
   String? get comment => _comment;
   String? get returnDate => _returnDate;
@@ -67,6 +72,7 @@ class BasketAdminOrderModel {
     }
     map['chatId'] = _chatId;
     map['summa'] = _summa;
+    map['size'] = _size;
     map['status'] = _status;
     map['date'] = _date;
     map['comment'] = _comment;

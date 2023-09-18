@@ -19,8 +19,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   TextEditingController searchController = TextEditingController();
 
@@ -76,8 +75,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
           title: const Text(
             'Сообщение',
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
           ),
         ),
         body: BlocConsumer<ChatCubit, ChatState>(
@@ -113,8 +111,7 @@ class _ChatPageState extends State<ChatPage> {
                           }),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(width: 1)),
+                                borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(width: 1)),
 
                             prefixIcon: searchController.text.isEmpty
                                 ? Transform.translate(
@@ -126,14 +123,10 @@ class _ChatPageState extends State<ChatPage> {
                                   )
                                 : null,
                             hintText: 'Поиск',
-                            hintStyle: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
+                            hintStyle: const TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w400),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(
-                                    width: 0.3, color: Colors.grey)),
+                                borderSide: const BorderSide(width: 0.3, color: Colors.grey)),
                             // suffixIcon: IconButton(
                             //     onPressed: () {},
                             //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',
@@ -168,68 +161,53 @@ class _ChatPageState extends State<ChatPage> {
                                       chatId: state.chat[index].chatId,
                                     )),
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16),
+                                      padding: const EdgeInsets.symmetric(horizontal: 16),
                                       height: 80,
                                       //  width: 400,
                                       child: Row(
                                         children: [
                                           CircleAvatar(
-                                            backgroundImage: state
-                                                        .chat[index].avatar !=
-                                                    null
+                                            backgroundImage: state.chat[index].avatar != null
                                                 ? NetworkImage(
                                                     'http://185.116.193.73/storage/${state.chat[index].avatar}')
                                                 : null,
-                                            backgroundColor:
-                                                Colors.grey.withOpacity(0.3),
+                                            backgroundColor: Colors.grey.withOpacity(0.3),
                                             radius: 30,
                                           ),
                                           const SizedBox(width: 12),
                                           Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
                                               Container(
-                                                padding: const EdgeInsets.only(
-                                                    top: 20.5),
+                                                padding: const EdgeInsets.only(top: 20.5),
                                                 width: 275,
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Text(
                                                       '${state.chat[index].name}',
-                                                      style: const TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w500),
+                                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                                                     ),
                                                     Text(
                                                       ' ${parseDate(state.chat[index].createdAt)}',
                                                       style: const TextStyle(
                                                           color: Colors.grey,
                                                           fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w400),
+                                                          fontWeight: FontWeight.w400),
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                               Container(
-                                                padding: const EdgeInsets.only(
-                                                    top: 20.5, left: 0),
+                                                padding: const EdgeInsets.only(top: 20.5, left: 0),
                                                 // alignment: Alignment.bottomLeft,
                                                 width: 275,
                                                 child: Text(
                                                   '${state.chat[index].lastMessage != null ? state.chat[index].lastMessage!.text : ''}',
                                                   style: const TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                                      color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w400),
                                                   maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
                                                 ),
                                               ),
                                             ],
@@ -254,9 +232,7 @@ class _ChatPageState extends State<ChatPage> {
                       ),
                     ]);
               } else {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }));
   }
