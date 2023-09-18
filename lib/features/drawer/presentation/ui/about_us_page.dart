@@ -21,10 +21,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
         elevation: 0,
         title: const Text(
           'О нас',
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 16,
-              fontWeight: FontWeight.w500),
+          style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
         ),
         leading: IconButton(
           onPressed: () {
@@ -61,11 +58,8 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 children: const [
                   Flexible(
                     child: (Text(
-                      'LUNA market-это лучшее мобильное приложение для покупки и продажи товаров,с видео обзорами от Блогеров  , Маркетплейс для Физических,Самозанятых и Юридических Лиц.\nВозможность\nПродвижения Вашего Бизнеса,Реклама товаров, Раскрутка новых Брендов с эксклюзивной программой для Блогеров',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
+                      'LUNA market-это лучшее мобильное приложение для покупки и продажи товаров,с видео обзорами от Блогеров  , Маркетплейс для Физических и Юридических Лиц.\nВозможность\nПродвижения Вашего Бизнеса,Реклама товаров, Раскрутка новых Брендов с эксклюзивной программой для Блогеров',
+                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )),
                   ),
                 ],
@@ -118,20 +112,14 @@ class _AboutUsPageState extends State<AboutUsPage> {
               children: [
                 const Text(
                   'Контакты',
-                  style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.kGray700),
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: AppColors.kGray700),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 const Text(
                   'АДМИНИСТРАЦИЯ:',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.kGray900,
-                      fontSize: 16),
+                  style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.kGray900, fontSize: 16),
                 ),
                 const SizedBox(
                   height: 4,
@@ -139,24 +127,17 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 Row(
                   children: [
                     const Text(
-                      'Email',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.kGray700),
+                      'Telegram',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kGray700),
                     ),
                     const SizedBox(
                       width: 8,
                     ),
                     GestureDetector(
-                      onTap: () => launch("https://Lunamarket@inbox.Ru",
-                          forceSafariVC: false),
+                      onTap: () => launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
                       child: const Text(
-                        'https://Lunamarket@inbox.Ru',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.kPrimaryColor),
+                        'https://t.me/LUNAmarketAdmin',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kPrimaryColor),
                       ),
                     ),
                   ],
@@ -166,10 +147,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 ),
                 const Text(
                   'Мы в соцсетях:',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.kGray900,
-                      fontSize: 16),
+                  style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.kGray900, fontSize: 16),
                 ),
                 const SizedBox(
                   height: 8,
@@ -178,23 +156,16 @@ class _AboutUsPageState extends State<AboutUsPage> {
                   children: [
                     const Text(
                       'Telegram ',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.kGray700),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kGray700),
                     ),
                     const SizedBox(
                       width: 8,
                     ),
                     GestureDetector(
-                      onTap: () => launch("https://t.me/LunaMarke_t",
-                          forceSafariVC: false),
+                      onTap: () => launch("https://t.me/LunaMarke_t", forceSafariVC: false),
                       child: const Text(
                         'https://t.me/LunaMarke_t',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.kPrimaryColor),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kPrimaryColor),
                       ),
                     ),
                   ],
@@ -208,23 +179,16 @@ class _AboutUsPageState extends State<AboutUsPage> {
                   children: [
                     const Text(
                       'Telegram Канал для Продавцов ',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.kGray700),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kGray700),
                     ),
                     const SizedBox(
                       height: 4,
                     ),
                     GestureDetector(
-                      onTap: () => launch("https://t.me/LUNAmarketSeller",
-                          forceSafariVC: false),
+                      onTap: () => launch("https://t.me/LUNAmarketSeller", forceSafariVC: false),
                       child: const Text(
                         'https://t.me/LUNAmarketSeller',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.kPrimaryColor),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kPrimaryColor),
                       ),
                     ),
                   ],
@@ -238,23 +202,16 @@ class _AboutUsPageState extends State<AboutUsPage> {
                   children: [
                     const Text(
                       'Telegram Канал для Блогеров',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.kGray700),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kGray700),
                     ),
                     const SizedBox(
                       height: 4,
                     ),
                     GestureDetector(
-                      onTap: () => launch("https://t.me/LUNAmarketBlogger",
-                          forceSafariVC: false),
+                      onTap: () => launch("https://t.me/LUNAmarketBlogger", forceSafariVC: false),
                       child: const Text(
                         'https://t.me/LUNAmarketBlogger',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.kPrimaryColor),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kPrimaryColor),
                       ),
                     ),
                   ],
@@ -264,10 +221,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 ),
                 const Text(
                   'Если хотите с нами связаться, пишите',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.kGray300),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.kGray300),
                 ),
               ],
             ),
@@ -288,9 +242,8 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 Row(
                   children: [
                     GestureDetector(
-                        onTap: () => launch(
-                            "https://instagram.com/luna_market.ru?igshid=YmMyMTA2M2Y=",
-                            forceSafariVC: false),
+                        onTap: () =>
+                            launch("https://instagram.com/luna_market.ru?igshid=YmMyMTA2M2Y=", forceSafariVC: false),
                         child: SvgPicture.asset('assets/icons/insta.svg')),
                     const SizedBox(
                       width: 16,
@@ -303,16 +256,13 @@ class _AboutUsPageState extends State<AboutUsPage> {
                     //   width: 16,
                     // ),
                     GestureDetector(
-                        onTap: () => launch("https://t.me/LUNAmarketAdmin",
-                            forceSafariVC: false),
+                        onTap: () => launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
                         child: SvgPicture.asset('assets/icons/telegram.svg')),
                     const SizedBox(
                       width: 16,
                     ),
                     GestureDetector(
-                      onTap: () => launch(
-                          "https://www.youtube.com/@lunamarket365",
-                          forceSafariVC: false),
+                      onTap: () => launch("https://www.youtube.com/@lunamarket365", forceSafariVC: false),
                       child: SvgPicture.asset(
                         'assets/icons/youtube.svg',
                         height: 34,
@@ -323,11 +273,9 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       width: 16,
                     ),
                     GestureDetector(
-                      onTap: () => launch(
-                          "https://www.tiktok.com/@lunamarket365?_t=8bXOtWBKkIU&_r=1",
-                          forceSafariVC: false),
-                      child: SvgPicture.asset('assets/icons/tiktok.svg',
-                          height: 34, width: 34),
+                      onTap: () =>
+                          launch("https://www.tiktok.com/@lunamarket365?_t=8bXOtWBKkIU&_r=1", forceSafariVC: false),
+                      child: SvgPicture.asset('assets/icons/tiktok.svg', height: 34, width: 34),
                     ),
                     const SizedBox(
                       width: 16,

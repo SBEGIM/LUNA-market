@@ -78,7 +78,7 @@ class AdvertBottomSheet extends StatelessWidget {
                         style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.kGray1000),
                       ),
                       Text(
-                        ' ${description ?? 'Market TOO'}',
+                        ' ${description != 'null' ? description : ''}',
                         style: const TextStyle(fontSize: 12, color: Colors.grey),
                       )
                     ],

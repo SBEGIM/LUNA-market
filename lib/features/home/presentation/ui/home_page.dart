@@ -256,7 +256,7 @@ class _HomePageState extends State<HomePage> {
                                       childAspectRatio: 1.5,
                                       crossAxisSpacing: 20,
                                       mainAxisSpacing: 2),
-                                  itemCount: state.productModel.length >= 4 ? 4 : state.productModel.length,
+                                  itemCount: state.productModel.length >= 8 ? 8 : state.productModel.length,
                                   itemBuilder: (BuildContext ctx, index) {
                                     return GestureDetector(
                                       onTap: () => context.router

@@ -1030,7 +1030,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                         style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
                       )
                     : const Text(
-                        'real FBS - это схема продажи, при которой вы храните товары у себя на складе, следите за новыми заказами, собираете их и передаёте в доставку CDEK.',
+                        'real FBS - это схема продажи, при которой вы храните товары у себя на складе, следите за новыми заказами, собираете их и доставляете собственными силами.',
                         style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
                       ),
                 const SizedBox(height: 28),

@@ -74,7 +74,7 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                 height: 10,
               ),
               FieldsCoopRequest(
-                titleText: 'Инн',
+                titleText: 'ИИН',
                 hintText: 'Введите инн',
                 star: false,
                 arrow: false,
@@ -164,7 +164,7 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                             ),
                             TextSpan(
-                              text: "Оферту для продавцов",
+                              text: "Оферту для блогеров",
                               style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 16),
                             ),
                           ],
