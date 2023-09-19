@@ -307,6 +307,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   '$bonus Бонусов',
@@ -316,10 +317,10 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                                   ),
                                 ),
                                 const Text(
-                                  'Накоплено',
+                                  'Оплатить можно 10% от суммы бонуса',
                                   style: TextStyle(
                                     color: AppColors.steelGray,
-                                    fontSize: 12,
+                                    fontSize: 11,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
@@ -363,7 +364,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                       Container(
                         padding: const EdgeInsets.only(right: 16),
                         child: Text(
-                          ' ${isSwitched == true ? (courier + price - bonus) : (courier + price)} ₽',
+                          ' ${isSwitched == true ? (courier + price - (bonus > price ? (bonus * 0.01).toInt() : bonus - price)) : (courier + price)} ₽',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -838,8 +839,11 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                   title: 'Рассрочка Halal',
                 ));
               } else if (isCheckedOnline == true) {
-                BlocProvider.of<orderCubit.OrderCubit>(context)
-                    .payment(address: widget.address.toString(), bonus: isSwitched == true ? bonus.toString() : '0');
+                BlocProvider.of<orderCubit.OrderCubit>(context).payment(
+                    address: widget.address.toString(),
+                    bonus: isSwitched == true
+                        ? (bonus > price ? ((bonus * 0.01).toInt()).toString() : bonus.toString())
+                        : '0');
               } else {
                 Get.snackbar('Ошибка', 'Выберите способ оплаты', backgroundColor: Colors.redAccent);
               }
