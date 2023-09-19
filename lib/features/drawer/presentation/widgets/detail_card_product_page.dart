@@ -1808,64 +1808,62 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 scrollDirection: Axis.vertical,
                                 itemCount: state.reviewModel.length,
                                 itemBuilder: (context, index) {
-                                  return Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              '${state.reviewModel[index].user!.name}',
-                                              style: const TextStyle(
-                                                  color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '${state.reviewModel[index].user!.name}',
+                                            style: const TextStyle(
+                                                color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                                          ),
+                                          RatingBar.builder(
+                                            initialRating: state.reviewModel[index].rating!.toDouble(),
+                                            minRating: 1,
+                                            itemSize: 15,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: false,
+                                            itemCount: 5,
+                                            ignoreGestures: true,
+                                            itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
+                                            itemBuilder: (context, _) => const Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
                                             ),
-                                            RatingBar.builder(
-                                              initialRating: state.reviewModel[index].rating!.toDouble(),
-                                              minRating: 1,
-                                              itemSize: 15,
-                                              direction: Axis.horizontal,
-                                              allowHalfRating: false,
-                                              itemCount: 5,
-                                              ignoreGestures: true,
-                                              itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
-                                              itemBuilder: (context, _) => const Icon(
-                                                Icons.star,
-                                                color: Colors.amber,
-                                              ),
-                                              onRatingUpdate: (value) {
-                                                rating = value.toInt();
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          '${state.reviewModel[index].date}',
-                                          style: const TextStyle(
-                                              color: AppColors.kGray300, fontWeight: FontWeight.w500, fontSize: 12),
-                                        ),
-                                        const SizedBox(
-                                          height: 4,
-                                        ),
-                                        Text(
-                                          '${state.reviewModel[index].text}',
-                                          maxLines: 4,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w400, fontSize: 14.0, color: Colors.black),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        //   Flexible(
-                                        //       child: Text(
-                                        //           'The Dropbox HQ in San Francisco is one of the best designed & most comfortable offices I have ever witnessed. Great stuff! If you happen to visit SanFran, dont miss the chance to witness it yourself. ',style: TextStyle(color: Colors.black),))
-                                        // ],
-                                      ],
-                                    ),
+                                            onRatingUpdate: (value) {
+                                              rating = value.toInt();
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        '${state.reviewModel[index].date}',
+                                        style: const TextStyle(
+                                            color: AppColors.kGray300, fontWeight: FontWeight.w500, fontSize: 12),
+                                      ),
+                                      const SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        '${state.reviewModel[index].text}',
+                                        maxLines: 4,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w400, fontSize: 14.0, color: Colors.black),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      //   Flexible(
+                                      //       child: Text(
+                                      //           'The Dropbox HQ in San Francisco is one of the best designed & most comfortable offices I have ever witnessed. Great stuff! If you happen to visit SanFran, dont miss the chance to witness it yourself. ',style: TextStyle(color: Colors.black),))
+                                      // ],
+                                    ],
                                   );
                                 },
                               ));
