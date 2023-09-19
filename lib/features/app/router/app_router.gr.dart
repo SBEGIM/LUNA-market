@@ -111,6 +111,7 @@ abstract class _$AppRouter extends RootStackRouter {
         routeData: routeData,
         child: BasketOrderAddressPage(
           fulfillment: args.fulfillment,
+          deleveryDay: args.deleveryDay,
           key: args.key,
         ),
       );
@@ -320,6 +321,17 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const ForgotPasswordAdminPage(),
       );
     },
+    BloggerDetailTapeCardRoute.name: (routeData) {
+      final args = routeData.argsAs<BloggerDetailTapeCardRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: BloggerDetailTapeCardPage(
+          index: args.index,
+          shopName: args.shopName,
+          key: args.key,
+        ),
+      );
+    },
     BlogShopsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -330,17 +342,6 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const TapeBloggerPage(),
-      );
-    },
-    BloggerDetailTapeCardRoute.name: (routeData) {
-      final args = routeData.argsAs<BloggerDetailTapeCardRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: BloggerDetailTapeCardPage(
-          index: args.index,
-          shopName: args.shopName,
-          key: args.key,
-        ),
       );
     },
   };
@@ -650,12 +651,14 @@ class BasketOrderAddressRoute
     extends PageRouteInfo<BasketOrderAddressRouteArgs> {
   BasketOrderAddressRoute({
     String? fulfillment,
+    String? deleveryDay,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           BasketOrderAddressRoute.name,
           args: BasketOrderAddressRouteArgs(
             fulfillment: fulfillment,
+            deleveryDay: deleveryDay,
             key: key,
           ),
           initialChildren: children,
@@ -670,16 +673,19 @@ class BasketOrderAddressRoute
 class BasketOrderAddressRouteArgs {
   const BasketOrderAddressRouteArgs({
     this.fulfillment,
+    this.deleveryDay,
     this.key,
   });
 
   final String? fulfillment;
 
+  final String? deleveryDay;
+
   final Key? key;
 
   @override
   String toString() {
-    return 'BasketOrderAddressRouteArgs{fulfillment: $fulfillment, key: $key}';
+    return 'BasketOrderAddressRouteArgs{fulfillment: $fulfillment, deleveryDay: $deleveryDay, key: $key}';
   }
 }
 
@@ -1321,34 +1327,6 @@ class ForgotPasswordAdminRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [BlogShopsPage]
-class BlogShopsRoute extends PageRouteInfo<void> {
-  const BlogShopsRoute({List<PageRouteInfo>? children})
-      : super(
-          BlogShopsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'BlogShopsRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [TapeBloggerPage]
-class TapeBloggerRoute extends PageRouteInfo<void> {
-  const TapeBloggerRoute({List<PageRouteInfo>? children})
-      : super(
-          TapeBloggerRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'TapeBloggerRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
 /// [BloggerDetailTapeCardPage]
 class BloggerDetailTapeCardRoute
     extends PageRouteInfo<BloggerDetailTapeCardRouteArgs> {
@@ -1390,4 +1368,32 @@ class BloggerDetailTapeCardRouteArgs {
   String toString() {
     return 'BloggerDetailTapeCardRouteArgs{index: $index, shopName: $shopName, key: $key}';
   }
+}
+
+/// generated route for
+/// [BlogShopsPage]
+class BlogShopsRoute extends PageRouteInfo<void> {
+  const BlogShopsRoute({List<PageRouteInfo>? children})
+      : super(
+          BlogShopsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BlogShopsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [TapeBloggerPage]
+class TapeBloggerRoute extends PageRouteInfo<void> {
+  const TapeBloggerRoute({List<PageRouteInfo>? children})
+      : super(
+          TapeBloggerRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TapeBloggerRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

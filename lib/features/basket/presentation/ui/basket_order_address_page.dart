@@ -16,7 +16,9 @@ import 'map_picker.dart';
 @RoutePage()
 class BasketOrderAddressPage extends StatefulWidget {
   final String? fulfillment;
-  const BasketOrderAddressPage({this.fulfillment, Key? key}) : super(key: key);
+  final String? deleveryDay;
+
+  const BasketOrderAddressPage({this.fulfillment, this.deleveryDay, Key? key}) : super(key: key);
 
   @override
   _BasketOrderAddressPageState createState() => _BasketOrderAddressPageState();
@@ -171,8 +173,10 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                         ),
                                       ),
                                       const SizedBox(height: 8),
-                                      const Text(
-                                        '3 августа, бесплатно',
+                                      Text(
+                                        widget.deleveryDay != null
+                                            ? 'Доставка: ${widget.deleveryDay} дня'
+                                            : 'Доставка:  нет данных СДЕК',
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
@@ -345,8 +349,10 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                         ),
                                       ),
                                       const SizedBox(height: 8),
-                                      const Text(
-                                        '3 августа, бесплатно',
+                                      Text(
+                                        widget.deleveryDay != null
+                                            ? 'Доставка: ${widget.deleveryDay} дня'
+                                            : 'Доставка:  нет данных СДЕК',
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,

@@ -27,6 +27,8 @@ class _BasketPageState extends State<BasketPage> {
   int count = 0;
   int price = 0;
   String fulfillment = '';
+  String deleveryDay = '';
+
   String? productNames;
 
   bool bootSheet = false;
@@ -67,6 +69,8 @@ class _BasketPageState extends State<BasketPage> {
       price += element.price!.toInt();
 
       fulfillment = element.product!.fulfillment ?? 'fbs';
+
+      deleveryDay = element.deliveryDay != null ? element.deliveryDay.toString() : '';
 
       productNames =
           "${productNames != null ? "${productNames} ," : ''}  $kDeepLinkUrl/?product_id\u003d${element.product!.id}";
@@ -340,7 +344,8 @@ class _BasketPageState extends State<BasketPage> {
                   child: InkWell(
                       onTap: () {
                         if (count != 0) {
-                          context.router.push(BasketOrderAddressRoute(fulfillment: fulfillment));
+                          context.router
+                              .push(BasketOrderAddressRoute(fulfillment: fulfillment, deleveryDay: deleveryDay));
                           // Get.to(const BasketOrderAddressPage())
                         }
 
