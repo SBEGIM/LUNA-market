@@ -190,7 +190,6 @@ class ProductToApi {
         'fulfillment': fulfillment
       };
 
-      Map<String, String> tokenSeller = {"Authorization": "Bearer $token"};
       Map<String, dynamic> queryParams = {};
       Map<String, dynamic> blocc = {};
       Map<String, dynamic> sizes = {};
@@ -212,7 +211,6 @@ class ProductToApi {
         }
       }
 
-      queryParams.addAll(tokenSeller);
       queryParams.addAll(blocc);
       queryParams.addAll(sizes);
       queryParams.addAll(subCharacteristicIds);
