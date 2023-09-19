@@ -7,6 +7,7 @@ class BasketShowModel {
     int? optom,
     int? userBonus,
     int? basketId,
+    int? chatId,
     int? basketCount,
     int? deliveryDay,
     int? deliveryPrice,
@@ -22,6 +23,7 @@ class BasketShowModel {
     _optom = optom;
     _userBonus = userBonus;
     _basketId = basketId;
+    _chatId = chatId;
     _basketCount = basketCount;
     _deliveryDay = deliveryDay;
     _deliveryPrice = deliveryPrice;
@@ -39,6 +41,7 @@ class BasketShowModel {
     _optom = json['optom'];
     _userBonus = json['user_bonus'];
     _basketId = json['basket_id'];
+    _chatId = json['chat_id'];
     _basketCount = json['basket_count'];
     _basketColor = json['basket_color'];
     _basketSize = json['basket_size'];
@@ -59,6 +62,7 @@ class BasketShowModel {
   int? _optom;
   int? _userBonus;
   int? _basketId;
+  int? _chatId;
   int? _basketCount;
   String? _basketColor;
   String? _basketSize;
@@ -74,6 +78,8 @@ class BasketShowModel {
   int? get optom => _optom;
   int? get userBonus => _userBonus;
   int? get basketId => _basketId;
+  int? get chatId => _chatId;
+
   int? get basketCount => _basketCount;
   String? get basketColor => _basketColor;
   String? get basketSize => _basketSize;
@@ -93,6 +99,7 @@ class BasketShowModel {
     map['optom'] = _optom;
     map['userBonus'] = _userBonus;
     map['basket_id'] = _basketId;
+    map['chatId'] = _chatId;
     map['basket_count'] = _basketCount;
     map['basket_color'] = _basketColor;
     map['basket_size'] = _basketSize;

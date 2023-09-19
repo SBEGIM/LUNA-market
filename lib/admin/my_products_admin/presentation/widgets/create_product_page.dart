@@ -1477,7 +1477,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
 
             if (subCharacteristicsValue?.isNotEmpty ?? false) {
               for (var e in subCharacteristicsValue!) {
-                subIds.add(e.id!);
+                subIds.add(e.id!.toInt());
               }
             }
 

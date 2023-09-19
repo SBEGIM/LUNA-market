@@ -155,6 +155,7 @@ class ProductAdminCubit extends Cubit<ProductAdminState> {
         Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
+      emit(InitState());
       log(e.toString());
       // emit(ErrorState(message: 'Ошибка'));
     }

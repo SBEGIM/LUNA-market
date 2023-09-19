@@ -538,7 +538,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                               userId: state.basketShowModel.first.product?.shopId,
                                               name: state.basketShowModel.first.shopName,
                                               avatar: state.basketShowModel.first.image?.first ?? '',
-                                              chatId: null));
+                                              chatId: state.basketShowModel.first.chatId ?? null));
                                         },
                                         child: const Text(
                                           'Уточнить цену доставки',
