@@ -439,7 +439,7 @@ class _EditProductPageState extends State<EditProductPage> {
                             ),
                             PopupMenuButton(
                               onSelected: (value) {
-                                mockSizeAdds!.add(value as Cats);
+                                // mockSizeAdds!.add(value as Cats);
                                 sizeId = value.id.toString();
                                 sizeName = value.name ?? 'Пустое';
 
@@ -505,12 +505,12 @@ class _EditProductPageState extends State<EditProductPage> {
                             if (sizeCountController.text.isNotEmpty) {
                               bool exists = false;
 
-                              sizeCountDto? sizeCountLast;
+                              //    sizeCountDto? sizeCountLast;
                               // if (optomCount.isNotEmpty) {
 
-                              sizeCountLast = sizeCount.isNotEmpty ? sizeCount.last : null;
-                              for (var element in sizeCount) {
-                                if (element.count == sizeCountController.text) {
+                              // sizeCountLast = sizeCount.isNotEmpty ? sizeCount.last : null;
+                              for (var element in mockSizeAdds!) {
+                                if (element.name == sizeName) {
                                   exists = true;
                                   setState(() {});
                                 }
@@ -519,6 +519,8 @@ class _EditProductPageState extends State<EditProductPage> {
                               //   }
 
                               if (!exists) {
+                                mockSizeAdds!.add(Cats(name: sizeName));
+
                                 sizeCount
                                     .add(sizeCountDto(id: sizeId, name: sizeName, count: sizeCountController.text));
 

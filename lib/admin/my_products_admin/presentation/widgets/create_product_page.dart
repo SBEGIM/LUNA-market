@@ -490,7 +490,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               ),
                               PopupMenuButton(
                                 onSelected: (value) {
-                                  mockSizeAdds!.add(value as Cats);
+                                  // mockSizeAdds!.add(value as Cats);
                                   sizeId = value.id.toString();
                                   sizeName = value.name ?? 'Пустое';
 
@@ -556,12 +556,12 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               if (sizeCountController.text.isNotEmpty) {
                                 bool exists = false;
 
-                                sizeCountDto? sizeCountLast;
+                                //  Cats? sizeCountLast;
                                 // if (optomCount.isNotEmpty) {
 
-                                sizeCountLast = sizeCount.isNotEmpty ? sizeCount.last : null;
-                                for (var element in sizeCount) {
-                                  if (element.count == sizeCountController.text) {
+                                // sizeCountLast = mockSizeAdds!.isEmpty ? mockSizeAdds!.last : null;
+                                for (var element in mockSizeAdds!) {
+                                  if (element.name == sizeName) {
                                     exists = true;
                                     setState(() {});
                                   }
@@ -570,6 +570,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                 //   }
 
                                 if (!exists) {
+                                  mockSizeAdds!.add(Cats(name: sizeName));
+
                                   sizeCount
                                       .add(sizeCountDto(id: sizeId, name: sizeName, count: sizeCountController.text));
 
@@ -1480,6 +1482,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 subIds.add(e.id!.toInt());
               }
             }
+
+            print(subIds.toString());
 
             isChangeState = true;
             if (_image.isNotEmpty &&

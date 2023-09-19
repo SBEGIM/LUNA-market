@@ -207,7 +207,7 @@ class ProductToApi {
       }
       if (subIds?.isNotEmpty ?? false) {
         for (var i = 0; i < subIds!.length; i++) {
-          subCharacteristicIds['sub_characteristic_ids[]'] = subIds[i];
+          subCharacteristicIds['sub_characteristic_ids[]'] = subIds[i].toString();
         }
       }
 
