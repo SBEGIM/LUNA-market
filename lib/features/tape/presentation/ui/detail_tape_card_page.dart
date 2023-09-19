@@ -1201,7 +1201,7 @@ class _VideosState extends State<Videos> {
       }
     });
 
-    BlocProvider.of<tapeCubit.TapeCubit>(context).view(widget.tape.id!);
+    BlocProvider.of<tapeCubit.TapeCubit>(context).view(widget.tape.tapeId!);
     super.initState();
   }
 

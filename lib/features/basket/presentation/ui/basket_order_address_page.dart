@@ -174,10 +174,10 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                        widget.deleveryDay != null
+                                        widget.deleveryDay != null && widget.deleveryDay != '0'
                                             ? 'Доставка: ${widget.deleveryDay} дня'
-                                            : 'Доставка:  нет данных СДЕК',
-                                        style: TextStyle(
+                                            : 'Доставка: Нет срока доставки СДЕК',
+                                        style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
                                         ),
@@ -350,9 +350,9 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                        widget.deleveryDay != null
+                                        widget.deleveryDay != null && widget.deleveryDay != '0'
                                             ? 'Доставка: ${widget.deleveryDay} дня'
-                                            : 'Доставка:  нет данных СДЕК',
+                                            : 'Доставка: Нет срока доставки СДЕК',
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
@@ -492,8 +492,10 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                         maxLines: 1,
                                       ),
                                       const SizedBox(height: 8),
-                                      const Text(
-                                        '3 августа, бесплатно',
+                                      Text(
+                                        widget.deleveryDay != null && widget.deleveryDay != '0'
+                                            ? 'Доставка: ${widget.deleveryDay} дня'
+                                            : 'Доставка: Нет срока доставки СДЕК',
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,

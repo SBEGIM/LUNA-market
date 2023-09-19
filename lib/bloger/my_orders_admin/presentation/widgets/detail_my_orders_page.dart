@@ -253,7 +253,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.summa} ₸ ',
+                      '${widget.basket.courier ?? 0} ₸ ',
                       style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
@@ -291,7 +291,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.summa} ₸ ',
+                      '${widget.basket.bonus ?? 0} ₸ ',
                       style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
