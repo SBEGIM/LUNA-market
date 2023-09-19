@@ -6,7 +6,7 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:lunamarket.info</string>
+		<string>applinks:lunamarket.ru</string>
 	</array>
 </dict>
 </plist>
