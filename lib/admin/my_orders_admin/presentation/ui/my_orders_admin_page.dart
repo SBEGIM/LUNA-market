@@ -1,10 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/admin/my_orders_admin/presentation/widgets/all_my_orders_page.dart';
 import 'package:haji_market/admin/my_orders_admin/presentation/widgets/done_my_orders_page.dart';
 import 'package:haji_market/core/common/constants.dart';
-import '../../../../admin/my_orders_admin/data/bloc/basket_admin_cubit.dart';
 import '../../../../features/app/widgets/custom_switch_button.dart';
 import '../widgets/all_my_realFBS_orders_page.dart';
 
@@ -67,9 +65,7 @@ class _MyOrdersAdminPageState extends State<MyOrdersAdminPage> {
                           'FBS',
                           style: TextStyle(
                             fontSize: 15,
-                            color: segmentValue == 0
-                                ? Colors.black
-                                : const Color(0xff9B9B9B),
+                            color: segmentValue == 0 ? Colors.black : const Color(0xff9B9B9B),
                           ),
                         ),
                       ),
@@ -84,9 +80,7 @@ class _MyOrdersAdminPageState extends State<MyOrdersAdminPage> {
                           'realFBS',
                           style: TextStyle(
                             fontSize: 14,
-                            color: segmentValue == 1
-                                ? Colors.black
-                                : const Color(0xff9B9B9B),
+                            color: segmentValue == 1 ? Colors.black : const Color(0xff9B9B9B),
                           ),
                         ),
                       ),
@@ -101,9 +95,7 @@ class _MyOrdersAdminPageState extends State<MyOrdersAdminPage> {
                           'Завершенные',
                           style: TextStyle(
                             fontSize: 14,
-                            color: segmentValue == 2
-                                ? Colors.black
-                                : const Color(0xff9B9B9B),
+                            color: segmentValue == 2 ? Colors.black : const Color(0xff9B9B9B),
                           ),
                         ),
                       ),
@@ -111,8 +103,7 @@ class _MyOrdersAdminPageState extends State<MyOrdersAdminPage> {
                     onValueChanged: (int? value) async {
                       if (value != null) {
                         segmentValue = value;
-                        BlocProvider.of<BasketAdminCubit>(context)
-                            .basketSwitchState(value);
+                        // BlocProvider.of<BasketAdminCubit>(context).basketSwitchState(value);
                       }
                       setState(() {});
                     },

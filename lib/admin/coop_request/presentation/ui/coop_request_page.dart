@@ -225,7 +225,8 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                     check: checkController.text);
 
                 await BlocProvider.of<RegisterAdminCubit>(context).register(registerDto);
-                context.router.push(const AuthAdminRoute());
+                if (!mounted) return;
+                context.router.push(AdminAuthRoute());
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(builder: (context) => AuthAdminPage()),

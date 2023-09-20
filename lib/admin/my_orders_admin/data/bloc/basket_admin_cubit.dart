@@ -16,11 +16,10 @@ class BasketAdminCubit extends Cubit<BasketAdminState> {
   Future<void> basketOrderShow(fulfillment) async {
     try {
       emit(LoadingState());
-      final List<BasketAdminOrderModel> data =
-          await basketRepository.basketOrderShow('fbs');
+      final List<BasketAdminOrderModel> data = await basketRepository.basketOrderShow('fbs');
       activeOrders.clear();
       activeOrders.addAll(data);
-      emit(LoadedOrderState(activeOrders));
+      emit(LoadedState(activeOrders, activeOrdersRealFBS, endOrders));
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
@@ -31,13 +30,12 @@ class BasketAdminCubit extends Cubit<BasketAdminState> {
     try {
       emit(LoadingState());
 
-      final List<BasketAdminOrderModel> data =
-          await basketRepository.basketOrderRealFbsShow('realFBS');
+      final List<BasketAdminOrderModel> data = await basketRepository.basketOrderRealFbsShow('realFBS');
       activeOrdersRealFBS.clear();
       activeOrdersRealFBS.addAll(data);
 
       print("data lenth ${activeOrdersRealFBS.length}");
-      emit(LoadedOrderRealFbsState(data));
+      emit(LoadedState(activeOrders, activeOrdersRealFBS, endOrders));
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
@@ -47,36 +45,35 @@ class BasketAdminCubit extends Cubit<BasketAdminState> {
   Future<void> basketOrderEndShow() async {
     try {
       emit(LoadingState());
-      final List<BasketAdminOrderModel> data =
-          await basketRepository.basketOrderEndShow();
+      final List<BasketAdminOrderModel> data = await basketRepository.basketOrderEndShow();
 
       endOrders.clear();
       endOrders.addAll(data);
 
-      emit(LoadedOrderEndState(endOrders));
+      emit(LoadedState(activeOrders, activeOrdersRealFBS, endOrders));
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
 
-  Future<void> basketSwitchState(int value) async {
-    try {
-      if (value == 0) {
-        emit(LoadingState());
-        emit(LoadedOrderState(activeOrders));
-      } else if (value == 1) {
-        emit(LoadingState());
-        print(activeOrdersRealFBS.length);
-        emit(LoadedOrderRealFbsState(activeOrdersRealFBS));
-      } else {
-        emit(LoadedOrderEndState(endOrders));
-      }
-    } catch (e) {
-      log(e.toString());
-      emit(ErrorState(message: 'Ошибка state'));
-    }
-  }
+  // Future<void> basketSwitchState(int value) async {
+  //   try {
+  //     if (value == 0) {
+  //       emit(LoadingState());
+  //       emit(LoadedOrderState(activeOrders));
+  //     } else if (value == 1) {
+  //       emit(LoadingState());
+  //       print(activeOrdersRealFBS.length);
+  //       emit(LoadedOrderRealFbsState(activeOrdersRealFBS));
+  //     } else {
+  //       emit(LoadedOrderEndState(endOrders));
+  //     }
+  //   } catch (e) {
+  //     log(e.toString());
+  //     emit(ErrorState(message: 'Ошибка state'));
+  //   }
+  // }
 
   Future<void> basketStatus(String status, String id, productId) async {
     try {

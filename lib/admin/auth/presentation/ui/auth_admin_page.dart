@@ -10,6 +10,7 @@ import 'package:haji_market/features/auth/presentation/widgets/default_button.da
 
 import '../../data/bloc/login_admin_cubit.dart';
 import '../../data/bloc/login_admin_state.dart';
+
 @RoutePage()
 class AuthAdminPage extends StatefulWidget {
   const AuthAdminPage({Key? key}) : super(key: key);
@@ -58,8 +59,7 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
             }),
           ),
         ),
-        body: BlocConsumer<LoginAdminCubit, LoginAdminState>(
-            listener: (context, state) {
+        body: BlocConsumer<LoginAdminCubit, LoginAdminState>(listener: (context, state) {
           if (state is LoadedState) {
             context.router.push(RegisterShopRoute(shopName: nameController.text));
             // Navigator.push(
@@ -129,9 +129,7 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
                               ),
                             ),
                             onChanged: (value) {
-                              passwordController.text.isEmpty
-                                  ? __visibleIconView = false
-                                  : __visibleIconView = true;
+                              passwordController.text.isEmpty ? __visibleIconView = false : __visibleIconView = true;
                               if (passwordController.text.isNotEmpty) {
                                 isButtonEnabled = true;
                                 setState(() {});
@@ -149,11 +147,8 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
                             },
                             child: __visibleIconView == true
                                 ? Icon(
-                                    _passwordVisible
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color:
-                                        const Color.fromRGBO(177, 179, 181, 1),
+                                    _passwordVisible ? Icons.visibility_off : Icons.visibility,
+                                    color: const Color.fromRGBO(177, 179, 181, 1),
                                   )
                                 : const SizedBox(width: 5),
                           ),
@@ -175,10 +170,7 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
                   child: const Center(
                     child: Text(
                       'Забыли пароль?',
-                      style: TextStyle(
-                          color: AppColors.kPrimaryColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500),
+                      style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 18, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),
@@ -193,8 +185,7 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
                       press: () {
                         final login = BlocProvider.of<LoginAdminCubit>(context);
 
-                        login.login(
-                            nameController.text, passwordController.text);
+                        login.login(nameController.text, passwordController.text);
                       },
                       color: Colors.white,
                       width: 343),
@@ -213,8 +204,7 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
               ),
             );
           } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
         }));
   }
