@@ -2306,27 +2306,35 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 // Navigator.pop(context);
 
                 if (widget.product.product_count == 0 && widget.product.pre_order == 1) {
-                  showCupertinoModalPopup<void>(
-                    context: context,
-                    builder: (context) => PreOrderDialog(
-                      onYesTap: () {
-                        Navigator.pop(context);
-                        if (isvisible == false && widget.product.inBasket == false) {
-                          BlocProvider.of<BasketCubit>(context)
-                              .basketAdd(widget.product.id.toString(), '1', 0, sizeValue, colorValue);
-                          setState(() {
-                            isvisible = true;
-                          });
-                          BlocProvider.of<ProductCubit>(context).products();
-                        } else {
-                          this.context.router.pushAndPopUntil(
-                                const LauncherRoute(children: [BasketRoute()]),
-                                predicate: (route) => false,
-                              );
-                        }
-                      },
-                    ),
-                  );
+                  if (isvisible == false && widget.product.inBasket == false) {
+                    showCupertinoModalPopup<void>(
+                      context: context,
+                      builder: (context) => PreOrderDialog(
+                        onYesTap: () {
+                          Navigator.pop(context);
+                          if (isvisible == false && widget.product.inBasket == false) {
+                            BlocProvider.of<BasketCubit>(context)
+                                .basketAdd(widget.product.id.toString(), '1', 0, sizeValue, colorValue);
+                            setState(() {
+                              isvisible = true;
+                            });
+                            BlocProvider.of<ProductCubit>(context).products();
+                          } else {
+                            this.context.router.pushAndPopUntil(
+                                  const LauncherRoute(children: [BasketRoute()]),
+                                  predicate: (route) => false,
+                                );
+                          }
+                        },
+                      ),
+                    );
+                  } else {
+                    context.router.pushAndPopUntil(
+                      const LauncherRoute(children: [BasketRoute()]),
+                      predicate: (route) => false,
+                    );
+                  }
+
                   return;
                 }
 

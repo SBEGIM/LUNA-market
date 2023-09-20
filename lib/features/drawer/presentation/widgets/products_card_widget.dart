@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/data/bloc/basket_cubit.dart';
@@ -426,45 +427,93 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                   ],
                                 )
                               else
-                                GestureDetector(
-                                  onTap: () {
-                                    /// FIXME
-                                    BlocProvider.of<BasketCubit>(context)
-                                        .basketAdd(widget.product.id.toString(), '1', 0, '', '');
-                                    BlocProvider.of<productCubit.ProductCubit>(context).updateProductByIndex(
-                                      index: widget.index,
-                                      updatedProduct: widget.product.copyWith(
-                                        basketCount: basketCount + 1,
+                                (widget.product.pre_order == 1 && widget.product.product_count == 0)
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          /// FIXME
+                                          BlocProvider.of<BasketCubit>(context)
+                                              .basketAdd(widget.product.id.toString(), '1', 0, '', '');
+                                          BlocProvider.of<productCubit.ProductCubit>(context).updateProductByIndex(
+                                            index: widget.index,
+                                            updatedProduct: widget.product.copyWith(
+                                              basketCount: basketCount + 1,
+                                            ),
+                                          );
+                                          // setState(() {
+                                          //   count += 1;
+                                          //   if (count == 0) {
+                                          //     isvisible = false;
+                                          //   } else {
+                                          //     isvisible = true;
+                                          //   }
+                                          // });
+                                        },
+                                        child: Container(
+                                          width: 99,
+                                          height: 32,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFF1DC4CF),
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: const Text(
+                                            'Предзаказ',
+                                            // textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          /// FIXME
+                                          if (widget.product.product_count != 0) {
+                                            BlocProvider.of<BasketCubit>(context)
+                                                .basketAdd(widget.product.id.toString(), '1', 0, '', '');
+                                            BlocProvider.of<productCubit.ProductCubit>(context).updateProductByIndex(
+                                              index: widget.index,
+                                              updatedProduct: widget.product.copyWith(
+                                                basketCount: basketCount + 1,
+                                              ),
+                                            );
+                                          } else {
+                                            Get.snackbar('Ошибка запроса нет предзаказа!', 'количество товара 0 шт',
+                                                backgroundColor: Colors.blueAccent);
+                                          }
+
+                                          // setState(() {
+                                          //   count += 1;
+                                          //   if (count == 0) {
+                                          //     isvisible = false;
+                                          //   } else {
+                                          //     isvisible = true;
+                                          //   }
+                                          // });
+                                        },
+                                        child: Container(
+                                          width: 99,
+                                          height: 32,
+                                          decoration: BoxDecoration(
+                                            color: widget.product.product_count != 0
+                                                ? const Color(0xFF1DC4CF)
+                                                : Colors.grey,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: const Text(
+                                            'В корзину',
+                                            // textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    );
-                                    // setState(() {
-                                    //   count += 1;
-                                    //   if (count == 0) {
-                                    //     isvisible = false;
-                                    //   } else {
-                                    //     isvisible = true;
-                                    //   }
-                                    // });
-                                  },
-                                  child: Container(
-                                    width: 99,
-                                    height: 32,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFF1DC4CF),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: const Text(
-                                      'В корзину',
-                                      // textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
                             ],
                           ),
                   ],

@@ -213,8 +213,8 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Инфо о заказе',
+                    Text(
+                      "${widget.basket.preorder == 1 ? 'Инфо о предзаказе' : 'Инфо о заказе'}",
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                     Container(
