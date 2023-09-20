@@ -79,6 +79,7 @@ class ProductAdminRepository {
     String productId,
     String articul,
     String currency,
+    bool isSwitchedBs,
     String deep,
     List<dynamic>? image,
     List<optomPriceDto> optom,
@@ -105,6 +106,7 @@ class ProductAdminRepository {
           productId,
           articul,
           currency,
+          isSwitchedBs,
           deep,
           image,
           optom,
@@ -165,7 +167,7 @@ class ProductToApi {
       final token = _box.read('seller_token');
       String? preOrder;
 
-      isSwitchedBs == 'true' ? preOrder = '1' : preOrder = '0';
+      isSwitchedBs == true ? preOrder = '1' : preOrder = '0';
 
       final bodys = {
         'shop_id': sellerId.toString(),
@@ -265,6 +267,7 @@ class ProductToApi {
       String productId,
       String articul,
       String currency,
+      bool isSwitchedBs,
       String deep,
       List<dynamic>? image,
       List<optomPriceDto> optom,
@@ -276,6 +279,9 @@ class ProductToApi {
       List<int>? subIds) async {
     final sellerId = _box.read('seller_id');
     final token = _box.read('seller_token');
+    String? preOrder;
+
+    isSwitchedBs == true ? preOrder = '1' : preOrder = '0';
 
     final body = {
       'shop_id': sellerId.toString(),
@@ -296,6 +302,7 @@ class ProductToApi {
       'articul': articul,
       'deep': deep,
       'currency': currency,
+      'pre_order': preOrder,
       'fulfillment': fulfillment,
       'point': point,
       'point_blogger': pointBlogger,

@@ -13,6 +13,7 @@ class AdminProductsModel {
     int? compound,
     int? point,
     int? bonus,
+    int? pre_order,
     String? fulfillment,
     String? description,
     dynamic articul,
@@ -43,6 +44,7 @@ class AdminProductsModel {
     _compound = compound;
     _point = point;
     _bonus = bonus;
+    _pre_order = pre_order;
     _fulfillment = fulfillment;
     _description = description;
     _articul = articul;
@@ -74,6 +76,7 @@ class AdminProductsModel {
     _compound = json['compound'];
     _point = json['point'];
     _bonus = json['bonus'];
+    _pre_order = json['pre_order'];
     _fulfillment = json['fulfillment'];
     _description = json['description'];
     _articul = json['articul'];
@@ -107,6 +110,7 @@ class AdminProductsModel {
   int? _compound;
   int? _point;
   int? _bonus;
+  int? _pre_order;
   String? _fulfillment;
   String? _description;
   dynamic _articul;
@@ -137,6 +141,7 @@ class AdminProductsModel {
   int? get compound => _compound;
   int? get point => _point;
   int? get bonus => _bonus;
+  int? get pre_order => _pre_order;
   String? get fulfillment => _fulfillment;
   String? get description => _description;
   dynamic get articul => _articul;
@@ -169,6 +174,7 @@ class AdminProductsModel {
     map['compound'] = _compound;
     map['point'] = _point;
     map['bonus'] = _bonus;
+    map['pre_order'] = _pre_order;
     map['fulfillment'] = _fulfillment;
     map['description'] = _description;
     map['articul'] = _articul;
