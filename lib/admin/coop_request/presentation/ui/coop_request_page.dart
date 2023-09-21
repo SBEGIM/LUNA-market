@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/admin/auth/data/DTO/register_admin_dto.dart';
@@ -32,7 +33,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
   TextEditingController checkController = TextEditingController();
   TextEditingController catController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController phoneController = MaskedTextController(mask: '+7(000)-000-00-00');
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -208,7 +209,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
             onTap: () async {
               if (iinController.text.isNotEmpty &&
                   nameController.text.isNotEmpty &&
-                  phoneController.text.isNotEmpty &&
+                  phoneController.text.length == 17 &&
                   emailController.text.isNotEmpty &&
                   userNameController.text.isNotEmpty &&
                   catController.text.isNotEmpty &&

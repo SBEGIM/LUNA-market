@@ -1540,7 +1540,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                                 color: AppColors.kGray900, fontSize: 14, fontWeight: FontWeight.w400),
                                             children: <TextSpan>[
                                               TextSpan(
-                                                text: 'не найден адрес магазина (СДЕК)',
+                                                text: 'не найден адрес пункта (СДЕК)',
                                                 style: TextStyle(
                                                   color: Colors.orangeAccent,
                                                   fontSize: 12,

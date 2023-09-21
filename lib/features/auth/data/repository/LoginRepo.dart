@@ -77,7 +77,6 @@ class LoginToApi {
     final response = await http.post(Uri.parse('$baseUrl/user/late/auth'), body: {});
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      print(data.toString());
       _box.write('token', data['access_token'].toString());
       _box.write('user_id', data['id'].toString());
       _box.write('name', 'Не авторизированный');

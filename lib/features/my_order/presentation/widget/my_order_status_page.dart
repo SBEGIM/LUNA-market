@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
@@ -14,6 +15,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import '../../../../admin/my_orders_admin/data/bloc/order_status_admin_cubit.dart';
 import '../../../chat/presentation/chat_page.dart';
+import '../../../chat/presentation/message.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart';
 import '../../../drawer/data/bloc/review_cubit.dart';
 
@@ -354,8 +356,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               width: 54,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(34),
-                                  image: const DecorationImage(
-                                    image: NetworkImage("http://185.116.193.73/storage/shops/1.png"),
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                        "http://185.116.193.73/storage/${widget.basketOrder.product!.first.shopImage}"),
                                     fit: BoxFit.cover,
                                   )),
                             ),
@@ -382,15 +385,14 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                // Get.off(ChatPage);
-                                // GetStorage()
-                                //     .write('video_stop', true);
-                                Get.to(() => const ChatPage());
-                                // Get.to(ProductsPage(
-                                //   cats: Cats(id: 0, name: ''),
-                                // ));
-                                // GetStorage()
-                                //     .write('shopFilterId', 1);
+                                // Get.to(() => const ChatPage());
+
+                                Get.to(Message(
+                                  userId: widget.basketOrder.product!.first.id,
+                                  name: widget.basketOrder.product!.first.shopName,
+                                  avatar: widget.basketOrder.product!.first.shopImage,
+                                  chatId: widget.basketOrder.chatId,
+                                ));
                               },
                               child: Container(
                                 height: 30,

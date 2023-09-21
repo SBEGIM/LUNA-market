@@ -10,8 +10,7 @@ import '../DTO/register_admin_dto.dart';
 class RegisterAdminCubit extends Cubit<RegisterAdminState> {
   final RegisterAdminRepository registerAdminRepository;
 
-  RegisterAdminCubit({required this.registerAdminRepository})
-      : super(InitState());
+  RegisterAdminCubit({required this.registerAdminRepository}) : super(InitState());
 
   Future<void> register(RegisterAdminDTO register) async {
     try {
@@ -24,13 +23,11 @@ class RegisterAdminCubit extends Cubit<RegisterAdminState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль', backgroundColor: Colors.redAccent);
       }
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('500', 'Ошибка сервера', backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());
