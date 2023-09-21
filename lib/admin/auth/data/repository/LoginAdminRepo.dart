@@ -16,7 +16,7 @@ class LoginToApi {
   final _box = GetStorage();
 
   Future<dynamic> login(String name, String password) async {
-    final deviceToken = _box.read('device_token');
+    final deviceToken = await _box.read('device_token');
     String? deviceType;
     if (Platform.isIOS == true) {
       deviceType = 'ios';

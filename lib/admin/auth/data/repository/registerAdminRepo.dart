@@ -22,7 +22,7 @@ class RegisterToApi {
   final _box = GetStorage();
 
   Future<dynamic> register(RegisterAdminDTO register) async {
-    final deviceToken = _box.read('device_token');
+    final deviceToken = await _box.read('device_token');
 
     String s = register.phone;
     String result = s.substring(2);

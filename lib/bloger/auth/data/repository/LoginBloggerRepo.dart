@@ -20,7 +20,7 @@ class LoginToApi {
   final _box = GetStorage();
 
   Future<dynamic> login(String phone, String password) async {
-    final deviceToken = _box.read('device_token');
+    final deviceToken = await _box.read('device_token');
     String? deviceType;
     if (Platform.isIOS == true) {
       deviceType = 'ios';
@@ -55,7 +55,7 @@ class LoginToApi {
 
   Future<dynamic> register(RegisterBloggerDTO register) async {
     String s = register.phone;
-    final deviceToken = _box.read('device_token');
+    final deviceToken = await _box.read('device_token');
 
     String? deviceType;
     if (Platform.isIOS == true) {

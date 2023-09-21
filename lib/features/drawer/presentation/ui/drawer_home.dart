@@ -452,7 +452,9 @@ class _DrawerPageState extends State<DrawerPage> {
 
                 GestureDetector(
                   onTap: () {
+                    final deviceToken = _box.read('device_token');
                     GetStorage().erase();
+                    _box.write('device_token', deviceToken);
                     // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
                     BlocProvider.of<AppBloc>(context).add(const AppEvent.exiting());
 

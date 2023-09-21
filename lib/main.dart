@@ -65,7 +65,7 @@ void main() async {
       provisional: false,
       sound: true,
     );
-    getDeviceToken();
+    await getDeviceToken();
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   } catch (e) {

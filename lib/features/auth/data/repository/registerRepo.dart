@@ -10,23 +10,19 @@ const baseUrl = 'http://185.116.193.73/api';
 class RegisterRepository {
   final RegisterToApi _registerToApi = RegisterToApi();
 
-  Future<dynamic> register(RegisterDTO register) =>
-      _registerToApi.register(register);
+  Future<dynamic> register(RegisterDTO register) => _registerToApi.register(register);
   Future<dynamic> smsSend(String phone) => _registerToApi.smsSend(phone);
-  Future<dynamic> smsCheck(String phone, String code) =>
-      _registerToApi.smsCheck(phone, code);
+  Future<dynamic> smsCheck(String phone, String code) => _registerToApi.smsCheck(phone, code);
   Future<dynamic> resetSend(String phone) => _registerToApi.resetSend(phone);
-  Future<dynamic> resetCheck(String phone, String code) =>
-      _registerToApi.resetCheck(phone, code);
-  Future<dynamic> passwordReset(String phone, String password) =>
-      _registerToApi.passwordReset(phone, password);
+  Future<dynamic> resetCheck(String phone, String code) => _registerToApi.resetCheck(phone, code);
+  Future<dynamic> passwordReset(String phone, String password) => _registerToApi.passwordReset(phone, password);
 }
 
 class RegisterToApi {
   final _box = GetStorage();
 
   Future<dynamic> register(RegisterDTO register) async {
-    final deviceToken = _box.read('device_token');
+    final deviceToken = await _box.read('device_token');
     String? deviceType;
     if (Platform.isIOS == true) {
       deviceType = 'ios';
@@ -89,8 +85,7 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response =
-        await http.post(Uri.parse('$baseUrl/user/register/send-code'), body: {
+    final response = await http.post(Uri.parse('$baseUrl/user/register/send-code'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
     });
 
@@ -101,8 +96,7 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response =
-        await http.post(Uri.parse('$baseUrl/user/register/check'), body: {
+    final response = await http.post(Uri.parse('$baseUrl/user/register/check'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'code': code,
     });
@@ -114,8 +108,7 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response = await http
-        .post(Uri.parse('$baseUrl/user/password/reset/send-code'), body: {
+    final response = await http.post(Uri.parse('$baseUrl/user/password/reset/send-code'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
     });
 
@@ -126,8 +119,7 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response = await http
-        .post(Uri.parse('$baseUrl/user/password/reset/check-code'), body: {
+    final response = await http.post(Uri.parse('$baseUrl/user/password/reset/check-code'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'code': code,
     });
@@ -140,8 +132,7 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response =
-        await http.post(Uri.parse('$baseUrl/user/password/reset'), body: {
+    final response = await http.post(Uri.parse('$baseUrl/user/password/reset'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'password': password,
     });
