@@ -22,7 +22,7 @@ class EditBloggerCubit extends Cubit<EditBloggerState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль', backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка запроса!', 'Телефон или никнейм занято', backgroundColor: Colors.redAccent);
       }
       if (data == 500) {
         emit(InitState());

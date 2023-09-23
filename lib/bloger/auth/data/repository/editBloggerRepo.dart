@@ -33,8 +33,9 @@ class EditToApi {
       'nick_name': nick ?? '',
       'invoice': check ?? '',
       'card': card ?? '',
-      'access_token': _box.read('blogger_token').toString(),
     };
+
+    final header = {"Authorization": "Bearer ${_box.read('blogger_token').toString()}"};
 
     final request = http.MultipartRequest(
       'POST',
@@ -47,6 +48,7 @@ class EditToApi {
       );
     }
     request.fields.addAll(body);
+    request.headers.addAll(header);
 
     final http.StreamedResponse response = await request.send();
     final respStr = await response.stream.bytesToString();

@@ -84,7 +84,7 @@ class BasketShowModel {
   String? get basketColor => _basketColor;
   String? get basketSize => _basketSize;
   int? get deliveryDay => _deliveryDay;
-  int? get deliveryPrice => deliveryPrice;
+  int? get deliveryPrice => _deliveryPrice;
   String? get shopName => _shopName;
   List<String>? get address => _address;
 

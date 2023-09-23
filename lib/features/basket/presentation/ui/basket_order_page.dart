@@ -77,7 +77,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
         price += element.price ?? 0;
         bonus += element.userBonus ?? 0;
 
-        if (widget.fbs != true) courier += element.priceCourier!.toInt();
+        if (widget.fbs != true) courier += element.deliveryPrice ?? 0;
         productNames =
             "${productNames != null ? "$productNames ," : ''}  $kDeepLinkUrl/?product_id\u003d${element.product!.id}";
       }
@@ -364,7 +364,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                       Container(
                         padding: const EdgeInsets.only(right: 16),
                         child: Text(
-                          ' ${isSwitched == true ? (courier + price - (bonus * 0.1).toInt()) : (courier + price)} ₽',
+                          ' ${isSwitched == true ? ((courier + price) - (bonus * 0.1).toInt() >= price ? 0 : (price - bonus * 0.1).toInt()) : (courier + price)} ₽',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -842,7 +842,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                 BlocProvider.of<orderCubit.OrderCubit>(context).payment(
                     address: widget.address.toString(),
                     bonus: isSwitched == true
-                        ? (bonus > price ? ((bonus * 0.01).toInt()).toString() : bonus.toString())
+                        ? (bonus > price ? ((bonus * 0.1).toInt()).toString() : bonus.toString())
                         : '0');
               } else {
                 Get.snackbar('Ошибка', 'Выберите способ оплаты', backgroundColor: Colors.redAccent);

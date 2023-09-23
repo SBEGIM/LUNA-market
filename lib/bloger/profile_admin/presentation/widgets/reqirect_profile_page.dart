@@ -188,7 +188,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                               controller: nickNameController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
-                                hintText: 'Никнэйм',
+                                hintText: 'Никнейм',
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white),
                                   // borderRadius: BorderRadius.circular(3),

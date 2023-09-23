@@ -12,7 +12,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-
 import '../../../features/chat/data/cubit/message_cubit.dart';
 import '../data/DTO/DTO/messageAdminDto.dart';
 import '../data/cubit/message_admin_cubit.dart';
@@ -51,7 +50,8 @@ class _MessageAdminState extends State<MessageAdmin> {
       _image != null ? _image!.path : "",
     );
 
-    String text = jsonEncode({'action': 'file', 'text': null, 'path': data, 'type': 'image', 'to': widget.userId});
+    String text = jsonEncode(
+        {'action': 'file', 'text': null, 'path': data, 'type': 'image', 'to': widget.userId, 'chat_id': widget.chatId});
 
     channel.sink.add(text);
   }
@@ -63,7 +63,12 @@ class _MessageAdminState extends State<MessageAdmin> {
 
   void SendData() {
     if (_chatTextController.text.isNotEmpty) {
-      String text = jsonEncode({'action': 'message', 'text': _chatTextController.text.toString(), 'to': widget.userId});
+      String text = jsonEncode({
+        'action': 'message',
+        'text': _chatTextController.text.toString(),
+        'to': widget.userId,
+        'chat_id': widget.chatId
+      });
 
       channel.sink.add(text);
       _chatTextController.clear();

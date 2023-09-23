@@ -51,7 +51,8 @@ class _MessageState extends State<Message> {
       _image != null ? _image!.path : "",
     );
 
-    String text = jsonEncode({'action': 'file', 'text': null, 'path': data, 'type': 'image', 'to': widget.userId});
+    String text = jsonEncode(
+        {'action': 'file', 'text': null, 'path': data, 'type': 'image', 'to': widget.userId, 'chat_id': widget.chatId});
 
     channel.sink.add(text);
   }
@@ -63,7 +64,12 @@ class _MessageState extends State<Message> {
 
   void SendData() {
     if (_chatTextController.text.isNotEmpty) {
-      String text = jsonEncode({'action': 'message', 'text': _chatTextController.text.toString(), 'to': widget.userId});
+      String text = jsonEncode({
+        'action': 'message',
+        'text': _chatTextController.text.toString(),
+        'to': widget.userId,
+        'chat_id': widget.chatId
+      });
 
       channel.sink.add(text);
       // BlocProvider.of<MessageCubit>(context)

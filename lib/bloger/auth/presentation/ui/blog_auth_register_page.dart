@@ -123,8 +123,13 @@ class _BlogAuthRegisterPageState extends State<BlogAuthRegisterPage> {
           children: [
             const BlogAuthPage(),
             BlogRequestPage(
-              onTap: () {
-                segmentValue = 0;
+              onTap: (value) {
+                if (value == 200) {
+                  segmentValue = 0;
+                } else {
+                  segmentValue = 1;
+                }
+
                 setState(() {});
               },
             ),

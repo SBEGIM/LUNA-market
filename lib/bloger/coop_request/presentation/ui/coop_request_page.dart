@@ -10,7 +10,7 @@ import '../../../../offer_for_the_seller.dart';
 import '../../../auth/data/DTO/register_blogger_dto.dart';
 
 class BlogRequestPage extends StatefulWidget {
-  final Function()? onTap;
+  final Function(int status)? onTap;
   const BlogRequestPage({Key? key, this.onTap}) : super(key: key);
 
   @override
@@ -204,8 +204,9 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
 
                 final register = BlocProvider.of<LoginBloggerCubit>(context);
 
-                await register.register(data);
-                widget.onTap?.call();
+                final statuCode = await register.register(data);
+
+                widget.onTap?.call(statuCode ?? 200);
 
                 // Navigator.push(
                 //   context,
