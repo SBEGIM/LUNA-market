@@ -6,25 +6,19 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
-import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart' as productAdState;
 import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart' as productCubit;
 import 'package:haji_market/features/drawer/data/bloc/product_state.dart' as productState;
 import 'package:haji_market/features/drawer/data/bloc/shops_drawer_cubit.dart' as shopsDrawerCubit;
 import 'package:haji_market/features/drawer/data/bloc/shops_drawer_state.dart' as shopsDrawerState;
 import 'package:haji_market/features/drawer/data/bloc/sub_cats_cubit.dart' as subCatCubit;
 import 'package:haji_market/features/drawer/data/bloc/sub_cats_state.dart' as subCatState;
-import 'package:haji_market/features/drawer/presentation/widgets/detail_card_product_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/filter_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/products_card_widget.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/features/home/data/bloc/cats_cubit.dart';
-import 'package:haji_market/features/home/data/bloc/cats_state.dart' as catsState;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../home/data/model/Cats.dart';
-import '../../../home/presentation/widgets/product_watching_card.dart';
 import '../../data/bloc/brand_cubit.dart' as brandCubit;
 import 'package:haji_market/features/drawer/data/bloc/brand_state.dart' as brandState;
-
 import '../../data/bloc/product_ad_cubit.dart';
 import '../../data/bloc/product_ad_state.dart';
 import '../widgets/product_ad_card.dart';
@@ -55,6 +49,7 @@ class _ProductsPageState extends State<ProductsPage> {
       setState(() {});
     });
 
+    print(widget.cats.id);
     if (widget.cats.id == 0) {
       GetStorage().remove('CatId');
       GetStorage().remove('catId');
@@ -76,7 +71,7 @@ class _ProductsPageState extends State<ProductsPage> {
     GetStorage().remove('rating');
     BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context).shopsDrawer(widget.cats.id);
     BlocProvider.of<brandCubit.BrandCubit>(context).brands(subCatId: widget.cats.id);
-    BlocProvider.of<ProductAdCubit>(context).adProducts(widget.cats.id);
+    BlocProvider.of<ProductAdCubit>(context).adProducts(GetStorage().read('CatId'));
     subCatCubit.SubCatsCubit subCatsCubit = BlocProvider.of<subCatCubit.SubCatsCubit>(context);
     if (subCatsCubit.state is! subCatState.LoadedState) {
       subCatsCubit.subCats(widget.cats.id);
@@ -273,7 +268,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       // shrinkWrap: true,
-                                      itemCount: state.productModel.length < 4 ? state.productModel.length : 4,
+                                      itemCount: state.productModel.length < 6 ? state.productModel.length : 6,
                                       itemBuilder: (BuildContext ctx, index) {
                                         return GestureDetector(
                                           onTap: () => context.router

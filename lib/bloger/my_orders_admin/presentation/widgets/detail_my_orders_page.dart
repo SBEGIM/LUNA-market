@@ -365,16 +365,23 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                 ),
                 Row(
                   children: [
-                    Image.asset(
-                      'assets/images/kana.png',
+                    Container(
                       height: 40,
                       width: 40,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(31),
+                          image: DecorationImage(
+                            image: (widget.basket.user!.avatar != null)
+                                ? NetworkImage("http://185.116.193.73/storage/${widget.basket.user!.avatar}")
+                                : const AssetImage('assets/icons/profile2.png') as ImageProvider,
+                            fit: BoxFit.cover,
+                          )),
                     ),
                     const SizedBox(
                       width: 20,
                     ),
-                    const Text(
-                      'Қанат Тұрғанбай',
+                    Text(
+                      '${widget.basket.user?.name ?? 'Имя не найдено'}',
                       style: TextStyle(color: AppColors.kGray700, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],

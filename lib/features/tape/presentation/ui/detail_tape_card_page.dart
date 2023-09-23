@@ -20,7 +20,6 @@ import 'package:haji_market/features/tape/presentation/data/models/TapeModel.dar
 import 'package:share_plus/share_plus.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 //import 'package:video_player/video_player.dart';
-import '../../../app/bloc/navigation_cubit/navigation_cubit.dart';
 import '../../../chat/presentation/message.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart' as basCubit;
 import '../../../drawer/data/bloc/favorite_cubit.dart' as favCubit;

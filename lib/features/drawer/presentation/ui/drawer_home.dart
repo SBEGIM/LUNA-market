@@ -394,43 +394,43 @@ class _DrawerPageState extends State<DrawerPage> {
                   //height: 0,
                   color: AppColors.kGray200,
                 ),
-                SizedBox(
-                  height: 55,
-                  child: Padding(
-                    padding: const EdgeInsets.all(13.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        const Text(
-                          'Вход с Touch ID',
-                          style: AppTextStyles.drawer2TextStyle,
-                        ),
-                        SizedBox(
-                          height: 8,
-                          child: Transform.scale(
-                            scale: 0.9,
-                            child: CupertinoSwitch(
-                              value: isSwitchedTouch,
-                              onChanged: (value) {
-                                setState(() {
-                                  isSwitchedTouch = value;
-                                  // print(isSwitched);
-                                });
-                              },
-                              trackColor: Colors.grey.shade200,
-                              activeColor: AppColors.kPrimaryColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const Divider(
-                  color: AppColors.kGray200,
-                  height: 0,
-                ),
+                // SizedBox(
+                //   height: 55,
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(13.0),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       mainAxisSize: MainAxisSize.max,
+                //       children: [
+                //         const Text(
+                //           'Вход с Touch ID',
+                //           style: AppTextStyles.drawer2TextStyle,
+                //         ),
+                //         SizedBox(
+                //           height: 8,
+                //           child: Transform.scale(
+                //             scale: 0.9,
+                //             child: CupertinoSwitch(
+                //               value: isSwitchedTouch,
+                //               onChanged: (value) {
+                //                 setState(() {
+                //                   isSwitchedTouch = value;
+                //                   // print(isSwitched);
+                //                 });
+                //               },
+                //               trackColor: Colors.grey.shade200,
+                //               activeColor: AppColors.kPrimaryColor,
+                //             ),
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // const Divider(
+                //   color: AppColors.kGray200,
+                //   height: 0,
+                // ),
                 InkWell(
                   onTap: () {
                     Navigator.push(

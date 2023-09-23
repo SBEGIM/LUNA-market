@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:haji_market/bloger/tape/data/cubit/tape_blogger_state.dart';
 import 'package:haji_market/bloger/tape/data/model/TapeBloggerModel.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,13 +19,10 @@ import '../../../tape/data/cubit/tape_blogger_cubit.dart';
 class BloggerDetailTapeCardPage extends StatefulWidget {
   final int? index;
   final String? shopName;
-  const BloggerDetailTapeCardPage(
-      {required this.index, required this.shopName, Key? key})
-      : super(key: key);
+  const BloggerDetailTapeCardPage({required this.index, required this.shopName, Key? key}) : super(key: key);
 
   @override
-  State<BloggerDetailTapeCardPage> createState() =>
-      _BloggerDetailTapeCardPageState();
+  State<BloggerDetailTapeCardPage> createState() => _BloggerDetailTapeCardPageState();
 }
 
 class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
@@ -74,10 +72,7 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
             title: visible == true
                 ? Text(
                     '${widget.shopName}',
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500),
+                    style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
                   )
                 : null
             // ? Row(
@@ -165,9 +160,7 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                 );
               }
               if (state is LoadingState) {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
 
               if (state is LoadedState) {
@@ -201,32 +194,24 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Container(
                                               height: 28,
                                               width: 90,
                                               decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0xFFFF3347),
-                                                  borderRadius:
-                                                      BorderRadius.circular(6)),
+                                                  color: const Color(0xFFFF3347),
+                                                  borderRadius: BorderRadius.circular(6)),
                                               alignment: Alignment.center,
                                               child: Text(
                                                 '${state.tapeModel[index].price} руб.',
                                                 style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: Colors.white),
+                                                    fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
                                               ),
                                             ),
                                             const SizedBox(height: 6),
@@ -234,35 +219,47 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                                               height: 28,
                                               width: 110,
                                               decoration: BoxDecoration(
-                                                  color: Colors.orangeAccent,
-                                                  borderRadius:
-                                                      BorderRadius.circular(6)),
+                                                  color: Colors.orangeAccent, borderRadius: BorderRadius.circular(6)),
                                               alignment: Alignment.center,
                                               child: Text(
                                                 'Артикул: ${state.tapeModel[index].id}',
                                                 style: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.white),
+                                                    fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
                                               ),
                                             ),
                                           ],
                                         ),
-                                        Container(
-                                          height: 28,
-                                          width: 110,
-                                          decoration: BoxDecoration(
-                                              color: Colors.green[700],
-                                              borderRadius:
-                                                  BorderRadius.circular(6)),
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '${state.tapeModel[index].name}',
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.white),
-                                          ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                await Share.share(
+                                                    "$kDeepLinkUrl/?index\u003d${widget.index}&shop_name\u003d${widget.shopName}");
+                                              },
+                                              child: SvgPicture.asset(
+                                                'assets/icons/share.svg',
+                                                height: 30,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 6,
+                                            ),
+                                            Container(
+                                              //height: 28,
+                                              // width: 110,
+                                              padding: const EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.green[700], borderRadius: BorderRadius.circular(6)),
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                '${state.tapeModel[index].name}',
+                                                style: const TextStyle(
+                                                    fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ]),
                                 ])),
@@ -410,9 +407,7 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                   },
                 );
               } else {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }));
   }
@@ -434,8 +429,7 @@ class _VideosState extends State<Videos> {
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network(
-        'http://185.116.193.73/storage/${widget.tape.video}')
+    _controller = VideoPlayerController.network('http://185.116.193.73/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.play();
         setState(() {});
@@ -465,7 +459,7 @@ class _VideosState extends State<Videos> {
   @override
   Widget build(BuildContext context) {
     return _controller!.value.isInitialized
-        ?Stack(
+        ? Stack(
             children: [
               SizedBox.expand(
                 child: FittedBox(
@@ -512,7 +506,6 @@ class _VideosState extends State<Videos> {
               ),
             ],
           )
-        : const Center(
-            child: CircularProgressIndicator(color: Colors.blueAccent));
+        : const Center(child: CircularProgressIndicator(color: Colors.blueAccent));
   }
 }
