@@ -37,7 +37,7 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Доставка будет ${widget.basketOrder.returnDate}',
+                '${widget.basketOrder.deliveryDay != 0 ? 'Доставка будет через ${widget.basketOrder.deliveryDay} дня' : 'Неизвестно'}',
                 style: const TextStyle(color: AppColors.kGray900, fontSize: 18, fontWeight: FontWeight.w600),
               ),
               const SizedBox(

@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
@@ -14,7 +13,6 @@ import 'package:haji_market/features/my_order/presentation/widget/cancel_order_w
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import '../../../../admin/my_orders_admin/data/bloc/order_status_admin_cubit.dart';
-import '../../../chat/presentation/chat_page.dart';
 import '../../../chat/presentation/message.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart';
 import '../../../drawer/data/bloc/review_cubit.dart';
@@ -695,14 +693,11 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             child: const Text('Доставка'),
                           ),
                           Container(
-                            padding: const EdgeInsets.only(right: 16),
-                            child: (widget.basketOrder.product ?? []).isNotEmpty
-                                ? Text(
-                                    '${widget.basketOrder.product!.first.shopCourier!.toInt()} ₽ ',
-                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                                  )
-                                : const SizedBox(),
-                          )
+                              padding: const EdgeInsets.only(right: 16),
+                              child: Text(
+                                '${widget.basketOrder.deliveryPrice ?? 0} ₽ ',
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                              ))
                         ],
                       ),
                     ),
@@ -722,14 +717,11 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.only(right: 16),
-                            child: (widget.basketOrder.product ?? []).isNotEmpty
-                                ? Text(
-                                    '${widget.basketOrder.summa!.toInt() + widget.basketOrder.product!.first.shopCourier!.toInt()} ₽ ',
-                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                                  )
-                                : const SizedBox(),
-                          )
+                              padding: const EdgeInsets.only(right: 16),
+                              child: Text(
+                                '${widget.basketOrder.summa!.toInt() + widget.basketOrder.deliveryPrice!} ₽ ',
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                              ))
                         ],
                       ),
                     ),

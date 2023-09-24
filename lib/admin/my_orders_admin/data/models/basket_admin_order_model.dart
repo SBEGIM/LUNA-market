@@ -8,6 +8,8 @@ class BasketAdminOrderModel {
     String? status,
     int? bonus,
     int? courier,
+    int? deliveryDay,
+    int? deliveryPrice,
     int? preorder,
     String? size,
     String? date,
@@ -23,6 +25,8 @@ class BasketAdminOrderModel {
     _status = status;
     _bonus = bonus;
     _courier = courier;
+    _deliveryDay = deliveryDay;
+    _deliveryPrice = deliveryPrice;
     _preorder = preorder;
     _date = date;
     _returnDate = returnDate;
@@ -43,6 +47,8 @@ class BasketAdminOrderModel {
     _bonus = json['bonus'];
     _preorder = json['pre_order'];
     _courier = json['courier'];
+    _deliveryDay = json['delivery_day'];
+    _deliveryPrice = json['delivery_price'];
     _size = json['size'];
     _date = json['date'];
     _comment = json['comment'];
@@ -57,6 +63,8 @@ class BasketAdminOrderModel {
   int? _bonus;
   int? _preorder;
   int? _courier;
+  int? _deliveryDay;
+  int? _deliveryPrice;
   String? _size;
   String? _date;
   String? _comment;
@@ -70,6 +78,8 @@ class BasketAdminOrderModel {
   int? get bonus => _bonus;
   int? get preorder => _preorder;
   int? get courier => _courier;
+  int? get deliveryDay => _deliveryDay;
+  int? get deliveryPrice => _deliveryPrice;
   String? get status => _status;
   String? get size => _size;
   String? get date => _date;
@@ -92,6 +102,8 @@ class BasketAdminOrderModel {
     map['bonus'] = _bonus;
     map['preorder'] = _preorder;
     map['courier'] = _courier;
+    map['delivery_day'] = _deliveryDay;
+    map['delivery_price'] = _deliveryPrice;
     map['date'] = _date;
     map['comment'] = _comment;
     map['return_date'] = _returnDate;

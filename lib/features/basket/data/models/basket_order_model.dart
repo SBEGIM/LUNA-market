@@ -6,6 +6,8 @@ class BasketOrderModel {
     int? summa,
     int? chatId,
     String? status,
+    int? deliveryDay,
+    int? deliveryPrice,
     String? date,
     String? updated_at,
     String? comment,
@@ -17,6 +19,8 @@ class BasketOrderModel {
     _summa = summa;
     _chatId = chatId;
     _status = status;
+    _deliveryDay = deliveryDay;
+    _deliveryPrice = deliveryPrice;
     _date = date;
     _updated_at = updated_at;
     _comment = comment;
@@ -36,6 +40,8 @@ class BasketOrderModel {
     _status = json['status'];
     _chatId = json['chat_id'];
     _date = json['date'];
+    _deliveryDay = json['delivery_day'];
+    _deliveryPrice = json['delivery_price'];
     _updated_at = json['updated_at'];
     _comment = json['comment'];
     _returnDate = json['return_date'];
@@ -47,6 +53,8 @@ class BasketOrderModel {
   int? _chatId;
   String? _status;
   String? _date;
+  int? _deliveryDay;
+  int? _deliveryPrice;
   String? _updated_at;
   String? _comment;
   String? _returnDate;
@@ -58,6 +66,8 @@ class BasketOrderModel {
   String? get status => _status;
   int? get chatId => _chatId;
   String? get date => _date;
+  int? get deliveryDay => _deliveryDay;
+  int? get deliveryPrice => _deliveryPrice;
   String? get updated_at => _updated_at;
   String? get comment => _comment;
   String? get returnDate => _returnDate;
@@ -73,6 +83,8 @@ class BasketOrderModel {
     map['chatId'] = _chatId;
     map['status'] = _status;
     map['date'] = _date;
+    map['deliveryDay'] = _deliveryDay;
+    map['deliveryPrice'] = _deliveryPrice;
     map['updated_at'] = _updated_at;
     map['comment'] = _comment;
     map['return_date'] = _returnDate;

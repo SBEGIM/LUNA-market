@@ -276,7 +276,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.product?.first.optom == 1 ? (widget.basket.product?.first.shopCourier ?? 0) : 0}  ₽ ',
+                      '${widget.basket.deliveryPrice ?? 0}  ₽ ',
                       style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
@@ -295,7 +295,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.summa! + (widget.basket.product?.first.optom == 1 ? (widget.basket.product?.first.shopCourier ?? 0) : 0)} ₽ ',
+                      '${widget.basket.summa! + widget.basket.deliveryPrice!} ₽ ',
                       style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
@@ -320,25 +320,25 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   ],
                 ),
               ),
-              const Divider(
-                color: AppColors.kGray400,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 16.0, right: 16, top: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Способы оплаты ',
-                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
-                    ),
-                    Text(
-                      'Master Card **** 5169',
-                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
-                    )
-                  ],
-                ),
-              ),
+              // const Divider(
+              //   color: AppColors.kGray400,
+              // ),
+              // const Padding(
+              //   padding: EdgeInsets.only(left: 16.0, right: 16, top: 16),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       Text(
+              //         'Способы оплаты ',
+              //         style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+              //       ),
+              //       Text(
+              //         'Master Card **** 5169',
+              //         style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+              //       )
+              //     ],
+              //   ),
+              // ),
               const Divider(
                 color: AppColors.kGray400,
               ),
