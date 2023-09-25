@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
+import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
 import 'package:haji_market/features/my_order/presentation/widget/cancel_order_widget.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -807,98 +808,97 @@ class _QRViewExampleState extends State<QRViewExample> {
           Expanded(flex: 4, child: _buildQrView(context)),
           Expanded(
             flex: 1,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  if (result != null)
-                    Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            if (result!.code == widget.id.toString()) {
-                              Get.snackbar('Заказ', 'возврат оформлен', backgroundColor: Colors.greenAccent);
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                if (result != null)
+                  Container(
+                      margin: const EdgeInsets.all(8),
+                      child: DefaultButton(
+                        width: 350,
+                        color: Colors.white,
+                        backgroundColor: AppColors.kPrimaryColor,
+                        text: '${result?.code ?? 'Код не найден'}',
+                        press: () async {
+                          if (result?.code == widget.id.toString()) {
+                            Get.snackbar('Заказ', 'возврат оформлен', backgroundColor: Colors.greenAccent);
 
-                              BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(
-                                'cancel',
-                                widget.id.toString(),
-                                widget.product_id.toString(),
-                              );
-                            } else {
-                              Get.snackbar('Заказ', 'код товара не совпал', backgroundColor: Colors.greenAccent);
-                            }
-                          },
-                          child: Text('Формат: ${describeEnum(result!.format)}   Результат: ${result!.code}',
-                              style: const TextStyle(fontSize: 20)),
-                        ))
-                  else
-                    const Text('Сканирование...'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await controller?.toggleFlash();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getFlashStatus(),
-                              builder: (context, snapshot) {
-                                return Text('Свет: ${snapshot.data != false ? 'включен' : 'выключен'}');
-                              },
-                            )),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await controller?.flipCamera();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getCameraInfo(),
-                              builder: (context, snapshot) {
-                                if (snapshot.data != null) {
-                                  return Text(
-                                      'Камера: ${describeEnum(snapshot.data!) != 'back' ? 'передняя' : 'задняя'}');
-                                } else {
-                                  return const Text('loading');
-                                }
-                              },
-                            )),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.pauseCamera();
-                          },
-                          child: const Text('Пауза', style: TextStyle(fontSize: 20)),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.resumeCamera();
-                          },
-                          child: const Text('Продолжать', style: TextStyle(fontSize: 20)),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
+                            BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(
+                              'cancel',
+                              widget.id.toString(),
+                              widget.product_id.toString(),
+                            );
+                          } else {
+                            Get.snackbar('Заказ', 'код товара не совпал', backgroundColor: Colors.greenAccent);
+                          }
+                        },
+                      ))
+                else
+                  SizedBox(height: 50, width: 50, child: const CircularProgressIndicator()),
+                //   Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: <Widget>[
+                //       Container(
+                //         margin: const EdgeInsets.all(8),
+                //         child: ElevatedButton(
+                //             onPressed: () async {
+                //               await controller?.toggleFlash();
+                //               setState(() {});
+                //             },
+                //             child: FutureBuilder(
+                //               future: controller?.getFlashStatus(),
+                //               builder: (context, snapshot) {
+                //                 return Text('Свет: ${snapshot.data != false ? 'включен' : 'выключен'}');
+                //               },
+                //             )),
+                //       ),
+                //       Container(
+                //         margin: const EdgeInsets.all(8),
+                //         child: ElevatedButton(
+                //             onPressed: () async {
+                //               await controller?.flipCamera();
+                //               setState(() {});
+                //             },
+                //             child: FutureBuilder(
+                //               future: controller?.getCameraInfo(),
+                //               builder: (context, snapshot) {
+                //                 if (snapshot.data != null) {
+                //                   return Text(
+                //                       'Камера: ${describeEnum(snapshot.data!) != 'back' ? 'передняя' : 'задняя'}');
+                //                 } else {
+                //                   return const Text('loading');
+                //                 }
+                //               },
+                //             )),
+                //       )
+                //     ],
+                //   ),
+                //   Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: <Widget>[
+                //       Container(
+                //         margin: const EdgeInsets.all(8),
+                //         child: ElevatedButton(
+                //           onPressed: () async {
+                //             await controller?.pauseCamera();
+                //           },
+                //           child: const Text('Пауза', style: TextStyle(fontSize: 20)),
+                //         ),
+                //       ),
+                //       Container(
+                //         margin: const EdgeInsets.all(8),
+                //         child: ElevatedButton(
+                //           onPressed: () async {
+                //             await controller?.resumeCamera();
+                //           },
+                //           child: const Text('Продолжать', style: TextStyle(fontSize: 20)),
+                //         ),
+                //       )
+                //     ],
+                //   ),
+              ],
             ),
           )
         ],
@@ -927,7 +927,13 @@ class _QRViewExampleState extends State<QRViewExample> {
     });
     controller.scannedDataStream.listen((scanData) {
       setState(() {
-        result = scanData;
+        if (result?.code != null) {
+          if (result?.code == scanData.code) {
+            result = scanData;
+          }
+        } else {
+          result = scanData;
+        }
       });
     });
   }
