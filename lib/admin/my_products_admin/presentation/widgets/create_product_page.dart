@@ -336,13 +336,13 @@ class _CreateProductPageState extends State<CreateProductPage> {
                     arrow: false,
                     controller: priceController,
                     textInputNumber: true),
-                // FieldsProductRequest(
-                //     titleText: 'Скидка  % ',
-                //     hintText: 'Введите размер скидки',
-                //     star: true,
-                //     arrow: false,
-                //     controller: compoundController,
-                //     textInputNumber: true),
+                FieldsProductRequest(
+                    titleText: 'Скидка ,% ',
+                    hintText: 'Введите размер скидки',
+                    star: true,
+                    arrow: false,
+                    controller: compoundController,
+                    textInputNumber: true),
                 FieldsProductRequest(
                   titleText: 'Накопительные бонусы ,% ',
                   hintText: 'Введите размер бонуса',

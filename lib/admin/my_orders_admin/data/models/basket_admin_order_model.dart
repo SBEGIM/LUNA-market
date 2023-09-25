@@ -14,6 +14,7 @@ class BasketAdminOrderModel {
     String? size,
     String? date,
     String? comment,
+    String? fulfillment,
     String? returnDate,
   }) {
     _id = id;
@@ -29,6 +30,7 @@ class BasketAdminOrderModel {
     _deliveryPrice = deliveryPrice;
     _preorder = preorder;
     _date = date;
+    _fulfillment = fulfillment;
     _returnDate = returnDate;
   }
 
@@ -52,6 +54,7 @@ class BasketAdminOrderModel {
     _size = json['size'];
     _date = json['date'];
     _comment = json['comment'];
+    _fulfillment = json['fulfillment'];
     _returnDate = json['return_date'];
   }
   int? _id;
@@ -68,6 +71,7 @@ class BasketAdminOrderModel {
   String? _size;
   String? _date;
   String? _comment;
+  String? _fulfillment;
   String? _returnDate;
 
   int? get id => _id;
@@ -84,6 +88,7 @@ class BasketAdminOrderModel {
   String? get size => _size;
   String? get date => _date;
   String? get comment => _comment;
+  String? get fulfillment => _fulfillment;
   String? get returnDate => _returnDate;
 
   Map<String, dynamic> toJson() {
@@ -106,6 +111,7 @@ class BasketAdminOrderModel {
     map['delivery_price'] = _deliveryPrice;
     map['date'] = _date;
     map['comment'] = _comment;
+    map['fulfillment'] = _fulfillment;
     map['return_date'] = _returnDate;
     return map;
   }

@@ -288,13 +288,13 @@ class _EditProductPageState extends State<EditProductPage> {
                 arrow: false,
                 controller: priceController,
               ),
-              // FieldsProductRequest(
-              //   titleText: 'Скидка при оплате наличными, % ',
-              //   hintText: 'Введите размер скидки',
-              //   star: true,
-              //   arrow: false,
-              //   controller: compoundController,
-              // ),
+              FieldsProductRequest(
+                titleText: 'Скидка ,% ',
+                hintText: 'Введите размер скидки',
+                star: true,
+                arrow: false,
+                controller: compoundController,
+              ),
               FieldsProductRequest(
                 titleText: 'Накопительные бонусы ,% ',
                 hintText: 'Введите размер бонуса',

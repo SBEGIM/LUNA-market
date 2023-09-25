@@ -543,7 +543,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                               chatId: state.basketShowModel.first.chatId ?? null));
                                         },
                                         child: const Text(
-                                          'Уточнить цену доставки',
+                                          'Уточните срок и цену доставки',
                                           style: TextStyle(
                                               fontSize: 14, fontWeight: FontWeight.w400, color: Colors.orangeAccent),
                                         ),

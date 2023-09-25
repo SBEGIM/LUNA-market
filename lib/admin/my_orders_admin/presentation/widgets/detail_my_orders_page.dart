@@ -276,7 +276,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.deliveryPrice ?? 0}  ₽ ',
+                      '${widget.basket.fulfillment == 'fbs' ? widget.basket.deliveryPrice ?? 0 : 0}  ₽ ',
                       style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],

@@ -317,7 +317,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                                   ),
                                 ),
                                 const Text(
-                                  'Оплатить можно 10% от суммы бонуса',
+                                  'Оплатить можно 10% от суммы товара',
                                   style: TextStyle(
                                     color: AppColors.steelGray,
                                     fontSize: 11,
