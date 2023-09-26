@@ -295,7 +295,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '${widget.basket.summa! + widget.basket.deliveryPrice!} ₽ ',
+                      '${widget.basket.summa! + widget.basket.deliveryPrice! - widget.basket.bonus!} ₽ ',
                       style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
@@ -304,18 +304,18 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
               const Divider(
                 color: AppColors.kGray400,
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(left: 16.0, right: 16, top: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Оплата бонусами  ',
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Text(
-                      '0 ₽ ',
-                      style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                      '${widget.basket.bonus ?? 0} ₽ ',
+                      style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
