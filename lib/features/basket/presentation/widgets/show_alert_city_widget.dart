@@ -44,7 +44,6 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                         child: CupertinoTextField(
                           controller: controller,
                           onChanged: (value) {
-                            print('$value');
                             BlocProvider.of<CityCubit>(context).searchCdekCity(value);
                           },
                         ),

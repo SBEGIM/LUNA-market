@@ -14,8 +14,7 @@ class StatisticsAdminShowPage extends StatefulWidget {
   const StatisticsAdminShowPage({Key? key}) : super(key: key);
 
   @override
-  State<StatisticsAdminShowPage> createState() =>
-      _StatisticsAdminShowPageState();
+  State<StatisticsAdminShowPage> createState() => _StatisticsAdminShowPageState();
 }
 
 class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
@@ -88,10 +87,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
             children: [
               const Text(
                 'Год',
-                style: TextStyle(
-                    color: AppColors.kGray900,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16),
+                style: TextStyle(color: AppColors.kGray900, fontWeight: FontWeight.w700, fontSize: 16),
               ),
               const SizedBox(
                 width: 15,
@@ -112,10 +108,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
               ),
               Text(
                 '$year',
-                style: const TextStyle(
-                    color: AppColors.kGray900,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16),
+                style: const TextStyle(color: AppColors.kGray900, fontWeight: FontWeight.w700, fontSize: 16),
               ),
               const SizedBox(
                 width: 5,
@@ -137,14 +130,10 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
         Container(
           // color: Colors.white,
           padding: const EdgeInsets.all(16),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Text(
               'Месяцы',
-              style: TextStyle(
-                  color: AppColors.kGray900,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16),
+              style: TextStyle(color: AppColors.kGray900, fontWeight: FontWeight.w700, fontSize: 16),
             ),
             SizedBox(
               height: 50,
@@ -161,15 +150,13 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                         _summBonus;
                         _selectIndex;
                       });
-                      BlocProvider.of<ProfileMonthStaticsAdminCubit>(context)
-                          .statics(
+                      BlocProvider.of<ProfileMonthStaticsAdminCubit>(context).statics(
                         year,
                         _selectIndex + 1,
                       );
                     },
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 8.0, bottom: 4, left: 4, right: 4),
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 4, left: 4, right: 4),
                       child: chipDate(
                         months[index],
                         index,
@@ -211,13 +198,11 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
               height: 10,
             ),
 
-            BlocConsumer<ProfileMonthStaticsAdminCubit,
-                ProfileMonthStaticsAdminState>(
+            BlocConsumer<ProfileMonthStaticsAdminCubit, ProfileMonthStaticsAdminState>(
               listener: (context, state) {
                 // if (state is LoadedState) {}
                 if (state is LoadedState) {
-                  incrementSumm(
-                      state.loadedProfile.map((e) => e.price ?? 1).toList());
+                  incrementSumm(state.loadedProfile.map((e) => e.price ?? 1).toList());
                 }
               },
               builder: (context, state) {
@@ -233,33 +218,29 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                             width: 343,
                             margin: const EdgeInsets.only(top: 10),
                             child: Container(
-                              padding: const EdgeInsets.only(
-                                  top: 16, bottom: 10, left: 10, right: 20),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10)),
+                              padding: const EdgeInsets.only(top: 16, bottom: 10, left: 10, right: 20),
+                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                               child: Row(
                                 children: [
                                   SizedBox(
-                                      height: 60,
-                                      width: 60,
-                                      child:
-                                          Image.asset('assets/images/mac.png')),
+                                    height: 60,
+                                    width: 60,
+                                    child: Image.network(
+                                      'http://185.116.193.73/storage/${state.loadedProfile[index].path}',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                   const SizedBox(
                                     width: 16,
                                   ),
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        state.loadedProfile[index].name
-                                            .toString(),
+                                        state.loadedProfile[index].name.toString(),
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
-                                            color: AppColors.kGray900,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400),
+                                            color: AppColors.kGray900, fontSize: 10, fontWeight: FontWeight.w400),
                                       ),
                                       const SizedBox(
                                         height: 5,
@@ -267,9 +248,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                                       Text(
                                         'Магазин: ${GetStorage().read('seller_name')} ',
                                         style: const TextStyle(
-                                            color: AppColors.kGray900,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400),
+                                            color: AppColors.kGray900, fontSize: 10, fontWeight: FontWeight.w400),
                                       ),
                                       const SizedBox(
                                         height: 5,
@@ -279,24 +258,15 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                                         // mainAxisAlignment: MainAxisAlignment.spaceAround,
                                         children: [
                                           Text(
-                                            state.loadedProfile[index].price
-                                                .toString(),
-                                            style: const TextStyle(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w400),
+                                            state.loadedProfile[index].price.toString(),
+                                            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
                                           ),
                                           const SizedBox(width: 45),
-                                          Text(
-                                              'x${state.loadedProfile[index].count.toString()}',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400)),
+                                          Text('x${state.loadedProfile[index].count.toString()}',
+                                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
                                           const SizedBox(width: 45),
-                                          Text(
-                                              '${state.loadedProfile[index].price.toString()} ₽',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400)),
+                                          Text('${state.loadedProfile[index].price.toString()} ₽',
+                                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
                                         ],
                                       )
                                       // Text(
@@ -315,9 +285,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                         }),
                   );
                 } else {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent));
+                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                 }
               },
             ),
@@ -325,8 +293,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
             Container(
               height: 36,
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(6)),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -334,9 +301,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                     'Мой заработок',
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   ),
-                  Text('$_summBonus ₽',
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w400)),
+                  Text('$_summBonus ₽', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
                 ],
               ),
             )
@@ -392,20 +357,14 @@ class StatisticWidgetContainer extends StatelessWidget {
           ),
           Text(
             text,
-            style: const TextStyle(
-                color: AppColors.kGray900,
-                fontSize: 24,
-                fontWeight: FontWeight.w700),
+            style: const TextStyle(color: AppColors.kGray900, fontSize: 24, fontWeight: FontWeight.w700),
           ),
           const SizedBox(
             height: 4,
           ),
           Text(
             subText,
-            style: const TextStyle(
-                color: AppColors.kGray900,
-                fontSize: 14,
-                fontWeight: FontWeight.w400),
+            style: const TextStyle(color: AppColors.kGray900, fontSize: 14, fontWeight: FontWeight.w400),
           )
         ],
       ),

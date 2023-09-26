@@ -443,7 +443,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   },
                 ),
                 FieldsProductRequest(
-                  titleText: 'Количество в комплекте ',
+                  titleText: 'Количество в наличии ',
                   hintText: 'Выберите количество',
                   star: false,
                   arrow: false,

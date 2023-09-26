@@ -1085,10 +1085,18 @@ class _PopularShopsState extends State<PopularShops> {
                           return GestureDetector(
                               onTap: () {
                                 GetStorage().write('shopFilter', state.popularShops[index].name!);
-                                GetStorage().write('shopFilterId', state.popularShops[index].id);
-                                GetStorage().write('shopSelectedIndexSort', index);
+                                // GetStorage().write('shopFilterId', state.popularShops[index].id);
+
+                                List<int> _selectedListSort = [];
+
+                                _selectedListSort.add(state.popularShops[index].id as int);
+
+                                GetStorage().write('shopFilterId', _selectedListSort.toString());
+
+                                // GetStorage().write('shopSelectedIndexSort', index);
                                 context.router.push(ProductsRoute(
                                   cats: Cats(id: 0, name: ''),
+                                  shopId: state.popularShops[index].id.toString(),
                                 ));
                                 // Get.to(ProductsPage(
                                 //   cats: Cats(id: 0, name: ''),

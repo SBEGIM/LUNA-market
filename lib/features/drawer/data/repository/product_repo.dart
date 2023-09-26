@@ -68,6 +68,8 @@ class ProductApi {
         shopId = GetStorage().read('shopFilterId');
         shopIds.clear();
         var ab = json.decode(shopId).cast<int>().toList();
+
+        print(ab.toString());
         shopIds.addAll(ab);
       } else {
         shopId = '';

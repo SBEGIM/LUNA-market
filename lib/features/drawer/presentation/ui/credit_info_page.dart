@@ -21,10 +21,7 @@ class _CreditInfoPageState extends State<CreditInfoPage> {
         elevation: 0,
         title: const Text(
           'Рассрочка',
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 16,
-              fontWeight: FontWeight.w500),
+          style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
         ),
         leading: IconButton(
           onPressed: () {
@@ -47,40 +44,40 @@ class _CreditInfoPageState extends State<CreditInfoPage> {
               height: 12,
               color: AppColors.kBackgroundColor,
             ),
-            InkWell(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) =>
-                //           CreditInfoDetailPage(title: 'Плати Долями')),
-                // );
+            // InkWell(
+            //   onTap: () {
+            //     // Navigator.push(
+            //     //   context,
+            //     //   MaterialPageRoute(
+            //     //       builder: (context) =>
+            //     //           CreditInfoDetailPage(title: 'Плати Долями')),
+            //     // );
 
-                Get.snackbar('Нет доступа!', 'Временно не доступен..',
-                    backgroundColor: Colors.orangeAccent);
-              },
-              child: const DrawerListTile(
-                text: 'Плати Долями',
-              ),
-            ),
-            const Divider(
-              color: AppColors.kGray200,
-            ),
-            InkWell(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) =>
-                //           CreditInfoDetailPage(title: 'Рассрочка Тинькофф')),
-                // );
-                Get.snackbar('Нет доступа!', 'Временно не доступен..',
-                    backgroundColor: Colors.orangeAccent);
-              },
-              child: const DrawerListTile(
-                text: 'Рассрочка Тинькофф',
-              ),
-            ),
+            //     Get.snackbar('Нет доступа!', 'Временно не доступен..',
+            //         backgroundColor: Colors.orangeAccent);
+            //   },
+            //   child: const DrawerListTile(
+            //     text: 'Плати Долями',
+            //   ),
+            // ),
+            // const Divider(
+            //   color: AppColors.kGray200,
+            // ),
+            // InkWell(
+            //   onTap: () {
+            //     // Navigator.push(
+            //     //   context,
+            //     //   MaterialPageRoute(
+            //     //       builder: (context) =>
+            //     //           CreditInfoDetailPage(title: 'Рассрочка Тинькофф')),
+            //     // );
+            //     Get.snackbar('Нет доступа!', 'Временно не доступен..',
+            //         backgroundColor: Colors.orangeAccent);
+            //   },
+            //   child: const DrawerListTile(
+            //     text: 'Рассрочка Тинькофф',
+            //   ),
+            // ),
             const Divider(
               color: AppColors.kGray200,
             ),
@@ -88,9 +85,7 @@ class _CreditInfoPageState extends State<CreditInfoPage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          CreditInfoDetailPage(title: 'Рассрочка HALAL')),
+                  MaterialPageRoute(builder: (context) => CreditInfoDetailPage(title: 'Рассрочка HALAL')),
                 );
               },
               child: const DrawerListTile(

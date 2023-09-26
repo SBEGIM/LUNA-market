@@ -10,8 +10,7 @@ class StatisticsBloggerShowPage extends StatefulWidget {
   const StatisticsBloggerShowPage({Key? key}) : super(key: key);
 
   @override
-  State<StatisticsBloggerShowPage> createState() =>
-      _StatisticsBloggerShowPageState();
+  State<StatisticsBloggerShowPage> createState() => _StatisticsBloggerShowPageState();
 }
 
 class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
@@ -82,10 +81,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
             children: [
               const Text(
                 'Год',
-                style: TextStyle(
-                    color: AppColors.kGray900,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16),
+                style: TextStyle(color: AppColors.kGray900, fontWeight: FontWeight.w700, fontSize: 16),
               ),
               const SizedBox(
                 width: 15,
@@ -93,8 +89,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
               GestureDetector(
                 onTap: () {
                   year--;
-                  BlocProvider.of<ProfileMonthStaticsBloggerCubit>(context)
-                      .statics(_selectIndex + 1, year);
+                  BlocProvider.of<ProfileMonthStaticsBloggerCubit>(context).statics(_selectIndex + 1, year);
                   setState(() {});
                 },
                 child: const Icon(
@@ -108,10 +103,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
               ),
               Text(
                 '$year',
-                style: const TextStyle(
-                    color: AppColors.kGray900,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16),
+                style: const TextStyle(color: AppColors.kGray900, fontWeight: FontWeight.w700, fontSize: 16),
               ),
               const SizedBox(
                 width: 5,
@@ -119,8 +111,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
               GestureDetector(
                 onTap: () {
                   year++;
-                  BlocProvider.of<ProfileMonthStaticsBloggerCubit>(context)
-                      .statics(_selectIndex + 1, year);
+                  BlocProvider.of<ProfileMonthStaticsBloggerCubit>(context).statics(_selectIndex + 1, year);
                   setState(() {});
                 },
                 child: const Icon(
@@ -135,14 +126,10 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
         Container(
           // color: Colors.white,
           padding: const EdgeInsets.all(16),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Text(
               'Месяцы',
-              style: TextStyle(
-                  color: AppColors.kGray900,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16),
+              style: TextStyle(color: AppColors.kGray900, fontWeight: FontWeight.w700, fontSize: 16),
             ),
             SizedBox(
               height: 50,
@@ -154,8 +141,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                   return GestureDetector(
                     onTap: () {
                       _selectIndex = index;
-                      BlocProvider.of<ProfileMonthStaticsBloggerCubit>(context)
-                          .statics(_selectIndex + 1, year);
+                      BlocProvider.of<ProfileMonthStaticsBloggerCubit>(context).statics(_selectIndex + 1, year);
 
                       _summBonus = 0;
                       setState(() {
@@ -164,8 +150,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                       });
                     },
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 8.0, bottom: 4, left: 4, right: 4),
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 4, left: 4, right: 4),
                       child: chipDate(
                         months[index],
                         index,
@@ -207,8 +192,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
               height: 10,
             ),
 
-            BlocConsumer<ProfileMonthStaticsBloggerCubit,
-                ProfileMonthStaticsBloggerState>(
+            BlocConsumer<ProfileMonthStaticsBloggerCubit, ProfileMonthStaticsBloggerState>(
               listener: (context, state) {
                 if (state is LoadedState) {
                   if (state.loadedProfile.isNotEmpty) {
@@ -236,47 +220,35 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                                   width: 343,
                                   margin: const EdgeInsets.only(top: 10),
                                   child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 16,
-                                        bottom: 10,
-                                        left: 10,
-                                        right: 20),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
+                                    padding: const EdgeInsets.only(top: 16, bottom: 10, left: 10, right: 20),
+                                    decoration:
+                                        BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                                     child: Row(
                                       children: [
                                         SizedBox(
                                             height: 60,
                                             width: 60,
-                                            child: Image.asset(
-                                                'assets/images/mac.png')),
+                                            child: Image.network(
+                                                'http://185.116.193.73/storage/${state.loadedProfile[index].path}')),
                                         const SizedBox(
                                           width: 16,
                                         ),
                                         Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              state.loadedProfile[index].name
-                                                  .toString(),
+                                              state.loadedProfile[index].name.toString(),
                                               overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
-                                                  color: AppColors.kGray900,
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400),
+                                                  color: AppColors.kGray900, fontSize: 10, fontWeight: FontWeight.w400),
                                             ),
                                             const SizedBox(
                                               height: 5,
                                             ),
-                                            const Text(
-                                              'Магазин: Sulpak',
-                                              style: TextStyle(
-                                                  color: AppColors.kGray900,
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400),
+                                            Text(
+                                              'Магазин: ${state.loadedProfile[index].shop_name.toString()}',
+                                              style: const TextStyle(
+                                                  color: AppColors.kGray900, fontSize: 10, fontWeight: FontWeight.w400),
                                             ),
                                             const SizedBox(
                                               height: 5,
@@ -286,35 +258,18 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                                               // mainAxisAlignment: MainAxisAlignment.spaceAround,
                                               children: [
                                                 Text(
-                                                  state.loadedProfile[index]
-                                                      .price
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                                  state.loadedProfile[index].price.toString(),
+                                                  style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
                                                 ),
                                                 const SizedBox(width: 45),
-                                                Text(
-                                                    'x${state.loadedProfile[index].count.toString()}',
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w400)),
+                                                Text('x${state.loadedProfile[index].count.toString()}',
+                                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
                                                 const SizedBox(width: 45),
-                                                Text(
-                                                    '${state.loadedProfile[index].bonusPercent.toString()} %',
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w400)),
+                                                Text('${state.loadedProfile[index].bonusPercent.toString()} %',
+                                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
                                                 const SizedBox(width: 45),
-                                                Text(
-                                                    '${state.loadedProfile[index].bonus.toString()}₽',
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w400)),
+                                                Text('${state.loadedProfile[index].bonus.toString()}₽',
+                                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
                                               ],
                                             )
                                             // Text(
@@ -334,9 +289,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                         }),
                   );
                 } else {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent));
+                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                 }
               },
             ),
@@ -344,8 +297,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
             Container(
               height: 36,
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(6)),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -353,9 +305,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                     'Мой заработок',
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   ),
-                  Text('$_summBonus ₽',
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w400)),
+                  Text('$_summBonus ₽', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
                 ],
               ),
             ),
@@ -363,19 +313,15 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
             Container(
               height: 36,
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(6)),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Заработок за ${year} год',
-                    style: const TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.w400),
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   ),
-                  Text('$_summBonusYear ₽',
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w400)),
+                  Text('$_summBonusYear ₽', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
                 ],
               ),
             )
@@ -431,20 +377,14 @@ class StatisticWidgetContainer extends StatelessWidget {
           ),
           Text(
             text,
-            style: const TextStyle(
-                color: AppColors.kGray900,
-                fontSize: 24,
-                fontWeight: FontWeight.w700),
+            style: const TextStyle(color: AppColors.kGray900, fontSize: 24, fontWeight: FontWeight.w700),
           ),
           const SizedBox(
             height: 4,
           ),
           Text(
             subText,
-            style: const TextStyle(
-                color: AppColors.kGray900,
-                fontSize: 14,
-                fontWeight: FontWeight.w400),
+            style: const TextStyle(color: AppColors.kGray900, fontSize: 14, fontWeight: FontWeight.w400),
           )
         ],
       ),

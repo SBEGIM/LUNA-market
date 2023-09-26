@@ -2262,10 +2262,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   );
                   return;
                 }
-                Future.wait<void>([
-                  BlocProvider.of<BasketCubit>(context)
-                      .basketAdd(widget.product.id.toString(), '1', 0, sizeValue, colorValue),
-                ]);
+                if (count == 0) {
+                  Future.wait<void>([
+                    BlocProvider.of<BasketCubit>(context)
+                        .basketAdd(widget.product.id.toString(), '1', 0, sizeValue, colorValue),
+                  ]);
+                }
 
                 if (BlocProvider.of<BasketCubit>(context).state is! LoadedState) {
                   Future.wait<void>([
