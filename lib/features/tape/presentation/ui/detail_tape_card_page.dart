@@ -569,6 +569,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
+                                            print(' chat:::${state.tapeModel[index].chatId}');
                                             // Get.off(ChatPage);
                                             GetStorage().write('video_stop', true);
 

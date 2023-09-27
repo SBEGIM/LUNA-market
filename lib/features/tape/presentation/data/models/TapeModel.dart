@@ -65,6 +65,7 @@ class TapeModel {
       description: description ?? this.description,
       compound: compound ?? this.compound,
       point: point ?? this.point,
+      chatId: chatId ?? this.chatId,
       video: video ?? this.video,
       image: image ?? this.image,
       inBasket: inBasket ?? this.inBasket,
