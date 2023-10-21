@@ -143,6 +143,27 @@ class _AboutUsPageState extends State<AboutUsPage> {
                   ],
                 ),
                 const SizedBox(
+                  height: 4,
+                ),
+                Row(
+                  children: [
+                    const Text(
+                      'Email',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kGray700),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    GestureDetector(
+                      onTap: () => launch("https://hajimarket@gmail.com", forceSafariVC: false),
+                      child: const Text(
+                        'https://hajimarket@gmail.com',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kPrimaryColor),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
                   height: 10,
                 ),
                 const Text(

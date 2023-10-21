@@ -240,9 +240,24 @@ class _DrawerPageState extends State<DrawerPage> {
                     text: 'Кабинет блогера',
                   ),
                 ),
+
                 const Divider(
                   color: AppColors.kGray200,
                 ),
+                // InkWell(
+                //   onTap: () {
+                //     _box.read('blogger_token') != null
+                //         ? BlocProvider.of<AppBloc>(context)
+                //             .add(const AppEvent.chageState(state: AppState.inAppManagerState()))
+                //         : context.router.push(BlogAuthRegisterRoute());
+                //   },
+                //   child: const DrawerListTile(
+                //     text: 'Кабинет менеджера',
+                //   ),
+                // ),
+                // const Divider(
+                //   color: AppColors.kGray200,
+                // ),
                 InkWell(
                   onTap: () {
                     Navigator.push(

@@ -86,25 +86,25 @@ class _$AppEventCopyWithImpl<$Res, $Val extends AppEvent>
 }
 
 /// @nodoc
-abstract class _$$_CheckAuthCopyWith<$Res> {
-  factory _$$_CheckAuthCopyWith(
-          _$_CheckAuth value, $Res Function(_$_CheckAuth) then) =
-      __$$_CheckAuthCopyWithImpl<$Res>;
+abstract class _$$CheckAuthImplCopyWith<$Res> {
+  factory _$$CheckAuthImplCopyWith(
+          _$CheckAuthImpl value, $Res Function(_$CheckAuthImpl) then) =
+      __$$CheckAuthImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_CheckAuthCopyWithImpl<$Res>
-    extends _$AppEventCopyWithImpl<$Res, _$_CheckAuth>
-    implements _$$_CheckAuthCopyWith<$Res> {
-  __$$_CheckAuthCopyWithImpl(
-      _$_CheckAuth _value, $Res Function(_$_CheckAuth) _then)
+class __$$CheckAuthImplCopyWithImpl<$Res>
+    extends _$AppEventCopyWithImpl<$Res, _$CheckAuthImpl>
+    implements _$$CheckAuthImplCopyWith<$Res> {
+  __$$CheckAuthImplCopyWithImpl(
+      _$CheckAuthImpl _value, $Res Function(_$CheckAuthImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_CheckAuth implements _CheckAuth {
-  const _$_CheckAuth();
+class _$CheckAuthImpl implements _CheckAuth {
+  const _$CheckAuthImpl();
 
   @override
   String toString() {
@@ -114,7 +114,7 @@ class _$_CheckAuth implements _CheckAuth {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_CheckAuth);
+        (other.runtimeType == runtimeType && other is _$CheckAuthImpl);
   }
 
   @override
@@ -196,28 +196,29 @@ class _$_CheckAuth implements _CheckAuth {
 }
 
 abstract class _CheckAuth implements AppEvent {
-  const factory _CheckAuth() = _$_CheckAuth;
+  const factory _CheckAuth() = _$CheckAuthImpl;
 }
 
 /// @nodoc
-abstract class _$$_ExitingCopyWith<$Res> {
-  factory _$$_ExitingCopyWith(
-          _$_Exiting value, $Res Function(_$_Exiting) then) =
-      __$$_ExitingCopyWithImpl<$Res>;
+abstract class _$$ExitingImplCopyWith<$Res> {
+  factory _$$ExitingImplCopyWith(
+          _$ExitingImpl value, $Res Function(_$ExitingImpl) then) =
+      __$$ExitingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_ExitingCopyWithImpl<$Res>
-    extends _$AppEventCopyWithImpl<$Res, _$_Exiting>
-    implements _$$_ExitingCopyWith<$Res> {
-  __$$_ExitingCopyWithImpl(_$_Exiting _value, $Res Function(_$_Exiting) _then)
+class __$$ExitingImplCopyWithImpl<$Res>
+    extends _$AppEventCopyWithImpl<$Res, _$ExitingImpl>
+    implements _$$ExitingImplCopyWith<$Res> {
+  __$$ExitingImplCopyWithImpl(
+      _$ExitingImpl _value, $Res Function(_$ExitingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Exiting implements _Exiting {
-  const _$_Exiting();
+class _$ExitingImpl implements _Exiting {
+  const _$ExitingImpl();
 
   @override
   String toString() {
@@ -227,7 +228,7 @@ class _$_Exiting implements _Exiting {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Exiting);
+        (other.runtimeType == runtimeType && other is _$ExitingImpl);
   }
 
   @override
@@ -309,29 +310,29 @@ class _$_Exiting implements _Exiting {
 }
 
 abstract class _Exiting implements AppEvent {
-  const factory _Exiting() = _$_Exiting;
+  const factory _Exiting() = _$ExitingImpl;
 }
 
 /// @nodoc
-abstract class _$$_LoginingCopyWith<$Res> {
-  factory _$$_LoginingCopyWith(
-          _$_Logining value, $Res Function(_$_Logining) then) =
-      __$$_LoginingCopyWithImpl<$Res>;
+abstract class _$$LoginingImplCopyWith<$Res> {
+  factory _$$LoginingImplCopyWith(
+          _$LoginingImpl value, $Res Function(_$LoginingImpl) then) =
+      __$$LoginingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoginingCopyWithImpl<$Res>
-    extends _$AppEventCopyWithImpl<$Res, _$_Logining>
-    implements _$$_LoginingCopyWith<$Res> {
-  __$$_LoginingCopyWithImpl(
-      _$_Logining _value, $Res Function(_$_Logining) _then)
+class __$$LoginingImplCopyWithImpl<$Res>
+    extends _$AppEventCopyWithImpl<$Res, _$LoginingImpl>
+    implements _$$LoginingImplCopyWith<$Res> {
+  __$$LoginingImplCopyWithImpl(
+      _$LoginingImpl _value, $Res Function(_$LoginingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Logining implements _Logining {
-  const _$_Logining();
+class _$LoginingImpl implements _Logining {
+  const _$LoginingImpl();
 
   @override
   String toString() {
@@ -341,7 +342,7 @@ class _$_Logining implements _Logining {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Logining);
+        (other.runtimeType == runtimeType && other is _$LoginingImpl);
   }
 
   @override
@@ -423,14 +424,14 @@ class _$_Logining implements _Logining {
 }
 
 abstract class _Logining implements AppEvent {
-  const factory _Logining() = _$_Logining;
+  const factory _Logining() = _$LoginingImpl;
 }
 
 /// @nodoc
-abstract class _$$_ChangeStateCopyWith<$Res> {
-  factory _$$_ChangeStateCopyWith(
-          _$_ChangeState value, $Res Function(_$_ChangeState) then) =
-      __$$_ChangeStateCopyWithImpl<$Res>;
+abstract class _$$ChangeStateImplCopyWith<$Res> {
+  factory _$$ChangeStateImplCopyWith(
+          _$ChangeStateImpl value, $Res Function(_$ChangeStateImpl) then) =
+      __$$ChangeStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({AppState state});
 
@@ -438,11 +439,11 @@ abstract class _$$_ChangeStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ChangeStateCopyWithImpl<$Res>
-    extends _$AppEventCopyWithImpl<$Res, _$_ChangeState>
-    implements _$$_ChangeStateCopyWith<$Res> {
-  __$$_ChangeStateCopyWithImpl(
-      _$_ChangeState _value, $Res Function(_$_ChangeState) _then)
+class __$$ChangeStateImplCopyWithImpl<$Res>
+    extends _$AppEventCopyWithImpl<$Res, _$ChangeStateImpl>
+    implements _$$ChangeStateImplCopyWith<$Res> {
+  __$$ChangeStateImplCopyWithImpl(
+      _$ChangeStateImpl _value, $Res Function(_$ChangeStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -450,7 +451,7 @@ class __$$_ChangeStateCopyWithImpl<$Res>
   $Res call({
     Object? state = null,
   }) {
-    return _then(_$_ChangeState(
+    return _then(_$ChangeStateImpl(
       state: null == state
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
@@ -469,8 +470,8 @@ class __$$_ChangeStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ChangeState implements _ChangeState {
-  const _$_ChangeState({required this.state});
+class _$ChangeStateImpl implements _ChangeState {
+  const _$ChangeStateImpl({required this.state});
 
   @override
   final AppState state;
@@ -484,7 +485,7 @@ class _$_ChangeState implements _ChangeState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ChangeState &&
+            other is _$ChangeStateImpl &&
             (identical(other.state, state) || other.state == state));
   }
 
@@ -494,8 +495,8 @@ class _$_ChangeState implements _ChangeState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ChangeStateCopyWith<_$_ChangeState> get copyWith =>
-      __$$_ChangeStateCopyWithImpl<_$_ChangeState>(this, _$identity);
+  _$$ChangeStateImplCopyWith<_$ChangeStateImpl> get copyWith =>
+      __$$ChangeStateImplCopyWithImpl<_$ChangeStateImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -573,11 +574,12 @@ class _$_ChangeState implements _ChangeState {
 }
 
 abstract class _ChangeState implements AppEvent {
-  const factory _ChangeState({required final AppState state}) = _$_ChangeState;
+  const factory _ChangeState({required final AppState state}) =
+      _$ChangeStateImpl;
 
   AppState get state;
   @JsonKey(ignore: true)
-  _$$_ChangeStateCopyWith<_$_ChangeState> get copyWith =>
+  _$$ChangeStateImplCopyWith<_$ChangeStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -590,6 +592,7 @@ mixin _$AppState {
     required TResult Function(int? index) inAppUserState,
     required TResult Function(int? index) inAppBlogerState,
     required TResult Function(int? index) inAppAdminState,
+    required TResult Function(int? index) inAppManagerState,
     required TResult Function(String message) errorState,
   }) =>
       throw _privateConstructorUsedError;
@@ -600,6 +603,7 @@ mixin _$AppState {
     TResult? Function(int? index)? inAppUserState,
     TResult? Function(int? index)? inAppBlogerState,
     TResult? Function(int? index)? inAppAdminState,
+    TResult? Function(int? index)? inAppManagerState,
     TResult? Function(String message)? errorState,
   }) =>
       throw _privateConstructorUsedError;
@@ -610,6 +614,7 @@ mixin _$AppState {
     TResult Function(int? index)? inAppUserState,
     TResult Function(int? index)? inAppBlogerState,
     TResult Function(int? index)? inAppAdminState,
+    TResult Function(int? index)? inAppManagerState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) =>
@@ -621,6 +626,7 @@ mixin _$AppState {
     required TResult Function(_InAppUserState value) inAppUserState,
     required TResult Function(_InAppBlogerState value) inAppBlogerState,
     required TResult Function(_InAppAdminState value) inAppAdminState,
+    required TResult Function(_InAppManagerState value) inAppManagerState,
     required TResult Function(_ErrorState value) errorState,
   }) =>
       throw _privateConstructorUsedError;
@@ -631,6 +637,7 @@ mixin _$AppState {
     TResult? Function(_InAppUserState value)? inAppUserState,
     TResult? Function(_InAppBlogerState value)? inAppBlogerState,
     TResult? Function(_InAppAdminState value)? inAppAdminState,
+    TResult? Function(_InAppManagerState value)? inAppManagerState,
     TResult? Function(_ErrorState value)? errorState,
   }) =>
       throw _privateConstructorUsedError;
@@ -641,6 +648,7 @@ mixin _$AppState {
     TResult Function(_InAppUserState value)? inAppUserState,
     TResult Function(_InAppBlogerState value)? inAppBlogerState,
     TResult Function(_InAppAdminState value)? inAppAdminState,
+    TResult Function(_InAppManagerState value)? inAppManagerState,
     TResult Function(_ErrorState value)? errorState,
     required TResult orElse(),
   }) =>
@@ -665,25 +673,25 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
 }
 
 /// @nodoc
-abstract class _$$_LoadingStateCopyWith<$Res> {
-  factory _$$_LoadingStateCopyWith(
-          _$_LoadingState value, $Res Function(_$_LoadingState) then) =
-      __$$_LoadingStateCopyWithImpl<$Res>;
+abstract class _$$LoadingStateImplCopyWith<$Res> {
+  factory _$$LoadingStateImplCopyWith(
+          _$LoadingStateImpl value, $Res Function(_$LoadingStateImpl) then) =
+      __$$LoadingStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingStateCopyWithImpl<$Res>
-    extends _$AppStateCopyWithImpl<$Res, _$_LoadingState>
-    implements _$$_LoadingStateCopyWith<$Res> {
-  __$$_LoadingStateCopyWithImpl(
-      _$_LoadingState _value, $Res Function(_$_LoadingState) _then)
+class __$$LoadingStateImplCopyWithImpl<$Res>
+    extends _$AppStateCopyWithImpl<$Res, _$LoadingStateImpl>
+    implements _$$LoadingStateImplCopyWith<$Res> {
+  __$$LoadingStateImplCopyWithImpl(
+      _$LoadingStateImpl _value, $Res Function(_$LoadingStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_LoadingState implements _LoadingState {
-  const _$_LoadingState();
+class _$LoadingStateImpl implements _LoadingState {
+  const _$LoadingStateImpl();
 
   @override
   String toString() {
@@ -693,7 +701,7 @@ class _$_LoadingState implements _LoadingState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_LoadingState);
+        (other.runtimeType == runtimeType && other is _$LoadingStateImpl);
   }
 
   @override
@@ -707,6 +715,7 @@ class _$_LoadingState implements _LoadingState {
     required TResult Function(int? index) inAppUserState,
     required TResult Function(int? index) inAppBlogerState,
     required TResult Function(int? index) inAppAdminState,
+    required TResult Function(int? index) inAppManagerState,
     required TResult Function(String message) errorState,
   }) {
     return loadingState();
@@ -720,6 +729,7 @@ class _$_LoadingState implements _LoadingState {
     TResult? Function(int? index)? inAppUserState,
     TResult? Function(int? index)? inAppBlogerState,
     TResult? Function(int? index)? inAppAdminState,
+    TResult? Function(int? index)? inAppManagerState,
     TResult? Function(String message)? errorState,
   }) {
     return loadingState?.call();
@@ -733,6 +743,7 @@ class _$_LoadingState implements _LoadingState {
     TResult Function(int? index)? inAppUserState,
     TResult Function(int? index)? inAppBlogerState,
     TResult Function(int? index)? inAppAdminState,
+    TResult Function(int? index)? inAppManagerState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) {
@@ -750,6 +761,7 @@ class _$_LoadingState implements _LoadingState {
     required TResult Function(_InAppUserState value) inAppUserState,
     required TResult Function(_InAppBlogerState value) inAppBlogerState,
     required TResult Function(_InAppAdminState value) inAppAdminState,
+    required TResult Function(_InAppManagerState value) inAppManagerState,
     required TResult Function(_ErrorState value) errorState,
   }) {
     return loadingState(this);
@@ -763,6 +775,7 @@ class _$_LoadingState implements _LoadingState {
     TResult? Function(_InAppUserState value)? inAppUserState,
     TResult? Function(_InAppBlogerState value)? inAppBlogerState,
     TResult? Function(_InAppAdminState value)? inAppAdminState,
+    TResult? Function(_InAppManagerState value)? inAppManagerState,
     TResult? Function(_ErrorState value)? errorState,
   }) {
     return loadingState?.call(this);
@@ -776,6 +789,7 @@ class _$_LoadingState implements _LoadingState {
     TResult Function(_InAppUserState value)? inAppUserState,
     TResult Function(_InAppBlogerState value)? inAppBlogerState,
     TResult Function(_InAppAdminState value)? inAppAdminState,
+    TResult Function(_InAppManagerState value)? inAppManagerState,
     TResult Function(_ErrorState value)? errorState,
     required TResult orElse(),
   }) {
@@ -787,29 +801,29 @@ class _$_LoadingState implements _LoadingState {
 }
 
 abstract class _LoadingState implements AppState {
-  const factory _LoadingState() = _$_LoadingState;
+  const factory _LoadingState() = _$LoadingStateImpl;
 }
 
 /// @nodoc
-abstract class _$$_NotAuthorizedStateCopyWith<$Res> {
-  factory _$$_NotAuthorizedStateCopyWith(_$_NotAuthorizedState value,
-          $Res Function(_$_NotAuthorizedState) then) =
-      __$$_NotAuthorizedStateCopyWithImpl<$Res>;
+abstract class _$$NotAuthorizedStateImplCopyWith<$Res> {
+  factory _$$NotAuthorizedStateImplCopyWith(_$NotAuthorizedStateImpl value,
+          $Res Function(_$NotAuthorizedStateImpl) then) =
+      __$$NotAuthorizedStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_NotAuthorizedStateCopyWithImpl<$Res>
-    extends _$AppStateCopyWithImpl<$Res, _$_NotAuthorizedState>
-    implements _$$_NotAuthorizedStateCopyWith<$Res> {
-  __$$_NotAuthorizedStateCopyWithImpl(
-      _$_NotAuthorizedState _value, $Res Function(_$_NotAuthorizedState) _then)
+class __$$NotAuthorizedStateImplCopyWithImpl<$Res>
+    extends _$AppStateCopyWithImpl<$Res, _$NotAuthorizedStateImpl>
+    implements _$$NotAuthorizedStateImplCopyWith<$Res> {
+  __$$NotAuthorizedStateImplCopyWithImpl(_$NotAuthorizedStateImpl _value,
+      $Res Function(_$NotAuthorizedStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_NotAuthorizedState implements _NotAuthorizedState {
-  const _$_NotAuthorizedState();
+class _$NotAuthorizedStateImpl implements _NotAuthorizedState {
+  const _$NotAuthorizedStateImpl();
 
   @override
   String toString() {
@@ -819,7 +833,7 @@ class _$_NotAuthorizedState implements _NotAuthorizedState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_NotAuthorizedState);
+        (other.runtimeType == runtimeType && other is _$NotAuthorizedStateImpl);
   }
 
   @override
@@ -833,6 +847,7 @@ class _$_NotAuthorizedState implements _NotAuthorizedState {
     required TResult Function(int? index) inAppUserState,
     required TResult Function(int? index) inAppBlogerState,
     required TResult Function(int? index) inAppAdminState,
+    required TResult Function(int? index) inAppManagerState,
     required TResult Function(String message) errorState,
   }) {
     return notAuthorizedState();
@@ -846,6 +861,7 @@ class _$_NotAuthorizedState implements _NotAuthorizedState {
     TResult? Function(int? index)? inAppUserState,
     TResult? Function(int? index)? inAppBlogerState,
     TResult? Function(int? index)? inAppAdminState,
+    TResult? Function(int? index)? inAppManagerState,
     TResult? Function(String message)? errorState,
   }) {
     return notAuthorizedState?.call();
@@ -859,6 +875,7 @@ class _$_NotAuthorizedState implements _NotAuthorizedState {
     TResult Function(int? index)? inAppUserState,
     TResult Function(int? index)? inAppBlogerState,
     TResult Function(int? index)? inAppAdminState,
+    TResult Function(int? index)? inAppManagerState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) {
@@ -876,6 +893,7 @@ class _$_NotAuthorizedState implements _NotAuthorizedState {
     required TResult Function(_InAppUserState value) inAppUserState,
     required TResult Function(_InAppBlogerState value) inAppBlogerState,
     required TResult Function(_InAppAdminState value) inAppAdminState,
+    required TResult Function(_InAppManagerState value) inAppManagerState,
     required TResult Function(_ErrorState value) errorState,
   }) {
     return notAuthorizedState(this);
@@ -889,6 +907,7 @@ class _$_NotAuthorizedState implements _NotAuthorizedState {
     TResult? Function(_InAppUserState value)? inAppUserState,
     TResult? Function(_InAppBlogerState value)? inAppBlogerState,
     TResult? Function(_InAppAdminState value)? inAppAdminState,
+    TResult? Function(_InAppManagerState value)? inAppManagerState,
     TResult? Function(_ErrorState value)? errorState,
   }) {
     return notAuthorizedState?.call(this);
@@ -902,6 +921,7 @@ class _$_NotAuthorizedState implements _NotAuthorizedState {
     TResult Function(_InAppUserState value)? inAppUserState,
     TResult Function(_InAppBlogerState value)? inAppBlogerState,
     TResult Function(_InAppAdminState value)? inAppAdminState,
+    TResult Function(_InAppManagerState value)? inAppManagerState,
     TResult Function(_ErrorState value)? errorState,
     required TResult orElse(),
   }) {
@@ -913,24 +933,24 @@ class _$_NotAuthorizedState implements _NotAuthorizedState {
 }
 
 abstract class _NotAuthorizedState implements AppState {
-  const factory _NotAuthorizedState() = _$_NotAuthorizedState;
+  const factory _NotAuthorizedState() = _$NotAuthorizedStateImpl;
 }
 
 /// @nodoc
-abstract class _$$_InAppUserStateCopyWith<$Res> {
-  factory _$$_InAppUserStateCopyWith(
-          _$_InAppUserState value, $Res Function(_$_InAppUserState) then) =
-      __$$_InAppUserStateCopyWithImpl<$Res>;
+abstract class _$$InAppUserStateImplCopyWith<$Res> {
+  factory _$$InAppUserStateImplCopyWith(_$InAppUserStateImpl value,
+          $Res Function(_$InAppUserStateImpl) then) =
+      __$$InAppUserStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int? index});
 }
 
 /// @nodoc
-class __$$_InAppUserStateCopyWithImpl<$Res>
-    extends _$AppStateCopyWithImpl<$Res, _$_InAppUserState>
-    implements _$$_InAppUserStateCopyWith<$Res> {
-  __$$_InAppUserStateCopyWithImpl(
-      _$_InAppUserState _value, $Res Function(_$_InAppUserState) _then)
+class __$$InAppUserStateImplCopyWithImpl<$Res>
+    extends _$AppStateCopyWithImpl<$Res, _$InAppUserStateImpl>
+    implements _$$InAppUserStateImplCopyWith<$Res> {
+  __$$InAppUserStateImplCopyWithImpl(
+      _$InAppUserStateImpl _value, $Res Function(_$InAppUserStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -938,7 +958,7 @@ class __$$_InAppUserStateCopyWithImpl<$Res>
   $Res call({
     Object? index = freezed,
   }) {
-    return _then(_$_InAppUserState(
+    return _then(_$InAppUserStateImpl(
       index: freezed == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
@@ -949,8 +969,8 @@ class __$$_InAppUserStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_InAppUserState implements _InAppUserState {
-  const _$_InAppUserState({this.index});
+class _$InAppUserStateImpl implements _InAppUserState {
+  const _$InAppUserStateImpl({this.index});
 
   @override
   final int? index;
@@ -964,7 +984,7 @@ class _$_InAppUserState implements _InAppUserState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_InAppUserState &&
+            other is _$InAppUserStateImpl &&
             (identical(other.index, index) || other.index == index));
   }
 
@@ -974,8 +994,9 @@ class _$_InAppUserState implements _InAppUserState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_InAppUserStateCopyWith<_$_InAppUserState> get copyWith =>
-      __$$_InAppUserStateCopyWithImpl<_$_InAppUserState>(this, _$identity);
+  _$$InAppUserStateImplCopyWith<_$InAppUserStateImpl> get copyWith =>
+      __$$InAppUserStateImplCopyWithImpl<_$InAppUserStateImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -985,6 +1006,7 @@ class _$_InAppUserState implements _InAppUserState {
     required TResult Function(int? index) inAppUserState,
     required TResult Function(int? index) inAppBlogerState,
     required TResult Function(int? index) inAppAdminState,
+    required TResult Function(int? index) inAppManagerState,
     required TResult Function(String message) errorState,
   }) {
     return inAppUserState(index);
@@ -998,6 +1020,7 @@ class _$_InAppUserState implements _InAppUserState {
     TResult? Function(int? index)? inAppUserState,
     TResult? Function(int? index)? inAppBlogerState,
     TResult? Function(int? index)? inAppAdminState,
+    TResult? Function(int? index)? inAppManagerState,
     TResult? Function(String message)? errorState,
   }) {
     return inAppUserState?.call(index);
@@ -1011,6 +1034,7 @@ class _$_InAppUserState implements _InAppUserState {
     TResult Function(int? index)? inAppUserState,
     TResult Function(int? index)? inAppBlogerState,
     TResult Function(int? index)? inAppAdminState,
+    TResult Function(int? index)? inAppManagerState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) {
@@ -1028,6 +1052,7 @@ class _$_InAppUserState implements _InAppUserState {
     required TResult Function(_InAppUserState value) inAppUserState,
     required TResult Function(_InAppBlogerState value) inAppBlogerState,
     required TResult Function(_InAppAdminState value) inAppAdminState,
+    required TResult Function(_InAppManagerState value) inAppManagerState,
     required TResult Function(_ErrorState value) errorState,
   }) {
     return inAppUserState(this);
@@ -1041,6 +1066,7 @@ class _$_InAppUserState implements _InAppUserState {
     TResult? Function(_InAppUserState value)? inAppUserState,
     TResult? Function(_InAppBlogerState value)? inAppBlogerState,
     TResult? Function(_InAppAdminState value)? inAppAdminState,
+    TResult? Function(_InAppManagerState value)? inAppManagerState,
     TResult? Function(_ErrorState value)? errorState,
   }) {
     return inAppUserState?.call(this);
@@ -1054,6 +1080,7 @@ class _$_InAppUserState implements _InAppUserState {
     TResult Function(_InAppUserState value)? inAppUserState,
     TResult Function(_InAppBlogerState value)? inAppBlogerState,
     TResult Function(_InAppAdminState value)? inAppAdminState,
+    TResult Function(_InAppManagerState value)? inAppManagerState,
     TResult Function(_ErrorState value)? errorState,
     required TResult orElse(),
   }) {
@@ -1065,29 +1092,29 @@ class _$_InAppUserState implements _InAppUserState {
 }
 
 abstract class _InAppUserState implements AppState {
-  const factory _InAppUserState({final int? index}) = _$_InAppUserState;
+  const factory _InAppUserState({final int? index}) = _$InAppUserStateImpl;
 
   int? get index;
   @JsonKey(ignore: true)
-  _$$_InAppUserStateCopyWith<_$_InAppUserState> get copyWith =>
+  _$$InAppUserStateImplCopyWith<_$InAppUserStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_InAppBlogerStateCopyWith<$Res> {
-  factory _$$_InAppBlogerStateCopyWith(
-          _$_InAppBlogerState value, $Res Function(_$_InAppBlogerState) then) =
-      __$$_InAppBlogerStateCopyWithImpl<$Res>;
+abstract class _$$InAppBlogerStateImplCopyWith<$Res> {
+  factory _$$InAppBlogerStateImplCopyWith(_$InAppBlogerStateImpl value,
+          $Res Function(_$InAppBlogerStateImpl) then) =
+      __$$InAppBlogerStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int? index});
 }
 
 /// @nodoc
-class __$$_InAppBlogerStateCopyWithImpl<$Res>
-    extends _$AppStateCopyWithImpl<$Res, _$_InAppBlogerState>
-    implements _$$_InAppBlogerStateCopyWith<$Res> {
-  __$$_InAppBlogerStateCopyWithImpl(
-      _$_InAppBlogerState _value, $Res Function(_$_InAppBlogerState) _then)
+class __$$InAppBlogerStateImplCopyWithImpl<$Res>
+    extends _$AppStateCopyWithImpl<$Res, _$InAppBlogerStateImpl>
+    implements _$$InAppBlogerStateImplCopyWith<$Res> {
+  __$$InAppBlogerStateImplCopyWithImpl(_$InAppBlogerStateImpl _value,
+      $Res Function(_$InAppBlogerStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1095,7 +1122,7 @@ class __$$_InAppBlogerStateCopyWithImpl<$Res>
   $Res call({
     Object? index = freezed,
   }) {
-    return _then(_$_InAppBlogerState(
+    return _then(_$InAppBlogerStateImpl(
       index: freezed == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
@@ -1106,8 +1133,8 @@ class __$$_InAppBlogerStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_InAppBlogerState implements _InAppBlogerState {
-  const _$_InAppBlogerState({this.index});
+class _$InAppBlogerStateImpl implements _InAppBlogerState {
+  const _$InAppBlogerStateImpl({this.index});
 
   @override
   final int? index;
@@ -1121,7 +1148,7 @@ class _$_InAppBlogerState implements _InAppBlogerState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_InAppBlogerState &&
+            other is _$InAppBlogerStateImpl &&
             (identical(other.index, index) || other.index == index));
   }
 
@@ -1131,8 +1158,9 @@ class _$_InAppBlogerState implements _InAppBlogerState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_InAppBlogerStateCopyWith<_$_InAppBlogerState> get copyWith =>
-      __$$_InAppBlogerStateCopyWithImpl<_$_InAppBlogerState>(this, _$identity);
+  _$$InAppBlogerStateImplCopyWith<_$InAppBlogerStateImpl> get copyWith =>
+      __$$InAppBlogerStateImplCopyWithImpl<_$InAppBlogerStateImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1142,6 +1170,7 @@ class _$_InAppBlogerState implements _InAppBlogerState {
     required TResult Function(int? index) inAppUserState,
     required TResult Function(int? index) inAppBlogerState,
     required TResult Function(int? index) inAppAdminState,
+    required TResult Function(int? index) inAppManagerState,
     required TResult Function(String message) errorState,
   }) {
     return inAppBlogerState(index);
@@ -1155,6 +1184,7 @@ class _$_InAppBlogerState implements _InAppBlogerState {
     TResult? Function(int? index)? inAppUserState,
     TResult? Function(int? index)? inAppBlogerState,
     TResult? Function(int? index)? inAppAdminState,
+    TResult? Function(int? index)? inAppManagerState,
     TResult? Function(String message)? errorState,
   }) {
     return inAppBlogerState?.call(index);
@@ -1168,6 +1198,7 @@ class _$_InAppBlogerState implements _InAppBlogerState {
     TResult Function(int? index)? inAppUserState,
     TResult Function(int? index)? inAppBlogerState,
     TResult Function(int? index)? inAppAdminState,
+    TResult Function(int? index)? inAppManagerState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) {
@@ -1185,6 +1216,7 @@ class _$_InAppBlogerState implements _InAppBlogerState {
     required TResult Function(_InAppUserState value) inAppUserState,
     required TResult Function(_InAppBlogerState value) inAppBlogerState,
     required TResult Function(_InAppAdminState value) inAppAdminState,
+    required TResult Function(_InAppManagerState value) inAppManagerState,
     required TResult Function(_ErrorState value) errorState,
   }) {
     return inAppBlogerState(this);
@@ -1198,6 +1230,7 @@ class _$_InAppBlogerState implements _InAppBlogerState {
     TResult? Function(_InAppUserState value)? inAppUserState,
     TResult? Function(_InAppBlogerState value)? inAppBlogerState,
     TResult? Function(_InAppAdminState value)? inAppAdminState,
+    TResult? Function(_InAppManagerState value)? inAppManagerState,
     TResult? Function(_ErrorState value)? errorState,
   }) {
     return inAppBlogerState?.call(this);
@@ -1211,6 +1244,7 @@ class _$_InAppBlogerState implements _InAppBlogerState {
     TResult Function(_InAppUserState value)? inAppUserState,
     TResult Function(_InAppBlogerState value)? inAppBlogerState,
     TResult Function(_InAppAdminState value)? inAppAdminState,
+    TResult Function(_InAppManagerState value)? inAppManagerState,
     TResult Function(_ErrorState value)? errorState,
     required TResult orElse(),
   }) {
@@ -1222,29 +1256,29 @@ class _$_InAppBlogerState implements _InAppBlogerState {
 }
 
 abstract class _InAppBlogerState implements AppState {
-  const factory _InAppBlogerState({final int? index}) = _$_InAppBlogerState;
+  const factory _InAppBlogerState({final int? index}) = _$InAppBlogerStateImpl;
 
   int? get index;
   @JsonKey(ignore: true)
-  _$$_InAppBlogerStateCopyWith<_$_InAppBlogerState> get copyWith =>
+  _$$InAppBlogerStateImplCopyWith<_$InAppBlogerStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_InAppAdminStateCopyWith<$Res> {
-  factory _$$_InAppAdminStateCopyWith(
-          _$_InAppAdminState value, $Res Function(_$_InAppAdminState) then) =
-      __$$_InAppAdminStateCopyWithImpl<$Res>;
+abstract class _$$InAppAdminStateImplCopyWith<$Res> {
+  factory _$$InAppAdminStateImplCopyWith(_$InAppAdminStateImpl value,
+          $Res Function(_$InAppAdminStateImpl) then) =
+      __$$InAppAdminStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int? index});
 }
 
 /// @nodoc
-class __$$_InAppAdminStateCopyWithImpl<$Res>
-    extends _$AppStateCopyWithImpl<$Res, _$_InAppAdminState>
-    implements _$$_InAppAdminStateCopyWith<$Res> {
-  __$$_InAppAdminStateCopyWithImpl(
-      _$_InAppAdminState _value, $Res Function(_$_InAppAdminState) _then)
+class __$$InAppAdminStateImplCopyWithImpl<$Res>
+    extends _$AppStateCopyWithImpl<$Res, _$InAppAdminStateImpl>
+    implements _$$InAppAdminStateImplCopyWith<$Res> {
+  __$$InAppAdminStateImplCopyWithImpl(
+      _$InAppAdminStateImpl _value, $Res Function(_$InAppAdminStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1252,7 +1286,7 @@ class __$$_InAppAdminStateCopyWithImpl<$Res>
   $Res call({
     Object? index = freezed,
   }) {
-    return _then(_$_InAppAdminState(
+    return _then(_$InAppAdminStateImpl(
       index: freezed == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
@@ -1263,8 +1297,8 @@ class __$$_InAppAdminStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_InAppAdminState implements _InAppAdminState {
-  const _$_InAppAdminState({this.index});
+class _$InAppAdminStateImpl implements _InAppAdminState {
+  const _$InAppAdminStateImpl({this.index});
 
   @override
   final int? index;
@@ -1278,7 +1312,7 @@ class _$_InAppAdminState implements _InAppAdminState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_InAppAdminState &&
+            other is _$InAppAdminStateImpl &&
             (identical(other.index, index) || other.index == index));
   }
 
@@ -1288,8 +1322,9 @@ class _$_InAppAdminState implements _InAppAdminState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_InAppAdminStateCopyWith<_$_InAppAdminState> get copyWith =>
-      __$$_InAppAdminStateCopyWithImpl<_$_InAppAdminState>(this, _$identity);
+  _$$InAppAdminStateImplCopyWith<_$InAppAdminStateImpl> get copyWith =>
+      __$$InAppAdminStateImplCopyWithImpl<_$InAppAdminStateImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1299,6 +1334,7 @@ class _$_InAppAdminState implements _InAppAdminState {
     required TResult Function(int? index) inAppUserState,
     required TResult Function(int? index) inAppBlogerState,
     required TResult Function(int? index) inAppAdminState,
+    required TResult Function(int? index) inAppManagerState,
     required TResult Function(String message) errorState,
   }) {
     return inAppAdminState(index);
@@ -1312,6 +1348,7 @@ class _$_InAppAdminState implements _InAppAdminState {
     TResult? Function(int? index)? inAppUserState,
     TResult? Function(int? index)? inAppBlogerState,
     TResult? Function(int? index)? inAppAdminState,
+    TResult? Function(int? index)? inAppManagerState,
     TResult? Function(String message)? errorState,
   }) {
     return inAppAdminState?.call(index);
@@ -1325,6 +1362,7 @@ class _$_InAppAdminState implements _InAppAdminState {
     TResult Function(int? index)? inAppUserState,
     TResult Function(int? index)? inAppBlogerState,
     TResult Function(int? index)? inAppAdminState,
+    TResult Function(int? index)? inAppManagerState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) {
@@ -1342,6 +1380,7 @@ class _$_InAppAdminState implements _InAppAdminState {
     required TResult Function(_InAppUserState value) inAppUserState,
     required TResult Function(_InAppBlogerState value) inAppBlogerState,
     required TResult Function(_InAppAdminState value) inAppAdminState,
+    required TResult Function(_InAppManagerState value) inAppManagerState,
     required TResult Function(_ErrorState value) errorState,
   }) {
     return inAppAdminState(this);
@@ -1355,6 +1394,7 @@ class _$_InAppAdminState implements _InAppAdminState {
     TResult? Function(_InAppUserState value)? inAppUserState,
     TResult? Function(_InAppBlogerState value)? inAppBlogerState,
     TResult? Function(_InAppAdminState value)? inAppAdminState,
+    TResult? Function(_InAppManagerState value)? inAppManagerState,
     TResult? Function(_ErrorState value)? errorState,
   }) {
     return inAppAdminState?.call(this);
@@ -1368,6 +1408,7 @@ class _$_InAppAdminState implements _InAppAdminState {
     TResult Function(_InAppUserState value)? inAppUserState,
     TResult Function(_InAppBlogerState value)? inAppBlogerState,
     TResult Function(_InAppAdminState value)? inAppAdminState,
+    TResult Function(_InAppManagerState value)? inAppManagerState,
     TResult Function(_ErrorState value)? errorState,
     required TResult orElse(),
   }) {
@@ -1379,29 +1420,194 @@ class _$_InAppAdminState implements _InAppAdminState {
 }
 
 abstract class _InAppAdminState implements AppState {
-  const factory _InAppAdminState({final int? index}) = _$_InAppAdminState;
+  const factory _InAppAdminState({final int? index}) = _$InAppAdminStateImpl;
 
   int? get index;
   @JsonKey(ignore: true)
-  _$$_InAppAdminStateCopyWith<_$_InAppAdminState> get copyWith =>
+  _$$InAppAdminStateImplCopyWith<_$InAppAdminStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ErrorStateCopyWith<$Res> {
-  factory _$$_ErrorStateCopyWith(
-          _$_ErrorState value, $Res Function(_$_ErrorState) then) =
-      __$$_ErrorStateCopyWithImpl<$Res>;
+abstract class _$$InAppManagerStateImplCopyWith<$Res> {
+  factory _$$InAppManagerStateImplCopyWith(_$InAppManagerStateImpl value,
+          $Res Function(_$InAppManagerStateImpl) then) =
+      __$$InAppManagerStateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int? index});
+}
+
+/// @nodoc
+class __$$InAppManagerStateImplCopyWithImpl<$Res>
+    extends _$AppStateCopyWithImpl<$Res, _$InAppManagerStateImpl>
+    implements _$$InAppManagerStateImplCopyWith<$Res> {
+  __$$InAppManagerStateImplCopyWithImpl(_$InAppManagerStateImpl _value,
+      $Res Function(_$InAppManagerStateImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? index = freezed,
+  }) {
+    return _then(_$InAppManagerStateImpl(
+      index: freezed == index
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$InAppManagerStateImpl implements _InAppManagerState {
+  const _$InAppManagerStateImpl({this.index});
+
+  @override
+  final int? index;
+
+  @override
+  String toString() {
+    return 'AppState.inAppManagerState(index: $index)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$InAppManagerStateImpl &&
+            (identical(other.index, index) || other.index == index));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, index);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$InAppManagerStateImplCopyWith<_$InAppManagerStateImpl> get copyWith =>
+      __$$InAppManagerStateImplCopyWithImpl<_$InAppManagerStateImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadingState,
+    required TResult Function() notAuthorizedState,
+    required TResult Function(int? index) inAppUserState,
+    required TResult Function(int? index) inAppBlogerState,
+    required TResult Function(int? index) inAppAdminState,
+    required TResult Function(int? index) inAppManagerState,
+    required TResult Function(String message) errorState,
+  }) {
+    return inAppManagerState(index);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadingState,
+    TResult? Function()? notAuthorizedState,
+    TResult? Function(int? index)? inAppUserState,
+    TResult? Function(int? index)? inAppBlogerState,
+    TResult? Function(int? index)? inAppAdminState,
+    TResult? Function(int? index)? inAppManagerState,
+    TResult? Function(String message)? errorState,
+  }) {
+    return inAppManagerState?.call(index);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadingState,
+    TResult Function()? notAuthorizedState,
+    TResult Function(int? index)? inAppUserState,
+    TResult Function(int? index)? inAppBlogerState,
+    TResult Function(int? index)? inAppAdminState,
+    TResult Function(int? index)? inAppManagerState,
+    TResult Function(String message)? errorState,
+    required TResult orElse(),
+  }) {
+    if (inAppManagerState != null) {
+      return inAppManagerState(index);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadingState value) loadingState,
+    required TResult Function(_NotAuthorizedState value) notAuthorizedState,
+    required TResult Function(_InAppUserState value) inAppUserState,
+    required TResult Function(_InAppBlogerState value) inAppBlogerState,
+    required TResult Function(_InAppAdminState value) inAppAdminState,
+    required TResult Function(_InAppManagerState value) inAppManagerState,
+    required TResult Function(_ErrorState value) errorState,
+  }) {
+    return inAppManagerState(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadingState value)? loadingState,
+    TResult? Function(_NotAuthorizedState value)? notAuthorizedState,
+    TResult? Function(_InAppUserState value)? inAppUserState,
+    TResult? Function(_InAppBlogerState value)? inAppBlogerState,
+    TResult? Function(_InAppAdminState value)? inAppAdminState,
+    TResult? Function(_InAppManagerState value)? inAppManagerState,
+    TResult? Function(_ErrorState value)? errorState,
+  }) {
+    return inAppManagerState?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadingState value)? loadingState,
+    TResult Function(_NotAuthorizedState value)? notAuthorizedState,
+    TResult Function(_InAppUserState value)? inAppUserState,
+    TResult Function(_InAppBlogerState value)? inAppBlogerState,
+    TResult Function(_InAppAdminState value)? inAppAdminState,
+    TResult Function(_InAppManagerState value)? inAppManagerState,
+    TResult Function(_ErrorState value)? errorState,
+    required TResult orElse(),
+  }) {
+    if (inAppManagerState != null) {
+      return inAppManagerState(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _InAppManagerState implements AppState {
+  const factory _InAppManagerState({final int? index}) =
+      _$InAppManagerStateImpl;
+
+  int? get index;
+  @JsonKey(ignore: true)
+  _$$InAppManagerStateImplCopyWith<_$InAppManagerStateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ErrorStateImplCopyWith<$Res> {
+  factory _$$ErrorStateImplCopyWith(
+          _$ErrorStateImpl value, $Res Function(_$ErrorStateImpl) then) =
+      __$$ErrorStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$_ErrorStateCopyWithImpl<$Res>
-    extends _$AppStateCopyWithImpl<$Res, _$_ErrorState>
-    implements _$$_ErrorStateCopyWith<$Res> {
-  __$$_ErrorStateCopyWithImpl(
-      _$_ErrorState _value, $Res Function(_$_ErrorState) _then)
+class __$$ErrorStateImplCopyWithImpl<$Res>
+    extends _$AppStateCopyWithImpl<$Res, _$ErrorStateImpl>
+    implements _$$ErrorStateImplCopyWith<$Res> {
+  __$$ErrorStateImplCopyWithImpl(
+      _$ErrorStateImpl _value, $Res Function(_$ErrorStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1409,7 +1615,7 @@ class __$$_ErrorStateCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$_ErrorState(
+    return _then(_$ErrorStateImpl(
       message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -1420,8 +1626,8 @@ class __$$_ErrorStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ErrorState implements _ErrorState {
-  const _$_ErrorState({required this.message});
+class _$ErrorStateImpl implements _ErrorState {
+  const _$ErrorStateImpl({required this.message});
 
   @override
   final String message;
@@ -1435,7 +1641,7 @@ class _$_ErrorState implements _ErrorState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ErrorState &&
+            other is _$ErrorStateImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -1445,8 +1651,8 @@ class _$_ErrorState implements _ErrorState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ErrorStateCopyWith<_$_ErrorState> get copyWith =>
-      __$$_ErrorStateCopyWithImpl<_$_ErrorState>(this, _$identity);
+  _$$ErrorStateImplCopyWith<_$ErrorStateImpl> get copyWith =>
+      __$$ErrorStateImplCopyWithImpl<_$ErrorStateImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1456,6 +1662,7 @@ class _$_ErrorState implements _ErrorState {
     required TResult Function(int? index) inAppUserState,
     required TResult Function(int? index) inAppBlogerState,
     required TResult Function(int? index) inAppAdminState,
+    required TResult Function(int? index) inAppManagerState,
     required TResult Function(String message) errorState,
   }) {
     return errorState(message);
@@ -1469,6 +1676,7 @@ class _$_ErrorState implements _ErrorState {
     TResult? Function(int? index)? inAppUserState,
     TResult? Function(int? index)? inAppBlogerState,
     TResult? Function(int? index)? inAppAdminState,
+    TResult? Function(int? index)? inAppManagerState,
     TResult? Function(String message)? errorState,
   }) {
     return errorState?.call(message);
@@ -1482,6 +1690,7 @@ class _$_ErrorState implements _ErrorState {
     TResult Function(int? index)? inAppUserState,
     TResult Function(int? index)? inAppBlogerState,
     TResult Function(int? index)? inAppAdminState,
+    TResult Function(int? index)? inAppManagerState,
     TResult Function(String message)? errorState,
     required TResult orElse(),
   }) {
@@ -1499,6 +1708,7 @@ class _$_ErrorState implements _ErrorState {
     required TResult Function(_InAppUserState value) inAppUserState,
     required TResult Function(_InAppBlogerState value) inAppBlogerState,
     required TResult Function(_InAppAdminState value) inAppAdminState,
+    required TResult Function(_InAppManagerState value) inAppManagerState,
     required TResult Function(_ErrorState value) errorState,
   }) {
     return errorState(this);
@@ -1512,6 +1722,7 @@ class _$_ErrorState implements _ErrorState {
     TResult? Function(_InAppUserState value)? inAppUserState,
     TResult? Function(_InAppBlogerState value)? inAppBlogerState,
     TResult? Function(_InAppAdminState value)? inAppAdminState,
+    TResult? Function(_InAppManagerState value)? inAppManagerState,
     TResult? Function(_ErrorState value)? errorState,
   }) {
     return errorState?.call(this);
@@ -1525,6 +1736,7 @@ class _$_ErrorState implements _ErrorState {
     TResult Function(_InAppUserState value)? inAppUserState,
     TResult Function(_InAppBlogerState value)? inAppBlogerState,
     TResult Function(_InAppAdminState value)? inAppAdminState,
+    TResult Function(_InAppManagerState value)? inAppManagerState,
     TResult Function(_ErrorState value)? errorState,
     required TResult orElse(),
   }) {
@@ -1536,10 +1748,10 @@ class _$_ErrorState implements _ErrorState {
 }
 
 abstract class _ErrorState implements AppState {
-  const factory _ErrorState({required final String message}) = _$_ErrorState;
+  const factory _ErrorState({required final String message}) = _$ErrorStateImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$_ErrorStateCopyWith<_$_ErrorState> get copyWith =>
+  _$$ErrorStateImplCopyWith<_$ErrorStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

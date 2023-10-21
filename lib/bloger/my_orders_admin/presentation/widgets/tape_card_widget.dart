@@ -33,7 +33,7 @@ class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
     _controller = VideoPlayerController.network('http://185.116.193.73/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.pause();
-        // setState(() {});
+        setState(() {});
       });
     super.initState();
   }

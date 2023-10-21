@@ -1405,7 +1405,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                               title: "Изменить видео",
                               middleText: '',
                               textConfirm: 'Камера',
-                              textCancel: 'Фото',
+                              textCancel: 'Видео',
                               titlePadding: const EdgeInsets.only(top: 40),
                               onConfirm: () {
                                 change = true;

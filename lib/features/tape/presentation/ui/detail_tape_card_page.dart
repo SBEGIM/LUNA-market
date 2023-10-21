@@ -27,7 +27,7 @@ import '../data/bloc/tape_cubit.dart' as tapeCubit;
 import '../data/bloc/tape_state.dart' as tapeState;
 
 @RoutePage()
-class DetailTapeCardPage extends StatefulWidget with AutoRouteWrapper {
+class DetailTapeCardPage extends StatefulWidget implements AutoRouteWrapper {
   final int? index;
   final int? tapeId;
   final String? shopName;

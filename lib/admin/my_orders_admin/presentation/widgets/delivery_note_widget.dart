@@ -106,17 +106,17 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                           const SizedBox(
                             width: 30,
                           ),
-                          Container(
-                            height: 110,
-                            width: 110,
-                            padding: const EdgeInsets.all(8.0),
-                            alignment: Alignment.centerLeft,
-                            child: QrImage(
-                              data: "${widget.basketOrder.id}",
-                              version: QrVersions.auto,
-                            ),
-                          ),
-                          // Image.asset(
+                          // Container(
+                          //   height: 110,
+                          //   width: 110,
+                          //   padding: const EdgeInsets.all(8.0),
+                          //   alignment: Alignment.centerLeft,
+                          //   child: QrImage(
+                          //     data: "${widget.basketOrder.id}",
+                          //     version: QrVersions.auto,
+                          //   ),
+                          // ),
+                          // // Image.asset(
                           //   'assets/images/code.png',
                           //   height: 120,
                           //   width: 120,
@@ -320,16 +320,16 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
               ),
             ),
             const SizedBox(height: 12),
-            Container(
-              height: 164,
-              width: 168,
-              padding: const EdgeInsets.all(8.0),
-              alignment: Alignment.centerLeft,
-              child: QrImage(
-                data: "${widget.basketOrder.id}",
-                version: QrVersions.auto,
-              ),
-            ),
+            // Container(
+            //   height: 164,
+            //   width: 168,
+            //   padding: const EdgeInsets.all(8.0),
+            //   alignment: Alignment.centerLeft,
+            //   child: QrImage(
+            //     data: "${widget.basketOrder.id}",
+            //     version: QrVersions.auto,
+            //   ),
+            // ),
           ]),
         ));
   }

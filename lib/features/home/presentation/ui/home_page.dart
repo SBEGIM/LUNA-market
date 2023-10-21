@@ -1068,7 +1068,7 @@ class _PopularShopsState extends State<PopularShops> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Популярные магазины и бренды',
+                      'Бренды и Магазины',
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(

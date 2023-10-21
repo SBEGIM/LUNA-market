@@ -171,35 +171,48 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                   const SizedBox(
                                     height: 8,
                                   ),
-                                  ListView.builder(
-                                      shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: state.basketOrderModel[index].product!.length,
-                                      itemBuilder: (BuildContext context, int i) {
-                                        return Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              state.basketOrderModel[index].product![i].productName.toString(),
-                                              style: const TextStyle(
-                                                  color: AppColors.kGray750, fontSize: 14, fontWeight: FontWeight.w500),
+                                  SizedBox(
+                                    height: state.basketOrderModel[index].product!.length * 30,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: const NeverScrollableScrollPhysics(),
+                                        itemCount: state.basketOrderModel[index].product!.length,
+                                        itemBuilder: (BuildContext context, int i) {
+                                          return SizedBox(
+                                            height: 20,
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  state.basketOrderModel[index].product![i].productName.toString(),
+                                                  style: const TextStyle(
+                                                      color: AppColors.kGray750,
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  state.basketOrderModel[index].product![i].count.toString(),
+                                                  style: const TextStyle(
+                                                      color: AppColors.kGray750,
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  state.basketOrderModel[index].product![i].price.toString(),
+                                                  style: const TextStyle(
+                                                      color: AppColors.kGray750,
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w500),
+                                                )
+                                              ],
                                             ),
-                                            Text(
-                                              state.basketOrderModel[index].product![i].count.toString(),
-                                              style: const TextStyle(
-                                                  color: AppColors.kGray750, fontSize: 14, fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              state.basketOrderModel[index].product![i].price.toString(),
-                                              style: const TextStyle(
-                                                  color: AppColors.kGray750, fontSize: 14, fontWeight: FontWeight.w500),
-                                            )
-                                          ],
-                                        );
-                                      }),
-                                  const SizedBox(
-                                    height: 10,
+                                          );
+                                        }),
                                   ),
+                                  // const SizedBox(
+                                  //   height: 10,
+                                  // ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [

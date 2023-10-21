@@ -121,25 +121,25 @@ class _$NavigationStateCopyWithImpl<$Res, $Val extends NavigationState>
 }
 
 /// @nodoc
-abstract class _$$HomeStateCopyWith<$Res> {
-  factory _$$HomeStateCopyWith(
-          _$HomeState value, $Res Function(_$HomeState) then) =
-      __$$HomeStateCopyWithImpl<$Res>;
+abstract class _$$HomeStateImplCopyWith<$Res> {
+  factory _$$HomeStateImplCopyWith(
+          _$HomeStateImpl value, $Res Function(_$HomeStateImpl) then) =
+      __$$HomeStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$HomeStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res, _$HomeState>
-    implements _$$HomeStateCopyWith<$Res> {
-  __$$HomeStateCopyWithImpl(
-      _$HomeState _value, $Res Function(_$HomeState) _then)
+class __$$HomeStateImplCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$HomeStateImpl>
+    implements _$$HomeStateImplCopyWith<$Res> {
+  __$$HomeStateImplCopyWithImpl(
+      _$HomeStateImpl _value, $Res Function(_$HomeStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$HomeState implements HomeState {
-  const _$HomeState();
+class _$HomeStateImpl implements HomeState {
+  const _$HomeStateImpl();
 
   @override
   String toString() {
@@ -149,7 +149,7 @@ class _$HomeState implements HomeState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$HomeState);
+        (other.runtimeType == runtimeType && other is _$HomeStateImpl);
   }
 
   @override
@@ -265,29 +265,29 @@ class _$HomeState implements HomeState {
 }
 
 abstract class HomeState implements NavigationState {
-  const factory HomeState() = _$HomeState;
+  const factory HomeState() = _$HomeStateImpl;
 }
 
 /// @nodoc
-abstract class _$$TapeStateCopyWith<$Res> {
-  factory _$$TapeStateCopyWith(
-          _$TapeState value, $Res Function(_$TapeState) then) =
-      __$$TapeStateCopyWithImpl<$Res>;
+abstract class _$$TapeStateImplCopyWith<$Res> {
+  factory _$$TapeStateImplCopyWith(
+          _$TapeStateImpl value, $Res Function(_$TapeStateImpl) then) =
+      __$$TapeStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$TapeStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res, _$TapeState>
-    implements _$$TapeStateCopyWith<$Res> {
-  __$$TapeStateCopyWithImpl(
-      _$TapeState _value, $Res Function(_$TapeState) _then)
+class __$$TapeStateImplCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$TapeStateImpl>
+    implements _$$TapeStateImplCopyWith<$Res> {
+  __$$TapeStateImplCopyWithImpl(
+      _$TapeStateImpl _value, $Res Function(_$TapeStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$TapeState implements TapeState {
-  const _$TapeState();
+class _$TapeStateImpl implements TapeState {
+  const _$TapeStateImpl();
 
   @override
   String toString() {
@@ -297,7 +297,7 @@ class _$TapeState implements TapeState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$TapeState);
+        (other.runtimeType == runtimeType && other is _$TapeStateImpl);
   }
 
   @override
@@ -413,24 +413,24 @@ class _$TapeState implements TapeState {
 }
 
 abstract class TapeState implements NavigationState {
-  const factory TapeState() = _$TapeState;
+  const factory TapeState() = _$TapeStateImpl;
 }
 
 /// @nodoc
-abstract class _$$DetailTapeStateCopyWith<$Res> {
-  factory _$$DetailTapeStateCopyWith(
-          _$DetailTapeState value, $Res Function(_$DetailTapeState) then) =
-      __$$DetailTapeStateCopyWithImpl<$Res>;
+abstract class _$$DetailTapeStateImplCopyWith<$Res> {
+  factory _$$DetailTapeStateImplCopyWith(_$DetailTapeStateImpl value,
+          $Res Function(_$DetailTapeStateImpl) then) =
+      __$$DetailTapeStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int index, String name});
 }
 
 /// @nodoc
-class __$$DetailTapeStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res, _$DetailTapeState>
-    implements _$$DetailTapeStateCopyWith<$Res> {
-  __$$DetailTapeStateCopyWithImpl(
-      _$DetailTapeState _value, $Res Function(_$DetailTapeState) _then)
+class __$$DetailTapeStateImplCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$DetailTapeStateImpl>
+    implements _$$DetailTapeStateImplCopyWith<$Res> {
+  __$$DetailTapeStateImplCopyWithImpl(
+      _$DetailTapeStateImpl _value, $Res Function(_$DetailTapeStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -439,7 +439,7 @@ class __$$DetailTapeStateCopyWithImpl<$Res>
     Object? index = null,
     Object? name = null,
   }) {
-    return _then(_$DetailTapeState(
+    return _then(_$DetailTapeStateImpl(
       null == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
@@ -454,8 +454,8 @@ class __$$DetailTapeStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DetailTapeState implements DetailTapeState {
-  _$DetailTapeState(this.index, this.name);
+class _$DetailTapeStateImpl implements DetailTapeState {
+  _$DetailTapeStateImpl(this.index, this.name);
 
   @override
   final int index;
@@ -471,7 +471,7 @@ class _$DetailTapeState implements DetailTapeState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DetailTapeState &&
+            other is _$DetailTapeStateImpl &&
             (identical(other.index, index) || other.index == index) &&
             (identical(other.name, name) || other.name == name));
   }
@@ -482,8 +482,9 @@ class _$DetailTapeState implements DetailTapeState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DetailTapeStateCopyWith<_$DetailTapeState> get copyWith =>
-      __$$DetailTapeStateCopyWithImpl<_$DetailTapeState>(this, _$identity);
+  _$$DetailTapeStateImplCopyWith<_$DetailTapeStateImpl> get copyWith =>
+      __$$DetailTapeStateImplCopyWithImpl<_$DetailTapeStateImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -596,30 +597,32 @@ class _$DetailTapeState implements DetailTapeState {
 
 abstract class DetailTapeState implements NavigationState {
   factory DetailTapeState(final int index, final String name) =
-      _$DetailTapeState;
+      _$DetailTapeStateImpl;
 
   int get index;
   String get name;
   @JsonKey(ignore: true)
-  _$$DetailTapeStateCopyWith<_$DetailTapeState> get copyWith =>
+  _$$DetailTapeStateImplCopyWith<_$DetailTapeStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DetailBloggerTapeStateCopyWith<$Res> {
-  factory _$$DetailBloggerTapeStateCopyWith(_$DetailBloggerTapeState value,
-          $Res Function(_$DetailBloggerTapeState) then) =
-      __$$DetailBloggerTapeStateCopyWithImpl<$Res>;
+abstract class _$$DetailBloggerTapeStateImplCopyWith<$Res> {
+  factory _$$DetailBloggerTapeStateImplCopyWith(
+          _$DetailBloggerTapeStateImpl value,
+          $Res Function(_$DetailBloggerTapeStateImpl) then) =
+      __$$DetailBloggerTapeStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int bloggerId, String bloggerName, String bloggerAvatar});
 }
 
 /// @nodoc
-class __$$DetailBloggerTapeStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res, _$DetailBloggerTapeState>
-    implements _$$DetailBloggerTapeStateCopyWith<$Res> {
-  __$$DetailBloggerTapeStateCopyWithImpl(_$DetailBloggerTapeState _value,
-      $Res Function(_$DetailBloggerTapeState) _then)
+class __$$DetailBloggerTapeStateImplCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$DetailBloggerTapeStateImpl>
+    implements _$$DetailBloggerTapeStateImplCopyWith<$Res> {
+  __$$DetailBloggerTapeStateImplCopyWithImpl(
+      _$DetailBloggerTapeStateImpl _value,
+      $Res Function(_$DetailBloggerTapeStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -629,7 +632,7 @@ class __$$DetailBloggerTapeStateCopyWithImpl<$Res>
     Object? bloggerName = null,
     Object? bloggerAvatar = null,
   }) {
-    return _then(_$DetailBloggerTapeState(
+    return _then(_$DetailBloggerTapeStateImpl(
       null == bloggerId
           ? _value.bloggerId
           : bloggerId // ignore: cast_nullable_to_non_nullable
@@ -648,8 +651,8 @@ class __$$DetailBloggerTapeStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DetailBloggerTapeState implements DetailBloggerTapeState {
-  _$DetailBloggerTapeState(
+class _$DetailBloggerTapeStateImpl implements DetailBloggerTapeState {
+  _$DetailBloggerTapeStateImpl(
       this.bloggerId, this.bloggerName, this.bloggerAvatar);
 
   @override
@@ -668,7 +671,7 @@ class _$DetailBloggerTapeState implements DetailBloggerTapeState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DetailBloggerTapeState &&
+            other is _$DetailBloggerTapeStateImpl &&
             (identical(other.bloggerId, bloggerId) ||
                 other.bloggerId == bloggerId) &&
             (identical(other.bloggerName, bloggerName) ||
@@ -684,9 +687,9 @@ class _$DetailBloggerTapeState implements DetailBloggerTapeState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DetailBloggerTapeStateCopyWith<_$DetailBloggerTapeState> get copyWith =>
-      __$$DetailBloggerTapeStateCopyWithImpl<_$DetailBloggerTapeState>(
-          this, _$identity);
+  _$$DetailBloggerTapeStateImplCopyWith<_$DetailBloggerTapeStateImpl>
+      get copyWith => __$$DetailBloggerTapeStateImplCopyWithImpl<
+          _$DetailBloggerTapeStateImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -799,36 +802,36 @@ class _$DetailBloggerTapeState implements DetailBloggerTapeState {
 
 abstract class DetailBloggerTapeState implements NavigationState {
   factory DetailBloggerTapeState(final int bloggerId, final String bloggerName,
-      final String bloggerAvatar) = _$DetailBloggerTapeState;
+      final String bloggerAvatar) = _$DetailBloggerTapeStateImpl;
 
   int get bloggerId;
   String get bloggerName;
   String get bloggerAvatar;
   @JsonKey(ignore: true)
-  _$$DetailBloggerTapeStateCopyWith<_$DetailBloggerTapeState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$DetailBloggerTapeStateImplCopyWith<_$DetailBloggerTapeStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$FavoriteStateCopyWith<$Res> {
-  factory _$$FavoriteStateCopyWith(
-          _$FavoriteState value, $Res Function(_$FavoriteState) then) =
-      __$$FavoriteStateCopyWithImpl<$Res>;
+abstract class _$$FavoriteStateImplCopyWith<$Res> {
+  factory _$$FavoriteStateImplCopyWith(
+          _$FavoriteStateImpl value, $Res Function(_$FavoriteStateImpl) then) =
+      __$$FavoriteStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$FavoriteStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res, _$FavoriteState>
-    implements _$$FavoriteStateCopyWith<$Res> {
-  __$$FavoriteStateCopyWithImpl(
-      _$FavoriteState _value, $Res Function(_$FavoriteState) _then)
+class __$$FavoriteStateImplCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$FavoriteStateImpl>
+    implements _$$FavoriteStateImplCopyWith<$Res> {
+  __$$FavoriteStateImplCopyWithImpl(
+      _$FavoriteStateImpl _value, $Res Function(_$FavoriteStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$FavoriteState implements FavoriteState {
-  const _$FavoriteState();
+class _$FavoriteStateImpl implements FavoriteState {
+  const _$FavoriteStateImpl();
 
   @override
   String toString() {
@@ -838,7 +841,7 @@ class _$FavoriteState implements FavoriteState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$FavoriteState);
+        (other.runtimeType == runtimeType && other is _$FavoriteStateImpl);
   }
 
   @override
@@ -954,29 +957,29 @@ class _$FavoriteState implements FavoriteState {
 }
 
 abstract class FavoriteState implements NavigationState {
-  const factory FavoriteState() = _$FavoriteState;
+  const factory FavoriteState() = _$FavoriteStateImpl;
 }
 
 /// @nodoc
-abstract class _$$BasketStateCopyWith<$Res> {
-  factory _$$BasketStateCopyWith(
-          _$BasketState value, $Res Function(_$BasketState) then) =
-      __$$BasketStateCopyWithImpl<$Res>;
+abstract class _$$BasketStateImplCopyWith<$Res> {
+  factory _$$BasketStateImplCopyWith(
+          _$BasketStateImpl value, $Res Function(_$BasketStateImpl) then) =
+      __$$BasketStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$BasketStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res, _$BasketState>
-    implements _$$BasketStateCopyWith<$Res> {
-  __$$BasketStateCopyWithImpl(
-      _$BasketState _value, $Res Function(_$BasketState) _then)
+class __$$BasketStateImplCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$BasketStateImpl>
+    implements _$$BasketStateImplCopyWith<$Res> {
+  __$$BasketStateImplCopyWithImpl(
+      _$BasketStateImpl _value, $Res Function(_$BasketStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$BasketState implements BasketState {
-  const _$BasketState();
+class _$BasketStateImpl implements BasketState {
+  const _$BasketStateImpl();
 
   @override
   String toString() {
@@ -986,7 +989,7 @@ class _$BasketState implements BasketState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$BasketState);
+        (other.runtimeType == runtimeType && other is _$BasketStateImpl);
   }
 
   @override
@@ -1102,29 +1105,29 @@ class _$BasketState implements BasketState {
 }
 
 abstract class BasketState implements NavigationState {
-  const factory BasketState() = _$BasketState;
+  const factory BasketState() = _$BasketStateImpl;
 }
 
 /// @nodoc
-abstract class _$$MyOrderStateCopyWith<$Res> {
-  factory _$$MyOrderStateCopyWith(
-          _$MyOrderState value, $Res Function(_$MyOrderState) then) =
-      __$$MyOrderStateCopyWithImpl<$Res>;
+abstract class _$$MyOrderStateImplCopyWith<$Res> {
+  factory _$$MyOrderStateImplCopyWith(
+          _$MyOrderStateImpl value, $Res Function(_$MyOrderStateImpl) then) =
+      __$$MyOrderStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$MyOrderStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res, _$MyOrderState>
-    implements _$$MyOrderStateCopyWith<$Res> {
-  __$$MyOrderStateCopyWithImpl(
-      _$MyOrderState _value, $Res Function(_$MyOrderState) _then)
+class __$$MyOrderStateImplCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$MyOrderStateImpl>
+    implements _$$MyOrderStateImplCopyWith<$Res> {
+  __$$MyOrderStateImplCopyWithImpl(
+      _$MyOrderStateImpl _value, $Res Function(_$MyOrderStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$MyOrderState implements MyOrderState {
-  const _$MyOrderState();
+class _$MyOrderStateImpl implements MyOrderState {
+  const _$MyOrderStateImpl();
 
   @override
   String toString() {
@@ -1134,7 +1137,7 @@ class _$MyOrderState implements MyOrderState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$MyOrderState);
+        (other.runtimeType == runtimeType && other is _$MyOrderStateImpl);
   }
 
   @override
@@ -1250,29 +1253,29 @@ class _$MyOrderState implements MyOrderState {
 }
 
 abstract class MyOrderState implements NavigationState {
-  const factory MyOrderState() = _$MyOrderState;
+  const factory MyOrderState() = _$MyOrderStateImpl;
 }
 
 /// @nodoc
-abstract class _$$AuthStateCopyWith<$Res> {
-  factory _$$AuthStateCopyWith(
-          _$AuthState value, $Res Function(_$AuthState) then) =
-      __$$AuthStateCopyWithImpl<$Res>;
+abstract class _$$AuthStateImplCopyWith<$Res> {
+  factory _$$AuthStateImplCopyWith(
+          _$AuthStateImpl value, $Res Function(_$AuthStateImpl) then) =
+      __$$AuthStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AuthStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res, _$AuthState>
-    implements _$$AuthStateCopyWith<$Res> {
-  __$$AuthStateCopyWithImpl(
-      _$AuthState _value, $Res Function(_$AuthState) _then)
+class __$$AuthStateImplCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$AuthStateImpl>
+    implements _$$AuthStateImplCopyWith<$Res> {
+  __$$AuthStateImplCopyWithImpl(
+      _$AuthStateImpl _value, $Res Function(_$AuthStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AuthState implements AuthState {
-  const _$AuthState();
+class _$AuthStateImpl implements AuthState {
+  const _$AuthStateImpl();
 
   @override
   String toString() {
@@ -1282,7 +1285,7 @@ class _$AuthState implements AuthState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AuthState);
+        (other.runtimeType == runtimeType && other is _$AuthStateImpl);
   }
 
   @override
@@ -1398,29 +1401,29 @@ class _$AuthState implements AuthState {
 }
 
 abstract class AuthState implements NavigationState {
-  const factory AuthState() = _$AuthState;
+  const factory AuthState() = _$AuthStateImpl;
 }
 
 /// @nodoc
-abstract class _$$NotAuthStateCopyWith<$Res> {
-  factory _$$NotAuthStateCopyWith(
-          _$NotAuthState value, $Res Function(_$NotAuthState) then) =
-      __$$NotAuthStateCopyWithImpl<$Res>;
+abstract class _$$NotAuthStateImplCopyWith<$Res> {
+  factory _$$NotAuthStateImplCopyWith(
+          _$NotAuthStateImpl value, $Res Function(_$NotAuthStateImpl) then) =
+      __$$NotAuthStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$NotAuthStateCopyWithImpl<$Res>
-    extends _$NavigationStateCopyWithImpl<$Res, _$NotAuthState>
-    implements _$$NotAuthStateCopyWith<$Res> {
-  __$$NotAuthStateCopyWithImpl(
-      _$NotAuthState _value, $Res Function(_$NotAuthState) _then)
+class __$$NotAuthStateImplCopyWithImpl<$Res>
+    extends _$NavigationStateCopyWithImpl<$Res, _$NotAuthStateImpl>
+    implements _$$NotAuthStateImplCopyWith<$Res> {
+  __$$NotAuthStateImplCopyWithImpl(
+      _$NotAuthStateImpl _value, $Res Function(_$NotAuthStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$NotAuthState implements NotAuthState {
-  const _$NotAuthState();
+class _$NotAuthStateImpl implements NotAuthState {
+  const _$NotAuthStateImpl();
 
   @override
   String toString() {
@@ -1430,7 +1433,7 @@ class _$NotAuthState implements NotAuthState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$NotAuthState);
+        (other.runtimeType == runtimeType && other is _$NotAuthStateImpl);
   }
 
   @override
@@ -1546,5 +1549,5 @@ class _$NotAuthState implements NotAuthState {
 }
 
 abstract class NotAuthState implements NavigationState {
-  const factory NotAuthState() = _$NotAuthState;
+  const factory NotAuthState() = _$NotAuthStateImpl;
 }

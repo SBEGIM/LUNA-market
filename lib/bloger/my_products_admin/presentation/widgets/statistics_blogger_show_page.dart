@@ -24,6 +24,7 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
     'Июль',
     'Август',
     'Сентябрь',
+    'Октябрь',
     'Ноябрь',
     'Декабрь',
   ];

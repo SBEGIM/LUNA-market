@@ -98,6 +98,10 @@ class AppState with _$AppState {
     int? index,
   }) = _InAppAdminState;
 
+  const factory AppState.inAppManagerState({
+    int? index,
+  }) = _InAppManagerState;
+
   const factory AppState.errorState({
     required String message,
   }) = _ErrorState;

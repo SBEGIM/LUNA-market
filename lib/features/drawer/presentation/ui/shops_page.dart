@@ -86,7 +86,7 @@ class _ShopsPageState extends State<ShopsPage> {
               return Container(
                 margin: const EdgeInsets.only(top: 12, left: 15, right: 15),
                 child: GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
+                    // physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3, childAspectRatio: 0.65, crossAxisSpacing: 10, mainAxisSpacing: 10),

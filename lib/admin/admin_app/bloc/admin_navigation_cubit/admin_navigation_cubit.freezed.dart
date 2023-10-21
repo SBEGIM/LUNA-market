@@ -106,25 +106,25 @@ class _$AdminNavigationStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$TapeAdminStateCopyWith<$Res> {
-  factory _$$TapeAdminStateCopyWith(
-          _$TapeAdminState value, $Res Function(_$TapeAdminState) then) =
-      __$$TapeAdminStateCopyWithImpl<$Res>;
+abstract class _$$TapeAdminStateImplCopyWith<$Res> {
+  factory _$$TapeAdminStateImplCopyWith(_$TapeAdminStateImpl value,
+          $Res Function(_$TapeAdminStateImpl) then) =
+      __$$TapeAdminStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$TapeAdminStateCopyWithImpl<$Res>
-    extends _$AdminNavigationStateCopyWithImpl<$Res, _$TapeAdminState>
-    implements _$$TapeAdminStateCopyWith<$Res> {
-  __$$TapeAdminStateCopyWithImpl(
-      _$TapeAdminState _value, $Res Function(_$TapeAdminState) _then)
+class __$$TapeAdminStateImplCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res, _$TapeAdminStateImpl>
+    implements _$$TapeAdminStateImplCopyWith<$Res> {
+  __$$TapeAdminStateImplCopyWithImpl(
+      _$TapeAdminStateImpl _value, $Res Function(_$TapeAdminStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$TapeAdminState implements TapeAdminState {
-  const _$TapeAdminState();
+class _$TapeAdminStateImpl implements TapeAdminState {
+  const _$TapeAdminStateImpl();
 
   @override
   String toString() {
@@ -134,7 +134,7 @@ class _$TapeAdminState implements TapeAdminState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$TapeAdminState);
+        (other.runtimeType == runtimeType && other is _$TapeAdminStateImpl);
   }
 
   @override
@@ -234,24 +234,24 @@ class _$TapeAdminState implements TapeAdminState {
 }
 
 abstract class TapeAdminState implements AdminNavigationState {
-  const factory TapeAdminState() = _$TapeAdminState;
+  const factory TapeAdminState() = _$TapeAdminStateImpl;
 }
 
 /// @nodoc
-abstract class _$$DetailTapeAdminStateCopyWith<$Res> {
-  factory _$$DetailTapeAdminStateCopyWith(_$DetailTapeAdminState value,
-          $Res Function(_$DetailTapeAdminState) then) =
-      __$$DetailTapeAdminStateCopyWithImpl<$Res>;
+abstract class _$$DetailTapeAdminStateImplCopyWith<$Res> {
+  factory _$$DetailTapeAdminStateImplCopyWith(_$DetailTapeAdminStateImpl value,
+          $Res Function(_$DetailTapeAdminStateImpl) then) =
+      __$$DetailTapeAdminStateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int index, String name});
 }
 
 /// @nodoc
-class __$$DetailTapeAdminStateCopyWithImpl<$Res>
-    extends _$AdminNavigationStateCopyWithImpl<$Res, _$DetailTapeAdminState>
-    implements _$$DetailTapeAdminStateCopyWith<$Res> {
-  __$$DetailTapeAdminStateCopyWithImpl(_$DetailTapeAdminState _value,
-      $Res Function(_$DetailTapeAdminState) _then)
+class __$$DetailTapeAdminStateImplCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res, _$DetailTapeAdminStateImpl>
+    implements _$$DetailTapeAdminStateImplCopyWith<$Res> {
+  __$$DetailTapeAdminStateImplCopyWithImpl(_$DetailTapeAdminStateImpl _value,
+      $Res Function(_$DetailTapeAdminStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -260,7 +260,7 @@ class __$$DetailTapeAdminStateCopyWithImpl<$Res>
     Object? index = null,
     Object? name = null,
   }) {
-    return _then(_$DetailTapeAdminState(
+    return _then(_$DetailTapeAdminStateImpl(
       null == index
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
@@ -275,8 +275,8 @@ class __$$DetailTapeAdminStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DetailTapeAdminState implements DetailTapeAdminState {
-  _$DetailTapeAdminState(this.index, this.name);
+class _$DetailTapeAdminStateImpl implements DetailTapeAdminState {
+  _$DetailTapeAdminStateImpl(this.index, this.name);
 
   @override
   final int index;
@@ -292,7 +292,7 @@ class _$DetailTapeAdminState implements DetailTapeAdminState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DetailTapeAdminState &&
+            other is _$DetailTapeAdminStateImpl &&
             (identical(other.index, index) || other.index == index) &&
             (identical(other.name, name) || other.name == name));
   }
@@ -303,9 +303,10 @@ class _$DetailTapeAdminState implements DetailTapeAdminState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DetailTapeAdminStateCopyWith<_$DetailTapeAdminState> get copyWith =>
-      __$$DetailTapeAdminStateCopyWithImpl<_$DetailTapeAdminState>(
-          this, _$identity);
+  _$$DetailTapeAdminStateImplCopyWith<_$DetailTapeAdminStateImpl>
+      get copyWith =>
+          __$$DetailTapeAdminStateImplCopyWithImpl<_$DetailTapeAdminStateImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -402,35 +403,35 @@ class _$DetailTapeAdminState implements DetailTapeAdminState {
 
 abstract class DetailTapeAdminState implements AdminNavigationState {
   factory DetailTapeAdminState(final int index, final String name) =
-      _$DetailTapeAdminState;
+      _$DetailTapeAdminStateImpl;
 
   int get index;
   String get name;
   @JsonKey(ignore: true)
-  _$$DetailTapeAdminStateCopyWith<_$DetailTapeAdminState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$DetailTapeAdminStateImplCopyWith<_$DetailTapeAdminStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$HomeAdminStateCopyWith<$Res> {
-  factory _$$HomeAdminStateCopyWith(
-          _$HomeAdminState value, $Res Function(_$HomeAdminState) then) =
-      __$$HomeAdminStateCopyWithImpl<$Res>;
+abstract class _$$HomeAdminStateImplCopyWith<$Res> {
+  factory _$$HomeAdminStateImplCopyWith(_$HomeAdminStateImpl value,
+          $Res Function(_$HomeAdminStateImpl) then) =
+      __$$HomeAdminStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$HomeAdminStateCopyWithImpl<$Res>
-    extends _$AdminNavigationStateCopyWithImpl<$Res, _$HomeAdminState>
-    implements _$$HomeAdminStateCopyWith<$Res> {
-  __$$HomeAdminStateCopyWithImpl(
-      _$HomeAdminState _value, $Res Function(_$HomeAdminState) _then)
+class __$$HomeAdminStateImplCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res, _$HomeAdminStateImpl>
+    implements _$$HomeAdminStateImplCopyWith<$Res> {
+  __$$HomeAdminStateImplCopyWithImpl(
+      _$HomeAdminStateImpl _value, $Res Function(_$HomeAdminStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$HomeAdminState implements HomeAdminState {
-  const _$HomeAdminState();
+class _$HomeAdminStateImpl implements HomeAdminState {
+  const _$HomeAdminStateImpl();
 
   @override
   String toString() {
@@ -440,7 +441,7 @@ class _$HomeAdminState implements HomeAdminState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$HomeAdminState);
+        (other.runtimeType == runtimeType && other is _$HomeAdminStateImpl);
   }
 
   @override
@@ -540,29 +541,29 @@ class _$HomeAdminState implements HomeAdminState {
 }
 
 abstract class HomeAdminState implements AdminNavigationState {
-  const factory HomeAdminState() = _$HomeAdminState;
+  const factory HomeAdminState() = _$HomeAdminStateImpl;
 }
 
 /// @nodoc
-abstract class _$$MyOrderAdminStateCopyWith<$Res> {
-  factory _$$MyOrderAdminStateCopyWith(
-          _$MyOrderAdminState value, $Res Function(_$MyOrderAdminState) then) =
-      __$$MyOrderAdminStateCopyWithImpl<$Res>;
+abstract class _$$MyOrderAdminStateImplCopyWith<$Res> {
+  factory _$$MyOrderAdminStateImplCopyWith(_$MyOrderAdminStateImpl value,
+          $Res Function(_$MyOrderAdminStateImpl) then) =
+      __$$MyOrderAdminStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$MyOrderAdminStateCopyWithImpl<$Res>
-    extends _$AdminNavigationStateCopyWithImpl<$Res, _$MyOrderAdminState>
-    implements _$$MyOrderAdminStateCopyWith<$Res> {
-  __$$MyOrderAdminStateCopyWithImpl(
-      _$MyOrderAdminState _value, $Res Function(_$MyOrderAdminState) _then)
+class __$$MyOrderAdminStateImplCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res, _$MyOrderAdminStateImpl>
+    implements _$$MyOrderAdminStateImplCopyWith<$Res> {
+  __$$MyOrderAdminStateImplCopyWithImpl(_$MyOrderAdminStateImpl _value,
+      $Res Function(_$MyOrderAdminStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$MyOrderAdminState implements MyOrderAdminState {
-  const _$MyOrderAdminState();
+class _$MyOrderAdminStateImpl implements MyOrderAdminState {
+  const _$MyOrderAdminStateImpl();
 
   @override
   String toString() {
@@ -572,7 +573,7 @@ class _$MyOrderAdminState implements MyOrderAdminState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$MyOrderAdminState);
+        (other.runtimeType == runtimeType && other is _$MyOrderAdminStateImpl);
   }
 
   @override
@@ -672,29 +673,29 @@ class _$MyOrderAdminState implements MyOrderAdminState {
 }
 
 abstract class MyOrderAdminState implements AdminNavigationState {
-  const factory MyOrderAdminState() = _$MyOrderAdminState;
+  const factory MyOrderAdminState() = _$MyOrderAdminStateImpl;
 }
 
 /// @nodoc
-abstract class _$$ProfileStateCopyWith<$Res> {
-  factory _$$ProfileStateCopyWith(
-          _$ProfileState value, $Res Function(_$ProfileState) then) =
-      __$$ProfileStateCopyWithImpl<$Res>;
+abstract class _$$ProfileStateImplCopyWith<$Res> {
+  factory _$$ProfileStateImplCopyWith(
+          _$ProfileStateImpl value, $Res Function(_$ProfileStateImpl) then) =
+      __$$ProfileStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ProfileStateCopyWithImpl<$Res>
-    extends _$AdminNavigationStateCopyWithImpl<$Res, _$ProfileState>
-    implements _$$ProfileStateCopyWith<$Res> {
-  __$$ProfileStateCopyWithImpl(
-      _$ProfileState _value, $Res Function(_$ProfileState) _then)
+class __$$ProfileStateImplCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res, _$ProfileStateImpl>
+    implements _$$ProfileStateImplCopyWith<$Res> {
+  __$$ProfileStateImplCopyWithImpl(
+      _$ProfileStateImpl _value, $Res Function(_$ProfileStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ProfileState implements ProfileState {
-  const _$ProfileState();
+class _$ProfileStateImpl implements ProfileState {
+  const _$ProfileStateImpl();
 
   @override
   String toString() {
@@ -704,7 +705,7 @@ class _$ProfileState implements ProfileState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ProfileState);
+        (other.runtimeType == runtimeType && other is _$ProfileStateImpl);
   }
 
   @override
@@ -804,29 +805,29 @@ class _$ProfileState implements ProfileState {
 }
 
 abstract class ProfileState implements AdminNavigationState {
-  const factory ProfileState() = _$ProfileState;
+  const factory ProfileState() = _$ProfileStateImpl;
 }
 
 /// @nodoc
-abstract class _$$ChatAdminStateCopyWith<$Res> {
-  factory _$$ChatAdminStateCopyWith(
-          _$ChatAdminState value, $Res Function(_$ChatAdminState) then) =
-      __$$ChatAdminStateCopyWithImpl<$Res>;
+abstract class _$$ChatAdminStateImplCopyWith<$Res> {
+  factory _$$ChatAdminStateImplCopyWith(_$ChatAdminStateImpl value,
+          $Res Function(_$ChatAdminStateImpl) then) =
+      __$$ChatAdminStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ChatAdminStateCopyWithImpl<$Res>
-    extends _$AdminNavigationStateCopyWithImpl<$Res, _$ChatAdminState>
-    implements _$$ChatAdminStateCopyWith<$Res> {
-  __$$ChatAdminStateCopyWithImpl(
-      _$ChatAdminState _value, $Res Function(_$ChatAdminState) _then)
+class __$$ChatAdminStateImplCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res, _$ChatAdminStateImpl>
+    implements _$$ChatAdminStateImplCopyWith<$Res> {
+  __$$ChatAdminStateImplCopyWithImpl(
+      _$ChatAdminStateImpl _value, $Res Function(_$ChatAdminStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$ChatAdminState implements ChatAdminState {
-  const _$ChatAdminState();
+class _$ChatAdminStateImpl implements ChatAdminState {
+  const _$ChatAdminStateImpl();
 
   @override
   String toString() {
@@ -836,7 +837,7 @@ class _$ChatAdminState implements ChatAdminState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ChatAdminState);
+        (other.runtimeType == runtimeType && other is _$ChatAdminStateImpl);
   }
 
   @override
@@ -936,29 +937,29 @@ class _$ChatAdminState implements ChatAdminState {
 }
 
 abstract class ChatAdminState implements AdminNavigationState {
-  const factory ChatAdminState() = _$ChatAdminState;
+  const factory ChatAdminState() = _$ChatAdminStateImpl;
 }
 
 /// @nodoc
-abstract class _$$AdminAuthStateCopyWith<$Res> {
-  factory _$$AdminAuthStateCopyWith(
-          _$AdminAuthState value, $Res Function(_$AdminAuthState) then) =
-      __$$AdminAuthStateCopyWithImpl<$Res>;
+abstract class _$$AdminAuthStateImplCopyWith<$Res> {
+  factory _$$AdminAuthStateImplCopyWith(_$AdminAuthStateImpl value,
+          $Res Function(_$AdminAuthStateImpl) then) =
+      __$$AdminAuthStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AdminAuthStateCopyWithImpl<$Res>
-    extends _$AdminNavigationStateCopyWithImpl<$Res, _$AdminAuthState>
-    implements _$$AdminAuthStateCopyWith<$Res> {
-  __$$AdminAuthStateCopyWithImpl(
-      _$AdminAuthState _value, $Res Function(_$AdminAuthState) _then)
+class __$$AdminAuthStateImplCopyWithImpl<$Res>
+    extends _$AdminNavigationStateCopyWithImpl<$Res, _$AdminAuthStateImpl>
+    implements _$$AdminAuthStateImplCopyWith<$Res> {
+  __$$AdminAuthStateImplCopyWithImpl(
+      _$AdminAuthStateImpl _value, $Res Function(_$AdminAuthStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AdminAuthState implements AdminAuthState {
-  const _$AdminAuthState();
+class _$AdminAuthStateImpl implements AdminAuthState {
+  const _$AdminAuthStateImpl();
 
   @override
   String toString() {
@@ -968,7 +969,7 @@ class _$AdminAuthState implements AdminAuthState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AdminAuthState);
+        (other.runtimeType == runtimeType && other is _$AdminAuthStateImpl);
   }
 
   @override
@@ -1068,5 +1069,5 @@ class _$AdminAuthState implements AdminAuthState {
 }
 
 abstract class AdminAuthState implements AdminNavigationState {
-  const factory AdminAuthState() = _$AdminAuthState;
+  const factory AdminAuthState() = _$AdminAuthStateImpl;
 }

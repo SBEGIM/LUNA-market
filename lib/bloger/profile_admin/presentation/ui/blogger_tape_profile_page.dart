@@ -16,13 +16,19 @@ import '../data/bloc/profile_statics_blogger_cubit.dart';
 import '../data/bloc/profile_statics_blogger_state.dart';
 
 @RoutePage()
-class ProfileBloggerTapePage extends StatefulWidget with AutoRouteWrapper {
+class ProfileBloggerTapePage extends StatefulWidget implements AutoRouteWrapper {
   final int bloggerId;
   final String bloggerName;
   final String bloggerAvatar;
   final bool inSubscribe;
   final Function(bool)? onSubChanged;
-  ProfileBloggerTapePage({required this.bloggerId, required this.bloggerName, required this.bloggerAvatar, Key? key, required this.inSubscribe, this.onSubChanged})
+  ProfileBloggerTapePage(
+      {required this.bloggerId,
+      required this.bloggerName,
+      required this.bloggerAvatar,
+      Key? key,
+      required this.inSubscribe,
+      this.onSubChanged})
       : super(key: key);
 
   @override
@@ -128,7 +134,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                     setState(() {
                       inSub = !inSub;
                     });
-                    
+
                     widget.onSubChanged?.call(inSub);
                   },
                   child: Container(
