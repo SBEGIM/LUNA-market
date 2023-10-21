@@ -293,7 +293,10 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             strokeWidth: 2,
                                           )
                                         : Text(
-                                            widget.basketOrder.status == 'courier' ? 'Завершить' : 'Отменить',
+                                            widget.basketOrder.status == 'courier'
+                                                ? 'Товар получил \nПретензии не имею'
+                                                : 'Отменить',
+                                            textAlign: TextAlign.center,
                                             style: const TextStyle(
                                                 color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
                                           ),
@@ -373,7 +376,10 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    '+7${widget.basketOrder.product!.first.shopPhone}',
+                                    widget.basketOrder.product!.first.shopPhone != null ||
+                                            widget.basketOrder.product!.first.shopPhone != ''
+                                        ? '+7${widget.basketOrder.product!.first.shopPhone}'
+                                        : 'Неизвестен',
                                     style:
                                         const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
                                   ),

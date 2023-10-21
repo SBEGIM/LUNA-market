@@ -340,7 +340,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 height: 28,
                                 decoration: BoxDecoration(
                                     color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(6)),
-                                margin: const EdgeInsets.only(top: 130),
+                                margin: const EdgeInsets.only(top: 105),
                                 alignment: Alignment.center,
                                 child: const Text(
                                   '0·0·12',
@@ -434,7 +434,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                   //   ],
                                   // ),
                                   Container(
-                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.36),
+                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.26),
                                     child: Column(
                                       children: [
                                         inReport(
@@ -847,7 +847,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.36),
+                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.26),
                                     child: Column(
                                       children: [
                                         inReport(
