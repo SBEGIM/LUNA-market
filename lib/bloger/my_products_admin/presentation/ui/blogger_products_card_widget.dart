@@ -29,9 +29,8 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
     //   isvisible = true;
     // }
     // inFavorite = widget.product.inFavorite ?? false;
-    compoundPrice = (widget.product.price!.toInt() - widget.product.compound!.toInt());
-    procentPrice =
-        ((widget.product.price!.toInt() - widget.product.compound!.toInt()) / widget.product.price!.toInt()) * 100;
+    compoundPrice = (widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100;
+    procentPrice = ((widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100).toDouble();
     super.initState();
   }
 
