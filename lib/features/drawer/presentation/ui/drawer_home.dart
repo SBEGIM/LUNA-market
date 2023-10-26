@@ -373,7 +373,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   child: const SizedBox(
                     height: 55,
                     child: DrawerListTile(
-                      text: 'Связаться с администрацией',
+                      text: 'Техподдержка',
                     ),
                   ),
                 ),

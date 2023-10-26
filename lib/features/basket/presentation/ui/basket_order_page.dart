@@ -364,7 +364,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                       Container(
                         padding: const EdgeInsets.only(right: 16),
                         child: Text(
-                          ' ${isSwitched == true ? (bonus < (price * 0.1) ? (price - bonus) : (price - price * 0.1)).toInt() : (courier + price)} ₽',
+                          ' ${isSwitched == true ? (bonus < (price * 0.1) ? ((price - bonus) + courier) : ((price - price * 0.1) + courier)).toInt() : (courier + price)} ₽',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,

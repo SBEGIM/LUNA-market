@@ -342,7 +342,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Связаться с администрацией',
+                    'Техподдержка',
                     style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                   Icon(

@@ -155,9 +155,9 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       width: 8,
                     ),
                     GestureDetector(
-                      onTap: () => launch("https://hajimarket@gmail.com", forceSafariVC: false),
+                      onTap: () => launch("http://Lunamarket@inbox.ru", forceSafariVC: false),
                       child: const Text(
-                        'https://hajimarket@gmail.com',
+                        'http://Lunamarket@inbox.ru',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kPrimaryColor),
                       ),
                     ),

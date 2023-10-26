@@ -75,7 +75,7 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
               ),
               FieldsCoopRequest(
                 titleText: 'ИИН',
-                hintText: 'Введите инн',
+                hintText: 'Введите иин',
                 star: false,
                 arrow: false,
                 controller: iinController,

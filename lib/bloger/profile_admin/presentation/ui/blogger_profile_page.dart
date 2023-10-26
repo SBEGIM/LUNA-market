@@ -292,7 +292,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Связаться с администрацией',
+                      'Техподдержка',
                       style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     Icon(
