@@ -80,7 +80,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         if (state is LoadedState) {
           // Get.to(() => const ProfileBloggerPage());
 
-          Get.back();
+          Get.back(result: 'ok');
         }
       }, builder: (context, state) {
         if (state is InitState) {
@@ -250,7 +250,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                               controller: iinController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
-                                hintText: 'ИНН',
+                                hintText: 'ИИН',
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white),
                                   // borderRadius: BorderRadius.circular(3),

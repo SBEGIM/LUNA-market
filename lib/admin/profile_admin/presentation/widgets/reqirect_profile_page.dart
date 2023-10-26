@@ -502,7 +502,8 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                 checkController.text,
                 emailController.text,
                 '');
-            Navigator.pop(context);
+
+            Get.back(result: 'ok');
           },
           child: Container(
               decoration: BoxDecoration(

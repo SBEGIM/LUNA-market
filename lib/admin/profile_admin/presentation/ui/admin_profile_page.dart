@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/profile_admin/presentation/widgets/admin_cards_page.dart';
 import 'package:haji_market/admin/profile_admin/presentation/widgets/statistics_admin_show_page.dart';
@@ -84,11 +85,12 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
               style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.kGray900, fontSize: 16),
             ),
             subtitle: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ReqirectProfilePage()),
-                );
+              onTap: () async {
+                final data = await Get.to(ReqirectProfilePage());
+
+                if (data != null) {
+                  setState(() {});
+                }
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

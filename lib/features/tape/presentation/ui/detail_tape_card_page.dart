@@ -434,7 +434,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                   //   ],
                                   // ),
                                   Container(
-                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.26),
+                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.32),
                                     child: Column(
                                       children: [
                                         inReport(

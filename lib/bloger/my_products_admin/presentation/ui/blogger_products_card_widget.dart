@@ -30,7 +30,6 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
     // }
     // inFavorite = widget.product.inFavorite ?? false;
     compoundPrice = (widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100;
-    procentPrice = ((widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100).toDouble();
     super.initState();
   }
 
@@ -105,7 +104,7 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 4.0, right: 4, top: 2, bottom: 2),
                           child: Text(
-                            '-${procentPrice.toInt()}%',
+                            '-${widget.product.compound}%',
                             textAlign: TextAlign.center,
                             style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w400),
                           ),

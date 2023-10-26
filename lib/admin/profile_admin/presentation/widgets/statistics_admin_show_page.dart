@@ -28,6 +28,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
     'Июль',
     'Август',
     'Сентябрь',
+    'Октябрь',
     'Ноябрь',
     'Декабрь',
   ];

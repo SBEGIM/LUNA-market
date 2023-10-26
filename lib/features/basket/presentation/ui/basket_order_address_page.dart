@@ -494,9 +494,11 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                       const SizedBox(height: 8),
                                       Text(
                                         widget.deleveryDay != null && widget.deleveryDay != '0'
-                                            ? 'Доставка: ${widget.deleveryDay} дня'
-                                            : 'Доставка: Нет срока доставки СДЕК',
-                                        style: TextStyle(
+                                            ? widget.fulfillment == 'realFBS'
+                                                ? 'Срок доставка:  не известна'
+                                                : 'Срок доставка:  ${widget.deleveryDay} дня'
+                                            : 'Срок доставка: Нет срока доставки СДЕК',
+                                        style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
                                         ),

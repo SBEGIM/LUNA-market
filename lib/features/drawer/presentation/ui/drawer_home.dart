@@ -36,17 +36,9 @@ class _DrawerPageState extends State<DrawerPage> {
   @override
   void initState() {
     _box.read('avatar');
+    _box.read('name');
+
     isSwitchedPush = _box.read('push') == '1';
-
-    final lang = GetStorage().read('app_lang');
-
-    if (lang != null) {
-      if (lang == 'kz') {
-        selected = true;
-      } else {
-        selected = false;
-      }
-    }
 
     super.initState();
   }
@@ -74,7 +66,7 @@ class _DrawerPageState extends State<DrawerPage> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (_box.read('name') == 'Не авторизированный') {
                         GetStorage().remove('token');
                         BlocProvider.of<AppBloc>(context).add(const AppEvent.exiting());
@@ -83,24 +75,43 @@ class _DrawerPageState extends State<DrawerPage> {
                         //   MaterialPageRoute(builder: (context) => const ViewAuthRegisterPage(BackButton: true)),
                         // );
                       } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EditProfilePage(
-                                    name: _box.read('name'),
-                                    phone: _box.read('phone') ?? '',
-                                    gender: _box.read('gender') ?? '',
-                                    birthday: _box.read('birthday') ?? '',
-                                    country: _box.read('country') ?? '',
-                                    city: _box.read('city') ?? '',
-                                    street: _box.read('street') ?? '',
-                                    home: _box.read('home') ?? '',
-                                    porch: _box.read('porch') ?? '',
-                                    floor: _box.read('floor') ?? '',
-                                    room: _box.read('room') ?? '',
-                                    email: _box.read('email') ?? '',
-                                  )),
-                        );
+                        final data = await Get.to(EditProfilePage(
+                          name: _box.read('name'),
+                          phone: _box.read('phone') ?? '',
+                          gender: _box.read('gender') ?? '',
+                          birthday: _box.read('birthday') ?? '',
+                          country: _box.read('country') ?? '',
+                          city: _box.read('city') ?? '',
+                          street: _box.read('street') ?? '',
+                          home: _box.read('home') ?? '',
+                          porch: _box.read('porch') ?? '',
+                          floor: _box.read('floor') ?? '',
+                          room: _box.read('room') ?? '',
+                          email: _box.read('email') ?? '',
+                        ));
+
+                        if (data != null) {
+                          setState(() {});
+                        }
+
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => EditProfilePage(
+                        //             name: _box.read('name'),
+                        //             phone: _box.read('phone') ?? '',
+                        //             gender: _box.read('gender') ?? '',
+                        //             birthday: _box.read('birthday') ?? '',
+                        //             country: _box.read('country') ?? '',
+                        //             city: _box.read('city') ?? '',
+                        //             street: _box.read('street') ?? '',
+                        //             home: _box.read('home') ?? '',
+                        //             porch: _box.read('porch') ?? '',
+                        //             floor: _box.read('floor') ?? '',
+                        //             room: _box.read('room') ?? '',
+                        //             email: _box.read('email') ?? '',
+                        //           )),
+                        // );
                       }
                     },
                     child: Row(
