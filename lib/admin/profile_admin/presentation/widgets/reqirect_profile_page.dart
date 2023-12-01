@@ -27,6 +27,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   final ImagePicker _picker = ImagePicker();
 
   bool change = false;
+  bool typeOrganization = false;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -36,6 +37,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   TextEditingController cityController = TextEditingController();
   TextEditingController streetController = TextEditingController();
   TextEditingController homeController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController shopNameController = TextEditingController();
   TextEditingController iinController = TextEditingController();
@@ -88,6 +90,9 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     if (_box.read('seller_check') != null && _box.read('seller_check') != 'null') {
       checkController.text = _box.read('seller_check') ?? '99';
     }
+    if (_box.read('seller_type_organization') != null && _box.read('seller_type_organization') != 'null') {
+      typeOrganization = _box.read('seller_type_organization') == 'ИП' ? false : true;
+    }
 
     super.initState();
   }
@@ -97,10 +102,10 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     final maskFormatter = MaskTextInputFormatter(mask: '+#(###)-###-##-##');
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.kBackgroundColor,
+      backgroundColor: AppColors.kWhite,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.kWhite,
         elevation: 0,
         centerTitle: true,
         title: const Text(
@@ -146,7 +151,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                 }
               },
               child: CircleAvatar(
-                backgroundColor: Colors.white,
+                backgroundColor: AppColors.kGray200,
                 backgroundImage: NetworkImage('http://185.116.193.73/storage/${GetStorage().read('seller_image')}'),
                 radius: 34,
                 child: Align(
@@ -167,7 +172,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
             height: 10,
           ),
           const Divider(
-            color: AppColors.kGray700,
+            color: AppColors.kGray200,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -183,7 +188,13 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                 Container(
                   //  height: MediaQuery.of(context).size.height * 0.5,
 
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      width: 0.1,
+                    ),
+                  ),
                   child: Column(
                     // scrollDirection: Axis.vertical,
                     // shrinkWrap: false,
@@ -191,8 +202,8 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                       ListTile(
                         leading: Image.asset(
                           'assets/icons/company.png',
-                          height: 24,
-                          width: 24,
+                          height: 20,
+                          width: 20,
                         ),
                         title: TextField(
                           controller: shopNameController,
@@ -210,6 +221,80 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                         //   height: 24,
                         //   width: 24,
                         // ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Image.asset(
+                            'assets/icons/organization.png',
+                            height: 36,
+                            width: 36,
+                          ),
+                          // const SizedBox(
+                          //   width: 10,
+                          // ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              // border: Border.all(width: 0.2, color: Colors.grey)
+                            ),
+                            width: 130,
+                            height: 47,
+                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                              const Text(
+                                'ИП',
+                                textAlign: TextAlign.center,
+                              ),
+                              Checkbox(
+                                shape: const CircleBorder(),
+                                value: !typeOrganization,
+                                activeColor: AppColors.kPrimaryColor,
+                                onChanged: ((value) {
+                                  typeOrganization = !typeOrganization;
+                                  setState(() {});
+                                }),
+                              ),
+                            ]),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                              // border: Border.all(width: 0.2, color: Colors.grey),
+                            ),
+                            width: 130,
+                            height: 47,
+                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                              const Text(
+                                'OOO',
+                                textAlign: TextAlign.center,
+                              ),
+                              Checkbox(
+                                value: typeOrganization,
+                                shape: const CircleBorder(),
+                                activeColor: AppColors.kPrimaryColor,
+                                onChanged: ((value) {
+                                  typeOrganization = !typeOrganization;
+                                  setState(() {});
+                                }),
+                              ),
+                            ]),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       ListTile(
                         leading: SvgPicture.asset(
@@ -313,7 +398,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           setState(() {});
                         },
                         child: ListTile(
-                          horizontalTitleGap: 0,
+                          horizontalTitleGap: 10,
                           leading: SvgPicture.asset(
                             'assets/icons/country.svg',
                             height: 24,
@@ -350,7 +435,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           setState(() {});
                         },
                         child: ListTile(
-                          horizontalTitleGap: 0,
+                          horizontalTitleGap: 10,
                           leading: SvgPicture.asset(
                             'assets/icons/location.svg',
                             height: 24,
@@ -379,13 +464,19 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           // ),
                         ),
                       ),
-                      const Text(
-                        'Ваши товары будут показаны для этого города или региона *',
-                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Colors.grey),
-                        textAlign: TextAlign.left,
+                      Container(
+                        alignment: Alignment.center,
+                        height: 42,
+                        color: const Color(
+                          0xff1DC4CF,
+                        ).withOpacity(0.1),
+                        child: const Text(
+                          'Ваши товары будут показаны для этого города или региона *',
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.black),
+                        ),
                       ),
                       ListTile(
-                        horizontalTitleGap: 0,
+                        horizontalTitleGap: 10,
                         leading: SvgPicture.asset(
                           'assets/icons/street.svg',
                           height: 24,
@@ -409,7 +500,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                         // ),
                       ),
                       ListTile(
-                        horizontalTitleGap: 0,
+                        horizontalTitleGap: 10,
                         leading: SvgPicture.asset(
                           'assets/icons/Route.svg',
                           height: 24,
@@ -420,6 +511,30 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Дом',
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              // borderRadius: BorderRadius.circular(3),
+                            ),
+                          ),
+                        ),
+                        // trailing: SvgPicture.asset(
+                        //   'assets/icons/delete_circle.svg',
+                        //   height: 24,
+                        //   width: 24,
+                        // ),
+                      ),
+                      ListTile(
+                        horizontalTitleGap: 10,
+                        leading: SvgPicture.asset(
+                          'assets/icons/Route.svg',
+                          height: 24,
+                          width: 24,
+                        ),
+                        title: TextField(
+                          controller: addressController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Адрес',
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
                               // borderRadius: BorderRadius.circular(3),
@@ -501,7 +616,9 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                 iinController.text,
                 checkController.text,
                 emailController.text,
-                '');
+                '',
+                typeOrganization,
+                addressController.text);
 
             Get.back(result: 'ok');
           },

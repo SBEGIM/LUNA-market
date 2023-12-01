@@ -1615,74 +1615,78 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           const SizedBox(
             height: 10,
           ),
-          Container(
-            // padding: const EdgeInsets.all(16),
-            color: Colors.white,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
+
+          widget.product.characteristics?.length != 0
+              ? Container(
+                  // padding: const EdgeInsets.all(16),
+                  color: Colors.white,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Характеристики',
-                        style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w700),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Характеристики',
+                              style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w700),
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            SizedBox(
+                              height: (widget.product.characteristics?.length ?? 0) * 20,
+                              child: ListView.builder(
+                                  itemCount: widget.product.characteristics?.length ?? 0,
+                                  itemBuilder: (context, index) {
+                                    return Text(
+                                      '${widget.product.characteristics![index].name}: ${widget.product.characteristics![index].value}',
+                                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(
-                        height: 12,
+                      const Divider(
+                        height: 0,
+                        color: AppColors.kGray400,
                       ),
-                      SizedBox(
-                        height: (widget.product.characteristics?.length ?? 0) * 20,
-                        child: ListView.builder(
-                            itemCount: widget.product.characteristics?.length ?? 0,
-                            itemBuilder: (context, index) {
-                              return Text(
-                                '${widget.product.characteristics![index].name}: ${widget.product.characteristics![index].value}',
-                                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                              );
-                            }),
-                      ),
+                      (widget.product.characteristics?.length ?? 0) >= 5
+                          ? Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SpecificationsPage(product: widget.product)),
+                                  );
+                                  // SpecificationsPage
+                                },
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Подробнее',
+                                      style: TextStyle(
+                                          color: AppColors.kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w500),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: AppColors.kPrimaryColor,
+                                      size: 14,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          : const SizedBox()
                     ],
                   ),
-                ),
-                const Divider(
-                  height: 0,
-                  color: AppColors.kGray400,
-                ),
-                (widget.product.characteristics?.length ?? 0) >= 5
-                    ? Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => SpecificationsPage(product: widget.product)),
-                            );
-                            // SpecificationsPage
-                          },
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Подробнее',
-                                style: TextStyle(
-                                    color: AppColors.kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w500),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                color: AppColors.kPrimaryColor,
-                                size: 14,
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    : const SizedBox()
-              ],
-            ),
-          ),
+                )
+              : const SizedBox(),
           const SizedBox(
             height: 10,
           ),
@@ -1699,10 +1703,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           'Отзывы',
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                         ),
-                        Text(
-                          'Читать все',
-                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
-                        )
+                        // Text(
+                        //   'Читать все',
+                        //   style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
+                        // )
                       ],
                     ),
                   ),

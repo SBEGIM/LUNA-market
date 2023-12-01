@@ -5,6 +5,8 @@ class TapeModel {
     String? name,
     String? catName,
     int? price,
+    int? count,
+    int? preOrder,
     String? description,
     int? compound,
     int? point,
@@ -22,6 +24,8 @@ class TapeModel {
     _tapeId = tapeId;
     _name = name;
     _catName = catName;
+    _count = count;
+    _preOrder = preOrder;
     _price = price;
     _description = description;
     _compound = compound;
@@ -43,6 +47,8 @@ class TapeModel {
     String? name,
     String? catName,
     int? price,
+    int? count,
+    int? preOrder,
     String? description,
     int? compound,
     int? point,
@@ -62,6 +68,8 @@ class TapeModel {
       name: name ?? this.name,
       catName: catName ?? this.catName,
       price: price ?? this.price,
+      count: count ?? this.count,
+      preOrder: preOrder ?? this.preOrder,
       description: description ?? this.description,
       compound: compound ?? this.compound,
       point: point ?? this.point,
@@ -82,6 +90,9 @@ class TapeModel {
     _name = json['name'];
     _catName = json['cat_name'];
     _price = json['price'];
+    _count = json['count'];
+    _preOrder = json['pre_order'];
+    _price = json['price'];
     _description = json['description'];
     _compound = json['compound'];
     _point = json['point'];
@@ -100,6 +111,8 @@ class TapeModel {
   String? _name;
   String? _catName;
   int? _price;
+  int? _count;
+  int? _preOrder;
   String? _description;
   int? _compound;
   int? _point;
@@ -118,6 +131,8 @@ class TapeModel {
   String? get name => _name;
   String? get catName => _catName;
   int? get price => _price;
+  int? get count => _count;
+  int? get preOrder => _preOrder;
   String? get description => _description;
   int? get compound => _compound;
   int? get point => _point;
@@ -137,6 +152,8 @@ class TapeModel {
     map['tape_id'] = _tapeId;
     map['name'] = _name;
     map['cat_name'] = _catName;
+    map['count'] = _count;
+    map['preOrder'] = _preOrder;
     map['price'] = _price;
     map['description'] = _description;
     map['compound'] = _compound;

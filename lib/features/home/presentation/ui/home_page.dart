@@ -253,7 +253,7 @@ class _HomePageState extends State<HomePage> {
                                   shrinkWrap: true,
                                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: state.productModel.length >= 2 ? 2 : 1,
-                                      childAspectRatio: 1.5,
+                                      childAspectRatio: 1.8,
                                       crossAxisSpacing: 20,
                                       mainAxisSpacing: 2),
                                   itemCount: state.productModel.length >= 8 ? 8 : state.productModel.length,
@@ -1080,7 +1080,7 @@ class _PopularShopsState extends State<PopularShops> {
                         shrinkWrap: true,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3, childAspectRatio: 0.65, crossAxisSpacing: 10, mainAxisSpacing: 10),
-                        itemCount: state.popularShops.length >= 6 ? 9 : state.popularShops.length,
+                        itemCount: state.popularShops.length >= 6 ? 6 : state.popularShops.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                               onTap: () {
@@ -1120,11 +1120,12 @@ class _PopularShopsState extends State<PopularShops> {
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(50),
                                               image: DecorationImage(
-                                                  image: state.popularShops[index].image != null
+                                                  image: state.popularShops.isEmpty
                                                       ? NetworkImage(
                                                           "http://185.116.193.73/storage/${state.popularShops[index].image!}",
                                                         )
-                                                      : const AssetImage('assets/icons/appIcon.png') as ImageProvider,
+                                                      : const AssetImage('assets/icons/shops&brands.png')
+                                                          as ImageProvider,
                                                   fit: BoxFit.fitWidth),
                                               color: const Color(0xFFF0F5F5)),
                                           // child: Image.network(
@@ -1178,7 +1179,7 @@ class _PopularShopsState extends State<PopularShops> {
                                         Container(
                                           margin: const EdgeInsets.only(top: 130, left: 4),
                                           alignment: Alignment.center,
-                                          child: Text(state.popularShops[index].name!,
+                                          child: Text(state.popularShops[index].name ?? '',
                                               style: AppTextStyles.categoryTextStyle),
                                         ),
                                       ],

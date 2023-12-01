@@ -24,9 +24,11 @@ class ProfileEditAdminRepository {
           String? iin,
           String? check,
           String? email,
-          String? card) =>
+          String? card,
+          bool? typeOrganization,
+          String? address) =>
       _profileEditAdminToApi.edit(name, phone, logo, password_new, password_old, country, city, home, street, shopName,
-          iin, check, email, card);
+          iin, check, email, card, typeOrganization, address);
 
   Future<void> code(int? code) => _profileEditAdminToApi.code(code);
 }
@@ -35,21 +37,22 @@ class ProfileEditAdminToApi {
   final _box = GetStorage();
 
   Future<void> edit(
-    String? name,
-    String? phone,
-    String? logo,
-    String? password_new,
-    String? password_old,
-    String? country,
-    String? city,
-    String? home,
-    String? street,
-    String? shopName,
-    String? iin,
-    String? check,
-    String? email,
-    String? card,
-  ) async {
+      String? name,
+      String? phone,
+      String? logo,
+      String? password_new,
+      String? password_old,
+      String? country,
+      String? city,
+      String? home,
+      String? street,
+      String? shopName,
+      String? iin,
+      String? check,
+      String? email,
+      String? card,
+      bool? typeOrganization,
+      String? address) async {
     // seller_name = _box.read('seller_name').toString();
     final token = _box.read('seller_token').toString();
 
@@ -64,10 +67,12 @@ class ProfileEditAdminToApi {
       'country': country ?? '',
       'city': city ?? '',
       'home': home ?? '',
+      'address': address ?? '',
       'street': street ?? '',
       'iin': iin ?? '',
       'check': check ?? '',
-      'card': card ?? ''
+      'card': card ?? '',
+      'type_organization': typeOrganization != null ? (typeOrganization == true ? 'ТОО' : 'ИП') : '',
     };
 
     final header = {"Authorization": "Bearer $token"};
@@ -99,11 +104,13 @@ class ProfileEditAdminToApi {
     _box.write('seller_country', data['country'].toString());
     _box.write('seller_city', data['city'].toString());
     _box.write('seller_home', data['home'].toString());
+    _box.write('seller_address', data['seller_address'].toString());
     _box.write('seller_street', data['street'].toString());
     _box.write('seller_iin', data['iin'].toString());
     _box.write('seller_check', data['check'].toString());
     _box.write('seller_card', data['card'].toString());
     _box.write('seller_userName', data['user_name'].toString());
+    _box.write('seller_type_organization', data['type_organization'].toString());
   }
 
   Future<void> code(int? code) async {

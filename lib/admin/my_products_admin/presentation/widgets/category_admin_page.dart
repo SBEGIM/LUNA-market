@@ -106,19 +106,47 @@ class _CategoryAdminPageState extends State<CategoryAdminPage> {
                                     title: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          state.cats[index].name.toString(),
-                                          style: const TextStyle(
-                                              color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              state.cats[index].name.toString(),
+                                              style: const TextStyle(
+                                                  color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                                            ),
+                                            Row(children: [
+                                              Text(
+                                                '${state.cats[index].bonus ?? 0}%',
+                                                style: const TextStyle(
+                                                    color: Colors.red, fontSize: 12, fontWeight: FontWeight.w300),
+                                              ),
+                                              const SizedBox(width: 5),
+                                              const Text(
+                                                'комиссий',
+                                                style: TextStyle(
+                                                    color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w300),
+                                              ),
+                                            ]),
+                                          ],
                                         ),
                                         const SizedBox(
                                           width: 8,
                                         ),
-                                        Text(
-                                          '${state.cats[index].bonus ?? 0}%',
-                                          style: const TextStyle(
-                                              color: Colors.red, fontSize: 16, fontWeight: FontWeight.w400),
-                                        ),
+                                        // Column(
+                                        //   children: [
+                                        //     Text(
+                                        //       '${state.cats[index].bonus ?? 0}%',
+                                        //       style: const TextStyle(
+                                        //           color: Colors.red, fontSize: 16, fontWeight: FontWeight.w400),
+                                        //     ),
+                                        //     Text(
+                                        //       'комиссия',
+                                        //       style: const TextStyle(
+                                        //           color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w400),
+                                        //     ),
+                                        //   ],
+                                        // ),
                                       ],
                                     ),
                                     trailing: _selectedIndex == index

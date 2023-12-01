@@ -11,10 +11,11 @@ class EditBloggerCubit extends Cubit<EditBloggerState> {
   EditBloggerCubit({required this.editBloggerRepository}) : super(InitState());
 
   Future<void> edit(String? name, String? nick, String phone, String? password, String? check, String? iin, avatar,
-      String? card) async {
+      String? card, String? email, String? socialNetwork) async {
     try {
       emit(LoadingState());
-      final data = await editBloggerRepository.edit(name, nick, phone, password, iin, check, avatar, card);
+      final data =
+          await editBloggerRepository.edit(name, nick, phone, password, iin, check, avatar, card, email, socialNetwork);
 
       if (data == 200) {
         emit(LoadedState());

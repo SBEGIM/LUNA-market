@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
+import 'package:haji_market/features/drawer/presentation/widgets/count_zero_dialog.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/tape_check_cubit.dart';
 import 'package:haji_market/features/tape/presentation/data/repository/tape_repo.dart';
 import 'package:video_player/video_player.dart';
@@ -23,6 +24,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 import '../../../chat/presentation/message.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart' as basCubit;
 import '../../../drawer/data/bloc/favorite_cubit.dart' as favCubit;
+import '../../../drawer/presentation/widgets/pre_order_dialog.dart';
 import '../data/bloc/tape_cubit.dart' as tapeCubit;
 import '../data/bloc/tape_state.dart' as tapeState;
 
@@ -1382,25 +1384,87 @@ class _inBasketsState extends State<inBaskets> {
         if (state is tapeState.LoadedState) {
           return GestureDetector(
             onTap: () {
-              state.tapeModel[widget.index].inBasket == false
-                  ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(widget.tape.id.toString(), '1', 0, '', '',
-                      blogger_id: widget.tape.blogger?.id.toString() ?? '0')
-                  : BlocProvider.of<basCubit.BasketCubit>(context).basketMinus(widget.tape.id.toString(), '1', 0);
+              if (widget.tape.count == 0 && widget.tape.preOrder == 1) {
+                showCupertinoModalPopup<void>(
+                    context: context,
+                    builder: (context) => PreOrderDialog(onYesTap: () {
+                          state.tapeModel[widget.index].inBasket == false
+                              ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(
+                                  widget.tape.id.toString(), '1', 0, '', '',
+                                  blogger_id: widget.tape.blogger?.id.toString() ?? '0')
+                              : BlocProvider.of<basCubit.BasketCubit>(context)
+                                  .basketMinus(widget.tape.id.toString(), '1', 0);
 
-              BlocProvider.of<tapeCubit.TapeCubit>(context).update(widget.tape, widget.index, widget.tape.inSubscribe,
-                  !state.tapeModel[widget.index].inBasket!, widget.tape.inFavorite, widget.tape.inReport,
-                  isBlogger: widget.isBlogger);
-              setState(
-                () {
-                  inBasket = !inBasket!;
-                },
-              );
+                          BlocProvider.of<tapeCubit.TapeCubit>(context).update(
+                              widget.tape,
+                              widget.index,
+                              widget.tape.inSubscribe,
+                              !state.tapeModel[widget.index].inBasket!,
+                              widget.tape.inFavorite,
+                              widget.tape.inReport,
+                              isBlogger: widget.isBlogger);
+                          setState(
+                            () {
+                              inBasket = !inBasket!;
+                            },
+                          );
+
+                          Get.back();
+                        }));
+              } else if (widget.tape.count == 0) {
+                showCupertinoModalPopup<void>(
+                    context: context,
+                    builder: (context) => CountZeroDialog(onYesTap: () {
+                          state.tapeModel[widget.index].inBasket == false
+                              ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(
+                                  widget.tape.id.toString(), '1', 0, '', '',
+                                  blogger_id: widget.tape.blogger?.id.toString() ?? '0')
+                              : BlocProvider.of<basCubit.BasketCubit>(context)
+                                  .basketMinus(widget.tape.id.toString(), '1', 0);
+
+                          BlocProvider.of<tapeCubit.TapeCubit>(context).update(
+                              widget.tape,
+                              widget.index,
+                              widget.tape.inSubscribe,
+                              !state.tapeModel[widget.index].inBasket!,
+                              widget.tape.inFavorite,
+                              widget.tape.inReport,
+                              isBlogger: widget.isBlogger);
+                          setState(
+                            () {
+                              inBasket = !inBasket!;
+                            },
+                          );
+                        }));
+              } else {
+                state.tapeModel[widget.index].inBasket == false
+                    ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(
+                        widget.tape.id.toString(), '1', 0, '', '',
+                        blogger_id: widget.tape.blogger?.id.toString() ?? '0')
+                    : BlocProvider.of<basCubit.BasketCubit>(context).basketMinus(widget.tape.id.toString(), '1', 0);
+
+                BlocProvider.of<tapeCubit.TapeCubit>(context).update(widget.tape, widget.index, widget.tape.inSubscribe,
+                    !state.tapeModel[widget.index].inBasket!, widget.tape.inFavorite, widget.tape.inReport,
+                    isBlogger: widget.isBlogger);
+                setState(
+                  () {
+                    inBasket = !inBasket!;
+                  },
+                );
+                Get.back();
+
+                // this.context.router.pushAndPopUntil(
+                //       const LauncherRoute(children: [BasketRoute()]),
+                //       predicate: (route) => false,
+                //     );
+              }
             },
             child: SvgPicture.asset(
               state.tapeModel[widget.index].inBasket != true
                   ? 'assets/icons/shop_cart.svg'
                   : 'assets/icons/shop_cart_white.svg',
-              height: 30,
+
+              height: state.tapeModel[widget.index].inBasket != true ? 30 : 25,
               //  color: inBasket == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
             ),
           );
@@ -1423,7 +1487,7 @@ class _inBasketsState extends State<inBaskets> {
             },
             child: SvgPicture.asset(
               inBasket != true ? 'assets/icons/shop_cart.svg' : 'assets/icons/shop_cart_white.svg',
-              height: 30,
+              height: inBasket != true ? 30 : 25,
               //  color: inBasket == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
             ),
           );

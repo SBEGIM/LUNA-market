@@ -159,7 +159,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                         return GestureDetector(
                             onTap: () {
                               Get.to(() => ShopProductsBloggerPage(
-                                    title: state.popularShops[index].name!,
+                                    title: state.popularShops[index].name ?? '',
                                     id: state.popularShops[index].id!,
                                   ));
                             },
@@ -216,7 +216,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                                   ),
                                   Container(
                                     alignment: Alignment.center,
-                                    child: Text(state.popularShops[index].name!,
+                                    child: Text(state.popularShops[index].name ?? '',
                                         textAlign: TextAlign.center, style: AppTextStyles.categoryTextStyle),
                                   ),
                                   // Flexible(

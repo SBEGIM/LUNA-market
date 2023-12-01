@@ -26,6 +26,8 @@ class CoopRequestPage extends StatefulWidget {
 
 class _CoopRequestPageState extends State<CoopRequestPage> {
   bool isChecked = false;
+  bool typeOrganization = false;
+
   Cats cats = Cats(id: 0, name: 'Выберите категорию');
 
   TextEditingController iinController = TextEditingController();
@@ -70,6 +72,81 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
             const Text(
               'Укажите данные Вашего бизнеса',
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: AppColors.kGray900),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Row(
+              children: [
+                Text(
+                  'Выберите тип организаций ',
+                  style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
+                ),
+                Text(
+                  '*',
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Colors.red),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  width: 168,
+                  height: 47,
+                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    const Text(
+                      'ИП',
+                      textAlign: TextAlign.center,
+                    ),
+                    Checkbox(
+                      shape: const CircleBorder(),
+                      value: !typeOrganization,
+                      activeColor: AppColors.kPrimaryColor,
+                      onChanged: ((value) {
+                        typeOrganization = !typeOrganization;
+                        setState(() {});
+                      }),
+                    ),
+                  ]),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  width: 168,
+                  height: 47,
+                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    const Text(
+                      'OОО',
+                      textAlign: TextAlign.center,
+                    ),
+                    Checkbox(
+                      value: typeOrganization,
+                      shape: const CircleBorder(),
+                      activeColor: AppColors.kPrimaryColor,
+                      onChanged: ((value) {
+                        typeOrganization = !typeOrganization;
+                        setState(() {});
+                      }),
+                    ),
+                  ]),
+                ),
+              ],
             ),
             const SizedBox(
               height: 10,
@@ -223,7 +300,8 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                     password: passwordController.text,
                     iin: iinController.text,
                     userName: userNameController.text,
-                    check: checkController.text);
+                    check: checkController.text,
+                    typeOrganization: typeOrganization);
 
                 await BlocProvider.of<RegisterAdminCubit>(context).register(registerDto);
                 if (!mounted) return;

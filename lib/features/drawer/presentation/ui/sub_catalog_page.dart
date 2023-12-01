@@ -143,9 +143,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
 
                               GetStorage().write('subCatFilterId', [state.cats[index].id].toString());
                               GetStorage().remove('shopFilterId');
-                              context.router.push(ProductsRoute(
-                                cats: state.cats[index],
-                              ));
+                              context.router.push(ProductsRoute(cats: state.cats[index], subCats: state.cats[index]));
                               // Get.to(() => ProductsPage(
                               //       cats: state.cats[index],
                               //     ));

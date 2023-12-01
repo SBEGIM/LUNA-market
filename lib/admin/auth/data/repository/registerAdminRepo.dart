@@ -48,6 +48,7 @@ class RegisterToApi {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'device_token': deviceToken.toString(),
       'device_type': deviceType,
+      'type_organization': register.typeOrganization == false ? 'ИП' : 'ТОО',
     };
 
     final request = http.MultipartRequest(

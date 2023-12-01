@@ -149,8 +149,8 @@ class _AdminCardPageState extends State<AdminCardPage> {
         padding: const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
         child: InkWell(
           onTap: () async {
-            await BlocProvider.of<ProfileEditAdminCubit>(context)
-                .edit('', '', "", '', '', '', '', '', '', '', '', checkController.text, '', cardController.text);
+            await BlocProvider.of<ProfileEditAdminCubit>(context).edit(
+                '', '', "", '', '', '', '', '', '', '', '', checkController.text, '', cardController.text, null, '');
             // print('object');
             //  final edit = BlocProvider.of<EditAdminCubit>(context);
             // await edit.edit('', '', '', '', checkController.text, '', null);

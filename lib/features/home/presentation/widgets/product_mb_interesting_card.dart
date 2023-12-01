@@ -44,7 +44,6 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
       decoration: BoxDecoration(color: const Color.fromRGBO(250, 250, 250, 1), borderRadius: BorderRadius.circular(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
           Stack(
             children: [

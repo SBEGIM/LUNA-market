@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +9,7 @@ import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart' as productAdCubit;
 import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart' as productAdState;
+import 'package:haji_market/features/drawer/presentation/widgets/count_zero_dialog.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../drawer/data/bloc/basket_cubit.dart';
@@ -662,27 +664,33 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                BlocProvider.of<BasketCubit>(context)
-                                    .basketAdd(widget.basketProducts.product!.id.toString(), '1', 0, '', '');
-                                setState(() {
-                                  basketCount++;
-                                  basketPrice = (basketPrice +
-                                      ((widget.basketProducts.product!.price!.toInt() -
-                                          (widget.basketProducts.product!.price!.toInt() *
-                                                  (widget.basketProducts.product!.compound!.toInt() / 100))
-                                              .toInt())));
-                                });
+                                if ((widget.basketProducts.product?.count ?? 0) <= basketCount) {
+                                  showCupertinoModalPopup<void>(
+                                      context: context, builder: (context) => CountZeroDialog(onYesTap: () {}));
+                                  return;
+                                } else {
+                                  BlocProvider.of<BasketCubit>(context)
+                                      .basketAdd(widget.basketProducts.product!.id.toString(), '1', 0, '', '');
+                                  setState(() {
+                                    basketCount++;
+                                    basketPrice = (basketPrice +
+                                        ((widget.basketProducts.product!.price!.toInt() -
+                                            (widget.basketProducts.product!.price!.toInt() *
+                                                    (widget.basketProducts.product!.compound!.toInt() / 100))
+                                                .toInt())));
+                                  });
 
-                                int bottomPrice = GetStorage().read('bottomPrice');
-                                int bottomCount = GetStorage().read('bottomCount');
-                                bottomCount++;
+                                  int bottomPrice = GetStorage().read('bottomPrice');
+                                  int bottomCount = GetStorage().read('bottomCount');
+                                  bottomCount++;
 
-                                GetStorage().write('bottomCount', bottomCount);
-                                bottomPrice += ((widget.basketProducts.product!.price!.toInt() -
-                                    (widget.basketProducts.product!.price!.toInt() *
-                                            (widget.basketProducts.product!.compound!.toInt() / 100))
-                                        .toInt()));
-                                GetStorage().write('bottomPrice', bottomPrice);
+                                  GetStorage().write('bottomCount', bottomCount);
+                                  bottomPrice += ((widget.basketProducts.product!.price!.toInt() -
+                                      (widget.basketProducts.product!.price!.toInt() *
+                                              (widget.basketProducts.product!.compound!.toInt() / 100))
+                                          .toInt()));
+                                  GetStorage().write('bottomPrice', bottomPrice);
+                                }
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(4),

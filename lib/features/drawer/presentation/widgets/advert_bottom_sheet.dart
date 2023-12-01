@@ -7,6 +7,7 @@ import 'package:haji_market/core/common/constants.dart';
 class AdvertBottomSheet extends StatelessWidget {
   String? url;
   String? description;
+
   AdvertBottomSheet({
     this.url,
     this.description,
@@ -78,7 +79,7 @@ class AdvertBottomSheet extends StatelessWidget {
                         style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.kGray1000),
                       ),
                       Text(
-                        ' ${description != 'null' ? description : ''}',
+                        '${description != 'null' ? description : ''}',
                         style: const TextStyle(fontSize: 12, color: Colors.grey),
                       )
                     ],

@@ -7,15 +7,16 @@ class RegisterAdminDTO {
   final String userName;
   final String catName;
   final String check;
+  final bool typeOrganization;
 
-  const RegisterAdminDTO({
-    required this.iin,
-    required this.name,
-    required this.email,
-    required this.phone,
-    required this.password,
-    required this.userName,
-    required this.catName,
-    required this.check,
-  });
+  const RegisterAdminDTO(
+      {required this.iin,
+      required this.name,
+      required this.email,
+      required this.phone,
+      required this.password,
+      required this.userName,
+      required this.catName,
+      required this.check,
+      required this.typeOrganization});
 }

@@ -119,6 +119,8 @@ class Product {
     int? shopId,
     String? name,
     int? price,
+    int? count,
+    int? preOrder,
     int? compound,
     String? fulfillment,
     int? courierPrice,
@@ -127,6 +129,8 @@ class Product {
     _shopId = shopId;
     _name = name;
     _price = price;
+    _count = count;
+    _preOrder = preOrder;
     _compound = compound;
     _fulfillment = fulfillment;
     _courierPrice = courierPrice;
@@ -137,6 +141,8 @@ class Product {
     _shopId = json['shop_id'];
     _name = json['name'];
     _price = json['price'];
+    _count = json['count'];
+    _preOrder = json['pre_order'];
     _compound = json['compound'];
     _fulfillment = json['fulfillment'];
     _courierPrice = json['courier_price'];
@@ -145,6 +151,8 @@ class Product {
   int? _shopId;
   String? _name;
   int? _price;
+  int? _count;
+  int? _preOrder;
   int? _compound;
   String? _fulfillment;
   int? _courierPrice;
@@ -153,6 +161,8 @@ class Product {
   int? get shopId => _shopId;
   String? get name => _name;
   int? get price => _price;
+  int? get count => _count;
+  int? get preOrder => _preOrder;
   int? get compound => _compound;
   String? get fulfillment => _fulfillment;
   int? get courierPrice => _courierPrice;
@@ -163,6 +173,8 @@ class Product {
     map['shop_id'] = _shopId;
     map['name'] = _name;
     map['price'] = _price;
+    map['count'] = _count;
+    map['pre_order'] = _preOrder;
     map['compound'] = _compound;
     map['fulfillment'] = _fulfillment;
     map['courier_price'] = _courierPrice;

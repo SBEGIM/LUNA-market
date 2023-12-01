@@ -25,11 +25,13 @@ class ProfileEditAdminCubit extends Cubit<ProfileEditAdminState> {
     String? check,
     String? email,
     String? card,
+    bool? typeOrganization,
+    String? address,
   ) async {
     try {
       //  emit(LoadingState());
       await profileEditAdminRepository.edit(name, phone, logo, password_new, password_old, country, city, home, street,
-          shopName, iin, check, email, card);
+          shopName, iin, check, email, card, typeOrganization, address);
 
       // if (data != null) {
       //  emit(LoadedState(loadedProfile: data));

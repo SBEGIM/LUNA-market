@@ -6,7 +6,6 @@ import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/advert_bottom_sheet.dart';
-
 import '../../../../contract_of_sale.dart';
 import '../../../drawer/data/bloc/favorite_cubit.dart';
 
@@ -42,7 +41,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: 152,
+      width: 144,
       height: 250,
       margin: const EdgeInsets.only(right: 8.0, top: 10, left: 8.0),
       decoration: BoxDecoration(color: const Color.fromRGBO(250, 250, 250, 1), borderRadius: BorderRadius.circular(10)),
@@ -53,8 +52,8 @@ class _ProductAdCardState extends State<ProductAdCard> {
             children: [
               Container(
                 padding: const EdgeInsets.all(4),
-                //height: 160,
-                // width: 160,
+                height: 160,
+                width: 144,
                 alignment: Alignment.center,
                 child: Image.network(
                   widget.product.path!.isNotEmpty ? "http://185.116.193.73/storage/${widget.product.path!.first}" : '',
@@ -71,7 +70,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 160,
+                      width: 144,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -213,7 +212,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                       decoration:
                           const BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Text(
-                        '${widget.product.price!.toInt() ~/ 3}',
+                        '${((widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100.toInt() / 3).round()}',
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(fontSize: 10, color: Color(0xFF19191A), fontWeight: FontWeight.w500),
                       ),
@@ -226,7 +225,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 14, color: AppColors.kGray300, fontWeight: FontWeight.w400),
                     ),
-                    const SizedBox(width: 30),
+                    const SizedBox(width: 10),
                     GestureDetector(
                       onTap: () async {
                         await showModalBottomSheet(
@@ -238,7 +237,9 @@ class _ProductAdCardState extends State<ProductAdCard> {
                           ),
                           isDismissible: true,
                           builder: (context) {
-                            return AdvertBottomSheet();
+                            return AdvertBottomSheet(
+                                description:
+                                    "${widget.product.shop?.typeOrganization ?? 'ИП'}: ${widget.product.shop!.name}");
                           },
                         );
                       },

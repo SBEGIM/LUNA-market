@@ -10,15 +10,15 @@ class EditBloggerRepository {
   final EditToApi _editToApi = EditToApi();
 
   Future<dynamic> edit(String? name, String? nick, String phone, String? password, String? iin, String? check, avatar,
-          String? card) =>
-      _editToApi.edit(name, nick, phone, password, iin, check, avatar, card);
+          String? card, String? email, String? socialNetwork) =>
+      _editToApi.edit(name, nick, phone, password, iin, check, avatar, card, email, socialNetwork);
 }
 
 class EditToApi {
   final _box = GetStorage();
 
   Future<dynamic> edit(String? name, String? nick, String phone, String? password, String? iin, String? check, avatar,
-      String? card) async {
+      String? card, String? email, String? socialNetwork) async {
     String result = '';
     if (phone.isNotEmpty) {
       result = phone.substring(2);
@@ -33,6 +33,8 @@ class EditToApi {
       'nick_name': nick ?? '',
       'invoice': check ?? '',
       'card': card ?? '',
+      'email': email ?? '',
+      'social_network': socialNetwork ?? ''
     };
 
     final header = {"Authorization": "Bearer ${_box.read('blogger_token').toString()}"};
@@ -66,6 +68,8 @@ class EditToApi {
       _box.write('blogger_avatar', data['avatar'].toString());
       _box.write('blogger_invoice', data['invoice'].toString());
       _box.write('blogger_card', data['card'].toString());
+      _box.write('blogger_social_network', data['social_network'].toString());
+      _box.write('blogger_email', data['email'].toString());
 
       // _box.write('card', data['user']['card'].toString());
     }

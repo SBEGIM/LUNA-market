@@ -25,6 +25,8 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
   final iinController = TextEditingController();
+  final socialNetworkController = TextEditingController();
+  final emailController = TextEditingController();
   final reapatPasswordController = TextEditingController();
   final checkController = TextEditingController();
 
@@ -48,7 +50,8 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     nameController.text = GetStorage().read('blogger_name') ?? '';
     nickNameController.text = GetStorage().read('blogger_nick_name') ?? '';
     iinController.text = GetStorage().read('blogger_iin') != 'null' ? (GetStorage().read('blogger_iin') ?? '') : '';
-
+    socialNetworkController.text = GetStorage().read('blogger_social_network') ?? '';
+    emailController.text = GetStorage().read('blogger_email') ?? '';
     checkController.text =
         GetStorage().read('blogger_invoice') != 'null' ? (GetStorage().read('blogger_invoice') ?? '') : '';
     // phoneController.text = GetStorage().read('blogger_phone') ?? '';
@@ -84,7 +87,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         }
       }, builder: (context, state) {
         if (state is InitState) {
-          return Column(
+          return ListView(
             children: [
               const SizedBox(
                 height: 10,
@@ -179,8 +182,8 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                             // ),
                           ),
                           ListTile(
-                            leading: SvgPicture.asset(
-                              'assets/icons/user.svg',
+                            leading: Image.asset(
+                              'assets/icons/company.png',
                               height: 24,
                               width: 24,
                             ),
@@ -260,6 +263,44 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           ),
                           ListTile(
                             leading: SvgPicture.asset(
+                              'assets/icons/street.svg',
+                              height: 24,
+                              width: 24,
+                            ),
+                            title: TextField(
+                              keyboardType: TextInputType.number,
+                              controller: socialNetworkController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Ссылка на соц сеть',
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  // borderRadius: BorderRadius.circular(3),
+                                ),
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            leading: Image.asset(
+                              'assets/icons/email.png',
+                              height: 24,
+                              width: 24,
+                            ),
+                            title: TextField(
+                              keyboardType: TextInputType.number,
+                              controller: emailController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Email',
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  // borderRadius: BorderRadius.circular(3),
+                                ),
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            leading: SvgPicture.asset(
                               'assets/icons/password.svg',
                               height: 24,
                               width: 24,
@@ -327,7 +368,9 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                   iinController.text,
                   checkController.text,
                   _image != null ? _image!.path : null,
-                  '');
+                  '',
+                  emailController.text,
+                  socialNetworkController.text);
             }
           },
           child: Container(

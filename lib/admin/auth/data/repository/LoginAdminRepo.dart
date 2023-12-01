@@ -42,6 +42,7 @@ class LoginToApi {
       _box.write('seller_check', data['check'].toString());
       _box.write('seller_partner', data['partner'].toString());
       _box.write('seller_userName', data['user_name'].toString());
+      _box.write('seller_type_organization', data['type_organization'].toString());
     }
     return response.statusCode;
   }

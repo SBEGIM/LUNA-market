@@ -151,7 +151,7 @@ class _BloggerCardPageState extends State<BloggerCardPage> {
           onTap: () async {
             // print('object');
             final edit = BlocProvider.of<EditBloggerCubit>(context);
-            await edit.edit('', '', '', '', checkController.text, '', null, cardController.text);
+            await edit.edit('', '', '', '', checkController.text, '', null, cardController.text, '', '');
 
             //Get.to(const BloggerNewCardPage());
             // GetStorage().write('blogger_invoice', checkController.text);

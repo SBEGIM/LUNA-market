@@ -241,6 +241,7 @@ abstract class _$AppRouter extends RootStackRouter {
           cats: args.cats,
           brandId: args.brandId,
           shopId: args.shopId,
+          subCats: args.subCats,
           key: args.key,
         ),
       );
@@ -1048,6 +1049,7 @@ class ProductsRoute extends PageRouteInfo<ProductsRouteArgs> {
     required Cats cats,
     int? brandId,
     String? shopId,
+    Cats? subCats,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
@@ -1056,6 +1058,7 @@ class ProductsRoute extends PageRouteInfo<ProductsRouteArgs> {
             cats: cats,
             brandId: brandId,
             shopId: shopId,
+            subCats: subCats,
             key: key,
           ),
           initialChildren: children,
@@ -1072,6 +1075,7 @@ class ProductsRouteArgs {
     required this.cats,
     this.brandId,
     this.shopId,
+    this.subCats,
     this.key,
   });
 
@@ -1081,11 +1085,13 @@ class ProductsRouteArgs {
 
   final String? shopId;
 
+  final Cats? subCats;
+
   final Key? key;
 
   @override
   String toString() {
-    return 'ProductsRouteArgs{cats: $cats, brandId: $brandId, shopId: $shopId, key: $key}';
+    return 'ProductsRouteArgs{cats: $cats, brandId: $brandId, shopId: $shopId, subCats: $subCats, key: $key}';
   }
 }
 
