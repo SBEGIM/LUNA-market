@@ -103,6 +103,15 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                             height: 70,
                             width: 70,
                           ),
+                          Container(
+                              height: 100,
+                              width: 100,
+                              padding: const EdgeInsets.all(8.0),
+                              alignment: Alignment.centerLeft,
+                              child: QrImageView(
+                                semanticsLabel: '${widget.basketOrder.id}',
+                                data: '${widget.basketOrder.id}',
+                              )),
                           const SizedBox(
                             width: 30,
                           ),
@@ -321,15 +330,14 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
             ),
             const SizedBox(height: 12),
             // Container(
-            //   height: 164,
-            //   width: 168,
-            //   padding: const EdgeInsets.all(8.0),
-            //   alignment: Alignment.centerLeft,
-            //   child: QrImage(
-            //     data: "${widget.basketOrder.id}",
-            //     version: QrVersions.auto,
-            //   ),
-            // ),
+            //     height: 164,
+            //     width: 168,
+            //     padding: const EdgeInsets.all(8.0),
+            //     alignment: Alignment.centerLeft,
+            //     child: QrImageView(
+            //       semanticsLabel: '${widget.basketOrder.id}',
+            //       data: '',
+            //     )),
           ]),
         ));
   }

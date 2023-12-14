@@ -170,32 +170,41 @@ class _DoneMyOrdersPageState extends State<DoneMyOrdersPage> {
                                   const SizedBox(
                                     height: 8,
                                   ),
-                                  ListView.builder(
-                                      shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: state.basketEndOrderModel[index].product!.length,
-                                      itemBuilder: (BuildContext context, int i) {
-                                        return Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              state.basketEndOrderModel[index].product![i].productName.toString(),
-                                              style: const TextStyle(
-                                                  color: AppColors.kGray750, fontSize: 14, fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              state.basketEndOrderModel[index].product![i].count.toString(),
-                                              style: const TextStyle(
-                                                  color: AppColors.kGray750, fontSize: 14, fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              state.basketEndOrderModel[index].product![i].price.toString(),
-                                              style: const TextStyle(
-                                                  color: AppColors.kGray750, fontSize: 14, fontWeight: FontWeight.w500),
-                                            )
-                                          ],
-                                        );
-                                      }),
+                                  SizedBox(
+                                    height: state.basketEndOrderModel[index].product!.length * 20,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: const NeverScrollableScrollPhysics(),
+                                        itemCount: state.basketEndOrderModel[index].product!.length,
+                                        itemBuilder: (BuildContext context, int i) {
+                                          return Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                state.basketEndOrderModel[index].product![i].productName.toString(),
+                                                style: const TextStyle(
+                                                    color: AppColors.kGray750,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
+                                              Text(
+                                                state.basketEndOrderModel[index].product![i].count.toString(),
+                                                style: const TextStyle(
+                                                    color: AppColors.kGray750,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
+                                              Text(
+                                                state.basketEndOrderModel[index].product![i].price.toString(),
+                                                style: const TextStyle(
+                                                    color: AppColors.kGray750,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500),
+                                              )
+                                            ],
+                                          );
+                                        }),
+                                  ),
                                   const SizedBox(
                                     height: 10,
                                   ),

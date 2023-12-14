@@ -240,8 +240,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                         SizedBox(
                           // width: 75,
                           child: Text(
-                            '$compoundPrice ₽ ',
-                            style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w500, fontSize: 16),
+                            '${(widget.product.price!.toInt() - (widget.product.price! / 100) * (widget.product.compound ?? 0)).toInt()} ₽ ',
+                            style: const TextStyle(color: Colors.red, fontSize: 16, fontWeight: FontWeight.w500),
                           ),
                         ),
                         Text(

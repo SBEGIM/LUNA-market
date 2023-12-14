@@ -21,7 +21,7 @@ class _ProductImagesState extends State<ProductImages> {
 
   @override
   void initState() {
-     if (widget.video != null) {
+    if (widget.video != null) {
       _controller = VideoPlayerController.network(
           // 'http://185.116.193.73/storage/${widget.product.path?.first ?? ''}'
           'http://185.116.193.73/storage/${widget.video}')
@@ -35,7 +35,7 @@ class _ProductImagesState extends State<ProductImages> {
 
         setState(() {});
       });
-            _controller2 = VideoPlayerController.network(
+      _controller2 = VideoPlayerController.network(
           // 'http://185.116.193.73/storage/${widget.product.path?.first ?? ''}'
           'http://185.116.193.73/storage/${widget.video}')
         ..initialize().then((_) {
@@ -71,8 +71,9 @@ class _ProductImagesState extends State<ProductImages> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          if (imageIndex  == (widget.images?.length ?? 0 ))
-            Container(    margin: const EdgeInsets.only(top: 24, left: 16, right: 16),
+          if (imageIndex == (widget.images?.length ?? 0))
+            Container(
+              margin: const EdgeInsets.only(top: 24, left: 16, right: 16),
               height: 343,
               width: 378,
               child: GestureDetector(
@@ -96,14 +97,14 @@ class _ProductImagesState extends State<ProductImages> {
                   // ),
                   icon
                       ? Positioned.fill(
-                        child: Center(
-                            child: SvgPicture.asset(
+                          child: Center(
+                              child: SvgPicture.asset(
                             'assets/icons/play_tape.svg',
                             height: 54,
                             width: 54,
                             color: const Color.fromRGBO(29, 196, 207, 1),
                           )),
-                      )
+                        )
                       : const SizedBox(),
                 ]),
               ),
@@ -115,7 +116,7 @@ class _ProductImagesState extends State<ProductImages> {
               width: 378,
               child: widget.images?.length != 0
                   ? Image.network("http://185.116.193.73/storage/${widget.images![imageIndex]}",
-                      fit: BoxFit.cover, errorBuilder: (context, error, stackTrace) => const ErrorImageWidget())
+                      fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => const ErrorImageWidget())
                   : Image.asset('assets/icons/no_data.png'),
             ),
           Container(
@@ -142,19 +143,20 @@ class _ProductImagesState extends State<ProductImages> {
                           Border.all(width: 0.3, color: imageIndex == index ? AppColors.kPrimaryColor : Colors.grey),
                     ),
                     //color: Colors.red,
-                    child: index==(widget.images?.length ?? 0)?
-                    VideoPlayer(_controller2!):
-                    
-                    Image.network(
-                      "http://185.116.193.73/storage/${widget.images![index]}",
-                      fit: BoxFit.cover,
-                    ),
+                    child: index == (widget.images?.length ?? 0)
+                        ? VideoPlayer(_controller2!)
+                        : Image.network(
+                            "http://185.116.193.73/storage/${widget.images![index]}",
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 );
               },
             ),
           ),
-         const SizedBox(height: 10,)
+          const SizedBox(
+            height: 10,
+          )
         ],
       ),
     );

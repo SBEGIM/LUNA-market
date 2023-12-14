@@ -31,10 +31,10 @@ class GridOptionsCategory extends StatelessWidget {
             // mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: 80,
+                height: 85,
                 //width: 128.05,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(4),
                     image: DecorationImage(
                       image: NetworkImage("http://185.116.193.73/storage/${layout.image}"),
                       fit: BoxFit.cover,
@@ -44,7 +44,7 @@ class GridOptionsCategory extends StatelessWidget {
               //   height: 13,
               // ),
               Container(
-                  height: 26,
+                  height: 44,
                   //  margin: const EdgeInsets.only(top: 69),
                   padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
                   // width: 128,

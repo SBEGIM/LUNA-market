@@ -172,32 +172,41 @@ class _AllMyOrdersRealFBSPageState extends State<AllMyOrdersRealFBSPage> {
                                   const SizedBox(
                                     height: 8,
                                   ),
-                                  ListView.builder(
-                                      shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: state.basketOrderRealFbsModel[index].product!.length,
-                                      itemBuilder: (BuildContext context, int i) {
-                                        return Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              state.basketOrderRealFbsModel[index].product![i].productName.toString(),
-                                              style: const TextStyle(
-                                                  color: AppColors.kGray750, fontSize: 14, fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              state.basketOrderRealFbsModel[index].product![i].count.toString(),
-                                              style: const TextStyle(
-                                                  color: AppColors.kGray750, fontSize: 14, fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              state.basketOrderRealFbsModel[index].product![i].price.toString(),
-                                              style: const TextStyle(
-                                                  color: AppColors.kGray750, fontSize: 14, fontWeight: FontWeight.w500),
-                                            )
-                                          ],
-                                        );
-                                      }),
+                                  SizedBox(
+                                    height: state.basketOrderRealFbsModel[index].product!.length * 20,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: const NeverScrollableScrollPhysics(),
+                                        itemCount: state.basketOrderRealFbsModel[index].product!.length,
+                                        itemBuilder: (BuildContext context, int i) {
+                                          return Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                state.basketOrderRealFbsModel[index].product![i].productName.toString(),
+                                                style: const TextStyle(
+                                                    color: AppColors.kGray750,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
+                                              Text(
+                                                state.basketOrderRealFbsModel[index].product![i].count.toString(),
+                                                style: const TextStyle(
+                                                    color: AppColors.kGray750,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
+                                              Text(
+                                                state.basketOrderRealFbsModel[index].product![i].price.toString(),
+                                                style: const TextStyle(
+                                                    color: AppColors.kGray750,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500),
+                                              )
+                                            ],
+                                          );
+                                        }),
+                                  ),
                                   const SizedBox(
                                     height: 10,
                                   ),

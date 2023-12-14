@@ -52,6 +52,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
   double procentPrice = 0;
   int compoundPrice = 0;
 
+  bool showText = false;
+
   //bool isvisible = false;
   bool inFavorite = false;
   List textDescrp = [];
@@ -210,6 +212,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           : Container(
                               margin: const EdgeInsets.only(top: 24, left: 8, right: 8),
                               decoration: BoxDecoration(
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               //color: Colors.red,
@@ -217,7 +220,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 height: 375,
                                 width: 400,
                                 "http://185.116.193.73/storage/${widget.product.path![imageIndex]}",
-                                fit: BoxFit.cover,
+                                fit: BoxFit.contain,
                                 errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
                                   height: 375,
                                   width: 400,
@@ -437,9 +440,14 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "${widget.product.name}",
-                      style: const TextStyle(fontSize: 16, color: AppColors.kGray900, fontWeight: FontWeight.w700),
+                    Container(
+                      padding: EdgeInsets.only(top: 6, bottom: 0),
+                      height: 55,
+                      width: 300,
+                      child: Text(
+                        "${widget.product.name}",
+                        style: const TextStyle(fontSize: 16, color: AppColors.kGray900, fontWeight: FontWeight.w700),
+                      ),
                     ),
                     IconButton(
                         onPressed: () async {
@@ -1687,6 +1695,55 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   ),
                 )
               : const SizedBox(),
+
+          widget.product.description != null
+              ? Expanded(
+                  flex: 2,
+                  // height: 100,
+                  // color: Colors.white,
+                  child: Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 8),
+                          child: const Text(
+                            'Описание',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          '${widget.product.description}',
+                          softWrap: showText == false ? true : false,
+                          maxLines: showText == false ? 4 : 40,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: AppColors.steelGray, fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(
+                          height: 14,
+                        ),
+                        const Divider(),
+                        GestureDetector(
+                          onTap: () {
+                            showText = !showText;
+                            setState(() {});
+                          },
+                          child: Text(
+                            showText == false ? 'Показать полностью' : 'Скрыть',
+                            style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 14),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              : const SizedBox(),
           const SizedBox(
             height: 10,
           ),
@@ -1701,7 +1758,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       children: [
                         Text(
                           'Отзывы',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                         ),
                         // Text(
                         //   'Читать все',

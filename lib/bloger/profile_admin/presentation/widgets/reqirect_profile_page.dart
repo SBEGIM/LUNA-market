@@ -48,6 +48,8 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   @override
   void initState() {
     nameController.text = GetStorage().read('blogger_name') ?? '';
+    phoneController.text = GetStorage().read('blogger_phone') ?? '';
+
     nickNameController.text = GetStorage().read('blogger_nick_name') ?? '';
     iinController.text = GetStorage().read('blogger_iin') != 'null' ? (GetStorage().read('blogger_iin') ?? '') : '';
     socialNetworkController.text = GetStorage().read('blogger_social_network') ?? '';

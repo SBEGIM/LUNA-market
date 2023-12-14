@@ -378,7 +378,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   Text(
                                     widget.basketOrder.product!.first.shopPhone != null ||
                                             widget.basketOrder.product!.first.shopPhone != ''
-                                        ? '+7${widget.basketOrder.product!.first.shopPhone}'
+                                        ? '${widget.basketOrder.product!.first.shopPhone}'
                                         : 'Неизвестен',
                                     style:
                                         const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
@@ -401,7 +401,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               },
                               child: Container(
                                 height: 30,
-                                width: 108,
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                // width: 108,
                                 decoration: BoxDecoration(
                                     color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(8)),
                                 alignment: Alignment.center,

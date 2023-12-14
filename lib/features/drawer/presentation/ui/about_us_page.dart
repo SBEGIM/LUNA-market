@@ -170,27 +170,27 @@ class _AboutUsPageState extends State<AboutUsPage> {
                   'Мы в соцсетях:',
                   style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.kGray900, fontSize: 16),
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Row(
-                  children: [
-                    const Text(
-                      'Telegram ',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kGray700),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    GestureDetector(
-                      onTap: () => launch("https://t.me/LunaMarke_t", forceSafariVC: false),
-                      child: const Text(
-                        'https://t.me/LunaMarke_t',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kPrimaryColor),
-                      ),
-                    ),
-                  ],
-                ),
+                // const SizedBox(
+                //   height: 8,
+                // ),
+                // Row(
+                //   children: [
+                //     const Text(
+                //       'Telegram ',
+                //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kGray700),
+                //     ),
+                //     const SizedBox(
+                //       width: 8,
+                //     ),
+                //     GestureDetector(
+                //       onTap: () => launch("https://t.me/LunaMarke_t", forceSafariVC: false),
+                //       child: const Text(
+                //         'https://t.me/LunaMarke_t',
+                //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kPrimaryColor),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 const SizedBox(
                   height: 8,
                 ),
@@ -277,7 +277,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                     //   width: 16,
                     // ),
                     GestureDetector(
-                        onTap: () => launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
+                        onTap: () => launch("https://t.me/LunaMarke_t", forceSafariVC: false),
                         child: SvgPicture.asset('assets/icons/telegram.svg')),
                     const SizedBox(
                       width: 16,

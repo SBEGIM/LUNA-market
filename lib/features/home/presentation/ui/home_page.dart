@@ -594,12 +594,12 @@ class _CatsHomePageState extends State<CatsHomePage> {
                       height: 16,
                     ),
                     SizedBox(
-                      height: 225,
+                      height: 266,
                       child: GridView.builder(
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, childAspectRatio: 90 / 80, crossAxisSpacing: 10, mainAxisSpacing: 8),
+                              crossAxisCount: 2, childAspectRatio: 90 / 80, crossAxisSpacing: 8, mainAxisSpacing: 8),
                           itemCount: state.cats.length,
                           itemBuilder: (BuildContext ctx, index) {
                             return GridOptionsCategory(
@@ -1084,7 +1084,7 @@ class _PopularShopsState extends State<PopularShops> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                               onTap: () {
-                                GetStorage().write('shopFilter', state.popularShops[index].name!);
+                                GetStorage().write('shopFilter', state.popularShops[index].name ?? '');
                                 // GetStorage().write('shopFilterId', state.popularShops[index].id);
 
                                 List<int> _selectedListSort = [];
@@ -1120,7 +1120,7 @@ class _PopularShopsState extends State<PopularShops> {
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(50),
                                               image: DecorationImage(
-                                                  image: state.popularShops.isEmpty
+                                                  image: state.popularShops[index].image != null
                                                       ? NetworkImage(
                                                           "http://185.116.193.73/storage/${state.popularShops[index].image!}",
                                                         )

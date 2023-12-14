@@ -36,6 +36,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
   int _selectIndex = -1;
   final int _SelectSecondIndex = -1;
   int _summBonus = 0;
+  int _total = 0;
 
   Function? summPrice;
 
@@ -214,6 +215,8 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                         scrollDirection: Axis.vertical,
                         itemCount: state.loadedProfile.length,
                         itemBuilder: (context, index) {
+                          _total = state.loadedProfile[index].total ?? 0;
+
                           return Container(
                             height: 80,
                             width: 343,
@@ -238,7 +241,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        state.loadedProfile[index].name.toString(),
+                                        state.loadedProfile[index].name ?? '',
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                             color: AppColors.kGray900, fontSize: 10, fontWeight: FontWeight.w400),
@@ -266,7 +269,8 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                                           Text('x${state.loadedProfile[index].count.toString()}',
                                               style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
                                           const SizedBox(width: 45),
-                                          Text('${state.loadedProfile[index].price.toString()} ₽',
+                                          Text(
+                                              '${(state.loadedProfile[index].price! * state.loadedProfile[index].count!)} ₽',
                                               style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
                                         ],
                                       )
@@ -303,6 +307,21 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   ),
                   Text('$_summBonus ₽', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
+                ],
+              ),
+            ),
+            Container(
+              height: 36,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Заработок за год',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                  ),
+                  Text('$_total ₽', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
                 ],
               ),
             )

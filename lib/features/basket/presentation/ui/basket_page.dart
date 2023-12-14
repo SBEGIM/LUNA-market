@@ -450,7 +450,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 193,
+              height: 200,
               padding: const EdgeInsets.only(left: 4, right: 16, top: 8, bottom: 8),
               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8), boxShadow: const [
                 BoxShadow(
@@ -539,10 +539,14 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                               const SizedBox(
                                 height: 8,
                               ),
-                              Text(
-                                '${widget.basketProducts.product!.name}',
-                                style: const TextStyle(
-                                    fontSize: 14, color: AppColors.kGray900, fontWeight: FontWeight.w400),
+                              SizedBox(
+                                width: 200,
+                                child: Text(
+                                  '${widget.basketProducts.product!.name}',
+                                  style: const TextStyle(
+                                      fontSize: 14, color: AppColors.kGray900, fontWeight: FontWeight.w400),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                               const SizedBox(
                                 height: 8,
