@@ -88,10 +88,12 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
           controller: screenshotController,
           child: ListView(children: [
             Container(
+              width: 300,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -141,170 +143,170 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Откуда',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
-                      ),
-                      Text(
-                        'Куда',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${widget.basketOrder.product!.first.shopName}',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                      ),
-                      Text(
-                        '${GetStorage().read('city')}',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          '${widget.basketOrder.product!.first.address}',
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                      Expanded(
-                          child: Text(
-                        address,
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                      )),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Отправитель',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
-                      ),
-                      Text(
-                        'Получатель',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        widget.basketOrder.product?.first.shopName ?? 'Неизвестно',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                      ),
-                      Text(
-                        widget.basketOrder.user?.name ?? 'Неизвестно',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Номер отправителя',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
-                      ),
-                      Text(
-                        'Номер получателя',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        widget.basketOrder.product?.first.shopPhone ?? 'Неизвестно',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                      ),
-                      Text(
-                        widget.basketOrder.user?.phone.toString() ?? 'Неизвестно',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                      ),
-                      // Text(
-                      //   '${widget.basketOrder.user!.phone}',
-                      //   style: const TextStyle(
-                      //       fontSize: 16, fontWeight: FontWeight.w400),
-                      // ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Дата доставки',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    '${widget.basketOrder.returnDate}',
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Посылка',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    height: widget.basketOrder.product!.length * 25,
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: widget.basketOrder.product!.length,
-                      shrinkWrap: false,
-                      itemBuilder: (context, index) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                  IntrinsicHeight(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${widget.basketOrder.product![0].productName}',
+                              'Откуда',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              '${widget.basketOrder.product!.first.shopName}',
                               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                             ),
+                            const SizedBox(height: 12),
+                            SizedBox(
+                              width: 150,
+                              height: 100,
+                              child: Text(
+                                '${widget.basketOrder.product!.first.address}',
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                                maxLines: 4,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
                             Text(
-                              '${widget.basketOrder.product![0].count} шт',
+                              'Отправитель',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              widget.basketOrder.product?.first.shopName ?? 'Неизвестно',
                               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              'Номер отправителя',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              widget.basketOrder.product?.first.shopPhone ?? 'Неизвестно',
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                            ),
+                            const SizedBox(height: 12),
+                            const Text(
+                              'Вес посылки',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+                            ),
+                            const SizedBox(height: 12),
+                            const Text(
+                              'Дата доставки',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+                            ),
+                            const SizedBox(height: 12),
+                            SizedBox(
+                              height: widget.basketOrder.product!.length * 25,
+                              width: 100,
+                              child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: widget.basketOrder.product!.length,
+                                shrinkWrap: false,
+                                itemBuilder: (context, index) {
+                                  return Text(
+                                    '${widget.basketOrder.product![0].productName}',
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                                  );
+                                },
+                              ),
                             ),
                           ],
-                        );
-                      },
+                        ),
+                        VerticalDivider(),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Куда',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              '${GetStorage().read('city')}',
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                            ),
+                            const SizedBox(height: 12),
+                            SizedBox(
+                              width: 150,
+                              height: 100,
+                              child: Text(
+                                address,
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                                maxLines: 4,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              'Получатель',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              widget.basketOrder.user?.name ?? 'Неизвестно',
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              'Номер получателя',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              widget.basketOrder.user?.phone.toString() ?? 'Неизвестно',
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              ' ${(widget.basketOrder.product!.first.count! * 1.4).round()} кг',
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.grey),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              '${widget.basketOrder.returnDate}',
+                            ),
+                            const SizedBox(height: 12),
+                            SizedBox(
+                              height: widget.basketOrder.product!.length * 25,
+                              width: 100,
+                              child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: widget.basketOrder.product!.length,
+                                shrinkWrap: false,
+                                itemBuilder: (context, index) {
+                                  return Text(
+                                    '${widget.basketOrder.product![0].count} шт',
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Вес посылки',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
-                      ),
-                      Text(
-                        ' ${(widget.basketOrder.product!.first.count! * 1.4).round()} кг',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.grey),
-                      ),
-                    ],
-                  ),
 
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Дополнительные комментарий',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
-                  ),
+                  // const Text(
+                  //   'Посылка',
+                  //   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+                  // ),
+                  // const Text(
+                  //   'Дополнительные комментарий',
+                  //   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+                  // ),
                   const SizedBox(height: 12),
                   const TextField(
                     // controller: null,

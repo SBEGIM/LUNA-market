@@ -136,9 +136,18 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        widget.product.name.toString(),
-                        style: const TextStyle(fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w500),
+                      Container(
+                        height: 40,
+                        width: 160,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          widget.product.name.toString(),
+                          // 'qweqweq qweqweqw qweqweqweqw qweqweqwe qweqweqweqweqw',
+                          style: const TextStyle(fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w500),
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
                       ),
 
                       GestureDetector(
@@ -277,7 +286,7 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                 ),
                 Container(
                     // height: 100,
-                    padding: const EdgeInsets.only(right: 12, top: 6),
+                    padding: const EdgeInsets.only(right: 6, top: 6),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       mainAxisSize: MainAxisSize.max,
@@ -305,9 +314,8 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                             await showAlertStaticticsWidget(context, widget.product);
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                             // width: 99,
-                            height: 32,
                             decoration: BoxDecoration(
                               color: const Color(0xFF1DC4CF),
                               borderRadius: BorderRadius.circular(10),

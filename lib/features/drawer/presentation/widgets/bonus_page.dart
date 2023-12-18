@@ -18,6 +18,26 @@ class _BonusUserPageState extends State<BonusUserPage> {
 
   String currency = 'руб';
 
+  List<String> titleBonus = [
+    'Что такое бонусы продавцов ?',
+    'Как накопить бонусы продавцов ?',
+    'Как можно использовать бонусы ?',
+  ];
+
+  List<bool> showBonus = [
+    false,
+    false,
+    false,
+  ];
+
+  bool bonusDesciptionHeight = false;
+
+  List<String> descriptionBonus = [
+    'Это бонусная программа в приложении LUNA market позволяющая экономить на покупках у продавцов на LUNA market.',
+    'Бонусы продавцов можно накапливать у продавцов на LUNA market при покупке товаров с начислением бонусов после оставления отзыва на данный товар,И списывать при следующих покупках у этих продавцов.',
+    'Вы можете оплатить бонусами до 10% от стоимости товара по курсу 1 бонус =1 рубль.Бонусы можно тратить на следующие покупки у продавцов, который их начислил.Срок жизни бонусов продавца -12 месяцев с момента начисления за покупку товара.',
+  ];
+
   @override
   void initState() {
     BlocProvider.of<BonusCubit>(context).myBonus();
@@ -55,6 +75,65 @@ class _BonusUserPageState extends State<BonusUserPage> {
       body: ListView(
         shrinkWrap: true,
         children: [
+          Container(
+            margin: const EdgeInsets.only(top: 16, left: 16, bottom: 8),
+            height: 23,
+            child: const Text(
+              'Бонусы продавцов',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kGray900),
+            ),
+          ),
+          SizedBox(
+            height: bonusDesciptionHeight == true ? 300 : 200,
+            child: ListView.builder(
+              itemCount: titleBonus.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: const EdgeInsets.only(top: 16, left: 16, bottom: 8, right: 16),
+                  height: showBonus[index] == true ? 170 : 70,
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${titleBonus[index]}',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.kGray900),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              showBonus[index] = !showBonus[index];
+
+                              bonusDesciptionHeight = !bonusDesciptionHeight;
+                              setState(() {});
+                            },
+                            child: showBonus[index] == true
+                                ? Icon(
+                                    Icons.keyboard_arrow_up_outlined,
+                                    color: AppColors.kPrimaryColor,
+                                  )
+                                : Icon(
+                                    Icons.keyboard_arrow_down_outlined,
+                                    color: AppColors.kPrimaryColor,
+                                  ),
+                          )
+                        ],
+                      ),
+                      showBonus[index] == true
+                          ? Text(
+                              '${descriptionBonus[index]}',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.kGray900),
+                            )
+                          : SizedBox(),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
           Container(
             margin: const EdgeInsets.only(top: 16, left: 16, bottom: 8),
             height: 23,

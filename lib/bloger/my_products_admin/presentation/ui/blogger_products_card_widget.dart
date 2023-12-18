@@ -129,9 +129,14 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        widget.product.name.toString(),
-                        style: const TextStyle(fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w500),
+                      SizedBox(
+                        width: 150,
+                        child: Text(
+                          widget.product.name.toString(),
+                          style: const TextStyle(fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w500),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       IconButton(
                           onPressed: () async {
@@ -152,10 +157,10 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                     ],
                   ),
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(top: 0, bottom: 3),
                   child: Text(
-                    'Ноутбук',
+                    '${widget.product.catName}',
                     style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
                   ),
                 ),

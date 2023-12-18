@@ -599,7 +599,7 @@ class _CatsHomePageState extends State<CatsHomePage> {
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, childAspectRatio: 90 / 80, crossAxisSpacing: 8, mainAxisSpacing: 8),
+                              crossAxisCount: 2, childAspectRatio: 60 / 50, crossAxisSpacing: 8, mainAxisSpacing: 8),
                           itemCount: state.cats.length,
                           itemBuilder: (BuildContext ctx, index) {
                             return GridOptionsCategory(

@@ -31,7 +31,7 @@ class GridOptionsCategory extends StatelessWidget {
             // mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: 85,
+                height: 80,
                 //width: 128.05,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),

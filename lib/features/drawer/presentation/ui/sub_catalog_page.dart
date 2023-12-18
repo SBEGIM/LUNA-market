@@ -233,12 +233,12 @@ class CatalogListTile extends StatelessWidget {
         color: Color.fromARGB(15, 227, 9, 9),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Stack(
             children: [
               Container(
-                margin: const EdgeInsets.only(top: 12, left: 10),
+                margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
                 alignment: Alignment.center,
                 height: 90,
                 width: 90,

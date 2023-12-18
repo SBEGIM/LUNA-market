@@ -33,7 +33,7 @@ class GridOptionsPopular extends StatelessWidget {
           Stack(
             children: [
               Container(
-                margin: const EdgeInsets.only(top: 12, left: 10),
+                margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
                 alignment: Alignment.center,
                 height: 90,
                 width: 90,

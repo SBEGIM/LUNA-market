@@ -514,9 +514,15 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 const SizedBox(
                                   height: 8,
                                 ),
-                                Text(
-                                  '${widget.basketOrder.product![index].productName}',
-                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                                SizedBox(
+                                  height: 50,
+                                  width: 185,
+                                  child: Text(
+                                    '${widget.basketOrder.product![index].productName}',
+                                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                                 const SizedBox(height: 18),
                                 GestureDetector(

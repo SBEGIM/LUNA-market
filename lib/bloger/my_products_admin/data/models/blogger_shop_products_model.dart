@@ -7,6 +7,7 @@ class BloggerShopProductModel {
     int? count,
     int? currentCount,
     String? name,
+    String? catName,
     int? price,
     int? compound,
     int? bonus,
@@ -27,6 +28,7 @@ class BloggerShopProductModel {
     _count = count;
     _currentCount = currentCount;
     _name = name;
+    _catName = catName;
     _price = price;
     _compound = compound;
     _bonus = bonus;
@@ -49,6 +51,7 @@ class BloggerShopProductModel {
     _count = json['count'];
     _currentCount = json['current_count'];
     _name = json['name'];
+    _catName = json['cat_name'];
     _price = json['price'];
     _compound = json['compound'];
     _bonus = json['bonus'];
@@ -69,6 +72,7 @@ class BloggerShopProductModel {
   int? _count;
   int? _currentCount;
   String? _name;
+  String? _catName;
   int? _price;
   int? _compound;
   int? _bonus;
@@ -89,6 +93,7 @@ class BloggerShopProductModel {
   int? get count => _count;
   int? get currentCount => _currentCount;
   String? get name => _name;
+  String? get catName => _catName;
   int? get price => _price;
   int? get compound => _compound;
   int? get bonus => _bonus;
@@ -111,6 +116,7 @@ class BloggerShopProductModel {
     map['count'] = _count;
     map['current_count'] = _currentCount;
     map['name'] = _name;
+    map['catName'] = _catName;
     map['price'] = _price;
     map['compound'] = _compound;
     map['bonus'] = _bonus;
