@@ -252,9 +252,9 @@ class _DrawerPageState extends State<DrawerPage> {
                   ),
                 ),
 
-                const Divider(
-                  color: AppColors.kGray200,
-                ),
+                // const Divider(
+                //   color: AppColors.kGray200,
+                // ),
                 // InkWell(
                 //   onTap: () {
                 //     _box.read('blogger_token') != null
@@ -269,17 +269,17 @@ class _DrawerPageState extends State<DrawerPage> {
                 // const Divider(
                 //   color: AppColors.kGray200,
                 // ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const CreditInfoPage()),
-                    );
-                  },
-                  child: const DrawerListTile(
-                    text: 'Рассрочка',
-                  ),
-                ),
+                // InkWell(
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (context) => const CreditInfoPage()),
+                //     );
+                //   },
+                //   child: const DrawerListTile(
+                //     text: 'Рассрочка',
+                //   ),
+                // ),
 
                 // InkWell(
                 //   onTap: () {

@@ -24,17 +24,26 @@ class GridOptionsCategory extends StatelessWidget {
       child: Container(
         // height: 80,
         // width: 90,
-        decoration:
-            BoxDecoration(color: const Color.fromRGBO(249, 249, 249, 1), borderRadius: BorderRadius.circular(16)),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(0), boxShadow: [
+          const BoxShadow(
+            color: Colors.white,
+            offset: const Offset(0.0, 0.0),
+            blurRadius: 0.0,
+            spreadRadius: 0.0,
+          )
+        ]),
         child: Center(
           child: Column(
             // mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 height: 80,
-                //width: 128.05,
+                // width: 90,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(4),
+                      topRight: Radius.circular(4),
+                    ),
                     image: DecorationImage(
                       image: NetworkImage("http://185.116.193.73/storage/${layout.image}"),
                       fit: BoxFit.cover,
@@ -48,15 +57,15 @@ class GridOptionsCategory extends StatelessWidget {
                   //  margin: const EdgeInsets.only(top: 69),
                   padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
                   // width: 128,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     borderRadius:
                         const BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
-                    border: Border.all(
-                      width: 0.1,
-                    ),
+                    // border: Border.all(
+                    //   width: 0.1,
+                    // ),
                     color: Colors.white,
                   ),
-                  alignment: Alignment.center,
+                  alignment: Alignment.topCenter,
                   child: Text(layout.title!,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,

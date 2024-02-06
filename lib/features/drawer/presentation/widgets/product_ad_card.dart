@@ -239,7 +239,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                           builder: (context) {
                             return AdvertBottomSheet(
                                 description:
-                                    "${widget.product.shop?.typeOrganization ?? 'ИП'}: ${widget.product.shop!.name}");
+                                    "${widget.product.shop?.typeOrganization ?? 'ИП'}: ${widget.product.shop!.userName}");
                           },
                         );
                       },

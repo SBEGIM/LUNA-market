@@ -187,7 +187,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
                         ),
                         padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
                         child: const Text(
-                          'Перейти в чат',
+                          'Чат с магазином',
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
                         ),

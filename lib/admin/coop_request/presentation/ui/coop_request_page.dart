@@ -32,6 +32,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
 
   TextEditingController iinController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController contactController = TextEditingController();
   TextEditingController checkController = TextEditingController();
   TextEditingController catController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
@@ -163,6 +164,13 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
               hintText: 'Введите название компании',
               star: false,
               arrow: false,
+              controller: userNameController,
+            ),
+            FieldsCoopRequest(
+              titleText: 'Название магазина',
+              hintText: 'Введите название магазина',
+              star: false,
+              arrow: false,
               controller: nameController,
             ),
             FieldsCoopRequest(
@@ -194,7 +202,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
               hintText: 'Введите контактное имя',
               star: false,
               arrow: false,
-              controller: userNameController,
+              controller: contactController,
             ),
             FieldsCoopRequest(
               titleText: 'Мобильный телефон ',

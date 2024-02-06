@@ -31,6 +31,17 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
       case 'order':
         {
           status = 'Заказ оформлен';
+          postStatus = 'accepted';
+          postSecondStatus = 'cancel';
+
+          buttonText = 'Принять';
+          buttonSecondText = 'Отменить заказ';
+        }
+        break;
+
+      case 'accepted':
+        {
+          status = 'Заказ оформлен';
           postStatus = 'courier';
           postSecondStatus = 'cancel';
 

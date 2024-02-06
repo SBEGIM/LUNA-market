@@ -907,6 +907,13 @@ class _CreateProductPageState extends State<CreateProductPage> {
                     },
                   ),
                 ),
+                FieldsProductRequest(
+                  titleText: 'Описание товара',
+                  hintText: 'Расскажите подробнее о товаре',
+                  star: true,
+                  arrow: false,
+                  controller: descriptionController,
+                ),
                 const SizedBox(height: 10),
                 const Text(
                   'Габариты и вес с упаковкой',
@@ -945,13 +952,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   controller: massaController,
                   textInputNumber: true,
                 ),
-                FieldsProductRequest(
-                  titleText: 'Дополнительно ',
-                  hintText: 'Для дополнительной информации',
-                  star: true,
-                  arrow: false,
-                  controller: descriptionController,
-                ),
+
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),

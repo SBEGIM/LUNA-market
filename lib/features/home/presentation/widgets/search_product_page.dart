@@ -51,6 +51,9 @@ class _SearchProductPageState extends State<SearchProductPage> {
             child: TextField(
               controller: searchController,
               onChanged: (value) async {
+                GetStorage().remove('CatId');
+                GetStorage().remove('subCatFilterId');
+                GetStorage().remove('shopFilterId');
                 GetStorage().write('search', value);
                 GetStorage().write('shopFilterId', 0);
 
@@ -174,9 +177,14 @@ class UnderCatalogListTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: AppTextStyles.chanheLangTextStyle,
+          SizedBox(
+            width: 375,
+            child: Text(
+              title,
+              style: AppTextStyles.chanheLangTextStyle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           SvgPicture.asset('assets/icons/back_menu.svg', width: 12, height: 16),
         ],

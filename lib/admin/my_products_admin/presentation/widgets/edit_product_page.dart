@@ -863,6 +863,13 @@ class _EditProductPageState extends State<EditProductPage> {
                   },
                 ),
               ),
+              FieldsProductRequest(
+                titleText: 'Описание товара',
+                hintText: 'Расскажите подробнее о товаре',
+                star: true,
+                arrow: false,
+                controller: descriptionController,
+              ),
               const SizedBox(height: 10),
               const Text(
                 'Габариты и вес с упаковкой',
@@ -897,13 +904,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 arrow: false,
                 controller: massaController,
               ),
-              FieldsProductRequest(
-                titleText: 'Дополнительно ',
-                hintText: 'Для дополнительной информации',
-                star: true,
-                arrow: false,
-                controller: descriptionController,
-              ),
+
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),

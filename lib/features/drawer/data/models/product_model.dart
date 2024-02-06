@@ -371,6 +371,7 @@ class Shop {
     int? id,
     int? chat_id,
     String? name,
+    String? userName,
     String? typeOrganization,
     String? logo,
     String? image,
@@ -381,6 +382,7 @@ class Shop {
     _id = id;
     _chat_id = chat_id;
     _name = name;
+    _userName = userName;
     _typeOrganization = typeOrganization;
     _logo = logo;
     _image = image;
@@ -393,6 +395,7 @@ class Shop {
     _id = json['id'];
     _chat_id = json['chat_id'];
     _name = json['name'];
+    _userName = json['user_name'];
     _typeOrganization = json['type_organization'];
     _logo = json['logo'];
     _image = json['image'];
@@ -403,6 +406,7 @@ class Shop {
   int? _id;
   int? _chat_id;
   String? _name;
+  String? _userName;
   String? _typeOrganization;
   String? _logo;
   String? _image;
@@ -413,6 +417,7 @@ class Shop {
   int? get id => _id;
   int? get chat_id => _chat_id;
   String? get name => _name;
+  String? get userName => _userName;
   String? get typeOrganization => _typeOrganization;
   String? get logo => _logo;
   String? get image => _image;
@@ -425,6 +430,7 @@ class Shop {
     map['id'] = _id;
     map['chat_id'] = _chat_id;
     map['name'] = _name;
+    map['userName'] = _userName;
     map['typeOrganization'] = _typeOrganization;
     map['logo'] = _logo;
     map['image'] = _image;

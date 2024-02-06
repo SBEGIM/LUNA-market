@@ -162,8 +162,8 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                 const SizedBox(
                   height: 8,
                 ),
-                const Text(
-                  'Подкатегория',
+                Text(
+                  '${widget.product.catName ?? 'Неизвестно'}',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 14, color: AppColors.kGray300, fontWeight: FontWeight.w400),
                 ),

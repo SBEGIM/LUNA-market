@@ -744,54 +744,54 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
               //       ],
               //     )),
               // const SizedBox(height: 1),
-              Container(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  height: 55,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Image.asset(
-                            'assets/icons/halal_installment plan.png',
-                            height: 34,
-                            width: 34,
-                          ),
-                          const SizedBox(width: 8),
-                          const Text(
-                            'Рассрочка Halal',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Checkbox(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                        checkColor: Colors.white,
-                        activeColor: AppColors.kPrimaryColor,
-                        value: isCheckedHalal,
-                        onChanged: (bool? value) {
-                          // Get.snackbar('Нет доступа',
-                          //     'данная оплата пока недоступно...',
-                          //     backgroundColor: Colors.orangeAccent);
+              // Container(
+              //     padding: const EdgeInsets.only(left: 16, right: 16),
+              //     alignment: Alignment.center,
+              //     color: Colors.white,
+              //     height: 55,
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         Row(
+              //           children: [
+              //             Image.asset(
+              //               'assets/icons/halal_installment plan.png',
+              //               height: 34,
+              //               width: 34,
+              //             ),
+              //             const SizedBox(width: 8),
+              //             const Text(
+              //               'Рассрочка Halal',
+              //               style: TextStyle(
+              //                 fontSize: 16,
+              //                 fontWeight: FontWeight.w400,
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //         Checkbox(
+              //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+              //           checkColor: Colors.white,
+              //           activeColor: AppColors.kPrimaryColor,
+              //           value: isCheckedHalal,
+              //           onChanged: (bool? value) {
+              //             // Get.snackbar('Нет доступа',
+              //             //     'данная оплата пока недоступно...',
+              //             //     backgroundColor: Colors.orangeAccent);
 
-                          setState(() {
-                            isCheckedTinkoff = false;
-                            isCheckedOnline = false;
-                            isCheckedCash = false;
-                            isCheckedPart = false;
-                            isCheckedHalal = value!;
-                          });
-                        },
-                      ),
-                    ],
-                  )),
+              //             setState(() {
+              //               isCheckedTinkoff = false;
+              //               isCheckedOnline = false;
+              //               isCheckedCash = false;
+              //               isCheckedPart = false;
+              //               isCheckedHalal = value!;
+              //             });
+              //           },
+              //         ),
+              //       ],
+              //     )),
 
-              const SizedBox(height: 1),
+              // const SizedBox(height: 1),
               GestureDetector(
                 onTap: () {
                   Get.to(const ContractOfSale());

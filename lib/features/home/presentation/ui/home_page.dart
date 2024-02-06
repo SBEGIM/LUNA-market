@@ -105,8 +105,6 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.only(right: 22.0),
               child: GestureDetector(
                   onTap: () {
-//Get.to(const SearchProductPage());
-
                     context.router.push(const SearchProductRoute());
                   },
                   child: SvgPicture.asset('assets/icons/search.svg')))
@@ -599,7 +597,7 @@ class _CatsHomePageState extends State<CatsHomePage> {
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, childAspectRatio: 60 / 50, crossAxisSpacing: 8, mainAxisSpacing: 8),
+                              crossAxisCount: 2, childAspectRatio: 60 / 50, crossAxisSpacing: 12, mainAxisSpacing: 12),
                           itemCount: state.cats.length,
                           itemBuilder: (BuildContext ctx, index) {
                             return GridOptionsCategory(
@@ -1113,7 +1111,7 @@ class _PopularShopsState extends State<PopularShops> {
                                     Stack(
                                       children: [
                                         Container(
-                                          margin: const EdgeInsets.only(top: 12, left: 10),
+                                          margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
                                           alignment: Alignment.center,
                                           height: 90,
                                           width: 90,

@@ -23,6 +23,11 @@ class ProductApi {
   int CatId = 0;
   String subCatId = '';
   bool rating = false;
+  int priceAsc = 0;
+  int priceDesc = 0;
+  int orderByNew = 0;
+  int orderByPopular = 0;
+
   List<dynamic> shopIds = [];
   List<dynamic> brandIds = [];
   List<dynamic> subCatIds = [];
@@ -68,8 +73,6 @@ class ProductApi {
         shopId = GetStorage().read('shopFilterId');
         shopIds.clear();
         var ab = json.decode(shopId).cast<int>().toList();
-
-        print(ab.toString());
         shopIds.addAll(ab);
       } else {
         shopId = '';
@@ -79,6 +82,50 @@ class ProductApi {
         rating = GetStorage().read('ratingFilter');
       } else {
         rating = false;
+      }
+      if (_box.hasData('sortFilter')) {
+        final String sort = GetStorage().read('sortFilter');
+
+        if (sort == 'priceAsc') {
+          priceAsc = 1;
+        }
+
+        switch (sort) {
+          case 'priceAsc':
+            priceAsc = 1;
+            priceDesc = 0;
+            orderByNew = 0;
+            orderByPopular = 0;
+
+            break;
+          case 'priceDesc':
+            priceAsc = 0;
+            priceDesc = 1;
+            orderByNew = 0;
+            orderByPopular = 0;
+            break;
+          case 'orderByNew':
+            priceAsc = 0;
+            priceDesc = 0;
+            orderByNew = 1;
+            orderByPopular = 0;
+            break;
+          case 'orderByPopular':
+            priceAsc = 0;
+            priceDesc = 0;
+            orderByNew = 0;
+            orderByPopular = 1;
+            break;
+          case 'rating':
+            priceAsc = 0;
+            priceDesc = 0;
+            orderByNew = 0;
+            orderByPopular = 0;
+            rating = true;
+            break;
+          default:
+            print("число не равно 1, 2, 3");
+        }
       }
     });
 
@@ -104,6 +151,10 @@ class ProductApi {
       "search": search,
       "min_price": "$price_start",
       "max_price": "$price_end",
+      "price_asc": "$priceAsc",
+      "price_desc": "$priceDesc",
+      "order_by_new": "$orderByNew",
+      "order_by_popular": "$orderByPopular",
       "page": "$page"
     };
 

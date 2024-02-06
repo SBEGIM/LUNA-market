@@ -130,6 +130,54 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                       ),
                       TimelineTile(
                         isFirst: false,
+                        indicatorStyle: widget.basketOrder.status == 'accepted'
+                            ? IndicatorStyle(
+                                color: AppColors.kPrimaryColor,
+                                iconStyle: IconStyle(
+                                  color: Colors.white,
+                                  iconData: Icons.check,
+                                ),
+                              )
+                            : IndicatorStyle(
+                                color: Colors.grey,
+                                iconStyle: IconStyle(
+                                  color: Colors.white,
+                                  iconData:
+                                      (widget.basketOrder.status == 'end' || widget.basketOrder.status == 'accepted')
+                                          ? Icons.check
+                                          : Icons.history_toggle_off,
+                                ),
+                              ),
+                        beforeLineStyle: const LineStyle(
+                          thickness: 1.4,
+                        ),
+                        lineXY: 0.4,
+                        endChild: Padding(
+                          padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.basketOrder.status == 'cancel' ? 'Отменен' : 'Прниять',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Text(
+                                '${widget.basketOrder.status == 'cancel' ? widget.basketOrder.updated_at : widget.basketOrder.returnDate}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  color: AppColors.kGray300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      TimelineTile(
+                        isFirst: false,
                         indicatorStyle: widget.basketOrder.status == 'courier'
                             ? IndicatorStyle(
                                 color: AppColors.kPrimaryColor,

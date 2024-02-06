@@ -96,7 +96,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
   void initState() {
     textDescrp = [
       'Все товары ${widget.product.shop!.name}',
-      'Все товары из брэнда  ${widget.product.brandName}',
+      'Все товары из брэнда  ${widget.product.brandName ?? ''}',
       'Все товары из категории  ${widget.product.catName}',
     ];
     isvisible = widget.product.inBasket ?? false;
@@ -468,7 +468,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 //   height: 8,
                 // ),
                 Text(
-                  'Артикул: ${widget.product.id}',
+                  'Код товара: ${widget.product.id}',
                   style: const TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(

@@ -88,7 +88,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
             Container(
               alignment: Alignment.center,
               color: widget.fulfillment != 'fbs' ? Colors.red[200] : Colors.white,
-              height: widget.fulfillment != 'fbs' ? 100 : 155,
+              height: widget.fulfillment != 'fbs' ? 100 : 165,
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
@@ -401,7 +401,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
             Container(
               alignment: Alignment.center,
               color: widget.fulfillment != 'realFBS' ? Colors.red[200] : Colors.white,
-              height: widget.fulfillment != 'realFBS' ? 100 : 155,
+              height: widget.fulfillment != 'realFBS' ? 100 : 180,
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
@@ -428,23 +428,27 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                 padding: const EdgeInsets.only(top: 12, right: 10),
                                 alignment: Alignment.topCenter,
                                 child: const Icon(Icons.lock))
-                            : Checkbox(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                checkColor: Colors.white,
-                                activeColor: AppColors.kPrimaryColor,
-                                value: shop,
-                                onChanged: (bool? value) {
-                                  if (widget.fulfillment != 'realFBS') {
-                                    Get.snackbar('Доставка', 'Не доступно для этого товара',
-                                        backgroundColor: Colors.orangeAccent);
-                                  } else {
-                                    courier = false;
-                                    point = false;
-                                    shop = true;
-                                    fbs = true;
-                                    setState(() {});
-                                  }
-                                },
+                            : Container(
+                                padding: const EdgeInsets.only(bottom: 128),
+                                margin: EdgeInsets.zero,
+                                child: Checkbox(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                  checkColor: Colors.white,
+                                  activeColor: AppColors.kPrimaryColor,
+                                  value: shop,
+                                  onChanged: (bool? value) {
+                                    if (widget.fulfillment != 'realFBS') {
+                                      Get.snackbar('Доставка', 'Не доступно для этого товара',
+                                          backgroundColor: Colors.orangeAccent);
+                                    } else {
+                                      courier = false;
+                                      point = false;
+                                      shop = true;
+                                      fbs = true;
+                                      setState(() {});
+                                    }
+                                  },
+                                ),
                               ),
                         widget.fulfillment != 'realFBS'
                             ? Container(
@@ -500,6 +504,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                             : 'Срок доставка: Нет срока доставки СДЕК',
                                         style: const TextStyle(
                                           fontSize: 14,
+                                          fontFamily: 'SF Pro Text',
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),

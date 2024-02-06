@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 
 import '../../data/bloc/product_cubit.dart';
@@ -17,13 +17,7 @@ class SortingPage extends StatefulWidget {
 class _SortingPageState extends State<SortingPage> {
   int _selectedIndexSort = -1;
 
-  List<String> sort = [
-    'Популярные',
-    'Новинки',
-    'Сначала дешевые',
-    'Сначала дорогие',
-    'Высокий рейтинг'
-  ];
+  List<String> sort = ['Популярные', 'Новинки', 'Сначала дешевые', 'Сначала дорогие', 'Высокий рейтинг'];
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +29,7 @@ class _SortingPageState extends State<SortingPage> {
         centerTitle: true,
         leading: InkWell(
           onTap: () {
-            final select = _selectedIndexSort == -1
-                ? 'Не выбрано'
-                : sort[_selectedIndexSort];
+            final select = _selectedIndexSort == -1 ? 'Не выбрано' : sort[_selectedIndexSort];
 
             Get.back(result: select);
           },
@@ -48,10 +40,7 @@ class _SortingPageState extends State<SortingPage> {
         ),
         title: const Text(
           'Сортировка',
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 16,
-              fontWeight: FontWeight.w500),
+          style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
         ),
       ),
       body: SizedBox(
@@ -78,6 +67,27 @@ class _SortingPageState extends State<SortingPage> {
                           // устанавливаем индекс выделенного элемента
                           _selectedIndexSort = index;
                         });
+
+                        switch (sort[_selectedIndexSort]) {
+                          case 'Популярные':
+                            GetStorage().write('sortFilter', 'orderByPopular');
+                            break;
+                          case 'Новинки':
+                            GetStorage().write('sortFilter', 'orderByNew');
+                            break;
+                          case 'Сначала дешевые':
+                            GetStorage().write('sortFilter', 'priceAsc');
+                            break;
+                          case 'Сначала дорогие':
+                            GetStorage().write('sortFilter', 'priceDesc');
+                            break;
+                          case 'Высокий рейтинг':
+                            GetStorage().write('sortFilter', 'rating');
+                            break;
+                          default:
+                            print("число не равно 1, 2, 3");
+                        }
+
                         BlocProvider.of<ProductCubit>(context).products();
                       },
                       child: ListTile(
@@ -108,13 +118,10 @@ class _SortingPageState extends State<SortingPage> {
       ),
       bottomSheet: Container(
         color: Colors.white,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
         child: GestureDetector(
           onTap: () {
-            final select = _selectedIndexSort == -1
-                ? 'Не выбрано'
-                : sort[_selectedIndexSort];
+            final select = _selectedIndexSort == -1 ? 'Не выбрано' : sort[_selectedIndexSort];
 
             Get.back(result: select);
           },
@@ -127,10 +134,7 @@ class _SortingPageState extends State<SortingPage> {
               padding: const EdgeInsets.all(16),
               child: const Text(
                 'Готово',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                 textAlign: TextAlign.center,
               )),
         ),
