@@ -11,6 +11,7 @@ class BloggerShopProductModel {
     int? price,
     int? compound,
     int? bonus,
+    int? bloggerPoint,
     String? description,
     dynamic articul,
     dynamic height,
@@ -32,6 +33,7 @@ class BloggerShopProductModel {
     _price = price;
     _compound = compound;
     _bonus = bonus;
+    _bloggerPoint = bloggerPoint;
     _description = description;
     _articul = articul;
     _height = height;
@@ -55,6 +57,7 @@ class BloggerShopProductModel {
     _price = json['price'];
     _compound = json['compound'];
     _bonus = json['bonus'];
+    _bloggerPoint = json['point_blogger'];
     _description = json['description'];
     _articul = json['articul'];
     _height = json['height'];
@@ -76,6 +79,7 @@ class BloggerShopProductModel {
   int? _price;
   int? _compound;
   int? _bonus;
+  int? _bloggerPoint;
   String? _description;
   dynamic _articul;
   dynamic _height;
@@ -97,6 +101,7 @@ class BloggerShopProductModel {
   int? get price => _price;
   int? get compound => _compound;
   int? get bonus => _bonus;
+  int? get bloggerPoint => _bloggerPoint;
   String? get description => _description;
   dynamic get articul => _articul;
   dynamic get height => _height;
@@ -120,6 +125,7 @@ class BloggerShopProductModel {
     map['price'] = _price;
     map['compound'] = _compound;
     map['bonus'] = _bonus;
+    map['bloggerPoint'] = _bloggerPoint;
     map['description'] = _description;
     map['articul'] = _articul;
     map['height'] = _height;

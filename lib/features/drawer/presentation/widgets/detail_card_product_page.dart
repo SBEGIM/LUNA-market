@@ -1697,50 +1697,45 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               : const SizedBox(),
 
           widget.product.description != null
-              ? Expanded(
-                  flex: 2,
-                  // height: 100,
-                  // color: Colors.white,
-                  child: Container(
-                    color: Colors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(left: 8),
-                          child: const Text(
-                            'Описание',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          '${widget.product.description}',
-                          softWrap: showText == false ? true : false,
-                          maxLines: showText == false ? 4 : 40,
+              ? Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(left: 8),
+                        child: const Text(
+                          'Описание',
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: AppColors.steelGray, fontSize: 14, fontWeight: FontWeight.w500),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                         ),
-                        const SizedBox(
-                          height: 14,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        '${widget.product.description}',
+                        softWrap: showText == false ? true : false,
+                        maxLines: showText == false ? 4 : 40,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: AppColors.steelGray, fontSize: 14, fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(
+                        height: 14,
+                      ),
+                      const Divider(),
+                      GestureDetector(
+                        onTap: () {
+                          showText = !showText;
+                          setState(() {});
+                        },
+                        child: Text(
+                          showText == false ? 'Показать полностью' : 'Скрыть',
+                          style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 14),
                         ),
-                        const Divider(),
-                        GestureDetector(
-                          onTap: () {
-                            showText = !showText;
-                            setState(() {});
-                          },
-                          child: Text(
-                            showText == false ? 'Показать полностью' : 'Скрыть',
-                            style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 14),
-                          ),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                 )
               : const SizedBox(),

@@ -209,6 +209,8 @@ class _EditProductPageState extends State<EditProductPage> {
     pointsController.text = widget.product.point != null ? widget.product.point.toString() : '0';
     pointsBloggerController.text = widget.product.pointBlogger != null ? widget.product.pointBlogger.toString() : '0';
 
+    isSwitchedFBS = widget.product.fulfillment == 'realFBS' ? true : false;
+
     super.initState();
   }
 

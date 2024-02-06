@@ -86,13 +86,14 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                         height: 4,
                       ),
                       Container(
-                        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(4)),
-                        child: const Padding(
+                        decoration:
+                            BoxDecoration(color: const Color(0xFFFFC107), borderRadius: BorderRadius.circular(4)),
+                        child: Padding(
                           padding: EdgeInsets.only(left: 4, right: 4, top: 2, bottom: 2),
                           child: Text(
-                            '10% Б',
+                            '${widget.product.bloggerPoint}% за рекламу',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w400),
+                            style: TextStyle(color: Colors.black, fontSize: 9, fontWeight: FontWeight.w500),
                           ),
                         ),
                       ),

@@ -53,10 +53,7 @@ class _BrandsPageState extends State<BrandsPage> {
         ],
         title: const Text(
           'Бренды',
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 16,
-              fontWeight: FontWeight.w500),
+          style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
         ),
       ),
       body: Container(
@@ -73,66 +70,60 @@ class _BrandsPageState extends State<BrandsPage> {
                 );
               }
               if (state is LoadedState) {
-                return SizedBox(
-                  height: 225,
-                  child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: state.cats.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        children: [
-                          const Divider(
-                            height: 1,
-                          ),
-                          SizedBox(
-                            height: 55,
-                            child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    //  _selectedIndexSort = index;
-                                    if (_selectedListSort.contains(index)) {
-                                      _selectedListSort.remove(index);
-                                    } else {
-                                      _selectedListSort.add(index);
-                                    }
-                                    // subCatName =
-                                    //     state.cats[index].name.toString();
-                                  });
-                                  // BlocProvider.of<ProductCubit>(context)
-                                  //     .products();
-                                },
-                                child: ListTile(
-                                  selected: _selectedListSort.contains(index),
-                                  leading: Text(
-                                    '${state.cats[index].name}',
-                                    style: AppTextStyles.appBarTextStyle,
-                                  ),
-                                  trailing: _selectedListSort.contains(index)
-                                      ? SvgPicture.asset(
-                                          'assets/icons/check_circle.svg',
-                                        )
-                                      : SvgPicture.asset(
-                                          'assets/icons/check_circle_no_selected.svg',
-                                        ),
-                                )),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                return ListView.builder(
+                  // physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: state.cats.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        const Divider(
+                          height: 1,
+                        ),
+                        SizedBox(
+                          height: 55,
+                          child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  //  _selectedIndexSort = index;
+                                  if (_selectedListSort.contains(index)) {
+                                    _selectedListSort.remove(index);
+                                  } else {
+                                    _selectedListSort.add(index);
+                                  }
+                                  // subCatName =
+                                  //     state.cats[index].name.toString();
+                                });
+                                // BlocProvider.of<ProductCubit>(context)
+                                //     .products();
+                              },
+                              child: ListTile(
+                                selected: _selectedListSort.contains(index),
+                                leading: Text(
+                                  '${state.cats[index].name}',
+                                  style: AppTextStyles.appBarTextStyle,
+                                ),
+                                trailing: _selectedListSort.contains(index)
+                                    ? SvgPicture.asset(
+                                        'assets/icons/check_circle.svg',
+                                      )
+                                    : SvgPicture.asset(
+                                        'assets/icons/check_circle_no_selected.svg',
+                                      ),
+                              )),
+                        ),
+                      ],
+                    );
+                  },
                 );
               } else {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }),
       ),
       bottomSheet: Container(
         color: Colors.white,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
         child: InkWell(
           onTap: () {
             Get.back(result: subCatName);
@@ -146,10 +137,7 @@ class _BrandsPageState extends State<BrandsPage> {
               padding: const EdgeInsets.all(16),
               child: const Text(
                 'Готово',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                 textAlign: TextAlign.center,
               )),
         ),

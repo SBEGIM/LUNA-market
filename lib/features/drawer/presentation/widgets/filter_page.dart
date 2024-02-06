@@ -35,6 +35,14 @@ class _FilterPageState extends State<FilterPage> {
   int count = 0;
 
   @override
+  void initState() {
+    // TODO: implement initState
+
+    BlocProvider.of<BrandCubit>(context).brands();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     bool selectedView = false;
     return Scaffold(
@@ -72,8 +80,7 @@ class _FilterPageState extends State<FilterPage> {
             ),
           ],
         ),
-        body: BlocConsumer<productCubit.ProductCubit,
-                productState.ProductState>(
+        body: BlocConsumer<productCubit.ProductCubit, productState.ProductState>(
             listener: (context, state) {},
             builder: (context, state) {
               if (state is productState.ErrorState) {
@@ -85,9 +92,7 @@ class _FilterPageState extends State<FilterPage> {
                 );
               }
               if (state is productState.LoadingState) {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
 
               if (state is productState.LoadedState) {
@@ -135,26 +140,19 @@ class _FilterPageState extends State<FilterPage> {
                               height: 71,
                               child: InkWell(
                                 onTap: () async {
-                                  final data =
-                                      await Get.to(() => const SortingPage())
-                                          as String;
+                                  final data = await Get.to(() => const SortingPage()) as String;
                                   sortName = data;
                                   setState(() {});
                                 },
                                 child: ListTile(
                                     title: const Text(
                                       'Сортировка ',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400),
+                                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
                                     ),
                                     subtitle: Text(
                                       sortName,
                                       style: const TextStyle(
-                                          color: AppColors.kGray300,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14),
+                                          color: AppColors.kGray300, fontWeight: FontWeight.w400, fontSize: 14),
                                     ),
                                     trailing: const InkWell(
                                         child: Icon(
@@ -171,9 +169,7 @@ class _FilterPageState extends State<FilterPage> {
                               height: 71,
                               child: InkWell(
                                 onTap: () async {
-                                  final data =
-                                      await Get.to(() => const CategoriesPage())
-                                          as String;
+                                  final data = await Get.to(() => const CategoriesPage()) as String;
 
                                   if (data != '') {
                                     subCatName = data;
@@ -183,17 +179,12 @@ class _FilterPageState extends State<FilterPage> {
                                 child: ListTile(
                                     title: const Text(
                                       'Категория',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400),
+                                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
                                     ),
                                     subtitle: Text(
                                       subCatName,
                                       style: const TextStyle(
-                                          color: AppColors.kGray300,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14),
+                                          color: AppColors.kGray300, fontWeight: FontWeight.w400, fontSize: 14),
                                     ),
                                     trailing: const InkWell(
                                         child: Icon(
@@ -216,8 +207,7 @@ class _FilterPageState extends State<FilterPage> {
                         children: [
                           const Text(
                             'Цена',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w400),
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                           ),
                           const SizedBox(
                             height: 20,
@@ -227,8 +217,7 @@ class _FilterPageState extends State<FilterPage> {
                             children: [
                               Container(
                                   height: 39,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.42,
+                                  width: MediaQuery.of(context).size.width * 0.42,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: AppColors.kGray200,
@@ -242,14 +231,12 @@ class _FilterPageState extends State<FilterPage> {
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      labelText:
-                                          'до ${values.start.toString()}',
+                                      labelText: 'до ${values.start.toString()}',
                                     ),
                                   )),
                               Container(
                                   height: 39,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.42,
+                                  width: MediaQuery.of(context).size.width * 0.42,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: AppColors.kGray200,
@@ -286,12 +273,9 @@ class _FilterPageState extends State<FilterPage> {
                               onChanged: (value) {
                                 setState(() {
                                   values = value;
-                                  priceStartController.text =
-                                      value.start.toString();
-                                  priceEndController.text =
-                                      value.end.toString();
-                                  labels = RangeLabels(value.start.toString(),
-                                      value.end.toString());
+                                  priceStartController.text = value.start.toString();
+                                  priceEndController.text = value.end.toString();
+                                  labels = RangeLabels(value.start.toString(), value.end.toString());
                                 });
                               }),
                         ],
@@ -302,15 +286,13 @@ class _FilterPageState extends State<FilterPage> {
                     ),
                     Container(
                       color: Colors.white,
-                      padding: const EdgeInsets.only(
-                          left: 13, right: 8, bottom: 13, top: 13),
+                      padding: const EdgeInsets.only(left: 13, right: 8, bottom: 13, top: 13),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'Бренд',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w400),
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                           ),
                           const SizedBox(
                             height: 10,
@@ -322,35 +304,28 @@ class _FilterPageState extends State<FilterPage> {
                                   return Center(
                                     child: Text(
                                       state.message,
-                                      style: const TextStyle(
-                                          fontSize: 20.0, color: Colors.grey),
+                                      style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                                     ),
                                   );
                                 }
                                 if (state is LoadedState) {
                                   return GridView.builder(
                                       scrollDirection: Axis.vertical,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
+                                      physics: const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 5,
-                                              childAspectRatio: 1.3,
-                                              crossAxisSpacing: 2,
-                                              mainAxisSpacing: 1),
+                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 5,
+                                          childAspectRatio: 1.3,
+                                          crossAxisSpacing: 2,
+                                          mainAxisSpacing: 1),
                                       itemCount: state.cats.length,
                                       itemBuilder: (BuildContext ctx, index) {
                                         return Container(
-                                          child: chipBrand(
-                                              state.cats[index].name.toString(),
-                                              index),
+                                          child: chipBrand(state.cats[index].name.toString(), index),
                                         );
                                       });
                                 } else {
-                                  return const Center(
-                                      child: CircularProgressIndicator(
-                                          color: Colors.indigoAccent));
+                                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                                 }
                               }),
                           const Divider(
@@ -366,9 +341,7 @@ class _FilterPageState extends State<FilterPage> {
                                 Text(
                                   'Показать все',
                                   style: TextStyle(
-                                      color: AppColors.kPrimaryColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
+                                      color: AppColors.kPrimaryColor, fontSize: 16, fontWeight: FontWeight.w400),
                                 ),
                                 Icon(
                                   Icons.arrow_forward_ios,
@@ -384,18 +357,14 @@ class _FilterPageState extends State<FilterPage> {
                       height: 10,
                     ),
                     Container(
-                      padding: const EdgeInsets.only(
-                          left: 13, right: 13, top: 10, bottom: 10),
+                      padding: const EdgeInsets.only(left: 13, right: 13, top: 10, bottom: 10),
                       color: Colors.white,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
                             'Высокий рейтинг',
-                            style: TextStyle(
-                                color: AppColors.kGray900,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
+                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                           ),
                           Switch(
                             value: isSwitched,
@@ -416,56 +385,45 @@ class _FilterPageState extends State<FilterPage> {
                     if (widget.shopId == null)
                       Container(
                         color: Colors.white,
-                        padding: const EdgeInsets.only(
-                            left: 13, right: 8, bottom: 13, top: 13),
+                        padding: const EdgeInsets.only(left: 13, right: 8, bottom: 13, top: 13),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
                               'Продавцы',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w400),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                             ),
                             const SizedBox(
                               height: 10,
                             ),
-                            BlocConsumer<shopsCubit.ShopsDrawerCubit,
-                                    shopsState.ShopsDrawerState>(
+                            BlocConsumer<shopsCubit.ShopsDrawerCubit, shopsState.ShopsDrawerState>(
                                 listener: (context, state) {},
                                 builder: (context, state) {
                                   if (state is shopsState.ErrorState) {
                                     return Center(
                                       child: Text(
                                         state.message,
-                                        style: const TextStyle(
-                                            fontSize: 20.0, color: Colors.grey),
+                                        style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                                       ),
                                     );
                                   }
                                   if (state is shopsState.LoadedState) {
                                     return GridView.builder(
                                         scrollDirection: Axis.vertical,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
+                                        physics: const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 5,
-                                                childAspectRatio: 1.3,
-                                                crossAxisSpacing: 4,
-                                                mainAxisSpacing: 1),
+                                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 5,
+                                            childAspectRatio: 1.3,
+                                            crossAxisSpacing: 4,
+                                            mainAxisSpacing: 1),
                                         itemCount: state.shopsDrawer.length,
                                         itemBuilder: (BuildContext ctx, index) {
                                           return Container(
-                                              child: chipShops(
-                                                  state.shopsDrawer[index].name
-                                                      .toString(),
-                                                  index));
+                                              child: chipShops(state.shopsDrawer[index].name.toString(), index));
                                         });
                                   } else {
-                                    return const Center(
-                                        child: CircularProgressIndicator(
-                                            color: Colors.indigoAccent));
+                                    return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                                   }
                                 }),
                             const Divider(
@@ -475,21 +433,16 @@ class _FilterPageState extends State<FilterPage> {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ShopsFiltrPage()),
+                                  MaterialPageRoute(builder: (context) => const ShopsFiltrPage()),
                                 );
                               },
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: const [
                                   Text(
                                     'Показать все',
                                     style: TextStyle(
-                                        color: AppColors.kPrimaryColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400),
+                                        color: AppColors.kPrimaryColor, fontSize: 16, fontWeight: FontWeight.w400),
                                   ),
                                   Icon(
                                     Icons.arrow_forward_ios,
@@ -507,19 +460,16 @@ class _FilterPageState extends State<FilterPage> {
                   ],
                 );
               } else {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }),
         bottomSheet: GestureDetector(
             onTap: () {
-              Get.back();
+              Navigator.pop(context);
             },
             child: Container(
               color: Colors.white,
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, top: 16, bottom: 16),
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
               child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -529,10 +479,7 @@ class _FilterPageState extends State<FilterPage> {
                   padding: const EdgeInsets.all(16),
                   child: Text(
                     'Показать $count товара',
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16),
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                     textAlign: TextAlign.center,
                   )),
             )));
@@ -564,9 +511,7 @@ class _FilterPageState extends State<FilterPage> {
             color: Colors.black,
           ),
         ),
-        backgroundColor: _selectListBrand.contains(index)
-            ? AppColors.kPrimaryColor
-            : Colors.white,
+        backgroundColor: _selectListBrand.contains(index) ? AppColors.kPrimaryColor : Colors.white,
         elevation: 1.0,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -600,9 +545,7 @@ class _FilterPageState extends State<FilterPage> {
             color: Colors.black,
           ),
         ),
-        backgroundColor: _selectListShop.contains(index)
-            ? AppColors.kPrimaryColor
-            : Colors.white,
+        backgroundColor: _selectListShop.contains(index) ? AppColors.kPrimaryColor : Colors.white,
         elevation: 1.0,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
