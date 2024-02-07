@@ -11,12 +11,10 @@ import 'blogger_products_card_widget.dart';
 class ShopProductsBloggerPage extends StatefulWidget {
   String title;
   int id;
-  ShopProductsBloggerPage({required this.title, required this.id, Key? key})
-      : super(key: key);
+  ShopProductsBloggerPage({required this.title, required this.id, Key? key}) : super(key: key);
 
   @override
-  State<ShopProductsBloggerPage> createState() =>
-      _ShopProductsBloggerPageState();
+  State<ShopProductsBloggerPage> createState() => _ShopProductsBloggerPageState();
 }
 
 class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
@@ -41,13 +39,9 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
           AnimSearchBar(
             helpText: 'Поиск..',
             onChanged: (String? value) {
-              // BlocProvider.of<TapeCubit>(context)
-              //     .tapes(false, false, searchController.text);
+              BlocProvider.of<BloggerShopProductsCubit>(context).products(searchController.text, widget.id);
             },
-            style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: Color.fromRGBO(153, 162, 173, 1)),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Color.fromRGBO(153, 162, 173, 1)),
             textController: searchController,
             onSuffixTap: () {
               searchController.clear();
@@ -67,8 +61,7 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
           ),
           GestureDetector(
               onTap: () async {
-                await Share.share(
-                    '$kDeepLinkUrl/?blogger/shop_${widget.id}');
+                await Share.share('$kDeepLinkUrl/?blogger/shop_${widget.id}');
               },
               child: SvgPicture.asset(
                 'assets/icons/share.svg',
@@ -99,10 +92,7 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
             alignment: Alignment.bottomLeft,
             color: AppColors.kBackgroundColor,
             child: const Text('Выберите товар',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700)),
+                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w700)),
           ),
           BlocConsumer<BloggerShopProductsCubit, BloggerShopProductsState>(
               listener: (context, state) {},
@@ -111,15 +101,12 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                   return Center(
                     child: Text(
                       state.message,
-                      style:
-                          const TextStyle(fontSize: 20.0, color: Colors.grey),
+                      style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                     ),
                   );
                 }
                 if (state is LoadingState) {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent));
+                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                 }
                 if (state is NoDataState) {
                   return Expanded(
@@ -129,20 +116,15 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Container(
-                            margin: const EdgeInsets.only(top: 220),
-                            child: Image.asset('assets/icons/no_data.png')),
+                            margin: const EdgeInsets.only(top: 220), child: Image.asset('assets/icons/no_data.png')),
                         const Text(
                           'Нет данных',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                           textAlign: TextAlign.center,
                         ),
                         const Text(
                           'У этого магазина отсуствует товары',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff717171)),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
                           textAlign: TextAlign.center,
                         )
                       ],
@@ -226,9 +208,7 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                   //     ),
                   //   );
                 } else {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent));
+                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                 }
               })
         ],

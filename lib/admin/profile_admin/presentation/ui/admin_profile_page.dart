@@ -41,15 +41,15 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         backgroundColor: Colors.white,
         elevation: 0,
-        // leading: IconButton(
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //   },
-        //   icon: const Icon(
-        //     Icons.arrow_back_ios,
-        //     color: AppColors.kPrimaryColor,
-        //   ),
-        // ),
+        leading: IconButton(
+          onPressed: () {
+            BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(state: AppState.inAppUserState(index: 1)));
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.kPrimaryColor,
+          ),
+        ),
         centerTitle: true,
         title: const Text(
           'Профиль продавца',
