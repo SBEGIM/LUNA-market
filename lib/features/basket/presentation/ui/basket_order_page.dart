@@ -77,7 +77,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
         price += element.price ?? 0;
         bonus += element.userBonus ?? 0;
 
-        if (widget.fbs != true) courier += element.deliveryPrice ?? 0;
+        if (element.fulfillment == 'fbs') courier += element.deliveryPrice ?? 0;
         productNames =
             "${productNames != null ? "$productNames ," : ''}  $kDeepLinkUrl/?product_id\u003d${element.product!.id}";
       }

@@ -24,7 +24,7 @@ import '../../data/bloc/product_admin_state.dart';
 
 class CreateProductPage extends StatefulWidget {
   final Cats cat;
-  final Cats subCat;
+  final Cats? subCat;
   const CreateProductPage({required this.cat, required this.subCat, Key? key}) : super(key: key);
 
   @override
@@ -429,7 +429,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 ),
                 FieldsProductRequest(
                   titleText: 'Тип ',
-                  hintText: subCats!.name.toString(),
+                  hintText: subCats?.name ?? '',
                   hintColor: true,
                   star: true,
                   arrow: false,
@@ -1509,7 +1509,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   countController.text,
                   compoundController.text,
                   cats!.id.toString(),
-                  subCats!.id.toString(),
+                  subCats?.id == null ? null : subCats?.id.toString(),
                   brands?.id == null ? null : brands?.id.toString(),
                   colors!.id.toString(),
                   descriptionController.text,

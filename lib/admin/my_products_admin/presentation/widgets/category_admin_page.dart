@@ -246,10 +246,10 @@ class _CategoryAdminPageState extends State<CategoryAdminPage> {
         padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
         child: InkWell(
           onTap: () {
-            if (_cat != null && _subCat != null) {
+            if (_cat != null) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CreateProductPage(cat: _cat!, subCat: _subCat!)),
+                MaterialPageRoute(builder: (context) => CreateProductPage(cat: _cat!, subCat: _subCat)),
               );
             }
 
@@ -258,7 +258,7 @@ class _CategoryAdminPageState extends State<CategoryAdminPage> {
           child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: (_cat != null && _subCat != null) ? AppColors.kPrimaryColor : AppColors.steelGray,
+                color: (_cat != null) ? AppColors.kPrimaryColor : AppColors.steelGray,
               ),
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.all(16),

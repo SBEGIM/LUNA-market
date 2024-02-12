@@ -11,6 +11,7 @@ class BasketShowModel {
     int? basketCount,
     int? deliveryDay,
     int? deliveryPrice,
+    String? fulfillment,
     String? basketColor,
     String? basketSize,
     String? shopName,
@@ -27,6 +28,7 @@ class BasketShowModel {
     _basketCount = basketCount;
     _deliveryDay = deliveryDay;
     _deliveryPrice = deliveryPrice;
+    _fulfillment = fulfillment;
     _basketColor = basketColor;
     _basketSize = basketSize;
     _shopName = shopName;
@@ -47,6 +49,7 @@ class BasketShowModel {
     _basketSize = json['basket_size'];
     _deliveryDay = json['delivery_day'];
     _deliveryPrice = json['delivery_price'];
+    _fulfillment = json['fulfillment'];
     _shopName = json['shop_name'];
     if (json['address'] != null) {
       _address = [];
@@ -68,6 +71,7 @@ class BasketShowModel {
   String? _basketSize;
   int? _deliveryDay;
   int? _deliveryPrice;
+  String? _fulfillment;
   String? _shopName;
   List<String>? _address;
 
@@ -79,12 +83,12 @@ class BasketShowModel {
   int? get userBonus => _userBonus;
   int? get basketId => _basketId;
   int? get chatId => _chatId;
-
   int? get basketCount => _basketCount;
   String? get basketColor => _basketColor;
   String? get basketSize => _basketSize;
   int? get deliveryDay => _deliveryDay;
   int? get deliveryPrice => _deliveryPrice;
+  String? get fulfillment => _fulfillment;
   String? get shopName => _shopName;
   List<String>? get address => _address;
 
@@ -105,6 +109,7 @@ class BasketShowModel {
     map['basket_size'] = _basketSize;
     map['delivery_day'] = _deliveryDay;
     map['delivery_price'] = _deliveryPrice;
+    map['fulfillment'] = _fulfillment;
     map['shop_name'] = _shopName;
     if (_address != null) {
       map['address'] = _address!.map((v) => v.toString()).toList();

@@ -441,7 +441,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 // Get.to(() => const ChatPage());
 
                                 Get.to(Message(
-                                  userId: widget.basketOrder.product!.first.id,
+                                  userId: widget.basketOrder.shopId,
                                   name: widget.basketOrder.product!.first.shopName,
                                   avatar: widget.basketOrder.product!.first.shopImage,
                                   chatId: widget.basketOrder.chatId,
