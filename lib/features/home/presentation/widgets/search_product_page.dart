@@ -7,6 +7,7 @@ import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
+import 'package:haji_market/features/home/data/model/Cats.dart';
 import '../../../drawer/data/bloc/product_state.dart';
 import '../../../drawer/presentation/widgets/detail_card_product_page.dart';
 
@@ -54,8 +55,10 @@ class _SearchProductPageState extends State<SearchProductPage> {
                 GetStorage().remove('CatId');
                 GetStorage().remove('subCatFilterId');
                 GetStorage().remove('shopFilterId');
+                GetStorage().remove('search');
                 GetStorage().write('search', value);
-                GetStorage().write('shopFilterId', 0);
+
+                // GetStorage().write('shopFilterId', "[0]");
 
                 await BlocProvider.of<ProductCubit>(context).products();
 
@@ -125,7 +128,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
                       return Column(
                         children: [
                           InkWell(
-                              onTap: () {
+                              onTap: () async {
                                 // Navigator.push(
                                 //   context,
                                 //   MaterialPageRoute(
@@ -136,10 +139,22 @@ class _SearchProductPageState extends State<SearchProductPage> {
                                 GetStorage().remove('CatId');
                                 GetStorage().remove('subCatFilterId');
                                 GetStorage().remove('shopFilterId');
+
+                                GetStorage().remove('search');
+                                // GetStorage().remove('search');
+
+                                // print(widget.cats?.id ?? 0);
+                                GetStorage().write('search', state.productModel[index].name.toString());
+
+                                // await BlocProvider.of<ProductCubit>(context).products();
+                                context.router.push(ProductsRoute(
+                                    cats: Cats(id: 0, name: state.productModel[index].name), subCats: null));
+                                // Get.to(() => ProductsPage(
                                 // context.router.push(ProductsRoute(
                                 //   // cats: state.cats[index],
                                 // ));
-                                context.router.push(DetailCardProductRoute(product: state.productModel[index]));
+
+                                // context.router.push(DetailCardProductRoute(product: state.productModel[index]));
                               },
                               child: UnderCatalogListTile(
                                 title: state.productModel[index].name.toString(),

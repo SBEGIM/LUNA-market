@@ -51,7 +51,6 @@ class _ProductsPageState extends State<ProductsPage> {
       setState(() {});
     });
 
-    print(widget.cats.id);
     if (widget.cats.id == 0) {
       GetStorage().remove('CatId');
       GetStorage().remove('catId');
@@ -61,7 +60,9 @@ class _ProductsPageState extends State<ProductsPage> {
     if (widget.brandId != null) {
       GetStorage().remove('brandFilterId');
     }
-    GetStorage().remove('search');
+    if (widget.cats.id == 0 && widget.cats.name == null) {
+      GetStorage().remove('search');
+    }
     GetStorage().remove('sub_cat_id');
     GetStorage().remove('subCatId');
 
@@ -74,6 +75,7 @@ class _ProductsPageState extends State<ProductsPage> {
     }
     GetStorage().remove('ratingFilter');
     GetStorage().remove('rating');
+
     BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context).shopsDrawer(widget.cats.id);
     BlocProvider.of<brandCubit.BrandCubit>(context).brands(subCatId: widget.cats.id);
     BlocProvider.of<ProductAdCubit>(context).adProducts(GetStorage().read('CatId'));

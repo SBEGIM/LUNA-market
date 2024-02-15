@@ -41,7 +41,7 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 151,
+      height: 160,
       margin: const EdgeInsets.only(left: 16, top: 7, bottom: 8, right: 16),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), boxShadow: const [
         BoxShadow(

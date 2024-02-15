@@ -43,6 +43,8 @@ class ProductApi {
       }
       if (_box.hasData('search')) {
         search = GetStorage().read('search');
+
+        print('search sss $search');
       } else {
         search = '';
       }
