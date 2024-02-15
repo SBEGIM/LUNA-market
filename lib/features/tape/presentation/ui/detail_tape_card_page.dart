@@ -1393,7 +1393,7 @@ class _inBasketsState extends State<inBaskets> {
                                   widget.tape.id.toString(), '1', 0, '', '',
                                   blogger_id: widget.tape.blogger?.id.toString() ?? '0')
                               : BlocProvider.of<basCubit.BasketCubit>(context)
-                                  .basketMinus(widget.tape.id.toString(), '1', 0);
+                                  .basketMinus(widget.tape.id.toString(), '1', 0, 'fbs');
 
                           BlocProvider.of<tapeCubit.TapeCubit>(context).update(
                               widget.tape,
@@ -1420,7 +1420,7 @@ class _inBasketsState extends State<inBaskets> {
                                   widget.tape.id.toString(), '1', 0, '', '',
                                   blogger_id: widget.tape.blogger?.id.toString() ?? '0')
                               : BlocProvider.of<basCubit.BasketCubit>(context)
-                                  .basketMinus(widget.tape.id.toString(), '1', 0);
+                                  .basketMinus(widget.tape.id.toString(), '1', 0, 'fbs');
 
                           BlocProvider.of<tapeCubit.TapeCubit>(context).update(
                               widget.tape,
@@ -1441,7 +1441,8 @@ class _inBasketsState extends State<inBaskets> {
                     ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(
                         widget.tape.id.toString(), '1', 0, '', '',
                         blogger_id: widget.tape.blogger?.id.toString() ?? '0')
-                    : BlocProvider.of<basCubit.BasketCubit>(context).basketMinus(widget.tape.id.toString(), '1', 0);
+                    : BlocProvider.of<basCubit.BasketCubit>(context)
+                        .basketMinus(widget.tape.id.toString(), '1', 0, 'fbs');
 
                 BlocProvider.of<tapeCubit.TapeCubit>(context).update(widget.tape, widget.index, widget.tape.inSubscribe,
                     !state.tapeModel[widget.index].inBasket!, widget.tape.inFavorite, widget.tape.inReport,
@@ -1474,7 +1475,8 @@ class _inBasketsState extends State<inBaskets> {
               inBasket == false
                   ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(widget.tape.id.toString(), '1', 0, '', '',
                       blogger_id: widget.tape.blogger?.id.toString() ?? '0')
-                  : BlocProvider.of<basCubit.BasketCubit>(context).basketMinus(widget.tape.id.toString(), '1', 0);
+                  : BlocProvider.of<basCubit.BasketCubit>(context)
+                      .basketMinus(widget.tape.id.toString(), '1', 0, 'fbs');
 
               BlocProvider.of<tapeCubit.TapeCubit>(context).update(widget.tape, widget.index, widget.tape.inSubscribe,
                   !inBasket!, widget.tape.inFavorite, widget.tape.inReport,

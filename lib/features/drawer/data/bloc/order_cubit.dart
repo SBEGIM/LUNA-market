@@ -7,10 +7,10 @@ class OrderCubit extends Cubit<OrderState> {
 
   OrderCubit({required this.basketRepository}) : super(InitState());
 
-  Future<void> payment({String? address, String? bonus}) async {
+  Future<void> payment({String? address, String? bonus, String? fulfillment}) async {
     try {
       emit(LoadingState());
-      final data = await basketRepository.payment(address: address, bonus: bonus);
+      final data = await basketRepository.payment(address: address, bonus: bonus, fulfillment: fulfillment);
       emit(LoadedState(url: data));
     } catch (e) {
       log(e.toString());

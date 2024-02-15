@@ -7,14 +7,18 @@ import '../repository/blogger_shop_products_repo.dart';
 class BloggerShopProductsCubit extends Cubit<BloggerShopProductsState> {
   final BloggerShopProductsRepository bloggerShopProductsRepository;
 
-  BloggerShopProductsCubit({required this.bloggerShopProductsRepository})
-      : super(InitState());
+  BloggerShopProductsCubit({required this.bloggerShopProductsRepository}) : super(InitState());
+
+  int page = 1;
+
+  List<BloggerShopProductModel> array = [];
 
   Future<void> products(String? name, int shopId) async {
     try {
       emit(LoadingState());
-      final List<BloggerShopProductModel> data =
-          await bloggerShopProductsRepository.products(name, shopId);
+      page = 1;
+
+      final List<BloggerShopProductModel> data = await bloggerShopProductsRepository.products(name, shopId, page);
       if (data.isEmpty) {
         emit(NoDataState());
       } else {
@@ -22,6 +26,25 @@ class BloggerShopProductsCubit extends Cubit<BloggerShopProductsState> {
       }
     } catch (e) {
       log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  Future<void> productsPagination(String? name, int? shopId) async {
+    try {
+      // emit(LoadingState());
+      final data = await bloggerShopProductsRepository.products(name, shopId, page);
+
+      // for (int i = 0; i < data.length; i++) {
+      //   array.add(data[i]);
+      // }
+      if (data.isNotEmpty) {
+        page++;
+      }
+
+      array += data;
+      emit(LoadedState(array));
+    } catch (e) {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }

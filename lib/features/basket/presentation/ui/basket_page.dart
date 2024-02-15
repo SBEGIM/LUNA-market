@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
+import 'package:haji_market/features/app/widgets/custom_switch_button.dart';
 import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart' as productAdCubit;
 import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart' as productAdState;
@@ -30,6 +31,8 @@ class _BasketPageState extends State<BasketPage> {
   int price = 0;
   String fulfillment = '';
   String deleveryDay = '';
+
+  String fulfillmentApi = 'FBS';
 
   String? productNames;
 
@@ -98,10 +101,11 @@ class _BasketPageState extends State<BasketPage> {
 
   Function? bottomPrice;
   Function? bottomCount;
+  int segmentValue = 0;
 
   @override
   void initState() {
-    BlocProvider.of<BasketCubit>(context).basketShow();
+    BlocProvider.of<BasketCubit>(context).basketShow(fulfillmentApi);
     BlocProvider.of<productAdCubit.ProductAdCubit>(context).adProducts(null);
     bottomPrice = GetStorage().listenKey('bottomPrice', (value) {
       basketPrice(value);
@@ -155,6 +159,76 @@ class _BasketPageState extends State<BasketPage> {
             ),
             textAlign: TextAlign.center,
           ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(60),
+            child: Column(
+              children: [
+                Container(
+                  height: 12,
+                  color: AppColors.kBackgroundColor,
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                    top: 8,
+                    left: 16,
+                    bottom: 8,
+                    right: 16,
+                    // right: screenSize.height * 0.016,
+                  ),
+                  child: CustomSwitchButton<int>(
+                    groupValue: segmentValue,
+                    children: {
+                      0: Container(
+                        alignment: Alignment.center,
+                        height: 39,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          'FBS',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: segmentValue == 0 ? Colors.black : const Color(0xff9B9B9B),
+                          ),
+                        ),
+                      ),
+                      1: Container(
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        height: 39,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          'realFBS',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: segmentValue == 1 ? Colors.black : const Color(0xff9B9B9B),
+                          ),
+                        ),
+                      ),
+                    },
+                    onValueChanged: (int? value) async {
+                      if (value != null) {
+                        segmentValue = value;
+                        print('fbs value $value');
+                        if (value == 0) {
+                          fulfillmentApi = 'FBS';
+                        } else {
+                          fulfillmentApi = 'realFBS';
+                        }
+                        BlocProvider.of<BasketCubit>(context).basketShow(fulfillmentApi);
+
+                        // BlocProvider.of<BasketAdminCubit>(context).basketSwitchState(value);
+                      }
+                      setState(() {});
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
         body: BlocConsumer<BasketCubit, BasketState>(listener: (context, state) {
           if (state is NoDataState) {
@@ -171,7 +245,7 @@ class _BasketPageState extends State<BasketPage> {
             return SmartRefresher(
               controller: refreshController,
               onRefresh: () {
-                BlocProvider.of<BasketCubit>(context).basketShow();
+                BlocProvider.of<BasketCubit>(context).basketShow(fulfillmentApi);
                 refreshController.refreshCompleted();
               },
               child: Column(
@@ -190,7 +264,7 @@ class _BasketPageState extends State<BasketPage> {
             return SmartRefresher(
               controller: refreshController,
               onRefresh: () {
-                BlocProvider.of<BasketCubit>(context).basketShow();
+                BlocProvider.of<BasketCubit>(context).basketShow(fulfillmentApi);
                 refreshController.refreshCompleted();
               },
               child: const Column(
@@ -204,7 +278,7 @@ class _BasketPageState extends State<BasketPage> {
             return SmartRefresher(
               controller: refreshController,
               onRefresh: () {
-                BlocProvider.of<BasketCubit>(context).basketShow();
+                BlocProvider.of<BasketCubit>(context).basketShow(fulfillmentApi);
                 refreshController.refreshCompleted();
               },
               child: Column(
@@ -230,7 +304,7 @@ class _BasketPageState extends State<BasketPage> {
             return SmartRefresher(
               controller: refreshController,
               onRefresh: () {
-                BlocProvider.of<BasketCubit>(context).basketShow();
+                BlocProvider.of<BasketCubit>(context).basketShow(fulfillmentApi);
                 refreshController.refreshCompleted();
               },
               child: ListView(
@@ -255,6 +329,7 @@ class _BasketPageState extends State<BasketPage> {
                           child: BasketProductCardWidget(
                             basketProducts: state.basketShowModel[index],
                             count: index,
+                            fulfillment: fulfillmentApi,
                           ),
                         );
                       },
@@ -327,7 +402,7 @@ class _BasketPageState extends State<BasketPage> {
             return SmartRefresher(
               controller: refreshController,
               onRefresh: () {
-                BlocProvider.of<BasketCubit>(context).basketShow();
+                BlocProvider.of<BasketCubit>(context).basketShow(fulfillmentApi);
                 refreshController.refreshCompleted();
               },
               child: const Column(
@@ -398,9 +473,11 @@ class _BasketPageState extends State<BasketPage> {
 class BasketProductCardWidget extends StatefulWidget {
   final BasketShowModel basketProducts;
   final int count;
+  final String fulfillment;
   const BasketProductCardWidget({
     required this.count,
     required this.basketProducts,
+    required this.fulfillment,
     Key? key,
   }) : super(key: key);
 
@@ -412,6 +489,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
   int basketCount = 0;
   int basketPrice = 0;
   bool isVisible = true;
+  String fulfillmentApi = 'fbs';
 
   List<basketOrderDTO> basketOrder = [];
 
@@ -419,6 +497,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
   void initState() {
     basketCount = widget.basketProducts.basketCount!.toInt();
     basketPrice = widget.basketProducts.price!.toInt();
+    fulfillmentApi = widget.fulfillment;
 
     // basketOrder[widget.count] = basketOrderDTO(product: ProductDTO(
     //   id: widget.basketProducts.product!.id!.toInt(),
@@ -608,7 +687,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                             GestureDetector(
                               onTap: () async {
                                 await BlocProvider.of<BasketCubit>(context)
-                                    .basketMinus(widget.basketProducts.product!.id.toString(), '1', 0);
+                                    .basketMinus(widget.basketProducts.product!.id.toString(), '1', 0, fulfillmentApi);
 
                                 basketCount--;
                                 int bottomPrice = GetStorage().read('bottomPrice');
@@ -629,7 +708,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                         .toInt()));
 
                                 if (basketCount == 0) {
-                                  await BlocProvider.of<BasketCubit>(context).basketShow();
+                                  await BlocProvider.of<BasketCubit>(context).basketShow(fulfillmentApi);
                                   isVisible = false;
                                 }
 
@@ -720,8 +799,8 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                         ),
                       GestureDetector(
                         onTap: () {
-                          BlocProvider.of<BasketCubit>(context)
-                              .basketMinus(widget.basketProducts.product!.id.toString(), basketCount.toString(), 0);
+                          BlocProvider.of<BasketCubit>(context).basketMinus(
+                              widget.basketProducts.product!.id.toString(), basketCount.toString(), 0, fulfillmentApi);
                           // isVisible = false;
 
                           // setState(() {});

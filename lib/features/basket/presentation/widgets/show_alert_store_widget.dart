@@ -302,7 +302,9 @@ Future<dynamic> showAlertStoreWidget(BuildContext context) async {
 
                       Get.back();
                       Get.back();
-                      Get.to(() => new BasketOrderAddressPage());
+                      Get.to(() => new BasketOrderAddressPage(
+                            fulfillment: 'fbs',
+                          ));
                     },
                     child: Container(
                         decoration: BoxDecoration(

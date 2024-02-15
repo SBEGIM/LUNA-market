@@ -874,7 +874,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               BlocProvider.of<BasketCubit>(context).basketMinus(
                                   widget.product.id.toString(),
                                   (widget.product.bloc![selectedIndex3!].count! * count),
-                                  (widget.product.bloc![selectedIndex3!].price! * count));
+                                  (widget.product.bloc![selectedIndex3!].price! * count),
+                                  'fbs');
                             }
                           } else {
                             isvisible = false;
@@ -2305,7 +2306,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
                         if (BlocProvider.of<BasketCubit>(context).state is! LoadedState) {
                           Future.wait<void>([
-                            BlocProvider.of<BasketCubit>(context).basketShow(),
+                            BlocProvider.of<BasketCubit>(context).basketShow('fbs'),
                           ]);
                         }
 
@@ -2327,7 +2328,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
                 if (BlocProvider.of<BasketCubit>(context).state is! LoadedState) {
                   Future.wait<void>([
-                    BlocProvider.of<BasketCubit>(context).basketShow(),
+                    BlocProvider.of<BasketCubit>(context).basketShow('fbs'),
                   ]);
                 }
 

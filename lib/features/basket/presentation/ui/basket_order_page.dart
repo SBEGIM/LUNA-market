@@ -17,7 +17,8 @@ import '../../../drawer/presentation/widgets/credit_info_detail_page.dart';
 class BasketOrderPage extends StatefulWidget {
   final String? address;
   bool? fbs;
-  BasketOrderPage({this.fbs, Key? key, this.address}) : super(key: key);
+  String fulfillment;
+  BasketOrderPage({this.fbs, Key? key, this.address, required this.fulfillment}) : super(key: key);
 
   @override
   _BasketOrderPageState createState() => _BasketOrderPageState();
@@ -841,7 +842,8 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
               } else if (isCheckedOnline == true) {
                 BlocProvider.of<orderCubit.OrderCubit>(context).payment(
                     address: widget.address.toString(),
-                    bonus: isSwitched == true ? (bonus < (price * 0.1) ? bonus : (price * 0.1)).toString() : '0');
+                    bonus: isSwitched == true ? (bonus < (price * 0.1) ? bonus : (price * 0.1)).toString() : '0',
+                    fulfillment: widget.fulfillment);
               } else {
                 Get.snackbar('Ошибка', 'Выберите способ оплаты', backgroundColor: Colors.redAccent);
               }

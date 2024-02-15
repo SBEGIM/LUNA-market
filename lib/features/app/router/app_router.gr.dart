@@ -45,8 +45,7 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     BasketOrderAddressRoute.name: (routeData) {
-      final args = routeData.argsAs<BasketOrderAddressRouteArgs>(
-          orElse: () => const BasketOrderAddressRouteArgs());
+      final args = routeData.argsAs<BasketOrderAddressRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: BasketOrderAddressPage(
@@ -57,14 +56,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     BasketOrderRoute.name: (routeData) {
-      final args = routeData.argsAs<BasketOrderRouteArgs>(
-          orElse: () => const BasketOrderRouteArgs());
+      final args = routeData.argsAs<BasketOrderRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: BasketOrderPage(
           fbs: args.fbs,
           key: args.key,
           address: args.address,
+          fulfillment: args.fulfillment,
         ),
       );
     },
@@ -433,7 +432,7 @@ class BaseTapeTab extends PageRouteInfo<void> {
 class BasketOrderAddressRoute
     extends PageRouteInfo<BasketOrderAddressRouteArgs> {
   BasketOrderAddressRoute({
-    String? fulfillment,
+    required String fulfillment,
     String? deleveryDay,
     Key? key,
     List<PageRouteInfo>? children,
@@ -455,12 +454,12 @@ class BasketOrderAddressRoute
 
 class BasketOrderAddressRouteArgs {
   const BasketOrderAddressRouteArgs({
-    this.fulfillment,
+    required this.fulfillment,
     this.deleveryDay,
     this.key,
   });
 
-  final String? fulfillment;
+  final String fulfillment;
 
   final String? deleveryDay;
 
@@ -479,6 +478,7 @@ class BasketOrderRoute extends PageRouteInfo<BasketOrderRouteArgs> {
     bool? fbs,
     Key? key,
     String? address,
+    required String fulfillment,
     List<PageRouteInfo>? children,
   }) : super(
           BasketOrderRoute.name,
@@ -486,6 +486,7 @@ class BasketOrderRoute extends PageRouteInfo<BasketOrderRouteArgs> {
             fbs: fbs,
             key: key,
             address: address,
+            fulfillment: fulfillment,
           ),
           initialChildren: children,
         );
@@ -501,6 +502,7 @@ class BasketOrderRouteArgs {
     this.fbs,
     this.key,
     this.address,
+    required this.fulfillment,
   });
 
   final bool? fbs;
@@ -509,9 +511,11 @@ class BasketOrderRouteArgs {
 
   final String? address;
 
+  final String fulfillment;
+
   @override
   String toString() {
-    return 'BasketOrderRouteArgs{fbs: $fbs, key: $key, address: $address}';
+    return 'BasketOrderRouteArgs{fbs: $fbs, key: $key, address: $address, fulfillment: $fulfillment}';
   }
 }
 

@@ -330,7 +330,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                       onTap: () {
                                         /// FIXME
                                         BlocProvider.of<BasketCubit>(context)
-                                            .basketMinus(widget.product.id.toString(), '1', 0);
+                                            .basketMinus(widget.product.id.toString(), '1', 0, 'fbs');
 
                                         BlocProvider.of<productCubit.ProductCubit>(context).updateProductByIndex(
                                           index: widget.index,

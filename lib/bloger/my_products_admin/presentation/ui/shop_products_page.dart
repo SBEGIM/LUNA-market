@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/bloger/my_products_admin/data/bloc/blogger_shop_products_state.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../core/common/constants.dart';
 import '../../../../features/tape/presentation/widgets/anim_search_widget.dart';
@@ -30,6 +31,14 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
     String? title;
     final TextEditingController searchController = TextEditingController();
     bool visible = true;
+
+    RefreshController refreshController = RefreshController();
+
+    Future<void> onLoading() async {
+      await BlocProvider.of<BloggerShopProductsCubit>(context).productsPagination(searchController.text, widget.id);
+      await Future.delayed(const Duration(milliseconds: 2000));
+      refreshController.loadComplete();
+    }
 
     final TextEditingController nameController = TextEditingController();
 
@@ -133,6 +142,16 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                 }
                 if (state is LoadedState) {
                   return Expanded(
+                      child: SmartRefresher(
+                    controller: refreshController,
+                    enablePullUp: true,
+                    onLoading: () {
+                      onLoading();
+                    },
+                    onRefresh: () {
+                      BlocProvider.of<BloggerShopProductsCubit>(context).products(searchController.text, widget.id);
+                      refreshController.refreshCompleted();
+                    },
                     child: ListView.builder(
                         padding: EdgeInsets.zero,
                         // physics: const NeverScrollableScrollPhysics(),
@@ -144,8 +163,7 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                           );
                           //  product: state.productModel[index]);
                         }),
-                  );
-
+                  ));
                   //   Expanded(
                   //     child: Container(
                   //       color: Colors.white,

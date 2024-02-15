@@ -15,10 +15,10 @@ import 'map_picker.dart';
 
 @RoutePage()
 class BasketOrderAddressPage extends StatefulWidget {
-  final String? fulfillment;
+  final String fulfillment;
   final String? deleveryDay;
 
-  const BasketOrderAddressPage({this.fulfillment, this.deleveryDay, Key? key}) : super(key: key);
+  const BasketOrderAddressPage({required this.fulfillment, this.deleveryDay, Key? key}) : super(key: key);
 
   @override
   _BasketOrderAddressPageState createState() => _BasketOrderAddressPageState();
@@ -30,6 +30,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
   bool shop = false;
   bool fbs = false;
   String address = '';
+  String? fulfillment = '';
 
   String? office;
 
@@ -41,6 +42,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
   @override
   void initState() {
     getAddress();
+    fulfillment = widget.fulfillment;
     super.initState();
   }
 
@@ -623,7 +625,8 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                 return;
               }
             }
-            context.router.push(BasketOrderRoute(fbs: fbs, address: point ? office : address));
+            context.router
+                .push(BasketOrderRoute(fbs: fbs, address: point ? office : address, fulfillment: widget.fulfillment));
             // Get.to(BasketOrderPage(
             //   fbs: fbs,
             // ));
