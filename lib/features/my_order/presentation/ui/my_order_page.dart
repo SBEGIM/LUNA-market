@@ -44,9 +44,8 @@ class _MyOrderPageState extends State<MyOrderPage> {
           ),
           centerTitle: true,
           title: const Text(
-            'История заказов',
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+            'Мои заказы',
+            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
           )),
       body: BlocConsumer<BasketCubit, BasketState>(
           listener: (context, state) {},
@@ -67,14 +66,11 @@ class _MyOrderPageState extends State<MyOrderPage> {
                   itemCount: state.basketOrderModel.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                        padding: const EdgeInsets.only(
-                            left: 16, right: 16, bottom: 16),
-                        child: MyOrderCardWidget(
-                            basketOrder: state.basketOrderModel[index]));
+                        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                        child: MyOrderCardWidget(basketOrder: state.basketOrderModel[index]));
                   });
             } else {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
     );

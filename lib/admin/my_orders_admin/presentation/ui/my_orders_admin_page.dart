@@ -62,29 +62,29 @@ class _MyOrdersAdminPageState extends State<MyOrdersAdminPage> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          'FBS',
+                          'Активные',
                           style: TextStyle(
                             fontSize: 15,
                             color: segmentValue == 0 ? Colors.black : const Color(0xff9B9B9B),
                           ),
                         ),
                       ),
+                      // 1: Container(
+                      //   width: MediaQuery.of(context).size.width,
+                      //   alignment: Alignment.center,
+                      //   height: 39,
+                      //   decoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(4),
+                      //   ),
+                      //   child: Text(
+                      //     'realFBS',
+                      //     style: TextStyle(
+                      //       fontSize: 14,
+                      //       color: segmentValue == 1 ? Colors.black : const Color(0xff9B9B9B),
+                      //     ),
+                      //   ),
+                      // ),
                       1: Container(
-                        width: MediaQuery.of(context).size.width,
-                        alignment: Alignment.center,
-                        height: 39,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          'realFBS',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: segmentValue == 1 ? Colors.black : const Color(0xff9B9B9B),
-                          ),
-                        ),
-                      ),
-                      2: Container(
                         width: MediaQuery.of(context).size.width,
                         alignment: Alignment.center,
                         height: 39,
@@ -119,7 +119,7 @@ class _MyOrdersAdminPageState extends State<MyOrdersAdminPage> {
             index: segmentValue,
             children: [
               AllMyOrdersPage(fulfillment: 'fbs'),
-              AllMyOrdersRealFBSPage(fulfillment: 'realFBS'),
+              //  AllMyOrdersRealFBSPage(fulfillment: 'realFBS'),
               const DoneMyOrdersPage(),
             ],
           ),

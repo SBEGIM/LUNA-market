@@ -188,7 +188,7 @@ class _DoneMyOrdersPageState extends State<DoneMyOrdersPage> {
                                                     fontWeight: FontWeight.w500),
                                               ),
                                               Text(
-                                                state.basketEndOrderModel[index].product![i].count.toString(),
+                                                'x' + state.basketEndOrderModel[index].product![i].count.toString(),
                                                 style: const TextStyle(
                                                     color: AppColors.kGray750,
                                                     fontSize: 14,

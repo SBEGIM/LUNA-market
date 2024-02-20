@@ -3,7 +3,11 @@ class BasketOrderModel {
     int? id,
     int? shopId,
     List<Product>? product,
+    List<Product>? productFBS,
+    List<Product>? productRealFBS,
     int? summa,
+    int? priceFBS,
+    int? priceRealFBS,
     int? chatId,
     String? status,
     int? deliveryDay,
@@ -16,7 +20,11 @@ class BasketOrderModel {
     _id = id;
     _shopId = shopId;
     _product = product;
+    _productFBS = productFBS;
+    _productRealFBS = productRealFBS;
     _summa = summa;
+    _priceFBS = priceFBS;
+    _priceRealFBS = priceRealFBS;
     _chatId = chatId;
     _status = status;
     _deliveryDay = deliveryDay;
@@ -36,7 +44,21 @@ class BasketOrderModel {
         _product?.add(Product.fromJson(v));
       });
     }
+    if (json['product_fbs'] != null) {
+      _productFBS = [];
+      json['product_fbs'].forEach((v) {
+        _productFBS?.add(Product.fromJson(v));
+      });
+    }
+    if (json['product_realFBS'] != null) {
+      _productRealFBS = [];
+      json['product_realFBS'].forEach((v) {
+        _productRealFBS?.add(Product.fromJson(v));
+      });
+    }
     _summa = json['summa'];
+    _priceFBS = json['price_fbs'];
+    _priceRealFBS = json['price_realFBS'];
     _status = json['status'];
     _chatId = json['chat_id'];
     _date = json['date'];
@@ -49,7 +71,11 @@ class BasketOrderModel {
   int? _id;
   int? _shopId;
   List<Product>? _product;
+  List<Product>? _productFBS;
+  List<Product>? _productRealFBS;
   int? _summa;
+  int? _priceFBS;
+  int? _priceRealFBS;
   int? _chatId;
   String? _status;
   String? _date;
@@ -62,7 +88,11 @@ class BasketOrderModel {
   int? get id => _id;
   int? get shopId => _shopId;
   List<Product>? get product => _product;
+  List<Product>? get productFBS => _productFBS;
+  List<Product>? get productRealFBS => _productRealFBS;
   int? get summa => _summa;
+  int? get priceFBS => _priceFBS;
+  int? get priceRealFBS => _priceRealFBS;
   String? get status => _status;
   int? get chatId => _chatId;
   String? get date => _date;
@@ -79,7 +109,15 @@ class BasketOrderModel {
     if (_product != null) {
       map['product'] = _product?.map((v) => v.toJson()).toList();
     }
+    if (_productFBS != null) {
+      map['product_fbs'] = _productFBS?.map((v) => v.toJson()).toList();
+    }
+    if (_productRealFBS != null) {
+      map['product_realFBS'] = _productRealFBS?.map((v) => v.toJson()).toList();
+    }
     map['summa'] = _summa;
+    map['price_FBS'] = _priceFBS;
+    map['price_realFBS'] = _priceRealFBS;
     map['chatId'] = _chatId;
     map['status'] = _status;
     map['date'] = _date;

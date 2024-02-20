@@ -2,10 +2,16 @@ class BasketAdminOrderModel {
   BasketAdminOrderModel({
     int? id,
     List<Product>? product,
+    List<Product>? productFBS,
+    List<Product>? productRealFBS,
     User? user,
     int? chatId,
     int? summa,
+    int? priceFBS,
+    int? priceRealFBS,
     String? status,
+    String? statusFBS,
+    String? statusRealFBS,
     int? bonus,
     int? courier,
     int? deliveryDay,
@@ -19,11 +25,17 @@ class BasketAdminOrderModel {
   }) {
     _id = id;
     _product = product;
+    _productFBS = productFBS;
+    _productRealFBS = productRealFBS;
     _user = user!;
     _chatId = chatId;
     _summa = summa;
+    _priceFBS = priceFBS;
+    _priceRealFBS = priceRealFBS;
     _size = size;
     _status = status;
+    _productFBS = productFBS;
+    _productRealFBS = productRealFBS;
     _bonus = bonus;
     _courier = courier;
     _deliveryDay = deliveryDay;
@@ -42,10 +54,26 @@ class BasketAdminOrderModel {
         _product?.add(Product.fromJson(v));
       });
     }
+    if (json['product_fbs'] != null) {
+      _productFBS = [];
+      json['product_fbs'].forEach((v) {
+        _productFBS?.add(Product.fromJson(v));
+      });
+    }
+    if (json['product_realFBS'] != null) {
+      _productRealFBS = [];
+      json['product_realFBS'].forEach((v) {
+        _productRealFBS?.add(Product.fromJson(v));
+      });
+    }
     _user = json['user'] != null ? User.fromJson(json['user']) : null;
     _chatId = json['chat_id'];
     _summa = json['summa'];
+    _priceFBS = json['price_fbs'];
+    _priceRealFBS = json['price_realFBS'];
     _status = json['status'];
+    _statusFBS = json['status_fbs'];
+    _statusRealFBS = json['status_realFBS'];
     _bonus = json['bonus'];
     _preorder = json['pre_order'];
     _courier = json['courier'];
@@ -59,10 +87,16 @@ class BasketAdminOrderModel {
   }
   int? _id;
   List<Product>? _product;
+  List<Product>? _productFBS;
+  List<Product>? _productRealFBS;
   User? _user;
   int? _chatId;
   int? _summa;
   String? _status;
+  String? _statusFBS;
+  String? _statusRealFBS;
+  int? _priceFBS;
+  int? _priceRealFBS;
   int? _bonus;
   int? _preorder;
   int? _courier;
@@ -76,15 +110,21 @@ class BasketAdminOrderModel {
 
   int? get id => _id;
   List<Product>? get product => _product;
+  List<Product>? get productFBS => _productFBS;
+  List<Product>? get productRealFBS => _productRealFBS;
   User? get user => _user;
   int? get chatId => _chatId;
   int? get summa => _summa;
+  int? get priceFBS => _priceFBS;
+  int? get priceRealFBS => _priceRealFBS;
   int? get bonus => _bonus;
   int? get preorder => _preorder;
   int? get courier => _courier;
   int? get deliveryDay => _deliveryDay;
   int? get deliveryPrice => _deliveryPrice;
   String? get status => _status;
+  String? get statusFBS => _statusFBS;
+  String? get statusRealFBS => _statusRealFBS;
   String? get size => _size;
   String? get date => _date;
   String? get comment => _comment;
@@ -97,13 +137,23 @@ class BasketAdminOrderModel {
     if (_product != null) {
       map['product'] = _product?.map((v) => v.toJson()).toList();
     }
+    if (_productFBS != null) {
+      map['product_fbs'] = _productFBS?.map((v) => v.toJson()).toList();
+    }
+    if (_productRealFBS != null) {
+      map['product_realFBS'] = _productRealFBS?.map((v) => v.toJson()).toList();
+    }
     if (_user != null) {
       map['user'] = _user?.toJson();
     }
     map['chatId'] = _chatId;
     map['summa'] = _summa;
+    map['price_fbs'] = _priceFBS;
+    map['price_realFBS'] = _priceRealFBS;
     map['size'] = _size;
     map['status'] = _status;
+    map['status_fbs'] = _statusFBS;
+    map['status_realFBS'] = _statusRealFBS;
     map['bonus'] = _bonus;
     map['preorder'] = _preorder;
     map['courier'] = _courier;
