@@ -10,6 +10,8 @@ class BasketOrderModel {
     int? priceRealFBS,
     int? chatId,
     String? status,
+    String? statusFBS,
+    String? statusRealFBS,
     int? deliveryDay,
     int? deliveryPrice,
     String? date,
@@ -27,6 +29,8 @@ class BasketOrderModel {
     _priceRealFBS = priceRealFBS;
     _chatId = chatId;
     _status = status;
+    _statusFBS = statusFBS;
+    _statusRealFBS = _statusRealFBS;
     _deliveryDay = deliveryDay;
     _deliveryPrice = deliveryPrice;
     _date = date;
@@ -60,6 +64,8 @@ class BasketOrderModel {
     _priceFBS = json['price_fbs'];
     _priceRealFBS = json['price_realFBS'];
     _status = json['status'];
+    _statusFBS = json['status_fbs'];
+    _statusRealFBS = json['status_realFBS'];
     _chatId = json['chat_id'];
     _date = json['date'];
     _deliveryDay = json['delivery_day'];
@@ -78,6 +84,8 @@ class BasketOrderModel {
   int? _priceRealFBS;
   int? _chatId;
   String? _status;
+  String? _statusFBS;
+  String? _statusRealFBS;
   String? _date;
   int? _deliveryDay;
   int? _deliveryPrice;
@@ -94,6 +102,8 @@ class BasketOrderModel {
   int? get priceFBS => _priceFBS;
   int? get priceRealFBS => _priceRealFBS;
   String? get status => _status;
+  String? get statusFBS => _statusFBS;
+  String? get statusRealFBS => _statusRealFBS;
   int? get chatId => _chatId;
   String? get date => _date;
   int? get deliveryDay => _deliveryDay;
@@ -120,6 +130,8 @@ class BasketOrderModel {
     map['price_realFBS'] = _priceRealFBS;
     map['chatId'] = _chatId;
     map['status'] = _status;
+    map['status_fbs'] = _statusFBS;
+    map['status_realFBS'] = _statusRealFBS;
     map['date'] = _date;
     map['deliveryDay'] = _deliveryDay;
     map['deliveryPrice'] = _deliveryPrice;
