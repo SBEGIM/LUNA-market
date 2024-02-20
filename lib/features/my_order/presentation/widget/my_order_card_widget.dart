@@ -14,6 +14,114 @@ class MyOrderCardWidget extends StatefulWidget {
 }
 
 class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
+  String statusFBS = '';
+  String statusRealFBS = '';
+
+  @override
+  void initState() {
+    switch (widget.basketOrder.statusFBS) {
+      case 'order':
+        {
+          statusFBS = 'Заказ оформлен';
+        }
+        break;
+
+      case 'accepted':
+        {
+          statusFBS = 'Заказ оформлен';
+        }
+        break;
+
+      case 'courier':
+        {
+          statusFBS = 'Передан службе доставка';
+        }
+        break;
+      case 'error':
+        {
+          statusFBS = 'Ошибка';
+        }
+        break;
+      case 'cancel':
+        {
+          statusFBS = 'Клиент отменил заказ';
+        }
+        break;
+      case 'rejected':
+        {
+          statusFBS = 'Магазин отменил заказ';
+        }
+        break;
+      case 'end':
+        {
+          statusFBS = 'Заказ окончен';
+        }
+        break;
+      case 'in_process':
+        {
+          statusFBS = 'В процессе';
+        }
+        break;
+      default:
+        {
+          statusFBS = 'Неизвестно';
+        }
+        break;
+    }
+
+    switch (widget.basketOrder.statusRealFBS) {
+      case 'order':
+        {
+          statusRealFBS = 'Заказ оформлен';
+        }
+        break;
+
+      case 'accepted':
+        {
+          statusRealFBS = 'Заказ оформлен';
+        }
+        break;
+
+      case 'courier':
+        {
+          statusRealFBS = 'Передан службе доставка';
+        }
+        break;
+      case 'error':
+        {
+          statusRealFBS = 'Ошибка';
+        }
+        break;
+      case 'cancel':
+        {
+          statusRealFBS = 'Клиент отменил заказ';
+        }
+        break;
+      case 'rejected':
+        {
+          statusRealFBS = 'Магазин отменил заказ';
+        }
+        break;
+      case 'end':
+        {
+          statusRealFBS = 'Заказ окончен';
+        }
+        break;
+      case 'in_process':
+        {
+          statusRealFBS = 'В процессе';
+        }
+        break;
+      default:
+        {
+          statusRealFBS = 'Неизвестно';
+        }
+        break;
+    }
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -109,12 +217,13 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                           decoration:
                               BoxDecoration(color: const Color(0x104BB34B), borderRadius: BorderRadius.circular(4)),
                           padding: const EdgeInsets.all(5),
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Доставлен',
-                                style: TextStyle(color: Color(0xFF4BB34B), fontSize: 12, fontWeight: FontWeight.w400),
+                                statusFBS,
+                                style: const TextStyle(
+                                    color: Color(0xFF4BB34B), fontSize: 12, fontWeight: FontWeight.w400),
                               ),
                             ],
                           ),
@@ -174,12 +283,13 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                           decoration:
                               BoxDecoration(color: const Color(0x104BB34B), borderRadius: BorderRadius.circular(4)),
                           padding: const EdgeInsets.all(5),
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Передан курьеру',
-                                style: TextStyle(color: Color(0xFF4BB34B), fontSize: 12, fontWeight: FontWeight.w400),
+                                statusRealFBS,
+                                style: const TextStyle(
+                                    color: Color(0xFF4BB34B), fontSize: 12, fontWeight: FontWeight.w400),
                               ),
                             ],
                           ),

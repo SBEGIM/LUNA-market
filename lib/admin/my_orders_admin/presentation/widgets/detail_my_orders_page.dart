@@ -20,96 +20,189 @@ class DetailMyOrdersPage extends StatefulWidget {
 }
 
 class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
-  String status = '';
-  String postStatus = '';
-  String postSecondStatus = '';
-  String buttonText = '';
-  String buttonSecondText = '';
+  String statusFBS = '';
+  String statusRealFBS = '';
+
+  String postStatusFBS = '';
+  String postStatusRealFBS = '';
+
+  String postSecondStatusFBS = '';
+  String postSecondStatusRealFBS = '';
+
+  String buttonTextFBS = '';
+  String buttonTextRealFBS = '';
+
+  String buttonSecondTextFBS = '';
+  String buttonSecondTextRealFBS = '';
 
   int segmentValue = 0;
 
   @override
   void initState() {
-    switch (widget.basket.status) {
+    switch (widget.basket.statusFBS) {
       case 'order':
         {
-          status = 'Заказ оформлен';
-          postStatus = 'accepted';
-          postSecondStatus = 'cancel';
+          statusFBS = 'Заказ оформлен';
+          postStatusFBS = 'accepted';
+          postSecondStatusFBS = 'cancel';
 
-          buttonText = 'Принять';
-          buttonSecondText = 'Отменить заказ';
+          buttonTextFBS = 'Принять';
+          buttonSecondTextFBS = 'Отменить заказ';
         }
         break;
 
       case 'accepted':
         {
-          status = 'Заказ оформлен';
-          postStatus = 'courier';
-          postSecondStatus = 'cancel';
+          statusFBS = 'Заказ оформлен';
+          postStatusFBS = 'courier';
+          postSecondStatusFBS = 'cancel';
 
-          buttonText = 'Передать курьеру';
-          buttonSecondText = 'Отменить заказ';
+          buttonTextFBS = 'Передать курьеру';
+          buttonSecondTextFBS = 'Отменить заказ';
         }
         break;
 
       case 'courier':
         {
-          status = 'Передан службе доставка';
-          postStatus = '';
-          postSecondStatus = 'error';
-          buttonText = 'Ожидание клиента';
-          buttonSecondText = 'Проблемы с заказом';
+          statusFBS = 'Передан службе доставка';
+          postStatusFBS = '';
+          postSecondStatusFBS = 'error';
+          buttonTextFBS = 'Ожидание клиента';
+          buttonSecondTextFBS = 'Проблемы с заказом';
         }
         break;
       case 'error':
         {
-          status = 'Ошибка';
-          postStatus = 'courier';
-          postSecondStatus = '';
-          buttonText = 'Передать курьеру';
-          buttonSecondText = 'Ошибка c заказом';
+          statusFBS = 'Ошибка';
+          postStatusFBS = 'courier';
+          postSecondStatusFBS = '';
+          buttonTextFBS = 'Передать курьеру';
+          buttonSecondTextFBS = 'Ошибка c заказом';
         }
         break;
       case 'cancel':
         {
-          status = 'Клиент отменил заказ';
-          postStatus = 'end';
-          postSecondStatus = 'end';
-          buttonText = 'Завершить';
-          buttonSecondText = 'Завершить';
+          statusFBS = 'Клиент отменил заказ';
+          postStatusFBS = 'end';
+          postSecondStatusFBS = 'end';
+          buttonTextFBS = 'Завершить';
+          buttonSecondTextFBS = 'Завершить';
         }
         break;
       case 'rejected':
         {
-          status = 'Магазин отменил заказ';
-          postStatus = 'rejected';
-          postSecondStatus = 'rejected';
-          buttonText = 'Вы отменили заказ';
-          buttonSecondText = 'Вы отменили заказ';
+          statusFBS = 'Магазин отменил заказ';
+          postStatusFBS = 'rejected';
+          postSecondStatusFBS = 'rejected';
+          buttonTextFBS = 'Вы отменили заказ';
+          buttonSecondTextFBS = 'Вы отменили заказ';
         }
         break;
       case 'end':
         {
-          status = 'Заказ окончен';
-          postStatus = 'end';
-          postSecondStatus = 'end';
-          buttonText = 'Заказ окончен';
-          buttonSecondText = 'Заказ окончен';
+          statusFBS = 'Заказ окончен';
+          postStatusFBS = 'end';
+          postSecondStatusFBS = 'end';
+          buttonTextFBS = 'Заказ окончен';
+          buttonSecondTextFBS = 'Заказ окончен';
         }
         break;
       case 'in_process':
         {
-          status = 'В процессе';
-          postStatus = 'success';
-          postSecondStatus = 'rejected';
-          buttonText = 'Принят';
-          buttonSecondText = 'Отклонить';
+          statusFBS = 'В процессе';
+          postStatusFBS = 'success';
+          postSecondStatusFBS = 'rejected';
+          buttonTextFBS = 'Принят';
+          buttonSecondTextFBS = 'Отклонить';
         }
         break;
       default:
         {
-          status = 'Неизвестно';
+          statusFBS = 'Неизвестно';
+        }
+        break;
+    }
+
+    switch (widget.basket.statusRealFBS) {
+      case 'order':
+        {
+          statusRealFBS = 'Заказ оформлен';
+          postStatusRealFBS = 'accepted';
+          postSecondStatusRealFBS = 'cancel';
+
+          buttonTextRealFBS = 'Принять';
+          buttonSecondTextRealFBS = 'Отменить заказ';
+        }
+        break;
+
+      case 'accepted':
+        {
+          statusRealFBS = 'Заказ оформлен';
+          postStatusRealFBS = 'courier';
+          postSecondStatusRealFBS = 'cancel';
+
+          buttonTextRealFBS = 'Передать курьеру';
+          buttonSecondTextRealFBS = 'Отменить заказ';
+        }
+        break;
+
+      case 'courier':
+        {
+          statusRealFBS = 'Передан службе доставка';
+          postStatusRealFBS = '';
+          postSecondStatusRealFBS = 'error';
+          buttonTextRealFBS = 'Ожидание клиента';
+          buttonSecondTextRealFBS = 'Проблемы с заказом';
+        }
+        break;
+      case 'error':
+        {
+          statusRealFBS = 'Ошибка';
+          postStatusRealFBS = 'courier';
+          postSecondStatusRealFBS = '';
+          buttonTextRealFBS = 'Передать курьеру';
+          buttonSecondTextRealFBS = 'Ошибка c заказом';
+        }
+        break;
+      case 'cancel':
+        {
+          statusRealFBS = 'Клиент отменил заказ';
+          postStatusRealFBS = 'end';
+          postSecondStatusRealFBS = 'end';
+          buttonTextRealFBS = 'Завершить';
+          buttonSecondTextRealFBS = 'Завершить';
+        }
+        break;
+      case 'rejected':
+        {
+          statusRealFBS = 'Магазин отменил заказ';
+          postStatusRealFBS = 'rejected';
+          postSecondStatusRealFBS = 'rejected';
+          buttonTextRealFBS = 'Вы отменили заказ';
+          buttonSecondTextRealFBS = 'Вы отменили заказ';
+        }
+        break;
+      case 'end':
+        {
+          statusRealFBS = 'Заказ окончен';
+          postStatusRealFBS = 'end';
+          postSecondStatusRealFBS = 'end';
+          buttonTextRealFBS = 'Заказ окончен';
+          buttonSecondTextRealFBS = 'Заказ окончен';
+        }
+        break;
+      case 'in_process':
+        {
+          statusRealFBS = 'В процессе';
+          postStatusRealFBS = 'success';
+          postSecondStatusRealFBS = 'rejected';
+          buttonTextRealFBS = 'Принят';
+          buttonSecondTextRealFBS = 'Отклонить';
+        }
+        break;
+      default:
+        {
+          statusRealFBS = 'Неизвестно';
         }
         break;
     }
@@ -317,7 +410,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                           Container(
                             decoration: const BoxDecoration(color: AppColors.kGray1),
                             padding: const EdgeInsets.all(8),
-                            child: Text(status),
+                            child: Text(statusFBS),
                           )
                         ],
                       ),
@@ -603,9 +696,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            if (postStatus != '') {
+                            if (postStatusFBS != '') {
                               BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(
-                                postStatus,
+                                postStatusFBS,
                                 widget.basket.id.toString(),
                                 widget.basket.product!.first.id.toString(),
                               );
@@ -627,7 +720,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                     child: CircularProgressIndicator.adaptive(),
                                   )
                                 : Text(
-                                    buttonText,
+                                    buttonTextFBS,
                                     style:
                                         const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
                                   ),
@@ -635,8 +728,8 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (postSecondStatus != '') {
-                              BlocProvider.of<BasketAdminCubit>(context).basketStatus(postSecondStatus,
+                            if (postSecondStatusFBS != '') {
+                              BlocProvider.of<BasketAdminCubit>(context).basketStatus(postSecondStatusFBS,
                                   widget.basket.id.toString(), widget.basket.product!.first.id.toString());
                               BlocProvider.of<BasketAdminCubit>(context).basketOrderRealFBSshow('realFBS');
 
@@ -651,7 +744,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                               13,
                             ),
                             child: Text(
-                              buttonSecondText,
+                              buttonSecondTextFBS,
                               style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
                             ),
                           ),
@@ -785,7 +878,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                           Container(
                             decoration: const BoxDecoration(color: AppColors.kGray1),
                             padding: const EdgeInsets.all(8),
-                            child: Text(status),
+                            child: Text(statusRealFBS),
                           )
                         ],
                       ),
@@ -1071,9 +1164,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            if (postStatus != '') {
+                            if (postStatusRealFBS != '') {
                               BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(
-                                postStatus,
+                                postStatusRealFBS,
                                 widget.basket.id.toString(),
                                 widget.basket.product!.first.id.toString(),
                               );
@@ -1095,7 +1188,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                     child: CircularProgressIndicator.adaptive(),
                                   )
                                 : Text(
-                                    buttonText,
+                                    buttonTextRealFBS,
                                     style:
                                         const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
                                   ),
@@ -1103,8 +1196,8 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (postSecondStatus != '') {
-                              BlocProvider.of<BasketAdminCubit>(context).basketStatus(postSecondStatus,
+                            if (postSecondStatusRealFBS != '') {
+                              BlocProvider.of<BasketAdminCubit>(context).basketStatus(postSecondStatusRealFBS,
                                   widget.basket.id.toString(), widget.basket.product!.first.id.toString());
                               BlocProvider.of<BasketAdminCubit>(context).basketOrderRealFBSshow('realFBS');
 
@@ -1119,7 +1212,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                               13,
                             ),
                             child: Text(
-                              buttonSecondText,
+                              buttonSecondTextRealFBS,
                               style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
                             ),
                           ),

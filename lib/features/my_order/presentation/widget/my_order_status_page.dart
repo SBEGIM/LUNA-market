@@ -1785,7 +1785,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         textAlign: TextAlign.center,
                       ),
                       const Text(
-                        'Отсутствует заказы fbs',
+                        'Отсутствует заказы realFBS',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
                         textAlign: TextAlign.center,
                       )

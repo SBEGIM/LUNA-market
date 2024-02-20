@@ -34,6 +34,8 @@ class BasketAdminOrderModel {
     _priceRealFBS = priceRealFBS;
     _size = size;
     _status = status;
+    _statusFBS = statusFBS;
+    _statusRealFBS = statusRealFBS;
     _productFBS = productFBS;
     _productRealFBS = productRealFBS;
     _bonus = bonus;
