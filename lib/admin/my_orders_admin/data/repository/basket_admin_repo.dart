@@ -10,74 +10,61 @@ const baseUrl = 'http://185.116.193.73/api';
 class BasketAdminRepository {
   final Basket _basket = Basket();
 
-  Future<List<BasketAdminOrderModel>> basketOrderShow(fulfillment) =>
-      _basket.basketOrderShow(fulfillment);
+  Future<List<BasketAdminOrderModel>> basketOrderShow(fulfillment) => _basket.basketOrderShow(fulfillment);
 
   Future<List<BasketAdminOrderModel>> basketOrderRealFbsShow(fulfillment) =>
       _basket.basketOrderRealFbsShow(fulfillment);
 
-  Future<List<BasketAdminOrderModel>> basketOrderEndShow() =>
-      _basket.basketOrderEndShow();
+  Future<List<BasketAdminOrderModel>> basketOrderEndShow() => _basket.basketOrderEndShow();
 
-  Future<void> basketStatus(String status, id, productId) =>
-      _basket.basketStatus(status, id, productId);
+  Future<void> basketStatus(String status, id, productId, fulfillment) =>
+      _basket.basketStatus(status, id, productId, fulfillment);
 }
 
 class Basket {
   final _box = GetStorage();
 
-  Future<List<BasketAdminOrderModel>> basketOrderShow(
-      String? fulfillment) async {
+  Future<List<BasketAdminOrderModel>> basketOrderShow(String? fulfillment) async {
     final String? token = _box.read('seller_token');
 
     final response = await http.get(
-        Uri.parse(
-            "$baseUrl/basket/order/seller/status?status=active&page=1&fulfillment=$fulfillment"),
+        Uri.parse("$baseUrl/basket/order/seller/status?status=active&page=1&fulfillment=$fulfillment"),
         headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);
 
-    return (data['data'] as List)
-        .map((e) => BasketAdminOrderModel.fromJson(e))
-        .toList();
+    return (data['data'] as List).map((e) => BasketAdminOrderModel.fromJson(e)).toList();
   }
 
-  Future<List<BasketAdminOrderModel>> basketOrderRealFbsShow(
-      String? fulfillment) async {
+  Future<List<BasketAdminOrderModel>> basketOrderRealFbsShow(String? fulfillment) async {
     final String? token = _box.read('seller_token');
 
     final response = await http.get(
-        Uri.parse(
-            "$baseUrl/basket/order/seller/status?status=active&page=1&fulfillment=realFBS"),
+        Uri.parse("$baseUrl/basket/order/seller/status?status=active&page=1&fulfillment=realFBS"),
         headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);
 
-    return (data['data'] as List)
-        .map((e) => BasketAdminOrderModel.fromJson(e))
-        .toList();
+    return (data['data'] as List).map((e) => BasketAdminOrderModel.fromJson(e)).toList();
   }
 
   Future<List<BasketAdminOrderModel>> basketOrderEndShow() async {
     final String? token = _box.read('seller_token');
 
-    final response = await http.get(
-        Uri.parse("$baseUrl/basket/order/seller/status?status=end&page=1"),
+    final response = await http.get(Uri.parse("$baseUrl/basket/order/seller/status?status=end&page=1"),
         headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);
 
-    return (data['data'] as List)
-        .map((e) => BasketAdminOrderModel.fromJson(e))
-        .toList();
+    return (data['data'] as List).map((e) => BasketAdminOrderModel.fromJson(e)).toList();
   }
 
-  Future<void> basketStatus(String status, id, productId) async {
+  Future<void> basketStatus(String status, id, productId, fulfillment) async {
     final String? token = _box.read('token');
 
     final response = await http.post(Uri.parse("$baseUrl/basket/status"),
         headers: {"Authorization": "Bearer $token"},
-        body: {'status': status, 'id': id, 'product_id': productId});
+        body: {'status': status, 'id': id, 'product_id': productId, 'fulfillment': fulfillment});
 
     return;
   }

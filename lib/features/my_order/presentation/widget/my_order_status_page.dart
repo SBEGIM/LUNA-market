@@ -417,10 +417,10 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                 );
                                               } else {
                                                 BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(
-                                                  'end',
-                                                  widget.basketOrder.id.toString(),
-                                                  widget.basketOrder.product!.first.id.toString(),
-                                                );
+                                                    'end',
+                                                    widget.basketOrder.id.toString(),
+                                                    widget.basketOrder.product!.first.id.toString(),
+                                                    'fbs');
                                                 // Get.back();
                                               }
                                             },
@@ -459,7 +459,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           Navigator.of(context).push(MaterialPageRoute(
                                             builder: (context) => QRViewExample(
                                                 id: widget.basketOrder.id!,
-                                                product_id: widget.basketOrder.product!.first.id!),
+                                                product_id: widget.basketOrder.product!.first.id!,
+                                                fulfillment: 'fbs'),
                                           ));
                                         },
                                         child: Container(
@@ -1244,10 +1245,10 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                 );
                                               } else {
                                                 BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(
-                                                  'end',
-                                                  widget.basketOrder.id.toString(),
-                                                  widget.basketOrder.product!.first.id.toString(),
-                                                );
+                                                    'end',
+                                                    widget.basketOrder.id.toString(),
+                                                    widget.basketOrder.product!.first.id.toString(),
+                                                    'fbs');
                                                 // Get.back();
                                               }
                                             },
@@ -1286,7 +1287,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           Navigator.of(context).push(MaterialPageRoute(
                                             builder: (context) => QRViewExample(
                                                 id: widget.basketOrder.id!,
-                                                product_id: widget.basketOrder.product!.first.id!),
+                                                product_id: widget.basketOrder.product!.first.id!,
+                                                fulfillment: 'realFBS'),
                                           ));
                                         },
                                         child: Container(
@@ -1802,7 +1804,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
 class QRViewExample extends StatefulWidget {
   int id;
   int product_id;
-  QRViewExample({required this.id, required this.product_id, Key? key}) : super(key: key);
+  String fulfillment;
+  QRViewExample({required this.id, required this.product_id, required this.fulfillment, Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _QRViewExampleState();
@@ -1848,10 +1851,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                             Get.snackbar('Заказ', 'возврат оформлен', backgroundColor: Colors.greenAccent);
 
                             BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(
-                              'cancel',
-                              widget.id.toString(),
-                              widget.product_id.toString(),
-                            );
+                                'cancel', widget.id.toString(), widget.product_id.toString(), widget.fulfillment);
                           } else {
                             Get.snackbar('Заказ', 'код товара не совпал', backgroundColor: Colors.greenAccent);
                           }

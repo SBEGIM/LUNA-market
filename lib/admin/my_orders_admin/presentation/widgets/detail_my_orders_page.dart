@@ -697,11 +697,8 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                         GestureDetector(
                           onTap: () {
                             if (postStatusFBS != '') {
-                              BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(
-                                postStatusFBS,
-                                widget.basket.id.toString(),
-                                widget.basket.product!.first.id.toString(),
-                              );
+                              BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(postStatusFBS,
+                                  widget.basket.id.toString(), widget.basket.product!.first.id.toString(), 'fbs');
 
                               BlocProvider.of<BasketAdminCubit>(context).basketOrderRealFBSshow('realFBS');
 
@@ -730,8 +727,8 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                           onTap: () {
                             if (postSecondStatusFBS != '') {
                               BlocProvider.of<BasketAdminCubit>(context).basketStatus(postSecondStatusFBS,
-                                  widget.basket.id.toString(), widget.basket.product!.first.id.toString());
-                              BlocProvider.of<BasketAdminCubit>(context).basketOrderRealFBSshow('realFBS');
+                                  widget.basket.id.toString(), widget.basket.product!.first.id.toString(), 'fbs');
+                              BlocProvider.of<BasketAdminCubit>(context).basketOrderRealFBSshow('fbs');
 
                               Get.back();
                             } else {
@@ -1165,11 +1162,8 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                         GestureDetector(
                           onTap: () {
                             if (postStatusRealFBS != '') {
-                              BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(
-                                postStatusRealFBS,
-                                widget.basket.id.toString(),
-                                widget.basket.product!.first.id.toString(),
-                              );
+                              BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(postStatusRealFBS,
+                                  widget.basket.id.toString(), widget.basket.product!.first.id.toString(), 'realFBS');
 
                               BlocProvider.of<BasketAdminCubit>(context).basketOrderRealFBSshow('realFBS');
 
@@ -1198,7 +1192,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                           onTap: () {
                             if (postSecondStatusRealFBS != '') {
                               BlocProvider.of<BasketAdminCubit>(context).basketStatus(postSecondStatusRealFBS,
-                                  widget.basket.id.toString(), widget.basket.product!.first.id.toString());
+                                  widget.basket.id.toString(), widget.basket.product!.first.id.toString(), 'realFBS');
                               BlocProvider.of<BasketAdminCubit>(context).basketOrderRealFBSshow('realFBS');
 
                               Get.back();

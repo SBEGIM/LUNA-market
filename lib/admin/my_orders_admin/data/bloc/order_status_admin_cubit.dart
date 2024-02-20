@@ -10,16 +10,15 @@ class OrderStatusAdminCubit extends Cubit<OrderStatusAdminState> {
   final BasketRepository basketRepository;
 
   OrderStatusAdminCubit(this.basketRepository, {required this.basketAdminRepository}) : super(InitState());
-  
-  void toInitState(){
-    
+
+  void toInitState() {
     emit(InitState());
   }
 
-  Future<void> basketStatus(String status, String id, productId) async {
+  Future<void> basketStatus(String status, String id, productId, String fulfillment) async {
     emit(LoadingState());
     try {
-      await basketAdminRepository.basketStatus(status, id, productId);
+      await basketAdminRepository.basketStatus(status, id, productId, fulfillment);
 
       emit(LoadedState());
     } catch (e) {
@@ -27,7 +26,7 @@ class OrderStatusAdminCubit extends Cubit<OrderStatusAdminState> {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
-  
+
   Future<void> cancelOrder(String id, String status, String? text) async {
     try {
       final data = await basketRepository.status(id, status, text);
