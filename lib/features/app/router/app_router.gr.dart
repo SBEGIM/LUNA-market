@@ -143,6 +143,17 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    DetailMyOrdersRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailMyOrdersRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: WrappedRoute(
+            child: DetailMyOrdersPage(
+          basket: args.basket,
+          key: args.key,
+        )),
+      );
+    },
     DetailStoreRoute.name: (routeData) {
       final args = routeData.argsAs<DetailStoreRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -769,6 +780,44 @@ class DetailCardProductRouteArgs {
   @override
   String toString() {
     return 'DetailCardProductRouteArgs{product: $product, key: $key}';
+  }
+}
+
+/// generated route for
+/// [DetailMyOrdersPage]
+class DetailMyOrdersRoute extends PageRouteInfo<DetailMyOrdersRouteArgs> {
+  DetailMyOrdersRoute({
+    required BasketAdminOrderModel basket,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          DetailMyOrdersRoute.name,
+          args: DetailMyOrdersRouteArgs(
+            basket: basket,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'DetailMyOrdersRoute';
+
+  static const PageInfo<DetailMyOrdersRouteArgs> page =
+      PageInfo<DetailMyOrdersRouteArgs>(name);
+}
+
+class DetailMyOrdersRouteArgs {
+  const DetailMyOrdersRouteArgs({
+    required this.basket,
+    this.key,
+  });
+
+  final BasketAdminOrderModel basket;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'DetailMyOrdersRouteArgs{basket: $basket, key: $key}';
   }
 }
 

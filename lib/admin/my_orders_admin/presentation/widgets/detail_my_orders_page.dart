@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
@@ -11,9 +12,15 @@ import '../../../../features/app/widgets/custom_back_button.dart';
 import '../../../chat/presentation/message_admin_page.dart';
 import '../../data/bloc/basket_admin_cubit.dart';
 
-class DetailMyOrdersPage extends StatefulWidget {
+@RoutePage()
+class DetailMyOrdersPage extends StatefulWidget implements AutoRouteWrapper {
   final BasketAdminOrderModel basket;
   const DetailMyOrdersPage({required this.basket, Key? key}) : super(key: key);
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return this;
+  }
 
   @override
   State<DetailMyOrdersPage> createState() => _DetailMyOrdersPageState();

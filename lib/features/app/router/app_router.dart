@@ -5,7 +5,9 @@ import 'package:haji_market/admin/auth/presentation/ui/change_password.dart';
 import 'package:haji_market/admin/auth/presentation/ui/register_shop_page.dart';
 import 'package:haji_market/admin/auth/presentation/ui/admin_auth_page.dart';
 import 'package:haji_market/admin/chat/presentation/chat_admin_page.dart';
+import 'package:haji_market/admin/my_orders_admin/data/models/basket_admin_order_model.dart';
 import 'package:haji_market/admin/my_orders_admin/presentation/ui/my_orders_admin_page.dart';
+import 'package:haji_market/admin/my_orders_admin/presentation/widgets/detail_my_orders_page.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/ui/my_products_admin_page.dart';
 import 'package:haji_market/admin/profile_admin/presentation/ui/admin_profile_page.dart';
 import 'package:haji_market/admin/tape_admin/presentation/ui/tape_admin_page.dart';
@@ -38,7 +40,7 @@ import 'package:haji_market/features/home/presentation/widgets/search_product_pa
 import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart';
 import 'package:haji_market/features/tape/presentation/ui/tape_page.dart';
 import 'package:haji_market/features/app/presentaion/launcher.dart';
-
+import 'package:haji_market/admin/my_orders_admin/presentation/ui/my_orders_admin_page.dart';
 import 'package:haji_market/features/tape/presentation/ui/detail_tape_card_page.dart';
 
 import '../../auth/presentation/ui/forgot_password.dart';
@@ -93,10 +95,12 @@ class AppRouter extends _$AppRouter {
             AutoRoute(page: ProfileAdminRoute.page),
           ],
         ),
+
         ///Basket Routes
         AutoRoute(page: PaymentWebviewRoute.page),
         AutoRoute(page: BasketOrderAddressRoute.page),
         AutoRoute(page: BasketOrderRoute.page),
+
         ///Home Routes
         AutoRoute(page: ShopsRoute.page),
         AutoRoute(page: CatalogRoute.page),
@@ -106,6 +110,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: ProductsRoute.page),
         AutoRoute(page: SearchProductRoute.page),
         AutoRoute(page: DetailCardProductRoute.page),
+
         ///Auth Routes
         AutoRoute(page: AuthAdminRoute.page),
         AutoRoute(page: AdminAuthRoute.page),
@@ -113,7 +118,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: ForgotPasswordAdminRoute.page),
         AutoRoute(page: RegisterShopRoute.page),
         AutoRoute(page: BlogAuthRegisterRoute.page),
-        
+
         AutoRoute(page: ChangePasswordRoute.page),
         AutoRoute(page: ForgotPasswordRoute.page),
       ];

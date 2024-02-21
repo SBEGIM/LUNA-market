@@ -1,18 +1,25 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/admin_app/presentation/base_admin_new.dart';
+import 'package:haji_market/admin/my_orders_admin/presentation/widgets/detail_my_orders_page.dart';
 import 'package:haji_market/bloger/admin_app/presentation/base_blogger_new.dart';
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/detail_card_product_page.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart';
+import 'package:haji_market/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:haji_market/features/app/presentaion/base_new.dart';
 import 'package:haji_market/features/app/widgets/custom_loading_widget.dart';
@@ -32,7 +39,56 @@ class _LauncherAppState extends State<LauncherApp> {
     initUniLinks();
     initUniLinkss();
     BlocProvider.of<AppBloc>(context).add(const AppEvent.checkAuth());
+
+    checkInitialMessage();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+
+      final String? data = (message.data['type']) as String;
+
+      print(notification!.title.toString());
+
+      if (data == 'shop') {
+        AppBloc appBloc = BlocProvider.of<AppBloc>(context);
+        appBloc.state.maybeWhen(
+          inAppAdminState: (i) {
+            context.router.push(DetailMyOrdersRoute(basket: message.data['basket']));
+          },
+          orElse: () {},
+        );
+
+        // Get.to(DetailMyOrdersPage(basket: message.data['basket']));
+      }
+
+      if (Platform.isAndroid) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channelDescription: channel.description,
+              color: Colors.blue,
+              playSound: true,
+              icon: '@mipmap/launcher_icon',
+            ),
+          ),
+        );
+      }
+    });
+
     super.initState();
+  }
+
+  Future<void> checkInitialMessage() async {
+    final RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    if (initialMessage != null) {
+      final RemoteMessage message = initialMessage;
+      log('checkInitialMessage:: ${initialMessage.data}');
+    }
   }
 
   final bool token = GetStorage().hasData('token');
@@ -55,8 +111,6 @@ class _LauncherAppState extends State<LauncherApp> {
         String index = Uri.parse(initialLink.toString()).queryParameters['index'].toString();
 
         if (productId != '' && productId != 'null') {
-          print('wwww Success product');
-
           GetStorage().write('deep_blogger_id', bloggerId);
           GetStorage().write('deep_product_id', productId);
           getProductById(productId);
@@ -64,7 +118,8 @@ class _LauncherAppState extends State<LauncherApp> {
         if (shopName != '' && shopName != 'null') {
           appBloc.state.maybeWhen(
             inAppUserState: (i) {
-              context.router.push(DetailTapeCardRoute(index: int.parse(index), shopName: shopName,tapeBloc: BlocProvider.of<TapeCubit>(context)));
+              context.router.push(DetailTapeCardRoute(
+                  index: int.parse(index), shopName: shopName, tapeBloc: BlocProvider.of<TapeCubit>(context)));
             },
             orElse: () {},
           );
@@ -106,7 +161,8 @@ class _LauncherAppState extends State<LauncherApp> {
 
           appBloc.state.maybeWhen(
             inAppUserState: (i) {
-              context.router.push(DetailTapeCardRoute(index: int.parse(index), shopName: shopName,tapeBloc: BlocProvider.of<TapeCubit>(context)));
+              context.router.push(DetailTapeCardRoute(
+                  index: int.parse(index), shopName: shopName, tapeBloc: BlocProvider.of<TapeCubit>(context)));
             },
             orElse: () {},
           );

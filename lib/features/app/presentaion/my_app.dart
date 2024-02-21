@@ -139,44 +139,6 @@ class _MyAppState extends State<MyApp> {
   final bool token = GetStorage().hasData('token');
   ProductModel? product;
 
-  Future<void> checkInitialMessage() async {
-    final RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-    if (initialMessage != null) {
-      final RemoteMessage message = initialMessage;
-      log('checkInitialMessage:: ${initialMessage.data}');
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    checkInitialMessage();
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      print(notification!.title.toString());
-
-      if (Platform.isAndroid) {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              channelDescription: channel.description,
-              color: Colors.blue,
-              playSound: true,
-              icon: '@mipmap/launcher_icon',
-            ),
-          ),
-        );
-      }
-    });
-  }
-
   AppRouter appRouter = AppRouter();
   @override
   Widget build(BuildContext context) {
