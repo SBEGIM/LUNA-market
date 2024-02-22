@@ -50,16 +50,19 @@ class _LauncherAppState extends State<LauncherApp> {
 
       AppBloc appBloc = BlocProvider.of<AppBloc>(context);
 
-      final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
       if (data == 'shop') {
-        appBloc.state.maybeWhen(
-          inAppAdminState: (i) {
-            context.router.push(DetailMyOrdersRoute(basket: basket));
-          },
-          orElse: () {
-            Get.to(DetailMyOrdersPage(basket: basket));
-          },
-        );
+        final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
+
+        Get.to(DetailMyOrdersPage(basket: basket));
+
+        // appBloc.state.maybeWhen(
+        //   inAppAdminState: (i) {
+        //     context.router.push(DetailMyOrdersRoute(basket: basket));
+        //   },
+        //   orElse: () {
+        //     Get.to(DetailMyOrdersPage(basket: basket));
+        //   },
+        // );
       }
 
       if (Platform.isAndroid) {
@@ -88,17 +91,21 @@ class _LauncherAppState extends State<LauncherApp> {
 
       AppBloc appBloc = BlocProvider.of<AppBloc>(context);
 
-      final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
+      print('$data data type');
 
       if (data == 'shop') {
-        appBloc.state.maybeWhen(
-          inAppAdminState: (i) {
-            context.router.push(DetailMyOrdersRoute(basket: basket));
-          },
-          orElse: () {
-            Get.to(DetailMyOrdersPage(basket: basket));
-          },
-        );
+        final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
+
+        Get.to(DetailMyOrdersPage(basket: basket));
+
+        // appBloc.state.maybeWhen(
+        //   inAppAdminState: (i) {
+        //     context.router.push(DetailMyOrdersRoute(basket: basket));
+        //   },
+        //   orElse: () {
+        //     Get.to(DetailMyOrdersPage(basket: basket));
+        //   },
+        // );
       }
 
       if (Platform.isAndroid) {
@@ -119,6 +126,49 @@ class _LauncherAppState extends State<LauncherApp> {
         );
       }
     });
+
+    // FirebaseMessaging.onBackgroundMessage((message) => null).listen((RemoteMessage message) {
+    //     RemoteNotification? notification = message.notification;
+
+    //     final String? data = message.data['type'].toString();
+
+    //     AppBloc appBloc = BlocProvider.of<AppBloc>(context);
+
+    //     print('$data data type');
+
+    //     if (data == 'shop') {
+    //       final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
+
+    //       Get.to(DetailMyOrdersPage(basket: basket));
+
+    //       // appBloc.state.maybeWhen(
+    //       //   inAppAdminState: (i) {
+    //       //     context.router.push(DetailMyOrdersRoute(basket: basket));
+    //       //   },
+    //       //   orElse: () {
+    //       //     Get.to(DetailMyOrdersPage(basket: basket));
+    //       //   },
+    //       // );
+    //     }
+
+    //     if (Platform.isAndroid) {
+    //       flutterLocalNotificationsPlugin.show(
+    //         notification.hashCode,
+    //         notification?.title,
+    //         notification?.body,
+    //         NotificationDetails(
+    //           android: AndroidNotificationDetails(
+    //             channel.id,
+    //             channel.name,
+    //             channelDescription: channel.description,
+    //             color: Colors.blue,
+    //             playSound: true,
+    //             icon: '@mipmap/launcher_icon',
+    //           ),
+    //         ),
+    //       );
+    //     }
+    //   });
 
     super.initState();
   }
