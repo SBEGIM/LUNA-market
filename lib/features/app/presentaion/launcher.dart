@@ -12,6 +12,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/admin_app/presentation/base_admin_new.dart';
+import 'package:haji_market/admin/my_orders_admin/data/models/basket_admin_order_model.dart';
 import 'package:haji_market/admin/my_orders_admin/presentation/widgets/detail_my_orders_page.dart';
 import 'package:haji_market/bloger/admin_app/presentation/base_blogger_new.dart';
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
@@ -45,27 +46,66 @@ class _LauncherAppState extends State<LauncherApp> {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
 
-      final String? data = (message.data['type']) as String;
+      final String? data = message.data['type'].toString();
 
-      print(notification!.title.toString());
+      AppBloc appBloc = BlocProvider.of<AppBloc>(context);
 
+      final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
       if (data == 'shop') {
-        AppBloc appBloc = BlocProvider.of<AppBloc>(context);
         appBloc.state.maybeWhen(
           inAppAdminState: (i) {
-            context.router.push(DetailMyOrdersRoute(basket: message.data['basket']));
+            context.router.push(DetailMyOrdersRoute(basket: basket));
           },
-          orElse: () {},
+          orElse: () {
+            Get.to(DetailMyOrdersPage(basket: basket));
+          },
         );
-
-        // Get.to(DetailMyOrdersPage(basket: message.data['basket']));
       }
 
       if (Platform.isAndroid) {
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
-          notification.title,
-          notification.body,
+          notification?.title,
+          notification?.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channelDescription: channel.description,
+              color: Colors.blue,
+              playSound: true,
+              icon: '@mipmap/launcher_icon',
+            ),
+          ),
+        );
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+
+      final String? data = message.data['type'].toString();
+
+      AppBloc appBloc = BlocProvider.of<AppBloc>(context);
+
+      final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
+
+      if (data == 'shop') {
+        appBloc.state.maybeWhen(
+          inAppAdminState: (i) {
+            context.router.push(DetailMyOrdersRoute(basket: basket));
+          },
+          orElse: () {
+            Get.to(DetailMyOrdersPage(basket: basket));
+          },
+        );
+      }
+
+      if (Platform.isAndroid) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification?.title,
+          notification?.body,
           NotificationDetails(
             android: AndroidNotificationDetails(
               channel.id,

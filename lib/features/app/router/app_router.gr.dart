@@ -16,8 +16,7 @@ abstract class _$AppRouter extends RootStackRouter {
   @override
   final Map<String, PageFactory> pagesMap = {
     AdminAuthRoute.name: (routeData) {
-      final args = routeData.argsAs<AdminAuthRouteArgs>(
-          orElse: () => const AdminAuthRouteArgs());
+      final args = routeData.argsAs<AdminAuthRouteArgs>(orElse: () => const AdminAuthRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: AdminAuthPage(
@@ -74,8 +73,7 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     BlogAuthRegisterRoute.name: (routeData) {
-      final args = routeData.argsAs<BlogAuthRegisterRouteArgs>(
-          orElse: () => const BlogAuthRegisterRouteArgs());
+      final args = routeData.argsAs<BlogAuthRegisterRouteArgs>(orElse: () => const BlogAuthRegisterRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: BlogAuthRegisterPage(
@@ -203,8 +201,7 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     HomeRoute.name: (routeData) {
-      final args =
-          routeData.argsAs<HomeRouteArgs>(orElse: () => const HomeRouteArgs());
+      final args = routeData.argsAs<HomeRouteArgs>(orElse: () => const HomeRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: HomePage(
@@ -306,8 +303,7 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     SubCatalogRoute.name: (routeData) {
-      final args = routeData.argsAs<SubCatalogRouteArgs>(
-          orElse: () => const SubCatalogRouteArgs());
+      final args = routeData.argsAs<SubCatalogRouteArgs>(orElse: () => const SubCatalogRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: SubCatalogPage(
@@ -345,8 +341,7 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     ViewAuthRegisterRoute.name: (routeData) {
-      final args = routeData.argsAs<ViewAuthRegisterRouteArgs>(
-          orElse: () => const ViewAuthRegisterRouteArgs());
+      final args = routeData.argsAs<ViewAuthRegisterRouteArgs>(orElse: () => const ViewAuthRegisterRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: ViewAuthRegisterPage(
@@ -376,8 +371,7 @@ class AdminAuthRoute extends PageRouteInfo<AdminAuthRouteArgs> {
 
   static const String name = 'AdminAuthRoute';
 
-  static const PageInfo<AdminAuthRouteArgs> page =
-      PageInfo<AdminAuthRouteArgs>(name);
+  static const PageInfo<AdminAuthRouteArgs> page = PageInfo<AdminAuthRouteArgs>(name);
 }
 
 class AdminAuthRouteArgs {
@@ -440,8 +434,7 @@ class BaseTapeTab extends PageRouteInfo<void> {
 
 /// generated route for
 /// [BasketOrderAddressPage]
-class BasketOrderAddressRoute
-    extends PageRouteInfo<BasketOrderAddressRouteArgs> {
+class BasketOrderAddressRoute extends PageRouteInfo<BasketOrderAddressRouteArgs> {
   BasketOrderAddressRoute({
     required String fulfillment,
     String? deleveryDay,
@@ -459,8 +452,7 @@ class BasketOrderAddressRoute
 
   static const String name = 'BasketOrderAddressRoute';
 
-  static const PageInfo<BasketOrderAddressRouteArgs> page =
-      PageInfo<BasketOrderAddressRouteArgs>(name);
+  static const PageInfo<BasketOrderAddressRouteArgs> page = PageInfo<BasketOrderAddressRouteArgs>(name);
 }
 
 class BasketOrderAddressRouteArgs {
@@ -504,8 +496,7 @@ class BasketOrderRoute extends PageRouteInfo<BasketOrderRouteArgs> {
 
   static const String name = 'BasketOrderRoute';
 
-  static const PageInfo<BasketOrderRouteArgs> page =
-      PageInfo<BasketOrderRouteArgs>(name);
+  static const PageInfo<BasketOrderRouteArgs> page = PageInfo<BasketOrderRouteArgs>(name);
 }
 
 class BasketOrderRouteArgs {
@@ -562,8 +553,7 @@ class BlogAuthRegisterRoute extends PageRouteInfo<BlogAuthRegisterRouteArgs> {
 
   static const String name = 'BlogAuthRegisterRoute';
 
-  static const PageInfo<BlogAuthRegisterRouteArgs> page =
-      PageInfo<BlogAuthRegisterRouteArgs>(name);
+  static const PageInfo<BlogAuthRegisterRouteArgs> page = PageInfo<BlogAuthRegisterRouteArgs>(name);
 }
 
 class BlogAuthRegisterRouteArgs {
@@ -598,8 +588,7 @@ class BlogShopsRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [BloggerDetailTapeCardPage]
-class BloggerDetailTapeCardRoute
-    extends PageRouteInfo<BloggerDetailTapeCardRouteArgs> {
+class BloggerDetailTapeCardRoute extends PageRouteInfo<BloggerDetailTapeCardRouteArgs> {
   BloggerDetailTapeCardRoute({
     required int? index,
     required String? shopName,
@@ -617,8 +606,7 @@ class BloggerDetailTapeCardRoute
 
   static const String name = 'BloggerDetailTapeCardRoute';
 
-  static const PageInfo<BloggerDetailTapeCardRouteArgs> page =
-      PageInfo<BloggerDetailTapeCardRouteArgs>(name);
+  static const PageInfo<BloggerDetailTapeCardRouteArgs> page = PageInfo<BloggerDetailTapeCardRouteArgs>(name);
 }
 
 class BloggerDetailTapeCardRouteArgs {
@@ -656,8 +644,7 @@ class CatalogRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ChangePasswordAdminPage]
-class ChangePasswordAdminRoute
-    extends PageRouteInfo<ChangePasswordAdminRouteArgs> {
+class ChangePasswordAdminRoute extends PageRouteInfo<ChangePasswordAdminRouteArgs> {
   ChangePasswordAdminRoute({
     Key? key,
     required String textEditingController,
@@ -673,8 +660,7 @@ class ChangePasswordAdminRoute
 
   static const String name = 'ChangePasswordAdminRoute';
 
-  static const PageInfo<ChangePasswordAdminRouteArgs> page =
-      PageInfo<ChangePasswordAdminRouteArgs>(name);
+  static const PageInfo<ChangePasswordAdminRouteArgs> page = PageInfo<ChangePasswordAdminRouteArgs>(name);
 }
 
 class ChangePasswordAdminRouteArgs {
@@ -711,8 +697,7 @@ class ChangePasswordRoute extends PageRouteInfo<ChangePasswordRouteArgs> {
 
   static const String name = 'ChangePasswordRoute';
 
-  static const PageInfo<ChangePasswordRouteArgs> page =
-      PageInfo<ChangePasswordRouteArgs>(name);
+  static const PageInfo<ChangePasswordRouteArgs> page = PageInfo<ChangePasswordRouteArgs>(name);
 }
 
 class ChangePasswordRouteArgs {
@@ -763,8 +748,7 @@ class DetailCardProductRoute extends PageRouteInfo<DetailCardProductRouteArgs> {
 
   static const String name = 'DetailCardProductRoute';
 
-  static const PageInfo<DetailCardProductRouteArgs> page =
-      PageInfo<DetailCardProductRouteArgs>(name);
+  static const PageInfo<DetailCardProductRouteArgs> page = PageInfo<DetailCardProductRouteArgs>(name);
 }
 
 class DetailCardProductRouteArgs {
@@ -801,8 +785,7 @@ class DetailMyOrdersRoute extends PageRouteInfo<DetailMyOrdersRouteArgs> {
 
   static const String name = 'DetailMyOrdersRoute';
 
-  static const PageInfo<DetailMyOrdersRouteArgs> page =
-      PageInfo<DetailMyOrdersRouteArgs>(name);
+  static const PageInfo<DetailMyOrdersRouteArgs> page = PageInfo<DetailMyOrdersRouteArgs>(name);
 }
 
 class DetailMyOrdersRouteArgs {
@@ -839,8 +822,7 @@ class DetailStoreRoute extends PageRouteInfo<DetailStoreRouteArgs> {
 
   static const String name = 'DetailStoreRoute';
 
-  static const PageInfo<DetailStoreRouteArgs> page =
-      PageInfo<DetailStoreRouteArgs>(name);
+  static const PageInfo<DetailStoreRouteArgs> page = PageInfo<DetailStoreRouteArgs>(name);
 }
 
 class DetailStoreRouteArgs {
@@ -883,8 +865,7 @@ class DetailTapeCardRoute extends PageRouteInfo<DetailTapeCardRouteArgs> {
 
   static const String name = 'DetailTapeCardRoute';
 
-  static const PageInfo<DetailTapeCardRouteArgs> page =
-      PageInfo<DetailTapeCardRouteArgs>(name);
+  static const PageInfo<DetailTapeCardRouteArgs> page = PageInfo<DetailTapeCardRouteArgs>(name);
 }
 
 class DetailTapeCardRouteArgs {
@@ -1072,8 +1053,7 @@ class PaymentWebviewRoute extends PageRouteInfo<PaymentWebviewRouteArgs> {
 
   static const String name = 'PaymentWebviewRoute';
 
-  static const PageInfo<PaymentWebviewRouteArgs> page =
-      PageInfo<PaymentWebviewRouteArgs>(name);
+  static const PageInfo<PaymentWebviewRouteArgs> page = PageInfo<PaymentWebviewRouteArgs>(name);
 }
 
 class PaymentWebviewRouteArgs {
@@ -1119,8 +1099,7 @@ class ProductsRoute extends PageRouteInfo<ProductsRouteArgs> {
 
   static const String name = 'ProductsRoute';
 
-  static const PageInfo<ProductsRouteArgs> page =
-      PageInfo<ProductsRouteArgs>(name);
+  static const PageInfo<ProductsRouteArgs> page = PageInfo<ProductsRouteArgs>(name);
 }
 
 class ProductsRouteArgs {
@@ -1178,8 +1157,7 @@ class ProfileBloggerRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ProfileBloggerTapePage]
-class ProfileBloggerTapeRoute
-    extends PageRouteInfo<ProfileBloggerTapeRouteArgs> {
+class ProfileBloggerTapeRoute extends PageRouteInfo<ProfileBloggerTapeRouteArgs> {
   ProfileBloggerTapeRoute({
     required int bloggerId,
     required String bloggerName,
@@ -1203,8 +1181,7 @@ class ProfileBloggerTapeRoute
 
   static const String name = 'ProfileBloggerTapeRoute';
 
-  static const PageInfo<ProfileBloggerTapeRouteArgs> page =
-      PageInfo<ProfileBloggerTapeRouteArgs>(name);
+  static const PageInfo<ProfileBloggerTapeRouteArgs> page = PageInfo<ProfileBloggerTapeRouteArgs>(name);
 }
 
 class ProfileBloggerTapeRouteArgs {
@@ -1253,8 +1230,7 @@ class RegisterShopRoute extends PageRouteInfo<RegisterShopRouteArgs> {
 
   static const String name = 'RegisterShopRoute';
 
-  static const PageInfo<RegisterShopRouteArgs> page =
-      PageInfo<RegisterShopRouteArgs>(name);
+  static const PageInfo<RegisterShopRouteArgs> page = PageInfo<RegisterShopRouteArgs>(name);
 }
 
 class RegisterShopRouteArgs {
@@ -1319,8 +1295,7 @@ class SubCatalogRoute extends PageRouteInfo<SubCatalogRouteArgs> {
 
   static const String name = 'SubCatalogRoute';
 
-  static const PageInfo<SubCatalogRouteArgs> page =
-      PageInfo<SubCatalogRouteArgs>(name);
+  static const PageInfo<SubCatalogRouteArgs> page = PageInfo<SubCatalogRouteArgs>(name);
 }
 
 class SubCatalogRouteArgs {
@@ -1399,8 +1374,7 @@ class UnderCatalogRoute extends PageRouteInfo<UnderCatalogRouteArgs> {
 
   static const String name = 'UnderCatalogRoute';
 
-  static const PageInfo<UnderCatalogRouteArgs> page =
-      PageInfo<UnderCatalogRouteArgs>(name);
+  static const PageInfo<UnderCatalogRouteArgs> page = PageInfo<UnderCatalogRouteArgs>(name);
 }
 
 class UnderCatalogRouteArgs {
@@ -1437,8 +1411,7 @@ class ViewAuthRegisterRoute extends PageRouteInfo<ViewAuthRegisterRouteArgs> {
 
   static const String name = 'ViewAuthRegisterRoute';
 
-  static const PageInfo<ViewAuthRegisterRouteArgs> page =
-      PageInfo<ViewAuthRegisterRouteArgs>(name);
+  static const PageInfo<ViewAuthRegisterRouteArgs> page = PageInfo<ViewAuthRegisterRouteArgs>(name);
 }
 
 class ViewAuthRegisterRouteArgs {

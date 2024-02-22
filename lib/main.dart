@@ -21,9 +21,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> getDeviceToken() async {
   final box = GetStorage();
+
   final deviceToken = await FirebaseMessaging.instance.getToken();
 
   if (deviceToken != null) {
+    print('deveice_token $deviceToken');
     await box.write('device_token', deviceToken.toString());
   }
 }
