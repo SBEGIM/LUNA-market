@@ -457,7 +457,10 @@ class _PopularCatsHompageState extends State<PopularCatsHompage> {
                               //       builder: (context) => UnderCatalogPage(
                               //           cats: state.cats[index])),
                               // );
-
+                              GetStorage().remove('CatId');
+                              GetStorage().remove('subCatFilterId');
+                              GetStorage().remove('shopFilterId');
+                              GetStorage().remove('search');
                               GetStorage().write('CatId', state.cats[index].id);
 
                               context.router.push(ProductsRoute(
@@ -1082,6 +1085,10 @@ class _PopularShopsState extends State<PopularShops> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                               onTap: () {
+                                GetStorage().remove('CatId');
+                                GetStorage().remove('subCatFilterId');
+                                GetStorage().remove('shopFilterId');
+                                GetStorage().remove('search');
                                 GetStorage().write('shopFilter', state.popularShops[index].name ?? '');
                                 // GetStorage().write('shopFilterId', state.popularShops[index].id);
 

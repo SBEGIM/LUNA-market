@@ -721,33 +721,33 @@ class _DrawerPageState extends State<DrawerPage> {
                   // const SizedBox(
                   //   width: 8,
                   // ),
-                  InkWell(
-                    onTap: () {
-                      GetStorage().write('app_lang', 'ru');
-                      selected = false;
-                      setState(() {});
-                    },
-                    child: Container(
-                      height: 34,
-                      width: 54,
-                      decoration: BoxDecoration(
-                          color: selected == true ? Colors.white : Colors.black,
-                          border: Border.all(
-                            color: AppColors.kGray900,
-                          ),
-                          borderRadius: const BorderRadius.all(Radius.circular(10))),
-                      child: Center(
-                          child: Text(
-                        'Рус',
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: selected == true ? Colors.black : Colors.white,
-                          // AppColors.kLightBlackColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )),
-                    ),
-                  ),
+                  //   InkWell(
+                  //     onTap: () {
+                  //       GetStorage().write('app_lang', 'ru');
+                  //       selected = false;
+                  //       setState(() {});
+                  //     },
+                  //     child: Container(
+                  //       height: 34,
+                  //       width: 54,
+                  //       decoration: BoxDecoration(
+                  //           color: selected == true ? Colors.white : Colors.black,
+                  //           border: Border.all(
+                  //             color: AppColors.kGray900,
+                  //           ),
+                  //           borderRadius: const BorderRadius.all(Radius.circular(10))),
+                  //       child: Center(
+                  //           child: Text(
+                  //         'Рус',
+                  //         style: TextStyle(
+                  //           fontSize: 17,
+                  //           color: selected == true ? Colors.black : Colors.white,
+                  //           // AppColors.kLightBlackColor,
+                  //           fontWeight: FontWeight.w500,
+                  //         ),
+                  //       )),
+                  //     ),
+                  //   ),
                 ],
               ),
             )

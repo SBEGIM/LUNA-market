@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:haji_market/admin/chat/presentation/message_admin_page.dart';
+import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/chat/presentation/message.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -48,12 +50,21 @@ class _LauncherAppState extends State<LauncherApp> {
 
       final String? data = message.data['type'].toString();
 
+      // if (Platform.isAndroid && (data == 'chat' || data == 'shop')) {
+      //   flutterLocalNotificationsPlugin.cancelAll();
+      // }
+
+      // if (Platform.isIOS && (data == 'chat' || data == 'shop')) {
+      //   flutterLocalNotificationsPlugin.cancelAll();
+      // }
       AppBloc appBloc = BlocProvider.of<AppBloc>(context);
 
       if (data == 'shop') {
         final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
 
-        Get.to(DetailMyOrdersPage(basket: basket));
+        Get.snackbar('${notification?.title}', '${notification?.body}', onTap: (value) {
+          Get.to(DetailMyOrdersPage(basket: basket));
+        }, backgroundColor: Colors.blueAccent, duration: const Duration(seconds: 10));
 
         // appBloc.state.maybeWhen(
         //   inAppAdminState: (i) {
@@ -67,11 +78,20 @@ class _LauncherAppState extends State<LauncherApp> {
       if (data == 'chat') {
         final chat = jsonDecode(message.data['chat']);
 
-        Get.to(() =>
-            MessagePage(userId: chat['user_id'], name: chat['name'], avatar: chat['avatar'], chatId: chat['chat_id']));
+        Get.snackbar('${notification?.title}', '${notification?.body}', onTap: (value) {
+          appBloc.state.maybeWhen(
+            inAppUserState: (i) {
+              Get.to(() => MessagePage(
+                  userId: chat['user_id'], name: chat['name'], avatar: chat['avatar'], chatId: chat['chat_id']));
+            },
+            orElse: () {
+              Get.to(() => MessageAdmin(userId: chat['user_id'], userName: chat['name'], chatId: chat['chat_id']));
+            },
+          );
+        }, backgroundColor: Colors.blueAccent, duration: const Duration(seconds: 10));
       }
 
-      if (Platform.isAndroid) {
+      if (Platform.isAndroid && (data != 'chat' || data != 'shop')) {
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
           notification?.title,
@@ -95,10 +115,22 @@ class _LauncherAppState extends State<LauncherApp> {
 
       final String? data = message.data['type'].toString();
 
+      // if (Platform.isAndroid && (data == 'chat' || data == 'shop')) {
+      //   flutterLocalNotificationsPlugin.cancelAll();
+      // }
+
+      // if (Platform.isIOS && (data == 'chat' || data == 'shop')) {
+      //   flutterLocalNotificationsPlugin.cancelAll();
+      // }
+
+      AppBloc appBloc = BlocProvider.of<AppBloc>(context);
+
       if (data == 'shop') {
         final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
 
-        Get.to(DetailMyOrdersPage(basket: basket));
+        Get.snackbar('${notification?.title}', '${notification?.body}', onTap: (value) {
+          Get.to(DetailMyOrdersPage(basket: basket));
+        }, backgroundColor: AppColors.kPrimaryColor, duration: const Duration(seconds: 10));
 
         // appBloc.state.maybeWhen(
         //   inAppAdminState: (i) {
@@ -109,15 +141,23 @@ class _LauncherAppState extends State<LauncherApp> {
         //   },
         // );
       }
-
       if (data == 'chat') {
         final chat = jsonDecode(message.data['chat']);
 
-        Get.to(() =>
-            MessagePage(userId: chat['user_id'], name: chat['name'], avatar: chat['avatar'], chatId: chat['chat_id']));
+        Get.snackbar('${notification?.title}', '${notification?.body}', onTap: (value) {
+          appBloc.state.maybeWhen(
+            inAppUserState: (i) {
+              Get.to(() => MessagePage(
+                  userId: chat['user_id'], name: chat['name'], avatar: chat['avatar'], chatId: chat['chat_id']));
+            },
+            orElse: () {
+              Get.to(() => MessageAdmin(userId: chat['user_id'], userName: chat['name'], chatId: chat['chat_id']));
+            },
+          );
+        }, backgroundColor: AppColors.kPrimaryColor, duration: const Duration(seconds: 10));
       }
 
-      if (Platform.isAndroid) {
+      if (Platform.isAndroid && (data != 'chat' || data != 'shop')) {
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
           notification?.title,
