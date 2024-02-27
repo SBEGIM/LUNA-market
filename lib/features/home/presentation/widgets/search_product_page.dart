@@ -40,6 +40,10 @@ class _SearchProductPageState extends State<SearchProductPage> {
           titleSpacing: 0,
           leading: IconButton(
             onPressed: () {
+              GetStorage().remove('CatId');
+              GetStorage().remove('subCatFilterId');
+              GetStorage().remove('shopFilterId');
+              GetStorage().remove('search');
               Navigator.pop(context);
             },
             icon: SvgPicture.asset('assets/icons/back_header.svg'),
@@ -56,6 +60,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
                 GetStorage().remove('subCatFilterId');
                 GetStorage().remove('shopFilterId');
                 GetStorage().remove('search');
+
                 GetStorage().write('search', value);
 
                 // GetStorage().write('shopFilterId', "[0]");

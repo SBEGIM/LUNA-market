@@ -577,7 +577,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
 
                                             // if (state.tapeModel[index].chatId ==
                                             //     null) {
-                                            Get.to(Message(
+                                            Get.to(MessagePage(
                                                 userId: state.tapeModel[index].shop!.id,
                                                 name: state.tapeModel[index].shop!.name,
                                                 avatar: state.tapeModel[index].shop!.image,
@@ -991,7 +991,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
 
                                             // if (state.tapeModel[index].chatId ==
                                             //     null) {
-                                            Get.to(Message(
+                                            Get.to(MessagePage(
                                                 userId: state.tapeModel[index].shop!.id,
                                                 name: state.tapeModel[index].shop!.name,
                                                 avatar: state.tapeModel[index].shop!.image,

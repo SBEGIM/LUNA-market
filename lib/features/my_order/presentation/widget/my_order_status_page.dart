@@ -543,7 +543,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         onTap: () {
                                           // Get.to(() => const ChatPage());
 
-                                          Get.to(Message(
+                                          Get.to(MessagePage(
                                             userId: widget.basketOrder.shopId,
                                             name: widget.basketOrder.productFBS?.first.shopName,
                                             avatar: widget.basketOrder.productFBS?.first.shopImage,
@@ -1371,7 +1371,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         onTap: () {
                                           // Get.to(() => const ChatPage());
 
-                                          Get.to(Message(
+                                          Get.to(MessagePage(
                                             userId: widget.basketOrder.shopId,
                                             name: widget.basketOrder.productFBS?.first.shopName,
                                             avatar: widget.basketOrder.productFBS?.first.shopImage,

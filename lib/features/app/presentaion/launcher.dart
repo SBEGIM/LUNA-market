@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:haji_market/features/chat/presentation/message.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +64,12 @@ class _LauncherAppState extends State<LauncherApp> {
         //   },
         // );
       }
+      if (data == 'chat') {
+        final chat = jsonDecode(message.data['chat']);
+
+        Get.to(() =>
+            MessagePage(userId: chat['user_id'], name: chat['name'], avatar: chat['avatar'], chatId: chat['chat_id']));
+      }
 
       if (Platform.isAndroid) {
         flutterLocalNotificationsPlugin.show(
@@ -89,10 +95,6 @@ class _LauncherAppState extends State<LauncherApp> {
 
       final String? data = message.data['type'].toString();
 
-      AppBloc appBloc = BlocProvider.of<AppBloc>(context);
-
-      print('$data data type');
-
       if (data == 'shop') {
         final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
 
@@ -106,6 +108,13 @@ class _LauncherAppState extends State<LauncherApp> {
         //     Get.to(DetailMyOrdersPage(basket: basket));
         //   },
         // );
+      }
+
+      if (data == 'chat') {
+        final chat = jsonDecode(message.data['chat']);
+
+        Get.to(() =>
+            MessagePage(userId: chat['user_id'], name: chat['name'], avatar: chat['avatar'], chatId: chat['chat_id']));
       }
 
       if (Platform.isAndroid) {
@@ -129,46 +138,6 @@ class _LauncherAppState extends State<LauncherApp> {
 
     // FirebaseMessaging.onBackgroundMessage((message) => null).listen((RemoteMessage message) {
     //     RemoteNotification? notification = message.notification;
-
-    //     final String? data = message.data['type'].toString();
-
-    //     AppBloc appBloc = BlocProvider.of<AppBloc>(context);
-
-    //     print('$data data type');
-
-    //     if (data == 'shop') {
-    //       final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
-
-    //       Get.to(DetailMyOrdersPage(basket: basket));
-
-    //       // appBloc.state.maybeWhen(
-    //       //   inAppAdminState: (i) {
-    //       //     context.router.push(DetailMyOrdersRoute(basket: basket));
-    //       //   },
-    //       //   orElse: () {
-    //       //     Get.to(DetailMyOrdersPage(basket: basket));
-    //       //   },
-    //       // );
-    //     }
-
-    //     if (Platform.isAndroid) {
-    //       flutterLocalNotificationsPlugin.show(
-    //         notification.hashCode,
-    //         notification?.title,
-    //         notification?.body,
-    //         NotificationDetails(
-    //           android: AndroidNotificationDetails(
-    //             channel.id,
-    //             channel.name,
-    //             channelDescription: channel.description,
-    //             color: Colors.blue,
-    //             playSound: true,
-    //             icon: '@mipmap/launcher_icon',
-    //           ),
-    //         ),
-    //       );
-    //     }
-    //   });
 
     super.initState();
   }

@@ -17,19 +17,19 @@ import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import '../data/DTO/DTO/messageDto.dart';
 
-class Message extends StatefulWidget {
+class MessagePage extends StatefulWidget {
   String? name;
   int? userId;
   String? avatar;
   int? chatId;
 
-  Message({required this.userId, this.name, required this.avatar, this.chatId, super.key});
+  MessagePage({required this.userId, this.name, required this.avatar, this.chatId, super.key});
 
   @override
-  State<Message> createState() => _MessageState();
+  State<MessagePage> createState() => _MessagePageState();
 }
 
-class _MessageState extends State<Message> {
+class _MessagePageState extends State<MessagePage> {
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
   bool change = false;

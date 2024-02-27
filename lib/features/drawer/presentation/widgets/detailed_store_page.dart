@@ -159,7 +159,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
                     onTap: () {
                       //  Get.to(() => const ChatPage());
 
-                      Get.to(Message(
+                      Get.to(MessagePage(
                           userId: widget.shop.shop?.id,
                           name: widget.shop.shop?.name,
                           avatar: widget.shop.shop?.image,

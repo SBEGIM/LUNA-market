@@ -51,7 +51,7 @@ class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
         const BasketRoute(),
         const DrawerRoute(),
       ],
-      homeIndex: widget.index ?? -1,
+      // homeIndex: widget.index ?? -1,
       backgroundColor: tabController?.index != 0 ? Colors.white : null,
       extendBody: true,
       transitionBuilder: (context, child, animation) {
@@ -74,6 +74,7 @@ class _BaseNewState extends State<BaseNew> with TickerProviderStateMixin {
 
               if (!exists && (index == 1 || index == 3)) {
                 // Get.showSnackbar(
+
                 Get.snackbar(
                   'СДЕК',
                   city != null ? 'Ваш город $city?' : 'Ваш город неизвестен для доставки!',

@@ -122,6 +122,10 @@ class _ProductsPageState extends State<ProductsPage> {
         titleSpacing: 0,
         leading: IconButton(
           onPressed: () {
+            GetStorage().remove('CatId');
+            GetStorage().remove('subCatFilterId');
+            GetStorage().remove('shopFilterId');
+            GetStorage().remove('search');
             // Navigator.pop(context);
             context.router.pop();
           },

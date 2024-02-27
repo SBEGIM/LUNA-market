@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/categories_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/shops_filtr_page.dart';
@@ -70,12 +71,20 @@ class _FilterPageState extends State<FilterPage> {
             'Фильтр',
             style: TextStyle(color: Colors.black),
           ),
-          actions: const [
+          actions: [
             Padding(
-              padding: EdgeInsets.only(right: 8.0, top: 20),
-              child: Text(
-                'Сбросить',
-                style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 16),
+              padding: const EdgeInsets.only(right: 8.0, top: 20, bottom: 5),
+              child: InkWell(
+                onTap: () {
+                  GetStorage().remove('CatId');
+                  GetStorage().remove('subCatFilterId');
+                  GetStorage().remove('shopFilterId');
+                  GetStorage().remove('search');
+                },
+                child: const Text(
+                  'Сбросить',
+                  style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 16),
+                ),
               ),
             ),
           ],

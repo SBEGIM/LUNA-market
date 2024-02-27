@@ -154,7 +154,7 @@ class _ChatPageState extends State<ChatPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   GestureDetector(
-                                    onTap: () => Get.to(Message(
+                                    onTap: () => Get.to(MessagePage(
                                       userId: state.chat[index].userId,
                                       name: state.chat[index].name!,
                                       avatar: state.chat[index].avatar,

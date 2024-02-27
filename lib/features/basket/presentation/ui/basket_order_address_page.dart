@@ -545,7 +545,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                       const SizedBox(height: 8),
                                       GestureDetector(
                                         onTap: () {
-                                          Get.to(() => Message(
+                                          Get.to(() => MessagePage(
                                               userId: state.basketShowModel.first.product?.shopId,
                                               name: state.basketShowModel.first.shopName,
                                               avatar: state.basketShowModel.first.image?.first ?? '',
