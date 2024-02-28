@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:haji_market/contract_of_sale.dart';
@@ -87,15 +88,27 @@ class AdvertBottomSheet extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              const Row(
-                children: [
-                  Icon(Icons.link),
-                  SizedBox(width: 10),
-                  Text(
-                    'Скопировать ссылку',
-                    style: TextStyle(fontSize: 14, color: AppColors.kPrimaryColor),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    print('wqeqweq');
+                    Clipboard.setData(ClipboardData(text: url.toString()));
+                  },
+                  child: const SizedBox(
+                    height: 20,
+                    child: Row(
+                      children: [
+                        Icon(Icons.link),
+                        SizedBox(width: 10),
+                        Text(
+                          'Скопировать ссылку',
+                          style: TextStyle(fontSize: 14, color: AppColors.kPrimaryColor),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
+                ),
               )
             ],
           ),

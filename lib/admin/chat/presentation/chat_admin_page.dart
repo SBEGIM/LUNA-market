@@ -88,62 +88,64 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
               }
 
               if (state is LoadedState) {
-                return ListView(
-                    // mainAxisAlignment: MainAxisAlignment.start,
-                    // mainAxisSize: MainAxisSize.min,
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 46,
-                        margin: const EdgeInsets.only(top: 20),
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        alignment: Alignment.center,
-                        child: TextField(
-                          keyboardType: TextInputType.text,
-                          controller: searchController,
-                          textAlign: TextAlign.center,
-                          onChanged: ((value) {
-                            setState(() {});
-                          }),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(width: 1)),
+                return SmartRefresher(
+                  controller: _refreshController,
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  onLoading: () {
+                    onLoading();
+                  },
+                  onRefresh: () {
+                    onRefresh();
+                  },
+                  child: ListView(
+                      // physics: const NeverScrollableScrollPhysics(),
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      // mainAxisSize: MainAxisSize.min,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 46,
+                          margin: const EdgeInsets.only(top: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          alignment: Alignment.center,
+                          child: TextField(
+                            keyboardType: TextInputType.text,
+                            controller: searchController,
+                            textAlign: TextAlign.center,
+                            onChanged: ((value) {
+                              setState(() {});
+                            }),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(width: 1)),
 
-                            prefixIcon: searchController.text.isEmpty
-                                ? Transform.translate(
-                                    offset: const Offset(85, 0),
-                                    child: const Icon(
-                                      Icons.search,
-                                      color: Colors.grey,
-                                    ),
-                                  )
-                                : null,
-                            hintText: 'Поиск клиентов',
-                            hintStyle: const TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w400),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(width: 0.3, color: Colors.grey)),
-                            // suffixIcon: IconButton(
-                            //     onPressed: () {},
-                            //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',
-                            //         color: Colors.grey)),
+                              prefixIcon: searchController.text.isEmpty
+                                  ? Transform.translate(
+                                      offset: const Offset(85, 0),
+                                      child: const Icon(
+                                        Icons.search,
+                                        color: Colors.grey,
+                                      ),
+                                    )
+                                  : null,
+                              hintText: 'Поиск клиентов',
+                              hintStyle: const TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w400),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(width: 0.3, color: Colors.grey)),
+                              // suffixIcon: IconButton(
+                              //     onPressed: () {},
+                              //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',
+                              //         color: Colors.grey)),
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      Container(
-                        height: 600,
-                        child: SmartRefresher(
-                          controller: _refreshController,
-                          enablePullDown: false,
-                          enablePullUp: true,
-                          onLoading: () {
-                            onLoading();
-                          },
-                          onRefresh: () {
-                            onRefresh();
-                          },
+                        const SizedBox(height: 16),
+                        Container(
+                          height: 600,
                           child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: state.chat.length,
                             itemBuilder: ((context, index) {
                               return Column(
@@ -174,28 +176,52 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                             children: [
                                               Container(
                                                 padding: const EdgeInsets.only(top: 20.5),
-                                                width: 275,
+                                                width: 325,
                                                 child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Text(
                                                       '${state.chat[index].name}',
-                                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                                                     ),
-                                                    Text(
-                                                      ' ${parseDate(state.chat[index].createdAt)}',
-                                                      style: const TextStyle(
-                                                          color: Colors.grey,
-                                                          fontSize: 12,
-                                                          fontWeight: FontWeight.w400),
+                                                    Column(
+                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                                      children: [
+                                                        Text(
+                                                          ' ${parseDate(state.chat[index].createdAt)}',
+                                                          style: const TextStyle(
+                                                              color: Colors.grey,
+                                                              fontSize: 12,
+                                                              fontWeight: FontWeight.w400),
+                                                        ),
+                                                        state.chat[index].countNewMessages != 0
+                                                            ? Container(
+                                                                width: 22,
+                                                                height: 22,
+                                                                margin: const EdgeInsets.only(top: 6),
+                                                                alignment: Alignment.center,
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(12),
+                                                                    color: AppColors.kPrimaryColor),
+                                                                child: Text(
+                                                                  '${state.chat[index].countNewMessages}',
+                                                                  style: const TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontSize: 12,
+                                                                      fontWeight: FontWeight.w500),
+                                                                ))
+                                                            : SizedBox()
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                               Container(
-                                                padding: const EdgeInsets.only(top: 20.5, left: 0),
+                                                padding: const EdgeInsets.only(top: 0, left: 0),
                                                 // alignment: Alignment.bottomLeft,
-                                                width: 275,
+                                                width: 325,
                                                 child: Text(
                                                   '${state.chat[index].lastMessage != null ? state.chat[index].lastMessage!.text : ''}',
                                                   style: const TextStyle(
@@ -214,8 +240,8 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                             }),
                           ),
                         ),
-                      ),
-                    ]);
+                      ]),
+                );
               } else {
                 return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
               }

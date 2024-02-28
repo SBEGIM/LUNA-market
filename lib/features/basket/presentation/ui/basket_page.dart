@@ -212,11 +212,12 @@ class _BasketPageState extends State<BasketPage> {
                     onValueChanged: (int? value) async {
                       if (value != null) {
                         segmentValue = value;
-                        print('fbs value $value');
                         if (value == 0) {
                           fulfillmentApi = 'FBS';
+                          fulfillment = 'FBS';
                         } else {
                           fulfillmentApi = 'realFBS';
+                          fulfillment = 'realFBS';
                         }
                         BlocProvider.of<BasketCubit>(context).basketShow(fulfillmentApi);
 
@@ -421,8 +422,11 @@ class _BasketPageState extends State<BasketPage> {
                   child: InkWell(
                       onTap: () {
                         if (count != 0) {
-                          context.router
-                              .push(BasketOrderAddressRoute(fulfillment: fulfillment, deleveryDay: deleveryDay));
+                          context.router.push(BasketOrderRoute(
+                              fbs: fulfillment == 'FBS' ? true : false, address: '', fulfillment: fulfillment));
+
+                          //    context.router
+                          //    .push(BasketOrderAddressRoute(fulfillment: fulfillment, deleveryDay: deleveryDay));
                           // Get.to(const BasketOrderAddressPage())
                         }
 

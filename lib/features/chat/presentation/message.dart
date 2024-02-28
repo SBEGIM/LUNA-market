@@ -129,6 +129,9 @@ class _MessagePageState extends State<MessagePage> {
           'action': 'pong',
         });
         channel.sink.add(text);
+
+        text = jsonEncode({'action': 'read', 'chat_id': widget.chatId});
+        channel.sink.add(text);
       }
 
       if (data['action'] == 'message' || data['action'] == 'file') {

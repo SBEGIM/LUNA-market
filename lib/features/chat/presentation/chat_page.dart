@@ -137,6 +137,7 @@ class _ChatPageState extends State<ChatPage> {
                       const SizedBox(height: 16),
                       Container(
                         height: 600,
+                        padding: const EdgeInsets.only(left: 16, right: 0),
                         child: SmartRefresher(
                           controller: _refreshController,
                           enablePullDown: false,
@@ -179,29 +180,53 @@ class _ChatPageState extends State<ChatPage> {
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
                                               Container(
-                                                padding: const EdgeInsets.only(top: 20.5),
-                                                width: 275,
+                                                padding: const EdgeInsets.only(top: 10.5, left: 0, right: 0),
+                                                width: 310,
                                                 child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Text(
                                                       '${state.chat[index].name}',
                                                       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                                                     ),
-                                                    Text(
-                                                      ' ${parseDate(state.chat[index].createdAt)}',
-                                                      style: const TextStyle(
-                                                          color: Colors.grey,
-                                                          fontSize: 12,
-                                                          fontWeight: FontWeight.w400),
+                                                    Column(
+                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                                      children: [
+                                                        Text(
+                                                          ' ${parseDate(state.chat[index].createdAt)}',
+                                                          style: const TextStyle(
+                                                              color: Colors.grey,
+                                                              fontSize: 12,
+                                                              fontWeight: FontWeight.w400),
+                                                        ),
+                                                        state.chat[index].countNewMessages != 0
+                                                            ? Container(
+                                                                width: 22,
+                                                                height: 22,
+                                                                margin: const EdgeInsets.only(top: 6),
+                                                                alignment: Alignment.center,
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(12),
+                                                                    color: AppColors.kPrimaryColor),
+                                                                child: Text(
+                                                                  '${state.chat[index].countNewMessages}',
+                                                                  style: const TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontSize: 12,
+                                                                      fontWeight: FontWeight.w500),
+                                                                ))
+                                                            : SizedBox()
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                               Container(
-                                                padding: const EdgeInsets.only(top: 20.5, left: 0),
-                                                // alignment: Alignment.bottomLeft,
-                                                width: 275,
+                                                padding: const EdgeInsets.only(top: 0, left: 0),
+                                                alignment: Alignment.topLeft,
+                                                width: 310,
                                                 child: Text(
                                                   '${state.chat[index].lastMessage != null ? state.chat[index].lastMessage!.text : ''}',
                                                   style: const TextStyle(
