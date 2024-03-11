@@ -14,6 +14,8 @@ import 'package:haji_market/admin/my_products_admin/data/bloc/size_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/data/repository/CharacteristicAdminRepo.dart';
 import 'package:haji_market/admin/my_products_admin/data/repository/SizeAdminRepo.dart';
 import 'package:haji_market/admin/tape_admin/data/repository/tape_admin_repo.dart';
+import 'package:haji_market/bloger/auth/data/bloc/sms_blogger_cubit.dart';
+import 'package:haji_market/bloger/auth/data/repository/registerBloggerRepo.dart';
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:haji_market/features/app/presentaion/app_router_builder.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
@@ -432,6 +434,11 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (_) => CharacteristicsCubit(
             characteristicRepository: CharacteristicAdminRepo(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => SmsBloggerCubit(
+            registerRepository: RegisterBloggerRepository(),
           ),
         ),
       ],

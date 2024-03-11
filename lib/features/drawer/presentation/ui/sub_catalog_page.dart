@@ -147,7 +147,9 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                               //цйуйцуйц
                               // print(widget.cats?.id ?? 0);
 
-                              context.router.push(ProductsRoute(cats: widget.cats!, subCats: state.cats[index]));
+                              context.router.push(ProductsRoute(
+                                  cats: widget.cats ?? Cats(id: widget.cats?.id ?? 0, name: widget.cats?.name ?? ''),
+                                  subCats: state.cats[index]));
                               // Get.to(() => ProductsPage(
                               //       cats: state.cats[index],
                               //     ));

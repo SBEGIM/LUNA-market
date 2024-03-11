@@ -12,7 +12,7 @@ part of 'admin_navigation_cubit.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AdminNavigationState {
@@ -132,7 +132,7 @@ class _$TapeAdminStateImpl implements TapeAdminState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$TapeAdminStateImpl);
   }
@@ -289,7 +289,7 @@ class _$DetailTapeAdminStateImpl implements DetailTapeAdminState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DetailTapeAdminStateImpl &&
@@ -439,7 +439,7 @@ class _$HomeAdminStateImpl implements HomeAdminState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$HomeAdminStateImpl);
   }
@@ -571,7 +571,7 @@ class _$MyOrderAdminStateImpl implements MyOrderAdminState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$MyOrderAdminStateImpl);
   }
@@ -703,7 +703,7 @@ class _$ProfileStateImpl implements ProfileState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$ProfileStateImpl);
   }
@@ -835,7 +835,7 @@ class _$ChatAdminStateImpl implements ChatAdminState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$ChatAdminStateImpl);
   }
@@ -967,7 +967,7 @@ class _$AdminAuthStateImpl implements AdminAuthState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$AdminAuthStateImpl);
   }

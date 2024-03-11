@@ -128,9 +128,9 @@ class _LauncherAppState extends State<LauncherApp> {
       if (data == 'shop') {
         final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
 
-        Get.snackbar('${notification?.title}', '${notification?.body}', onTap: (value) {
-          Get.to(DetailMyOrdersPage(basket: basket));
-        }, backgroundColor: AppColors.kPrimaryColor, duration: const Duration(seconds: 10));
+        // Get.snackbar('${notification?.title}', '${notification?.body}', onTap: (value) {
+        Get.to(DetailMyOrdersPage(basket: basket));
+        //  }, backgroundColor: AppColors.kPrimaryColor, duration: const Duration(seconds: 10));
 
         // appBloc.state.maybeWhen(
         //   inAppAdminState: (i) {
@@ -144,17 +144,18 @@ class _LauncherAppState extends State<LauncherApp> {
       if (data == 'chat') {
         final chat = jsonDecode(message.data['chat']);
 
-        Get.snackbar('${notification?.title}', '${notification?.body}', onTap: (value) {
-          appBloc.state.maybeWhen(
-            inAppUserState: (i) {
-              Get.to(() => MessagePage(
-                  userId: chat['user_id'], name: chat['name'], avatar: chat['avatar'], chatId: chat['chat_id']));
-            },
-            orElse: () {
-              Get.to(() => MessageAdmin(userId: chat['user_id'], userName: chat['name'], chatId: chat['chat_id']));
-            },
-          );
-        }, backgroundColor: AppColors.kPrimaryColor, duration: const Duration(seconds: 10));
+        appBloc.state.maybeWhen(
+          inAppUserState: (i) {
+            Get.to(() => MessagePage(
+                userId: chat['user_id'], name: chat['name'], avatar: chat['avatar'], chatId: chat['chat_id']));
+          },
+          orElse: () {
+            Get.to(() => MessageAdmin(userId: chat['user_id'], userName: chat['name'], chatId: chat['chat_id']));
+          },
+        );
+
+        //  Get.snackbar('${notification?.title}', '${notification?.body}',
+        //         onTap: (value) {}, backgroundColor: AppColors.kPrimaryColor, duration: const Duration(seconds: 10));
       }
 
       if (Platform.isAndroid && (data != 'chat' || data != 'shop')) {

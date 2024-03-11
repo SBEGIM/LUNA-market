@@ -176,7 +176,7 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                             children: [
                                               Container(
                                                 padding: const EdgeInsets.only(top: 20.5),
-                                                width: 325,
+                                                width: 260,
                                                 child: Row(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -221,7 +221,7 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                               Container(
                                                 padding: const EdgeInsets.only(top: 0, left: 0),
                                                 // alignment: Alignment.bottomLeft,
-                                                width: 325,
+                                                width: 260,
                                                 child: Text(
                                                   '${state.chat[index].lastMessage != null ? state.chat[index].lastMessage!.text : ''}',
                                                   style: const TextStyle(

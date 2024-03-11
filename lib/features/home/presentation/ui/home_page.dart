@@ -325,6 +325,7 @@ class _HomePageState extends State<HomePage> {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
+                                    //  print(state.partner[index].url.toString());
                                     Get.to(() => CreditWebviewPage(
                                         title: state.partner[index].name, url: state.partner[index].url.toString()));
                                   },

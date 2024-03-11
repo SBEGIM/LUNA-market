@@ -179,7 +179,7 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                       //   Get.snackbar('Заполните', 'Напишите полный номер' , backgroundColor: Colors.blueAccent);
                       // }
                       // Get.to(const ForgotPasswordPage());
-                      context.router.push(const ForgotPasswordRoute());
+                      context.router.push(const ForgotPasswordBLoggerRoute());
                     },
                     child: const Center(
                       child: Text(

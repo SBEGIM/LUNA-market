@@ -12,7 +12,7 @@ part of 'app_bloc.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AppEvent {
@@ -112,7 +112,7 @@ class _$CheckAuthImpl implements _CheckAuth {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$CheckAuthImpl);
   }
@@ -226,7 +226,7 @@ class _$ExitingImpl implements _Exiting {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$ExitingImpl);
   }
@@ -340,7 +340,7 @@ class _$LoginingImpl implements _Logining {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$LoginingImpl);
   }
@@ -482,7 +482,7 @@ class _$ChangeStateImpl implements _ChangeState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ChangeStateImpl &&
@@ -699,7 +699,7 @@ class _$LoadingStateImpl implements _LoadingState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$LoadingStateImpl);
   }
@@ -831,7 +831,7 @@ class _$NotAuthorizedStateImpl implements _NotAuthorizedState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType && other is _$NotAuthorizedStateImpl);
   }
@@ -981,7 +981,7 @@ class _$InAppUserStateImpl implements _InAppUserState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$InAppUserStateImpl &&
@@ -1145,7 +1145,7 @@ class _$InAppBlogerStateImpl implements _InAppBlogerState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$InAppBlogerStateImpl &&
@@ -1309,7 +1309,7 @@ class _$InAppAdminStateImpl implements _InAppAdminState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$InAppAdminStateImpl &&
@@ -1473,7 +1473,7 @@ class _$InAppManagerStateImpl implements _InAppManagerState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$InAppManagerStateImpl &&
@@ -1638,7 +1638,7 @@ class _$ErrorStateImpl implements _ErrorState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ErrorStateImpl &&

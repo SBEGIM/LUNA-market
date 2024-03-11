@@ -12,6 +12,7 @@ import 'package:haji_market/features/auth/presentation/widgets/default_button.da
 
 import '../../data/bloc/sms_cubit.dart';
 import '../widgets/login_forget_password_modal_bottom.dart';
+
 @RoutePage()
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
@@ -21,8 +22,7 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  TextEditingController phoneControllerAuth =
-      MaskedTextController(mask: '+7(000)-000-00-00');
+  TextEditingController phoneControllerAuth = MaskedTextController(mask: '+7(000)-000-00-00');
 
   bool _visibleIconView = false;
 
@@ -49,9 +49,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         if (state is LoadedState) {
           showModalBottomSheet(
               shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    topRight: Radius.circular(10.0)),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
               ),
               context: context,
               builder: (context) {
@@ -65,8 +63,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           return Container(
             color: AppColors.kBackgroundColor,
             child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 16.0, right: 16, top: 16, bottom: 45),
+              padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 45),
               child: Column(
                 children: [
                   Container(
@@ -129,8 +126,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             final sms = BlocProvider.of<SmsCubit>(context);
                             sms.resetSend(phoneControllerAuth.text);
                           } else {
-                            Get.snackbar('Номер телефона пустой', 'Заполните',
-                                backgroundColor: Colors.blueAccent);
+                            Get.snackbar('Номер телефона пустой', 'Заполните', backgroundColor: Colors.blueAccent);
                           }
                         },
                         color: Colors.white,
@@ -149,8 +145,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             ),
           );
         } else {
-          return const Center(
-              child: CircularProgressIndicator(color: Colors.indigoAccent));
+          return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
         }
       }),
     );

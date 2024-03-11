@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:haji_market/admin/chat/data/cubit/chat_admin_cubit.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/chat/data/DTO/DTO/message_dto.dart';
 import 'package:image_picker/image_picker.dart';
@@ -116,6 +117,8 @@ class _MessageAdminState extends State<MessageAdmin> {
 
     channel.ready.then((value) {
       ready = true;
+      String text = jsonEncode({'action': 'read', 'chat_id': widget.chatId});
+      channel.sink.add(text);
       setState(() {});
     });
 
@@ -146,6 +149,8 @@ class _MessageAdminState extends State<MessageAdmin> {
           backgroundColor: Colors.white,
           leading: GestureDetector(
             onTap: () {
+              BlocProvider.of<ChatAdminCubit>(context).chat();
+
               Get.back();
             },
             child: const Icon(

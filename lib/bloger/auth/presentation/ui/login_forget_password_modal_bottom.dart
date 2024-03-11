@@ -5,27 +5,27 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:haji_market/admin/auth/data/bloc/sms_admin_cubit.dart';
-import 'package:haji_market/admin/auth/data/bloc/sms_admin_state.dart';
+import 'package:haji_market/bloger/auth/data/bloc/sms_blogger_cubit.dart';
+import 'package:haji_market/bloger/auth/data/bloc/sms_blogger_state.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import 'change_password.dart';
+import 'change_blogger_password.dart';
 
-class LoginForgotAdminPasswordModalBottom extends StatefulWidget {
+class LoginForgotBloggerPasswordModalBottom extends StatefulWidget {
   final String textEditingController;
-  const LoginForgotAdminPasswordModalBottom({
+  const LoginForgotBloggerPasswordModalBottom({
     Key? key,
     required this.textEditingController,
   }) : super(key: key);
 
   @override
-  State<LoginForgotAdminPasswordModalBottom> createState() => _LoginForgotAdminPasswordModalBottom();
+  State<LoginForgotBloggerPasswordModalBottom> createState() => _LoginForgotBLoggerPasswordModalBottom();
 }
 
-class _LoginForgotAdminPasswordModalBottom extends State<LoginForgotAdminPasswordModalBottom> {
+class _LoginForgotBLoggerPasswordModalBottom extends State<LoginForgotBloggerPasswordModalBottom> {
   late Timer _timer;
   int _start = 60;
 
@@ -67,19 +67,18 @@ class _LoginForgotAdminPasswordModalBottom extends State<LoginForgotAdminPasswor
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SmsAdminCubit, SmsAdminState>(listener: (context, state) {
+    return BlocConsumer<SmsBloggerCubit, SmsBloggerState>(listener: (context, state) {
       if (state is ErrorState) {}
       if (state is LoadedState) {
         log(widget.textEditingController);
         // Get.to( () => ChangePasswordPage( textEditingController: widget.textEditingController));
         FocusScope.of(context).requestFocus(FocusNode());
-        context.router.push(ChangePasswordAdminRoute(textEditingController: widget.textEditingController));
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) => ChangePasswordAdminPage(
-        //           textEditingController: widget.textEditingController)),
-        // );
+        context.router.push(ChangePasswordBloggerRoute(textEditingController: widget.textEditingController));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ChangePasswordBloggerPage(textEditingController: widget.textEditingController)),
+        );
       }
     }, builder: (context, state) {
       if (state is LoadingState) {
@@ -131,7 +130,7 @@ class _LoginForgotAdminPasswordModalBottom extends State<LoginForgotAdminPasswor
                 },
                 onCompleted: (value) async {
                   if (value.length == 4) {
-                    final sms = BlocProvider.of<SmsAdminCubit>(context);
+                    final sms = BlocProvider.of<SmsBloggerCubit>(context);
                     sms.resetCheck(widget.textEditingController, value.toString());
                     // Navigator.push(
                     //   context,
@@ -157,7 +156,7 @@ class _LoginForgotAdminPasswordModalBottom extends State<LoginForgotAdminPasswor
                 text: 'Переотправить код',
                 press: () {
                   if (_start == 60) {
-                    final sms = BlocProvider.of<SmsAdminCubit>(context);
+                    final sms = BlocProvider.of<SmsBloggerCubit>(context);
                     sms.smsResend(widget.textEditingController);
                     startTimer();
                     _start = 59;

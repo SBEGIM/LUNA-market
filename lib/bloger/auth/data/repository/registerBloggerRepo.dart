@@ -41,7 +41,7 @@ class RegisterToApi {
 
     final request = http.MultipartRequest(
       'POST',
-      Uri.parse('$baseUrl/user/register'),
+      Uri.parse('$baseUrl/blogger/register'),
     );
 
     // if(register.avatar != ''){
@@ -66,7 +66,7 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response = await http.post(Uri.parse('$baseUrl/user/register/send-code'), body: {
+    final response = await http.post(Uri.parse('$baseUrl/blogger/register/send-code'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
     });
 
@@ -77,7 +77,7 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response = await http.post(Uri.parse('$baseUrl/user/register/check'), body: {
+    final response = await http.post(Uri.parse('$baseUrl/blogger/register/check'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'code': code,
     });
@@ -89,7 +89,7 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response = await http.post(Uri.parse('$baseUrl/user/password/reset/send-code'), body: {
+    final response = await http.post(Uri.parse('$baseUrl/blogger/password/reset/send-code'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
     });
 
@@ -100,7 +100,7 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response = await http.post(Uri.parse('$baseUrl/user/password/reset/check-code'), body: {
+    final response = await http.post(Uri.parse('$baseUrl/blogger/password/reset/check-code'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'code': code,
     });
@@ -112,7 +112,7 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response = await http.post(Uri.parse('$baseUrl/user/password/reset'), body: {
+    final response = await http.post(Uri.parse('$baseUrl/blogger/password/reset'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'password': password,
     });

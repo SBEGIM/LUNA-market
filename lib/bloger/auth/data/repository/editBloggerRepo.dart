@@ -21,7 +21,7 @@ class EditToApi {
       String? card, String? email, String? socialNetwork) async {
     String result = '';
     if (phone.isNotEmpty) {
-      result = phone.substring(2);
+      // result = phone.substring(2);
       phone = result.replaceAll(RegExp('[^0-9]'), '');
     }
 

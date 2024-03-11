@@ -3,7 +3,8 @@ import 'package:haji_market/core/common/constants.dart';
 
 class DefaultButton extends StatelessWidget {
   const DefaultButton(
-      {super.key, required this.text,
+      {super.key,
+      required this.text,
       required this.press,
       required this.color,
       required this.backgroundColor,
@@ -12,7 +13,7 @@ class DefaultButton extends StatelessWidget {
   final Function? press;
   final Color color;
   final double width;
-  final Color backgroundColor ;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +24,9 @@ class DefaultButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
-          ), backgroundColor: backgroundColor,
+          ),
+          backgroundColor: backgroundColor,
         ),
-        
         onPressed: press as void Function()?,
         child: Text(
           text,

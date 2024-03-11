@@ -247,7 +247,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          widget.basketOrder.statusFBS == 'cancel' ? 'Отменен' : 'Прниять',
+                                          widget.basketOrder.statusFBS == 'cancel' ? 'Отменен' : 'Прният',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14,
@@ -1075,7 +1075,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          widget.basketOrder.statusRealFBS == 'cancel' ? 'Отменен' : 'Прниять',
+                                          widget.basketOrder.statusRealFBS == 'cancel' ? 'Отменен' : 'Прният',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14,

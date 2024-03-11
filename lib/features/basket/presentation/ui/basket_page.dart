@@ -29,7 +29,7 @@ class BasketPage extends StatefulWidget {
 class _BasketPageState extends State<BasketPage> {
   int count = 0;
   int price = 0;
-  String fulfillment = '';
+  String fulfillment = 'FBS';
   String deleveryDay = '';
 
   String fulfillmentApi = 'FBS';
@@ -212,18 +212,21 @@ class _BasketPageState extends State<BasketPage> {
                     onValueChanged: (int? value) async {
                       if (value != null) {
                         segmentValue = value;
-                        if (value == 0) {
+                        print(value);
+                        if (segmentValue == 0) {
                           fulfillmentApi = 'FBS';
                           fulfillment = 'FBS';
                         } else {
                           fulfillmentApi = 'realFBS';
                           fulfillment = 'realFBS';
+
+                          print(fulfillment);
                         }
+
                         BlocProvider.of<BasketCubit>(context).basketShow(fulfillmentApi);
 
                         // BlocProvider.of<BasketAdminCubit>(context).basketSwitchState(value);
                       }
-                      setState(() {});
                     },
                   ),
                 ),
@@ -239,6 +242,8 @@ class _BasketPageState extends State<BasketPage> {
           if (state is LoadedState) {
             basketData(basket: state.basketShowModel);
             bootSheet = true;
+
+            fulfillment = state.basketShowModel.first.fulfillment ?? '';
             setState(() {});
           }
         }, builder: (context, state) {
@@ -422,11 +427,15 @@ class _BasketPageState extends State<BasketPage> {
                   child: InkWell(
                       onTap: () {
                         if (count != 0) {
-                          context.router.push(BasketOrderRoute(
-                              fbs: fulfillment == 'FBS' ? true : false, address: '', fulfillment: fulfillment));
+                          print('$fulfillment');
 
-                          //    context.router
-                          //    .push(BasketOrderAddressRoute(fulfillment: fulfillment, deleveryDay: deleveryDay));
+                          if (fulfillment != 'realFBS') {
+                            context.router
+                                .push(BasketOrderAddressRoute(fulfillment: fulfillment, deleveryDay: deleveryDay));
+                          } else {
+                            context.router.push(BasketOrderRoute(
+                                fbs: fulfillment == 'FBS' ? true : false, address: '', fulfillment: fulfillment));
+                          }
                           // Get.to(const BasketOrderAddressPage())
                         }
 

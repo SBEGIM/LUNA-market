@@ -180,8 +180,8 @@ class _ChatPageState extends State<ChatPage> {
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
                                               Container(
-                                                padding: const EdgeInsets.only(top: 10.5, left: 0, right: 0),
-                                                width: 310,
+                                                padding: const EdgeInsets.only(top: 10.5, left: 0, right: 10),
+                                                width: 260,
                                                 child: Row(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,7 +226,7 @@ class _ChatPageState extends State<ChatPage> {
                                               Container(
                                                 padding: const EdgeInsets.only(top: 0, left: 0),
                                                 alignment: Alignment.topLeft,
-                                                width: 310,
+                                                width: 260,
                                                 child: Text(
                                                   '${state.chat[index].lastMessage != null ? state.chat[index].lastMessage!.text : ''}',
                                                   style: const TextStyle(

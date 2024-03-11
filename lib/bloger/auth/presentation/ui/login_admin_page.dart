@@ -9,7 +9,7 @@ import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 
-import 'forgot_admin_password.dart';
+import 'forgot_blogger_password.dart';
 
 class LoginAdminPage extends StatefulWidget {
   const LoginAdminPage({Key? key}) : super(key: key);
@@ -58,8 +58,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
         //     }),
         //   ),
         // ),
-        body: BlocConsumer<LoginAdminCubit, LoginAdminState>(
-            listener: (context, state) {
+        body: BlocConsumer<LoginAdminCubit, LoginAdminState>(listener: (context, state) {
           if (state is LoadedState) {
             context.router.push(RegisterShopRoute(shopName: nameController.text));
             // Navigator.push(
@@ -129,9 +128,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
                               ),
                             ),
                             onChanged: (value) {
-                              passwordController.text.isEmpty
-                                  ? __visibleIconView = false
-                                  : __visibleIconView = true;
+                              passwordController.text.isEmpty ? __visibleIconView = false : __visibleIconView = true;
                               if (passwordController.text.isNotEmpty) {
                                 isButtonEnabled = true;
                                 setState(() {});
@@ -149,11 +146,8 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
                             },
                             child: __visibleIconView == true
                                 ? Icon(
-                                    _passwordVisible
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color:
-                                        const Color.fromRGBO(177, 179, 181, 1),
+                                    _passwordVisible ? Icons.visibility_off : Icons.visibility,
+                                    color: const Color.fromRGBO(177, 179, 181, 1),
                                   )
                                 : const SizedBox(width: 5),
                           ),
@@ -167,7 +161,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    context.router.push(const ForgotPasswordAdminRoute());
+                    context.router.push(const ForgotPasswordBLoggerRoute());
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(
@@ -178,10 +172,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
                   child: const Center(
                     child: Text(
                       'Забыли пароль?',
-                      style: TextStyle(
-                          color: AppColors.kPrimaryColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500),
+                      style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 18, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),
@@ -196,8 +187,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
                       press: () {
                         final login = BlocProvider.of<LoginAdminCubit>(context);
 
-                        login.login(
-                            nameController.text, passwordController.text);
+                        login.login(nameController.text, passwordController.text);
                       },
                       color: Colors.white,
                       width: 343),
@@ -216,8 +206,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
               ),
             );
           } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
+            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
           }
         }));
   }
