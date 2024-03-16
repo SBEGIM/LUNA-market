@@ -61,15 +61,15 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
           backgroundColor: Colors.white,
           centerTitle: true,
           elevation: 0,
-          leading: GestureDetector(
-            onTap: () {
-              Get.back();
-            },
-            child: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.kPrimaryColor,
-            ),
-          ),
+          // leading: GestureDetector(
+          //   onTap: () {
+          //     Get.back();
+          //   },
+          //   child: const Icon(
+          //     Icons.arrow_back_ios,
+          //     color: AppColors.kPrimaryColor,
+          //   ),
+          // ),
           title: const Text(
             'Сообщение',
             style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
