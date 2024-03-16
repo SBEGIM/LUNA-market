@@ -3,11 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/custom_switch_button.dart';
 import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
+import 'package:haji_market/features/chat/presentation/message.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart' as productAdCubit;
 import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart' as productAdState;
 import 'package:haji_market/features/drawer/presentation/widgets/count_zero_dialog.dart';
@@ -651,12 +653,25 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                               const SizedBox(
                                 height: 8,
                               ),
-                              Text(
-                                widget.basketProducts.deliveryDay != null && widget.basketProducts.deliveryDay != 0
-                                    ? 'Доставка: ${widget.basketProducts.deliveryDay} дня'
-                                    : 'Доставка: Нет срока доставки СДЕК',
-                                style: const TextStyle(
-                                    fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w600),
+                              GestureDetector(
+                                onTap: (() {
+                                  Get.to(() => MessagePage(
+                                      userId: widget.basketProducts.product?.shopId,
+                                      name: widget.basketProducts.shopName,
+                                      avatar: widget.basketProducts.image?.first ?? '',
+                                      chatId: widget.basketProducts.chatId));
+                                }),
+                                child: Text(
+                                  widget.basketProducts.fulfillment != 'realFBS'
+                                      ? 'Доставка: ${widget.basketProducts.deliveryDay} дня'
+                                      : 'Узнать срок доставки',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: widget.basketProducts.fulfillment == 'realFBS'
+                                          ? Colors.orangeAccent
+                                          : Colors.black),
+                                ),
                               ),
                             ],
                           ),

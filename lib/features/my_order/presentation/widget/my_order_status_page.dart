@@ -1355,9 +1355,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             ),
                                             const SizedBox(height: 8),
                                             Text(
-                                              widget.basketOrder.productFBS?.first.shopPhone != null ||
-                                                      widget.basketOrder.productFBS?.first.shopPhone != ''
-                                                  ? '${widget.basketOrder.productFBS?.first.shopPhone}'
+                                              widget.basketOrder.product?.first.shopPhone != ''
+                                                  ? '${widget.basketOrder.product?.first.shopPhone}'
                                                   : 'Неизвестен',
                                               style: const TextStyle(
                                                   color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),

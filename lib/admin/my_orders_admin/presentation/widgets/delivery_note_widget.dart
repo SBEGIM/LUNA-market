@@ -205,8 +205,8 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                             ),
                             const SizedBox(height: 12),
                             SizedBox(
-                              height: widget.basketOrder.product!.length * 25,
-                              width: 100,
+                              height: widget.basketOrder.product!.length * 40,
+                              width: 120,
                               child: ListView.builder(
                                 scrollDirection: Axis.vertical,
                                 physics: const NeverScrollableScrollPhysics(),
@@ -215,6 +215,8 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                                 itemBuilder: (context, index) {
                                   return Text(
                                     '${widget.basketOrder.product![0].productName}',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
                                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                                   );
                                 },
@@ -278,7 +280,7 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                             ),
                             const SizedBox(height: 12),
                             SizedBox(
-                              height: widget.basketOrder.product!.length * 25,
+                              height: widget.basketOrder.product!.length * 35,
                               width: 100,
                               child: ListView.builder(
                                 scrollDirection: Axis.vertical,
@@ -286,9 +288,14 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                                 itemCount: widget.basketOrder.product!.length,
                                 shrinkWrap: false,
                                 itemBuilder: (context, index) {
-                                  return Text(
-                                    '${widget.basketOrder.product![0].count} шт',
-                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                                  return Column(
+                                    children: [
+                                      const SizedBox(height: 15),
+                                      Text(
+                                        '${widget.basketOrder.product![0].count} шт',
+                                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                                      ),
+                                    ],
                                   );
                                 },
                               ),

@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:get/utils.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
@@ -310,10 +313,12 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                 alignment: Alignment.center,
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyOrderStatusPage(basketOrder: widget.basketOrder)),
-                    );
+                    widget.basketOrder.id != null
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyOrderStatusPage(basketOrder: widget.basketOrder)),
+                          )
+                        : printError();
                   },
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
