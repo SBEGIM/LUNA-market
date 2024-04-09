@@ -41,7 +41,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 144,
+      width: 155,
       height: 250,
       margin: const EdgeInsets.only(right: 8.0, top: 10, left: 8.0),
       decoration: BoxDecoration(color: const Color.fromRGBO(250, 250, 250, 1), borderRadius: BorderRadius.circular(10)),
@@ -170,7 +170,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                   style: const TextStyle(fontSize: 14, color: AppColors.kGray900, fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(
-                  height: 8,
+                  height: 14,
                 ),
                 (widget.product.compound != 0 && widget.product.compound != null)
                     ? Row(
@@ -201,7 +201,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                         style: const TextStyle(fontSize: 12, color: Color(0xFF19191A), fontWeight: FontWeight.w700),
                       ),
                 const SizedBox(
-                  height: 4,
+                  height: 12,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,

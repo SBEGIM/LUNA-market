@@ -173,6 +173,7 @@ class Product {
   Product({
     int? id,
     String? shopName,
+    String? shopAddress,
     int? shopCourier,
     String? shopPhone,
     String? productName,
@@ -186,6 +187,7 @@ class Product {
   }) {
     _id = id;
     _shopName = shopName;
+    _shopAddress = shopAddress;
     _shopCourier = shopCourier;
     _shopPhone = shopPhone;
     _productName = productName;
@@ -201,6 +203,7 @@ class Product {
   Product.fromJson(dynamic json) {
     _id = json['id'];
     _shopName = json['shop_name'];
+    _shopAddress = json['shop_address'];
     _shopPhone = json['shop_phone'];
     _shopCourier = json['shop_courier'];
     _productName = json['product_name'];
@@ -214,6 +217,7 @@ class Product {
   }
   int? _id;
   String? _shopName;
+  String? _shopAddress;
   int? _shopCourier;
   String? _shopPhone;
   String? _productName;
@@ -227,6 +231,7 @@ class Product {
 
   int? get id => _id;
   String? get shopName => _shopName;
+  String? get shopAddress => _shopAddress;
   int? get shopCourier => _shopCourier;
   String? get shopPhone => _shopPhone;
   String? get productName => _productName;
@@ -242,6 +247,7 @@ class Product {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['shop_name'] = _shopName;
+    map['shop_address'] = _shopAddress;
     map['shop_phone'] = _shopPhone;
     map['shop_courier'] = _shopCourier;
     map['product_name'] = _productName;

@@ -161,7 +161,7 @@ class _LoginAdminPageState extends State<LoginAdminPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    context.router.push(const ForgotPasswordBLoggerRoute());
+                    context.router.push(const ForgotPasswordAdminRoute());
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(

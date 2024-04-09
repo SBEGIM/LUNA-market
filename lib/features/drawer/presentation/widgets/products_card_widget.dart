@@ -46,7 +46,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 
     return Container(
       height: 151,
-      margin: const EdgeInsets.only(left: 16, top: 7, bottom: 8, right: 16),
+      margin: const EdgeInsets.only(left: 14, top: 7, bottom: 8, right: 14),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), boxShadow: const [
         BoxShadow(
           offset: Offset(0, 2),
@@ -60,7 +60,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 7.0, left: 16, right: 16),
+            padding: const EdgeInsets.only(top: 7.0, left: 8, right: 8),
             child: Stack(
               children: [
                 Image.network(
@@ -132,21 +132,26 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
             ),
           ),
           const SizedBox(
-            width: 16,
+            width: 4,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
               SizedBox(
-                width: 205,
+                width: MediaQuery.of(context).size.width * 0.63,
                 height: 40,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      widget.product.name.toString(),
-                      style: const TextStyle(fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w500),
+                    SizedBox(
+                      width: 140,
+                      child: Text(
+                        widget.product.name.toString(),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w500),
+                      ),
                     ),
                     IconButton(
                         onPressed: () async {
@@ -268,7 +273,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
               ),
               SizedBox(
                 height: 32,
-                width: 196,
+                width: MediaQuery.of(context).size.width * 0.63,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

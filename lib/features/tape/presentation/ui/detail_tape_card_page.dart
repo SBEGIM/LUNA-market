@@ -334,6 +334,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                           margin: const EdgeInsets.only(left: 16, right: 16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               // Column(
                               //   children: [
@@ -342,7 +343,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 height: 28,
                                 decoration: BoxDecoration(
                                     color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(6)),
-                                margin: const EdgeInsets.only(top: 105),
+                                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.14),
                                 alignment: Alignment.center,
                                 child: const Text(
                                   '0·0·12',
@@ -436,7 +437,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                   //   ],
                                   // ),
                                   Container(
-                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.32),
+                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.34),
                                     child: Column(
                                       children: [
                                         inReport(
@@ -571,7 +572,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            print(' chat:::${state.tapeModel[index].chatId}');
+                                            // print(' chat:::${state.tapeModel[index].chatId}');
                                             // Get.off(ChatPage);
                                             GetStorage().write('video_stop', true);
 
@@ -621,38 +622,12 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                               ),
                               SizedBox(
                                 width: 358,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Text(
-                                      '${state.tapeModel[index].name}',
-                                      style: const TextStyle(
-                                          fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white),
-                                    ),
-                                    // Row(
-                                    //   children: [
-                                    //     inBaskets(
-                                    //       tape: state.tapeModel[index],
-                                    //       index: index,
-                                    //     ),
-                                    //     const SizedBox(
-                                    //       width: 8,
-                                    //     ),
-                                    //     inFavorites(
-                                    //       tape: state.tapeModel[index],
-                                    //       index: index,
-                                    //     ),
-                                    //     const SizedBox(
-                                    //       width: 8,
-                                    //     ),
-                                    //     SvgPicture.asset(
-                                    //       'assets/icons/share.svg',
-                                    //       color: Colors.white,
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                  ],
+                                child: Text(
+                                  '${state.tapeModel[index].name}',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style:
+                                      const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white),
                                 ),
                               ),
                               const SizedBox(
@@ -781,7 +756,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 height: 28,
                                 decoration: BoxDecoration(
                                     color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(6)),
-                                margin: const EdgeInsets.only(top: 130),
+                                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10),
                                 alignment: Alignment.center,
                                 child: const Text(
                                   '0·0·12',
@@ -1218,6 +1193,7 @@ class _VideosState extends State<Videos> {
   Widget build(BuildContext context) {
     return _controller!.value.isInitialized
         ? Stack(
+            alignment: Alignment.bottomCenter,
             children: [
               SizedBox.expand(
                 child: FittedBox(
@@ -1259,7 +1235,7 @@ class _VideosState extends State<Videos> {
                   : Container(),
               Container(
                 alignment: Alignment.bottomCenter,
-                padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11),
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.10),
                 child: VideoProgressIndicator(_controller!, allowScrubbing: true),
               ),
             ],

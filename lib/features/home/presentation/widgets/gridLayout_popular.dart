@@ -31,12 +31,13 @@ class GridOptionsPopular extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
+            alignment: Alignment.center,
             children: [
               Container(
-                margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
+                // margin: const EdgeInsets.only(left: 12, right: 12),
                 alignment: Alignment.center,
-                height: 90,
-                width: 90,
+                height: 100,
+                width: 100,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(2),
                     image: DecorationImage(
@@ -95,7 +96,7 @@ class GridOptionsPopular extends StatelessWidget {
               //   ),
               // ),
               Container(
-                margin: const EdgeInsets.only(top: 130, left: 4),
+                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.17, left: 4),
                 alignment: Alignment.center,
                 child: Text(
                   layout!.title!,

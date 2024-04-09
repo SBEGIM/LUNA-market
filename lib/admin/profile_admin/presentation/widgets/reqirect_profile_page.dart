@@ -53,13 +53,17 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     });
   }
 
+  final maskFormatter = MaskTextInputFormatter(mask: '+7(###)-###-##-##');
+
   @override
   void initState() {
     if (_box.read('seller_name') != null && _box.read('seller_name') != 'null') {
       shopNameController.text = _box.read('seller_name') ?? '11';
     }
     if (_box.read('seller_phone') != null && _box.read('seller_phone') != 'null') {
-      phoneController.text = _box.read('seller_phone') ?? '22';
+      phoneController.text = maskFormatter.maskText(_box.read('seller_phone') ?? '22');
+
+      // phoneController.value = maskFormatter.updateMask(mask: "+#(###)-###-##-##"); // -> "12-34-56-78"
     }
 
     if (_box.read('seller_email') != null && _box.read('seller_email') != 'null') {
@@ -99,7 +103,6 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final maskFormatter = MaskTextInputFormatter(mask: '+#(###)-###-##-##');
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.kWhite,
@@ -363,7 +366,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           controller: phoneController,
                           decoration: const InputDecoration(
                             border: InputBorder.none,
-                            hintText: '+7(777) 777-71-18',
+                            hintText: '+7(###)-###-##-##',
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
                               // borderRadius: BorderRadius.circular(3),

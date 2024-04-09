@@ -1420,7 +1420,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                       const SizedBox(width: 13),
                                       Expanded(
                                         child: Text(
-                                          widget.basketOrder.productFBS?.first.address ?? 'Неизвестен',
+                                          widget.basketOrder.productRealFBS?.first.address ?? 'Неизвестен',
                                           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                                         ),
                                       )

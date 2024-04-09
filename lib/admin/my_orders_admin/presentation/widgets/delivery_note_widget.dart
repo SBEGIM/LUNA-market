@@ -167,7 +167,7 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                               width: 150,
                               height: 100,
                               child: Text(
-                                '${widget.basketOrder.product!.first.address}',
+                                '${widget.basketOrder.product!.first.shopAddress}',
                                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                                 maxLines: 4,
                                 overflow: TextOverflow.ellipsis,
@@ -243,7 +243,7 @@ class _DeliveryNoteAdminState extends State<DeliveryNoteAdmin> {
                               width: 150,
                               height: 100,
                               child: Text(
-                                address,
+                                '${widget.basketOrder.product!.first.address}',
                                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                                 maxLines: 4,
                                 overflow: TextOverflow.ellipsis,

@@ -281,6 +281,8 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
 
                                   if (state.basketOrderModel[index].productFBS?.isNotEmpty ?? false)
                                     Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         SizedBox(
                                           height: (state.basketOrderModel[index].productFBS?.length ?? 0) * 30,
@@ -295,13 +297,18 @@ class _AllMyOrdersPageState extends State<AllMyOrdersPage> {
                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
-                                                      Text(
-                                                        state.basketOrderModel[index].productFBS![i].productName
-                                                            .toString(),
-                                                        style: const TextStyle(
-                                                            color: AppColors.kGray750,
-                                                            fontSize: 14,
-                                                            fontWeight: FontWeight.w500),
+                                                      SizedBox(
+                                                        width: 160,
+                                                        child: Text(
+                                                          state.basketOrderModel[index].productFBS![i].productName
+                                                              .toString(),
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          style: const TextStyle(
+                                                              color: AppColors.kGray750,
+                                                              fontSize: 14,
+                                                              fontWeight: FontWeight.w500),
+                                                        ),
                                                       ),
                                                       Text(
                                                         'x' +

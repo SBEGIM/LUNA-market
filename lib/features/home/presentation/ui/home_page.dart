@@ -245,13 +245,15 @@ class _HomePageState extends State<HomePage> {
 
                           if (state is productAdState.LoadedState) {
                             return SizedBox(
-                                height: state.productModel.length >= 2 ? 608 : 304,
+                                // width: 400,
+                                height:
+                                    state.productModel.length >= 2 ? MediaQuery.of(context).size.height * 0.64 : 304,
                                 child: GridView.builder(
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: state.productModel.length >= 2 ? 2 : 1,
-                                      childAspectRatio: 1.8,
+                                      childAspectRatio: 1.6,
                                       crossAxisSpacing: 20,
                                       mainAxisSpacing: 2),
                                   itemCount: state.productModel.length >= 8 ? 8 : state.productModel.length,
@@ -447,7 +449,7 @@ class _PopularCatsHompageState extends State<PopularCatsHompage> {
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3, childAspectRatio: 0.65, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                            crossAxisCount: 3, childAspectRatio: 0.64, crossAxisSpacing: 10, mainAxisSpacing: 10),
                         itemCount: state.cats.length >= 6 ? 6 : state.cats.length,
                         itemBuilder: (BuildContext ctx, index) {
                           return InkWell(
@@ -819,7 +821,7 @@ class BannerImage extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage("http://185.116.193.73/storage/$image"),
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                     ),
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -1117,12 +1119,13 @@ class _PopularShopsState extends State<PopularShops> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Stack(
+                                      alignment: Alignment.center,
                                       children: [
                                         Container(
-                                          margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
+                                          margin: const EdgeInsets.only(top: 0, left: 12, right: 12),
                                           alignment: Alignment.center,
-                                          height: 90,
-                                          width: 90,
+                                          height: 100,
+                                          width: 100,
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(50),
                                               image: DecorationImage(
@@ -1159,7 +1162,7 @@ class _PopularShopsState extends State<PopularShops> {
                                               color: const Color.fromRGBO(31, 196, 207, 1),
                                               borderRadius: BorderRadius.circular(6),
                                             ),
-                                            margin: const EdgeInsets.only(top: 80, left: 4),
+                                            margin: const EdgeInsets.only(bottom: 140, left: 0, right: 75),
                                             alignment: Alignment.center,
                                             child: const Text(
                                               "0·0·12",
@@ -1174,7 +1177,7 @@ class _PopularShopsState extends State<PopularShops> {
                                             color: Colors.black,
                                             borderRadius: BorderRadius.circular(6),
                                           ),
-                                          margin: const EdgeInsets.only(top: 105, left: 4),
+                                          margin: const EdgeInsets.only(bottom: 90, left: 0, right: 75),
                                           alignment: Alignment.center,
                                           child: Text(
                                             "${state.popularShops[index].bonus.toString()}% Б",
@@ -1183,7 +1186,8 @@ class _PopularShopsState extends State<PopularShops> {
                                           ),
                                         ),
                                         Container(
-                                          margin: const EdgeInsets.only(top: 130, left: 4),
+                                          margin:
+                                              EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.18, left: 4),
                                           alignment: Alignment.center,
                                           child: Text(state.popularShops[index].name ?? '',
                                               style: AppTextStyles.categoryTextStyle),

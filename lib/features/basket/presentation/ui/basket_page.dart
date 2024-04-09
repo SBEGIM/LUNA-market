@@ -134,15 +134,15 @@ class _BasketPageState extends State<BasketPage> {
           iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
           backgroundColor: Colors.white,
           elevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              // Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.kPrimaryColor,
-            ),
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     // Navigator.pop(context);
+          //   },
+          //   icon: const Icon(
+          //     Icons.arrow_back_ios,
+          //     color: AppColors.kPrimaryColor,
+          //   ),
+          // ),
           actions: [
             Padding(
                 padding: const EdgeInsets.only(right: 22.0),
@@ -260,7 +260,7 @@ class _BasketPageState extends State<BasketPage> {
                 children: [
                   Center(
                     child: Text(
-                      state.message,
+                      'Обновите данные',
                       style: const TextStyle(fontSize: 20.0, color: Colors.grey),
                     ),
                   ),
@@ -664,7 +664,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                 child: Text(
                                   widget.basketProducts.fulfillment != 'realFBS'
                                       ? 'Доставка: ${widget.basketProducts.deliveryDay} дня'
-                                      : 'Узнать срок доставки',
+                                      : 'Узнать срок и цену доставки',
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,

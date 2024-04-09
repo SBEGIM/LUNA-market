@@ -180,12 +180,17 @@ class _DoneMyOrdersPageState extends State<DoneMyOrdersPage> {
                                           return Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                state.basketEndOrderModel[index].product![i].productName.toString(),
-                                                style: const TextStyle(
-                                                    color: AppColors.kGray750,
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500),
+                                              SizedBox(
+                                                width: 160,
+                                                child: Text(
+                                                  state.basketEndOrderModel[index].product![i].productName.toString(),
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style: const TextStyle(
+                                                      color: AppColors.kGray750,
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w500),
+                                                ),
                                               ),
                                               Text(
                                                 'x' + state.basketEndOrderModel[index].product![i].count.toString(),

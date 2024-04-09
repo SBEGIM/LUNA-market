@@ -56,20 +56,25 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
           // color: Colors.red,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                height: 120,
-                width: 130,
-                padding: const EdgeInsets.only(top: 20.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 8, right: 8, top: 20),
                 child: Stack(
+                  alignment: Alignment.centerLeft,
                   children: [
-                    Image.network(
-                      widget.product.path!.isNotEmpty
-                          ? "http://185.116.193.73/storage/${widget.product.path!.first}"
-                          : '',
-                      errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
-                        height: 120,
-                        width: 130,
+                    SizedBox(
+                      height: 100,
+                      width: 100,
+                      child: Image.network(
+                        widget.product.path!.isNotEmpty
+                            ? "http://185.116.193.73/storage/${widget.product.path!.first}"
+                            : '',
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                          height: 100,
+                          width: 100,
+                        ),
                       ),
                     ),
                     Padding(
@@ -130,21 +135,24 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                   ],
                 ),
               ),
-              const SizedBox(
-                width: 10,
-              ),
               Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 213,
-                    padding: const EdgeInsets.only(right: 6),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.64,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          widget.product.name.toString(),
-                          style: const TextStyle(fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w600),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          child: Text(
+                            widget.product.name.toString(),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style:
+                                const TextStyle(fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w600),
+                          ),
                         ),
                         IconButton(
                             onPressed: () async {
@@ -264,7 +272,7 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
 
                   SizedBox(
                       height: 32,
-                      width: 202, //196
+                      width: MediaQuery.of(context).size.width * 0.63,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

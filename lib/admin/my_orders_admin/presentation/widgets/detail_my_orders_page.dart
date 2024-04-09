@@ -703,7 +703,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            if (postStatusFBS != '') {
+                            if (postStatusFBS != '' && statusFBS != 'in_process') {
                               BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(postStatusFBS,
                                   widget.basket.id.toString(), widget.basket.product!.first.id.toString(), 'fbs');
 
@@ -1168,7 +1168,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            if (postStatusRealFBS != '') {
+                            if (postStatusRealFBS != '' && statusRealFBS != 'in_process') {
                               BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(postStatusRealFBS,
                                   widget.basket.id.toString(), widget.basket.product!.first.id.toString(), 'realFBS');
 

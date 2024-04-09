@@ -45,7 +45,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
           icon: SvgPicture.asset('assets/icons/back_header.svg'),
         ),
         actions: [
-          Padding(padding: const EdgeInsets.only(right: 22.0), child: SvgPicture.asset('assets/icons/share.svg'))
+          // Padding(padding: const EdgeInsets.only(right: 22.0), child: SvgPicture.asset('assets/icons/share.svg'))
         ],
         titleSpacing: 0,
         // leadingWidth: 1,
@@ -133,7 +133,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3, childAspectRatio: 0.65, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                            crossAxisCount: 3, childAspectRatio: 0.75, crossAxisSpacing: 10, mainAxisSpacing: 10),
                         itemCount: state.cats.length,
                         itemBuilder: (context, index) {
                           return InkWell(
@@ -234,103 +234,90 @@ class CatalogListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: Color.fromARGB(15, 227, 9, 9),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Stack(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
-                alignment: Alignment.center,
-                height: 90,
-                width: 90,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2),
-                    image: DecorationImage(
-                        image: NetworkImage(
-                          "${url}",
-                        ),
-                        fit: BoxFit.contain,
-                        onError: (exception, stackTrace) => const ErrorImageWidget(
-                              height: 90,
-                              width: 90,
-                            )),
-                    color: const Color(0xFFF0F5F5)),
-                // child: Image.network(
-                //   "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
-                //   width: 70,
-                // ),
-              ),
-              // Container(
-              //   height: 154,
-              //   width: 108,
-              //   decoration: BoxDecoration(
-              //       borderRadius: BorderRadius.circular(8),
-              //       image: DecorationImage(
-              //         image: NetworkImage(
-              //             "http://80.87.202.73:8001/storage/${layout!.image!}"),
-              //         fit: BoxFit.cover,
-              //       )),
-
-              //   // child: CircleAvatar(),
-              // ),
-              if (credit == 1)
-                Container(
-                  width: 46,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    color: const Color.fromRGBO(31, 196, 207, 1),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  margin: const EdgeInsets.only(top: 80, left: 4),
-                  alignment: Alignment.center,
-                  child: const Text(
-                    "0·0·12",
-                    style: AppTextStyles.bannerTextStyle,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              // Container(
-              //   width: 46,
-              //   height: 22,
-              //   decoration: BoxDecoration(
-              //     color: Colors.black,
-              //     borderRadius: BorderRadius.circular(6),
-              //   ),
-              //   margin: const EdgeInsets.only(top: 105, left: 4),
-              //   alignment: Alignment.center,
-              //   child: Text(
-              //     "${layout!.bonus.toString()}% Б",
-              //     style: AppTextStyles.bannerTextStyle,
-              //     textAlign: TextAlign.center,
-              //   ),
-              // ),
-              Container(
-                margin: const EdgeInsets.only(top: 130, left: 4),
-                alignment: Alignment.center,
-                child: Text(
-                  title,
-                  style: AppTextStyles.categoryTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
+          Container(
+            margin: const EdgeInsets.only(top: 10),
+            alignment: Alignment.center,
+            height: 90,
+            width: 90,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(2),
+                image: DecorationImage(
+                    image: NetworkImage(
+                      "${url}",
+                    ),
+                    fit: BoxFit.fill,
+                    onError: (exception, stackTrace) => const ErrorImageWidget(
+                          height: 90,
+                          width: 90,
+                        )),
+                color: const Color(0xFFF0F5F5)),
+            // child: Image.network(
+            //   "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
+            //   width: 70,
+            // ),
           ),
+          // Container(
+          //   height: 154,
+          //   width: 108,
+          //   decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(8),
+          //       image: DecorationImage(
+          //         image: NetworkImage(
+          //             "http://80.87.202.73:8001/storage/${layout!.image!}"),
+          //         fit: BoxFit.cover,
+          //       )),
 
-          // Center(
-          //   child: Image.asset(
-          //
+          //   // child: CircleAvatar(),
+          // ),
+          // if (credit == 1)
+          //   Container(
+          //     width: 46,
+          //     height: 22,
+          //     decoration: BoxDecoration(
+          //       color: const Color.fromRGBO(31, 196, 207, 1),
+          //       borderRadius: BorderRadius.circular(6),
+          //     ),
+          //     margin: const EdgeInsets.only(top: 10, left: 4),
+          //     alignment: Alignment.center,
+          //     child: const Text(
+          //       "0·0·12",
+          //       style: AppTextStyles.bannerTextStyle,
+          //       textAlign: TextAlign.center,
+          //     ),
+          //   ),
+          // Container(
+          //   width: 46,
+          //   height: 22,
+          //   decoration: BoxDecoration(
+          //     color: Colors.black,
+          //     borderRadius: BorderRadius.circular(6),
+          //   ),
+          //   margin: const EdgeInsets.only(top: 105, left: 4),
+          //   alignment: Alignment.center,
+          //   child: Text(
+          //     "${layout!.bonus.toString()}% Б",
+          //     style: AppTextStyles.bannerTextStyle,
+          //     textAlign: TextAlign.center,
           //   ),
           // ),
-          // const SizedBox(
-          //   height: 8,
-          // ),
-          // Flexible(
-          //     child:
+          Container(
+            margin: const EdgeInsets.only(top: 5, left: 4),
+            alignment: Alignment.center,
+            child: Text(
+              title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.categoryTextStyle,
+              textAlign: TextAlign.center,
+            ),
+          ),
         ],
       ),
     );

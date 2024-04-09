@@ -126,7 +126,6 @@ class ProductApi {
             rating = true;
             break;
           default:
-            print("число не равно 1, 2, 3");
         }
       }
     });

@@ -21,7 +21,7 @@ class BasketCubit extends Cubit<BasketState> {
         Get.snackbar('Ошибка', 'Товар не добавлен', backgroundColor: Colors.redAccent);
       }
       if (data == 200) {
-        await basketShowWithoutLoading(fulfillment!);
+        await basketShowWithoutLoading(fulfillment ?? 'fbs');
       }
     } catch (e) {
       log(e.toString());
@@ -36,7 +36,7 @@ class BasketCubit extends Cubit<BasketState> {
         Get.snackbar('Ошибка', 'Товар не убрань', backgroundColor: Colors.redAccent);
       }
       if (data == 200) {
-        await basketShowWithoutLoading(fulfillment);
+        await basketShowWithoutLoading(fulfillment ?? 'fbs');
       }
     } catch (e) {
       log(e.toString());
@@ -51,7 +51,7 @@ class BasketCubit extends Cubit<BasketState> {
         Get.snackbar('Ошибка', 'Товар не удален', backgroundColor: Colors.redAccent);
       }
       if (data == 200) {
-        await basketShowWithoutLoading(fulfillment);
+        await basketShowWithoutLoading(fulfillment ?? 'fbs');
       }
     } catch (e) {
       log(e.toString());

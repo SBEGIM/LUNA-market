@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:haji_market/admin/auth/presentation/ui/auth_admin_page.dart';
 import 'package:haji_market/admin/auth/presentation/ui/change_password.dart';
+import 'package:haji_market/admin/auth/presentation/ui/forgot_admin_password.dart';
 import 'package:haji_market/admin/auth/presentation/ui/register_shop_page.dart';
 import 'package:haji_market/admin/auth/presentation/ui/admin_auth_page.dart';
 import 'package:haji_market/admin/chat/presentation/chat_admin_page.dart';
@@ -115,6 +116,8 @@ class AppRouter extends _$AppRouter {
         ///Auth Routes
         AutoRoute(page: AuthAdminRoute.page),
         AutoRoute(page: AdminAuthRoute.page),
+        AutoRoute(page: ForgotPasswordAdminRoute.page),
+
         AutoRoute(page: ChangePasswordAdminRoute.page),
         AutoRoute(page: ForgotPasswordBLoggerRoute.page),
         AutoRoute(page: RegisterShopRoute.page),

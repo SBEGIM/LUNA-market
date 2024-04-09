@@ -30,8 +30,13 @@ class ProfileEditAdminCubit extends Cubit<ProfileEditAdminState> {
   ) async {
     try {
       //  emit(LoadingState());
-      await profileEditAdminRepository.edit(name, phone, logo, password_new, password_old, country, city, home, street,
-          shopName, iin, check, email, card, typeOrganization, address);
+      String repPhone = '';
+      if (phone != null) {
+        String subPhone = phone.substring(2);
+        repPhone = subPhone.replaceAll(RegExp('[^0-9]'), '');
+      }
+      await profileEditAdminRepository.edit(name, repPhone, logo, password_new, password_old, country, city, home,
+          street, shopName, iin, check, email, card, typeOrganization, address);
 
       // if (data != null) {
       //  emit(LoadedState(loadedProfile: data));

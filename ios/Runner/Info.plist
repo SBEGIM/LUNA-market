@@ -25,13 +25,15 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleIdentifier</key>
+			<string></string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>8XHSD5YR87.com.example.hajiMarket</string>
+			<string>W9W892FKAR.com.example.hajiMarket</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>lunamarket.info</string>
+				<string>lunamarket.ru</string>
 			</array>
 		</dict>
 	</array>
@@ -41,6 +43,12 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Приложению требуется доступ к камере, для публикации фото в ваш аватар</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>YES</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>YES</string>
+	<key>NSMotionUsageDescription</key>
+	<string>YES</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Приложению требуется доступ к камере, для публикации фото и сканеру</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -69,11 +77,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>YES</string>
-	<key>NSMotionUsageDescription</key>
-	<string>YES</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>YES</string>
 </dict>
 </plist>
