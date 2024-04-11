@@ -1124,10 +1124,10 @@ class _PopularShopsState extends State<PopularShops> {
                                         Container(
                                           margin: const EdgeInsets.only(top: 0, left: 12, right: 12),
                                           alignment: Alignment.center,
-                                          height: 100,
-                                          width: 100,
+                                          height: MediaQuery.of(context).size.height * 0.10,
+                                          width: MediaQuery.of(context).size.height * 0.10,
                                           decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(50),
+                                              borderRadius: BorderRadius.circular(100),
                                               image: DecorationImage(
                                                   image: state.popularShops[index].image != null
                                                       ? NetworkImage(
