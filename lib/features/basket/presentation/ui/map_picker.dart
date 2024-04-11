@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,29 +11,32 @@ import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/basket/data/DTO/cdek_office_model.dart';
 import 'package:haji_market/features/basket/data/DTO/map_geo.dart';
 import 'package:haji_market/features/basket/data/bloc/cdek_office_cubit.dart';
 import 'package:haji_market/features/basket/data/bloc/cdek_office_state.dart';
+import 'package:haji_market/features/basket/presentation/ui/basket_order_page.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import 'package:http/http.dart' as http;
 
-class Mapp extends StatefulWidget {
+@RoutePage()
+class MapPickerPage extends StatefulWidget {
   final MapGeo? mapGeo;
-  const Mapp({
-    Key? key,
-    this.mapGeo,
-  }) : super(key: key);
+  final int? cc;
+  final double? lat;
+  final double? long;
+  const MapPickerPage({Key? key, this.mapGeo, this.cc, this.lat, this.long}) : super(key: key);
 
   @override
-  _MappState createState() => _MappState();
+  State<MapPickerPage> createState() => _MapPickerPageState();
 }
 
-class _MappState extends State<Mapp> {
+class _MapPickerPageState extends State<MapPickerPage> {
   YandexMapController? controller;
   bool isNightModeEnabled = false;
 
-  Point _point = const Point(longitude: 76.945626, latitude: 43.237161);
+  Point? _point;
   Uint8List? asd;
   String? place;
   List<MapObject> MapObjects = [];
@@ -40,8 +44,9 @@ class _MappState extends State<Mapp> {
   @override
   void initState() {
     super.initState();
+    _point = Point(longitude: widget.long!, latitude: widget.lat!);
 
-    BlocProvider.of<CdekOfficeCubit>(context).cdek();
+    BlocProvider.of<CdekOfficeCubit>(context).cdek(widget.cc ?? 0);
   }
 
   @override
@@ -54,17 +59,12 @@ class _MappState extends State<Mapp> {
     for (int i = 0; i < data.length; i++) {
       MapObjects.add(PlacemarkMapObject(
         mapId: MapObjectId('placeMark $i'),
-        point: Point(
-            latitude: data[i].location!.latitude!,
-            longitude: data[i].location!.longitude!),
+        point: Point(latitude: data[i].location!.latitude!, longitude: data[i].location!.longitude!),
         icon: PlacemarkIcon.single(
-          PlacemarkIconStyle(
-              image: BitmapDescriptor.fromAssetImage('assets/icons/place.png'),
-              scale: 2),
+          PlacemarkIconStyle(image: BitmapDescriptor.fromAssetImage('assets/icons/place.png'), scale: 2),
         ),
         onTap: ((mapObject, point) {
-          Get.snackbar(data[i].name!, data[i].addressComment!,
-              backgroundColor: Colors.blueAccent);
+          Get.snackbar(data[i].name!, data[i].addressComment!, backgroundColor: Colors.blueAccent);
           //[i].name!;
           place = data[i].location!.addressFull!;
         }),
@@ -79,8 +79,7 @@ class _MappState extends State<Mapp> {
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         title: const Text(
           'Способ доставки',
-          style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
         ),
         backgroundColor: Colors.white,
       ),
@@ -103,12 +102,10 @@ class _MappState extends State<Mapp> {
             return Stack(
               children: <Widget>[
                 YandexMap(
-                  onMapCreated:
-                      (YandexMapController yandexMapController) async {
+                  onMapCreated: (YandexMapController yandexMapController) async {
                     controller = yandexMapController;
                     controller!.moveCamera(
-                      CameraUpdate.newCameraPosition(
-                          CameraPosition(target: _point, zoom: 14)),
+                      CameraUpdate.newCameraPosition(CameraPosition(target: _point!, zoom: 14)),
                       animation: const MapAnimation(duration: 3.0),
                     );
                   },
@@ -195,20 +192,16 @@ class _MappState extends State<Mapp> {
                     onTap: () async {
                       try {
                         final loc = await Geolocator.getCurrentPosition();
-                        final _myPoint = Point(
-                            latitude: loc.latitude, longitude: loc.longitude);
+                        final _myPoint = Point(latitude: loc.latitude, longitude: loc.longitude);
 
                         controller!.moveCamera(
-                          CameraUpdate.newCameraPosition(
-                              CameraPosition(target: _myPoint, zoom: 6)),
+                          CameraUpdate.newCameraPosition(CameraPosition(target: _myPoint, zoom: 6)),
                           animation: const MapAnimation(duration: 2.0),
                         );
 
                         //  controller!.move(point: _myPoint);
                       } catch (exception) {
-                        Get.snackbar(
-                            'Ошибка ', 'Не удалось найти местоположение',
-                            backgroundColor: Colors.red);
+                        Get.snackbar('Ошибка ', 'Не удалось найти местоположение', backgroundColor: Colors.red);
                       }
                     },
                     child: Container(
@@ -252,15 +245,19 @@ class _MappState extends State<Mapp> {
           //   long: controller!.placemarks[0].point.longitude,
           // );
 
-          Get.back(result: place);
+          Get.to(BasketOrderPage(
+            fbs: true,
+            fulfillment: 'fbs',
+          ));
+
+          // context.router.push(BasketOrderRoute(fbs: true, address: place, fulfillment: 'fbs'));
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Colors.white),
         ),
         child: Container(
           height: 48,
-          margin:
-              EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 40),
+          margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 40),
           decoration: BoxDecoration(
             color: AppColors.kPrimaryColor,
             border: Border.all(color: Colors.grey),

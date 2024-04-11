@@ -1,19 +1,25 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/custom_cupertino_action_sheet.dart';
+import 'package:haji_market/features/basket/presentation/ui/basket_order_address_page.dart';
+import 'package:haji_market/features/basket/presentation/ui/map_picker.dart';
 import 'package:haji_market/features/drawer/data/bloc/city_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/city_state.dart';
 import '../../../../admin/profile_admin/data/bloc/profile_edit_admin_cubit.dart';
 import '../../../../core/common/constants.dart';
 import '../../../auth/data/bloc/login_cubit.dart';
 
-Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
+Future<dynamic> showAlertCityBasketWidget(BuildContext context, bool shop) async {
   int? city;
   int? cityCode;
+  double? lat;
+  double? long;
   TextEditingController controller = TextEditingController();
 
   return showCupertinoModalPopup(
@@ -61,6 +67,8 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                                   onTap: () {
                                     city = index;
                                     cityCode = state.city[index].code as int;
+                                    lat = state.city[index].lat;
+                                    long = state.city[index].long;
                                     setState(() {});
                                   },
                                   child: Row(
@@ -165,15 +173,34 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
           onPressed: () async {
             // city != null ? GetStorage().write('country', country) : null;
             // Get.back();
-            if (!shop) {
-              final edit = BlocProvider.of<LoginCubit>(context);
-              await edit.cityCode(cityCode);
-            } else {
-              await BlocProvider.of<ProfileEditAdminCubit>(context).cityCode(cityCode);
+            // if (!shop) {
+            //   final edit = BlocProvider.of<LoginCubit>(context);
+            //   await edit.cityCode(cityCode);
+            // } else {
+            //   await BlocProvider.of<ProfileEditAdminCubit>(context).cityCode(cityCode);
+            // }
+
+            final data = await Get.to(() => MapPickerPage(
+                  cc: cityCode,
+                  lat: lat,
+                  long: long,
+                ));
+
+            GetStorage().write('cc', data);
+
+            //  Get.back(result: place);
+
+            // Get.back();
+
+            if (data != null) {
+              context.router.push(BasketOrderAddressRoute(fulfillment: 'fbs', office: data));
+
+              // Get.to(() => BasketOrderAddressPage(
+              //       office: data,
+              //       fulfillment: 'fbs',
+              //     ));
             }
 
-            Get.back();
-            // Get.to(() => new BasketOrderAddressPage());
             // callBack?.call();
           },
         ),

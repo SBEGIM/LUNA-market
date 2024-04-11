@@ -275,7 +275,7 @@ class _ProductsPageState extends State<ProductsPage> {
                           if (state is LoadedState) {
                             return state.productModel.isNotEmpty
                                 ? SizedBox(
-                                    height: 260,
+                                    height: MediaQuery.of(context).size.height * 0.31,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       // shrinkWrap: true,

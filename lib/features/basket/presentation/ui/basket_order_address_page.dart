@@ -4,7 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
+import 'package:haji_market/features/basket/presentation/widgets/show_alert_country_basket_widget.dart';
+import 'package:haji_market/features/basket/presentation/widgets/show_alert_country_widget.dart';
 import 'package:haji_market/features/drawer/data/bloc/address_cubit.dart';
+import 'package:haji_market/features/drawer/data/bloc/country_cubit.dart' as countryCubit;
 import '../../../../core/common/constants.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
 import '../../../chat/presentation/message.dart';
@@ -17,8 +20,9 @@ import 'map_picker.dart';
 class BasketOrderAddressPage extends StatefulWidget {
   final String fulfillment;
   final String? deleveryDay;
+  final String? office;
 
-  const BasketOrderAddressPage({required this.fulfillment, this.deleveryDay, Key? key}) : super(key: key);
+  const BasketOrderAddressPage({required this.fulfillment, this.deleveryDay, this.office, Key? key}) : super(key: key);
 
   @override
   _BasketOrderAddressPageState createState() => _BasketOrderAddressPageState();
@@ -43,6 +47,10 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
   void initState() {
     getAddress();
     fulfillment = widget.fulfillment;
+
+    if (widget.office != null) {
+      office = widget.office;
+    }
     super.initState();
   }
 
@@ -376,8 +384,14 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                       const SizedBox(height: 8),
                                       GestureDetector(
                                         onTap: () async {
-                                          final data = await Get.to(() => const Mapp());
-                                          office = data;
+                                          //  final data = await Get.to(() => const Mapp());
+                                          // final data = '';
+                                          Future.wait([BlocProvider.of<countryCubit.CountryCubit>(context).country()]);
+                                          showAlertCountryBasketWidget(context, () {
+                                            // context.router.pop();
+                                            // setState(() {});
+                                          }, true);
+                                          // office = data;
                                           setState(() {});
                                         },
                                         child: const Text(

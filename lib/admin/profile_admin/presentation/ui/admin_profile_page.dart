@@ -167,7 +167,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                                 style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
                               ),
                               const Text(
-                                'Подписчиков',
+                                'Товаров',
                                 style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
                               ),
                             ],

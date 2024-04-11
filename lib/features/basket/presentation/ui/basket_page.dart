@@ -376,7 +376,8 @@ class _BasketPageState extends State<BasketPage> {
 
                               if (state is productAdState.LoadedState) {
                                 return SizedBox(
-                                    height: 286,
+                                    height: MediaQuery.of(context).size.height * 0.29,
+                                    // width: MediaQuery.of(context).size.height * 0.20,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       itemCount: state.productModel.length,

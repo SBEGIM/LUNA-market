@@ -8,22 +8,20 @@ const baseUrl = 'http://185.116.193.73/api';
 class CdekOfficeRepository {
   final CdekOfficeApi _cdekOfficeApi = CdekOfficeApi();
 
-  Future<List<CdekOfficeModel>> cdekOffice() => _cdekOfficeApi.cdekOffice();
+  Future<List<CdekOfficeModel>> cdekOffice(int cc) => _cdekOfficeApi.cdekOffice(cc);
 }
 
 class CdekOfficeApi {
   final _box = GetStorage();
 
-  Future<List<CdekOfficeModel>> cdekOffice() async {
+  Future<List<CdekOfficeModel>> cdekOffice(int cc) async {
     final String? token = _box.read('token');
 
-    final response = await http.get(Uri.parse('$baseUrl/basket/cdek/office'),
-        headers: {"Authorization": "Bearer $token"});
+    final response =
+        await http.get(Uri.parse('$baseUrl/basket/cdek/office?cc=$cc'), headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);
 
-    return (data['data'] as List)
-        .map((e) => CdekOfficeModel.fromJson(e))
-        .toList();
+    return (data['data'] as List).map((e) => CdekOfficeModel.fromJson(e)).toList();
   }
 }

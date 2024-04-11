@@ -139,7 +139,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
             mainAxisSize: MainAxisSize.max,
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.63,
+                width: MediaQuery.of(context).size.width * 0.60,
                 height: 40,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -273,7 +273,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
               ),
               SizedBox(
                 height: 32,
-                width: MediaQuery.of(context).size.width * 0.63,
+                width: MediaQuery.of(context).size.width * 0.60,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

@@ -68,7 +68,7 @@ class _BaseAdminNewState extends State<BaseAdminNew> with TickerProviderStateMix
 
               if (!exists && (index != 1)) {
                 // Get.showSnackbar(
-                Get.closeCurrentSnackbar();
+                // Get.closeCurrentSnackbar();
                 Get.snackbar(
                   'СДЕК магазин',
                   city != null ? 'Ваш город $city?' : 'Ваш город неизвестен для cрока доставки!',

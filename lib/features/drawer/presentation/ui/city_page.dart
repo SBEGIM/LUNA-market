@@ -34,11 +34,8 @@ class _CityPageState extends State<CityPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text(
-          'Выберите город',
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 16,
-              fontWeight: FontWeight.w500),
+          'Населенный пункт',
+          style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
         ),
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
@@ -64,8 +61,7 @@ class _CityPageState extends State<CityPage> {
                     color: Colors.white,
                     child: ListView.separated(
                         shrinkWrap: true,
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
+                        separatorBuilder: (BuildContext context, int index) => const Divider(),
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: state.city.length,
                         itemBuilder: (BuildContext context, int index) {
@@ -75,8 +71,7 @@ class _CityPageState extends State<CityPage> {
                                 // устанавливаем индекс выделенного элемента
                                 _selectedIndex = index;
                                 city = state.city[index].name;
-                                GetStorage().write('user_city_id',
-                                    state.city[index].id.toString());
+                                GetStorage().write('user_city_id', state.city[index].id.toString());
                               });
                             },
                             child: SizedBox(
@@ -86,14 +81,11 @@ class _CityPageState extends State<CityPage> {
                                 leading: Text(
                                   "${state.city[index].name}",
                                   style: const TextStyle(
-                                      color: AppColors.kGray900,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
+                                      color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
                                 ),
 
                                 trailing: _selectedIndex == index
-                                    ? SvgPicture.asset(
-                                        'assets/icons/check_circle.svg')
+                                    ? SvgPicture.asset('assets/icons/check_circle.svg')
                                     : const SizedBox(),
 
                                 // title: Text("List item $index"));
@@ -110,21 +102,15 @@ class _CityPageState extends State<CityPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Container(
-                            margin: EdgeInsets.only(top: 146),
-                            child: Image.asset('assets/icons/no_data.png')),
+                        Container(margin: EdgeInsets.only(top: 146), child: Image.asset('assets/icons/no_data.png')),
                         const Text(
                           'Для этой страны не добавлены города',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w600),
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                           textAlign: TextAlign.center,
                         ),
                         const Text(
                           'В ближайшие время мы обновим список городов',
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff717171)),
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Color(0xff717171)),
                           textAlign: TextAlign.center,
                         )
                       ],

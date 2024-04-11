@@ -23,7 +23,7 @@ class CityCubit extends Cubit<CityState> {
         emit(LoadedState(data));
       }
     } catch (e) {
-      log(e.toString());
+      log("---- ${e.toString()}");
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
@@ -40,7 +40,7 @@ class CityCubit extends Cubit<CityState> {
         emit(LoadedState(data));
       }
     } catch (e) {
-      log(e.toString());
+      log("---!- ${e.toString()}");
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }

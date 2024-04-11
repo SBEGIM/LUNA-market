@@ -252,10 +252,10 @@ class _HomePageState extends State<HomePage> {
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: state.productModel.length >= 2 ? 2 : 1,
-                                      childAspectRatio: 1.6,
-                                      crossAxisSpacing: 20,
-                                      mainAxisSpacing: 2),
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 1.55,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 0),
                                   itemCount: state.productModel.length >= 8 ? 8 : state.productModel.length,
                                   itemBuilder: (BuildContext ctx, index) {
                                     return GestureDetector(

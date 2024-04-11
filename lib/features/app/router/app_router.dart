@@ -22,9 +22,11 @@ import 'package:haji_market/bloger/shops/BlogShopsPage.dart';
 import 'package:haji_market/bloger/tape/presentation/ui/tape_blogger_page.dart';
 import 'package:haji_market/features/auth/presentation/ui/change_password.dart';
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
+import 'package:haji_market/features/basket/data/DTO/map_geo.dart';
 import 'package:haji_market/features/basket/presentation/ui/basket_order_address_page.dart';
 import 'package:haji_market/features/basket/presentation/ui/basket_order_page.dart';
 import 'package:haji_market/features/basket/presentation/ui/basket_page.dart';
+import 'package:haji_market/features/basket/presentation/ui/map_picker.dart';
 import 'package:haji_market/features/basket/presentation/widgets/payment_webview_widget.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:haji_market/features/drawer/presentation/ui/catalog_page.dart';
@@ -102,6 +104,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: PaymentWebviewRoute.page),
         AutoRoute(page: BasketOrderAddressRoute.page),
         AutoRoute(page: BasketOrderRoute.page),
+        AutoRoute(page: MapPickerRoute.page),
 
         ///Home Routes
         AutoRoute(page: ShopsRoute.page),

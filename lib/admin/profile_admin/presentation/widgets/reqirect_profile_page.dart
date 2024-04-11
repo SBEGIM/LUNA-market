@@ -71,7 +71,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     }
 
     if (_box.read('seller_country') != null && _box.read('seller_country') != 'null') {
-      cityController.text = _box.read('seller_country') ?? '55';
+      countryController.text = _box.read('seller_country') ?? '55';
     }
 
     if (_box.read('seller_city') != null && _box.read('seller_city') != 'null') {
@@ -467,17 +467,17 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           // ),
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.center,
-                        height: 42,
-                        color: const Color(
-                          0xff1DC4CF,
-                        ).withOpacity(0.1),
-                        child: const Text(
-                          'Ваши товары будут показаны для этого города или региона *',
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.black),
-                        ),
-                      ),
+                      // Container(
+                      //   alignment: Alignment.center,
+                      //   height: 42,
+                      //   color: const Color(
+                      //     0xff1DC4CF,
+                      //   ).withOpacity(0.1),
+                      //   child: const Text(
+                      //     'Ваши товары будут показаны для этого города или региона *',
+                      //     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.black),
+                      //   ),
+                      // ),
                       ListTile(
                         horizontalTitleGap: 10,
                         leading: SvgPicture.asset(

@@ -10,10 +10,10 @@ class CdekOfficeCubit extends Cubit<CdekOfficeState> {
 
   CdekOfficeCubit({required this.cdekRepository}) : super(InitState());
 
-  Future<void> cdek() async {
+  Future<void> cdek(int cc) async {
     try {
       emit(LoadingState());
-      final List<CdekOfficeModel> data = await cdekRepository.cdekOffice();
+      final List<CdekOfficeModel> data = await cdekRepository.cdekOffice(cc);
 
       emit(LoadedState(data));
     } catch (e) {

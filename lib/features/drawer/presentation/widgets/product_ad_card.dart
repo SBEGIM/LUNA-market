@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
@@ -41,9 +42,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 155,
-      height: 250,
-      margin: const EdgeInsets.only(right: 8.0, top: 10, left: 8.0),
+      margin: const EdgeInsets.only(right: 16.0),
       decoration: BoxDecoration(color: const Color.fromRGBO(250, 250, 250, 1), borderRadius: BorderRadius.circular(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,16 +51,12 @@ class _ProductAdCardState extends State<ProductAdCard> {
             children: [
               Container(
                 padding: const EdgeInsets.all(4),
-                height: 160,
-                width: 144,
-                alignment: Alignment.center,
+                height: MediaQuery.of(context).size.height * 0.18,
+                width: MediaQuery.of(context).size.width * 0.28,
                 child: Image.network(
                   widget.product.path!.isNotEmpty ? "http://185.116.193.73/storage/${widget.product.path!.first}" : '',
-                  fit: BoxFit.cover,
-                  height: 160,
-                  width: 160,
-                  errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(height: 160, width: 160),
-                  //alignment: Alignment.center,
+                  alignment: Alignment.center,
+                  errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(),
                 ),
               ),
               Padding(
@@ -70,7 +65,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 144,
+                      width: 160,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -121,38 +116,27 @@ class _ProductAdCardState extends State<ProductAdCard> {
                     widget.product.point != 0
                         ? Container(
                             decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(4)),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
+                            child: const Padding(
+                              padding: EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
                               child: Text(
-                                '${widget.product.point}% Б',
+                                '10% Б',
                                 textAlign: TextAlign.center,
-                                style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                               ),
                             ),
                           )
                         : const SizedBox(),
                     widget.product.point != 0 ? const SizedBox(height: 66) : const SizedBox(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        widget.product.compound != 0
-                            ? Container(
-                                decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(6)),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
-                                  child: Text(
-                                    '-${widget.product.compound}%',
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
-                                  ),
-                                ),
-                              )
-                            : const SizedBox(),
-                        const SizedBox(
-                          width: 40,
+                    Container(
+                      decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(6)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
+                        child: Text(
+                          '-${widget.product.compound}%',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
@@ -170,19 +154,54 @@ class _ProductAdCardState extends State<ProductAdCard> {
                   style: const TextStyle(fontSize: 14, color: AppColors.kGray900, fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(
-                  height: 14,
+                  height: 8,
                 ),
-                (widget.product.compound != 0 && widget.product.compound != null)
+                GestureDetector(
+                  onTap: () async {
+                    await showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      isDismissible: true,
+                      builder: (context) {
+                        return AdvertBottomSheet(
+                            description:
+                                "${widget.product.shop?.typeOrganization ?? 'ИП'}: ${widget.product.shop!.userName}");
+                      },
+                    );
+                  },
+                  child: Container(
+                    decoration:
+                        const BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.all(Radius.circular(4))),
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
+                      child: Text(
+                        'РЕКЛАМА',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                (widget.product.compound != 0 || widget.product.compound != null)
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            '${widget.product.price!.toInt() - (widget.product.price! / 100 * widget.product.compound!.toInt()).toInt()} ₽ ',
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                fontSize: 12, color: Color.fromRGBO(255, 50, 72, 1), fontWeight: FontWeight.w700),
+                          SizedBox(
+                            width: 75,
+                            child: Text(
+                              '${(widget.product.price?.toInt() ?? 0) - (widget.product.price! / 100 * widget.product.compound!).toInt()} ₽',
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 12, color: Color.fromRGBO(255, 50, 72, 1), fontWeight: FontWeight.w700),
+                            ),
                           ),
-                          const SizedBox(width: 10),
                           Text(
                             '${widget.product.price} ₽',
                             overflow: TextOverflow.ellipsis,
@@ -201,60 +220,31 @@ class _ProductAdCardState extends State<ProductAdCard> {
                         style: const TextStyle(fontSize: 12, color: Color(0xFF19191A), fontWeight: FontWeight.w700),
                       ),
                 const SizedBox(
-                  height: 12,
+                  height: 4,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      padding: const EdgeInsets.only(left: 4, right: 4, top: 4, bottom: 4),
-                      margin: const EdgeInsets.only(right: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
                       decoration:
-                          const BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Text(
-                        '${((widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100.toInt() / 3).round()}',
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 10, color: Color(0xFF19191A), fontWeight: FontWeight.w500),
+                          BoxDecoration(color: Colors.grey.withOpacity(0.2), borderRadius: BorderRadius.circular(6)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 4, right: 4, top: 4, bottom: 4),
+                        child: Text(
+                          '${((widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100.toInt() / 3).round()}',
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 10, color: Color(0xFF19191A), fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ),
-                    // const SizedBox(
-                    //   width: 4,
-                    // ),
+                    const SizedBox(
+                      width: 4,
+                    ),
                     const Text(
                       'х3',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 14, color: AppColors.kGray300, fontWeight: FontWeight.w400),
-                    ),
-                    const SizedBox(width: 10),
-                    GestureDetector(
-                      onTap: () async {
-                        await showModalBottomSheet(
-                          context: context,
-                          backgroundColor: Colors.transparent,
-                          isScrollControlled: true,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          isDismissible: true,
-                          builder: (context) {
-                            return AdvertBottomSheet(
-                                description:
-                                    "${widget.product.shop?.typeOrganization ?? 'ИП'}: ${widget.product.shop!.userName}");
-                          },
-                        );
-                      },
-                      child: Container(
-                        decoration:
-                            BoxDecoration(color: Colors.grey.withOpacity(0.2), borderRadius: BorderRadius.circular(6)),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
-                          child: Text(
-                            'РЕКЛАМА',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      ),
                     ),
                   ],
                 ),

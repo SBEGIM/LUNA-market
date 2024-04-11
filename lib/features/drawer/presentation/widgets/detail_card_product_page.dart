@@ -2132,6 +2132,15 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         //       cats: Cats(id: 0, name: ''),
                         //     ));
                       } else if (index == 2) {
+                        GetStorage().write('CatId', widget.product.catId ?? 0);
+                        GetStorage().write('catId', widget.product.catId ?? 0);
+
+                        GetStorage().write(
+                            'subCatFilterId',
+                            [
+                              widget.product.catId,
+                            ].toString());
+                        GetStorage().remove('shopFilterId');
                         context.router.push(ProductsRoute(
                           cats: Cats(id: widget.product.catId, name: widget.product.catName),
                         ));

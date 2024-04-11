@@ -60,11 +60,33 @@ class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
                     width: _controller!.value.size.width,
                     child: AspectRatio(
                       aspectRatio: _controller!.value.aspectRatio,
-                      child: VideoPlayer(_controller!),
+                      child: Opacity(opacity: widget.tape.isDelete == true ? 0.3 : 1, child: VideoPlayer(_controller!)),
                     ),
                   )),
             ),
           ),
+          widget.tape.isDelete == true
+              ? const Positioned(
+                  top: 150,
+                  left: 0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.close_outlined),
+                      SizedBox(
+                        height: 25,
+                        child: Text(
+                          'Товар удален продавцом',
+                          maxLines: 2,
+                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: Colors.black),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              : const SizedBox(),
           InkWell(
             onTap: () {
               context.router

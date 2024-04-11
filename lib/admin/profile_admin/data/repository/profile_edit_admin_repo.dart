@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:get/route_manager.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/profile_admin/data/model/profile_statics_admin_model.dart';
 import 'package:http/http.dart' as http;
@@ -57,6 +59,10 @@ class ProfileEditAdminToApi {
     // seller_name = _box.read('seller_name').toString();
     final token = _box.read('seller_token').toString();
 
+    print('token ${token}');
+
+    print('qweqweq');
+
     final body = {
       'token': token,
       'new_name': shopName ?? '',
@@ -94,7 +100,11 @@ class ProfileEditAdminToApi {
     final http.StreamedResponse response = await request.send();
     final respStr = await response.stream.bytesToString();
     if (response.statusCode == 400) {
-      Get.snackbar('Ошибка', 'Номер или Телефон занято');
+      print('ww');
+
+      Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль', backgroundColor: Colors.redAccent);
+      // Get.snackbar('title', 'message', backgroundColor: Colors.redAccent);
+      return;
     }
     final jsonResponse = jsonDecode(respStr);
     final data = jsonResponse;

@@ -113,23 +113,21 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
                     // children: const [],
                     itemBuilder: (context, index) {
                       return Shimmer(
-                        duration: const Duration(seconds: 3), //Default value
-                        interval: const Duration(microseconds: 1), //Default value: Duration(seconds: 0)
-                        color: Colors.white, //Default value
-                        colorOpacity: 0, //Default value
-                        enabled: true, //Default value
-                        direction: const ShimmerDirection.fromLTRB(), //Default Value
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.grey.withOpacity(0.6),
-                          ),
-                          child: BloggerTapeCardWidget(
-                            tape: state.tapeModel[index],
-                            index: index,
-                          ),
-                        ),
-                      );
+                          duration: const Duration(seconds: 3), //Default value
+                          interval: const Duration(microseconds: 1), //Default value: Duration(seconds: 0)
+                          color: Colors.white, //Default value
+                          colorOpacity: 0, //Default value
+                          enabled: true, //Default value
+                          direction: const ShimmerDirection.fromLTRB(), //Default Value
+                          child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.grey.withOpacity(0.6),
+                              ),
+                              child: BloggerTapeCardWidget(
+                                tape: state.tapeModel[index],
+                                index: index,
+                              )));
                     },
                   ),
                 );

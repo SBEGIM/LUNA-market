@@ -50,6 +50,7 @@ abstract class _$AppRouter extends RootStackRouter {
         child: BasketOrderAddressPage(
           fulfillment: args.fulfillment,
           deleveryDay: args.deleveryDay,
+          office: args.office,
           key: args.key,
         ),
       );
@@ -231,6 +232,19 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const LauncherApp(),
+      );
+    },
+    MapPickerRoute.name: (routeData) {
+      final args = routeData.argsAs<MapPickerRouteArgs>(orElse: () => const MapPickerRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: MapPickerPage(
+          key: args.key,
+          mapGeo: args.mapGeo,
+          cc: args.cc,
+          lat: args.lat,
+          long: args.long,
+        ),
       );
     },
     MyOrdersAdminRoute.name: (routeData) {
@@ -454,6 +468,7 @@ class BasketOrderAddressRoute extends PageRouteInfo<BasketOrderAddressRouteArgs>
   BasketOrderAddressRoute({
     required String fulfillment,
     String? deleveryDay,
+    String? office,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
@@ -461,6 +476,7 @@ class BasketOrderAddressRoute extends PageRouteInfo<BasketOrderAddressRouteArgs>
           args: BasketOrderAddressRouteArgs(
             fulfillment: fulfillment,
             deleveryDay: deleveryDay,
+            office: office,
             key: key,
           ),
           initialChildren: children,
@@ -475,6 +491,7 @@ class BasketOrderAddressRouteArgs {
   const BasketOrderAddressRouteArgs({
     required this.fulfillment,
     this.deleveryDay,
+    this.office,
     this.key,
   });
 
@@ -482,11 +499,13 @@ class BasketOrderAddressRouteArgs {
 
   final String? deleveryDay;
 
+  final String? office;
+
   final Key? key;
 
   @override
   String toString() {
-    return 'BasketOrderAddressRouteArgs{fulfillment: $fulfillment, deleveryDay: $deleveryDay, key: $key}';
+    return 'BasketOrderAddressRouteArgs{fulfillment: $fulfillment, deleveryDay: $deleveryDay, office: $office, key: $key}';
   }
 }
 
@@ -1070,6 +1089,58 @@ class LauncherRoute extends PageRouteInfo<void> {
   static const String name = 'LauncherRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [MapPickerPage]
+class MapPickerRoute extends PageRouteInfo<MapPickerRouteArgs> {
+  MapPickerRoute({
+    Key? key,
+    MapGeo? mapGeo,
+    int? cc,
+    double? lat,
+    double? long,
+    List<PageRouteInfo>? children,
+  }) : super(
+          MapPickerRoute.name,
+          args: MapPickerRouteArgs(
+            key: key,
+            mapGeo: mapGeo,
+            cc: cc,
+            lat: lat,
+            long: long,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'MapPickerRoute';
+
+  static const PageInfo<MapPickerRouteArgs> page = PageInfo<MapPickerRouteArgs>(name);
+}
+
+class MapPickerRouteArgs {
+  const MapPickerRouteArgs({
+    this.key,
+    this.mapGeo,
+    this.cc,
+    this.lat,
+    this.long,
+  });
+
+  final Key? key;
+
+  final MapGeo? mapGeo;
+
+  final int? cc;
+
+  final double? lat;
+
+  final double? long;
+
+  @override
+  String toString() {
+    return 'MapPickerRouteArgs{key: $key, mapGeo: $mapGeo, cc: $cc, lat: $lat, long: $long}';
+  }
 }
 
 /// generated route for

@@ -13,6 +13,7 @@ class TapeBloggerModel {
       bool? inReport,
       bool? inFavorite,
       bool? inSubscribe,
+      bool? isDelete,
       Shop? shop}) {
     _id = id;
     _tapeId = tapeId;
@@ -27,7 +28,7 @@ class TapeBloggerModel {
     _inReport = inReport;
     _inFavorite = inFavorite;
     _inSubscribe = inSubscribe;
-
+    _isDelete = isDelete;
     _shop = shop;
   }
 
@@ -45,6 +46,7 @@ class TapeBloggerModel {
     _inReport = json['in_report'];
     _inFavorite = json['in_favorite'];
     _inSubscribe = json['in_subscribe'];
+    _isDelete = json['is_delete'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
   }
   int? _id;
@@ -60,6 +62,7 @@ class TapeBloggerModel {
   bool? _inReport;
   bool? _inFavorite;
   bool? _inSubscribe;
+  bool? _isDelete;
   Shop? _shop;
 
   int? get id => _id;
@@ -75,6 +78,7 @@ class TapeBloggerModel {
   bool? get inReport => _inReport;
   bool? get inFavorite => _inFavorite;
   bool? get inSubscribe => _inSubscribe;
+  bool? get isDelete => _isDelete;
   Shop? get shop => _shop;
 
   Map<String, dynamic> toJson() {
@@ -92,6 +96,7 @@ class TapeBloggerModel {
     map['in_report'] = _inReport;
     map['in_favorite'] = _inFavorite;
     map['inSubscribe'] = _inSubscribe;
+    map['isDelete'] = _isDelete;
     if (_shop != null) {
       map['shop'] = _shop?.toJson();
     }

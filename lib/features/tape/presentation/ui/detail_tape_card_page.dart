@@ -118,7 +118,6 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                   return BlocConsumer<TapeCheckCubit, TapeCheckState>(
                     listener: (context, stateCheck) {
                       if (stateCheck is LoadedState) {
-                        log(state.tapeModel[currentIndex].tapeId.toString());
                         BlocProvider.of<tapeCubit.TapeCubit>(context).updateTapeByIndex(
                             index: currentIndex,
                             updatedTape: state.tapeModel[currentIndex].copyWith(
@@ -343,7 +342,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 height: 28,
                                 decoration: BoxDecoration(
                                     color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(6)),
-                                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.14),
+                                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.13),
                                 alignment: Alignment.center,
                                 child: const Text(
                                   '0·0·12',
@@ -437,7 +436,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                   //   ],
                                   // ),
                                   Container(
-                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.34),
+                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.327),
                                     child: Column(
                                       children: [
                                         inReport(
@@ -631,7 +630,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 ),
                               ),
                               const SizedBox(
-                                height: 14,
+                                height: 8,
                               ),
                               // Text(
                               //   'Артикул: ${state.tapeModel[index].id}',
@@ -640,9 +639,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                               //       fontWeight: FontWeight.w500,
                               //       color: Colors.white),
                               // ),
-                              const SizedBox(
-                                height: 8,
-                              ),
+
                               SizedBox(
                                 // width: 358,
                                 child: Row(
@@ -747,7 +744,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                         // ),
 
                         Container(
-                          margin: const EdgeInsets.only(left: 16, right: 16),
+                          margin: EdgeInsets.only(left: 16, right: 16, top: MediaQuery.of(context).size.height * 0.12),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -756,7 +753,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 height: 28,
                                 decoration: BoxDecoration(
                                     color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(6)),
-                                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10),
+                                // margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.19),
                                 alignment: Alignment.center,
                                 child: const Text(
                                   '0·0·12',
@@ -824,7 +821,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.26),
+                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.30),
                                     child: Column(
                                       children: [
                                         inReport(
@@ -1009,39 +1006,14 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                 height: 7.4,
                               ),
                               SizedBox(
-                                width: 358,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Text(
-                                      '${state.tapeModel[index].name}',
-                                      style: const TextStyle(
-                                          fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white),
-                                    ),
-                                    // Row(
-                                    //   children: [
-                                    //     inBaskets(
-                                    //       tape: state.tapeModel[index],
-                                    //       index: index,
-                                    //     ),
-                                    //     const SizedBox(
-                                    //       width: 8,
-                                    //     ),
-                                    //     inFavorites(
-                                    //       tape: state.tapeModel[index],
-                                    //       index: index,
-                                    //     ),
-                                    //     const SizedBox(
-                                    //       width: 8,
-                                    //     ),
-                                    //     SvgPicture.asset(
-                                    //       'assets/icons/share.svg',
-                                    //       color: Colors.white,
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                  ],
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                height: 40,
+                                child: Text(
+                                  '${state.tapeModel[index].name}',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style:
+                                      const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white),
                                 ),
                               ),
                               const SizedBox(
@@ -1235,7 +1207,7 @@ class _VideosState extends State<Videos> {
                   : Container(),
               Container(
                 alignment: Alignment.bottomCenter,
-                padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.10),
+                margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.10),
                 child: VideoProgressIndicator(_controller!, allowScrubbing: true),
               ),
             ],

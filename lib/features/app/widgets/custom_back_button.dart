@@ -23,8 +23,8 @@ class CustomBackButton extends StatelessWidget {
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            children:const [
-               Icon(
+            children: const [
+              Icon(
                 Icons.arrow_back_ios_new,
                 color: Color(0xFF1DC4CF),
               ),
@@ -42,7 +42,6 @@ class CustomDropButton extends StatelessWidget {
   const CustomDropButton({
     Key? key,
     required this.onTap,
-
   }) : super(key: key);
 
   @override
@@ -58,9 +57,7 @@ class CustomDropButton extends StatelessWidget {
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset('assets/icons/cancel.svg')
-            ],
+            children: [SvgPicture.asset('assets/icons/cancel.svg')],
           ),
         ),
       ),
