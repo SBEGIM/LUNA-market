@@ -1124,8 +1124,8 @@ class _PopularShopsState extends State<PopularShops> {
                                         Container(
                                           margin: const EdgeInsets.only(top: 0, left: 12, right: 12),
                                           alignment: Alignment.center,
-                                          height: MediaQuery.of(context).size.height * 0.10,
-                                          width: MediaQuery.of(context).size.height * 0.10,
+                                          height: MediaQuery.of(context).size.height * 0.08,
+                                          width: MediaQuery.of(context).size.height * 0.08,
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(100),
                                               image: DecorationImage(
@@ -1187,9 +1187,11 @@ class _PopularShopsState extends State<PopularShops> {
                                         ),
                                         Container(
                                           margin:
-                                              EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.18, left: 4),
+                                              EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.17, left: 4),
                                           alignment: Alignment.center,
                                           child: Text(state.popularShops[index].name ?? '',
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
                                               style: AppTextStyles.categoryTextStyle),
                                         ),
                                       ],
