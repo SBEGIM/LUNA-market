@@ -17,7 +17,11 @@ class ProductAdCubit extends Cubit<ProductAdState> {
       emit(LoadingState());
       final List<ProductModel> data = await productAdRepository.product(catId);
 
-      emit(LoadedState(data));
+      if (data.isNotEmpty) {
+        emit(NoDataState());
+      } else {
+        emit(LoadedState(data));
+      }
     } catch (e) {
       log(e.toString() + 'ProductAdCubit products');
       emit(ErrorState(message: 'Ошибка сервера'));

@@ -5,6 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/drawer/data/bloc/order_cubit.dart' as orderCubit;
+import 'package:haji_market/features/drawer/presentation/widgets/metas_webview.dart';
+import 'package:haji_market/features/home/data/bloc/meta_cubit.dart' as metaCubit;
+import 'package:haji_market/features/home/data/bloc/meta_state.dart' as metaState;
 import 'package:share_plus/share_plus.dart';
 import '../../../../contract_of_sale.dart';
 import '../../../../core/common/constants.dart';
@@ -93,9 +96,22 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
   @override
   void initState() {
     basketData();
+    if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.LoadedState) {
+      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+    }
     // BlocProvider.of<BasketCubit>(context).basketShow();
     super.initState();
   }
+
+  List<String> metas = [
+    'Пользовательское соглашение',
+    'Оферта для продавцов',
+    'Политика конфиденциальности',
+    'Типовой договор купли-продажи',
+    'Типовой договор на оказание рекламных услуг'
+  ];
+
+  List<String> metasBody = [];
 
   @override
   Widget build(BuildContext context) {
@@ -793,31 +809,49 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
               //     )),
 
               // const SizedBox(height: 1),
-              GestureDetector(
-                onTap: () {
-                  Get.to(const ContractOfSale());
-                },
-                child: Container(
-                  padding: const EdgeInsets.only(top: 8, left: 16),
-                  alignment: Alignment.centerLeft,
-                  child: RichText(
-                    textAlign: TextAlign.left,
-                    text: const TextSpan(
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: "Нажимая «Оформить заказ», вы принимаете\nусловия ",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+
+              BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(builder: (context, state) {
+                if (state is metaState.LoadedState) {
+                  metasBody.addAll([
+                    state.metas.terms_of_use!,
+                    state.metas.privacy_policy!,
+                    state.metas.contract_offer!,
+                    state.metas.shipping_payment!,
+                    state.metas.TTN!,
+                  ]);
+                  return GestureDetector(
+                    onTap: () {
+                      Get.to(() => MetasPage(
+                            title: metas[3],
+                            body: metasBody[3],
+                          ));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 8, left: 16),
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                        textAlign: TextAlign.left,
+                        text: const TextSpan(
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: "Нажимая «Оформить заказ», вы принимаете\nусловия ",
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                            ),
+                            TextSpan(
+                              text: "Типового договора купли-продажи\n",
+                              style: TextStyle(fontSize: 16, color: AppColors.kPrimaryColor),
+                            ),
+                          ],
                         ),
-                        TextSpan(
-                          text: "Типового договора купли-продажи\n",
-                          style: TextStyle(fontSize: 16, color: AppColors.kPrimaryColor),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ),
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                }
+              }),
+
               const SizedBox(
                 height: 57,
               ),

@@ -34,7 +34,9 @@ import 'package:haji_market/features/drawer/data/repository/address_repo.dart';
 import 'package:haji_market/features/drawer/data/repository/bonus_repo.dart';
 import 'package:haji_market/features/drawer/data/repository/profit_repo.dart';
 import 'package:haji_market/features/drawer/data/repository/respublic_repo.dart';
+import 'package:haji_market/features/home/data/bloc/meta_cubit.dart';
 import 'package:haji_market/features/home/data/bloc/partner_cubit.dart';
+import 'package:haji_market/features/home/data/repository/meta_repo.dart';
 import 'package:haji_market/features/home/data/repository/partner_repo.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -439,6 +441,11 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (_) => SmsBloggerCubit(
             registerRepository: RegisterBloggerRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => MetaCubit(
+            metaRepository: MetaRepository(),
           ),
         ),
       ],

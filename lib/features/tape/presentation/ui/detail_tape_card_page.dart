@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/count_zero_dialog.dart';
+import 'package:haji_market/features/home/data/bloc/meta_cubit.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/tape_check_cubit.dart';
 import 'package:haji_market/features/tape/presentation/data/repository/tape_repo.dart';
 import 'package:video_player/video_player.dart';
@@ -84,6 +85,10 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
         BlocProvider.of<TapeCheckCubit>(context)
             .tapeCheck(tapeId: (tape.state as tapeState.LoadedState).tapeModel[currentIndex].tapeId!);
       }
+    }
+
+    if (BlocProvider.of<MetaCubit>(context).state is! LoadedState) {
+      BlocProvider.of<MetaCubit>(context).partners();
     }
     title = 'Лента';
     // GetStorage().write('title_tape', 'Отписаться');

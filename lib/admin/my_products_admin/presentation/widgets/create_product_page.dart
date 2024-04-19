@@ -11,6 +11,9 @@ import 'package:haji_market/admin/my_products_admin/presentation/widgets/brands_
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/colors_admin_page.dart';
 import 'package:haji_market/blogger_ad.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/drawer/presentation/widgets/metas_webview.dart';
+import 'package:haji_market/features/home/data/bloc/meta_cubit.dart' as metaCubit;
+import 'package:haji_market/features/home/data/bloc/meta_state.dart' as metaState;
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../features/app/widgets/custom_back_button.dart';
@@ -180,9 +183,22 @@ class _CreateProductPageState extends State<CreateProductPage> {
     colors = Cats(id: 0, name: 'Выберите цвет');
     _sizeArray();
     _charactisticsArray();
+    if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.LoadedState) {
+      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+    }
     BlocProvider.of<lastArticul.LastArticulCubit>(context).getLastArticul();
     super.initState();
   }
+
+  List<String> metas = [
+    'Пользовательское соглашение',
+    'Оферта для продавцов',
+    'Политика конфиденциальности',
+    'Типовой договор купли-продажи',
+    'Типовой договор на оказание рекламных услуг'
+  ];
+
+  List<String> metasBody = [];
 
   @override
   Widget build(BuildContext context) {
@@ -351,29 +367,48 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   controller: pointsController,
                   textInputNumber: true,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Get.to(const BloggerAd());
-                  },
-                  child: SizedBox(
-                    child: RichText(
-                      textAlign: TextAlign.left,
-                      text: const TextSpan(
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: "Предлагая вознаграждение блогеру, вы принимаете условия ",
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey),
+
+                BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(builder: (context, state) {
+                  if (state is metaState.LoadedState) {
+                    metasBody.addAll([
+                      state.metas.terms_of_use!,
+                      state.metas.privacy_policy!,
+                      state.metas.contract_offer!,
+                      state.metas.shipping_payment!,
+                      state.metas.TTN!,
+                    ]);
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => MetasPage(
+                              title: metas[3],
+                              body: metasBody[3],
+                            ));
+                      },
+                      child: SizedBox(
+                        child: RichText(
+                          textAlign: TextAlign.left,
+                          text: const TextSpan(
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: "Предлагая вознаграждение блогеру, вы принимаете условия ",
+                                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey),
+                              ),
+                              TextSpan(
+                                text: "Типового договора на оказание рекламных услуг\n",
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
+                              )
+                            ],
                           ),
-                          TextSpan(
-                            text: "Типового договора на оказание рекламных услуг\n",
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                  }
+                }),
+
                 FieldsProductRequest(
                     titleText: 'Вознаграждение блогеру ,% ',
                     hintText: 'Введите вознаграждение ',

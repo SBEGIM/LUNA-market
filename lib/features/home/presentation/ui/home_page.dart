@@ -12,10 +12,13 @@ import 'package:haji_market/features/app/widgets/shimmer_box.dart';
 import 'package:haji_market/features/drawer/data/bloc/product_ad_cubit.dart' as productAdCubit;
 import 'package:haji_market/features/drawer/data/bloc/product_ad_state.dart' as productAdState;
 import 'package:haji_market/features/drawer/presentation/widgets/advert_bottom_sheet.dart';
+import 'package:haji_market/features/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/features/home/data/bloc/banners_cubit.dart' as bannerCubit;
 import 'package:haji_market/features/home/data/bloc/banners_state.dart' as bannerState;
 import 'package:haji_market/features/home/data/bloc/partner_cubit.dart' as partnerCubit;
 import 'package:haji_market/features/home/data/bloc/partner_state.dart' as partnerState;
+import 'package:haji_market/features/home/data/bloc/meta_cubit.dart' as metaCubit;
+import 'package:haji_market/features/home/data/bloc/meta_state.dart' as metaState;
 import 'package:haji_market/features/home/data/model/Cats.dart';
 import 'package:haji_market/features/home/presentation/widgets/gridLayout_popular.dart';
 import 'package:haji_market/features/home/presentation/widgets/gridlayout_categor.dart';
@@ -49,6 +52,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   RefreshController refreshController = RefreshController();
+
+  List<String> metas = [
+    'Пользовательское соглашение',
+    'Оферта для продавцов',
+    'Политика конфиденциальности',
+    'Типовой договор купли-продажи',
+    'Типовой договор на оказание рекламных услуг'
+  ];
+
+  List<String> metasBody = [];
+
+  List<String> metasUrlLinks = [];
+
   @override
   void initState() {
     if (BlocProvider.of<bannerCubit.BannersCubit>(context).state is! bannerState.LoadedState) {
@@ -73,6 +89,10 @@ class _HomePageState extends State<HomePage> {
 
     if (BlocProvider.of<partnerCubit.PartnerCubit>(context).state is! partnerState.LoadedState) {
       BlocProvider.of<partnerCubit.PartnerCubit>(context).partners();
+    }
+
+    if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.LoadedState) {
+      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
     }
 
     if (BlocProvider.of<productCubit.ProductCubit>(context).state is! productState.LoadedState) {
@@ -242,7 +262,12 @@ class _HomePageState extends State<HomePage> {
                           if (state is productAdState.LoadingState) {
                             return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
                           }
-
+                          if (state is productAdState.NoDataState) {
+                            return const SizedBox(
+                              height: 20,
+                              width: 20,
+                            );
+                          }
                           if (state is productAdState.LoadedState) {
                             return SizedBox(
                                 // width: 400,
@@ -259,8 +284,9 @@ class _HomePageState extends State<HomePage> {
                                   itemCount: state.productModel.length >= 8 ? 8 : state.productModel.length,
                                   itemBuilder: (BuildContext ctx, index) {
                                     return GestureDetector(
-                                      onTap: () => context.router
-                                          .push(DetailCardProductRoute(product: state.productModel[index])),
+                                      onTap: () => context.router.push(DetailCardProductRoute(
+                                        product: state.productModel[index],
+                                      )),
                                       child: ProductAdCard(
                                         product: state.productModel[index],
                                       ),
@@ -297,8 +323,16 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 16,
             ),
-            BlocBuilder<partnerCubit.PartnerCubit, partnerState.PartnerState>(builder: (context, state) {
-              if (state is partnerState.LoadedState) {
+            BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(builder: (context, state) {
+              if (state is metaState.LoadedState) {
+                metasBody.addAll([
+                  state.metas.terms_of_use!,
+                  state.metas.privacy_policy!,
+                  state.metas.contract_offer!,
+                  state.metas.shipping_payment!,
+                  state.metas.TTN!,
+                ]);
+
                 return Container(
                   color: Colors.white,
                   child: Padding(
@@ -321,20 +355,22 @@ class _HomePageState extends State<HomePage> {
                           height: 20,
                         ),
                         SizedBox(
-                          height: state.partner.length * 24,
+                          height: 150,
                           child: ListView.builder(
-                              itemCount: state.partner.length,
+                              itemCount: 5,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
                                     //  print(state.partner[index].url.toString());
-                                    Get.to(() => CreditWebviewPage(
-                                        title: state.partner[index].name, url: state.partner[index].url.toString()));
+                                    Get.to(() => MetasPage(
+                                          title: metas[index],
+                                          body: metasBody[index],
+                                        ));
                                   },
                                   child: SizedBox(
                                     height: 24,
                                     child: Text(
-                                      '${state.partner[index].name}',
+                                      '${metas[index]}',
                                       style: AppTextStyles.kcolorPartnerTextStyle,
                                     ),
                                   ),
@@ -1124,8 +1160,8 @@ class _PopularShopsState extends State<PopularShops> {
                                         Container(
                                           margin: const EdgeInsets.only(top: 0, left: 12, right: 12),
                                           alignment: Alignment.center,
-                                          height: MediaQuery.of(context).size.height * 0.08,
-                                          width: MediaQuery.of(context).size.height * 0.08,
+                                          height: MediaQuery.of(context).size.height * 0.10,
+                                          width: MediaQuery.of(context).size.height * 0.10,
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(100),
                                               image: DecorationImage(

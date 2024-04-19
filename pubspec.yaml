@@ -61,6 +61,8 @@ dependencies:
   shimmer: ^3.0.0
   qr_code_scanner: ^1.0.1
   qr_flutter: ^4.0.0
+  flutter_widget_from_html: ^0.9.1
+  htmltopdfwidgets: ^0.0.9+1
 
 dev_dependencies:
   auto_route_generator: ^7.1.1

@@ -17,8 +17,8 @@ class PopularShopsApi {
   Future<List<PopularShops>> popularShops() async {
     final String? token = _box.read('token');
 
-    final response = await http.get(Uri.parse('$baseUrl/shop/popular/shops'),
-        headers: {"Authorization": "Bearer $token"});
+    final response =
+        await http.get(Uri.parse('$baseUrl/shop/popular/shops'), headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);
 

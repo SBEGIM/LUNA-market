@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:haji_market/features/drawer/presentation/widgets/metas_webview.dart';
+import 'package:haji_market/features/home/data/bloc/meta_cubit.dart' as metaCubit;
+import 'package:haji_market/features/home/data/bloc/meta_state.dart' as metaState;
 
 import '../../blogger_ad.dart';
 import '../../core/common/constants.dart';
@@ -23,9 +26,22 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
 
   final searchController = TextEditingController();
 
+  List<String> metas = [
+    'Пользовательское соглашение',
+    'Оферта для продавцов',
+    'Политика конфиденциальности',
+    'Типовой договор купли-продажи',
+    'Типовой договор на оказание рекламных услуг'
+  ];
+
+  List<String> metasBody = [];
   @override
   void initState() {
     BlocProvider.of<PopularShopsCubit>(context).popShops();
+
+    if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.LoadedState) {
+      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+    }
     super.initState();
   }
 
@@ -102,31 +118,48 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
           //         color: Colors.grey),
           //   ),
           // ),
-          GestureDetector(
-            onTap: () {
-              Get.to(const BloggerAd());
-            },
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              child: RichText(
-                textAlign: TextAlign.left,
-                text: const TextSpan(
-                  style: TextStyle(fontSize: 16, color: Colors.black),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text:
-                          "При продаже каждого рекламированного товара блогером % от каждой стоимости товара будет перечисляться на счет блогера. Размещая рекламные материалы, вы принимаете условия ",
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey),
+
+          BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(builder: (context, state) {
+            if (state is metaState.LoadedState) {
+              metasBody.addAll([
+                state.metas.terms_of_use!,
+                state.metas.privacy_policy!,
+                state.metas.contract_offer!,
+                state.metas.shipping_payment!,
+                state.metas.TTN!,
+              ]);
+              return GestureDetector(
+                onTap: () {
+                  Get.to(() => MetasPage(
+                        title: metas[3],
+                        body: metasBody[3],
+                      ));
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: RichText(
+                    textAlign: TextAlign.left,
+                    text: const TextSpan(
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text:
+                              "При продаже каждого рекламированного товара блогером % от каждой стоимости товара будет перечисляться на счет блогера. Размещая рекламные материалы, вы принимаете условия ",
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey),
+                        ),
+                        TextSpan(
+                          text: "Типового договора на оказание рекламных услуг\n",
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
+                        )
+                      ],
                     ),
-                    TextSpan(
-                      text: "Типового договора на оказание рекламных услуг\n",
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
-                    )
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ),
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+            }
+          }),
           const SizedBox(height: 10),
           BlocConsumer<PopularShopsCubit, PopularShopsState>(
               listener: (context, state) {},

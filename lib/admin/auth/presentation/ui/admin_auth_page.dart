@@ -100,7 +100,7 @@ class _AdminAuthPageState extends State<AdminAuthPage> {
                   },
                   onValueChanged: (int? value) async {
                     if (value != null) {
-                      value == 0 ? (title = 'Войти в кабинет продавца') : (title = 'Заявка на содрудничество');
+                      value == 0 ? (title = 'Войти в кабинет продавца') : (title = 'Заявка на сотрудничество');
                       segmentValue = value;
                     }
                     setState(() {});

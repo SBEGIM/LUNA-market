@@ -6,6 +6,8 @@ class InitState extends ProductAdState {}
 
 class LoadingState extends ProductAdState {}
 
+class NoDataState extends ProductAdState {}
+
 class LoadedState extends ProductAdState {
   List<ProductModel> productModel;
   LoadedState(this.productModel);

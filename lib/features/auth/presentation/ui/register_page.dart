@@ -7,6 +7,9 @@ import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/auth/presentation/ui/register_check_sms_modal_bottom.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:haji_market/features/drawer/presentation/widgets/metas_webview.dart';
+import 'package:haji_market/features/home/data/bloc/meta_cubit.dart' as metaCubit;
+import 'package:haji_market/features/home/data/bloc/meta_state.dart' as metaState;
 import 'package:haji_market/oferta.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../../../politic.dart';
@@ -23,17 +26,14 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  RegisterDTO register =
-      const RegisterDTO(name: 'null', phone: 'null', password: 'null');
+  RegisterDTO register = const RegisterDTO(name: 'null', phone: 'null', password: 'null');
   final maskFormatter = MaskTextInputFormatter(mask: '+#(###)-###-##-##');
   bool isChecked = false;
   bool isButtonEnabled = false;
   TextEditingController nameControllerRegister = TextEditingController();
-  TextEditingController phoneControllerRegister =
-      MaskedTextController(mask: '+7(000)-000-00-00');
+  TextEditingController phoneControllerRegister = MaskedTextController(mask: '+7(000)-000-00-00');
   TextEditingController passwordControllerRegister = TextEditingController();
-  TextEditingController repePasswordControllerRegister =
-      TextEditingController();
+  TextEditingController repePasswordControllerRegister = TextEditingController();
 
   bool _passwordVisible = true;
 
@@ -49,8 +49,26 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() {});
   }
 
+  @override
+  void initState() {
+    if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.LoadedState) {
+      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+    }
+    super.initState();
+  }
+
   FocusNode myFocusNodePhone = FocusNode();
   FocusNode myFocusNodeName = FocusNode();
+
+  List<String> metas = [
+    'Пользовательское соглашение',
+    'Оферта для продавцов',
+    'Политика конфиденциальности',
+    'Типовой договор купли-продажи',
+    'Типовой договор на оказание рекламных услуг'
+  ];
+
+  List<String> metasBody = [];
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (state is LoadedState) {
         showModalBottomSheet(
             shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.0),
-                  topRight: Radius.circular(10.0)),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
             ),
             context: context,
             builder: (context) {
@@ -88,9 +104,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             children: [
               Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
                 child: Column(
                   children: [
                     ListTile(
@@ -212,9 +226,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                         child: _visibleIconView == true
                             ? Icon(
-                                _passwordVisible
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                                _passwordVisible ? Icons.visibility_off : Icons.visibility,
                                 color: const Color.fromRGBO(177, 179, 181, 1),
                               )
                             : const SizedBox(width: 5),
@@ -243,8 +255,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           repePasswordControllerRegister.text.isEmpty
                               ? _visibleIconViewRepeat = false
                               : _visibleIconViewRepeat = true;
-                          if (passwordControllerRegister.text ==
-                              repePasswordControllerRegister.text) {
+                          if (passwordControllerRegister.text == repePasswordControllerRegister.text) {
                             setIsButtonEnabled(true);
                           } else {
                             setIsButtonEnabled(false);
@@ -259,9 +270,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                         child: _visibleIconViewRepeat == true
                             ? Icon(
-                                _passwordVisible
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                                _passwordVisible ? Icons.visibility_off : Icons.visibility,
                                 color: const Color.fromRGBO(177, 179, 181, 1),
                               )
                             : const SizedBox(width: 5),
@@ -279,43 +288,53 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(
                       width: 10,
                     ),
-                    Flexible(
-                        child: RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                        children: <TextSpan>[
-                          const TextSpan(
-                              text: 'Нажимая «Зарегистрироваться», Вы '),
-                          const TextSpan(text: 'принимаете '),
-                          TextSpan(
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () => Get.to(const Oferta()),
-                            text: 'Пользовательское \n соглашение',
-                            style: const TextStyle(
-                                color: AppColors.kPrimaryColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
+
+                    BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(builder: (context, state) {
+                      if (state is metaState.LoadedState) {
+                        metasBody.addAll([
+                          state.metas.terms_of_use!,
+                          state.metas.privacy_policy!,
+                          state.metas.contract_offer!,
+                          state.metas.shipping_payment!,
+                          state.metas.TTN!,
+                        ]);
+                        return Flexible(
+                            child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                            children: <TextSpan>[
+                              const TextSpan(text: 'Нажимая «Зарегистрироваться», Вы '),
+                              const TextSpan(text: 'принимаете '),
+                              TextSpan(
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () => Get.to(() => MetasPage(
+                                        title: metas[0],
+                                        body: metasBody[0],
+                                      )),
+                                text: 'Пользовательское \n соглашение',
+                                style: const TextStyle(
+                                    color: AppColors.kPrimaryColor, fontSize: 16, fontWeight: FontWeight.w400),
+                              ),
+                              const TextSpan(text: ' и даете согласие на \n обработку персональных данных'),
+                              const TextSpan(text: 'в соответствии с '),
+                              TextSpan(
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () => Get.to(() => MetasPage(
+                                        title: metas[2],
+                                        body: metasBody[2],
+                                      )),
+                                text: 'Политикой Конфиденциальности',
+                                style: const TextStyle(
+                                    color: AppColors.kPrimaryColor, fontSize: 16, fontWeight: FontWeight.w400),
+                              ),
+                            ],
                           ),
-                          const TextSpan(
-                              text:
-                                  ' и даете согласие на \n обработку персональных данных'),
-                          const TextSpan(text: 'в соответствии с '),
-                          TextSpan(
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () => Get.to(const Politic()),
-                            text: 'Политикой Конфиденциальности',
-                            style: const TextStyle(
-                                color: AppColors.kPrimaryColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                    ))
+                        ));
+                      } else {
+                        return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                      }
+                    }),
 
                     // Text(
                     //   textAlign: TextAlign.center,
@@ -344,8 +363,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (nameControllerRegister.text.isNotEmpty &&
                           phoneControllerRegister.text.length >= 17 &&
                           passwordControllerRegister.text.isNotEmpty) {
-                        if (passwordControllerRegister.text ==
-                            repePasswordControllerRegister.text) {
+                        if (passwordControllerRegister.text == repePasswordControllerRegister.text) {
                           register = RegisterDTO(
                             name: nameControllerRegister.text,
                             phone: phoneControllerRegister.text,
@@ -355,12 +373,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           final sms = BlocProvider.of<SmsCubit>(context);
                           sms.smsSend(phoneControllerRegister.text);
                         } else {
-                          Get.snackbar('Ошибка запроса', 'Пароли не совпадают!',
-                              backgroundColor: Colors.blueAccent);
+                          Get.snackbar('Ошибка запроса', 'Пароли не совпадают!', backgroundColor: Colors.blueAccent);
                         }
                       } else {
-                        Get.snackbar('Ошибка запроса', 'Заполните данные!',
-                            backgroundColor: Colors.blueAccent);
+                        Get.snackbar('Ошибка запроса', 'Заполните данные!', backgroundColor: Colors.blueAccent);
                       }
 
                       // Navigator.push(

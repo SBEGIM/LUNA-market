@@ -6,6 +6,9 @@ import 'package:get/route_manager.dart';
 import 'package:haji_market/bloger/auth/data/bloc/login_blogger_cubit.dart';
 import 'package:haji_market/bloger/auth/data/bloc/login_blogger_state.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/drawer/presentation/widgets/metas_webview.dart';
+import 'package:haji_market/features/home/data/bloc/meta_cubit.dart' as metaCubit;
+import 'package:haji_market/features/home/data/bloc/meta_state.dart' as metaState;
 import '../../../../offer_for_the_seller.dart';
 import '../../../auth/data/DTO/register_blogger_dto.dart';
 
@@ -31,8 +34,21 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
 
   @override
   void initState() {
+    if (BlocProvider.of<metaCubit.MetaCubit>(context).state is! metaState.LoadedState) {
+      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+    }
     super.initState();
   }
+
+  List<String> metas = [
+    'Пользовательское соглашение',
+    'Оферта для продавцов',
+    'Политика конфиденциальности',
+    'Типовой договор купли-продажи',
+    'Типовой договор на оказание рекламных услуг'
+  ];
+
+  List<String> metasBody = [];
 
   @override
   Widget build(BuildContext context) {
@@ -148,30 +164,46 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                       },
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(const OfferForTheSeller());
-                    },
-                    child: Container(
-                      alignment: Alignment.bottomLeft,
-                      child: RichText(
-                        textAlign: TextAlign.left,
-                        text: const TextSpan(
-                          style: TextStyle(fontSize: 16, color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: "принимаю ",
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                  BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(builder: (context, state) {
+                    if (state is metaState.LoadedState) {
+                      metasBody.addAll([
+                        state.metas.terms_of_use!,
+                        state.metas.privacy_policy!,
+                        state.metas.contract_offer!,
+                        state.metas.shipping_payment!,
+                        state.metas.TTN!,
+                      ]);
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(() => MetasPage(
+                                title: metas[4],
+                                body: metasBody[4],
+                              ));
+                        },
+                        child: Container(
+                          alignment: Alignment.bottomLeft,
+                          child: RichText(
+                            textAlign: TextAlign.left,
+                            text: const TextSpan(
+                              style: TextStyle(fontSize: 16, color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: "принимаю ",
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                                ),
+                                TextSpan(
+                                  text: "Оферту для блогеров",
+                                  style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 16),
+                                ),
+                              ],
                             ),
-                            TextSpan(
-                              text: "Оферту для блогеров",
-                              style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 16),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                      );
+                    } else {
+                      return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                    }
+                  }),
                 ],
               ),
               const SizedBox(height: 100)
