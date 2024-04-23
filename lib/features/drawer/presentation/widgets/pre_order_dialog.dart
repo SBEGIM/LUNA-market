@@ -48,24 +48,31 @@ class _PreOrderDialogState extends State<PreOrderDialog> {
           return RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400),
               children: <TextSpan>[
                 const TextSpan(
-                    text: 'Данный товар не в наличии, нажимая ДА вы принимаете условия покупки по предзаказу? '),
+                    text:
+                        'Данный товар не в наличии,но доступен к предзаказу, нажимая ДА вы принимаете условия покупки по предзаказу, '),
                 TextSpan(
                   recognizer: TapGestureRecognizer()
                     ..onTap = () => Get.to(() => MetasPage(
                           title: metas[3],
                           body: metasBody[3],
                         )),
-                  text: metas[3],
-                  style: const TextStyle(color: AppColors.kPrimaryColor, fontSize: 16, fontWeight: FontWeight.w400),
+                  text: 'типового договора купли продажи',
+                  style: const TextStyle(
+                      color: AppColors.kPrimaryColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
                 ),
               ],
             ),
           );
         } else {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }

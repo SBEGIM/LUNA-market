@@ -1,11 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/home/data/repository/Popular_shops_repo.dart';
-import 'package:htmltopdfwidgets/htmltopdfwidgets.dart' as htmlToPdf;
 import 'package:share_plus/share_plus.dart';
 
 class MetasPage extends StatefulWidget {
@@ -63,22 +61,6 @@ class _MetasPageState extends State<MetasPage> {
   ''';
 
   bool load = false;
-
-  createDocument() async {
-    const filePath = 'example.pdf';
-    final file = File(filePath);
-    final newpdf = htmlToPdf.Document();
-    final widgets = await htmlToPdf.HTMLToPdf().convert(
-      htmlText,
-    );
-
-    // newpdf.addPage(htmlToPdf.MultiPage(
-    //     maxPages: 200,
-    //     build: (context) {
-    //       return widgets;
-    //     }));
-    await file.writeAsBytes(await newpdf.save());
-  }
 
   List<String> metas = [
     'Пользовательское соглашение',
@@ -150,21 +132,17 @@ class _MetasPageState extends State<MetasPage> {
 
                     // final pdf = await createDocument();
 
-                    await Share.share("${baseUrl}/pdf/${type}");
+                    await Share.share("$baseUrl/pdf/$type");
                   })
             ]),
-        body: ListView(children: [
-          Container(
-            padding: const EdgeInsets.all(1.0),
-            margin: const EdgeInsets.all(1.0),
-            child: HtmlWidget(
-              '''${widget.body}''',
+        body: CustomScrollView(slivers: [
+          HtmlWidget(
+            '''${widget.body}''',
 
-              renderMode: RenderMode.column,
+            renderMode: RenderMode.sliverList,
 
-              // set the default styling for text
-              textStyle: TextStyle(fontSize: 8),
-            ),
+            // set the default styling for text
+            textStyle: const TextStyle(fontSize: 8),
           ),
         ]));
   }
