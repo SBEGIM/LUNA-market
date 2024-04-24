@@ -6,6 +6,7 @@ class Banners {
     int? bonus,
     String? date,
     String? url,
+    String? urlAdmin,
     String? description,
   }) {
     _id = id;
@@ -14,6 +15,7 @@ class Banners {
     _bonus = bonus;
     _date = date;
     _url = url;
+    _urlAdmin = urlAdmin;
     _description = description;
   }
 
@@ -24,6 +26,7 @@ class Banners {
     _bonus = json['bonus'];
     _date = json['date'];
     _url = json['url'];
+    _urlAdmin = json['url_admin'];
     _description = json['description'];
   }
   int? _id;
@@ -32,6 +35,7 @@ class Banners {
   int? _bonus;
   String? _date;
   String? _url;
+  String? _urlAdmin;
   String? _description;
 
   int? get id => _id;
@@ -40,6 +44,7 @@ class Banners {
   int? get bonus => _bonus;
   String? get date => _date;
   String? get url => _url;
+  String? get urlAdmin => _urlAdmin;
   String? get description => _description;
 
   Map<String, dynamic> toJson() {
@@ -50,6 +55,7 @@ class Banners {
     map['bonus'] = _bonus;
     map['date'] = _date;
     map['url'] = _url;
+    map['urlADmin'] = _urlAdmin;
     map['description'] = _description;
 
     return map;
