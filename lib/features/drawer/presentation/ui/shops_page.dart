@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/custom_back_button.dart';
@@ -34,13 +35,17 @@ class _ShopsPageState extends State<ShopsPage> {
           }),
         ),
         actions: [
-          Padding(padding: const EdgeInsets.only(right: 22.0), child: SvgPicture.asset('assets/icons/share.svg'))
+          Padding(
+              padding: const EdgeInsets.only(right: 22.0),
+              child: SvgPicture.asset('assets/icons/share.svg'))
         ],
         // leadingWidth: 1,
         title: Container(
           height: 34,
           width: 279,
-          decoration: BoxDecoration(color: const Color(0xFFF8F8F8), borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(
+              color: const Color(0xFFF8F8F8),
+              borderRadius: BorderRadius.circular(10)),
           child: TextField(
               controller: searchController,
               onChanged: (value) {
@@ -79,7 +84,8 @@ class _ShopsPageState extends State<ShopsPage> {
               );
             }
             if (state is LoadingState) {
-              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
 
             if (state is LoadedState) {
@@ -88,25 +94,40 @@ class _ShopsPageState extends State<ShopsPage> {
                 child: GridView.builder(
                     // physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, childAspectRatio: 0.65, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.65,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10),
                     itemCount: state.popularShops.length,
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          context.router.push(ProductsRoute(cats: Cats(id: 0, name: '')));
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           ProductsPage(cats: Cats(id: 0, name: '')),
-                          //     ));
+                          GetStorage().remove('CatId');
+                          GetStorage().remove('subCatFilterId');
+                          GetStorage().remove('shopFilterId');
+                          GetStorage().remove('search');
+                          GetStorage().write('shopFilter',
+                              state.popularShops[index].name ?? '');
+                          // GetStorage().write('shopFilterId', state.popularShops[index].id);
+                          List<int> selectedListSort = [];
+                          selectedListSort
+                              .add(state.popularShops[index].id as int);
+                          GetStorage().write(
+                              'shopFilterId', selectedListSort.toString());
+                          // GetStorage().write('shopSelectedIndexSort', index);
+                          context.router.push(ProductsRoute(
+                            cats: Cats(id: 0, name: ''),
+                            shopId: state.popularShops[index].id.toString(),
+                          ));
                         },
                         child: ShopsListTile(
                           title: '${state.popularShops[index].name}',
                           credit: state.popularShops[index].credit ?? false,
                           bonus: '${state.popularShops[index].bonus}',
-                          url: "http://185.116.193.73/storage/${state.popularShops[index].image ?? ''}",
+                          url:
+                              "http://185.116.193.73/storage/${state.popularShops[index].image ?? ''}",
                         ),
                       );
                     }),
@@ -134,7 +155,8 @@ class _ShopsPageState extends State<ShopsPage> {
               //   },
               // );
             } else {
-              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
     );
