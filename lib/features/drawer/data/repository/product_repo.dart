@@ -44,15 +44,17 @@ class ProductApi {
       if (_box.hasData('search')) {
         search = GetStorage().read('search');
 
-        print('search sss $search');
       } else {
         search = '';
       }
       if (_box.hasData('brandFilterId')) {
+
         brandId = GetStorage().read('brandFilterId');
         brandIds.clear();
         var ab = json.decode(brandId).cast<int>().toList();
+
         brandIds.addAll(ab);
+
       } else {
         brandId = '';
         brandIds.clear();
@@ -137,6 +139,7 @@ class ProductApi {
     }
 
     for (var i = 0; i < brandIds.length; i++) {
+      print('sssss ${brandIds[i]}');
       queryParams['brand_id[$i]'] = brandIds[i].toString();
     }
 

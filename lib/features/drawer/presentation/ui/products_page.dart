@@ -57,7 +57,7 @@ class _ProductsPageState extends State<ProductsPage> {
     }
 
     GetStorage().remove('priceFilter');
-    if (widget.brandId != null) {
+    if (widget.brandId == null) {
       GetStorage().remove('brandFilterId');
     }
     if (widget.cats.id == 0 && widget.cats.name == null) {

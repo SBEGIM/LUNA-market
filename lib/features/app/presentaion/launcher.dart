@@ -324,8 +324,14 @@ class _LauncherAppState extends State<LauncherApp> {
             );
       },
       builder: (context, state) {
+        
         return state.maybeWhen(
-          notAuthorizedState: () => const ViewAuthRegisterPage(),
+          notAuthorizedState: 
+          (){
+
+            log('not auth ');
+            return  const ViewAuthRegisterPage();
+          },
           loadingState: () => const _Scaffold(child: CustomLoadingWidget()),
           inAppBlogerState: (index) => const BaseBloggerNew(),
           inAppAdminState: (index) => const BaseAdminNew(),

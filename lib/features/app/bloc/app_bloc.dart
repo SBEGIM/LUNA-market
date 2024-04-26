@@ -36,6 +36,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     _CheckAuth event,
     Emitter<AppState> emit,
   ) async {
+
+      print('token ${token}');
+
+
     if (token) {
       emit(const AppState.inAppUserState());
     } else {
