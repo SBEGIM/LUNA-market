@@ -35,13 +35,17 @@ class _ShopsPageState extends State<ShopsPage> {
           }),
         ),
         actions: [
-          Padding(padding: const EdgeInsets.only(right: 22.0), child: SvgPicture.asset('assets/icons/share.svg'))
+          Padding(
+              padding: const EdgeInsets.only(right: 22.0),
+              child: SvgPicture.asset('assets/icons/share.svg'))
         ],
         // leadingWidth: 1,
         title: Container(
           height: 34,
           width: 279,
-          decoration: BoxDecoration(color: const Color(0xFFF8F8F8), borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(
+              color: const Color(0xFFF8F8F8),
+              borderRadius: BorderRadius.circular(10)),
           child: TextField(
               controller: searchController,
               onChanged: (value) {
@@ -80,7 +84,8 @@ class _ShopsPageState extends State<ShopsPage> {
               );
             }
             if (state is LoadingState) {
-              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
 
             if (state is LoadedState) {
@@ -89,12 +94,17 @@ class _ShopsPageState extends State<ShopsPage> {
                 child: GridView.builder(
                     // physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, childAspectRatio: 0.65, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.65,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10),
                     itemCount: state.popularShops.length,
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
+<<<<<<< HEAD
 
 
                             GetStorage().remove('CatId');
@@ -126,12 +136,32 @@ class _ShopsPageState extends State<ShopsPage> {
                           //       builder: (context) =>
                           //           ProductsPage(cats: Cats(id: 0, name: '')),
                           //     ));
+=======
+                          GetStorage().remove('CatId');
+                          GetStorage().remove('subCatFilterId');
+                          GetStorage().remove('shopFilterId');
+                          GetStorage().remove('search');
+                          GetStorage().write('shopFilter',
+                              state.popularShops[index].name ?? '');
+                          // GetStorage().write('shopFilterId', state.popularShops[index].id);
+                          List<int> selectedListSort = [];
+                          selectedListSort
+                              .add(state.popularShops[index].id as int);
+                          GetStorage().write(
+                              'shopFilterId', selectedListSort.toString());
+                          // GetStorage().write('shopSelectedIndexSort', index);
+                          context.router.push(ProductsRoute(
+                            cats: Cats(id: 0, name: ''),
+                            shopId: state.popularShops[index].id.toString(),
+                          ));
+>>>>>>> ea3ddd94d33870d88bc816c9b3938f1d325b5147
                         },
                         child: ShopsListTile(
                           title: '${state.popularShops[index].name}',
                           credit: state.popularShops[index].credit ?? false,
                           bonus: '${state.popularShops[index].bonus}',
-                          url: "http://185.116.193.73/storage/${state.popularShops[index].image ?? ''}",
+                          url:
+                              "http://185.116.193.73/storage/${state.popularShops[index].image ?? ''}",
                         ),
                       );
                     }),
@@ -159,7 +189,8 @@ class _ShopsPageState extends State<ShopsPage> {
               //   },
               // );
             } else {
-              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
     );
