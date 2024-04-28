@@ -1,11 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/core/common/constants.dart';
+import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/categories_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/shops_filtr_page.dart';
 import 'package:haji_market/features/drawer/presentation/widgets/sorting_page.dart';
+import '../../../home/data/model/Cats.dart';
 import '../../data/bloc/brand_cubit.dart';
 import '../../data/bloc/city_cubit.dart';
 import '../../data/bloc/brand_state.dart';
@@ -474,7 +477,33 @@ class _FilterPageState extends State<FilterPage> {
             }),
         bottomSheet: GestureDetector(
             onTap: () {
-              Navigator.pop(context);
+
+
+
+
+                // GetStorage().remove('CatId');
+                //           GetStorage().remove('subCatFilterId');
+                //           GetStorage().remove('shopFilterId');
+                //           GetStorage().remove('search');
+                //           GetStorage().write('shopFilter',
+                //               state.popularShops[index].name ?? '');
+                //           // GetStorage().write('shopFilterId', state.popularShops[index].id);
+                //           List<int> selectedListSort = [];
+                //           selectedListSort
+                //               .add(state.popularShops[index].id as int);
+                //           GetStorage().write(
+                //               'shopFilterId', selectedListSort.toString());
+                //           // GetStorage().write('shopSelectedIndexSort', index);
+                          context.router.push(ProductsRoute(
+                            cats: Cats(id:GetStorage().read('CatId') , name:subCatName ),
+                          ));
+
+
+
+              // Navigator.pop(context);
+
+
+          
             },
             child: Container(
               color: Colors.white,

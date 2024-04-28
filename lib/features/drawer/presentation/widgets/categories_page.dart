@@ -102,9 +102,15 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                               subCatCubit.SubCatsCubit>(context)
                                           .subCats(state.cats[index].id);
 
+
+
+                                            GetStorage().write('CatId', state.cats[index].id);
+
                                       setState(() {
                                         // устанавливаем индекс выделенного элемента
                                         _selectedIndex = index;
+
+                                        
                                         _cat = state.cats[index];
                                       });
                                     }
@@ -182,10 +188,11 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                                         _selectedListIndex2
                                                             .add(index);
                                                       }
-                                                      GetStorage().write(
-                                                          'subCatFilterId',
-                                                          _selectedListIndex2
-                                                              .toString());
+
+                                                  GetStorage().write('subCatFilterId', [_selectedListIndex2.toString()]);
+
+
+
 
                                                       _subCat =
                                                           state.cats[index];

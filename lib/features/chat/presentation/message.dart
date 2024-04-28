@@ -49,7 +49,7 @@ class _MessagePageState extends State<MessagePage> {
     final chat = BlocProvider.of<MessageCubit>(context);
 
     String? data = await chat.imageStore(
-      _image != null ? _image!.path : "",
+      _image != null ? _image?.path ?? '': "",
     );
 
     String text = jsonEncode(
@@ -109,6 +109,7 @@ class _MessagePageState extends State<MessagePage> {
   @override
   void dispose() {
     channel.sink.close();
+    _chatTextController.clear();
     _chatTextController.dispose();
     super.dispose();
   }
@@ -146,6 +147,8 @@ class _MessagePageState extends State<MessagePage> {
 
     super.initState();
   }
+
+  
 
   @override
   Widget build(BuildContext context) {

@@ -32,7 +32,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
     'Ноябрь',
     'Декабрь',
   ];
-  int year = 2023;
+  int year = 2024;
   int _selectIndex = -1;
   final int _SelectSecondIndex = -1;
   int _summBonus = 0;

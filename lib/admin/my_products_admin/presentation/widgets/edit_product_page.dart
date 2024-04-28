@@ -1156,7 +1156,7 @@ class _EditProductPageState extends State<EditProductPage> {
                             width: 102,
                             height: 38,
                             child: Text(
-                              '${optomCount[index].price} тг',
+                              '${optomCount[index].price} руб',
                               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                             ),
                           ),

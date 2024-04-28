@@ -104,39 +104,6 @@ class _ShopsPageState extends State<ShopsPage> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-<<<<<<< HEAD
-
-
-                            GetStorage().remove('CatId');
-                                GetStorage().remove('subCatFilterId');
-                                GetStorage().remove('shopFilterId');
-                                GetStorage().remove('search');
-                                GetStorage().write('shopFilter',
-                                    state.popularShops[index].name ?? '');
-                                // GetStorage().write('shopFilterId', state.popularShops[index].id);
-
-                                List<int> selectedListSort = [];
-
-                                selectedListSort
-                                    .add(state.popularShops[index].id as int);
-
-                                GetStorage().write('shopFilterId',
-                                    selectedListSort.toString());
-
-                                // GetStorage().write('shopSelectedIndexSort', index);
-                                context.router.push(ProductsRoute(
-                                  cats: Cats(id: 0, name: ''),
-                                  shopId:
-                                      state.popularShops[index].id.toString(),
-                                ));
-                        
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           ProductsPage(cats: Cats(id: 0, name: '')),
-                          //     ));
-=======
                           GetStorage().remove('CatId');
                           GetStorage().remove('subCatFilterId');
                           GetStorage().remove('shopFilterId');
@@ -154,7 +121,6 @@ class _ShopsPageState extends State<ShopsPage> {
                             cats: Cats(id: 0, name: ''),
                             shopId: state.popularShops[index].id.toString(),
                           ));
->>>>>>> ea3ddd94d33870d88bc816c9b3938f1d325b5147
                         },
                         child: ShopsListTile(
                           title: '${state.popularShops[index].name}',
