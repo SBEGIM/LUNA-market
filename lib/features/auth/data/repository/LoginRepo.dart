@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:get_storage/get_storage.dart';
@@ -78,10 +79,14 @@ class LoginToApi {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       _box.write('token', data['access_token'].toString());
-      _box.write('user_id', data['id'].toString());
+      _box.write('user_id', data['user']['id'].toString());
       _box.write('name', 'Не авторизированный');
       // _box.write('card', data['user']['card'].toString());
+
+
     }
+
+
     return response.statusCode;
   }
 

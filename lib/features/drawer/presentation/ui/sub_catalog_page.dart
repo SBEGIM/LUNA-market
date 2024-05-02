@@ -12,6 +12,7 @@ import '../../data/bloc/sub_cats_state.dart';
 
 @RoutePage()
 class SubCatalogPage extends StatefulWidget {
+  
   final Cats? cats;
 
   const SubCatalogPage({Key? key, this.cats}) : super(key: key);

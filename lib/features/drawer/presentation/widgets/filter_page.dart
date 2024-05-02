@@ -185,6 +185,8 @@ class _FilterPageState extends State<FilterPage> {
 
                                   if (data != '') {
                                     subCatName = data;
+
+                                        BlocProvider.of<productCubit.ProductCubit>(context).products();
                                     setState(() {});
                                   }
                                 },
@@ -494,9 +496,9 @@ class _FilterPageState extends State<FilterPage> {
                 //           GetStorage().write(
                 //               'shopFilterId', selectedListSort.toString());
                 //           // GetStorage().write('shopSelectedIndexSort', index);
-                          context.router.push(ProductsRoute(
-                            cats: Cats(id:GetStorage().read('CatId') , name:subCatName ),
-                          ));
+                 context.router.push(ProductsRoute(
+                  cats: subCatName != '' ? Cats(id:GetStorage().read('CatId') , name:subCatName ) : Cats(id: 0, name: ''),
+                ));
 
 
 
@@ -533,6 +535,10 @@ class _FilterPageState extends State<FilterPage> {
         } else {
           _selectListBrand.add(index);
         }
+
+
+       BlocProvider.of<productCubit.ProductCubit>(context).products();
+
 
         setState(() {});
 
@@ -571,6 +577,8 @@ class _FilterPageState extends State<FilterPage> {
         } else {
           _selectListShop.add(index);
         }
+
+       BlocProvider.of<productCubit.ProductCubit>(context).products();
 
         setState(() {});
         // BlocProvider.of<productCubit.ProductCubit>(context).products();

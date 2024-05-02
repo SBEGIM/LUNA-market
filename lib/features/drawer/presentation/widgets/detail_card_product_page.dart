@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/app/widgets/error_image_widget.dart';
+import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/profit_cubit.dart'
     as profitCubit;
 import 'package:haji_market/features/drawer/data/bloc/profit_state.dart'
@@ -510,7 +511,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           BlocProvider.of<ProductCubit>(context).products();
                         },
                         icon: SvgPicture.asset(
-                          inFavorite == true
+                          inFavorite != true
                               ? 'assets/icons/favorite_product_show.svg'
                               : 'assets/icons/heart_fill.svg',
                           color: Colors.red,
@@ -2313,7 +2314,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     const Divider(height: 0),
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
-                    onTap: () {
+                    onTap: () async{
                       if (index == 0) {
                         List<int> selectedListSort = [];
 
@@ -2321,15 +2322,14 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
                         GetStorage()
                             .write('shopFilterId', selectedListSort.toString());
+                        await BlocProvider.of<ProductCubit>(context).products();
 
                         context.router.push(ProductsRoute(
                           cats: Cats(id: 0, name: ''),
                           shopId: widget.product.shop!.id.toString(),
                         ));
+                        
 
-                        // Get.to(() => ProductsPage(
-                        //       cats: Cats(id: 0, name: ''),
-                        //     ));
                       } else if (index == 1) {
                         GetStorage().remove('brandFilterId');
                         List<int> selectedListSort = [];
@@ -2337,6 +2337,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         selectedListSort.add(widget.product.brandId ?? 0);
                         GetStorage().write(
                             'brandFilterId', selectedListSort.toString());
+
+
+                        await BlocProvider.of<ProductCubit>(context).products();
 
                         context.router.push(ProductsRoute(
                             cats: Cats(id: 0, name: ''),
@@ -2354,6 +2357,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               widget.product.catId,
                             ].toString());
                         GetStorage().remove('shopFilterId');
+                                                await BlocProvider.of<ProductCubit>(context).products();
+
                         context.router.push(ProductsRoute(
                           cats: Cats(
                               id: widget.product.catId,
