@@ -294,18 +294,16 @@ class _CategoriesPageState extends State<CategoriesPage> {
             const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
         child: InkWell(
           onTap: () {
-            if (_cat != null && _subCat != null) {
-              Get.back(result: _subCat!.name);
-            }
+              Get.back(result: _subCat?.name ?? 'Не выбрано');
+            
 
             // Navigator.pop(context);
           },
           child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: (_cat != null && _subCat != null)
-                    ? AppColors.kPrimaryColor
-                    : AppColors.steelGray,
+                color: 
+                     AppColors.kPrimaryColor
               ),
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.all(16),
