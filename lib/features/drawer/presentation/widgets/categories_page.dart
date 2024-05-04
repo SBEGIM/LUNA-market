@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,6 +34,28 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   @override
   void initState() {
+
+
+    if(GetStorage().hasData('CatId')){
+
+        final  catId = GetStorage().read('CatId');
+        
+        log(catId.toString());
+        _selectedIndex =  catId;
+
+}
+    
+
+
+    if(GetStorage().hasData('subCatFilterId')){
+
+        var  brandId = GetStorage().read('subCatFilterId');
+        var ab = json.decode(brandId.toString()).cast<int>().toList();
+
+        _selectedListIndex2.addAll(ab);
+
+
+}
     BlocProvider.of<CatsCubit>(context).cats();
     super.initState();
   }
@@ -93,7 +118,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                             children: [
                               InkWell(
                                   onTap: () async {
-                                    if (_selectedIndex == index) {
+                                    if (_selectedIndex == state.cats[index].id) {
                                       setState(() {
                                         _selectedIndex = -1;
                                       });
@@ -108,7 +133,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
                                       setState(() {
                                         // устанавливаем индекс выделенного элемента
-                                        _selectedIndex = index;
+                                        _selectedIndex = state.cats[index].id!;
 
                                         
                                         _cat = state.cats[index];
@@ -116,7 +141,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                     }
                                   },
                                   child: ListTile(
-                                    selected: index == _selectedIndex,
+                                    selected: state.cats[index].id == _selectedIndex,
                                     // leading: SvgPicture.asset('assets/temp/kaz.svg'),
                                     title: Text(
                                       state.cats[index].name.toString(),
@@ -125,7 +150,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400),
                                     ),
-                                    trailing: _selectedIndex == index
+                                    trailing: _selectedIndex ==  state.cats[index].id
                                         ? SvgPicture.asset(
                                             'assets/icons/check_circle.svg',
                                           )
@@ -133,12 +158,12 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                             'assets/icons/circle.svg',
                                           ),
                                   )),
-                              _selectedIndex == index
+                                  state.cats[index].id == _selectedIndex
                                   ? Divider(
                                       color: Colors.grey.shade400,
                                     )
                                   : Container(),
-                              _selectedIndex == index
+                               state.cats[index].id  == _selectedIndex
                                   ? BlocConsumer<subCatCubit.SubCatsCubit,
                                           subCatState.SubCatsState>(
                                       listener: (context, state) {},
@@ -181,15 +206,15 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                                       // _selectedIndex2 = index;
                                                       //_selectedListIndex2
                                                       if (_selectedListIndex2
-                                                          .contains(index)) {
+                                                          .contains(state.cats[index].id)) {
                                                         _selectedListIndex2
-                                                            .remove(index);
+                                                            .remove(state.cats[index].id);
                                                       } else {
                                                         _selectedListIndex2
-                                                            .add(index);
+                                                            .add(state.cats[index].id ?? 0);
                                                       }
 
-                                                  GetStorage().write('subCatFilterId', [_selectedListIndex2.toString()]);
+                                                  GetStorage().write('subCatFilterId', [state.cats[index].id]);
 
 
 
@@ -213,7 +238,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                                         selected:
                                                             _selectedListIndex2
                                                                 .contains(
-                                                                    index),
+                                                                    state.cats[index].id),
 
                                                         // leading: SvgPicture.asset('assets/temp/kaz.svg'),
                                                         title: Text(
@@ -230,7 +255,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                                         trailing:
                                                             _selectedListIndex2
                                                                     .contains(
-                                                                        index)
+                                                                        state.cats[index].id)
                                                                 ? SvgPicture
                                                                     .asset(
                                                                     'assets/icons/check_circle.svg',

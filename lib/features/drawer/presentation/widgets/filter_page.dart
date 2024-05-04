@@ -134,8 +134,6 @@ if(GetStorage().hasData('brandFilterId')){
 
                 countProduct(state.productModel.length);
 
-                                log('count_product  $count');
-
               }
             },
             builder: (context, state) {
