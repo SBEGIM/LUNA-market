@@ -88,7 +88,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
                   ListTile(
                     minVerticalPadding: 14,
                     leading: Image.network(
-                      'http://80.87.202.73:8001/storage/${widget.shop.shop!.image}',
+                      'http://185.116.193.73/storage/${widget.shop.shop!.image}',
                       width: 50,
                       height: 50,
                       errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
