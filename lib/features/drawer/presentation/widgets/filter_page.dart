@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,13 +41,43 @@ class _FilterPageState extends State<FilterPage> {
   String sortName = 'Не выбрано';
   int count = 0;
 
+
+  countProduct(int number) async{
+
+    count = number;
+    setState(() {
+      
+    });
+
+  }
+
   @override
   void initState() {
     // TODO: implement initState
 
-    BlocProvider.of<BrandCubit>(context).brands();
+
+ BrandCubit brandCubit =
+        BlocProvider.of<BrandCubit>(context);
+
+    if(brandCubit.state is! LoadedState ){
+        brandCubit.brands();
+        
+    }
+
     BlocProvider.of<productCubit.ProductCubit>(context).products();
+
+
+
+if(GetStorage().hasData('brandFilterId')){
+
+        var  brandId = GetStorage().read('brandFilterId');
+        var ab = json.decode(brandId).cast<int>().toList();
+
+        _selectListBrand.addAll(ab);
+
+}
     
+
     super.initState();
   }
 
@@ -95,7 +128,16 @@ class _FilterPageState extends State<FilterPage> {
           ],
         ),
         body: BlocConsumer<productCubit.ProductCubit, productState.ProductState>(
-            listener: (context, state) {},
+            listener: (context, state) {
+
+              if(state is productState.LoadedState){
+
+                countProduct(state.productModel.length);
+
+                                log('count_product  $count');
+
+              }
+            },
             builder: (context, state) {
               if (state is productState.ErrorState) {
                 return Center(
@@ -110,7 +152,6 @@ class _FilterPageState extends State<FilterPage> {
               }
 
               if (state is productState.LoadedState) {
-                count = state.productModel.length;
                 return ListView(
                   shrinkWrap: true,
                   children: [
@@ -188,7 +229,7 @@ class _FilterPageState extends State<FilterPage> {
                                   if (data != '') {
                                     subCatName = data;
 
-                                        BlocProvider.of<productCubit.ProductCubit>(context).products();
+                                      await  BlocProvider.of<productCubit.ProductCubit>(context).products();
                                     setState(() {});
                                   }
                                 },
@@ -337,7 +378,7 @@ class _FilterPageState extends State<FilterPage> {
                                       itemCount: state.cats.length,
                                       itemBuilder: (BuildContext ctx, index) {
                                         return Container(
-                                          child: chipBrand(state.cats[index].name.toString(), index),
+                                          child: chipBrand(state.cats[index].name.toString(), state.cats[index].id ?? 0),
                                         );
                                       });
                                 } else {
@@ -498,13 +539,13 @@ class _FilterPageState extends State<FilterPage> {
                 //           GetStorage().write(
                 //               'shopFilterId', selectedListSort.toString());
                 //           // GetStorage().write('shopSelectedIndexSort', index);
-                 context.router.push(ProductsRoute(
-                  cats: subCatName != '' ? Cats(id:GetStorage().read('CatId') , name:subCatName ) : Cats(id: 0, name: ''),
-                ));
+                //  context.router.push(ProductsRoute(
+                //   cats: subCatName != '' ? Cats(id:GetStorage().read('CatId') , name:subCatName ) : Cats(id: 0, name: ''),
+                // ));
 
 
 
-              // Navigator.pop(context);
+              Navigator.pop(context);
 
 
           
@@ -520,7 +561,7 @@ class _FilterPageState extends State<FilterPage> {
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.all(16),
                   child:  productState.ProductState is productState.LoadingState ?
-                SizedBox(height:20,width: 20,child:  const  CircularProgressIndicator(backgroundColor: Colors.white,))
+                     const  SizedBox(height:20,width: 20,child:    CircularProgressIndicator(backgroundColor: Colors.white,))
                   :
                    Text(
                     'Показать $count товара',
@@ -530,9 +571,9 @@ class _FilterPageState extends State<FilterPage> {
             )));
   }
 
-  Widget chipBrand(String label, int index) {
+  Widget chipBrand(String label, int index ) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async{
         //_selectListBrand[index] = index;
 
         if (_selectListBrand.contains(index)) {
@@ -544,7 +585,11 @@ class _FilterPageState extends State<FilterPage> {
         GetStorage().write('brandFilterId', _selectListBrand.toString());
 
 
-       BlocProvider.of<productCubit.ProductCubit>(context).products();
+
+      
+
+
+       await BlocProvider.of<productCubit.ProductCubit>(context).products();
 
 
         setState(() {});

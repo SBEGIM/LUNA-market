@@ -34,11 +34,7 @@ class _ShopsPageState extends State<ShopsPage> {
             context.router.pop();
           }),
         ),
-        actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 22.0),
-              child: SvgPicture.asset('assets/icons/share.svg'))
-        ],
+       
         // leadingWidth: 1,
         title: Container(
           height: 34,
@@ -48,6 +44,7 @@ class _ShopsPageState extends State<ShopsPage> {
               borderRadius: BorderRadius.circular(10)),
           child: TextField(
               controller: searchController,
+              textAlign: TextAlign.left,
               onChanged: (value) {
                 BlocProvider.of<PopularShopsCubit>(context).searchShops(value);
 
@@ -59,12 +56,16 @@ class _ShopsPageState extends State<ShopsPage> {
                 prefixIcon: Icon(
                   Icons.search,
                   color: AppColors.kGray300,
+                  
                 ),
+               contentPadding: EdgeInsets.only(bottom: 10),
                 hintText: 'Поиск',
                 hintStyle: TextStyle(
                   color: AppColors.kGray300,
                   fontSize: 18,
+                  
                 ),
+                hintMaxLines: 1,
                 border: InputBorder.none,
               ),
               style: const TextStyle(

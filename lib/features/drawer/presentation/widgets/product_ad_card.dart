@@ -126,7 +126,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                             ),
                           )
                         : const SizedBox(),
-                    widget.product.point != 0 ? const SizedBox(height: 66) : const SizedBox(),
+                    widget.product.point != 0 ? const SizedBox(height: 5) : const SizedBox(),
                     Container(
                       decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(6)),
                       child: Padding(

@@ -306,14 +306,14 @@ class _HomePageState extends State<HomePage> {
                                 // width: 400,
                                 height: state.productModel.length >= 2
                                     ? MediaQuery.of(context).size.height * 0.64
-                                    : 304,
+                                    : MediaQuery.of(context).size.height * 0.32 ,
                                 child: GridView.builder(
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                       SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 2,
-                                          childAspectRatio: 1.55,
+                                          childAspectRatio: MediaQuery.of(context).size.height * 0.0010,
                                           crossAxisSpacing: 10,
                                           mainAxisSpacing: 0),
                                   itemCount: state.productModel.length >= 8
