@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart';
 
 import '../../../../core/common/constants.dart';
 import '../../data/bloc/brand_cubit.dart';
@@ -91,6 +93,11 @@ class _BrandsPageState extends State<BrandsPage> {
                                   } else {
                                     _selectedListSort.add(index);
                                   }
+
+
+                                  GetStorage().write('brandFilterId', _selectedListSort.toString());
+                                         BlocProvider.of<ProductCubit>(context).products();
+
                                   // subCatName =
                                   //     state.cats[index].name.toString();
                                 });

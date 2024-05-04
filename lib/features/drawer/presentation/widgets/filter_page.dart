@@ -43,6 +43,8 @@ class _FilterPageState extends State<FilterPage> {
     // TODO: implement initState
 
     BlocProvider.of<BrandCubit>(context).brands();
+    BlocProvider.of<productCubit.ProductCubit>(context).products();
+    
     super.initState();
   }
 
@@ -517,7 +519,10 @@ class _FilterPageState extends State<FilterPage> {
                   ),
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.all(16),
-                  child: Text(
+                  child:  productState.ProductState is productState.LoadingState ?
+                SizedBox(height:20,width: 20,child:  const  CircularProgressIndicator(backgroundColor: Colors.white,))
+                  :
+                   Text(
                     'Показать $count товара',
                     style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
                     textAlign: TextAlign.center,
@@ -535,6 +540,8 @@ class _FilterPageState extends State<FilterPage> {
         } else {
           _selectListBrand.add(index);
         }
+
+        GetStorage().write('brandFilterId', _selectListBrand.toString());
 
 
        BlocProvider.of<productCubit.ProductCubit>(context).products();

@@ -16,6 +16,7 @@ class ProductCubit extends Cubit<ProductState> {
   Future<void> products() async {
     try {
       page = 1;
+      emit(LoadingState());
       final List<ProductModel> data = await productRepository.product(page);
       _products.clear();
       _products.addAll(data);
