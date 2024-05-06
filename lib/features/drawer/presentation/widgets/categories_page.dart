@@ -296,8 +296,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
           onTap: () {
               Get.back(result: _subCat?.name ?? 'Не выбрано');
             
-
-            // Navigator.pop(context);
           },
           child: Container(
               decoration: BoxDecoration(
