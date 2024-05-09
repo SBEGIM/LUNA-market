@@ -31,7 +31,7 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
       isvisible = true;
     }
     inFavorite = widget.product.inFavorite ?? false;
-    compoundPrice = (widget.product.price!.toInt() - widget.product.compound!.toInt());
+    compoundPrice =  (widget.product.price!.toInt() * (((100 - widget.product.compound!.toInt())) / 100)).toInt();
     procentPrice =
         ((widget.product.price!.toInt() - widget.product.compound!.toInt()) / widget.product.price!.toInt()) * 100;
     super.initState();

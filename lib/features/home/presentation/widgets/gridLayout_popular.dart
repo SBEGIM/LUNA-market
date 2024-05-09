@@ -99,7 +99,9 @@ class GridOptionsPopular extends StatelessWidget {
                 margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.17, left: 4),
                 alignment: Alignment.center,
                 child: Text(
-                  layout!.title!,
+                  layout?.title ?? '',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
                   style: AppTextStyles.categoryTextStyle,
                   textAlign: TextAlign.center,
                 ),

@@ -34,10 +34,85 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
   String productId = '';
   String productName = '';
   int segmentValue = 0;
+  int statusProggress = 1;
 
   int rating = 0;
 
   final TextEditingController _commentController = TextEditingController();
+
+
+   orderTimeline(String status){
+
+       switch (status) {
+      case 'order':
+        {
+          statusProggress = 1;
+        }
+        break;
+
+      case 'accepted':
+        {
+          statusProggress = 2;
+        }
+        break;
+
+      case 'courier':
+        {
+          statusProggress = 3;
+        }
+        break;
+      case 'error':
+        {
+          statusProggress = 1;
+        }
+        break;
+      case 'cancel':
+        {
+          statusProggress = 1;
+        }
+        break;
+      case 'rejected':
+        {
+          statusProggress = 2;
+        }
+        break;
+      case 'end':
+        {
+          statusProggress = 4;
+        }
+        break;
+      case 'in_process':
+        {
+          statusProggress = 1;
+        }
+        break;
+       case 'success':
+        {
+          statusProggress = 2;
+        }
+        break;
+      default:
+        {
+          statusProggress = 1;
+        }
+        break;
+    }
+
+    print('this nuber ${statusProggress}');
+
+    setState(() {
+      
+    });
+
+   }
+
+
+   @override
+  void initState() {
+    
+    orderTimeline(widget.basketOrder.statusFBS ?? 'in_process');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +197,16 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                     onValueChanged: (int? value) async {
                       if (value != null) {
                         segmentValue = value;
+                        print('${widget.basketOrder.statusFBS}');
+
+                        if(value == 0){
+                          orderTimeline(widget.basketOrder.statusFBS ?? 'in_process');
+
+                        }else{
+                          orderTimeline(widget.basketOrder.statusRealFBS ?? 'in_process');
+
+                        }
+
                         // BlocProvider.of<BasketAdminCubit>(context).basketSwitchState(value);
                       }
                       setState(() {});
@@ -171,24 +256,21 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isFirst: true,
-                                  indicatorStyle: widget.basketOrder.statusFBS == 'order'
-                                      ? IndicatorStyle(
+                                  indicatorStyle: statusProggress  >= 1? 
+                                       IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
                                             iconData: Icons.check,
                                           ),
-                                        )
-                                      : IndicatorStyle(
+                                        )  : IndicatorStyle(
                                           color: Colors.grey,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
-                                            iconData: (widget.basketOrder.statusFBS == 'end' ||
-                                                    widget.basketOrder.statusFBS == 'courier')
-                                                ? Icons.check
-                                                : Icons.history_toggle_off,
+                                            iconData: Icons.history_toggle_off,
                                           ),
                                         ),
+                                     
                                   beforeLineStyle: const LineStyle(
                                     thickness: 1.4,
                                   ),
@@ -219,22 +301,18 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isFirst: false,
-                                  indicatorStyle: widget.basketOrder.statusFBS == 'accepted'
-                                      ? IndicatorStyle(
+                                  indicatorStyle:  statusProggress  >= 2? 
+                                       IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
                                             iconData: Icons.check,
                                           ),
-                                        )
-                                      : IndicatorStyle(
+                                        )  : IndicatorStyle(
                                           color: Colors.grey,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
-                                            iconData: (widget.basketOrder.statusFBS == 'end' ||
-                                                    widget.basketOrder.statusFBS == 'accepted')
-                                                ? Icons.check
-                                                : Icons.history_toggle_off,
+                                            iconData: Icons.history_toggle_off,
                                           ),
                                         ),
                                   beforeLineStyle: const LineStyle(
@@ -247,7 +325,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          widget.basketOrder.statusFBS == 'cancel' ? 'Отменен' : 'Прният',
+                                          widget.basketOrder.statusFBS == 'cancel' || widget.basketOrder.statusFBS == 'rejected' ? 'Отменен или Отклонен' : 'Прният',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14,
@@ -267,22 +345,18 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isFirst: false,
-                                  indicatorStyle: widget.basketOrder.statusFBS == 'courier'
-                                      ? IndicatorStyle(
+                                  indicatorStyle:  statusProggress  >= 3? 
+                                       IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
                                             iconData: Icons.check,
                                           ),
-                                        )
-                                      : IndicatorStyle(
+                                        )  : IndicatorStyle(
                                           color: Colors.grey,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
-                                            iconData: (widget.basketOrder.statusFBS == 'end' ||
-                                                    widget.basketOrder.statusFBS == 'courier')
-                                                ? Icons.check
-                                                : Icons.history_toggle_off,
+                                            iconData: Icons.history_toggle_off,
                                           ),
                                         ),
                                   beforeLineStyle: const LineStyle(
@@ -315,21 +389,18 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isLast: true,
-                                  indicatorStyle: widget.basketOrder.statusFBS == 'end'
-                                      ? IndicatorStyle(
+                                  indicatorStyle:  statusProggress  >= 4? 
+                                       IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
                                             iconData: Icons.check,
                                           ),
-                                        )
-                                      : IndicatorStyle(
+                                        )  : IndicatorStyle(
                                           color: Colors.grey,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
-                                            iconData: widget.basketOrder.statusFBS == 'end'
-                                                ? Icons.check
-                                                : Icons.history_toggle_off,
+                                            iconData: Icons.history_toggle_off,
                                           ),
                                         ),
                                   beforeLineStyle: const LineStyle(
@@ -999,7 +1070,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isFirst: true,
-                                  indicatorStyle: widget.basketOrder.statusRealFBS == 'order'
+                                  indicatorStyle: statusProggress  >= 1 
                                       ? IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
@@ -1011,10 +1082,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           color: Colors.grey,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
-                                            iconData: (widget.basketOrder.statusRealFBS == 'end' ||
-                                                    widget.basketOrder.statusRealFBS == 'courier')
-                                                ? Icons.check
-                                                : Icons.history_toggle_off,
+                                            iconData: 
+                                               Icons.history_toggle_off,
                                           ),
                                         ),
                                   beforeLineStyle: const LineStyle(
@@ -1047,7 +1116,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isFirst: false,
-                                  indicatorStyle: widget.basketOrder.statusRealFBS == 'accepted'
+                                  indicatorStyle: statusProggress  >= 2
                                       ? IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
@@ -1075,7 +1144,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          widget.basketOrder.statusRealFBS == 'cancel' ? 'Отменен' : 'Прният',
+                                          widget.basketOrder.statusRealFBS == 'cancel' || widget.basketOrder.statusRealFBS == 'rejected' ? 'Отменен' : 'Прният',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14,
@@ -1095,7 +1164,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isFirst: false,
-                                  indicatorStyle: widget.basketOrder.statusRealFBS == 'courier'
+                                  indicatorStyle: statusProggress  >= 3
                                       ? IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
@@ -1143,7 +1212,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isLast: true,
-                                  indicatorStyle: widget.basketOrder.statusRealFBS == 'end'
+                                  indicatorStyle: statusProggress  >= 4 
                                       ? IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(

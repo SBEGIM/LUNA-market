@@ -65,6 +65,11 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
           statusFBS = 'В процессе';
         }
         break;
+        case 'success':
+        {
+          statusFBS = 'Принят';
+        }
+        break;
       default:
         {
           statusFBS = 'Неизвестно';
@@ -113,6 +118,11 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
       case 'in_process':
         {
           statusRealFBS = 'В процессе';
+        }
+        break;
+       case 'success':
+        {
+          statusFBS = 'Принят';
         }
         break;
       default:

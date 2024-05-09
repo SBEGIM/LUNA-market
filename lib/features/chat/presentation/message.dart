@@ -205,6 +205,7 @@ class _MessagePageState extends State<MessagePage> {
                 // });
                 if (ready) {
                   return Column(
+                    mainAxisSize: MainAxisSize.max,
                     children: [
                       Expanded(
                         child: SmartRefresher(
@@ -339,21 +340,29 @@ class _MessagePageState extends State<MessagePage> {
                               //   color: Colors.black,
                               // ),
                             ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 10, right: 10),
-                              padding: const EdgeInsets.only(left: 16),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  border: Border.all(width: 0.3, color: Colors.grey)),
-                              height: 40,
-                              width: 243,
-                              child: TextField(
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Напишите продавцу',
+                            Column(
+                                                                  mainAxisSize: MainAxisSize.max,
+
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(left: 10, right: 10),
+                                  padding: const EdgeInsets.only(left: 16),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30),
+                                      border: Border.all(width: 0.3, color: Colors.grey)),
+                                  
+                                  width: 243, 
+                                  child: TextField(
+                                    autocorrect: false,
+                                    maxLines: null,
+                                    decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Напишите продавцу',
+                                    ),
+                                    controller: _chatTextController,
+                                  ),
                                 ),
-                                controller: _chatTextController,
-                              ),
+                              ],
                             ),
                             GestureDetector(
                               onTap: () {

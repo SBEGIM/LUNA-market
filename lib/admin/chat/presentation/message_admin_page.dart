@@ -323,21 +323,26 @@ class _MessageAdminState extends State<MessageAdmin> {
                                   //   color: Colors.black,
                                   // ),
                                 ),
-                                Container(
-                                  margin: const EdgeInsets.only(left: 10, right: 10),
-                                  padding: const EdgeInsets.only(left: 16),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(30),
-                                      border: Border.all(width: 0.3, color: Colors.grey)),
-                                  height: 40,
-                                  width: 243,
-                                  child: TextField(
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: 'Напишите продавцу',
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 10, right: 10),
+                                      padding: const EdgeInsets.only(left: 16),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(30),
+                                          border: Border.all(width: 0.3, color: Colors.grey)),
+                                      width: 243,
+                                      child: TextField(
+                                        maxLines: null,
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: 'Напишите клиенту',
+                                        ),
+                                        controller: _chatTextController,
+                                      ),
                                     ),
-                                    controller: _chatTextController,
-                                  ),
+                                  ],
                                 ),
                                 GestureDetector(
                                   onTap: () {
