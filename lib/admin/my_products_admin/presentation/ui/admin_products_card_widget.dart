@@ -9,7 +9,8 @@ import '../widgets/show_alert_statictics_widget.dart';
 class AdminProductCardWidget extends StatefulWidget {
   final AdminProductsModel product;
 
-  const AdminProductCardWidget({required this.product, Key? key}) : super(key: key);
+  const AdminProductCardWidget({required this.product, Key? key})
+      : super(key: key);
 
   @override
   State<AdminProductCardWidget> createState() => _AdminProductCardWidgetState();
@@ -29,7 +30,9 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
     //   isvisible = true;
     // }
     // inFavorite = widget.product.inFavorite ?? false;
-    compoundPrice = widget.product.price! - ((widget.product.price! / 100) * (widget.product.compound ?? 1)).toInt();
+    compoundPrice = widget.product.price! -
+        ((widget.product.price! / 100) * (widget.product.compound ?? 1))
+            .toInt();
 
     widget.product.bloc?.forEach((element) {
       optomCount += element.count ?? 0;
@@ -43,13 +46,15 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
     return Container(
       height: 160,
       margin: const EdgeInsets.only(left: 16, top: 7, bottom: 8, right: 16),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), boxShadow: const [
-        BoxShadow(
-          offset: Offset(0, 2),
-          // blurRadius: 4,
-          color: Colors.white,
-        ),
-      ]),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: const [
+            BoxShadow(
+              offset: Offset(0, 2),
+              // blurRadius: 4,
+              color: Colors.white,
+            ),
+          ]),
       // height: MediaQuery.of(context).size.height * 0.86,
       // color: Colors.red,
       child: Row(
@@ -65,25 +70,32 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                       : "http://185.116.193.73/storage/banners/2.png",
                   height: 104,
                   width: 104,
-                  errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                  errorBuilder: (context, error, stackTrace) =>
+                      const ErrorImageWidget(
                     height: 104,
                     width: 104,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 4, right: 4, bottom: 8, top: 8),
+                  padding: const EdgeInsets.only(
+                      left: 4, right: 4, bottom: 8, top: 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        decoration:
-                            BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(4)),
+                        decoration: BoxDecoration(
+                            color: AppColors.kPrimaryColor,
+                            borderRadius: BorderRadius.circular(4)),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 4, right: 4, top: 2, bottom: 2),
+                          padding: const EdgeInsets.only(
+                              left: 4, right: 4, top: 2, bottom: 2),
                           child: Text(
                             widget.product.fulfillment ?? 'Доставка',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w400),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                       ),
@@ -92,13 +104,19 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                       ),
                       widget.product.point != 0
                           ? Container(
-                              decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(4)),
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(4)),
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 4, right: 4, top: 2, bottom: 2),
+                                padding: const EdgeInsets.only(
+                                    left: 4, right: 4, top: 2, bottom: 2),
                                 child: Text(
                                   '${widget.product.point ?? 0}% Б',
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w400),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ),
                             )
@@ -107,13 +125,19 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                         height: widget.product.point != 0 ? 22 : 0,
                       ),
                       Container(
-                        decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(4)),
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(4)),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 4.0, right: 4, top: 2, bottom: 2),
+                          padding: const EdgeInsets.only(
+                              left: 4.0, right: 4, top: 2, bottom: 2),
                           child: Text(
                             '-${widget.product.compound} %',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w400),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                       ),
@@ -138,12 +162,15 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                     children: [
                       Container(
                         height: 40,
-                        width: 160,
+                        width: 145,
                         alignment: Alignment.centerLeft,
                         child: Text(
                           widget.product.name.toString(),
                           // 'qweqweq qweqweqw qweqweqweqw qweqweqwe qweqweqweqweqw',
-                          style: const TextStyle(fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w500),
+                          style: const TextStyle(
+                              fontSize: 12,
+                              color: AppColors.kGray900,
+                              fontWeight: FontWeight.w500),
                           textAlign: TextAlign.start,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
@@ -152,7 +179,8 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
 
                       GestureDetector(
                           onTap: () async {
-                            await Share.share('$kDeepLinkUrl/?product_id=${widget.product.id}');
+                            await Share.share(
+                                '$kDeepLinkUrl/?product_id=${widget.product.id}');
                           },
                           child: SvgPicture.asset(
                             'assets/icons/share.svg',
@@ -184,7 +212,10 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                   padding: const EdgeInsets.only(top: 0, bottom: 3),
                   child: Text(
                     '${widget.product.catName}',
-                    style: const TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                    style: const TextStyle(
+                        color: AppColors.kGray300,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
                   ),
                 ),
                 // Row(
@@ -259,7 +290,10 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                             // width: 75,
                             child: Text(
                               '$compoundPrice ₽ ',
-                              style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w500, fontSize: 16),
+                              style: const TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16),
                             ),
                           ),
                           Text(
@@ -298,23 +332,31 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'В наличии: ${widget.product.count} шт',
-                                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w500),
+                                'В наличии: ${widget.product.count}x',
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w500),
                               ),
                               const SizedBox(height: 6),
                               Text(
-                                'Оптом: $optomCount шт',
-                                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w500),
+                                'Оптом: ${optomCount}x',
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
                         ),
                         GestureDetector(
                           onTap: () async {
-                            await showAlertStaticticsWidget(context, widget.product);
+                            await showAlertStaticticsWidget(
+                                context, widget.product);
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
                             // width: 99,
                             decoration: BoxDecoration(
                               color: const Color(0xFF1DC4CF),
@@ -324,7 +366,10 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
                             child: const Text(
                               'Управление',
                               // textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600),
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                         ),

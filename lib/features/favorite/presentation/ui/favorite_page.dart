@@ -19,6 +19,22 @@ class FavoritePage extends StatefulWidget {
 
 class _FavoritePageState extends State<FavoritePage> {
   RefreshController refreshController = RefreshController();
+
+  Future<void> onLoading() async {
+    await BlocProvider.of<FavoriteCubit>(context).myFavoritesPagination();
+    await Future.delayed(const Duration(milliseconds: 2000));
+    refreshController.loadComplete();
+  }
+
+  Future<void> onRefresh() async {
+    await BlocProvider.of<FavoriteCubit>(context).myFavorites();
+    await Future.delayed(Duration(milliseconds: 1000));
+    if (mounted) {
+      setState(() {});
+    }
+    refreshController.refreshCompleted();
+  }
+
   @override
   void initState() {
     BlocProvider.of<FavoriteCubit>(context).myFavorites();
@@ -59,30 +75,39 @@ class _FavoritePageState extends State<FavoritePage> {
                 );
               }
               if (state is LoadingState) {
-                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.indigoAccent));
               }
               if (state is NoDataState) {
                 return SizedBox(
                   width: MediaQuery.of(context).size.height,
                   child: SmartRefresher(
                     controller: refreshController,
-                    onRefresh: () {
-                      BlocProvider.of<FavoriteCubit>(context).myFavorites();
+                    onLoading: () {
+                      BlocProvider.of<FavoriteCubit>(context)
+                          .myFavoritesPagination();
                       refreshController.refreshCompleted();
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Container(margin: EdgeInsets.only(top: 146), child: Image.asset('assets/icons/no_data.png')),
+                        Container(
+                            margin: EdgeInsets.only(top: 146),
+                            child: Image.asset('assets/icons/no_data.png')),
                         const Text(
                           'В избранном нет товаров',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w600),
                           textAlign: TextAlign.center,
                         ),
                         const Text(
                           'Для выбора вещей перейдите в маркет',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff717171)),
                           textAlign: TextAlign.center,
                         )
                       ],
@@ -94,22 +119,31 @@ class _FavoritePageState extends State<FavoritePage> {
               if (state is LoadedState) {
                 return SmartRefresher(
                   controller: refreshController,
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  onLoading: () {
+                    onLoading();
+                  },
                   onRefresh: () {
-                    BlocProvider.of<FavoriteCubit>(context).myFavorites();
-                    refreshController.refreshCompleted();
+                    onRefresh();
                   },
                   child: ListView.builder(
-                      shrinkWrap: true,
+                      shrinkWrap: false,
                       itemCount: state.productModel.length,
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
-                          onTap: () => context.router.push(DetailCardProductRoute(product: state.productModel[index])),
-                          child: FavoriteProductsCardWidget(product: state.productModel[index]),
+                          onTap: () => context.router.push(
+                              DetailCardProductRoute(
+                                  product: state.productModel[index])),
+                          child: FavoriteProductsCardWidget(
+                              product: state.productModel[index]),
                         );
                       }),
                 );
               } else {
-                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }));
   }

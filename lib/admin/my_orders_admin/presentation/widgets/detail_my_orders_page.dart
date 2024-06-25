@@ -114,6 +114,15 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
           buttonSecondTextFBS = 'Заказ окончен';
         }
         break;
+      case 'success':
+        {
+          statusFBS = 'Принять';
+          postStatusFBS = 'courier';
+          postSecondStatusFBS = 'rejected';
+          buttonTextFBS = 'Передать курьеру';
+          buttonSecondTextFBS = 'Отклонить';
+        }
+        break;
       case 'in_process':
         {
           statusFBS = 'В процессе';
@@ -126,6 +135,8 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
       default:
         {
           statusFBS = 'Неизвестно';
+          buttonTextFBS = 'В ожидании';
+          buttonSecondTextFBS = 'В ожидании';
         }
         break;
     }
@@ -198,6 +209,15 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
           buttonSecondTextRealFBS = 'Заказ окончен';
         }
         break;
+      case 'success':
+        {
+          statusRealFBS = 'Принять';
+          postStatusRealFBS = 'courier';
+          postSecondStatusRealFBS = 'rejected';
+          buttonTextRealFBS = 'Передать курьеру';
+          buttonSecondTextRealFBS = 'Отклонить';
+        }
+        break;
       case 'in_process':
         {
           statusRealFBS = 'В процессе';
@@ -210,6 +230,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
       default:
         {
           statusRealFBS = 'Неизвестно';
+
+          buttonTextRealFBS = 'В ожидании';
+          buttonSecondTextRealFBS = 'В ожидании';
         }
         break;
     }
@@ -265,7 +288,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                         'FBS',
                         style: TextStyle(
                           fontSize: 15,
-                          color: segmentValue == 0 ? Colors.black : const Color(0xff9B9B9B),
+                          color: segmentValue == 0
+                              ? Colors.black
+                              : const Color(0xff9B9B9B),
                         ),
                       ),
                     ),
@@ -295,7 +320,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                         'realFBS',
                         style: TextStyle(
                           fontSize: 14,
-                          color: segmentValue == 2 ? Colors.black : const Color(0xff9B9B9B),
+                          color: segmentValue == 2
+                              ? Colors.black
+                              : const Color(0xff9B9B9B),
                         ),
                       ),
                     ),
@@ -337,13 +364,15 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                             child: ListTile(
                               leading: Image.network(
                                 widget.basket.productFBS![index].path != null &&
-                                        widget.basket.productFBS![index].path!.isNotEmpty
+                                        widget.basket.productFBS![index].path!
+                                            .isNotEmpty
                                     ? "http://185.116.193.73/storage/${widget.basket.productFBS![index].path?.first}"
                                     : '',
                                 fit: BoxFit.cover,
                                 height: 104,
                                 width: 104,
-                                errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const ErrorImageWidget(
                                   height: 104,
                                   width: 104,
                                 ),
@@ -354,7 +383,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                   Text(
                                     '${widget.basket.productFBS?[index].productName}',
                                     style: const TextStyle(
-                                        color: AppColors.kGray900, fontSize: 12, fontWeight: FontWeight.w500),
+                                        color: AppColors.kGray900,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                   const SizedBox(
                                     height: 8,
@@ -364,7 +395,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                       Text(
                                         '${widget.basket.productFBS?[index].price}',
                                         style: const TextStyle(
-                                            color: AppColors.kGray900, fontSize: 12, fontWeight: FontWeight.w400),
+                                            color: AppColors.kGray900,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400),
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -372,7 +405,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                       Text(
                                         '${widget.basket.productFBS?[index].count}x',
                                         style: const TextStyle(
-                                            color: AppColors.kPrimaryColor, fontSize: 12, fontWeight: FontWeight.w400),
+                                            color: AppColors.kPrimaryColor,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400),
                                       )
                                     ],
                                   ),
@@ -389,10 +424,12 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                   // const SizedBox(
                                   //   height: 8,
                                   // ),
-                                  const Text(
-                                    'Доставка: сегодня',
-                                    style:
-                                        TextStyle(color: AppColors.kGray900, fontSize: 12, fontWeight: FontWeight.w400),
+                                  Text(
+                                    'Доставка: ${widget.basket.deliveryDay} дней ',
+                                    style: const TextStyle(
+                                        color: AppColors.kGray900,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
                                   ),
                                 ],
                               ),
@@ -406,16 +443,21 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   // padding: const EdgeInsets.all(16),
                   child: Column(children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+                      padding:
+                          const EdgeInsets.only(left: 16.0, right: 16, top: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             "${widget.basket.preorder == 1 ? 'Инфо о предзаказе' : 'Инфо о заказе'}",
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
                           ),
                           Container(
-                            decoration: const BoxDecoration(color: AppColors.kGray1),
+                            decoration:
+                                const BoxDecoration(color: AppColors.kGray1),
                             padding: const EdgeInsets.all(8),
                             child: Text(statusFBS),
                           )
@@ -426,18 +468,24 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       color: AppColors.kGray400,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+                      padding:
+                          const EdgeInsets.only(left: 16.0, right: 16, top: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
                             'Сумма без доставки ',
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
                           ),
                           Text(
                             '${widget.basket.priceFBS} ₽ ',
-                            style:
-                                const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
                           )
                         ],
                       ),
@@ -446,18 +494,24 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       color: AppColors.kGray400,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+                      padding:
+                          const EdgeInsets.only(left: 16.0, right: 16, top: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
                             'Размер',
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
                           ),
                           Text(
                             '${widget.basket.size != 'null' ? (widget.basket.size ?? 'Не выбран') : 'Не выбран'} ',
-                            style:
-                                const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
                           )
                         ],
                       ),
@@ -466,18 +520,24 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       color: AppColors.kGray400,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+                      padding:
+                          const EdgeInsets.only(left: 16.0, right: 16, top: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
                             'Доставка',
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
                           ),
                           Text(
                             '${widget.basket.deliveryPrice}  ₽ ',
-                            style:
-                                const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
                           )
                         ],
                       ),
@@ -486,18 +546,24 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       color: AppColors.kGray400,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+                      padding:
+                          const EdgeInsets.only(left: 16.0, right: 16, top: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
                             'Сумма покупки ',
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
                           ),
                           Text(
                             '${widget.basket.priceFBS! + widget.basket.deliveryPrice! - widget.basket.bonus!} ₽ ',
-                            style:
-                                const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
                           )
                         ],
                       ),
@@ -512,12 +578,17 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                         children: [
                           const Text(
                             'Оплата бонусами  ',
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
                           ),
                           Text(
                             '${widget.basket.bonus ?? 0} ₽ ',
-                            style:
-                                const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
                           )
                         ],
                       ),
@@ -551,7 +622,10 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                         children: [
                           Text(
                             'Адрес доставки',
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
@@ -567,7 +641,10 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       minLeadingWidth: 12,
                       title: Text(
                         '${widget.basket.product!.first.address}',
-                        style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                        style: const TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
                       ),
                     ),
                   ]),
@@ -583,7 +660,10 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                     children: [
                       const Text(
                         'Клиент',
-                        style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700),
                       ),
                       const SizedBox(
                         height: 10,
@@ -597,8 +677,11 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                 borderRadius: BorderRadius.circular(31),
                                 image: DecorationImage(
                                   image: (widget.basket.user!.avatar != null)
-                                      ? NetworkImage("http://185.116.193.73/storage/${widget.basket.user!.avatar}")
-                                      : const AssetImage('assets/icons/profile2.png') as ImageProvider,
+                                      ? NetworkImage(
+                                          "http://185.116.193.73/storage/${widget.basket.user!.avatar}")
+                                      : const AssetImage(
+                                              'assets/icons/profile2.png')
+                                          as ImageProvider,
                                   fit: BoxFit.cover,
                                 )),
                           ),
@@ -614,7 +697,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                 Text(
                                   '${widget.basket.user!.name}',
                                   style: const TextStyle(
-                                      color: AppColors.kGray700, fontSize: 16, fontWeight: FontWeight.w500),
+                                      color: AppColors.kGray700,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 const SizedBox(height: 10),
                                 InkWell(
@@ -626,7 +711,8 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                         chatId: widget.basket.chatId));
                                   },
                                   child: const Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Icon(
                                         Icons.chat_bubble,
@@ -639,7 +725,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                       Text(
                                         'написать в чат',
                                         style: TextStyle(
-                                            color: AppColors.kPrimaryColor, fontSize: 16, fontWeight: FontWeight.w500),
+                                            color: AppColors.kPrimaryColor,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -687,12 +775,15 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                 const SizedBox(
                   height: 15,
                 ),
-                BlocConsumer<OrderStatusAdminCubit, OrderStatusAdminState>(listener: (context, state) {
+                BlocConsumer<OrderStatusAdminCubit, OrderStatusAdminState>(
+                    listener: (context, state) {
                   if (state is LoadedState) {
-                    BlocProvider.of<BasketAdminCubit>(context).basketOrderShow('fbs');
+                    BlocProvider.of<BasketAdminCubit>(context)
+                        .basketOrderShow('fbs');
                     Navigator.pop(context);
                   } else if (state is ErrorState) {
-                    Get.snackbar('Ошибка', state.message, backgroundColor: Colors.redAccent);
+                    Get.snackbar('Ошибка', state.message,
+                        backgroundColor: Colors.redAccent);
                   }
                 }, builder: (context, state) {
                   return Container(
@@ -703,53 +794,79 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            if (postStatusFBS != '' && statusFBS != 'in_process') {
-                              BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(postStatusFBS,
-                                  widget.basket.id.toString(), widget.basket.product!.first.id.toString(), 'fbs');
+                            if (postStatusFBS != '' &&
+                                statusFBS != 'in_process') {
+                              BlocProvider.of<OrderStatusAdminCubit>(context)
+                                  .basketStatus(
+                                      postStatusFBS,
+                                      widget.basket.id.toString(),
+                                      widget.basket.product!.first.id
+                                          .toString(),
+                                      'fbs');
 
-                              BlocProvider.of<BasketAdminCubit>(context).basketOrderRealFBSshow('realFBS');
+                              BlocProvider.of<BasketAdminCubit>(context)
+                                  .basketOrderRealFBSshow('realFBS');
 
                               Get.back();
                             } else {
-                              Get.snackbar('Заказ', 'Невозможно изменить статус', backgroundColor: Colors.orangeAccent);
+                              Get.snackbar(
+                                  'Заказ', 'Невозможно изменить статус',
+                                  backgroundColor: Colors.orangeAccent);
                             }
                           },
                           child: Container(
                             height: 42,
-                            decoration:
-                                BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(10)),
-                            padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 25),
+                            decoration: BoxDecoration(
+                                color: AppColors.kPrimaryColor,
+                                borderRadius: BorderRadius.circular(10)),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 13, horizontal: 25),
                             child: state is LoadingState
                                 ? const Center(
                                     child: CircularProgressIndicator.adaptive(),
                                   )
                                 : Text(
                                     buttonTextFBS,
-                                    style:
-                                        const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
                                   ),
                           ),
                         ),
                         GestureDetector(
                           onTap: () {
                             if (postSecondStatusFBS != '') {
-                              BlocProvider.of<BasketAdminCubit>(context).basketStatus(postSecondStatusFBS,
-                                  widget.basket.id.toString(), widget.basket.product!.first.id.toString(), 'fbs');
-                              BlocProvider.of<BasketAdminCubit>(context).basketOrderRealFBSshow('fbs');
+                              BlocProvider.of<BasketAdminCubit>(context)
+                                  .basketStatus(
+                                      postSecondStatusFBS,
+                                      widget.basket.id.toString(),
+                                      widget.basket.product!.first.id
+                                          .toString(),
+                                      'fbs');
+                              BlocProvider.of<BasketAdminCubit>(context)
+                                  .basketOrderRealFBSshow('fbs');
 
                               Get.back();
                             } else {
-                              Get.snackbar('Заказ', 'Невозможно изменить статус', backgroundColor: Colors.orangeAccent);
+                              Get.snackbar(
+                                  'Заказ', 'Невозможно изменить статус',
+                                  backgroundColor: Colors.orangeAccent);
                             }
                           },
                           child: Container(
-                            decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10)),
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(10)),
                             padding: const EdgeInsets.all(
                               13,
                             ),
                             child: Text(
                               buttonSecondTextFBS,
-                              style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ),
                         )
@@ -775,7 +892,10 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   ),
                   const Text(
                     'Отсутствует заказы fbs',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff717171)),
                     textAlign: TextAlign.center,
                   )
                 ],
@@ -801,14 +921,17 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                             ),
                             child: ListTile(
                               leading: Image.network(
-                                widget.basket.productRealFBS![index].path != null &&
-                                        widget.basket.productRealFBS![index].path!.isNotEmpty
+                                widget.basket.productRealFBS![index].path !=
+                                            null &&
+                                        widget.basket.productRealFBS![index]
+                                            .path!.isNotEmpty
                                     ? "http://185.116.193.73/storage/${widget.basket.productRealFBS![index].path?.first}"
                                     : '',
                                 fit: BoxFit.cover,
                                 height: 104,
                                 width: 104,
-                                errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const ErrorImageWidget(
                                   height: 104,
                                   width: 104,
                                 ),
@@ -819,7 +942,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                   Text(
                                     '${widget.basket.productRealFBS?[index].productName}',
                                     style: const TextStyle(
-                                        color: AppColors.kGray900, fontSize: 12, fontWeight: FontWeight.w500),
+                                        color: AppColors.kGray900,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                   const SizedBox(
                                     height: 8,
@@ -829,7 +954,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                       Text(
                                         '${widget.basket.productRealFBS?[index].price}',
                                         style: const TextStyle(
-                                            color: AppColors.kGray900, fontSize: 12, fontWeight: FontWeight.w400),
+                                            color: AppColors.kGray900,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400),
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -837,7 +964,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                       Text(
                                         '${widget.basket.productRealFBS?[index].count}x',
                                         style: const TextStyle(
-                                            color: AppColors.kPrimaryColor, fontSize: 12, fontWeight: FontWeight.w400),
+                                            color: AppColors.kPrimaryColor,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400),
                                       )
                                     ],
                                   ),
@@ -854,10 +983,12 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                   // const SizedBox(
                                   //   height: 8,
                                   // ),
-                                  const Text(
-                                    'Доставка: сегодня',
-                                    style:
-                                        TextStyle(color: AppColors.kGray900, fontSize: 12, fontWeight: FontWeight.w400),
+                                  Text(
+                                    'Доставка: ${widget.basket.deliveryDay} дней ',
+                                    style: const TextStyle(
+                                        color: AppColors.kGray900,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
                                   ),
                                 ],
                               ),
@@ -871,16 +1002,21 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   // padding: const EdgeInsets.all(16),
                   child: Column(children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+                      padding:
+                          const EdgeInsets.only(left: 16.0, right: 16, top: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             "${widget.basket.preorder == 1 ? 'Инфо о предзаказе' : 'Инфо о заказе'}",
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
                           ),
                           Container(
-                            decoration: const BoxDecoration(color: AppColors.kGray1),
+                            decoration:
+                                const BoxDecoration(color: AppColors.kGray1),
                             padding: const EdgeInsets.all(8),
                             child: Text(statusRealFBS),
                           )
@@ -891,18 +1027,24 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       color: AppColors.kGray400,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+                      padding:
+                          const EdgeInsets.only(left: 16.0, right: 16, top: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
                             'Сумма без доставки ',
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
                           ),
                           Text(
                             '${widget.basket.priceRealFBS} ₽ ',
-                            style:
-                                const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
                           )
                         ],
                       ),
@@ -911,18 +1053,24 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       color: AppColors.kGray400,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+                      padding:
+                          const EdgeInsets.only(left: 16.0, right: 16, top: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
                             'Размер',
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
                           ),
                           Text(
                             '${widget.basket.size != 'null' ? (widget.basket.size ?? 'Не выбран') : 'Не выбран'} ',
-                            style:
-                                const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
                           )
                         ],
                       ),
@@ -931,18 +1079,24 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       color: AppColors.kGray400,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+                      padding:
+                          const EdgeInsets.only(left: 16.0, right: 16, top: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
                             'Доставка',
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
                           ),
                           Text(
                             '${widget.basket.deliveryPrice}  ₽ ',
-                            style:
-                                const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
                           )
                         ],
                       ),
@@ -951,18 +1105,24 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       color: AppColors.kGray400,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+                      padding:
+                          const EdgeInsets.only(left: 16.0, right: 16, top: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
                             'Сумма покупки ',
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
                           ),
                           Text(
                             '${widget.basket.priceRealFBS! + widget.basket.deliveryPrice! - widget.basket.bonus!} ₽ ',
-                            style:
-                                const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
                           )
                         ],
                       ),
@@ -977,12 +1137,17 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                         children: [
                           const Text(
                             'Оплата бонусами  ',
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
                           ),
                           Text(
                             '${widget.basket.bonus ?? 0} ₽ ',
-                            style:
-                                const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
                           )
                         ],
                       ),
@@ -1016,7 +1181,10 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                         children: [
                           Text(
                             'Адрес доставки',
-                            style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                color: AppColors.kGray900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
@@ -1032,7 +1200,10 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       minLeadingWidth: 12,
                       title: Text(
                         '${widget.basket.productRealFBS!.first.address}',
-                        style: const TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                        style: const TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
                       ),
                     ),
                   ]),
@@ -1048,7 +1219,10 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                     children: [
                       const Text(
                         'Клиент',
-                        style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700),
                       ),
                       const SizedBox(
                         height: 10,
@@ -1062,8 +1236,11 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                 borderRadius: BorderRadius.circular(31),
                                 image: DecorationImage(
                                   image: (widget.basket.user!.avatar != null)
-                                      ? NetworkImage("http://185.116.193.73/storage/${widget.basket.user!.avatar}")
-                                      : const AssetImage('assets/icons/profile2.png') as ImageProvider,
+                                      ? NetworkImage(
+                                          "http://185.116.193.73/storage/${widget.basket.user!.avatar}")
+                                      : const AssetImage(
+                                              'assets/icons/profile2.png')
+                                          as ImageProvider,
                                   fit: BoxFit.cover,
                                 )),
                           ),
@@ -1079,7 +1256,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                 Text(
                                   '${widget.basket.user!.name}',
                                   style: const TextStyle(
-                                      color: AppColors.kGray700, fontSize: 16, fontWeight: FontWeight.w500),
+                                      color: AppColors.kGray700,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 const SizedBox(height: 10),
                                 InkWell(
@@ -1091,7 +1270,8 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                         chatId: widget.basket.chatId));
                                   },
                                   child: const Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Icon(
                                         Icons.chat_bubble,
@@ -1104,7 +1284,9 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                       Text(
                                         'написать в чат',
                                         style: TextStyle(
-                                            color: AppColors.kPrimaryColor, fontSize: 16, fontWeight: FontWeight.w500),
+                                            color: AppColors.kPrimaryColor,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -1152,12 +1334,15 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                 const SizedBox(
                   height: 15,
                 ),
-                BlocConsumer<OrderStatusAdminCubit, OrderStatusAdminState>(listener: (context, state) {
+                BlocConsumer<OrderStatusAdminCubit, OrderStatusAdminState>(
+                    listener: (context, state) {
                   if (state is LoadedState) {
-                    BlocProvider.of<BasketAdminCubit>(context).basketOrderShow('fbs');
+                    BlocProvider.of<BasketAdminCubit>(context)
+                        .basketOrderShow('fbs');
                     Navigator.pop(context);
                   } else if (state is ErrorState) {
-                    Get.snackbar('Ошибка', state.message, backgroundColor: Colors.redAccent);
+                    Get.snackbar('Ошибка', state.message,
+                        backgroundColor: Colors.redAccent);
                   }
                 }, builder: (context, state) {
                   return Container(
@@ -1168,53 +1353,79 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            if (postStatusRealFBS != '' && statusRealFBS != 'in_process') {
-                              BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(postStatusRealFBS,
-                                  widget.basket.id.toString(), widget.basket.product!.first.id.toString(), 'realFBS');
+                            if (postStatusRealFBS != '' &&
+                                statusRealFBS != 'in_process') {
+                              BlocProvider.of<OrderStatusAdminCubit>(context)
+                                  .basketStatus(
+                                      postStatusRealFBS,
+                                      widget.basket.id.toString(),
+                                      widget.basket.product!.first.id
+                                          .toString(),
+                                      'realFBS');
 
-                              BlocProvider.of<BasketAdminCubit>(context).basketOrderRealFBSshow('realFBS');
+                              BlocProvider.of<BasketAdminCubit>(context)
+                                  .basketOrderRealFBSshow('realFBS');
 
                               Get.back();
                             } else {
-                              Get.snackbar('Заказ', 'Невозможно изменить статус', backgroundColor: Colors.orangeAccent);
+                              Get.snackbar(
+                                  'Заказ', 'Невозможно изменить статус',
+                                  backgroundColor: Colors.orangeAccent);
                             }
                           },
                           child: Container(
                             height: 42,
-                            decoration:
-                                BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(10)),
-                            padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 25),
+                            decoration: BoxDecoration(
+                                color: AppColors.kPrimaryColor,
+                                borderRadius: BorderRadius.circular(10)),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 13, horizontal: 25),
                             child: state is LoadingState
                                 ? const Center(
                                     child: CircularProgressIndicator.adaptive(),
                                   )
                                 : Text(
                                     buttonTextRealFBS,
-                                    style:
-                                        const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
                                   ),
                           ),
                         ),
                         GestureDetector(
                           onTap: () {
                             if (postSecondStatusRealFBS != '') {
-                              BlocProvider.of<BasketAdminCubit>(context).basketStatus(postSecondStatusRealFBS,
-                                  widget.basket.id.toString(), widget.basket.product!.first.id.toString(), 'realFBS');
-                              BlocProvider.of<BasketAdminCubit>(context).basketOrderRealFBSshow('realFBS');
+                              BlocProvider.of<BasketAdminCubit>(context)
+                                  .basketStatus(
+                                      postSecondStatusRealFBS,
+                                      widget.basket.id.toString(),
+                                      widget.basket.product!.first.id
+                                          .toString(),
+                                      'realFBS');
+                              BlocProvider.of<BasketAdminCubit>(context)
+                                  .basketOrderRealFBSshow('realFBS');
 
                               Get.back();
                             } else {
-                              Get.snackbar('Заказ', 'Невозможно изменить статус', backgroundColor: Colors.orangeAccent);
+                              Get.snackbar(
+                                  'Заказ', 'Невозможно изменить статус',
+                                  backgroundColor: Colors.orangeAccent);
                             }
                           },
                           child: Container(
-                            decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10)),
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(10)),
                             padding: const EdgeInsets.all(
                               13,
                             ),
                             child: Text(
                               buttonSecondTextRealFBS,
-                              style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ),
                         )
@@ -1240,7 +1451,10 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                   ),
                   const Text(
                     'Отсутствует заказы realFBS',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff717171)),
                     textAlign: TextAlign.center,
                   )
                 ],

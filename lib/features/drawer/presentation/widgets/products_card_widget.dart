@@ -8,14 +8,18 @@ import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/drawer/data/bloc/basket_cubit.dart';
 import 'package:haji_market/features/drawer/data/bloc/favorite_cubit.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
-import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart' as productCubit;
-import 'package:haji_market/features/drawer/data/bloc/product_state.dart' as productState;
+import 'package:haji_market/features/drawer/data/bloc/product_cubit.dart'
+    as productCubit;
+import 'package:haji_market/features/drawer/data/bloc/product_state.dart'
+    as productState;
 
 class ProductCardWidget extends StatefulWidget {
   final int index;
   final ProductModel product;
 
-  const ProductCardWidget({required this.product, Key? key, required this.index}) : super(key: key);
+  const ProductCardWidget(
+      {required this.product, Key? key, required this.index})
+      : super(key: key);
 
   @override
   State<ProductCardWidget> createState() => _ProductCardWidgetState();
@@ -32,7 +36,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
     count += widget.product.basketCount ?? 0;
     inFavorite = widget.product.inFavorite ?? false;
-    compoundPrice = (widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100;
+    compoundPrice =
+        (widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100;
 
     setState(() {});
     // });
@@ -47,13 +52,15 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     return Container(
       height: 151,
       margin: const EdgeInsets.only(left: 14, top: 7, bottom: 8, right: 14),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), boxShadow: const [
-        BoxShadow(
-          offset: Offset(0, 2),
-          // blurRadius: 4,
-          color: Colors.white,
-        ),
-      ]),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: const [
+            BoxShadow(
+              offset: Offset(0, 2),
+              // blurRadius: 4,
+              color: Colors.white,
+            ),
+          ]),
       // height: MediaQuery.of(context).size.height * 0.86,
       // color: Colors.red,
       child: Row(
@@ -69,25 +76,32 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       : "http://185.116.193.73/storage/banners/2.png",
                   height: 104,
                   width: 104,
-                  errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                  errorBuilder: (context, error, stackTrace) =>
+                      const ErrorImageWidget(
                     height: 104,
                     width: 104,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 4, right: 4, bottom: 8, top: 8),
+                  padding: const EdgeInsets.only(
+                      left: 4, right: 4, bottom: 8, top: 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        decoration:
-                            BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(4)),
+                        decoration: BoxDecoration(
+                            color: AppColors.kPrimaryColor,
+                            borderRadius: BorderRadius.circular(4)),
                         child: const Padding(
-                          padding: EdgeInsets.only(left: 4, right: 4, top: 2, bottom: 2),
+                          padding: EdgeInsets.only(
+                              left: 4, right: 4, top: 2, bottom: 2),
                           child: Text(
                             '0·0·12',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                       ),
@@ -95,14 +109,20 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                         height: 4,
                       ),
                       Container(
-                        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(4)),
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(4)),
                         child: widget.product.point != 0
                             ? Padding(
-                                padding: const EdgeInsets.only(left: 4.0, right: 4, top: 2, bottom: 2),
+                                padding: const EdgeInsets.only(
+                                    left: 4.0, right: 4, top: 2, bottom: 2),
                                 child: Text(
                                   '${widget.product.point}% Б',
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w400),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               )
                             : const SizedBox(),
@@ -114,13 +134,19 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           : const SizedBox(),
                       widget.product.compound != 0
                           ? Container(
-                              decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(4)),
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(4)),
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 4.0, right: 4, top: 2, bottom: 2),
+                                padding: const EdgeInsets.only(
+                                    left: 4.0, right: 4, top: 2, bottom: 2),
                                 child: Text(
                                   '-${widget.product.compound}%',
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w400),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ),
                             )
@@ -139,7 +165,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
             mainAxisSize: MainAxisSize.max,
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.60,
+                width: MediaQuery.of(context).size.width * 0.55,
                 height: 40,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,12 +176,16 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                         widget.product.name.toString(),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w500),
+                        style: const TextStyle(
+                            fontSize: 12,
+                            color: AppColors.kGray900,
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                     IconButton(
                         onPressed: () async {
-                          final favorite = BlocProvider.of<FavoriteCubit>(context);
+                          final favorite =
+                              BlocProvider.of<FavoriteCubit>(context);
                           await favorite.favorite(widget.product.id.toString());
                           setState(() {
                             inFavorite = !inFavorite;
@@ -166,7 +196,9 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                             ? SvgPicture.asset('assets/icons/heart_fill.svg')
                             : SvgPicture.asset(
                                 'assets/icons/favorite.svg',
-                                color: inFavorite == true ? Colors.red : Colors.grey,
+                                color: inFavorite == true
+                                    ? Colors.red
+                                    : Colors.grey,
                               ))
                   ],
                 ),
@@ -175,14 +207,18 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 padding: const EdgeInsets.only(top: 0, bottom: 3),
                 child: Text(
                   widget.product.catName ?? '',
-                  style: const TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                  style: const TextStyle(
+                      color: AppColors.kGray300,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400),
                 ),
               ),
               Row(
                 children: [
                   RatingBar(
                     ignoreGestures: true,
-                    initialRating: double.parse(widget.product.rating.toString()),
+                    initialRating:
+                        double.parse(widget.product.rating.toString()),
                     minRating: 0,
                     maxRating: 5,
                     itemCount: 5,
@@ -209,7 +245,10 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                   ),
                   Text(
                     "(${widget.product.count} отзыва)",
-                    style: const TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                    style: const TextStyle(
+                        color: AppColors.kGray300,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
                   ),
                 ],
               ),
@@ -246,7 +285,10 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           // width: 75,
                           child: Text(
                             '${(widget.product.price!.toInt() - (widget.product.price! / 100) * (widget.product.compound ?? 0)).toInt()} ₽ ',
-                            style: const TextStyle(color: Colors.red, fontSize: 16, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                         Text(
@@ -273,7 +315,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
               ),
               SizedBox(
                 height: 32,
-                width: MediaQuery.of(context).size.width * 0.60,
+                width: MediaQuery.of(context).size.width * 0.55,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -290,7 +332,10 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           alignment: Alignment.center,
                           child: Text(
                             ' ${compoundPrice ~/ 3} ',
-                            style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                         const SizedBox(
@@ -306,7 +351,9 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                             'х3',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w400, color: Color.fromRGBO(197, 200, 204, 1)),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color.fromRGBO(197, 200, 204, 1)),
                           ),
                         ),
                       ],
@@ -323,7 +370,10 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                             child: Text(
                               'Оптом $basketCount шт',
                               // textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600),
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
                             ),
                           )
                         : Row(
@@ -335,11 +385,19 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                       onTap: () {
                                         /// FIXME
                                         BlocProvider.of<BasketCubit>(context)
-                                            .basketMinus(widget.product.id.toString(), '1', 0, 'fbs');
+                                            .basketMinus(
+                                                widget.product.id.toString(),
+                                                '1',
+                                                0,
+                                                'fbs');
 
-                                        BlocProvider.of<productCubit.ProductCubit>(context).updateProductByIndex(
+                                        BlocProvider.of<
+                                                productCubit
+                                                .ProductCubit>(context)
+                                            .updateProductByIndex(
                                           index: widget.index,
-                                          updatedProduct: widget.product.copyWith(
+                                          updatedProduct:
+                                              widget.product.copyWith(
                                             basketCount: basketCount - 1,
                                           ),
                                         );
@@ -357,14 +415,17 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                         width: 32,
                                         padding: const EdgeInsets.all(4),
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(6),
+                                          borderRadius:
+                                              BorderRadius.circular(6),
                                           color: Colors.white,
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.1),
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
                                               spreadRadius: 1,
                                               blurRadius: 1,
-                                              offset: const Offset(0, 1), // changes position of shadow
+                                              offset: const Offset(0,
+                                                  1), // changes position of shadow
                                             ),
                                           ],
                                         ),
@@ -394,10 +455,19 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                     InkWell(
                                       onTap: () {
                                         BlocProvider.of<BasketCubit>(context)
-                                            .basketAdd(widget.product.id.toString(), '1', 0, '', '');
-                                        BlocProvider.of<productCubit.ProductCubit>(context).updateProductByIndex(
+                                            .basketAdd(
+                                                widget.product.id.toString(),
+                                                '1',
+                                                0,
+                                                '',
+                                                '');
+                                        BlocProvider.of<
+                                                productCubit
+                                                .ProductCubit>(context)
+                                            .updateProductByIndex(
                                           index: widget.index,
-                                          updatedProduct: widget.product.copyWith(
+                                          updatedProduct:
+                                              widget.product.copyWith(
                                             basketCount: basketCount + 1,
                                           ),
                                         );
@@ -410,14 +480,17 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                       child: Container(
                                         padding: const EdgeInsets.all(4),
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           color: Colors.white,
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.1),
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
                                               spreadRadius: 1,
                                               blurRadius: 1,
-                                              offset: const Offset(0, 1), // changes position of shadow
+                                              offset: const Offset(0,
+                                                  1), // changes position of shadow
                                             ),
                                           ],
                                         ),
@@ -432,15 +505,25 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                   ],
                                 )
                               else
-                                (widget.product.pre_order == 1 && widget.product.product_count == 0)
+                                (widget.product.pre_order == 1 &&
+                                        widget.product.product_count == 0)
                                     ? GestureDetector(
                                         onTap: () {
                                           /// FIXME
                                           BlocProvider.of<BasketCubit>(context)
-                                              .basketAdd(widget.product.id.toString(), '1', 0, '', '');
-                                          BlocProvider.of<productCubit.ProductCubit>(context).updateProductByIndex(
+                                              .basketAdd(
+                                                  widget.product.id.toString(),
+                                                  '1',
+                                                  0,
+                                                  '',
+                                                  '');
+                                          BlocProvider.of<
+                                                  productCubit
+                                                  .ProductCubit>(context)
+                                              .updateProductByIndex(
                                             index: widget.index,
-                                            updatedProduct: widget.product.copyWith(
+                                            updatedProduct:
+                                                widget.product.copyWith(
                                               basketCount: basketCount + 1,
                                             ),
                                           );
@@ -458,7 +541,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                           height: 32,
                                           decoration: BoxDecoration(
                                             color: const Color(0xFF1DC4CF),
-                                            borderRadius: BorderRadius.circular(10),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
                                           alignment: Alignment.center,
                                           child: const Text(
@@ -475,18 +559,33 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                     : GestureDetector(
                                         onTap: () {
                                           /// FIXME
-                                          if (widget.product.product_count != 0) {
-                                            BlocProvider.of<BasketCubit>(context)
-                                                .basketAdd(widget.product.id.toString(), '1', 0, '', '');
-                                            BlocProvider.of<productCubit.ProductCubit>(context).updateProductByIndex(
+                                          if (widget.product.product_count !=
+                                              0) {
+                                            BlocProvider.of<BasketCubit>(
+                                                    context)
+                                                .basketAdd(
+                                                    widget.product.id
+                                                        .toString(),
+                                                    '1',
+                                                    0,
+                                                    '',
+                                                    '');
+                                            BlocProvider.of<
+                                                    productCubit
+                                                    .ProductCubit>(context)
+                                                .updateProductByIndex(
                                               index: widget.index,
-                                              updatedProduct: widget.product.copyWith(
+                                              updatedProduct:
+                                                  widget.product.copyWith(
                                                 basketCount: basketCount + 1,
                                               ),
                                             );
                                           } else {
-                                            Get.snackbar('Ошибка запроса нет предзаказа!', 'количество товара 0 шт',
-                                                backgroundColor: Colors.blueAccent);
+                                            Get.snackbar(
+                                                'Ошибка запроса нет предзаказа!',
+                                                'количество товара 0 шт',
+                                                backgroundColor:
+                                                    Colors.blueAccent);
                                           }
 
                                           // setState(() {
@@ -502,10 +601,13 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                           width: 99,
                                           height: 32,
                                           decoration: BoxDecoration(
-                                            color: widget.product.product_count != 0
-                                                ? const Color(0xFF1DC4CF)
-                                                : Colors.grey,
-                                            borderRadius: BorderRadius.circular(10),
+                                            color:
+                                                widget.product.product_count !=
+                                                        0
+                                                    ? const Color(0xFF1DC4CF)
+                                                    : Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
                                           alignment: Alignment.center,
                                           child: const Text(

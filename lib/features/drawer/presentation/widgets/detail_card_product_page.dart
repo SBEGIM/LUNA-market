@@ -2314,7 +2314,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     const Divider(height: 0),
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
-                    onTap: () async{
+                    onTap: () async {
                       if (index == 0) {
                         List<int> selectedListSort = [];
 
@@ -2328,8 +2328,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           cats: Cats(id: 0, name: ''),
                           shopId: widget.product.shop!.id.toString(),
                         ));
-                        
-
                       } else if (index == 1) {
                         GetStorage().remove('brandFilterId');
                         List<int> selectedListSort = [];
@@ -2337,7 +2335,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         selectedListSort.add(widget.product.brandId ?? 0);
                         GetStorage().write(
                             'brandFilterId', selectedListSort.toString());
-
 
                         await BlocProvider.of<ProductCubit>(context).products();
 
@@ -2357,7 +2354,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               widget.product.catId,
                             ].toString());
                         GetStorage().remove('shopFilterId');
-                                                await BlocProvider.of<ProductCubit>(context).products();
+                        await BlocProvider.of<ProductCubit>(context).products();
 
                         context.router.push(ProductsRoute(
                           cats: Cats(
@@ -2501,13 +2498,17 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         return state.productModel.isEmpty
                             ? const Center(child: Text('Товары не найдены'))
                             : SizedBox(
-                                height: 608,
+                                height:
+                                    state.productModel.length >= 4 ? 608 : 302,
                                 child: GridView.builder(
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount:
+                                              state.productModel.length >= 4
+                                                  ? 2
+                                                  : 1,
                                           childAspectRatio: 1.6,
                                           crossAxisSpacing: 20,
                                           mainAxisSpacing: 2),
@@ -2661,9 +2662,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             });
                             BlocProvider.of<ProductCubit>(context).products();
                           } else {
-                             context.router.replaceAll([
-                    const LauncherRoute(children: [BasketRoute()]),
-                  ]);
+                            context.router.replaceAll([
+                              const LauncherRoute(children: [BasketRoute()]),
+                            ]);
                           }
                         },
                       ),

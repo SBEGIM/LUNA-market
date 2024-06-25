@@ -8,7 +8,8 @@ const baseUrl = 'http://185.116.193.73/api';
 class FavoriteRepository {
   final FavoriteApi _favoriteApi = FavoriteApi();
 
-  Future<List<ProductModel>> favorites() => _favoriteApi.favorites();
+  Future<List<ProductModel>> favorites(int page) =>
+      _favoriteApi.favorites(page);
   Future<int> favorite(id) => _favoriteApi.favorite(id);
   Future<int> favoriteTape(id) => _favoriteApi.favoriteTape(id);
 }
@@ -16,10 +17,11 @@ class FavoriteRepository {
 class FavoriteApi {
   final _box = GetStorage();
 
-  Future<List<ProductModel>> favorites() async {
+  Future<List<ProductModel>> favorites(int page) async {
     final String? token = _box.read('token');
 
-    final response = await http.get(Uri.parse('$baseUrl/user/favorites'),
+    final response = await http.get(
+        Uri.parse('$baseUrl/user/favorites?page=$page'),
         headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);

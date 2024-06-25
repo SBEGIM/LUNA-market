@@ -9,18 +9,40 @@ class FavoriteCubit extends Cubit<FavoriteState> {
   final FavoriteRepository favoriteRepository;
 
   FavoriteCubit({required this.favoriteRepository}) : super(InitState());
+  int page = 1;
+  List<ProductModel> _products = [];
 
   Future<void> myFavorites() async {
     try {
+      page = 1;
       emit(LoadingState());
-      final List<ProductModel> data = await favoriteRepository.favorites();
+      final List<ProductModel> data = await favoriteRepository.favorites(page);
       if (data.length == 0) {
         emit(NoDataState());
       } else {
+        _products.clear();
+        _products.addAll(data);
         emit(LoadedState(data));
       }
     } catch (e) {
       log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  Future<void> myFavoritesPagination() async {
+    try {
+      // emit(LoadingState());
+
+      page++;
+      final List<ProductModel> data = await favoriteRepository.favorites(page);
+
+      for (int i = 0; i < data.length; i++) {
+        _products.add(data[i]);
+      }
+
+      emit(LoadedState(_products));
+    } catch (e) {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }

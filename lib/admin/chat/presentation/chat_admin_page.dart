@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/admin/chat/presentation/message_admin_page.dart';
 import 'package:intl/intl.dart';
@@ -18,7 +19,8 @@ class ChatAdminPage extends StatefulWidget {
 }
 
 class _ChatAdminPageState extends State<ChatAdminPage> {
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   TextEditingController searchController = TextEditingController();
 
@@ -72,7 +74,8 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
           // ),
           title: const Text(
             'Сообщение',
-            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(
+                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
           ),
         ),
         body: BlocConsumer<ChatAdminCubit, ChatAdminState>(
@@ -114,11 +117,16 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                             controller: searchController,
                             textAlign: TextAlign.center,
                             onChanged: ((value) {
+                              
+                              BlocProvider.of<ChatAdminCubit>(context)
+                                  .searchChats(searchController.text);
+
                               setState(() {});
                             }),
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(width: 1)),
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(width: 1)),
 
                               prefixIcon: searchController.text.isEmpty
                                   ? Transform.translate(
@@ -130,10 +138,14 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                     )
                                   : null,
                               hintText: 'Поиск клиентов',
-                              hintStyle: const TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w400),
+                              hintStyle: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(width: 0.3, color: Colors.grey)),
+                                  borderSide: const BorderSide(
+                                      width: 0.3, color: Colors.grey)),
                               // suffixIcon: IconButton(
                               //     onPressed: () {},
                               //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',
@@ -157,60 +169,93 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                         userId: state.chat[index].userId,
                                         userName: state.chat[index].name)),
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16),
                                       height: 100,
                                       //  width: 400,
                                       child: Row(
                                         children: [
                                           CircleAvatar(
-                                            backgroundImage: state.chat[index].avatar != null
+                                            backgroundImage: state
+                                                        .chat[index].avatar !=
+                                                    null
                                                 ? NetworkImage(
                                                     'http://185.116.193.73/storage/${state.chat[index].avatar}')
-                                                : null,
-                                            backgroundColor: Colors.grey,
+                                                : const AssetImage(
+                                                        'assets/icons/profile2.png')
+                                                    as ImageProvider,
+                                            backgroundColor: Colors.grey[100],
                                             radius: 30,
                                           ),
                                           const SizedBox(width: 12),
                                           Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
                                             children: [
                                               Container(
-                                                padding: const EdgeInsets.only(top: 20.5),
+                                                padding: const EdgeInsets.only(
+                                                    top: 20.5),
                                                 width: 260,
                                                 child: Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
                                                     Text(
                                                       '${state.chat[index].name}',
-                                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                                      style: const TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500),
                                                     ),
                                                     Column(
-                                                      mainAxisAlignment: MainAxisAlignment.end,
-                                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
                                                       children: [
                                                         Text(
                                                           ' ${parseDate(state.chat[index].createdAt)}',
                                                           style: const TextStyle(
-                                                              color: Colors.grey,
+                                                              color:
+                                                                  Colors.grey,
                                                               fontSize: 12,
-                                                              fontWeight: FontWeight.w400),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400),
                                                         ),
-                                                        state.chat[index].countNewMessages != 0
+                                                        state.chat[index]
+                                                                    .countNewMessages !=
+                                                                0
                                                             ? Container(
                                                                 width: 22,
                                                                 height: 22,
-                                                                margin: const EdgeInsets.only(top: 6),
-                                                                alignment: Alignment.center,
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        top: 6),
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
                                                                 decoration: BoxDecoration(
-                                                                    borderRadius: BorderRadius.circular(12),
-                                                                    color: AppColors.kPrimaryColor),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            12),
+                                                                    color: AppColors
+                                                                        .kPrimaryColor),
                                                                 child: Text(
                                                                   '${state.chat[index].countNewMessages}',
                                                                   style: const TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontSize: 12,
-                                                                      fontWeight: FontWeight.w500),
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          12,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
                                                                 ))
                                                             : SizedBox()
                                                       ],
@@ -219,14 +264,19 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                                 ),
                                               ),
                                               Container(
-                                                padding: const EdgeInsets.only(top: 0, left: 0),
+                                                padding: const EdgeInsets.only(
+                                                    top: 0, left: 0),
                                                 // alignment: Alignment.bottomLeft,
                                                 width: 260,
                                                 child: Text(
                                                   '${state.chat[index].lastMessage != null ? state.chat[index].lastMessage!.text : ''}',
                                                   style: const TextStyle(
-                                                      color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w400),
-                                                  overflow: TextOverflow.ellipsis,
+                                                      color: Colors.grey,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
                                               ),
                                             ],
@@ -243,7 +293,9 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                       ]),
                 );
               } else {
-                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }));
   }

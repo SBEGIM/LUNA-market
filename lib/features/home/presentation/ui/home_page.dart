@@ -90,7 +90,8 @@ class _HomePageState extends State<HomePage> {
 
     // if (BlocProvider.of<subCatCubit.SubCatsCubit>(context).state
     //     is! subCatState.LoadedState) {
-    BlocProvider.of<subCatCubit.SubCatsCubit>(context).subCats(0);
+    BlocProvider.of<subCatCubit.SubCatsCubit>(context)
+        .subCats(0, isAddAllProducts: false);
     //}
 
     if (BlocProvider.of<popShopsCubit.PopularShopsCubit>(context).state
@@ -306,14 +307,18 @@ class _HomePageState extends State<HomePage> {
                                 // width: 400,
                                 height: state.productModel.length >= 2
                                     ? MediaQuery.of(context).size.height * 0.64
-                                    : MediaQuery.of(context).size.height * 0.32 ,
+                                    : MediaQuery.of(context).size.height * 0.32,
                                 child: GridView.builder(
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   gridDelegate:
-                                       SliverGridDelegateWithFixedCrossAxisCount(
+                                      SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 2,
-                                          childAspectRatio: MediaQuery.of(context).size.height * 0.0010,
+                                          childAspectRatio:
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.0010,
                                           crossAxisSpacing: 10,
                                           mainAxisSpacing: 0),
                                   itemCount: state.productModel.length >= 8
@@ -1253,13 +1258,14 @@ class _PopularShopsState extends State<PopularShops> {
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Stack(
                                       alignment: Alignment.center,
                                       children: [
                                         Container(
                                           margin: const EdgeInsets.only(
-                                              top: 0, left: 12, right: 12),
+                                              top: 5, left: 12, right: 12),
                                           alignment: Alignment.center,
                                           height: MediaQuery.of(context)
                                                   .size
@@ -1267,8 +1273,8 @@ class _PopularShopsState extends State<PopularShops> {
                                               0.10,
                                           width: MediaQuery.of(context)
                                                   .size
-                                                  .height *
-                                              0.10,
+                                                  .width *
+                                              0.25,
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(100),
@@ -1306,7 +1312,7 @@ class _PopularShopsState extends State<PopularShops> {
                                         if (state.popularShops[index].credit ==
                                             true)
                                           Container(
-                                            width: 46,
+                                            width: 50,
                                             height: 22,
                                             decoration: BoxDecoration(
                                               color: const Color.fromRGBO(
@@ -1315,9 +1321,10 @@ class _PopularShopsState extends State<PopularShops> {
                                                   BorderRadius.circular(6),
                                             ),
                                             margin: const EdgeInsets.only(
-                                                bottom: 140,
-                                                left: 0,
-                                                right: 75),
+                                                bottom: 130,
+                                                top: 5,
+                                                left: 5,
+                                                right: 50),
                                             alignment: Alignment.center,
                                             child: const Text(
                                               "0·0·12",
@@ -1327,7 +1334,7 @@ class _PopularShopsState extends State<PopularShops> {
                                             ),
                                           ),
                                         Container(
-                                          width: 46,
+                                          width: 100,
                                           height: 22,
                                           decoration: BoxDecoration(
                                             color: Colors.black,
@@ -1335,7 +1342,10 @@ class _PopularShopsState extends State<PopularShops> {
                                                 BorderRadius.circular(6),
                                           ),
                                           margin: const EdgeInsets.only(
-                                              bottom: 90, left: 0, right: 75),
+                                              bottom: 80,
+                                              top: 5,
+                                              left: 5,
+                                              right: 50),
                                           alignment: Alignment.center,
                                           child: Text(
                                             "${state.popularShops[index].bonus.toString()}% Б",
@@ -1390,7 +1400,7 @@ class _PopularShopsState extends State<PopularShops> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Все предложения',
+                            'Все предложения ',
                             style: AppTextStyles.kcolorPrimaryTextStyle,
                           ),
                           Icon(

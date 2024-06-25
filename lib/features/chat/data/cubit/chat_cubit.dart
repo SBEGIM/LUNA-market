@@ -46,6 +46,19 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  Future<void> searchChats(String name) async {
+    if (name.isEmpty) return;
+
+    List<ChatModel> temp = [];
+    for (int i = 0; i < _chats.length; i++) {
+      if (_chats[i].name != null &&
+          _chats[i].name!.toLowerCase().contains(name.toLowerCase())) {
+        temp.add(_chats[i]);
+      }
+    }
+    emit(LoadedState(temp));
+  }
+
   // Future<void> searchCity(String city) async {
   //   if(city.isEmpty) return;
   //   if(_cities.isEmpty) {

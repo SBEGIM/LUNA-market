@@ -46,21 +46,19 @@ class ChatAdminCubit extends Cubit<ChatAdminState> {
     }
   }
 
-  // Future<void> searchCity(String city) async {
-  //   if(city.isEmpty) return;
-  //   if(_cities.isEmpty) {
-  //     await cities();
-  //     // final List<City> data = await listRepository.cities();
-  //     // _cities = data;
-  //   }
-  //   List<City> temp = [];
-  //   Set<String> citiesSet = {};
-  //   for(int i = 0 ; i < _cities.length; i++) {
-  //     if(_cities[i].name != null && _cities[i].name!.contains(city)) {
-  //       temp.add(_cities[i]);
-  //       citiesSet.add(_cities[i].name.toString());
-  //     }
-  //   }
-  //   emit(LoadedState(temp, citiesSet, ''));
-  // }
+  Future<void> searchChats(String name) async {
+    if (name.isEmpty) {
+      chat();
+      return;
+    }
+
+    List<ChatAdminModel> temp = [];
+    for (int i = 0; i < _chats.length; i++) {
+      if (_chats[i].name != null &&
+          _chats[i].name!.toLowerCase().contains(name.toLowerCase())) {
+        temp.add(_chats[i]);
+      }
+    }
+    emit(LoadedState(temp));
+  }
 }

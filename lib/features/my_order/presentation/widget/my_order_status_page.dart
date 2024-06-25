@@ -22,7 +22,8 @@ import '../../../drawer/data/bloc/review_cubit.dart';
 class MyOrderStatusPage extends StatefulWidget {
   final BasketOrderModel basketOrder;
 
-  const MyOrderStatusPage({required this.basketOrder, Key? key}) : super(key: key);
+  const MyOrderStatusPage({required this.basketOrder, Key? key})
+      : super(key: key);
 
   @override
   State<MyOrderStatusPage> createState() => _MyOrderStatusPageState();
@@ -40,10 +41,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
 
   final TextEditingController _commentController = TextEditingController();
 
-
-   orderTimeline(String status){
-
-       switch (status) {
+  orderTimeline(String status) {
+    switch (status) {
       case 'order':
         {
           statusProggress = 1;
@@ -86,7 +85,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
           statusProggress = 1;
         }
         break;
-       case 'success':
+      case 'success':
         {
           statusProggress = 2;
         }
@@ -100,16 +99,11 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
 
     print('this nuber ${statusProggress}');
 
-    setState(() {
-      
-    });
+    setState(() {});
+  }
 
-   }
-
-
-   @override
+  @override
   void initState() {
-    
     orderTimeline(widget.basketOrder.statusFBS ?? 'in_process');
     super.initState();
   }
@@ -159,7 +153,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           'FBS',
                           style: TextStyle(
                             fontSize: 15,
-                            color: segmentValue == 0 ? Colors.black : const Color(0xff9B9B9B),
+                            color: segmentValue == 0
+                                ? Colors.black
+                                : const Color(0xff9B9B9B),
                           ),
                         ),
                       ),
@@ -189,7 +185,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           'realFBS',
                           style: TextStyle(
                             fontSize: 14,
-                            color: segmentValue == 2 ? Colors.black : const Color(0xff9B9B9B),
+                            color: segmentValue == 2
+                                ? Colors.black
+                                : const Color(0xff9B9B9B),
                           ),
                         ),
                       ),
@@ -199,12 +197,12 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         segmentValue = value;
                         print('${widget.basketOrder.statusFBS}');
 
-                        if(value == 0){
-                          orderTimeline(widget.basketOrder.statusFBS ?? 'in_process');
-
-                        }else{
-                          orderTimeline(widget.basketOrder.statusRealFBS ?? 'in_process');
-
+                        if (value == 0) {
+                          orderTimeline(
+                              widget.basketOrder.statusFBS ?? 'in_process');
+                        } else {
+                          orderTimeline(
+                              widget.basketOrder.statusRealFBS ?? 'in_process');
                         }
 
                         // BlocProvider.of<BasketAdminCubit>(context).basketSwitchState(value);
@@ -232,14 +230,18 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
                             '${widget.basketOrder.date}',
-                            style:
-                                const TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: AppColors.kGray300,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 16.0, right: 16),
                           child: Container(
-                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
                             padding: const EdgeInsets.all(16),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,29 +258,31 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isFirst: true,
-                                  indicatorStyle: statusProggress  >= 1? 
-                                       IndicatorStyle(
+                                  indicatorStyle: statusProggress >= 1
+                                      ? IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
                                             iconData: Icons.check,
                                           ),
-                                        )  : IndicatorStyle(
+                                        )
+                                      : IndicatorStyle(
                                           color: Colors.grey,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
                                             iconData: Icons.history_toggle_off,
                                           ),
                                         ),
-                                     
                                   beforeLineStyle: const LineStyle(
                                     thickness: 1.4,
                                   ),
                                   lineXY: 0.4,
                                   endChild: Padding(
-                                    padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, top: 10, bottom: 10),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         const Text(
                                           'Заказ оплачен',
@@ -301,14 +305,15 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isFirst: false,
-                                  indicatorStyle:  statusProggress  >= 2? 
-                                       IndicatorStyle(
+                                  indicatorStyle: statusProggress >= 2
+                                      ? IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
                                             iconData: Icons.check,
                                           ),
-                                        )  : IndicatorStyle(
+                                        )
+                                      : IndicatorStyle(
                                           color: Colors.grey,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
@@ -320,12 +325,20 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   ),
                                   lineXY: 0.4,
                                   endChild: Padding(
-                                    padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, top: 10, bottom: 10),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          widget.basketOrder.statusFBS == 'cancel' || widget.basketOrder.statusFBS == 'rejected' ? 'Отменен или Отклонен' : 'Прният',
+                                          widget.basketOrder.statusFBS ==
+                                                      'cancel' ||
+                                                  widget.basketOrder
+                                                          .statusFBS ==
+                                                      'rejected'
+                                              ? 'Отменен или Отклонен'
+                                              : 'Прниять',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14,
@@ -345,14 +358,15 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isFirst: false,
-                                  indicatorStyle:  statusProggress  >= 3? 
-                                       IndicatorStyle(
+                                  indicatorStyle: statusProggress >= 3
+                                      ? IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
                                             iconData: Icons.check,
                                           ),
-                                        )  : IndicatorStyle(
+                                        )
+                                      : IndicatorStyle(
                                           color: Colors.grey,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
@@ -364,12 +378,17 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   ),
                                   lineXY: 0.4,
                                   endChild: Padding(
-                                    padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, top: 10, bottom: 10),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          widget.basketOrder.statusFBS == 'cancel' ? 'Отменен' : 'Доставка',
+                                          widget.basketOrder.statusFBS ==
+                                                  'cancel'
+                                              ? 'Отменен'
+                                              : 'Доставка',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14,
@@ -389,14 +408,15 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isLast: true,
-                                  indicatorStyle:  statusProggress  >= 4? 
-                                       IndicatorStyle(
+                                  indicatorStyle: statusProggress >= 4
+                                      ? IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
                                             iconData: Icons.check,
                                           ),
-                                        )  : IndicatorStyle(
+                                        )
+                                      : IndicatorStyle(
                                           color: Colors.grey,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
@@ -408,9 +428,11 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   ),
                                   lineXY: 0.4,
                                   endChild: Padding(
-                                    padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, top: 10, bottom: 10),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         const Text(
                                           'Выдан',
@@ -451,124 +473,178 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
                                             color: AppColors.kPrimaryColor,
-                                            borderRadius: BorderRadius.circular(12),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                           ),
                                           child: const Text(
                                             'Заказ отменен',
                                             style: TextStyle(
-                                                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500),
                                           ),
                                         ),
                                       )
                                     ],
                                   )
                                 else
-                                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                                    if (widget.basketOrder.statusFBS == 'end')
-                                      const SizedBox()
-                                    else
-                                      BlocConsumer<OrderStatusAdminCubit, OrderStatusAdminState>(
-                                          listener: (context, state) {
-                                        if (state is LoadedState) {
-                                          BlocProvider.of<BasketCubit>(context).basketOrderShow();
-                                          Navigator.pop(context);
-                                          Get.snackbar('Заказ', 'Вы совершили покупку',
-                                              backgroundColor: Colors.blueAccent);
-                                        }
-                                      }, builder: (context, state) {
-                                        return Expanded(
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        if (widget.basketOrder.statusFBS ==
+                                            'end')
+                                          const SizedBox()
+                                        else
+                                          BlocConsumer<OrderStatusAdminCubit,
+                                                  OrderStatusAdminState>(
+                                              listener: (context, state) {
+                                            if (state is LoadedState) {
+                                              BlocProvider.of<BasketCubit>(
+                                                      context)
+                                                  .basketOrderShow();
+                                              Navigator.pop(context);
+                                              Get.snackbar('Заказ',
+                                                  'Вы совершили покупку',
+                                                  backgroundColor:
+                                                      Colors.blueAccent);
+                                            }
+                                          }, builder: (context, state) {
+                                            return Expanded(
+                                              child: GestureDetector(
+                                                onTap: () async {
+                                                  if (widget.basketOrder
+                                                          .statusFBS !=
+                                                      'courier') {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              CancelOrderWidget(
+                                                                  id: widget
+                                                                      .basketOrder
+                                                                      .id
+                                                                      .toString())),
+                                                    );
+                                                  } else {
+                                                    BlocProvider.of<
+                                                                OrderStatusAdminCubit>(
+                                                            context)
+                                                        .basketStatus(
+                                                            'end',
+                                                            widget
+                                                                .basketOrder.id
+                                                                .toString(),
+                                                            widget
+                                                                .basketOrder
+                                                                .product!
+                                                                .first
+                                                                .id
+                                                                .toString(),
+                                                            'fbs');
+                                                    // Get.back();
+                                                  }
+                                                },
+                                                child: Container(
+                                                  height: 38,
+                                                  width: 136,
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        AppColors.kPrimaryColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                  child: state is LoadingState
+                                                      ? const CircularProgressIndicator
+                                                          .adaptive(
+                                                          strokeWidth: 2,
+                                                        )
+                                                      : Text(
+                                                          widget.basketOrder
+                                                                      .statusFBS ==
+                                                                  'courier'
+                                                              ? 'Товар получил \nПретензии не имею'
+                                                              : 'Отменить',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: const TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                        const SizedBox(width: 8),
+                                        Expanded(
                                           child: GestureDetector(
-                                            onTap: () async {
-                                              if (widget.basketOrder.statusFBS != 'courier') {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          CancelOrderWidget(id: widget.basketOrder.id.toString())),
-                                                );
-                                              } else {
-                                                BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(
-                                                    'end',
-                                                    widget.basketOrder.id.toString(),
-                                                    widget.basketOrder.product!.first.id.toString(),
-                                                    'fbs');
-                                                // Get.back();
-                                              }
+                                            onTap: () {
+                                              // setState(() {});
+
+                                              Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                builder: (context) =>
+                                                    QRViewExample(
+                                                        id: widget
+                                                            .basketOrder.id!,
+                                                        product_id: widget
+                                                            .basketOrder
+                                                            .product!
+                                                            .first
+                                                            .id!,
+                                                        fulfillment: 'fbs'),
+                                              ));
                                             },
                                             child: Container(
                                               height: 38,
                                               width: 136,
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
-                                                color: AppColors.kPrimaryColor,
-                                                borderRadius: BorderRadius.circular(12),
+                                                color: const Color.fromRGBO(
+                                                    29, 196, 207, 0.4),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
                                               ),
-                                              child: state is LoadingState
-                                                  ? const CircularProgressIndicator.adaptive(
-                                                      strokeWidth: 2,
-                                                    )
-                                                  : Text(
-                                                      widget.basketOrder.statusFBS == 'courier'
-                                                          ? 'Товар получил \nПретензии не имею'
-                                                          : 'Отменить',
-                                                      textAlign: TextAlign.center,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 12,
-                                                          fontWeight: FontWeight.w500),
-                                                    ),
+                                              child: const Text(
+                                                'Возврат',
+                                                style: TextStyle(
+                                                    color:
+                                                        AppColors.kPrimaryColor,
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      }),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          // setState(() {});
-
-                                          Navigator.of(context).push(MaterialPageRoute(
-                                            builder: (context) => QRViewExample(
-                                                id: widget.basketOrder.id!,
-                                                product_id: widget.basketOrder.product!.first.id!,
-                                                fulfillment: 'fbs'),
-                                          ));
-                                        },
-                                        child: Container(
-                                          height: 38,
-                                          width: 136,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            color: const Color.fromRGBO(29, 196, 207, 0.4),
-                                            borderRadius: BorderRadius.circular(12),
-                                          ),
-                                          child: const Text(
-                                            'Возврат',
-                                            style: TextStyle(
-                                                color: AppColors.kPrimaryColor,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500),
-                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ]),
+                                      ]),
                               ],
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, top: 10),
                           child: Container(
                               padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
                                     'Продовец',
                                     style: TextStyle(
-                                        color: AppColors.kPrimaryColor, fontSize: 12, fontWeight: FontWeight.w400),
+                                        color: AppColors.kPrimaryColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
                                   ),
                                   const SizedBox(
                                     height: 5,
@@ -579,7 +655,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         height: 54,
                                         width: 54,
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(34),
+                                            borderRadius:
+                                                BorderRadius.circular(34),
                                             image: DecorationImage(
                                               image: NetworkImage(
                                                   "http://185.116.193.73/storage/${widget.basketOrder.product!.first.shopImage}"),
@@ -587,23 +664,40 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             )),
                                       ),
                                       const SizedBox(width: 13),
-                                      if (widget.basketOrder.product != null && widget.basketOrder.product!.isNotEmpty)
+                                      if (widget.basketOrder.product != null &&
+                                          widget
+                                              .basketOrder.product!.isNotEmpty)
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               '${widget.basketOrder.product!.first.shopName}',
                                               style: const TextStyle(
-                                                  color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400),
                                             ),
                                             const SizedBox(height: 8),
                                             Text(
-                                              widget.basketOrder.productFBS?.first.shopPhone != null ||
-                                                      widget.basketOrder.productFBS?.first.shopPhone != ''
+                                              widget
+                                                              .basketOrder
+                                                              .productFBS
+                                                              ?.first
+                                                              .shopPhone !=
+                                                          null ||
+                                                      widget
+                                                              .basketOrder
+                                                              .productFBS
+                                                              ?.first
+                                                              .shopPhone !=
+                                                          ''
                                                   ? '${widget.basketOrder.productFBS?.first.shopPhone}'
                                                   : 'Неизвестен',
                                               style: const TextStyle(
-                                                  color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400),
                                             ),
                                           ],
                                         ),
@@ -616,22 +710,29 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
 
                                           Get.to(MessagePage(
                                             userId: widget.basketOrder.shopId,
-                                            name: widget.basketOrder.productFBS?.first.shopName,
-                                            avatar: widget.basketOrder.productFBS?.first.shopImage,
+                                            name: widget.basketOrder.productFBS
+                                                ?.first.shopName,
+                                            avatar: widget.basketOrder
+                                                .productFBS?.first.shopImage,
                                             chatId: widget.basketOrder.chatId,
                                           ));
                                         },
                                         child: Container(
                                           height: 30,
-                                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8),
                                           // width: 108,
                                           decoration: BoxDecoration(
-                                              color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(8)),
+                                              color: AppColors.kPrimaryColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(8)),
                                           alignment: Alignment.center,
                                           child: const Text(
                                             'Написать',
                                             style: TextStyle(
-                                                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400),
                                           ),
                                         ),
                                       )
@@ -641,17 +742,22 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               )),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, top: 10),
                           child: Container(
                               padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
                                     'Адрес доставки',
                                     style: TextStyle(
-                                        color: AppColors.kPrimaryColor, fontSize: 12, fontWeight: FontWeight.w400),
+                                        color: AppColors.kPrimaryColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
                                   ),
                                   const SizedBox(
                                     height: 5,
@@ -664,8 +770,12 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                       const SizedBox(width: 13),
                                       Expanded(
                                         child: Text(
-                                          widget.basketOrder.productFBS?.first.address ?? 'Неизвестен',
-                                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                                          widget.basketOrder.productFBS?.first
+                                                  .address ??
+                                              'Неизвестен',
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
                                         ),
                                       )
                                     ],
@@ -676,7 +786,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         Container(
                           margin: const EdgeInsets.all(16),
                           color: Colors.white,
-                          height: (widget.basketOrder.productFBS?.length ?? 1) * 180,
+                          height: (widget.basketOrder.productFBS?.length ?? 1) *
+                              180,
                           // width: 200,
                           child: ListView.builder(
                             shrinkWrap: true,
@@ -687,22 +798,33 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               return Container(
                                   height: 170,
                                   // width: 100,
-                                  padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+                                  padding: const EdgeInsets.only(
+                                      left: 16, right: 16, top: 12),
                                   color: Colors.white,
                                   child: Row(
                                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      if (widget.basketOrder.productFBS != null &&
-                                          widget.basketOrder.productFBS?[index].path != null &&
-                                          (widget.basketOrder.productFBS?[index].path?.isNotEmpty ?? false))
+                                      if (widget.basketOrder.productFBS !=
+                                              null &&
+                                          widget.basketOrder.productFBS?[index]
+                                                  .path !=
+                                              null &&
+                                          (widget.basketOrder.productFBS?[index]
+                                                  .path?.isNotEmpty ??
+                                              false))
                                         Image.network(
-                                          (widget.basketOrder.productFBS?[index].path!.isNotEmpty ?? false)
+                                          (widget.basketOrder.productFBS?[index]
+                                                      .path!.isNotEmpty ??
+                                                  false)
                                               ? "http://185.116.193.73/storage/${widget.basketOrder.productFBS?[index].path?.first}"
                                               : '',
                                           width: 120,
                                           height: 120,
-                                          errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  const ErrorImageWidget(
                                             height: 120,
                                             width: 120,
                                           ),
@@ -716,21 +838,31 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         width: 20,
                                       ),
                                       Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
                                             width: 185,
                                             child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Text(
                                                   '${widget.basketOrder.productFBS?[index].price} ₽',
-                                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
                                                 ),
                                                 Text(
                                                   '${widget.basketOrder.productFBS?[index].count} шт',
-                                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                                                  style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400),
                                                 ),
                                               ],
                                             ),
@@ -743,7 +875,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             width: 185,
                                             child: Text(
                                               '${widget.basketOrder.productFBS?[index].productName}',
-                                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400),
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -752,10 +886,21 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           GestureDetector(
                                             onTap: () async {
                                               if (inbasket != true) {
-                                                await BlocProvider.of<BasketCubit>(context).basketAdd(
-                                                    widget.basketOrder.productFBS?[index].id, '1', 0, '', '');
-                                                Get.snackbar('Успешно', 'Товар добавлен в корзину',
-                                                    backgroundColor: Colors.blueAccent);
+                                                await BlocProvider.of<
+                                                        BasketCubit>(context)
+                                                    .basketAdd(
+                                                        widget
+                                                            .basketOrder
+                                                            .productFBS?[index]
+                                                            .id,
+                                                        '1',
+                                                        0,
+                                                        '',
+                                                        '');
+                                                Get.snackbar('Успешно',
+                                                    'Товар добавлен в корзину',
+                                                    backgroundColor:
+                                                        Colors.blueAccent);
 
                                                 inbasket = true;
                                                 setState(() {});
@@ -767,24 +912,37 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
                                                 color: AppColors.kPrimaryColor,
-                                                borderRadius: BorderRadius.circular(12),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
                                               ),
                                               child: Text(
-                                                inbasket != true ? 'В корзину' : 'Добавлен в корзину',
+                                                inbasket != true
+                                                    ? 'В корзину'
+                                                    : 'Добавлен в корзину',
                                                 style: const TextStyle(
-                                                    color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.w500),
                                               ),
                                             ),
                                           ),
                                           const SizedBox(height: 8),
-                                          if (widget.basketOrder.statusFBS == 'end')
+                                          if (widget.basketOrder.statusFBS ==
+                                              'end')
                                             GestureDetector(
                                               onTap: () {
-                                                productId =
-                                                    (widget.basketOrder.productFBS?[index].id.toString() ?? '0');
+                                                productId = (widget.basketOrder
+                                                        .productFBS?[index].id
+                                                        .toString() ??
+                                                    '0');
 
-                                                productName =
-                                                    widget.basketOrder.productFBS?[index].productName.toString() ?? '0';
+                                                productName = widget
+                                                        .basketOrder
+                                                        .productFBS?[index]
+                                                        .productName
+                                                        .toString() ??
+                                                    '0';
                                                 hidden = !hidden;
 
                                                 setState(() {});
@@ -794,15 +952,19 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                 width: 136,
                                                 alignment: Alignment.center,
                                                 decoration: BoxDecoration(
-                                                  color: const Color.fromRGBO(29, 196, 207, 0.4),
-                                                  borderRadius: BorderRadius.circular(12),
+                                                  color: const Color.fromRGBO(
+                                                      29, 196, 207, 0.4),
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
                                                 ),
                                                 child: const Text(
                                                   'Оставить отзыв',
                                                   style: TextStyle(
-                                                      color: AppColors.kPrimaryColor,
+                                                      color: AppColors
+                                                          .kPrimaryColor,
                                                       fontSize: 12,
-                                                      fontWeight: FontWeight.w500),
+                                                      fontWeight:
+                                                          FontWeight.w500),
                                                 ),
                                               ),
                                             )
@@ -818,84 +980,97 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             color: Colors.white,
-                            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Оставьте отзыв',
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  RatingBar.builder(
-                                    initialRating: 0,
-                                    minRating: 1,
-                                    itemSize: 15,
-                                    direction: Axis.horizontal,
-                                    allowHalfRating: false,
-                                    itemCount: 5,
-                                    itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
-                                    itemBuilder: (context, _) => const Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
-                                    ),
-                                    onRatingUpdate: (value) {
-                                      rating = value.toInt();
-                                    },
-                                  ),
-                                ],
-                              ),
-                              TextFormField(
-                                controller: _commentController,
-                                maxLines: 5,
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                    hintText: 'Напишите отзывь для $productName', border: InputBorder.none),
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  await BlocProvider.of<ReviewCubit>(context)
-                                      .reviewStore(_commentController.text, rating.toString(), productId);
-                                  _commentController.clear();
-
-                                  hidden = !hidden;
-
-                                  setState(() {});
-
-                                  Get.snackbar('Успешно', 'отзыв добавлен', backgroundColor: Colors.blueAccent);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 39,
-                                  width: 209,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    border: Border.all(width: 0.2),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black,
-                                        offset: Offset(
-                                          0.2,
-                                          0.2,
-                                        ), //Offset
-                                        blurRadius: 0.1,
-                                        spreadRadius: 0.1,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ), //BoxShadow
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Оставьте отзыв',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700),
+                                        textAlign: TextAlign.start,
+                                      ),
+                                      RatingBar.builder(
+                                        initialRating: 0,
+                                        minRating: 1,
+                                        itemSize: 15,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: false,
+                                        itemCount: 5,
+                                        itemPadding: const EdgeInsets.symmetric(
+                                            horizontal: 0.0),
+                                        itemBuilder: (context, _) => const Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (value) {
+                                          rating = value.toInt();
+                                        },
+                                      ),
                                     ],
                                   ),
-                                  child: const Text(
-                                    'Оставить свой отзыв',
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                  TextFormField(
+                                    controller: _commentController,
+                                    maxLines: 5,
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                        hintText:
+                                            'Напишите отзывь для $productName',
+                                        border: InputBorder.none),
                                   ),
-                                ),
-                              ),
-                            ]),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await BlocProvider.of<ReviewCubit>(
+                                              context)
+                                          .reviewStore(_commentController.text,
+                                              rating.toString(), productId);
+                                      _commentController.clear();
+
+                                      hidden = !hidden;
+
+                                      setState(() {});
+
+                                      Get.snackbar('Успешно', 'отзыв добавлен',
+                                          backgroundColor: Colors.blueAccent);
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 39,
+                                      width: 209,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6),
+                                        border: Border.all(width: 0.2),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Colors.black,
+                                            offset: Offset(
+                                              0.2,
+                                              0.2,
+                                            ), //Offset
+                                            blurRadius: 0.1,
+                                            spreadRadius: 0.1,
+                                          ), //BoxShadow
+                                          BoxShadow(
+                                            color: Colors.white,
+                                            offset: Offset(0.0, 0.0),
+                                            blurRadius: 0.0,
+                                            spreadRadius: 0.0,
+                                          ), //BoxShadow
+                                        ],
+                                      ),
+                                      child: const Text(
+                                        'Оставить свой отзыв',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ),
+                                ]),
                           ),
                         ),
                         Container(
@@ -907,19 +1082,27 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 child: ListTile(
                                   title: const Text(
                                     'Товар',
-                                    style:
-                                        TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                                    style: TextStyle(
+                                        color: AppColors.kGray900,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400),
                                   ),
-                                  subtitle: (widget.basketOrder.productFBS ?? []).isNotEmpty
-                                      ? Text(
-                                          '${widget.basketOrder.productFBS!.first.productName}',
-                                          style: const TextStyle(
-                                              color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
-                                        )
-                                      : null,
+                                  subtitle:
+                                      (widget.basketOrder.productFBS ?? [])
+                                              .isNotEmpty
+                                          ? Text(
+                                              '${widget.basketOrder.productFBS!.first.productName}',
+                                              style: const TextStyle(
+                                                  color: AppColors.kGray300,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400),
+                                            )
+                                          : null,
                                   trailing: Text(
                                     '${widget.basketOrder.priceFBS ?? 0} ₽ ',
-                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ),
                               ),
@@ -929,17 +1112,21 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               SizedBox(
                                 height: 35,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.only(left: 16),
                                       child: const Text('Доставка'),
                                     ),
                                     Container(
-                                        padding: const EdgeInsets.only(right: 16),
+                                        padding:
+                                            const EdgeInsets.only(right: 16),
                                         child: Text(
                                           '${widget.basketOrder.deliveryPrice ?? 0} ₽ ',
-                                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
                                         ))
                                   ],
                                 ),
@@ -950,20 +1137,26 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               SizedBox(
                                 height: 35,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.only(left: 16),
                                       child: const Text(
                                         'К оплате',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
                                       ),
                                     ),
                                     Container(
-                                        padding: const EdgeInsets.only(right: 16),
+                                        padding:
+                                            const EdgeInsets.only(right: 16),
                                         child: Text(
-                                          '${widget.basketOrder.priceFBS?.toInt() ?? 0 + widget.basketOrder.deliveryPrice!} ₽ ',
-                                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                          '${(widget.basketOrder.priceFBS?.toInt() ?? 0) + (widget.basketOrder.deliveryPrice ?? 0)} ₽ ',
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
                                         ))
                                   ],
                                 ),
@@ -1025,12 +1218,16 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                       Image.asset('assets/icons/no_data.png'),
                       const Text(
                         'Нет заказов',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
                         textAlign: TextAlign.center,
                       ),
                       const Text(
                         'Отсутствует заказы fbs',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff717171)),
                         textAlign: TextAlign.center,
                       )
                     ],
@@ -1046,14 +1243,18 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
                             '${widget.basketOrder.date}',
-                            style:
-                                const TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w500),
+                            style: const TextStyle(
+                                color: AppColors.kGray300,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 16.0, right: 16),
                           child: Container(
-                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
                             padding: const EdgeInsets.all(16),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1070,7 +1271,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isFirst: true,
-                                  indicatorStyle: statusProggress  >= 1 
+                                  indicatorStyle: statusProggress >= 1
                                       ? IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
@@ -1082,8 +1283,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           color: Colors.grey,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
-                                            iconData: 
-                                               Icons.history_toggle_off,
+                                            iconData: Icons.history_toggle_off,
                                           ),
                                         ),
                                   beforeLineStyle: const LineStyle(
@@ -1091,9 +1291,11 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   ),
                                   lineXY: 0.4,
                                   endChild: Padding(
-                                    padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, top: 10, bottom: 10),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         const Text(
                                           'Заказ оплачен',
@@ -1116,7 +1318,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isFirst: false,
-                                  indicatorStyle: statusProggress  >= 2
+                                  indicatorStyle: statusProggress >= 2
                                       ? IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
@@ -1128,8 +1330,12 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           color: Colors.grey,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
-                                            iconData: (widget.basketOrder.statusRealFBS == 'end' ||
-                                                    widget.basketOrder.statusRealFBS == 'accepted')
+                                            iconData: (widget.basketOrder
+                                                            .statusRealFBS ==
+                                                        'end' ||
+                                                    widget.basketOrder
+                                                            .statusRealFBS ==
+                                                        'accepted')
                                                 ? Icons.check
                                                 : Icons.history_toggle_off,
                                           ),
@@ -1139,12 +1345,20 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   ),
                                   lineXY: 0.4,
                                   endChild: Padding(
-                                    padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, top: 10, bottom: 10),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          widget.basketOrder.statusRealFBS == 'cancel' || widget.basketOrder.statusRealFBS == 'rejected' ? 'Отменен' : 'Прният',
+                                          widget.basketOrder.statusRealFBS ==
+                                                      'cancel' ||
+                                                  widget.basketOrder
+                                                          .statusRealFBS ==
+                                                      'rejected'
+                                              ? 'Отменен'
+                                              : 'Прният',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14,
@@ -1164,7 +1378,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isFirst: false,
-                                  indicatorStyle: statusProggress  >= 3
+                                  indicatorStyle: statusProggress >= 3
                                       ? IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
@@ -1176,8 +1390,12 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           color: Colors.grey,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
-                                            iconData: (widget.basketOrder.statusRealFBS == 'end' ||
-                                                    widget.basketOrder.statusRealFBS == 'courier')
+                                            iconData: (widget.basketOrder
+                                                            .statusRealFBS ==
+                                                        'end' ||
+                                                    widget.basketOrder
+                                                            .statusRealFBS ==
+                                                        'courier')
                                                 ? Icons.check
                                                 : Icons.history_toggle_off,
                                           ),
@@ -1187,12 +1405,17 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   ),
                                   lineXY: 0.4,
                                   endChild: Padding(
-                                    padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, top: 10, bottom: 10),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          widget.basketOrder.statusRealFBS == 'cancel' ? 'Отменен' : 'Доставка',
+                                          widget.basketOrder.statusRealFBS ==
+                                                  'cancel'
+                                              ? 'Отменен'
+                                              : 'Доставка',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14,
@@ -1212,7 +1435,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 ),
                                 TimelineTile(
                                   isLast: true,
-                                  indicatorStyle: statusProggress  >= 4 
+                                  indicatorStyle: statusProggress >= 4
                                       ? IndicatorStyle(
                                           color: AppColors.kPrimaryColor,
                                           iconStyle: IconStyle(
@@ -1224,7 +1447,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           color: Colors.grey,
                                           iconStyle: IconStyle(
                                             color: Colors.white,
-                                            iconData: widget.basketOrder.statusRealFBS == 'end'
+                                            iconData: widget.basketOrder
+                                                        .statusRealFBS ==
+                                                    'end'
                                                 ? Icons.check
                                                 : Icons.history_toggle_off,
                                           ),
@@ -1234,9 +1459,11 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   ),
                                   lineXY: 0.4,
                                   endChild: Padding(
-                                    padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, top: 10, bottom: 10),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         const Text(
                                           'Выдан',
@@ -1246,7 +1473,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           ),
                                         ),
                                         Text(
-                                          widget.basketOrder.statusRealFBS == 'end'
+                                          widget.basketOrder.statusRealFBS ==
+                                                  'end'
                                               ? 'Вы получили товар'
                                               : 'Товар пока не получен',
                                           style: const TextStyle(
@@ -1267,7 +1495,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 //   color: AppColors.kGray500,
                                 // ),
                                 const SizedBox(height: 10),
-                                if (widget.basketOrder.statusRealFBS == 'cancel')
+                                if (widget.basketOrder.statusRealFBS ==
+                                    'cancel')
                                   Row(
                                     children: [
                                       Expanded(
@@ -1277,124 +1506,178 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
                                             color: AppColors.kPrimaryColor,
-                                            borderRadius: BorderRadius.circular(12),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                           ),
                                           child: const Text(
                                             'Заказ отменен',
                                             style: TextStyle(
-                                                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500),
                                           ),
                                         ),
                                       )
                                     ],
                                   )
                                 else
-                                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                                    if (widget.basketOrder.statusRealFBS == 'end')
-                                      const SizedBox()
-                                    else
-                                      BlocConsumer<OrderStatusAdminCubit, OrderStatusAdminState>(
-                                          listener: (context, state) {
-                                        if (state is LoadedState) {
-                                          BlocProvider.of<BasketCubit>(context).basketOrderShow();
-                                          Navigator.pop(context);
-                                          Get.snackbar('Заказ', 'Вы совершили покупку',
-                                              backgroundColor: Colors.blueAccent);
-                                        }
-                                      }, builder: (context, state) {
-                                        return Expanded(
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        if (widget.basketOrder.statusRealFBS ==
+                                            'end')
+                                          const SizedBox()
+                                        else
+                                          BlocConsumer<OrderStatusAdminCubit,
+                                                  OrderStatusAdminState>(
+                                              listener: (context, state) {
+                                            if (state is LoadedState) {
+                                              BlocProvider.of<BasketCubit>(
+                                                      context)
+                                                  .basketOrderShow();
+                                              Navigator.pop(context);
+                                              Get.snackbar('Заказ',
+                                                  'Вы совершили покупку',
+                                                  backgroundColor:
+                                                      Colors.blueAccent);
+                                            }
+                                          }, builder: (context, state) {
+                                            return Expanded(
+                                              child: GestureDetector(
+                                                onTap: () async {
+                                                  if (widget.basketOrder
+                                                          .statusRealFBS !=
+                                                      'courier') {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              CancelOrderWidget(
+                                                                  id: widget
+                                                                      .basketOrder
+                                                                      .id
+                                                                      .toString())),
+                                                    );
+                                                  } else {
+                                                    BlocProvider.of<
+                                                                OrderStatusAdminCubit>(
+                                                            context)
+                                                        .basketStatus(
+                                                            'end',
+                                                            widget
+                                                                .basketOrder.id
+                                                                .toString(),
+                                                            widget
+                                                                .basketOrder
+                                                                .product!
+                                                                .first
+                                                                .id
+                                                                .toString(),
+                                                            'fbs');
+                                                    // Get.back();
+                                                  }
+                                                },
+                                                child: Container(
+                                                  height: 38,
+                                                  width: 136,
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        AppColors.kPrimaryColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                  child: state is LoadingState
+                                                      ? const CircularProgressIndicator
+                                                          .adaptive(
+                                                          strokeWidth: 2,
+                                                        )
+                                                      : Text(
+                                                          widget.basketOrder
+                                                                      .statusRealFBS ==
+                                                                  'courier'
+                                                              ? 'Товар получил \nПретензии не имею'
+                                                              : 'Отменить',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: const TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                        const SizedBox(width: 8),
+                                        Expanded(
                                           child: GestureDetector(
-                                            onTap: () async {
-                                              if (widget.basketOrder.statusRealFBS != 'courier') {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          CancelOrderWidget(id: widget.basketOrder.id.toString())),
-                                                );
-                                              } else {
-                                                BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(
-                                                    'end',
-                                                    widget.basketOrder.id.toString(),
-                                                    widget.basketOrder.product!.first.id.toString(),
-                                                    'fbs');
-                                                // Get.back();
-                                              }
+                                            onTap: () {
+                                              // setState(() {});
+
+                                              Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                builder: (context) =>
+                                                    QRViewExample(
+                                                        id: widget
+                                                            .basketOrder.id!,
+                                                        product_id: widget
+                                                            .basketOrder
+                                                            .product!
+                                                            .first
+                                                            .id!,
+                                                        fulfillment: 'realFBS'),
+                                              ));
                                             },
                                             child: Container(
                                               height: 38,
                                               width: 136,
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
-                                                color: AppColors.kPrimaryColor,
-                                                borderRadius: BorderRadius.circular(12),
+                                                color: const Color.fromRGBO(
+                                                    29, 196, 207, 0.4),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
                                               ),
-                                              child: state is LoadingState
-                                                  ? const CircularProgressIndicator.adaptive(
-                                                      strokeWidth: 2,
-                                                    )
-                                                  : Text(
-                                                      widget.basketOrder.statusRealFBS == 'courier'
-                                                          ? 'Товар получил \nПретензии не имею'
-                                                          : 'Отменить',
-                                                      textAlign: TextAlign.center,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 12,
-                                                          fontWeight: FontWeight.w500),
-                                                    ),
+                                              child: const Text(
+                                                'Возврат',
+                                                style: TextStyle(
+                                                    color:
+                                                        AppColors.kPrimaryColor,
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      }),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          // setState(() {});
-
-                                          Navigator.of(context).push(MaterialPageRoute(
-                                            builder: (context) => QRViewExample(
-                                                id: widget.basketOrder.id!,
-                                                product_id: widget.basketOrder.product!.first.id!,
-                                                fulfillment: 'realFBS'),
-                                          ));
-                                        },
-                                        child: Container(
-                                          height: 38,
-                                          width: 136,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            color: const Color.fromRGBO(29, 196, 207, 0.4),
-                                            borderRadius: BorderRadius.circular(12),
-                                          ),
-                                          child: const Text(
-                                            'Возврат',
-                                            style: TextStyle(
-                                                color: AppColors.kPrimaryColor,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500),
-                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ]),
+                                      ]),
                               ],
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, top: 10),
                           child: Container(
                               padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
                                     'Продовец',
                                     style: TextStyle(
-                                        color: AppColors.kPrimaryColor, fontSize: 12, fontWeight: FontWeight.w400),
+                                        color: AppColors.kPrimaryColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
                                   ),
                                   const SizedBox(
                                     height: 5,
@@ -1405,7 +1688,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         height: 54,
                                         width: 54,
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(34),
+                                            borderRadius:
+                                                BorderRadius.circular(34),
                                             image: DecorationImage(
                                               image: NetworkImage(
                                                   "http://185.116.193.73/storage/${widget.basketOrder.product!.first.shopImage}"),
@@ -1413,22 +1697,31 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             )),
                                       ),
                                       const SizedBox(width: 13),
-                                      if (widget.basketOrder.product != null && widget.basketOrder.product!.isNotEmpty)
+                                      if (widget.basketOrder.product != null &&
+                                          widget
+                                              .basketOrder.product!.isNotEmpty)
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               '${widget.basketOrder.product!.first.shopName}',
                                               style: const TextStyle(
-                                                  color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400),
                                             ),
                                             const SizedBox(height: 8),
                                             Text(
-                                              widget.basketOrder.product?.first.shopPhone != ''
+                                              widget.basketOrder.product?.first
+                                                          .shopPhone !=
+                                                      ''
                                                   ? '${widget.basketOrder.product?.first.shopPhone}'
                                                   : 'Неизвестен',
                                               style: const TextStyle(
-                                                  color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400),
                                             ),
                                           ],
                                         ),
@@ -1441,22 +1734,29 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
 
                                           Get.to(MessagePage(
                                             userId: widget.basketOrder.shopId,
-                                            name: widget.basketOrder.productFBS?.first.shopName,
-                                            avatar: widget.basketOrder.productFBS?.first.shopImage,
+                                            name: widget.basketOrder.productFBS
+                                                ?.first.shopName,
+                                            avatar: widget.basketOrder
+                                                .productFBS?.first.shopImage,
                                             chatId: widget.basketOrder.chatId,
                                           ));
                                         },
                                         child: Container(
                                           height: 30,
-                                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8),
                                           // width: 108,
                                           decoration: BoxDecoration(
-                                              color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(8)),
+                                              color: AppColors.kPrimaryColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(8)),
                                           alignment: Alignment.center,
                                           child: const Text(
                                             'Написать',
                                             style: TextStyle(
-                                                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400),
                                           ),
                                         ),
                                       )
@@ -1466,17 +1766,22 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               )),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, top: 10),
                           child: Container(
                               padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
                                     'Адрес доставки',
                                     style: TextStyle(
-                                        color: AppColors.kPrimaryColor, fontSize: 12, fontWeight: FontWeight.w400),
+                                        color: AppColors.kPrimaryColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
                                   ),
                                   const SizedBox(
                                     height: 5,
@@ -1489,8 +1794,12 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                       const SizedBox(width: 13),
                                       Expanded(
                                         child: Text(
-                                          widget.basketOrder.productRealFBS?.first.address ?? 'Неизвестен',
-                                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                                          widget.basketOrder.productRealFBS
+                                                  ?.first.address ??
+                                              'Неизвестен',
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
                                         ),
                                       )
                                     ],
@@ -1501,33 +1810,55 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         Container(
                           margin: const EdgeInsets.all(16),
                           color: Colors.white,
-                          height: (widget.basketOrder.productRealFBS?.length ?? 1) * 180,
+                          height:
+                              (widget.basketOrder.productRealFBS?.length ?? 1) *
+                                  180,
                           // width: 200,
                           child: ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: widget.basketOrder.productRealFBS?.length,
+                            itemCount:
+                                widget.basketOrder.productRealFBS?.length,
                             scrollDirection: Axis.vertical,
                             itemBuilder: (context, index) {
                               return Container(
                                   height: 170,
                                   // width: 100,
-                                  padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+                                  padding: const EdgeInsets.only(
+                                      left: 16, right: 16, top: 12),
                                   color: Colors.white,
                                   child: Row(
                                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      if (widget.basketOrder.productRealFBS != null &&
-                                          widget.basketOrder.productRealFBS?[index].path != null &&
-                                          (widget.basketOrder.productRealFBS?[index].path?.isNotEmpty ?? false))
+                                      if (widget.basketOrder.productRealFBS !=
+                                              null &&
+                                          widget
+                                                  .basketOrder
+                                                  .productRealFBS?[index]
+                                                  .path !=
+                                              null &&
+                                          (widget
+                                                  .basketOrder
+                                                  .productRealFBS?[index]
+                                                  .path
+                                                  ?.isNotEmpty ??
+                                              false))
                                         Image.network(
-                                          (widget.basketOrder.productRealFBS?[index].path!.isNotEmpty ?? false)
+                                          (widget
+                                                      .basketOrder
+                                                      .productRealFBS?[index]
+                                                      .path!
+                                                      .isNotEmpty ??
+                                                  false)
                                               ? "http://185.116.193.73/storage/${widget.basketOrder.productRealFBS?[index].path?.first}"
                                               : '',
                                           width: 120,
                                           height: 120,
-                                          errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  const ErrorImageWidget(
                                             height: 120,
                                             width: 120,
                                           ),
@@ -1541,21 +1872,31 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         width: 20,
                                       ),
                                       Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
                                             width: 185,
                                             child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Text(
                                                   '${widget.basketOrder.productRealFBS?[index].price} ₽',
-                                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
                                                 ),
                                                 Text(
                                                   '${widget.basketOrder.productRealFBS?[index].count} шт',
-                                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                                                  style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400),
                                                 ),
                                               ],
                                             ),
@@ -1568,7 +1909,9 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             width: 185,
                                             child: Text(
                                               '${widget.basketOrder.productRealFBS?[index].productName}',
-                                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400),
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -1577,10 +1920,22 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           GestureDetector(
                                             onTap: () async {
                                               if (inbasket != true) {
-                                                await BlocProvider.of<BasketCubit>(context).basketAdd(
-                                                    widget.basketOrder.productRealFBS?[index].id, '1', 0, '', '');
-                                                Get.snackbar('Успешно', 'Товар добавлен в корзину',
-                                                    backgroundColor: Colors.blueAccent);
+                                                await BlocProvider.of<
+                                                        BasketCubit>(context)
+                                                    .basketAdd(
+                                                        widget
+                                                            .basketOrder
+                                                            .productRealFBS?[
+                                                                index]
+                                                            .id,
+                                                        '1',
+                                                        0,
+                                                        '',
+                                                        '');
+                                                Get.snackbar('Успешно',
+                                                    'Товар добавлен в корзину',
+                                                    backgroundColor:
+                                                        Colors.blueAccent);
 
                                                 inbasket = true;
                                                 setState(() {});
@@ -1592,25 +1947,39 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
                                                 color: AppColors.kPrimaryColor,
-                                                borderRadius: BorderRadius.circular(12),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
                                               ),
                                               child: Text(
-                                                inbasket != true ? 'В корзину' : 'Добавлен в корзину',
+                                                inbasket != true
+                                                    ? 'В корзину'
+                                                    : 'Добавлен в корзину',
                                                 style: const TextStyle(
-                                                    color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.w500),
                                               ),
                                             ),
                                           ),
                                           const SizedBox(height: 8),
-                                          if (widget.basketOrder.status == 'end')
+                                          if (widget.basketOrder.status ==
+                                              'end')
                                             GestureDetector(
                                               onTap: () {
-                                                productId =
-                                                    (widget.basketOrder.productRealFBS?[index].id.toString() ?? '0');
+                                                productId = (widget
+                                                        .basketOrder
+                                                        .productRealFBS?[index]
+                                                        .id
+                                                        .toString() ??
+                                                    '0');
 
-                                                productName =
-                                                    widget.basketOrder.productRealFBS?[index].productName.toString() ??
-                                                        '0';
+                                                productName = widget
+                                                        .basketOrder
+                                                        .productRealFBS?[index]
+                                                        .productName
+                                                        .toString() ??
+                                                    '0';
                                                 hidden = !hidden;
 
                                                 setState(() {});
@@ -1620,15 +1989,19 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                 width: 136,
                                                 alignment: Alignment.center,
                                                 decoration: BoxDecoration(
-                                                  color: const Color.fromRGBO(29, 196, 207, 0.4),
-                                                  borderRadius: BorderRadius.circular(12),
+                                                  color: const Color.fromRGBO(
+                                                      29, 196, 207, 0.4),
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
                                                 ),
                                                 child: const Text(
                                                   'Оставить отзыв',
                                                   style: TextStyle(
-                                                      color: AppColors.kPrimaryColor,
+                                                      color: AppColors
+                                                          .kPrimaryColor,
                                                       fontSize: 12,
-                                                      fontWeight: FontWeight.w500),
+                                                      fontWeight:
+                                                          FontWeight.w500),
                                                 ),
                                               ),
                                             )
@@ -1644,84 +2017,97 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             color: Colors.white,
-                            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Оставьте отзыв',
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  RatingBar.builder(
-                                    initialRating: 0,
-                                    minRating: 1,
-                                    itemSize: 15,
-                                    direction: Axis.horizontal,
-                                    allowHalfRating: false,
-                                    itemCount: 5,
-                                    itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
-                                    itemBuilder: (context, _) => const Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
-                                    ),
-                                    onRatingUpdate: (value) {
-                                      rating = value.toInt();
-                                    },
-                                  ),
-                                ],
-                              ),
-                              TextFormField(
-                                controller: _commentController,
-                                maxLines: 5,
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                    hintText: 'Напишите отзывь для $productName', border: InputBorder.none),
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  await BlocProvider.of<ReviewCubit>(context)
-                                      .reviewStore(_commentController.text, rating.toString(), productId);
-                                  _commentController.clear();
-
-                                  hidden = !hidden;
-
-                                  setState(() {});
-
-                                  Get.snackbar('Успешно', 'отзыв добавлен', backgroundColor: Colors.blueAccent);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 39,
-                                  width: 209,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    border: Border.all(width: 0.2),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black,
-                                        offset: Offset(
-                                          0.2,
-                                          0.2,
-                                        ), //Offset
-                                        blurRadius: 0.1,
-                                        spreadRadius: 0.1,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ), //BoxShadow
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Оставьте отзыв',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700),
+                                        textAlign: TextAlign.start,
+                                      ),
+                                      RatingBar.builder(
+                                        initialRating: 0,
+                                        minRating: 1,
+                                        itemSize: 15,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: false,
+                                        itemCount: 5,
+                                        itemPadding: const EdgeInsets.symmetric(
+                                            horizontal: 0.0),
+                                        itemBuilder: (context, _) => const Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (value) {
+                                          rating = value.toInt();
+                                        },
+                                      ),
                                     ],
                                   ),
-                                  child: const Text(
-                                    'Оставить свой отзыв',
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                  TextFormField(
+                                    controller: _commentController,
+                                    maxLines: 5,
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                        hintText:
+                                            'Напишите отзывь для $productName',
+                                        border: InputBorder.none),
                                   ),
-                                ),
-                              ),
-                            ]),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await BlocProvider.of<ReviewCubit>(
+                                              context)
+                                          .reviewStore(_commentController.text,
+                                              rating.toString(), productId);
+                                      _commentController.clear();
+
+                                      hidden = !hidden;
+
+                                      setState(() {});
+
+                                      Get.snackbar('Успешно', 'отзыв добавлен',
+                                          backgroundColor: Colors.blueAccent);
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 39,
+                                      width: 209,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6),
+                                        border: Border.all(width: 0.2),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Colors.black,
+                                            offset: Offset(
+                                              0.2,
+                                              0.2,
+                                            ), //Offset
+                                            blurRadius: 0.1,
+                                            spreadRadius: 0.1,
+                                          ), //BoxShadow
+                                          BoxShadow(
+                                            color: Colors.white,
+                                            offset: Offset(0.0, 0.0),
+                                            blurRadius: 0.0,
+                                            spreadRadius: 0.0,
+                                          ), //BoxShadow
+                                        ],
+                                      ),
+                                      child: const Text(
+                                        'Оставить свой отзыв',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ),
+                                ]),
                           ),
                         ),
                         Container(
@@ -1733,19 +2119,27 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 child: ListTile(
                                   title: const Text(
                                     'Товар',
-                                    style:
-                                        TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w400),
+                                    style: TextStyle(
+                                        color: AppColors.kGray900,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400),
                                   ),
-                                  subtitle: (widget.basketOrder.productRealFBS ?? []).isNotEmpty
-                                      ? Text(
-                                          '${widget.basketOrder.productRealFBS!.first.productName}',
-                                          style: const TextStyle(
-                                              color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
-                                        )
-                                      : null,
+                                  subtitle:
+                                      (widget.basketOrder.productRealFBS ?? [])
+                                              .isNotEmpty
+                                          ? Text(
+                                              '${widget.basketOrder.productRealFBS!.first.productName}',
+                                              style: const TextStyle(
+                                                  color: AppColors.kGray300,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400),
+                                            )
+                                          : null,
                                   trailing: Text(
                                     '${widget.basketOrder.priceRealFBS ?? 0} ₽ ',
-                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ),
                               ),
@@ -1755,17 +2149,21 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               SizedBox(
                                 height: 35,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.only(left: 16),
                                       child: const Text('Доставка'),
                                     ),
                                     Container(
-                                        padding: const EdgeInsets.only(right: 16),
+                                        padding:
+                                            const EdgeInsets.only(right: 16),
                                         child: Text(
                                           '0 ₽ ',
-                                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
                                         ))
                                   ],
                                 ),
@@ -1776,20 +2174,26 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                               SizedBox(
                                 height: 35,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.only(left: 16),
                                       child: const Text(
                                         'К оплате',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
                                       ),
                                     ),
                                     Container(
-                                        padding: const EdgeInsets.only(right: 16),
+                                        padding:
+                                            const EdgeInsets.only(right: 16),
                                         child: Text(
-                                          '${widget.basketOrder.priceRealFBS?.toInt() ?? 0 + widget.basketOrder.deliveryPrice!} ₽ ',
-                                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                          '${(widget.basketOrder.priceRealFBS?.toInt() ?? 0) + (widget.basketOrder.deliveryPrice ?? 0)} ₽ ',
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
                                         ))
                                   ],
                                 ),
@@ -1851,12 +2255,16 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                       Image.asset('assets/icons/no_data.png'),
                       const Text(
                         'Нет заказов',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
                         textAlign: TextAlign.center,
                       ),
                       const Text(
                         'Отсутствует заказы realFBS',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff717171)),
                         textAlign: TextAlign.center,
                       )
                     ],
@@ -1873,7 +2281,12 @@ class QRViewExample extends StatefulWidget {
   int id;
   int product_id;
   String fulfillment;
-  QRViewExample({required this.id, required this.product_id, required this.fulfillment, Key? key}) : super(key: key);
+  QRViewExample(
+      {required this.id,
+      required this.product_id,
+      required this.fulfillment,
+      Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _QRViewExampleState();
@@ -1916,17 +2329,26 @@ class _QRViewExampleState extends State<QRViewExample> {
                         text: '${result?.code ?? 'Код не найден'}',
                         press: () async {
                           if (result?.code == widget.id.toString()) {
-                            Get.snackbar('Заказ', 'возврат оформлен', backgroundColor: Colors.greenAccent);
+                            Get.snackbar('Заказ', 'возврат оформлен',
+                                backgroundColor: Colors.greenAccent);
 
-                            BlocProvider.of<OrderStatusAdminCubit>(context).basketStatus(
-                                'cancel', widget.id.toString(), widget.product_id.toString(), widget.fulfillment);
+                            BlocProvider.of<OrderStatusAdminCubit>(context)
+                                .basketStatus(
+                                    'cancel',
+                                    widget.id.toString(),
+                                    widget.product_id.toString(),
+                                    widget.fulfillment);
                           } else {
-                            Get.snackbar('Заказ', 'код товара не совпал', backgroundColor: Colors.greenAccent);
+                            Get.snackbar('Заказ', 'код товара не совпал',
+                                backgroundColor: Colors.greenAccent);
                           }
                         },
                       ))
                 else
-                  SizedBox(height: 50, width: 50, child: const CircularProgressIndicator()),
+                  SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: const CircularProgressIndicator()),
                 //   Row(
                 //     mainAxisAlignment: MainAxisAlignment.center,
                 //     crossAxisAlignment: CrossAxisAlignment.center,
@@ -2000,15 +2422,21 @@ class _QRViewExampleState extends State<QRViewExample> {
 
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-    var scanArea =
-        (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400) ? 150.0 : 300.0;
+    var scanArea = (MediaQuery.of(context).size.width < 400 ||
+            MediaQuery.of(context).size.height < 400)
+        ? 150.0
+        : 300.0;
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
-          borderColor: Colors.red, borderRadius: 10, borderLength: 30, borderWidth: 10, cutOutSize: scanArea),
+          borderColor: Colors.red,
+          borderRadius: 10,
+          borderLength: 30,
+          borderWidth: 10,
+          cutOutSize: scanArea),
       onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
     );
   }

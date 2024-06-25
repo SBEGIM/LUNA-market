@@ -140,7 +140,7 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.60,
+                    width: MediaQuery.of(context).size.width * 0.50,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -272,7 +272,7 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
 
                   SizedBox(
                       height: 32,
-                      width: MediaQuery.of(context).size.width * 0.60,
+                      width: MediaQuery.of(context).size.width * 0.55,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
