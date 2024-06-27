@@ -67,7 +67,7 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
         break;
         case 'success':
         {
-          statusFBS = 'Принят';
+          statusFBS = 'Принять';
         }
         break;
       default:
@@ -122,7 +122,7 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
         break;
        case 'success':
         {
-          statusFBS = 'Принят';
+          statusFBS = 'Принять';
         }
         break;
       default:

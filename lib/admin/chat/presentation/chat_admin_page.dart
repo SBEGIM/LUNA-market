@@ -117,7 +117,6 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                             controller: searchController,
                             textAlign: TextAlign.center,
                             onChanged: ((value) {
-                              
                               BlocProvider.of<ChatAdminCubit>(context)
                                   .searchChats(searchController.text);
 

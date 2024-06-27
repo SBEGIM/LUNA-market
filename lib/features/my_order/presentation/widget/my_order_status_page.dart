@@ -1358,7 +1358,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                           .statusRealFBS ==
                                                       'rejected'
                                               ? 'Отменен'
-                                              : 'Прният',
+                                              : 'Прниять',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14,

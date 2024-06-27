@@ -128,7 +128,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
           statusFBS = 'В процессе';
           postStatusFBS = 'success';
           postSecondStatusFBS = 'rejected';
-          buttonTextFBS = 'Принят';
+          buttonTextFBS = 'Принять';
           buttonSecondTextFBS = 'Отклонить';
         }
         break;
@@ -223,7 +223,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
           statusRealFBS = 'В процессе';
           postStatusRealFBS = 'success';
           postSecondStatusRealFBS = 'rejected';
-          buttonTextRealFBS = 'Принят';
+          buttonTextRealFBS = 'Принять';
           buttonSecondTextRealFBS = 'Отклонить';
         }
         break;

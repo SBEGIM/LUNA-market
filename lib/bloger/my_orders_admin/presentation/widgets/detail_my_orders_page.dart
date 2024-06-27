@@ -84,7 +84,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
           status = 'В процессе';
           postStatus = 'success';
           postSecondStatus = 'rejected';
-          buttonText = 'Принят';
+          buttonText = 'Принять';
           buttonSecondText = 'Отклонить';
         }
         break;

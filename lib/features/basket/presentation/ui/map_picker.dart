@@ -13,6 +13,7 @@ import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/basket/data/DTO/cdek_office_model.dart';
+import 'package:haji_market/features/basket/data/DTO/cdek_office_old_model.dart';
 import 'package:haji_market/features/basket/data/DTO/map_geo.dart';
 import 'package:haji_market/features/basket/data/bloc/cdek_office_cubit.dart';
 import 'package:haji_market/features/basket/data/bloc/cdek_office_state.dart';
@@ -26,7 +27,8 @@ class MapPickerPage extends StatefulWidget {
   final int? cc;
   final double? lat;
   final double? long;
-  const MapPickerPage({Key? key, this.mapGeo, this.cc, this.lat, this.long}) : super(key: key);
+  const MapPickerPage({Key? key, this.mapGeo, this.cc, this.lat, this.long})
+      : super(key: key);
 
   @override
   State<MapPickerPage> createState() => _MapPickerPageState();
@@ -55,18 +57,23 @@ class _MapPickerPageState extends State<MapPickerPage> {
     super.dispose();
   }
 
-  _placeMarkAdd(List<CdekOfficeModel> data) {
+  _placeMarkAdd(List<CdekOfficeOldModel> data) {
     for (int i = 0; i < data.length; i++) {
       MapObjects.add(PlacemarkMapObject(
         mapId: MapObjectId('placeMark $i'),
-        point: Point(latitude: data[i].location!.latitude!, longitude: data[i].location!.longitude!),
+        point: Point(
+            latitude: double.tryParse(data[i].coordY!)!,
+            longitude: double.tryParse(data[i].coordX!)!),
         icon: PlacemarkIcon.single(
-          PlacemarkIconStyle(image: BitmapDescriptor.fromAssetImage('assets/icons/place.png'), scale: 2),
+          PlacemarkIconStyle(
+              image: BitmapDescriptor.fromAssetImage('assets/icons/place.png'),
+              scale: 2),
         ),
         onTap: ((mapObject, point) {
-          Get.snackbar(data[i].name!, data[i].addressComment!, backgroundColor: Colors.blueAccent);
+          Get.snackbar(data[i].name!, data[i].addressComment!,
+              backgroundColor: Colors.blueAccent);
           //[i].name!;
-          place = data[i].location!.addressFull!;
+          place = data[i].fullAddress;
         }),
       ));
     }
@@ -79,7 +86,8 @@ class _MapPickerPageState extends State<MapPickerPage> {
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         title: const Text(
           'Способ доставки',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
+          style: TextStyle(
+              fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
         ),
         backgroundColor: Colors.white,
       ),
@@ -102,10 +110,12 @@ class _MapPickerPageState extends State<MapPickerPage> {
             return Stack(
               children: <Widget>[
                 YandexMap(
-                  onMapCreated: (YandexMapController yandexMapController) async {
+                  onMapCreated:
+                      (YandexMapController yandexMapController) async {
                     controller = yandexMapController;
                     controller!.moveCamera(
-                      CameraUpdate.newCameraPosition(CameraPosition(target: _point!, zoom: 14)),
+                      CameraUpdate.newCameraPosition(
+                          CameraPosition(target: _point!, zoom: 14)),
                       animation: const MapAnimation(duration: 3.0),
                     );
                   },
@@ -192,16 +202,20 @@ class _MapPickerPageState extends State<MapPickerPage> {
                     onTap: () async {
                       try {
                         final loc = await Geolocator.getCurrentPosition();
-                        final _myPoint = Point(latitude: loc.latitude, longitude: loc.longitude);
+                        final _myPoint = Point(
+                            latitude: loc.latitude, longitude: loc.longitude);
 
                         controller!.moveCamera(
-                          CameraUpdate.newCameraPosition(CameraPosition(target: _myPoint, zoom: 6)),
+                          CameraUpdate.newCameraPosition(
+                              CameraPosition(target: _myPoint, zoom: 6)),
                           animation: const MapAnimation(duration: 2.0),
                         );
 
                         //  controller!.move(point: _myPoint);
                       } catch (exception) {
-                        Get.snackbar('Ошибка ', 'Не удалось найти местоположение', backgroundColor: Colors.red);
+                        Get.snackbar(
+                            'Ошибка ', 'Не удалось найти местоположение',
+                            backgroundColor: Colors.red);
                       }
                     },
                     child: Container(
@@ -257,7 +271,8 @@ class _MapPickerPageState extends State<MapPickerPage> {
         ),
         child: Container(
           height: 48,
-          margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 40),
+          margin:
+              EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 40),
           decoration: BoxDecoration(
             color: AppColors.kPrimaryColor,
             border: Border.all(color: Colors.grey),

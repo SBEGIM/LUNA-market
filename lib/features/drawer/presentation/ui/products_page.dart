@@ -303,9 +303,8 @@ class _ProductsPageState extends State<ProductsPage> {
 
                           if (state is LoadedState) {
                             return state.productModel.isNotEmpty
-                                ? SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.36,
+                                ? LimitedBox(
+                                    maxHeight: 250,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       // shrinkWrap: true,
@@ -323,7 +322,8 @@ class _ProductsPageState extends State<ProductsPage> {
                                           ),
                                         );
                                       },
-                                    ))
+                                    ),
+                                  )
                                 : Container();
                           } else {
                             return Container();

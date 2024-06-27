@@ -500,160 +500,158 @@ class PopularCatsHompage extends StatefulWidget {
 class _PopularCatsHompageState extends State<PopularCatsHompage> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<subCatCubit.SubCatsCubit, subCatState.SubCatsState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is subCatState.ErrorState) {
-            return Center(
-              child: Text(
-                state.message,
-                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-              ),
-            );
-          }
-          // if (state is subCatState.LoadingState) {
-          //   return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
-          // }
+    return BlocBuilder<subCatCubit.SubCatsCubit, subCatState.SubCatsState>(
+      builder: (context, state) {
+      if (state is subCatState.ErrorState) {
+        return Center(
+          child: Text(
+            state.message,
+            style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+          ),
+        );
+      }
+      // if (state is subCatState.LoadingState) {
+      //   return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+      // }
 
-          if (state is subCatState.LoadedState) {
-            return Container(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Популярное',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    GridView.builder(
-                        padding: EdgeInsets.zero,
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                childAspectRatio: 0.64,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10),
-                        itemCount:
-                            state.cats.length >= 6 ? 6 : state.cats.length,
-                        itemBuilder: (BuildContext ctx, index) {
-                          return InkWell(
-                            onTap: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) => UnderCatalogPage(
-                              //           cats: state.cats[index])),
-                              // );
-                              GetStorage().remove('CatId');
-                              GetStorage().remove('subCatFilterId');
-                              GetStorage().remove('shopFilterId');
-                              GetStorage().remove('search');
-                              GetStorage().write('CatId', state.cats[index].id);
+      if (state is subCatState.LoadedState) {
+        return Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Популярное',
+                  style: TextStyle(
+                      color: AppColors.kGray900,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                GridView.builder(
+                    padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.64,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10),
+                    itemCount: state.cats.length >= 6 ? 6 : state.cats.length,
+                    itemBuilder: (BuildContext ctx, index) {
+                      return InkWell(
+                        onTap: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => UnderCatalogPage(
+                          //           cats: state.cats[index])),
+                          // );
+                          GetStorage().remove('CatId');
+                          GetStorage().remove('subCatFilterId');
+                          GetStorage().remove('shopFilterId');
+                          GetStorage().remove('search');
+                          GetStorage().write('CatId', state.cats[index].id);
 
-                              context.router.push(ProductsRoute(
-                                cats: state.cats[index],
-                              ));
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(builder: (context) => ProductsPage(cats: state.cats[index])),
-                              // );
-                            },
-                            child: GridOptionsPopular(
-                              layout: GridLayoutPopular(
-                                title: state.cats[index].name,
-                                image: state.cats[index].image,
-                                icon: state.cats[index].icon,
-                                bonus: state.cats[index].bonus ?? 0,
-                                credit: state.cats[index].credit ?? 0,
-                              ),
-                            ),
-                          );
-                        }),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        context.router.push(SubCatalogRoute());
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => const CatalogPage()),
-                        // );
-                      },
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Все предложения',
-                            style: AppTextStyles.kcolorPrimaryTextStyle,
+                          context.router.push(ProductsRoute(
+                            cats: state.cats[index + 1],
+                          ));
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) => ProductsPage(cats: state.cats[index])),
+                          // );
+                        },
+                        child: GridOptionsPopular(
+                          layout: GridLayoutPopular(
+                            title: state.cats[index + 1].name,
+                            image: state.cats[index + 1].image,
+                            icon: state.cats[index + 1].icon,
+                            bonus: state.cats[index + 1].bonus ?? 0,
+                            credit: state.cats[index + 1].credit ?? 0,
                           ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: AppColors.kPrimaryColor,
-                            size: 14,
-                          )
-                        ],
+                        ),
+                      );
+                    }),
+                const SizedBox(
+                  height: 24,
+                ),
+                InkWell(
+                  onTap: () {
+                    context.router.push(SubCatalogRoute());
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => const CatalogPage()),
+                    // );
+                  },
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Все предложения',
+                        style: AppTextStyles.kcolorPrimaryTextStyle,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                  ],
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: AppColors.kPrimaryColor,
+                        size: 14,
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            );
-          } else {
-            return Container(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const ShimmerBox(
-                      height: 22,
-                      radius: 10,
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    GridView.builder(
-                        padding: EdgeInsets.zero,
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                childAspectRatio: 0.65,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10),
-                        itemCount: 6,
-                        itemBuilder: (BuildContext ctx, index) {
-                          return const ShimmerBox(
-                            height: 90,
-                            width: 90,
-                            radius: 12,
-                          );
-                        }),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                  ],
+                const SizedBox(
+                  height: 4,
                 ),
-              ),
-            );
-          }
-        });
+              ],
+            ),
+          ),
+        );
+      } else {
+        return Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const ShimmerBox(
+                  height: 22,
+                  radius: 10,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                GridView.builder(
+                    padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.65,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10),
+                    itemCount: 6,
+                    itemBuilder: (BuildContext ctx, index) {
+                      return const ShimmerBox(
+                        height: 90,
+                        width: 90,
+                        radius: 12,
+                      );
+                    }),
+                const SizedBox(
+                  height: 24,
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    });
   }
 }
 
@@ -1334,7 +1332,7 @@ class _PopularShopsState extends State<PopularShops> {
                                             ),
                                           ),
                                         Container(
-                                          width: 100,
+                                          width: 50,
                                           height: 22,
                                           decoration: BoxDecoration(
                                             color: Colors.black,

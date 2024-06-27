@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:haji_market/features/basket/data/DTO/cdek_office_model.dart';
+import 'package:haji_market/features/basket/data/DTO/cdek_office_old_model.dart';
 import 'package:haji_market/features/basket/data/bloc/cdek_office_state.dart';
 import '../repository/CdekOfficeRepo.dart';
 
@@ -13,7 +14,7 @@ class CdekOfficeCubit extends Cubit<CdekOfficeState> {
   Future<void> cdek(int cc) async {
     try {
       emit(LoadingState());
-      final List<CdekOfficeModel> data = await cdekRepository.cdekOffice(cc);
+      final List<CdekOfficeOldModel> data = await cdekRepository.cdekOffice(cc);
 
       emit(LoadedState(data));
     } catch (e) {
