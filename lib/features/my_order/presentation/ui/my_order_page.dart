@@ -5,6 +5,7 @@ import 'package:get/route_manager.dart';
 import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/my_order/presentation/widget/my_order_card_widget.dart';
 import 'package:haji_market/features/my_order/presentation/widget/show_filter_dialog.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../drawer/data/bloc/basket_cubit.dart';
 import '../../../drawer/data/bloc/basket_state.dart';
@@ -18,6 +19,25 @@ class MyOrderPage extends StatefulWidget {
 }
 
 class _MyOrderPageState extends State<MyOrderPage> {
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  Future<void> onRefresh() async {
+    await BlocProvider.of<BasketCubit>(context).basketOrderShow();
+    await Future.delayed(Duration(milliseconds: 1000));
+    if (mounted) {
+      setState(() {});
+    }
+    _refreshController.refreshCompleted();
+  }
+
+  Future<void> onLoading() async {
+    await BlocProvider.of<BasketCubit>(context).basketOrderShow();
+    await Future.delayed(const Duration(milliseconds: 2000));
+
+    _refreshController.loadComplete();
+  }
+
   @override
   void initState() {
     BlocProvider.of<BasketCubit>(context).basketOrderShow();
@@ -45,7 +65,8 @@ class _MyOrderPageState extends State<MyOrderPage> {
           centerTitle: true,
           title: const Text(
             'Мои заказы',
-            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(
+                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
           )),
       body: BlocConsumer<BasketCubit, BasketState>(
           listener: (context, state) {},
@@ -60,17 +81,31 @@ class _MyOrderPageState extends State<MyOrderPage> {
             }
 
             if (state is LoadedOrderState) {
-              return ListView.builder(
-                  shrinkWrap: true,
-                  // padding: const EdgeInsets.all(8),
-                  itemCount: state.basketOrderModel.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                        child: MyOrderCardWidget(basketOrder: state.basketOrderModel[index]));
-                  });
+              return SmartRefresher(
+                controller: _refreshController,
+                enablePullDown: true,
+                enablePullUp: true,
+                onLoading: () {
+                  onLoading();
+                },
+                onRefresh: () {
+                  onRefresh();
+                },
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    // padding: const EdgeInsets.all(8),
+                    itemCount: state.basketOrderModel.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, bottom: 16),
+                          child: MyOrderCardWidget(
+                              basketOrder: state.basketOrderModel[index]));
+                    }),
+              );
             } else {
-              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
     );

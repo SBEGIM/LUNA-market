@@ -12,6 +12,7 @@ import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 import 'package:haji_market/features/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
 import 'package:haji_market/features/my_order/presentation/widget/cancel_order_widget.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import '../../../../admin/my_orders_admin/data/bloc/order_status_admin_cubit.dart';
@@ -108,6 +109,24 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
     super.initState();
   }
 
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  Future<void> onRefresh() async {
+    await BlocProvider.of<BasketCubit>(context).basketOrderShow();
+    if (mounted) {
+      setState(() {});
+    }
+    _refreshController.refreshCompleted();
+  }
+
+  Future<void> onLoading() async {
+    await BlocProvider.of<BasketCubit>(context).basketOrderShow();
+    await Future.delayed(const Duration(milliseconds: 2000));
+
+    _refreshController.loadComplete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -198,9 +217,13 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         print('${widget.basketOrder.statusFBS}');
 
                         if (value == 0) {
+                          await BlocProvider.of<BasketCubit>(context)
+                              .basketOrderShow();
                           orderTimeline(
                               widget.basketOrder.statusFBS ?? 'in_process');
                         } else {
+                          await BlocProvider.of<BasketCubit>(context)
+                              .basketOrderShow();
                           orderTimeline(
                               widget.basketOrder.statusRealFBS ?? 'in_process');
                         }
@@ -338,7 +361,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                           .statusFBS ==
                                                       'rejected'
                                               ? 'Отменен или Отклонен'
-                                              : 'Прниять',
+                                              : 'Принять',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14,
@@ -1358,7 +1381,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                           .statusRealFBS ==
                                                       'rejected'
                                               ? 'Отменен'
-                                              : 'Прниять',
+                                              : 'Принять',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14,

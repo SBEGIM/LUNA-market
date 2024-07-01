@@ -1332,7 +1332,7 @@ class _PopularShopsState extends State<PopularShops> {
                                             ),
                                           ),
                                         Container(
-                                          width: 50,
+                                          width: 35,
                                           height: 22,
                                           decoration: BoxDecoration(
                                             color: Colors.black,
@@ -1343,7 +1343,7 @@ class _PopularShopsState extends State<PopularShops> {
                                               bottom: 80,
                                               top: 5,
                                               left: 5,
-                                              right: 50),
+                                              right: 65),
                                           alignment: Alignment.center,
                                           child: Text(
                                             "${state.popularShops[index].bonus.toString()}% Б",
