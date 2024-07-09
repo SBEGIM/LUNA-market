@@ -822,7 +822,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   height: 170,
                                   // width: 100,
                                   padding: const EdgeInsets.only(
-                                      left: 16, right: 16, top: 12),
+                                      left: 0, right: 0, top: 8),
                                   color: Colors.white,
                                   child: Row(
                                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -891,10 +891,10 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             ),
                                           ),
                                           const SizedBox(
-                                            height: 8,
+                                            height: 4,
                                           ),
                                           SizedBox(
-                                            height: 50,
+                                            height: 40,
                                             width: 185,
                                             child: Text(
                                               '${widget.basketOrder.productFBS?[index].productName}',
@@ -905,7 +905,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
-                                          const SizedBox(height: 18),
+                                          const SizedBox(height: 4),
                                           GestureDetector(
                                             onTap: () async {
                                               if (inbasket != true) {

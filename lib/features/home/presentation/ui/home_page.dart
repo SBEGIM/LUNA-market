@@ -318,7 +318,7 @@ class _HomePageState extends State<HomePage> {
                                               MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.0010,
+                                                  0.0009,
                                           crossAxisSpacing: 10,
                                           mainAxisSpacing: 0),
                                   itemCount: state.productModel.length >= 8
@@ -501,7 +501,7 @@ class _PopularCatsHompageState extends State<PopularCatsHompage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<subCatCubit.SubCatsCubit, subCatState.SubCatsState>(
-      builder: (context, state) {
+        builder: (context, state) {
       if (state is subCatState.ErrorState) {
         return Center(
           child: Text(
@@ -539,7 +539,7 @@ class _PopularCatsHompageState extends State<PopularCatsHompage> {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
-                            childAspectRatio: 0.64,
+                            childAspectRatio: 0.70,
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10),
                     itemCount: state.cats.length >= 6 ? 6 : state.cats.length,
