@@ -33,14 +33,18 @@ class _CatalogPageState extends State<CatalogPage> {
           icon: SvgPicture.asset('assets/icons/back_header.svg'),
         ),
         actions: [
-          Padding(padding: const EdgeInsets.only(right: 22.0), child: SvgPicture.asset('assets/icons/share.svg'))
+          Padding(
+              padding: const EdgeInsets.only(right: 22.0),
+              child: SvgPicture.asset('assets/icons/share.svg'))
         ],
         titleSpacing: 0,
         // leadingWidth: 1,
         title: Container(
           height: 34,
           width: 279,
-          decoration: BoxDecoration(color: const Color(0xFFF8F8F8), borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(
+              color: const Color(0xFFF8F8F8),
+              borderRadius: BorderRadius.circular(10)),
           child: TextField(
               controller: searchController,
               onChanged: (value) {
@@ -83,7 +87,8 @@ class _CatalogPageState extends State<CatalogPage> {
               );
             }
             if (state is LoadingState) {
-              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
 
             if (state is LoadedState) {
@@ -94,13 +99,18 @@ class _CatalogPageState extends State<CatalogPage> {
                     child: GridView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3, childAspectRatio: 0.65, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                childAspectRatio: 0.65,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10),
                         itemCount: state.cats.length,
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
-                              context.router.push(UnderCatalogRoute(cats: state.cats[index]));
+                              context.router.push(
+                                  UnderCatalogRoute(cats: state.cats[index]));
                               // Navigator.push(
                               //   context,
                               //   MaterialPageRoute(
@@ -112,7 +122,8 @@ class _CatalogPageState extends State<CatalogPage> {
                               title: '${state.cats[index].name}',
                               credit: state.cats[index].credit!,
                               bonus: '${state.cats[index].bonus}',
-                              url: "http://185.116.193.73/storage/${state.cats[index].image!}",
+                              url:
+                                  "https://lunamarket.ru/storage/${state.cats[index].image!}",
                             ),
                           );
                         }),
@@ -152,7 +163,8 @@ class _CatalogPageState extends State<CatalogPage> {
               //},
               // );
             } else {
-              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
     );

@@ -10,7 +10,8 @@ import 'package:haji_market/features/my_order/presentation/widget/my_order_statu
 class MyOrderCardWidget extends StatefulWidget {
   final BasketOrderModel basketOrder;
 
-  const MyOrderCardWidget({required this.basketOrder, Key? key}) : super(key: key);
+  const MyOrderCardWidget({required this.basketOrder, Key? key})
+      : super(key: key);
 
   @override
   State<MyOrderCardWidget> createState() => _MyOrderCardWidgetState();
@@ -65,7 +66,7 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
           statusFBS = 'В процессе';
         }
         break;
-        case 'success':
+      case 'success':
         {
           statusFBS = 'Принять';
         }
@@ -120,7 +121,7 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
           statusRealFBS = 'В процессе';
         }
         break;
-       case 'success':
+      case 'success':
         {
           statusFBS = 'Принять';
         }
@@ -145,7 +146,10 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
         ),
         Text(
           '${widget.basketOrder.date}',
-          style: const TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w500),
+          style: const TextStyle(
+              color: AppColors.kGray300,
+              fontSize: 12,
+              fontWeight: FontWeight.w500),
         ),
         const SizedBox(
           height: 12,
@@ -153,7 +157,8 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
         Container(
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -162,7 +167,10 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                 child: Text(
                   'Заказ № ${widget.basketOrder.id}',
                   textAlign: TextAlign.right,
-                  style: const TextStyle(color: AppColors.kGray900, fontSize: 14, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                      color: AppColors.kGray900,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600),
                 ),
               ),
               const SizedBox(
@@ -173,7 +181,7 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
               //     widget.basketOrder.product!.first.path != null &&
               //     widget.basketOrder.product!.first.path!.isNotEmpty)
               //   Image.network(
-              //     "http://185.116.193.73/storage/${widget.basketOrder.product!.first.path!.first.toString()}",
+              //     "https://lunamarket.ru/storage/${widget.basketOrder.product!.first.path!.first.toString()}",
               //     height: 80,
               //     width: 80,
               //     errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
@@ -195,11 +203,17 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                       children: [
                         Text(
                           'Тип доставки:',
-                          style: TextStyle(color: AppColors.kGray400, fontSize: 12, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                              color: AppColors.kGray400,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
                         ),
                         Text(
                           'FBS',
-                          style: TextStyle(color: AppColors.kGray750, fontSize: 12, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                              color: AppColors.kGray750,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
                         )
                       ],
                     ),
@@ -211,11 +225,17 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                       children: [
                         const Text(
                           'Доставка:',
-                          style: TextStyle(color: AppColors.kGray400, fontSize: 12, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                              color: AppColors.kGray400,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
                         ),
                         Text(
                           '${widget.basketOrder.deliveryDay} дней',
-                          style: const TextStyle(color: AppColors.kGray750, fontSize: 12, fontWeight: FontWeight.w500),
+                          style: const TextStyle(
+                              color: AppColors.kGray750,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
                         )
                       ],
                     ),
@@ -224,11 +244,15 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                       children: [
                         const Text(
                           'Статус:',
-                          style: TextStyle(color: AppColors.kGray400, fontSize: 12, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                              color: AppColors.kGray400,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
                         ),
                         Container(
-                          decoration:
-                              BoxDecoration(color: const Color(0x104BB34B), borderRadius: BorderRadius.circular(4)),
+                          decoration: BoxDecoration(
+                              color: const Color(0x104BB34B),
+                              borderRadius: BorderRadius.circular(4)),
                           padding: const EdgeInsets.all(5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -236,7 +260,9 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                               Text(
                                 statusFBS,
                                 style: const TextStyle(
-                                    color: Color(0xFF4BB34B), fontSize: 12, fontWeight: FontWeight.w400),
+                                    color: Color(0xFF4BB34B),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400),
                               ),
                             ],
                           ),
@@ -261,11 +287,17 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                       children: [
                         Text(
                           'Тип доставки:',
-                          style: TextStyle(color: AppColors.kGray400, fontSize: 12, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                              color: AppColors.kGray400,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
                         ),
                         Text(
                           'realFBS',
-                          style: TextStyle(color: AppColors.kGray750, fontSize: 12, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                              color: AppColors.kGray750,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
                         )
                       ],
                     ),
@@ -277,11 +309,17 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                       children: [
                         Text(
                           'Доставка:',
-                          style: TextStyle(color: AppColors.kGray400, fontSize: 12, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                              color: AppColors.kGray400,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
                         ),
                         Text(
                           'Неизвестно',
-                          style: TextStyle(color: AppColors.kGray750, fontSize: 12, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                              color: AppColors.kGray750,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
                         )
                       ],
                     ),
@@ -290,11 +328,15 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                       children: [
                         const Text(
                           'Статус:',
-                          style: TextStyle(color: AppColors.kGray400, fontSize: 12, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                              color: AppColors.kGray400,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
                         ),
                         Container(
-                          decoration:
-                              BoxDecoration(color: const Color(0x104BB34B), borderRadius: BorderRadius.circular(4)),
+                          decoration: BoxDecoration(
+                              color: const Color(0x104BB34B),
+                              borderRadius: BorderRadius.circular(4)),
                           padding: const EdgeInsets.all(5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -302,7 +344,9 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                               Text(
                                 statusRealFBS,
                                 style: const TextStyle(
-                                    color: Color(0xFF4BB34B), fontSize: 12, fontWeight: FontWeight.w400),
+                                    color: Color(0xFF4BB34B),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400),
                               ),
                             ],
                           ),
@@ -326,7 +370,9 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                     widget.basketOrder.id != null
                         ? Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MyOrderStatusPage(basketOrder: widget.basketOrder)),
+                            MaterialPageRoute(
+                                builder: (context) => MyOrderStatusPage(
+                                    basketOrder: widget.basketOrder)),
                           )
                         : printError();
                   },
@@ -335,7 +381,10 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                     children: [
                       Text(
                         'Детали заказа',
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.kPrimaryColor),
                       ),
                       Icon(
                         Icons.arrow_forward_ios,

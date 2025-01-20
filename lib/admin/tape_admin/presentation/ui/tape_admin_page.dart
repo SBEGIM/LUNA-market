@@ -153,7 +153,7 @@ class _TapeAdminPageState extends State<TapeAdminPage> {
                 //       children: [
                 //         Image.asset('assets/images/tape.png'),
                 //         Image.network(
-                //           "http://185.116.193.73/storage/${state.tapeModel[index].image}",
+                //           "https://lunamarket.ru/storage/${state.tapeModel[index].image}",
                 //         ),
                 //         Align(
                 //           alignment: Alignment.bottomCenter,

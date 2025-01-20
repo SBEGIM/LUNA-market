@@ -67,7 +67,7 @@ class _BonusPageState extends State<BonusPage> {
                           borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
                             image: NetworkImage(
-                                "http://185.116.193.73/storage/${widget.image}"),
+                                "https://lunamarket.ru/storage/${widget.image}"),
                             fit: BoxFit.cover,
                           )),
                     ),

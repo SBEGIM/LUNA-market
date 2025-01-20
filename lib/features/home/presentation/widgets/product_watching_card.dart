@@ -57,7 +57,7 @@ class _ProductWatchingCardState extends State<ProductWatchingCard> {
                 width: 160,
                 child: Image.network(
                   widget.product.path!.isNotEmpty
-                      ? "http://185.116.193.73/storage/${widget.product.path!.first}"
+                      ? "https://lunamarket.ru/storage/${widget.product.path!.first}"
                       : '',
                   height: 160,
                   width: 160,

@@ -4,7 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class ProductRepository {
   final ProductApi _productApi = ProductApi();
@@ -43,18 +43,15 @@ class ProductApi {
       }
       if (_box.hasData('search')) {
         search = GetStorage().read('search');
-
       } else {
         search = '';
       }
       if (_box.hasData('brandFilterId')) {
-
         brandId = GetStorage().read('brandFilterId');
         brandIds.clear();
         var ab = json.decode(brandId).cast<int>().toList();
 
         brandIds.addAll(ab);
-
       } else {
         brandId = '';
         brandIds.clear();

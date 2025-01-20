@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../my_products_admin/data/models/blogger_shop_products_model.dart';
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class BloggerVideoProductsRepository {
   final ProductToApi _productToApi = ProductToApi();

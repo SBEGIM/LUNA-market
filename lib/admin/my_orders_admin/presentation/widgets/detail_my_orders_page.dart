@@ -366,7 +366,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                 widget.basket.productFBS![index].path != null &&
                                         widget.basket.productFBS![index].path!
                                             .isNotEmpty
-                                    ? "http://185.116.193.73/storage/${widget.basket.productFBS![index].path?.first}"
+                                    ? "https://lunamarket.ru/storage/${widget.basket.productFBS![index].path?.first}"
                                     : '',
                                 fit: BoxFit.cover,
                                 height: 104,
@@ -678,7 +678,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                 image: DecorationImage(
                                   image: (widget.basket.user!.avatar != null)
                                       ? NetworkImage(
-                                          "http://185.116.193.73/storage/${widget.basket.user!.avatar}")
+                                          "https://lunamarket.ru/storage/${widget.basket.user!.avatar}")
                                       : const AssetImage(
                                               'assets/icons/profile2.png')
                                           as ImageProvider,
@@ -925,7 +925,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                             null &&
                                         widget.basket.productRealFBS![index]
                                             .path!.isNotEmpty
-                                    ? "http://185.116.193.73/storage/${widget.basket.productRealFBS![index].path?.first}"
+                                    ? "https://lunamarket.ru/storage/${widget.basket.productRealFBS![index].path?.first}"
                                     : '',
                                 fit: BoxFit.cover,
                                 height: 104,
@@ -1237,7 +1237,7 @@ class _DetailMyOrdersPageState extends State<DetailMyOrdersPage> {
                                 image: DecorationImage(
                                   image: (widget.basket.user!.avatar != null)
                                       ? NetworkImage(
-                                          "http://185.116.193.73/storage/${widget.basket.user!.avatar}")
+                                          "https://lunamarket.ru/storage/${widget.basket.user!.avatar}")
                                       : const AssetImage(
                                               'assets/icons/profile2.png')
                                           as ImageProvider,

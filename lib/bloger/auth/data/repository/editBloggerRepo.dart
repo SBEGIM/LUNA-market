@@ -4,21 +4,40 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class EditBloggerRepository {
   final EditToApi _editToApi = EditToApi();
 
-  Future<dynamic> edit(String? name, String? nick, String phone, String? password, String? iin, String? check, avatar,
-          String? card, String? email, String? socialNetwork) =>
-      _editToApi.edit(name, nick, phone, password, iin, check, avatar, card, email, socialNetwork);
+  Future<dynamic> edit(
+          String? name,
+          String? nick,
+          String phone,
+          String? password,
+          String? iin,
+          String? check,
+          avatar,
+          String? card,
+          String? email,
+          String? socialNetwork) =>
+      _editToApi.edit(name, nick, phone, password, iin, check, avatar, card,
+          email, socialNetwork);
 }
 
 class EditToApi {
   final _box = GetStorage();
 
-  Future<dynamic> edit(String? name, String? nick, String phone, String? password, String? iin, String? check, avatar,
-      String? card, String? email, String? socialNetwork) async {
+  Future<dynamic> edit(
+      String? name,
+      String? nick,
+      String phone,
+      String? password,
+      String? iin,
+      String? check,
+      avatar,
+      String? card,
+      String? email,
+      String? socialNetwork) async {
     String result = '';
     if (phone.isNotEmpty) {
       // result = phone.substring(2);
@@ -37,7 +56,9 @@ class EditToApi {
       'social_network': socialNetwork ?? ''
     };
 
-    final header = {"Authorization": "Bearer ${_box.read('blogger_token').toString()}"};
+    final header = {
+      "Authorization": "Bearer ${_box.read('blogger_token').toString()}"
+    };
 
     final request = http.MultipartRequest(
       'POST',

@@ -23,8 +23,8 @@ class _ProductImagesState extends State<ProductImages> {
   void initState() {
     if (widget.video != null) {
       _controller = VideoPlayerController.network(
-          // 'http://185.116.193.73/storage/${widget.product.path?.first ?? ''}'
-          'http://185.116.193.73/storage/${widget.video}')
+          // 'https://lunamarket.ru/storage/${widget.product.path?.first ?? ''}'
+          'https://lunamarket.ru/storage/${widget.video}')
         ..initialize().then((_) {
           _controller!.pause();
           // setState(() {});
@@ -36,8 +36,8 @@ class _ProductImagesState extends State<ProductImages> {
         setState(() {});
       });
       _controller2 = VideoPlayerController.network(
-          // 'http://185.116.193.73/storage/${widget.product.path?.first ?? ''}'
-          'http://185.116.193.73/storage/${widget.video}')
+          // 'https://lunamarket.ru/storage/${widget.product.path?.first ?? ''}'
+          'https://lunamarket.ru/storage/${widget.video}')
         ..initialize().then((_) {
           _controller2!.pause();
           // setState(() {});
@@ -78,7 +78,9 @@ class _ProductImagesState extends State<ProductImages> {
               width: 378,
               child: GestureDetector(
                 onTap: () {
-                  _controller!.value.isPlaying ? _controller!.pause() : _controller!.play();
+                  _controller!.value.isPlaying
+                      ? _controller!.pause()
+                      : _controller!.play();
                 },
                 child: Stack(children: [
                   Center(
@@ -115,8 +117,11 @@ class _ProductImagesState extends State<ProductImages> {
               height: 343,
               width: 378,
               child: widget.images?.length != 0
-                  ? Image.network("http://185.116.193.73/storage/${widget.images![imageIndex]}",
-                      fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => const ErrorImageWidget())
+                  ? Image.network(
+                      "https://lunamarket.ru/storage/${widget.images![imageIndex]}",
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const ErrorImageWidget())
                   : Image.asset('assets/icons/no_data.png'),
             ),
           Container(
@@ -126,7 +131,8 @@ class _ProductImagesState extends State<ProductImages> {
             // color: Colors.red,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: (widget.images?.length ?? 0) + ((widget.video != null ? 1 : 0)),
+              itemCount: (widget.images?.length ?? 0) +
+                  ((widget.video != null ? 1 : 0)),
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: (() {
@@ -139,14 +145,17 @@ class _ProductImagesState extends State<ProductImages> {
                     width: 80,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      border:
-                          Border.all(width: 0.3, color: imageIndex == index ? AppColors.kPrimaryColor : Colors.grey),
+                      border: Border.all(
+                          width: 0.3,
+                          color: imageIndex == index
+                              ? AppColors.kPrimaryColor
+                              : Colors.grey),
                     ),
                     //color: Colors.red,
                     child: index == (widget.images?.length ?? 0)
                         ? VideoPlayer(_controller2!)
                         : Image.network(
-                            "http://185.116.193.73/storage/${widget.images![index]}",
+                            "https://lunamarket.ru/storage/${widget.images![index]}",
                             fit: BoxFit.cover,
                           ),
                   ),

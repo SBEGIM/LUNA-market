@@ -9,7 +9,8 @@ import 'package:haji_market/features/app/widgets/error_image_widget.dart';
 class BloggerProductCardWidget extends StatefulWidget {
   final BloggerShopProductModel product;
 
-  const BloggerProductCardWidget({required this.product, Key? key}) : super(key: key);
+  const BloggerProductCardWidget({required this.product, Key? key})
+      : super(key: key);
 
   @override
   State<BloggerProductCardWidget> createState() => _BloggerProductCardWidget();
@@ -29,7 +30,8 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
     //   isvisible = true;
     // }
     // inFavorite = widget.product.inFavorite ?? false;
-    compoundPrice = (widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100;
+    compoundPrice =
+        (widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100;
     super.initState();
   }
 
@@ -38,13 +40,15 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
     return Container(
       height: 151,
       margin: const EdgeInsets.only(left: 16, top: 7, bottom: 8, right: 16),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), boxShadow: const [
-        BoxShadow(
-          offset: Offset(0, 2),
-          // blurRadius: 4,
-          color: Colors.white,
-        ),
-      ]),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: const [
+            BoxShadow(
+              offset: Offset(0, 2),
+              // blurRadius: 4,
+              color: Colors.white,
+            ),
+          ]),
       // height: MediaQuery.of(context).size.height * 0.86,
       // color: Colors.red,
       child: Row(
@@ -56,29 +60,36 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
               children: [
                 Image.network(
                   widget.product.path != null
-                      ? "http://185.116.193.73/storage/${widget.product.path!.path}"
-                      : "http://185.116.193.73/storage/banners/2.png",
+                      ? "https://lunamarket.ru/storage/${widget.product.path!.path}"
+                      : "https://lunamarket.ru/storage/banners/2.png",
                   height: 104,
                   width: 104,
-                  errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                  errorBuilder: (context, error, stackTrace) =>
+                      const ErrorImageWidget(
                     height: 104,
                     width: 104,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 4, right: 4, bottom: 8, top: 8),
+                  padding: const EdgeInsets.only(
+                      left: 4, right: 4, bottom: 8, top: 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        decoration:
-                            BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(4)),
+                        decoration: BoxDecoration(
+                            color: AppColors.kPrimaryColor,
+                            borderRadius: BorderRadius.circular(4)),
                         child: const Padding(
-                          padding: EdgeInsets.only(left: 4, right: 4, top: 2, bottom: 2),
+                          padding: EdgeInsets.only(
+                              left: 4, right: 4, top: 2, bottom: 2),
                           child: Text(
                             '0·0·12',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                       ),
@@ -86,14 +97,19 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                         height: 4,
                       ),
                       Container(
-                        decoration:
-                            BoxDecoration(color: const Color(0xFFFFC107), borderRadius: BorderRadius.circular(4)),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFFFFC107),
+                            borderRadius: BorderRadius.circular(4)),
                         child: Padding(
-                          padding: EdgeInsets.only(left: 4, right: 4, top: 2, bottom: 2),
+                          padding: EdgeInsets.only(
+                              left: 4, right: 4, top: 2, bottom: 2),
                           child: Text(
                             '${widget.product.bloggerPoint}% за рекламу',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.black, fontSize: 9, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                       ),
@@ -101,13 +117,19 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                         height: 22,
                       ),
                       Container(
-                        decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(4)),
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(4)),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 4.0, right: 4, top: 2, bottom: 2),
+                          padding: const EdgeInsets.only(
+                              left: 4.0, right: 4, top: 2, bottom: 2),
                           child: Text(
                             '-${widget.product.compound}%',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w400),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                       ),
@@ -134,7 +156,10 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                         width: 150,
                         child: Text(
                           widget.product.name.toString(),
-                          style: const TextStyle(fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w500),
+                          style: const TextStyle(
+                              fontSize: 12,
+                              color: AppColors.kGray900,
+                              fontWeight: FontWeight.w500),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -153,7 +178,9 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                               ? SvgPicture.asset('assets/icons/heart_fill.svg')
                               : SvgPicture.asset(
                                   'assets/icons/favorite.svg',
-                                  color: inFavorite == true ? Colors.red : Colors.grey,
+                                  color: inFavorite == true
+                                      ? Colors.red
+                                      : Colors.grey,
                                 ))
                     ],
                   ),
@@ -162,7 +189,10 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                   padding: EdgeInsets.only(top: 0, bottom: 3),
                   child: Text(
                     '${widget.product.catName}',
-                    style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                    style: TextStyle(
+                        color: AppColors.kGray300,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
                   ),
                 ),
                 // Row(
@@ -237,7 +267,10 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                             // width: 75,
                             child: Text(
                               '$compoundPrice ₽ ',
-                              style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w500, fontSize: 16),
+                              style: const TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16),
                             ),
                           ),
                           Text(
@@ -281,7 +314,10 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                               alignment: Alignment.center,
                               child: Text(
                                 ' ${widget.product.price ?? 0 / 3} ',
-                                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400),
                               ),
                             ),
                             const SizedBox(
@@ -297,7 +333,9 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                                 'х3',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w400, color: Color.fromRGBO(197, 200, 204, 1)),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color.fromRGBO(197, 200, 204, 1)),
                               ),
                             ),
                           ],
@@ -307,7 +345,8 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                             // await showAlertStaticticsWidget(
                             //     context, widget.product);
 
-                            Get.to(() => UploadProductVideoPage(id: widget.product.id!));
+                            Get.to(() =>
+                                UploadProductVideoPage(id: widget.product.id!));
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -321,7 +360,10 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                             child: const Text(
                               'Добавить видео',
                               // textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600),
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                         ),

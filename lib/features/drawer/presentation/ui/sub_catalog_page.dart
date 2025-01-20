@@ -12,7 +12,6 @@ import '../../data/bloc/sub_cats_state.dart';
 
 @RoutePage()
 class SubCatalogPage extends StatefulWidget {
-  
   final Cats? cats;
 
   const SubCatalogPage({Key? key, this.cats}) : super(key: key);
@@ -53,14 +52,17 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
         title: Container(
           height: 34,
           width: 279,
-          decoration: BoxDecoration(color: const Color(0xFFF8F8F8), borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(
+              color: const Color(0xFFF8F8F8),
+              borderRadius: BorderRadius.circular(10)),
           child: TextField(
               controller: searchController,
               onChanged: (value) {
                 if (value.isEmpty) {
                   BlocProvider.of<SubCatsCubit>(context).subSave();
                 } else {
-                  BlocProvider.of<SubCatsCubit>(context).searchSubCats(value, widget.cats?.id ?? 0);
+                  BlocProvider.of<SubCatsCubit>(context)
+                      .searchSubCats(value, widget.cats?.id ?? 0);
                 }
               },
               decoration: const InputDecoration(
@@ -92,7 +94,8 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
               );
             }
             if (state is LoadingState) {
-              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
             // if (state is NoDataState) {
             //   return Container(
@@ -133,8 +136,12 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                         physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3, childAspectRatio: 0.75, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                childAspectRatio: 0.75,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10),
                         itemCount: state.cats.length,
                         itemBuilder: (context, index) {
                           return InkWell(
@@ -142,14 +149,18 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                               GetStorage().write('CatId', widget.cats?.id ?? 0);
                               GetStorage().write('catId', widget.cats?.id ?? 0);
 
-                              GetStorage().write('subCatFilterId', [state.cats[index].id].toString());
+                              GetStorage().write('subCatFilterId',
+                                  [state.cats[index].id].toString());
                               GetStorage().remove('shopFilterId');
 
                               //цйуйцуйц
                               // print(widget.cats?.id ?? 0);
 
                               context.router.push(ProductsRoute(
-                                  cats: widget.cats ?? Cats(id: widget.cats?.id ?? 0, name: widget.cats?.name ?? ''),
+                                  cats: widget.cats ??
+                                      Cats(
+                                          id: widget.cats?.id ?? 0,
+                                          name: widget.cats?.name ?? ''),
                                   subCats: state.cats[index]));
                               // Get.to(() => ProductsPage(
                               //       cats: state.cats[index],
@@ -171,7 +182,8 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                               title: '${state.cats[index].name}',
                               credit: 0,
                               bonus: '0',
-                              url: "http://185.116.193.73/storage/${state.cats[index].icon ?? ''}",
+                              url:
+                                  "https://lunamarket.ru/storage/${state.cats[index].icon ?? ''}",
                             ),
                           );
                         }),
@@ -211,7 +223,8 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
               //},
               // );
             } else {
-              return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
     );

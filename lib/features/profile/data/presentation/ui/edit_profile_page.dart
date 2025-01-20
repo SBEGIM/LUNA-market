@@ -129,7 +129,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
         ),
         actions: [
-          Padding(padding: const EdgeInsets.only(right: 16.0), child: SvgPicture.asset('assets/icons/notification.svg'))
+          Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: SvgPicture.asset('assets/icons/notification.svg'))
         ],
       ),
       body: Column(
@@ -185,13 +187,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ? BoxDecoration(
                               borderRadius: BorderRadius.circular(34),
                               image: DecorationImage(
-                                image: NetworkImage("http://185.116.193.73/storage/${_box.read('avatar')}"),
+                                image: NetworkImage(
+                                    "https://lunamarket.ru/storage/${_box.read('avatar')}"),
                                 fit: BoxFit.cover,
                               ))
                           : null,
-                      child: _box.read('avatar') == null || _box.read('avatar') == 'null'
+                      child: _box.read('avatar') == null ||
+                              _box.read('avatar') == 'null'
                           ? CircleAvatar(
-                              backgroundImage: const AssetImage('assets/icons/profile2.png'),
+                              backgroundImage:
+                                  const AssetImage('assets/icons/profile2.png'),
                               radius: 34,
                               child: Align(
                                 alignment: Alignment.bottomRight,
@@ -206,7 +211,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             title: Text(
               widget.name,
-              style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.kGray900, fontSize: 16),
+              style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.kGray900,
+                  fontSize: 16),
             ),
           ),
           const SizedBox(
@@ -221,7 +229,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               children: [
                 const Text(
                   'Чтобы поменять текущий пароль, необходимо сначала ввести старый правильно, а затем придумать новый',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.kGray300),
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.kGray300),
                 ),
                 const SizedBox(
                   height: 16,
@@ -310,7 +321,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     height: 19,
                                     width: 19,
                                   ),
-                                  title: gender != '' ? Text(gender != 'y' ? 'Мужской' : 'Женский') : const Text('Пол'),
+                                  title: gender != ''
+                                      ? Text(
+                                          gender != 'y' ? 'Мужской' : 'Женский')
+                                      : const Text('Пол'),
                                   trailing: Image.asset(
                                     'assets/icons/down.png',
                                     height: 16.5,
@@ -325,11 +339,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     padding: const EdgeInsets.only(left: 52.0),
                                     child: const Text(
                                       'Женский',
-                                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                   Checkbox(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
                                     checkColor: Colors.white,
                                     activeColor: AppColors.kPrimaryColor,
                                     value: woman,
@@ -346,11 +364,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     padding: const EdgeInsets.only(left: 22.5),
                                     child: const Text(
                                       'Мужской',
-                                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                   Checkbox(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
                                     checkColor: Colors.white,
                                     activeColor: AppColors.kPrimaryColor,
                                     value: man,
@@ -646,7 +668,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     hintText: 'Пароль',
                                     border: InputBorder.none,
                                     enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.white),
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
                                     ),
                                   ),
                                   obscureText: _obscureText,
@@ -657,7 +680,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       _obscureText = !_obscureText;
                                     });
                                   },
-                                  child: Icon(_obscureText ? Icons.visibility_off : Icons.visibility),
+                                  child: Icon(_obscureText
+                                      ? Icons.visibility_off
+                                      : Icons.visibility),
                                 )),
                             ListTile(
                                 leading: SvgPicture.asset(
@@ -672,7 +697,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     hintText: 'Введите новый пароль',
                                     border: InputBorder.none,
                                     enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.white),
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
                                     ),
                                   ),
                                   obscureText: _obscureTextRepeat,
@@ -683,7 +709,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       _obscureTextRepeat = !_obscureTextRepeat;
                                     });
                                   },
-                                  child: Icon(_obscureTextRepeat ? Icons.visibility_off : Icons.visibility),
+                                  child: Icon(_obscureTextRepeat
+                                      ? Icons.visibility_off
+                                      : Icons.visibility),
                                 )),
                           ],
                         ),
@@ -696,13 +724,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
       bottomSheet: Container(
         color: const Color.fromRGBO(252, 252, 252, 1),
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
         child: InkWell(
           onTap: () async {
             final edit = BlocProvider.of<LoginCubit>(context);
             await edit.edit(
                 userNameController.text,
-                phoneController.text != widget.phone ? phoneController.text : '',
+                phoneController.text != widget.phone
+                    ? phoneController.text
+                    : '',
                 _image != null ? _image!.path : "",
                 gender,
                 birthdayController.text,
@@ -727,7 +758,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               padding: const EdgeInsets.all(16),
               child: const Text(
                 'Сохранить',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16),
                 textAlign: TextAlign.center,
               )),
         ),

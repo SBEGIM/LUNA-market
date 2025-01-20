@@ -19,10 +19,13 @@ import '../../../tape/data/cubit/tape_blogger_cubit.dart';
 class BloggerDetailTapeCardPage extends StatefulWidget {
   final int? index;
   final String? shopName;
-  const BloggerDetailTapeCardPage({required this.index, required this.shopName, Key? key}) : super(key: key);
+  const BloggerDetailTapeCardPage(
+      {required this.index, required this.shopName, Key? key})
+      : super(key: key);
 
   @override
-  State<BloggerDetailTapeCardPage> createState() => _BloggerDetailTapeCardPageState();
+  State<BloggerDetailTapeCardPage> createState() =>
+      _BloggerDetailTapeCardPageState();
 }
 
 class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
@@ -72,7 +75,10 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
             title: visible == true
                 ? Text(
                     '${widget.shopName}',
-                    style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500),
                   )
                 : null
             // ? Row(
@@ -160,7 +166,9 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                 );
               }
               if (state is LoadingState) {
-                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.indigoAccent));
               }
 
               if (state is LoadedState) {
@@ -194,24 +202,32 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Container(
                                               height: 28,
                                               width: 90,
                                               decoration: BoxDecoration(
-                                                  color: const Color(0xFFFF3347),
-                                                  borderRadius: BorderRadius.circular(6)),
+                                                  color:
+                                                      const Color(0xFFFF3347),
+                                                  borderRadius:
+                                                      BorderRadius.circular(6)),
                                               alignment: Alignment.center,
                                               child: Text(
                                                 '${state.tapeModel[index].price} руб.',
                                                 style: const TextStyle(
-                                                    fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.white),
                                               ),
                                             ),
                                             const SizedBox(height: 6),
@@ -219,18 +235,23 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                                               height: 28,
                                               width: 110,
                                               decoration: BoxDecoration(
-                                                  color: Colors.orangeAccent, borderRadius: BorderRadius.circular(6)),
+                                                  color: Colors.orangeAccent,
+                                                  borderRadius:
+                                                      BorderRadius.circular(6)),
                                               alignment: Alignment.center,
                                               child: Text(
                                                 'Артикул: ${state.tapeModel[index].id}',
                                                 style: const TextStyle(
-                                                    fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white),
                                               ),
                                             ),
                                           ],
                                         ),
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
                                           children: [
                                             GestureDetector(
                                               onTap: () async {
@@ -251,12 +272,16 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                                               // width: 110,
                                               padding: const EdgeInsets.all(8),
                                               decoration: BoxDecoration(
-                                                  color: Colors.green[700], borderRadius: BorderRadius.circular(6)),
+                                                  color: Colors.green[700],
+                                                  borderRadius:
+                                                      BorderRadius.circular(6)),
                                               alignment: Alignment.center,
                                               child: Text(
                                                 '${state.tapeModel[index].name}',
                                                 style: const TextStyle(
-                                                    fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white),
                                               ),
                                             ),
                                           ],
@@ -407,7 +432,9 @@ class _BloggerDetailTapeCardPageState extends State<BloggerDetailTapeCardPage> {
                   },
                 );
               } else {
-                return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.indigoAccent));
               }
             }));
   }
@@ -429,7 +456,8 @@ class _VideosState extends State<Videos> {
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network('http://185.116.193.73/storage/${widget.tape.video}')
+    _controller = VideoPlayerController.network(
+        'https://lunamarket.ru/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.play();
         setState(() {});
@@ -467,7 +495,9 @@ class _VideosState extends State<Videos> {
                   fit: BoxFit.fitWidth,
                   child: GestureDetector(
                       onTap: () {
-                        _controller!.value.isPlaying ? _controller!.pause() : _controller!.play();
+                        _controller!.value.isPlaying
+                            ? _controller!.pause()
+                            : _controller!.play();
                       },
                       child: SizedBox(
                           height: _controller?.value.size.height,
@@ -479,7 +509,8 @@ class _VideosState extends State<Videos> {
                                   onVisibilityChanged: (info) {
                                     if (!mounted) return;
                                     if (info.visibleFraction == 0) {
-                                      _controller?.pause(); //pausing  functionality
+                                      _controller
+                                          ?.pause(); //pausing  functionality
                                     } else {
                                       _controller?.play();
                                     }
@@ -490,7 +521,9 @@ class _VideosState extends State<Videos> {
               icon
                   ? GestureDetector(
                       onTap: () {
-                        _controller!.value.isPlaying ? _controller!.pause() : _controller!.play();
+                        _controller!.value.isPlaying
+                            ? _controller!.pause()
+                            : _controller!.play();
                       },
                       child: Center(
                           child: SvgPicture.asset(
@@ -501,11 +534,14 @@ class _VideosState extends State<Videos> {
                   : Container(),
               Container(
                 alignment: Alignment.bottomCenter,
-                padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11),
-                child: VideoProgressIndicator(_controller!, allowScrubbing: true),
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).size.height * 0.11),
+                child:
+                    VideoProgressIndicator(_controller!, allowScrubbing: true),
               ),
             ],
           )
-        : const Center(child: CircularProgressIndicator(color: Colors.blueAccent));
+        : const Center(
+            child: CircularProgressIndicator(color: Colors.blueAccent));
   }
 }

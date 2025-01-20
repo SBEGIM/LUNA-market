@@ -24,14 +24,17 @@ class GridOptionsCategory extends StatelessWidget {
       child: Container(
         // height: 80,
         // width: 90,
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(0), boxShadow: [
-          const BoxShadow(
+        decoration: BoxDecoration(
             color: Colors.white,
-            offset: const Offset(0.0, 0.0),
-            blurRadius: 0.0,
-            spreadRadius: 0.0,
-          )
-        ]),
+            borderRadius: BorderRadius.circular(0),
+            boxShadow: [
+              const BoxShadow(
+                color: Colors.white,
+                offset: const Offset(0.0, 0.0),
+                blurRadius: 0.0,
+                spreadRadius: 0.0,
+              )
+            ]),
         child: Center(
           child: Column(
             // mainAxisSize: MainAxisSize.min,
@@ -45,7 +48,8 @@ class GridOptionsCategory extends StatelessWidget {
                       topRight: Radius.circular(4),
                     ),
                     image: DecorationImage(
-                      image: NetworkImage("http://185.116.193.73/storage/${layout.image}"),
+                      image: NetworkImage(
+                          "https://lunamarket.ru/storage/${layout.image}"),
                       fit: BoxFit.cover,
                     )),
               ),
@@ -55,11 +59,13 @@ class GridOptionsCategory extends StatelessWidget {
               Container(
                   height: 44,
                   //  margin: const EdgeInsets.only(top: 69),
-                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
                   // width: 128,
                   decoration: const BoxDecoration(
-                    borderRadius:
-                        const BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(8),
+                        bottomRight: Radius.circular(8)),
                     // border: Border.all(
                     //   width: 0.1,
                     // ),

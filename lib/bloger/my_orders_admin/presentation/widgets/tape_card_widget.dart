@@ -30,7 +30,8 @@ class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network('http://185.116.193.73/storage/${widget.tape.video}')
+    _controller = VideoPlayerController.network(
+        'https://lunamarket.ru/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.pause();
         setState(() {});
@@ -60,7 +61,9 @@ class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
                     width: _controller!.value.size.width,
                     child: AspectRatio(
                       aspectRatio: _controller!.value.aspectRatio,
-                      child: Opacity(opacity: widget.tape.isDelete == true ? 0.3 : 1, child: VideoPlayer(_controller!)),
+                      child: Opacity(
+                          opacity: widget.tape.isDelete == true ? 0.3 : 1,
+                          child: VideoPlayer(_controller!)),
                     ),
                   )),
             ),
@@ -80,7 +83,10 @@ class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
                         child: Text(
                           'Товар удален продавцом',
                           maxLines: 2,
-                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: Colors.black),
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black),
                         ),
                       )
                     ],
@@ -89,8 +95,8 @@ class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
               : const SizedBox(),
           InkWell(
             onTap: () {
-              context.router
-                  .push(BloggerDetailTapeCardRoute(index: widget.index, shopName: widget.tape.shop?.name ?? ''));
+              context.router.push(BloggerDetailTapeCardRoute(
+                  index: widget.index, shopName: widget.tape.shop?.name ?? ''));
               // BlocProvider.of<AdminNavigationCubit>(context).emit(
               //     DetailTapeAdminState(widget.index, widget.tape.shop!.name!));
               // Navigator.push(
@@ -103,14 +109,17 @@ class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 8.0, top: 8),
-              child: Align(alignment: Alignment.topRight, child: SvgPicture.asset('assets/icons/play.svg')),
+              child: Align(
+                  alignment: Alignment.topRight,
+                  child: SvgPicture.asset('assets/icons/play.svg')),
             ),
           ),
           BlocListener<UploadVideoBLoggerCubit, UploadVideoBloggerCubitState>(
             listener: (context, state) {
               if (state is LoadedOrderState) {
                 if (isLoaded) {
-                  BlocProvider.of<TapeBloggerCubit>(context).tapes(false, false, '');
+                  BlocProvider.of<TapeBloggerCubit>(context)
+                      .tapes(false, false, '');
                   isLoaded = false;
                 }
               }
@@ -129,7 +138,8 @@ class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
                         builder: (context) => DeleteVideoDialog(
                           onYesTap: () {
                             if (widget.tape.tapeId != null) {
-                              BlocProvider.of<UploadVideoBLoggerCubit>(context).delete(tapeId: widget.tape.tapeId!);
+                              BlocProvider.of<UploadVideoBLoggerCubit>(context)
+                                  .delete(tapeId: widget.tape.tapeId!);
                               isLoaded = true;
                               Navigator.pop(context);
                             }

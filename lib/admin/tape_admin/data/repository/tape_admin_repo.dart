@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 import '../model/TapeAdminModel.dart';
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class TapeAdminRepository {
   final TapeApi _tapeApi = TapeApi();

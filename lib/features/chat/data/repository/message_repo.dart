@@ -4,13 +4,14 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import '../DTO/DTO/messageDto.dart';
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 const _tag = 'messageRepository';
 
 class MessageRepository {
   final Message _message = Message();
 
-  Future<List<MessageDto>> messageList(int page, int chatId, int userId) => _message.messageList(page, chatId, userId);
+  Future<List<MessageDto>> messageList(int page, int chatId, int userId) =>
+      _message.messageList(page, chatId, userId);
   Future<String> imageStore(String avatar) => _message.imageStore(avatar);
 }
 
@@ -22,14 +23,17 @@ class Message {
       final String? token = _box.read('token');
 
       final response = await http.get(
-        Uri.parse("$baseUrl/chat/message?page=$page& ${chatId == 0 ? 'user_id=$userId' : 'chat_id=$chatId'} "),
+        Uri.parse(
+            "$baseUrl/chat/message?page=$page& ${chatId == 0 ? 'user_id=$userId' : 'chat_id=$chatId'} "),
         headers: {"Authorization": "Bearer $token"},
       );
       print('ok');
 
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 
-      return (data['data'] as List).map((e) => MessageDto.fromJson(e as Map<String, dynamic>)).toList();
+      return (data['data'] as List)
+          .map((e) => MessageDto.fromJson(e as Map<String, dynamic>))
+          .toList();
     } catch (e) {
       log('messageList::: $e', name: _tag);
       throw Exception(e);

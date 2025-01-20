@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../model/profile_month_blogger_statics.dart';
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class ProfileMonthStaticsBloggerRepository {
   final ProfileMonthStaticsBloggerToApi _profileMonthStaticsBloggerToApinToApi =

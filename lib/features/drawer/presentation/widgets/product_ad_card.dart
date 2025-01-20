@@ -61,7 +61,7 @@ class _ProductAdCardState extends State<ProductAdCard> {
                 width: 120,
                 child: Image.network(
                   widget.product.path!.isNotEmpty
-                      ? "http://185.116.193.73/storage/${widget.product.path!.first}"
+                      ? "https://lunamarket.ru/storage/${widget.product.path!.first}"
                       : '',
                   alignment: Alignment.center,
                   errorBuilder: (context, error, stackTrace) =>

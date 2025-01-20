@@ -4,7 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import '../model/chat_model.dart';
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 const _tag = 'ChatRepository';
 
 class ChatAdminRepository {

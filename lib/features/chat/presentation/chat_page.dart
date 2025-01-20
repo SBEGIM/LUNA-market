@@ -109,8 +109,6 @@ class _ChatPageState extends State<ChatPage> {
                           keyboardType: TextInputType.text,
                           controller: searchController,
                           onChanged: ((value) {
-
-                            
                             setState(() {});
                           }),
                           decoration: InputDecoration(
@@ -182,7 +180,7 @@ class _ChatPageState extends State<ChatPage> {
                                                         .chat[index].avatar !=
                                                     null
                                                 ? NetworkImage(
-                                                    'http://185.116.193.73/storage/${state.chat[index].avatar}')
+                                                    'https://lunamarket.ru/storage/${state.chat[index].avatar}')
                                                 : const AssetImage(
                                                         'assets/icons/profile2.png')
                                                     as ImageProvider,

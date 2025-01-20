@@ -61,11 +61,15 @@ class _LauncherAppState extends State<LauncherApp> {
       AppBloc appBloc = BlocProvider.of<AppBloc>(context);
 
       if (data == 'shop') {
-        final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
+        final basket = BasketAdminOrderModel.fromJson(
+            jsonDecode(message.data['basket'].toString()));
 
-        Get.snackbar('${notification?.title}', '${notification?.body}', onTap: (value) {
+        Get.snackbar('${notification?.title}', '${notification?.body}',
+            onTap: (value) {
           Get.to(DetailMyOrdersPage(basket: basket));
-        }, backgroundColor: Colors.blueAccent, duration: const Duration(seconds: 10));
+        },
+            backgroundColor: Colors.blueAccent,
+            duration: const Duration(seconds: 10));
 
         // appBloc.state.maybeWhen(
         //   inAppAdminState: (i) {
@@ -79,17 +83,26 @@ class _LauncherAppState extends State<LauncherApp> {
       if (data == 'chat') {
         final chat = jsonDecode(message.data['chat']);
 
-        Get.snackbar('${notification?.title}', '${notification?.body}', onTap: (value) {
+        Get.snackbar('${notification?.title}', '${notification?.body}',
+            onTap: (value) {
           appBloc.state.maybeWhen(
             inAppUserState: (i) {
               Get.to(() => MessagePage(
-                  userId: chat['user_id'], name: chat['name'], avatar: chat['avatar'], chatId: chat['chat_id']));
+                  userId: chat['user_id'],
+                  name: chat['name'],
+                  avatar: chat['avatar'],
+                  chatId: chat['chat_id']));
             },
             orElse: () {
-              Get.to(() => MessageAdmin(userId: chat['user_id'], userName: chat['name'], chatId: chat['chat_id']));
+              Get.to(() => MessageAdmin(
+                  userId: chat['user_id'],
+                  userName: chat['name'],
+                  chatId: chat['chat_id']));
             },
           );
-        }, backgroundColor: Colors.blueAccent, duration: const Duration(seconds: 10));
+        },
+            backgroundColor: Colors.blueAccent,
+            duration: const Duration(seconds: 10));
       }
 
       if (Platform.isAndroid && (data != 'chat' || data != 'shop')) {
@@ -127,7 +140,8 @@ class _LauncherAppState extends State<LauncherApp> {
       AppBloc appBloc = BlocProvider.of<AppBloc>(context);
 
       if (data == 'shop') {
-        final basket = BasketAdminOrderModel.fromJson(jsonDecode(message.data['basket'].toString()));
+        final basket = BasketAdminOrderModel.fromJson(
+            jsonDecode(message.data['basket'].toString()));
 
         // Get.snackbar('${notification?.title}', '${notification?.body}', onTap: (value) {
         Get.to(DetailMyOrdersPage(basket: basket));
@@ -148,10 +162,16 @@ class _LauncherAppState extends State<LauncherApp> {
         appBloc.state.maybeWhen(
           inAppUserState: (i) {
             Get.to(() => MessagePage(
-                userId: chat['user_id'], name: chat['name'], avatar: chat['avatar'], chatId: chat['chat_id']));
+                userId: chat['user_id'],
+                name: chat['name'],
+                avatar: chat['avatar'],
+                chatId: chat['chat_id']));
           },
           orElse: () {
-            Get.to(() => MessageAdmin(userId: chat['user_id'], userName: chat['name'], chatId: chat['chat_id']));
+            Get.to(() => MessageAdmin(
+                userId: chat['user_id'],
+                userName: chat['name'],
+                chatId: chat['chat_id']));
           },
         );
 
@@ -185,7 +205,8 @@ class _LauncherAppState extends State<LauncherApp> {
   }
 
   Future<void> checkInitialMessage() async {
-    final RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    final RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
       final RemoteMessage message = initialMessage;
       log('checkInitialMessage:: ${initialMessage.data}');
@@ -205,11 +226,19 @@ class _LauncherAppState extends State<LauncherApp> {
         // print(bloggerId + '222');
         // print(productId + 'wwww');
 
-        String bloggerId = Uri.parse(initialLink.toString()).queryParameters['blogger_id'].toString();
-        String productId = Uri.parse(initialLink.toString()).queryParameters['product_id'].toString();
+        String bloggerId = Uri.parse(initialLink.toString())
+            .queryParameters['blogger_id']
+            .toString();
+        String productId = Uri.parse(initialLink.toString())
+            .queryParameters['product_id']
+            .toString();
 
-        String shopName = Uri.parse(initialLink.toString()).queryParameters['shop_name'].toString();
-        String index = Uri.parse(initialLink.toString()).queryParameters['index'].toString();
+        String shopName = Uri.parse(initialLink.toString())
+            .queryParameters['shop_name']
+            .toString();
+        String index = Uri.parse(initialLink.toString())
+            .queryParameters['index']
+            .toString();
 
         if (productId != '' && productId != 'null') {
           GetStorage().write('deep_blogger_id', bloggerId);
@@ -220,7 +249,9 @@ class _LauncherAppState extends State<LauncherApp> {
           appBloc.state.maybeWhen(
             inAppUserState: (i) {
               context.router.push(DetailTapeCardRoute(
-                  index: int.parse(index), shopName: shopName, tapeBloc: BlocProvider.of<TapeCubit>(context)));
+                  index: int.parse(index),
+                  shopName: shopName,
+                  tapeBloc: BlocProvider.of<TapeCubit>(context)));
             },
             orElse: () {},
           );
@@ -236,9 +267,12 @@ class _LauncherAppState extends State<LauncherApp> {
     AppBloc appBloc = BlocProvider.of<AppBloc>(context);
     _sub = linkStream.listen((String? link) async {
       if (link != null) {
-        String bloggerId = Uri.parse(link).queryParameters['blogger_id'].toString();
-        String productId = Uri.parse(link).queryParameters['product_id'].toString();
-        String shopName = Uri.parse(link).queryParameters['shop_name'].toString();
+        String bloggerId =
+            Uri.parse(link).queryParameters['blogger_id'].toString();
+        String productId =
+            Uri.parse(link).queryParameters['product_id'].toString();
+        String shopName =
+            Uri.parse(link).queryParameters['shop_name'].toString();
         String index = Uri.parse(link).queryParameters['index'].toString();
 
         if (productId != '' && productId != 'null') {
@@ -263,7 +297,9 @@ class _LauncherAppState extends State<LauncherApp> {
           appBloc.state.maybeWhen(
             inAppUserState: (i) {
               context.router.push(DetailTapeCardRoute(
-                  index: int.parse(index), shopName: shopName, tapeBloc: BlocProvider.of<TapeCubit>(context)));
+                  index: int.parse(index),
+                  shopName: shopName,
+                  tapeBloc: BlocProvider.of<TapeCubit>(context)));
             },
             orElse: () {},
           );
@@ -277,7 +313,7 @@ class _LauncherAppState extends State<LauncherApp> {
     productId,
   ) async {
     AppBloc appBloc = BlocProvider.of<AppBloc>(context);
-    const baseUrl = 'http://185.116.193.73/api';
+    const baseUrl = 'https://lunamarket.ru/api';
 
     final String? authToken = GetStorage().read('token');
 
@@ -325,13 +361,10 @@ class _LauncherAppState extends State<LauncherApp> {
             );
       },
       builder: (context, state) {
-        
         return state.maybeWhen(
-          notAuthorizedState: 
-          (){
-
+          notAuthorizedState: () {
             log('not auth ');
-            return  const ViewAuthRegisterPage();
+            return const ViewAuthRegisterPage();
           },
           loadingState: () => const _Scaffold(child: CustomLoadingWidget()),
           inAppBlogerState: (index) => const BaseBloggerNew(),

@@ -51,8 +51,14 @@ class _MessageAdminState extends State<MessageAdmin> {
       _image != null ? _image!.path : "",
     );
 
-    String text = jsonEncode(
-        {'action': 'file', 'text': null, 'path': data, 'type': 'image', 'to': widget.userId, 'chat_id': widget.chatId});
+    String text = jsonEncode({
+      'action': 'file',
+      'text': null,
+      'path': data,
+      'type': 'image',
+      'to': widget.userId,
+      'chat_id': widget.chatId
+    });
 
     channel.sink.add(text);
   }
@@ -81,7 +87,8 @@ class _MessageAdminState extends State<MessageAdmin> {
   String sellerId = GetStorage().read('seller_id');
   bool ready = false;
 
-  final GroupedItemScrollController itemScrollController = GroupedItemScrollController();
+  final GroupedItemScrollController itemScrollController =
+      GroupedItemScrollController();
 
   // Future<void> onRefresh() async {
   //   channel.sink.close();
@@ -94,7 +101,8 @@ class _MessageAdminState extends State<MessageAdmin> {
   // }
 
   Future<void> onLoading() async {
-    await BlocProvider.of<MessageAdminCubit>(context).paginationMessage(widget.chatId ?? 0, widget.userId ?? 0);
+    await BlocProvider.of<MessageAdminCubit>(context)
+        .paginationMessage(widget.chatId ?? 0, widget.userId ?? 0);
     await Future.delayed(const Duration(milliseconds: 2000));
     _refreshController.loadComplete();
   }
@@ -112,8 +120,10 @@ class _MessageAdminState extends State<MessageAdmin> {
 
   @override
   void initState() {
-    BlocProvider.of<MessageAdminCubit>(context).getMessage(widget.chatId ?? 0, widget.userId ?? 0);
-    channel = IOWebSocketChannel.connect("ws://185.116.193.73:1995/?user_id=$sellerId");
+    BlocProvider.of<MessageAdminCubit>(context)
+        .getMessage(widget.chatId ?? 0, widget.userId ?? 0);
+    channel = IOWebSocketChannel.connect(
+        "ws://lunamarket.ru:1995/?user_id=$sellerId");
 
     channel.ready.then((value) {
       ready = true;
@@ -135,7 +145,8 @@ class _MessageAdminState extends State<MessageAdmin> {
       }
 
       if (data['action'] == 'message' || data['action'] == 'file') {
-        BlocProvider.of<MessageAdminCubit>(context).newMessage(MessageAdminDto.fromJson(data));
+        BlocProvider.of<MessageAdminCubit>(context)
+            .newMessage(MessageAdminDto.fromJson(data));
       }
     });
     super.initState();
@@ -214,34 +225,45 @@ class _MessageAdminState extends State<MessageAdmin> {
                                 // optional
                                 // order: StickyGroupedListOrder.DESC, // optional
                                 // reverse: true,
-                                groupSeparatorBuilder: (dynamic element) => Container(
-                                  margin: const EdgeInsets.only(top: 8, bottom: 8),
+                                groupSeparatorBuilder: (dynamic element) =>
+                                    Container(
+                                  margin:
+                                      const EdgeInsets.only(top: 8, bottom: 8),
                                   alignment: Alignment.center,
                                   height: 20,
                                   child: Text(
                                     DateFormat("dd.MM.yyyy").format(
                                       element,
                                     ),
-                                    style:
-                                        const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ),
-                                itemBuilder: (context, dynamic element) => Align(
-                                  alignment: element.userId != int.parse(sellerId)
-                                      ? Alignment.centerLeft
-                                      : Alignment.centerRight,
+                                itemBuilder: (context, dynamic element) =>
+                                    Align(
+                                  alignment:
+                                      element.userId != int.parse(sellerId)
+                                          ? Alignment.centerLeft
+                                          : Alignment.centerRight,
                                   child: Card(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                    margin: const EdgeInsets.only(top: 4, bottom: 4, left: 16, right: 16),
-                                    color:
-                                        element.userId == int.parse(sellerId) ? Colors.white : AppColors.kPrimaryColor,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    margin: const EdgeInsets.only(
+                                        top: 4, bottom: 4, left: 16, right: 16),
+                                    color: element.userId == int.parse(sellerId)
+                                        ? Colors.white
+                                        : AppColors.kPrimaryColor,
                                     child: element.type == 'message'
                                         ? Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text(
                                               element.text ?? '2',
                                               style: TextStyle(
-                                                  color: element.userId == int.parse(sellerId)
+                                                  color: element.userId ==
+                                                          int.parse(sellerId)
                                                       ? Colors.black
                                                       : Colors.white),
                                             ),
@@ -258,11 +280,12 @@ class _MessageAdminState extends State<MessageAdmin> {
                                               color: Colors.grey,
                                               image: DecorationImage(
                                                 image: NetworkImage(
-                                                  "http://185.116.193.73/storage/${element.path ?? ''}",
+                                                  "https://lunamarket.ru/storage/${element.path ?? ''}",
                                                 ),
                                                 fit: BoxFit.cover,
                                               ),
-                                              borderRadius: BorderRadius.circular(12),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
 
                                               //color: const Color(0xFFF0F5F5))),
                                             ),
@@ -275,7 +298,8 @@ class _MessageAdminState extends State<MessageAdmin> {
                           ),
                           Container(
                             height: 40,
-                            margin: const EdgeInsets.only(left: 16, right: 16, bottom: 36),
+                            margin: const EdgeInsets.only(
+                                left: 16, right: 16, bottom: 36),
                             //  padding: EdgeInsets.only(left: 16, right: 16, bottom: 36),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -290,7 +314,8 @@ class _MessageAdminState extends State<MessageAdmin> {
                                           middleText: '',
                                           textConfirm: 'Камера',
                                           textCancel: 'Фото',
-                                          titlePadding: const EdgeInsets.only(top: 40),
+                                          titlePadding:
+                                              const EdgeInsets.only(top: 40),
                                           onConfirm: () {
                                             change = true;
                                             setState(() {
@@ -327,11 +352,14 @@ class _MessageAdminState extends State<MessageAdmin> {
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Container(
-                                      margin: const EdgeInsets.only(left: 10, right: 10),
+                                      margin: const EdgeInsets.only(
+                                          left: 10, right: 10),
                                       padding: const EdgeInsets.only(left: 16),
                                       decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(30),
-                                          border: Border.all(width: 0.3, color: Colors.grey)),
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          border: Border.all(
+                                              width: 0.3, color: Colors.grey)),
                                       width: 243,
                                       child: TextField(
                                         maxLines: null,
@@ -359,10 +387,12 @@ class _MessageAdminState extends State<MessageAdmin> {
                         ],
                       )
                     : const Center(
-                        child: CircularProgressIndicator(color: Colors.blueAccent),
+                        child:
+                            CircularProgressIndicator(color: Colors.blueAccent),
                       );
               } else {
-                return const Center(child: CircularProgressIndicator(color: Colors.red));
+                return const Center(
+                    child: CircularProgressIndicator(color: Colors.red));
               }
             })
 

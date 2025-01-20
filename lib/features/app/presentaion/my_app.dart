@@ -176,7 +176,7 @@ class _MyAppState extends State<MyApp> {
             //     //   print('wwww Success product');
             //     //   GetStorage().write('deep_blogger_id', bloggerId);
             //     //   GetStorage().write('deep_product_id', productId);
-            //     //   const baseUrl = 'http://185.116.193.73/api';
+            //     //   const baseUrl = 'https://lunamarket.ru/api';
 
             //     //   final String? authToken = GetStorage().read('token');
 

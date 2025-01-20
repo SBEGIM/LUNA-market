@@ -1,37 +1,47 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
 import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class BasketRepository {
   final Basket _basket = Basket();
 
-  Future<int> basketAdd(productId, count, price, size, color, {bool? isOptom, String? blogger_id}) =>
-      _basket.basketAdd(productId, count, price, size, color, isOptom: isOptom, blogger_id: blogger_id);
-  Future<int> basketMinus(productId, count, price) => _basket.basketMinus(productId, count, price);
+  Future<int> basketAdd(productId, count, price, size, color,
+          {bool? isOptom, String? blogger_id}) =>
+      _basket.basketAdd(productId, count, price, size, color,
+          isOptom: isOptom, blogger_id: blogger_id);
+  Future<int> basketMinus(productId, count, price) =>
+      _basket.basketMinus(productId, count, price);
   Future<int> basketDelete(productId) => _basket.basketDelete(productId);
-  Future<List<BasketShowModel>> basketShow(String? fulfillment) => _basket.basketShow(fulfillment);
+  Future<List<BasketShowModel>> basketShow(String? fulfillment) =>
+      _basket.basketShow(fulfillment);
   Future<List<BasketOrderModel>> basketOrderShow() => _basket.basketOrderShow();
   Future<int> basketOrder(List id) => _basket.basketOrder(id);
-  Future<String> payment({String? address, String? bonus, String? fulfillment}) => _basket.payment(
+  Future<String> payment(
+          {String? address, String? bonus, String? fulfillment}) =>
+      _basket.payment(
         address: address,
         bonus: bonus,
         fulfillment: fulfillment,
       );
-  Future<int> status(String id, String status, String? text) => _basket.status(id, status, text);
+  Future<int> status(String id, String status, String? text) =>
+      _basket.status(id, status, text);
 }
 
 class Basket {
   final _box = GetStorage();
 
-  Future<int> basketAdd(productId, count, price, size, color, {bool? isOptom, String? blogger_id}) async {
+  Future<int> basketAdd(productId, count, price, size, color,
+      {bool? isOptom, String? blogger_id}) async {
     final String? token = _box.read('token');
 
-    final response = await http.post(Uri.parse('$baseUrl/basket/add'), headers: {
+    final response =
+        await http.post(Uri.parse('$baseUrl/basket/add'), headers: {
       "Authorization": "Bearer $token"
     }, body: {
       'product_id': productId.toString(),
@@ -52,8 +62,14 @@ class Basket {
     final String? token = _box.read('token');
 
     final response = await http.post(Uri.parse('$baseUrl/basket/minus'),
-        headers: {"Authorization": "Bearer $token"},
-        body: {'product_id': productId, 'count': count.toString(), 'price': price.toString()});
+        headers: {
+          "Authorization": "Bearer $token"
+        },
+        body: {
+          'product_id': productId,
+          'count': count.toString(),
+          'price': price.toString()
+        });
 
     final data = response.statusCode;
 
@@ -65,7 +81,8 @@ class Basket {
   ) async {
     final String? token = _box.read('token');
 
-    final response = await http.post(Uri.parse('$baseUrl/basket/delete'), headers: {
+    final response =
+        await http.post(Uri.parse('$baseUrl/basket/delete'), headers: {
       "Authorization": "Bearer $token"
     }, body: {
       'product_id': productId,
@@ -79,23 +96,29 @@ class Basket {
   Future<List<BasketShowModel>> basketShow(String? fulfillment) async {
     final String? token = _box.read('token');
 
-    final response = await http
-        .get(Uri.parse('$baseUrl/basket/show?fulfillment=$fulfillment'), headers: {"Authorization": "Bearer $token"});
+    final response = await http.get(
+        Uri.parse('$baseUrl/basket/show?fulfillment=$fulfillment'),
+        headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);
 
-    return (data['data'] as List).map((e) => BasketShowModel.fromJson(e)).toList();
+    return (data['data'] as List)
+        .map((e) => BasketShowModel.fromJson(e))
+        .toList();
   }
 
   Future<List<BasketOrderModel>> basketOrderShow() async {
     final String? token = _box.read('token');
 
-    final response = await http.get(Uri.parse("$baseUrl/basket/order/status?status=active&page=1"),
+    final response = await http.get(
+        Uri.parse("$baseUrl/basket/order/status?status=active&page=1"),
         headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);
 
-    return (data['data'] as List).map((e) => BasketOrderModel.fromJson(e)).toList();
+    return (data['data'] as List)
+        .map((e) => BasketOrderModel.fromJson(e))
+        .toList();
   }
 
   Future<int> basketOrder(List id) async {
@@ -117,14 +140,17 @@ class Basket {
     return data;
   }
 
-  Future<String> payment({String? address, String? bonus, String? fulfillment}) async {
+  Future<String> payment(
+      {String? address, String? bonus, String? fulfillment}) async {
     final String? token = _box.read('token');
 
-    final response = await http.post(Uri.parse('$baseUrl/payment/tinkoff/payment'),
+    final response = await http.post(
+        Uri.parse('$baseUrl/payment/tinkoff/payment'),
         headers: {"Authorization": "Bearer $token"},
         body: {'address': address, 'bonus': bonus, 'fulfillment': fulfillment});
 
     final data = jsonDecode(response.body);
+
 
     return data['data_tinkoff']['PaymentURL'];
   }

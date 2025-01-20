@@ -37,7 +37,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
 
   @override
   void initState() {
-    BlocProvider.of<StatisticsProductCubit>(context).statistics(widget.product.id, year, 1);
+    BlocProvider.of<StatisticsProductCubit>(context)
+        .statistics(widget.product.id, year, 1);
     super.initState();
   }
 
@@ -63,16 +64,19 @@ class _StatisticsPageState extends State<StatisticsPage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Container(
-            padding: const EdgeInsets.only(top: 16, bottom: 16, left: 15, right: 5),
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            padding:
+                const EdgeInsets.only(top: 16, bottom: 16, left: 15, right: 5),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: Row(
               children: [
                 SizedBox(
                   height: 106,
                   width: 106,
-                  child: widget.product.images != null && widget.product.images!.isNotEmpty
+                  child: widget.product.images != null &&
+                          widget.product.images!.isNotEmpty
                       ? Image.network(
-                          'http://185.116.193.73/storage/${widget.product.images?.first}',
+                          'https://lunamarket.ru/storage/${widget.product.images?.first}',
                           errorBuilder: (context, error, stackTrace) {
                             return const ErrorImageWidget();
                           },
@@ -88,21 +92,30 @@ class _StatisticsPageState extends State<StatisticsPage> {
                     Text(
                       '${widget.product.name}',
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(color: AppColors.kGray900, fontSize: 12, fontWeight: FontWeight.w500),
+                      style: const TextStyle(
+                          color: AppColors.kGray900,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500),
                     ),
                     const SizedBox(
                       height: 5,
                     ),
                     Text(
                       'Артикул: ${widget.product.id}',
-                      style: const TextStyle(color: AppColors.kGray900, fontSize: 12, fontWeight: FontWeight.w500),
+                      style: const TextStyle(
+                          color: AppColors.kGray900,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500),
                     ),
                     const SizedBox(
                       height: 5,
                     ),
                     Text(
                       'Дата добавления: ${widget.product.created_at}',
-                      style: const TextStyle(color: AppColors.kGray900, fontSize: 12, fontWeight: FontWeight.w500),
+                      style: const TextStyle(
+                          color: AppColors.kGray900,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500),
                     )
                   ],
                 )
@@ -118,7 +131,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
             children: [
               const Text(
                 'Год',
-                style: TextStyle(color: AppColors.kGray900, fontWeight: FontWeight.w700, fontSize: 16),
+                style: TextStyle(
+                    color: AppColors.kGray900,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
               ),
               const SizedBox(
                 width: 15,
@@ -139,7 +155,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
               ),
               Text(
                 '$year',
-                style: const TextStyle(color: AppColors.kGray900, fontWeight: FontWeight.w700, fontSize: 16),
+                style: const TextStyle(
+                    color: AppColors.kGray900,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
               ),
               const SizedBox(
                 width: 5,
@@ -166,7 +185,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
             children: [
               const Text(
                 'Месяцы',
-                style: TextStyle(color: AppColors.kGray900, fontWeight: FontWeight.w700, fontSize: 16),
+                style: TextStyle(
+                    color: AppColors.kGray900,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
               ),
               SizedBox(
                 height: 50,
@@ -178,7 +200,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
                     return GestureDetector(
                       onTap: () {
                         _selectIndex = index;
-                        BlocProvider.of<StatisticsProductCubit>(context).statistics(widget.product.id, year, index + 1);
+                        BlocProvider.of<StatisticsProductCubit>(context)
+                            .statistics(widget.product.id, year, index + 1);
 
                         _summBonus = 0;
                         setState(() {
@@ -187,7 +210,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
                         });
                       },
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0, bottom: 4, left: 4, right: 4),
+                        padding: const EdgeInsets.only(
+                            top: 8.0, bottom: 4, left: 4, right: 4),
                         child: chipDate(
                           months[index],
                           index,
@@ -242,7 +266,9 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       ],
                     );
                   } else {
-                    return const Center(child: CircularProgressIndicator(color: Colors.blueAccent));
+                    return const Center(
+                        child: CircularProgressIndicator(
+                            color: Colors.blueAccent));
                   }
                 },
               ),
@@ -294,14 +320,20 @@ class StatisticWidgetContainer extends StatelessWidget {
           ),
           Text(
             text,
-            style: const TextStyle(color: AppColors.kGray900, fontSize: 24, fontWeight: FontWeight.w700),
+            style: const TextStyle(
+                color: AppColors.kGray900,
+                fontSize: 24,
+                fontWeight: FontWeight.w700),
           ),
           const SizedBox(
             height: 4,
           ),
           Text(
             subText,
-            style: const TextStyle(color: AppColors.kGray900, fontSize: 14, fontWeight: FontWeight.w400),
+            style: const TextStyle(
+                color: AppColors.kGray900,
+                fontSize: 14,
+                fontWeight: FontWeight.w400),
           )
         ],
       ),

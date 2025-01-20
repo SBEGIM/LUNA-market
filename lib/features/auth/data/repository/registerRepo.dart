@@ -5,17 +5,21 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import '../DTO/register.dart';
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class RegisterRepository {
   final RegisterToApi _registerToApi = RegisterToApi();
 
-  Future<dynamic> register(RegisterDTO register) => _registerToApi.register(register);
+  Future<dynamic> register(RegisterDTO register) =>
+      _registerToApi.register(register);
   Future<dynamic> smsSend(String phone) => _registerToApi.smsSend(phone);
-  Future<dynamic> smsCheck(String phone, String code) => _registerToApi.smsCheck(phone, code);
+  Future<dynamic> smsCheck(String phone, String code) =>
+      _registerToApi.smsCheck(phone, code);
   Future<dynamic> resetSend(String phone) => _registerToApi.resetSend(phone);
-  Future<dynamic> resetCheck(String phone, String code) => _registerToApi.resetCheck(phone, code);
-  Future<dynamic> passwordReset(String phone, String password) => _registerToApi.passwordReset(phone, password);
+  Future<dynamic> resetCheck(String phone, String code) =>
+      _registerToApi.resetCheck(phone, code);
+  Future<dynamic> passwordReset(String phone, String password) =>
+      _registerToApi.passwordReset(phone, password);
 }
 
 class RegisterToApi {
@@ -85,7 +89,8 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response = await http.post(Uri.parse('$baseUrl/user/register/send-code'), body: {
+    final response =
+        await http.post(Uri.parse('$baseUrl/user/register/send-code'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
     });
 
@@ -96,7 +101,8 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response = await http.post(Uri.parse('$baseUrl/user/register/check'), body: {
+    final response =
+        await http.post(Uri.parse('$baseUrl/user/register/check'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'code': code,
     });
@@ -108,7 +114,8 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response = await http.post(Uri.parse('$baseUrl/user/password/reset/send-code'), body: {
+    final response = await http
+        .post(Uri.parse('$baseUrl/user/password/reset/send-code'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
     });
 
@@ -119,7 +126,8 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response = await http.post(Uri.parse('$baseUrl/user/password/reset/check-code'), body: {
+    final response = await http
+        .post(Uri.parse('$baseUrl/user/password/reset/check-code'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'code': code,
     });
@@ -132,7 +140,8 @@ class RegisterToApi {
     String s = phone;
     String result = s.substring(2);
 
-    final response = await http.post(Uri.parse('$baseUrl/user/password/reset'), body: {
+    final response =
+        await http.post(Uri.parse('$baseUrl/user/password/reset'), body: {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'password': password,
     });

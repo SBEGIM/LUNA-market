@@ -62,7 +62,10 @@ class _DetailStorePageState extends State<DetailStorePage> {
         ),
         title: Text(
           '${widget.shop.shop!.name}',
-          style: const TextStyle(color: AppColors.kGray900, fontWeight: FontWeight.w500, fontSize: 18),
+          style: const TextStyle(
+              color: AppColors.kGray900,
+              fontWeight: FontWeight.w500,
+              fontSize: 18),
         ),
         // actions: [
         //   Padding(
@@ -88,10 +91,11 @@ class _DetailStorePageState extends State<DetailStorePage> {
                   ListTile(
                     minVerticalPadding: 14,
                     leading: Image.network(
-                      'http://185.116.193.73/storage/${widget.shop.shop!.image}',
+                      'https://lunamarket.ru/storage/${widget.shop.shop!.image}',
                       width: 50,
                       height: 50,
-                      errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                      errorBuilder: (context, error, stackTrace) =>
+                          const ErrorImageWidget(
                         height: 50,
                         width: 50,
                       ),
@@ -104,7 +108,10 @@ class _DetailStorePageState extends State<DetailStorePage> {
                           'Дата регистрации: ${widget.shop.shop!.createdAt}',
                           //  maxLines: 1,
                           //overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w500),
+                          style: const TextStyle(
+                              color: AppColors.kGray300,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(
                           height: 10,
@@ -144,8 +151,10 @@ class _DetailStorePageState extends State<DetailStorePage> {
                             ),
                             const Text(
                               'Более 1 000 успешных продаж',
-                              style:
-                                  TextStyle(color: AppColors.kPrimaryColor, fontSize: 15, fontWeight: FontWeight.w400),
+                              style: TextStyle(
+                                  color: AppColors.kPrimaryColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
@@ -185,11 +194,15 @@ class _DetailStorePageState extends State<DetailStorePage> {
                           color: const Color(0x331DC4CF),
                           // : const Color.fromRGBO(29, 196, 207, 0.2),
                         ),
-                        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+                        padding: const EdgeInsets.only(
+                            left: 16, right: 16, top: 16, bottom: 16),
                         child: const Text(
                           'Чат с магазином',
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.kPrimaryColor),
                         ),
                       ),
                     ),
@@ -204,7 +217,8 @@ class _DetailStorePageState extends State<DetailStorePage> {
             color: AppColors.kGray300,
           ),
           GestureDetector(
-            onTap: () => launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
+            onTap: () =>
+                launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
             child: Container(
               height: 56,
               padding: EdgeInsets.only(left: 16),
@@ -253,7 +267,8 @@ class _DetailStorePageState extends State<DetailStorePage> {
 
                     _selectedListSort.add(widget.shop.shop!.id as int);
 
-                    GetStorage().write('shopFilterId', _selectedListSort.toString());
+                    GetStorage()
+                        .write('shopFilterId', _selectedListSort.toString());
 
                     context.router.push(ProductsRoute(
                       cats: Cats(id: 0, name: ''),
@@ -267,8 +282,10 @@ class _DetailStorePageState extends State<DetailStorePage> {
                   child: ListTile(
                       leading: Text(
                         'Все товары ${widget.shop.shop!.name}',
-                        style:
-                            const TextStyle(color: AppColors.kPrimaryColor, fontSize: 16, fontWeight: FontWeight.w400),
+                        style: const TextStyle(
+                            color: AppColors.kPrimaryColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
                       ),
                       trailing: const Icon(
                         Icons.arrow_forward_ios,
@@ -411,7 +428,8 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                     child: const Text(
                       'Отзывы',
                       textAlign: TextAlign.start,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                   ),
                   Container(
@@ -429,12 +447,17 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text: "4.8",
-                                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700, color: Colors.black),
+                                  style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black),
                                 ),
                                 TextSpan(
                                   text: " из 5",
-                                  style:
-                                      TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                                  style: TextStyle(
+                                      color: AppColors.kGray300,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ],
                             ),
@@ -457,7 +480,8 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                       direction: Axis.horizontal,
                                       allowHalfRating: true,
                                       itemCount: 5,
-                                      itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
+                                      itemPadding: const EdgeInsets.symmetric(
+                                          horizontal: 0.0),
                                       itemBuilder: (context, _) => const Icon(
                                         Icons.star,
                                         color: Colors.amber,
@@ -468,8 +492,14 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                     ),
                                     Stack(
                                       children: [
-                                        Container(height: 4, width: 186, color: Color(0xffe5f1ff)),
-                                        Container(height: 4, width: index.toDouble() * 10, color: Color(0xffFFC107))
+                                        Container(
+                                            height: 4,
+                                            width: 186,
+                                            color: Color(0xffe5f1ff)),
+                                        Container(
+                                            height: 4,
+                                            width: index.toDouble() * 10,
+                                            color: Color(0xffFFC107))
                                       ],
                                     )
                                   ],
@@ -480,7 +510,10 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                           margin: const EdgeInsets.only(top: 55),
                           child: const Text(
                             '98 отзывов',
-                            style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                color: AppColors.kGray300,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                       ],
@@ -502,17 +535,22 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                   return Center(
                     child: Text(
                       state.message,
-                      style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                      style:
+                          const TextStyle(fontSize: 20.0, color: Colors.grey),
                     ),
                   );
                 }
                 if (state is LoadingState) {
-                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                  return const Center(
+                      child: CircularProgressIndicator(
+                          color: Colors.indigoAccent));
                 }
 
                 if (state is LoadedState) {
                   return Container(
-                      height: state.reviewModel.length != 0 ? (80 * state.reviewModel.length.toDouble()) : 20,
+                      height: state.reviewModel.length != 0
+                          ? (80 * state.reviewModel.length.toDouble())
+                          : 20,
                       padding: const EdgeInsets.all(16),
                       child: ListView.builder(
                         scrollDirection: Axis.vertical,
@@ -523,22 +561,28 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       '${state.reviewModel[index].user!.name}',
                                       style: const TextStyle(
-                                          color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w500),
+                                          color: AppColors.kGray900,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     RatingBar.builder(
-                                      initialRating: state.reviewModel[index].rating!.toDouble(),
+                                      initialRating: state
+                                          .reviewModel[index].rating!
+                                          .toDouble(),
                                       minRating: 1,
                                       itemSize: 15,
                                       direction: Axis.horizontal,
                                       allowHalfRating: false,
                                       itemCount: 5,
                                       ignoreGestures: true,
-                                      itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
+                                      itemPadding: const EdgeInsets.symmetric(
+                                          horizontal: 0.0),
                                       itemBuilder: (context, _) => const Icon(
                                         Icons.star,
                                         color: Colors.amber,
@@ -555,7 +599,9 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                 Text(
                                   '${state.reviewModel[index].date}',
                                   style: const TextStyle(
-                                      color: AppColors.kGray300, fontWeight: FontWeight.w500, fontSize: 12),
+                                      color: AppColors.kGray300,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12),
                                 ),
                                 const SizedBox(
                                   height: 4,
@@ -564,8 +610,10 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                                   '${state.reviewModel[index].text}',
                                   maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
-                                  style:
-                                      const TextStyle(fontWeight: FontWeight.w400, fontSize: 14.0, color: Colors.black),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14.0,
+                                      color: Colors.black),
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -577,7 +625,9 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                         },
                       ));
                 } else {
-                  return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+                  return const Center(
+                      child: CircularProgressIndicator(
+                          color: Colors.indigoAccent));
                 }
               }),
           const Divider(
@@ -587,7 +637,8 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
           Container(
             padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
             color: Colors.white,
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -618,12 +669,13 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
                 controller: _commentController,
                 maxLines: 5,
                 keyboardType: TextInputType.text,
-                decoration: const InputDecoration(hintText: 'Напишите отзывь', border: InputBorder.none),
+                decoration: const InputDecoration(
+                    hintText: 'Напишите отзывь', border: InputBorder.none),
               ),
               GestureDetector(
                 onTap: () async {
-                  await BlocProvider.of<ReviewCubit>(context)
-                      .reviewStore(_commentController.text, rating.toString(), '28');
+                  await BlocProvider.of<ReviewCubit>(context).reviewStore(
+                      _commentController.text, rating.toString(), '28');
                   _commentController.clear();
                 },
                 child: Container(

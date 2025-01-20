@@ -4,12 +4,13 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/bloger/my_products_admin/data/models/blogger_product_statistics_model.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class BloggerTapeUploadRepository {
   final UploadApi _uploadVideoApi = UploadApi();
 
-  Future<void> uploadVideo(String product_id, video) => _uploadVideoApi.uploadVideo(product_id, video);
+  Future<void> uploadVideo(String product_id, video) =>
+      _uploadVideoApi.uploadVideo(product_id, video);
 }
 
 class UploadApi {

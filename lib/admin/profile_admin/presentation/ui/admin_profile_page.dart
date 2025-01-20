@@ -72,7 +72,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                 leading: CircleAvatar(
                   backgroundColor: Colors.white,
                   backgroundImage: NetworkImage(
-                    "http://185.116.193.73/storage/${GetStorage().read('seller_image')}",
+                    "https://lunamarket.ru/storage/${GetStorage().read('seller_image')}",
                   ),
                   radius: 34,
 

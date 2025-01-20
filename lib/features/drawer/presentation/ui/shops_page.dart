@@ -34,7 +34,7 @@ class _ShopsPageState extends State<ShopsPage> {
             context.router.pop();
           }),
         ),
-       
+
         // leadingWidth: 1,
         title: Container(
           height: 34,
@@ -56,14 +56,12 @@ class _ShopsPageState extends State<ShopsPage> {
                 prefixIcon: Icon(
                   Icons.search,
                   color: AppColors.kGray300,
-                  
                 ),
-               contentPadding: EdgeInsets.only(bottom: 10),
+                contentPadding: EdgeInsets.only(bottom: 10),
                 hintText: 'Поиск',
                 hintStyle: TextStyle(
                   color: AppColors.kGray300,
                   fontSize: 18,
-                  
                 ),
                 hintMaxLines: 1,
                 border: InputBorder.none,
@@ -128,7 +126,7 @@ class _ShopsPageState extends State<ShopsPage> {
                           credit: state.popularShops[index].credit ?? false,
                           bonus: '${state.popularShops[index].bonus}',
                           url:
-                              "http://185.116.193.73/storage/${state.popularShops[index].image ?? ''}",
+                              "https://lunamarket.ru/storage/${state.popularShops[index].image ?? ''}",
                         ),
                       );
                     }),

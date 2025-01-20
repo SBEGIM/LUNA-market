@@ -140,7 +140,7 @@
 //                                     borderRadius: BorderRadius.circular(34),
 //                                     image: DecorationImage(
 //                                       image: NetworkImage(
-//                                           "http://185.116.193.73/storage/${_box.read('avatar')}"),
+//                                           "https://lunamarket.ru/storage/${_box.read('avatar')}"),
 //                                       fit: BoxFit.cover,
 //                                     ))
 //                                 : null,

@@ -5,20 +5,34 @@ import 'dart:io';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class LoginRepository {
   final LoginToApi _loginToApi = LoginToApi();
 
-  Future<dynamic> login(String phone, String password) => _loginToApi.login(phone, password);
+  Future<dynamic> login(String phone, String password) =>
+      _loginToApi.login(phone, password);
   Future<dynamic> delete() => _loginToApi.delete();
   Future<dynamic> code(code) => _loginToApi.code(code);
 
   Future<dynamic> lateAuth() => _loginToApi.lateAuth();
   Future<dynamic> editPush(int pushStatus) => _loginToApi.editPush(pushStatus);
-  Future<dynamic> edit(String name, String phone, String Avatar, String gender, String birthday, String country,
-          String city, String street, String home, String porch, String floor, String room, String email) =>
-      _loginToApi.edit(name, phone, Avatar, gender, birthday, country, city, street, home, porch, floor, room, email);
+  Future<dynamic> edit(
+          String name,
+          String phone,
+          String Avatar,
+          String gender,
+          String birthday,
+          String country,
+          String city,
+          String street,
+          String home,
+          String porch,
+          String floor,
+          String room,
+          String email) =>
+      _loginToApi.edit(name, phone, Avatar, gender, birthday, country, city,
+          street, home, porch, floor, room, email);
 }
 
 class LoginToApi {
@@ -75,17 +89,15 @@ class LoginToApi {
     // final device_token = _box.read('device_token');
 
 //Removes everything after first '.'
-    final response = await http.post(Uri.parse('$baseUrl/user/late/auth'), body: {});
+    final response =
+        await http.post(Uri.parse('$baseUrl/user/late/auth'), body: {});
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       _box.write('token', data['access_token'].toString());
       _box.write('user_id', data['user']['id'].toString());
       _box.write('name', 'Не авторизированный');
       // _box.write('card', data['user']['card'].toString());
-
-
     }
-
 
     return response.statusCode;
   }
@@ -234,7 +246,8 @@ class LoginToApi {
 
   Future<dynamic> delete() async {
     final String? token = _box.read('token');
-    final response = await http.post(Uri.parse('$baseUrl/user/delete'), headers: {
+    final response =
+        await http.post(Uri.parse('$baseUrl/user/delete'), headers: {
       'Authorization': 'Bearer $token',
     });
 

@@ -40,7 +40,7 @@ class GridOptionsPopular extends StatelessWidget {
                 borderRadius: BorderRadius.circular(2),
                 image: DecorationImage(
                     image: NetworkImage(
-                      "http://185.116.193.73/storage/${layout!.icon ?? ''}",
+                      "https://lunamarket.ru/storage/${layout!.icon ?? ''}",
                     ),
                     fit: BoxFit.cover),
                 color: const Color(0xFFF0F5F5)),

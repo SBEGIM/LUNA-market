@@ -4,7 +4,7 @@ import 'package:haji_market/features/basket/data/DTO/cdek_office_model.dart';
 import 'package:haji_market/features/basket/data/DTO/cdek_office_old_model.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class CdekOfficeRepository {
   final CdekOfficeApi _cdekOfficeApi = CdekOfficeApi();

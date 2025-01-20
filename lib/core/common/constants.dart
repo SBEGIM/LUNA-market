@@ -172,4 +172,4 @@ String getFormattedArticle(String article) {
   }
 }
 
-const kDeepLinkUrl = 'http://lunamarket.ru';
+const kDeepLinkUrl = 'https://lunamarket.ru';

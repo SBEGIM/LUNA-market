@@ -11,13 +11,16 @@ import 'package:haji_market/features/drawer/data/models/product_model.dart';
 class FavoriteProductsCardWidget extends StatefulWidget {
   final ProductModel product;
 
-  const FavoriteProductsCardWidget({required this.product, Key? key}) : super(key: key);
+  const FavoriteProductsCardWidget({required this.product, Key? key})
+      : super(key: key);
 
   @override
-  State<FavoriteProductsCardWidget> createState() => _FavoriteProductsCardWidgetState();
+  State<FavoriteProductsCardWidget> createState() =>
+      _FavoriteProductsCardWidgetState();
 }
 
-class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget> {
+class _FavoriteProductsCardWidgetState
+    extends State<FavoriteProductsCardWidget> {
   int count = 0;
   bool isvisible = false;
   bool inFavorite = false;
@@ -31,9 +34,13 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
       isvisible = true;
     }
     inFavorite = widget.product.inFavorite ?? false;
-    compoundPrice =  (widget.product.price!.toInt() * (((100 - widget.product.compound!.toInt())) / 100)).toInt();
+    compoundPrice = (widget.product.price!.toInt() *
+            (((100 - widget.product.compound!.toInt())) / 100))
+        .toInt();
     procentPrice =
-        ((widget.product.price!.toInt() - widget.product.compound!.toInt()) / widget.product.price!.toInt()) * 100;
+        ((widget.product.price!.toInt() - widget.product.compound!.toInt()) /
+                widget.product.price!.toInt()) *
+            100;
     super.initState();
   }
 
@@ -45,13 +52,15 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
         padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
         child: Container(
           padding: const EdgeInsets.only(left: 4, top: 4, bottom: 9, right: 1),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), boxShadow: const [
-            BoxShadow(
-              offset: Offset(0, 2),
-              // blurRadius: 4,
-              color: Colors.white,
-            ),
-          ]),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: const [
+                BoxShadow(
+                  offset: Offset(0, 2),
+                  // blurRadius: 4,
+                  color: Colors.white,
+                ),
+              ]),
           // height: MediaQuery.of(context).size.height * 0.86,
           // color: Colors.red,
           child: Row(
@@ -68,10 +77,11 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                       width: 100,
                       child: Image.network(
                         widget.product.path!.isNotEmpty
-                            ? "http://185.116.193.73/storage/${widget.product.path!.first}"
+                            ? "https://lunamarket.ru/storage/${widget.product.path!.first}"
                             : '',
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                        errorBuilder: (context, error, stackTrace) =>
+                            const ErrorImageWidget(
                           height: 100,
                           width: 100,
                         ),
@@ -83,14 +93,19 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            decoration:
-                                BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(4)),
+                            decoration: BoxDecoration(
+                                color: AppColors.kPrimaryColor,
+                                borderRadius: BorderRadius.circular(4)),
                             child: const Padding(
-                              padding: EdgeInsets.only(left: 8.0, right: 8, top: 4, bottom: 4),
+                              padding: EdgeInsets.only(
+                                  left: 8.0, right: 8, top: 4, bottom: 4),
                               child: Text(
                                 '0·0·12',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400),
                               ),
                             ),
                           ),
@@ -99,13 +114,19 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                           ),
                           Container(
                             width: 50,
-                            decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(4)),
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(4)),
                             child: const Padding(
-                              padding: EdgeInsets.only(left: 4.0, right: 4, top: 2, bottom: 4),
+                              padding: EdgeInsets.only(
+                                  left: 4.0, right: 4, top: 2, bottom: 4),
                               child: Text(
                                 '10% Б',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400),
                               ),
                             ),
                           ),
@@ -116,15 +137,19 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                               ? Container(
                                   height: 22,
                                   decoration: BoxDecoration(
-                                      color: const Color.fromRGBO(255, 50, 72, 1),
+                                      color:
+                                          const Color.fromRGBO(255, 50, 72, 1),
                                       borderRadius: BorderRadius.circular(4)),
                                   child: Padding(
-                                    padding: const EdgeInsets.only(left: 4.0, right: 4, top: 4, bottom: 4),
+                                    padding: const EdgeInsets.only(
+                                        left: 4.0, right: 4, top: 4, bottom: 4),
                                     child: Text(
                                       '-${widget.product.compound}%',
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
-                                          color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
                                     ),
                                   ),
                                 )
@@ -150,21 +175,27 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                             widget.product.name.toString(),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style:
-                                const TextStyle(fontSize: 12, color: AppColors.kGray900, fontWeight: FontWeight.w600),
+                            style: const TextStyle(
+                                fontSize: 12,
+                                color: AppColors.kGray900,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                         IconButton(
                             onPressed: () async {
-                              final favorite = BlocProvider.of<FavoriteCubit>(context);
-                              await favorite.favorite(widget.product.id.toString());
+                              final favorite =
+                                  BlocProvider.of<FavoriteCubit>(context);
+                              await favorite
+                                  .favorite(widget.product.id.toString());
                               setState(() {
                                 inFavorite = !inFavorite;
                               });
                             },
                             icon: SvgPicture.asset(
                               'assets/icons/heart_fill.svg',
-                              color: inFavorite == true ? const Color.fromRGBO(255, 50, 72, 1) : Colors.grey,
+                              color: inFavorite == true
+                                  ? const Color.fromRGBO(255, 50, 72, 1)
+                                  : Colors.grey,
                             ))
                       ],
                     ),
@@ -173,14 +204,18 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                     padding: EdgeInsets.only(top: 0, bottom: 3),
                     child: Text(
                       'Ноутбук',
-                      style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                          color: AppColors.kGray300,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400),
                     ),
                   ),
                   Row(
                     children: [
                       RatingBar(
                         ignoreGestures: true,
-                        initialRating: double.parse(widget.product.rating.toString()),
+                        initialRating:
+                            double.parse(widget.product.rating.toString()),
                         minRating: 0,
                         maxRating: 5,
                         itemCount: 5,
@@ -207,7 +242,10 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                       ),
                       Text(
                         "(${widget.product.count} отзыва)",
-                        style: const TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                        style: const TextStyle(
+                            color: AppColors.kGray300,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -244,7 +282,10 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                               width: 75,
                               child: Text(
                                 '$compoundPrice ₽ ',
-                                style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w500, fontSize: 16),
+                                style: const TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16),
                               ),
                             ),
                             Text(
@@ -289,8 +330,10 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                                 alignment: Alignment.center,
                                 child: Text(
                                   ' ${widget.product.price ?? 0 / 3} ',
-                                  style:
-                                      const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ),
                               const SizedBox(
@@ -323,8 +366,14 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                                         children: [
                                           InkWell(
                                             onTap: () {
-                                              BlocProvider.of<BasketCubit>(context)
-                                                  .basketMinus(widget.product.id.toString(), '1', 0, 'fbs');
+                                              BlocProvider.of<BasketCubit>(
+                                                      context)
+                                                  .basketMinus(
+                                                      widget.product.id
+                                                          .toString(),
+                                                      '1',
+                                                      0,
+                                                      'fbs');
                                               setState(() {
                                                 if (count == 0) {
                                                   isvisible = false;
@@ -339,14 +388,17 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                                               width: 32,
                                               padding: const EdgeInsets.all(4),
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(6),
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
                                                 color: Colors.white,
                                                 boxShadow: [
                                                   BoxShadow(
-                                                    color: Colors.grey.withOpacity(0.1),
+                                                    color: Colors.grey
+                                                        .withOpacity(0.1),
                                                     spreadRadius: 1,
                                                     blurRadius: 1,
-                                                    offset: const Offset(0, 1), // changes position of shadow
+                                                    offset: const Offset(0,
+                                                        1), // changes position of shadow
                                                   ),
                                                 ],
                                               ),
@@ -358,7 +410,8 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                                                     )
                                                   : const Icon(
                                                       Icons.remove,
-                                                      color: AppColors.kPrimaryColor,
+                                                      color: AppColors
+                                                          .kPrimaryColor,
                                                     ),
                                             ),
                                           ),
@@ -375,8 +428,15 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                                           // ),
                                           InkWell(
                                             onTap: () {
-                                              BlocProvider.of<BasketCubit>(context)
-                                                  .basketAdd(widget.product.id.toString(), '1', 0, '', '');
+                                              BlocProvider.of<BasketCubit>(
+                                                      context)
+                                                  .basketAdd(
+                                                      widget.product.id
+                                                          .toString(),
+                                                      '1',
+                                                      0,
+                                                      '',
+                                                      '');
 
                                               setState(() {
                                                 count += 1;
@@ -385,14 +445,17 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                                             child: Container(
                                               padding: const EdgeInsets.all(4),
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(10),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
                                                 color: Colors.white,
                                                 boxShadow: [
                                                   BoxShadow(
-                                                    color: Colors.grey.withOpacity(0.1),
+                                                    color: Colors.grey
+                                                        .withOpacity(0.1),
                                                     spreadRadius: 1,
                                                     blurRadius: 1,
-                                                    offset: const Offset(0, 1), // changes position of shadow
+                                                    offset: const Offset(0,
+                                                        1), // changes position of shadow
                                                   ),
                                                 ],
                                               ),
@@ -412,7 +475,12 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                                   : GestureDetector(
                                       onTap: () {
                                         BlocProvider.of<BasketCubit>(context)
-                                            .basketAdd(widget.product.id.toString(), '1', 0, '', '');
+                                            .basketAdd(
+                                                widget.product.id.toString(),
+                                                '1',
+                                                0,
+                                                '',
+                                                '');
                                         setState(() {
                                           count += 1;
                                           if (count == 0) {
@@ -427,14 +495,17 @@ class _FavoriteProductsCardWidgetState extends State<FavoriteProductsCardWidget>
                                         height: 32,
                                         decoration: BoxDecoration(
                                           color: const Color(0xFF1DC4CF),
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                         alignment: Alignment.center,
                                         child: const Text(
                                           'В корзину',
                                           // textAlign: TextAlign.center,
-                                          style:
-                                              TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600),
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600),
                                         ),
                                       ),
                                     ),

@@ -25,7 +25,8 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network('http://185.116.193.73/storage/${widget.tape.video}')
+    _controller = VideoPlayerController.network(
+        'https://lunamarket.ru/storage/${widget.tape.video}')
       ..initialize().then((_) {
         _controller!.pause();
         setState(() {});
@@ -77,7 +78,9 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 8.0, top: 8),
-              child: Align(alignment: Alignment.topRight, child: SvgPicture.asset('assets/icons/play.svg')),
+              child: Align(
+                  alignment: Alignment.topRight,
+                  child: SvgPicture.asset('assets/icons/play.svg')),
             ),
           ),
           // Container(

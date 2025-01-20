@@ -937,7 +937,7 @@ class BannerImage extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image:
-                          NetworkImage("http://185.116.193.73/storage/$image"),
+                          NetworkImage("https://lunamarket.ru/storage/$image"),
                       fit: BoxFit.fill,
                     ),
                     borderRadius: BorderRadius.circular(8),
@@ -1285,7 +1285,7 @@ class _PopularShopsState extends State<PopularShops> {
                                                               .image !=
                                                           null
                                                       ? NetworkImage(
-                                                          "http://185.116.193.73/storage/${state.popularShops[index].image!}",
+                                                          "https://lunamarket.ru/storage/${state.popularShops[index].image!}",
                                                         )
                                                       : const AssetImage(
                                                               'assets/icons/shops&brands.png')

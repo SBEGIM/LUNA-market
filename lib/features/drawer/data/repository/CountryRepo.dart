@@ -3,7 +3,7 @@ import 'package:haji_market/features/home/data/model/City.dart';
 import 'package:http/http.dart' as http;
 import '../../../home/data/model/Country.dart';
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class CountryRepository {
   final CountryApi _countryApi = CountryApi();

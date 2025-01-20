@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../features/home/data/model/Cats.dart';
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class ColorAdminRepository {
   final ColorToApi _colorToApi = ColorToApi();

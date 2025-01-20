@@ -8,7 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/profile_admin/data/model/profile_statics_admin_model.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class ProfileEditAdminRepository {
   final ProfileEditAdminToApi _profileEditAdminToApi = ProfileEditAdminToApi();
@@ -30,8 +30,23 @@ class ProfileEditAdminRepository {
           String? card,
           bool? typeOrganization,
           String? address) =>
-      _profileEditAdminToApi.edit(name, phone, logo, password_new, password_old, country, city, home, street, shopName,
-          iin, check, email, card, typeOrganization, address);
+      _profileEditAdminToApi.edit(
+          name,
+          phone,
+          logo,
+          password_new,
+          password_old,
+          country,
+          city,
+          home,
+          street,
+          shopName,
+          iin,
+          check,
+          email,
+          card,
+          typeOrganization,
+          address);
 
   Future<void> code(int? code) => _profileEditAdminToApi.code(code);
 }
@@ -79,7 +94,9 @@ class ProfileEditAdminToApi {
       'iin': iin ?? '',
       'check': check ?? '',
       'card': card ?? '',
-      'type_organization': typeOrganization != null ? (typeOrganization == true ? 'ТОО' : 'ИП') : '',
+      'type_organization': typeOrganization != null
+          ? (typeOrganization == true ? 'ТОО' : 'ИП')
+          : '',
     };
 
     final header = {"Authorization": "Bearer $token"};
@@ -102,7 +119,8 @@ class ProfileEditAdminToApi {
     if (response.statusCode == 400) {
       print('ww');
 
-      Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль', backgroundColor: Colors.redAccent);
+      Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
+          backgroundColor: Colors.redAccent);
       // Get.snackbar('title', 'message', backgroundColor: Colors.redAccent);
       return;
     }
@@ -123,14 +141,16 @@ class ProfileEditAdminToApi {
     _box.write('seller_check', data['check'].toString());
     _box.write('seller_card', data['card'].toString());
     _box.write('seller_userName', data['user_name'].toString());
-    _box.write('seller_type_organization', data['type_organization'].toString());
+    _box.write(
+        'seller_type_organization', data['type_organization'].toString());
   }
 
   Future<void> code(int? code) async {
     final token = _box.read('seller_token').toString();
 
     final response = await http.post(Uri.parse('$baseUrl/seller/edit'),
-        headers: {"Authorization": "Bearer $token"}, body: {'code': code.toString()});
+        headers: {"Authorization": "Bearer $token"},
+        body: {'code': code.toString()});
     if (response.statusCode == 200) {
       _box.write('shop_location_code', code.toString());
     }

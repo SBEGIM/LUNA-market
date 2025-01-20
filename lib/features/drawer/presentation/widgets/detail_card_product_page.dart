@@ -124,8 +124,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
     if (widget.product.video != null) {
       _controller = VideoPlayerController.network(
-          // 'http://185.116.193.73/storage/${widget.product.path?.first ?? ''}'
-          'http://185.116.193.73/storage/${widget.product.video}')
+          // 'https://lunamarket.ru/storage/${widget.product.path?.first ?? ''}'
+          'https://lunamarket.ru/storage/${widget.product.video}')
         ..initialize().then((_) {
           _controller!.pause();
           // setState(() {});
@@ -241,7 +241,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               child: Image.network(
                                 height: 375,
                                 width: 400,
-                                "http://185.116.193.73/storage/${widget.product.path![imageIndex]}",
+                                "https://lunamarket.ru/storage/${widget.product.path![imageIndex]}",
                                 fit: BoxFit.contain,
                                 errorBuilder: (context, error, stackTrace) =>
                                     const ErrorImageWidget(
@@ -303,7 +303,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               //           child: Image.network(
               //             height: 375,
               //             width: 400,
-              //             "http://185.116.193.73/storage/${widget.product.path![imageIndex]}",
+              //             "https://lunamarket.ru/storage/${widget.product.path![imageIndex]}",
               //             fit: BoxFit.cover,
               //             errorBuilder: (context, error, stackTrace) =>
               //                 const ErrorImageWidget(
@@ -854,7 +854,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         width: double.infinity,
                         padding: EdgeInsets.zero,
                         child: Image.network(
-                          'http://185.116.193.73/storage/${state.path}',
+                          'https://lunamarket.ru/storage/${state.path}',
                           fit: BoxFit.cover,
                         ));
                   } else {

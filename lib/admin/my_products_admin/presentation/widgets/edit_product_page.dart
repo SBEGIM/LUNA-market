@@ -8,7 +8,8 @@ import 'package:haji_market/admin/my_products_admin/data/DTO/optom_price_dto.dar
 import 'package:haji_market/admin/my_products_admin/data/DTO/size_count_dto.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/characteristics_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/color_cubit.dart';
-import 'package:haji_market/admin/my_products_admin/data/bloc/delete_image_cubit.dart' as deleteImageCubit;
+import 'package:haji_market/admin/my_products_admin/data/bloc/delete_image_cubit.dart'
+    as deleteImageCubit;
 import 'package:haji_market/admin/my_products_admin/data/bloc/product_admin_state.dart';
 import 'package:haji_market/admin/my_products_admin/data/bloc/size_cubit.dart';
 import 'package:haji_market/admin/my_products_admin/presentation/widgets/sub_caats_admin_page.dart';
@@ -127,19 +128,22 @@ class _EditProductPageState extends State<EditProductPage> {
   Cats? colors;
 
   Future<void> CatById() async {
-    cats = await BlocProvider.of<CatsCubit>(context).catById(widget.product.catId.toString());
+    cats = await BlocProvider.of<CatsCubit>(context)
+        .catById(widget.product.catId.toString());
 
     if (widget.product.brandId != null) {
-      brands = await BlocProvider.of<BrandCubit>(context).brandById(widget.product.brandId.toString());
+      brands = await BlocProvider.of<BrandCubit>(context)
+          .brandById(widget.product.brandId.toString());
     } else {
       brands = Cats(id: 0, name: 'Не выбрано');
     }
 
-    subCats = await BlocProvider.of<SubCatsCubit>(context)
-        .subCatById(widget.product.catId.toString(), widget.product.subCatId.toString());
+    subCats = await BlocProvider.of<SubCatsCubit>(context).subCatById(
+        widget.product.catId.toString(), widget.product.subCatId.toString());
 
     if (widget.product.color!.isNotEmpty) {
-      colors = await BlocProvider.of<ColorCubit>(context).ColorById(widget.product.color!.first);
+      colors = await BlocProvider.of<ColorCubit>(context)
+          .ColorById(widget.product.color!.first);
     } else {
       Cats colors = Cats(id: 0, name: 'Выберите цвет');
     }
@@ -188,26 +192,42 @@ class _EditProductPageState extends State<EditProductPage> {
 
     // BlocProvider.of<ProductAdminCubit>(context)
     articulController.text = widget.product.articul ?? '1';
-    priceController.text = widget.product.price != null ? widget.product.price.toString() : '0';
-    compoundController.text = widget.product.compound != null ? widget.product.compound.toString() : '0';
-    nameController.text = widget.product.name != null ? widget.product.name.toString() : '';
-    countController.text = widget.product.count != null ? widget.product.count.toString() : '0';
+    priceController.text =
+        widget.product.price != null ? widget.product.price.toString() : '0';
+    compoundController.text = widget.product.compound != null
+        ? widget.product.compound.toString()
+        : '0';
+    nameController.text =
+        widget.product.name != null ? widget.product.name.toString() : '';
+    countController.text =
+        widget.product.count != null ? widget.product.count.toString() : '0';
     cat_id = widget.product.catId ?? 0;
     sub_cat_id = widget.product.subCatId ?? 0;
     brand_id = widget.product.brandId ?? 0;
-    heightController.text = widget.product.height != null ? widget.product.height.toString() : '';
-    widthController.text = widget.product.width != null ? widget.product.width.toString() : '';
-    massaController.text = widget.product.massa != null ? widget.product.massa.toString() : '';
-    descriptionController.text = widget.product.description != null ? widget.product.description.toString() : '';
-    deepController.text = widget.product.deep != null ? widget.product.deep.toString() : '';
+    heightController.text =
+        widget.product.height != null ? widget.product.height.toString() : '';
+    widthController.text =
+        widget.product.width != null ? widget.product.width.toString() : '';
+    massaController.text =
+        widget.product.massa != null ? widget.product.massa.toString() : '';
+    descriptionController.text = widget.product.description != null
+        ? widget.product.description.toString()
+        : '';
+    deepController.text =
+        widget.product.deep != null ? widget.product.deep.toString() : '';
     _networkImage = widget.product.images ?? [];
     if (widget.product.bloc != null && widget.product.bloc!.isNotEmpty) {
       for (final BlocDTO e in widget.product.bloc!) {
-        optomCount.add(optomPriceDto(price: (e.price ?? 0).toString(), count: (e.count ?? 0).toString()));
+        optomCount.add(optomPriceDto(
+            price: (e.price ?? 0).toString(),
+            count: (e.count ?? 0).toString()));
       }
     }
-    pointsController.text = widget.product.point != null ? widget.product.point.toString() : '0';
-    pointsBloggerController.text = widget.product.pointBlogger != null ? widget.product.pointBlogger.toString() : '0';
+    pointsController.text =
+        widget.product.point != null ? widget.product.point.toString() : '0';
+    pointsBloggerController.text = widget.product.pointBlogger != null
+        ? widget.product.pointBlogger.toString()
+        : '0';
 
     isSwitchedFBS = widget.product.fulfillment == 'realFBS' ? true : false;
 
@@ -220,7 +240,11 @@ class _EditProductPageState extends State<EditProductPage> {
       for (final SizeDTO e in widget.product.sizeV1 ?? []) {
         sizeCount.add(sizeCountDto(
             id: mockSizes!.where((element) => element.name == e.name).isNotEmpty
-                ? mockSizes!.where((element) => element.name == e.name).first.id.toString()
+                ? mockSizes!
+                    .where((element) => element.name == e.name)
+                    .first
+                    .id
+                    .toString()
                 : '-1',
             name: e.name ?? '',
             count: (e.count ?? 0).toString()));
@@ -230,13 +254,17 @@ class _EditProductPageState extends State<EditProductPage> {
   }
 
   void _charactisticsArray() async {
-    characteristics = await BlocProvider.of<CharacteristicsCubit>(context).characteristic();
+    characteristics =
+        await BlocProvider.of<CharacteristicsCubit>(context).characteristic();
 
-    subCharacteristics = await BlocProvider.of<CharacteristicsCubit>(context).subCharacteristic();
+    subCharacteristics = await BlocProvider.of<CharacteristicsCubit>(context)
+        .subCharacteristic();
 
     widget.product.characteristics?.forEach((element) {
-      characteristicsValue?.add(Characteristics(id: element.id, key: element.name));
-      subCharacteristicsValue?.add(Characteristics(id: element.id, value: element.value));
+      characteristicsValue
+          ?.add(Characteristics(id: element.id, key: element.name));
+      subCharacteristicsValue
+          ?.add(Characteristics(id: element.id, value: element.value));
     });
     setState(() {});
     // if ((widget.product.sizeV1 ?? []).isNotEmpty) {
@@ -316,12 +344,20 @@ class _EditProductPageState extends State<EditProductPage> {
                       style: TextStyle(fontSize: 16, color: Colors.black),
                       children: <TextSpan>[
                         TextSpan(
-                          text: "Предлагая вознаграждение блогеру, вы принимаете условия ",
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey),
+                          text:
+                              "Предлагая вознаграждение блогеру, вы принимаете условия ",
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey),
                         ),
                         TextSpan(
-                          text: "Типового договора на оказание рекламных услуг\n",
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: AppColors.kPrimaryColor),
+                          text:
+                              "Типового договора на оказание рекламных услуг\n",
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.kPrimaryColor),
                         )
                       ],
                     ),
@@ -376,7 +412,10 @@ class _EditProductPageState extends State<EditProductPage> {
               ),
               const Text(
                 'Общие характеристики',
-                style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                    color: AppColors.kGray900,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700),
               ),
               const SizedBox(
                 height: 10,
@@ -424,7 +463,8 @@ class _EditProductPageState extends State<EditProductPage> {
                   children: [
                     const Text(
                       'Введите размер и количество',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 10),
                     Row(
@@ -433,60 +473,69 @@ class _EditProductPageState extends State<EditProductPage> {
                           alignment: Alignment.center,
                           margin: const EdgeInsets.only(right: 10),
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
                           width: 111,
                           height: 38,
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                            Text(
-                              sizeName == '' ? 'Размер' : sizeName,
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                            ),
-                            PopupMenuButton(
-                              onSelected: (value) {
-                                // mockSizeAdds!.add(value as Cats);
-                                sizeId = value.id.toString();
-                                sizeName = value.name ?? 'Пустое';
-
-                                setState(() {});
-
-                                // mockSizeAdds!.forEach((element) {
-                                //   return print(element.name);
-                                // });
-                              },
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(15.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  sizeName == '' ? 'Размер' : sizeName,
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400),
                                 ),
-                              ),
-                              icon: SvgPicture.asset('assets/icons/dropdown.svg'),
-                              position: PopupMenuPosition.under,
-                              offset: const Offset(0, 0),
-                              itemBuilder: (
-                                BuildContext bc,
-                              ) {
-                                return mockSizes!.map<PopupMenuItem>((e) {
-                                  return PopupMenuItem(
-                                    value: e,
-                                    child: Text(
-                                      e.name ?? 'Пустое',
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  );
-                                }).toList();
-                              },
-                            )
+                                PopupMenuButton(
+                                  onSelected: (value) {
+                                    // mockSizeAdds!.add(value as Cats);
+                                    sizeId = value.id.toString();
+                                    sizeName = value.name ?? 'Пустое';
 
-                            // SvgPicture.asset(
-                            //     'assets/icons/dropdown.svg')
-                          ]),
+                                    setState(() {});
+
+                                    // mockSizeAdds!.forEach((element) {
+                                    //   return print(element.name);
+                                    // });
+                                  },
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(15.0),
+                                    ),
+                                  ),
+                                  icon: SvgPicture.asset(
+                                      'assets/icons/dropdown.svg'),
+                                  position: PopupMenuPosition.under,
+                                  offset: const Offset(0, 0),
+                                  itemBuilder: (
+                                    BuildContext bc,
+                                  ) {
+                                    return mockSizes!.map<PopupMenuItem>((e) {
+                                      return PopupMenuItem(
+                                        value: e,
+                                        child: Text(
+                                          e.name ?? 'Пустое',
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList();
+                                  },
+                                )
+
+                                // SvgPicture.asset(
+                                //     'assets/icons/dropdown.svg')
+                              ]),
                         ),
                         Container(
                           //alignment: Alignment.topCenter,
                           padding: const EdgeInsets.only(bottom: 6),
                           margin: const EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
                           width: 102,
                           height: 38,
                           child: TextField(
@@ -496,7 +545,8 @@ class _EditProductPageState extends State<EditProductPage> {
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Введите количество',
-                              hintStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                              hintStyle: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white),
                                 // borderRadius: BorderRadius.circular(3),
@@ -525,28 +575,34 @@ class _EditProductPageState extends State<EditProductPage> {
                               if (!exists) {
                                 mockSizeAdds!.add(Cats(name: sizeName));
 
-                                sizeCount
-                                    .add(sizeCountDto(id: sizeId, name: sizeName, count: sizeCountController.text));
+                                sizeCount.add(sizeCountDto(
+                                    id: sizeId,
+                                    name: sizeName,
+                                    count: sizeCountController.text));
 
                                 setState(() {});
                               } else {
                                 // Get.to(() => {})
-                                Get.snackbar('Ошибка', 'Данные уже имеется!', backgroundColor: Colors.redAccent);
+                                Get.snackbar('Ошибка', 'Данные уже имеется!',
+                                    backgroundColor: Colors.redAccent);
                               }
                             } else {
-                              Get.snackbar('Ошибка', 'Нет данных!', backgroundColor: Colors.redAccent);
+                              Get.snackbar('Ошибка', 'Нет данных!',
+                                  backgroundColor: Colors.redAccent);
                             }
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration:
-                                BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(8)),
+                            decoration: BoxDecoration(
+                                color: AppColors.kPrimaryColor,
+                                borderRadius: BorderRadius.circular(8)),
                             alignment: Alignment.center,
                             width: 102,
                             height: 38,
                             child: const Text(
                               '+',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w400),
                             ),
                           ),
                         ),
@@ -566,23 +622,29 @@ class _EditProductPageState extends State<EditProductPage> {
                           Container(
                             alignment: Alignment.center,
                             margin: const EdgeInsets.only(right: 10, top: 15),
-                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
                             width: 102,
                             height: 38,
                             child: Text(
                               sizeCount[index].name,
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                              style: const TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
                             ),
                           ),
                           Container(
                             alignment: Alignment.center,
                             margin: const EdgeInsets.only(right: 10, top: 15),
-                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
                             width: 102,
                             height: 38,
                             child: Text(
                               sizeCount[index].count,
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                              style: const TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
                             ),
                           ),
                           GestureDetector(
@@ -591,14 +653,16 @@ class _EditProductPageState extends State<EditProductPage> {
                               setState(() {});
                             }),
                             child: Container(
-                              margin: const EdgeInsets.only(right: 10, top: 15, left: 10),
+                              margin: const EdgeInsets.only(
+                                  right: 10, top: 15, left: 10),
                               decoration: BoxDecoration(
                                   // color: AppColors.kPrimaryColor,
                                   borderRadius: BorderRadius.circular(8)),
                               alignment: Alignment.center,
                               width: 102,
                               height: 38,
-                              child: SvgPicture.asset('assets/icons/basket_1.svg'),
+                              child:
+                                  SvgPicture.asset('assets/icons/basket_1.svg'),
                             ),
                           )
                         ],
@@ -612,7 +676,8 @@ class _EditProductPageState extends State<EditProductPage> {
                   children: [
                     const Text(
                       'Характиристика',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 10),
                     Row(
@@ -629,52 +694,75 @@ class _EditProductPageState extends State<EditProductPage> {
                                     child: Container(
                                       alignment: Alignment.centerLeft,
                                       margin: const EdgeInsets.only(right: 10),
-                                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                                      decoration:
-                                          BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
                                       // width: 111,
                                       height: 38,
-                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                        Text(
-                                          characteristicName == '' ? 'Параметр' : characteristicName,
-                                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                                        ),
-                                        PopupMenuButton(
-                                          onSelected: (value) async {
-                                            characteristicsValuelast = Characteristics(id: value.id, key: value.key);
-                                            //sizeId = value.id.toString();
-                                            characteristicId = value.id.toString();
-                                            characteristicName = value.key ?? 'Пустое';
-                                            subCharacteristics = await BlocProvider.of<CharacteristicsCubit>(context)
-                                                .subCharacteristic(id: value.id.toString());
-
-                                            setState(() {});
-                                          },
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(15.0),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              characteristicName == ''
+                                                  ? 'Параметр'
+                                                  : characteristicName,
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400),
                                             ),
-                                          ),
-                                          icon: SvgPicture.asset('assets/icons/dropdown.svg'),
-                                          position: PopupMenuPosition.under,
-                                          offset: const Offset(0, 0),
-                                          itemBuilder: (
-                                            BuildContext bc,
-                                          ) {
-                                            return characteristics!.map<PopupMenuItem>((e) {
-                                              return PopupMenuItem(
-                                                value: e,
-                                                child: Text(
-                                                  e.key ?? 'Пустое',
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                  ),
+                                            PopupMenuButton(
+                                              onSelected: (value) async {
+                                                characteristicsValuelast =
+                                                    Characteristics(
+                                                        id: value.id,
+                                                        key: value.key);
+                                                //sizeId = value.id.toString();
+                                                characteristicId =
+                                                    value.id.toString();
+                                                characteristicName =
+                                                    value.key ?? 'Пустое';
+                                                subCharacteristics =
+                                                    await BlocProvider.of<
+                                                                CharacteristicsCubit>(
+                                                            context)
+                                                        .subCharacteristic(
+                                                            id: value.id
+                                                                .toString());
+
+                                                setState(() {});
+                                              },
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(15.0),
                                                 ),
-                                              );
-                                            }).toList();
-                                          },
-                                        )
-                                      ]),
+                                              ),
+                                              icon: SvgPicture.asset(
+                                                  'assets/icons/dropdown.svg'),
+                                              position: PopupMenuPosition.under,
+                                              offset: const Offset(0, 0),
+                                              itemBuilder: (
+                                                BuildContext bc,
+                                              ) {
+                                                return characteristics!
+                                                    .map<PopupMenuItem>((e) {
+                                                  return PopupMenuItem(
+                                                    value: e,
+                                                    child: Text(
+                                                      e.key ?? 'Пустое',
+                                                      style: const TextStyle(
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }).toList();
+                                              },
+                                            )
+                                          ]),
                                     ),
                                   ),
                                 ],
@@ -688,55 +776,72 @@ class _EditProductPageState extends State<EditProductPage> {
                                     child: Container(
                                       alignment: Alignment.centerLeft,
                                       margin: const EdgeInsets.only(right: 10),
-                                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                                      decoration:
-                                          BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
                                       // width: 111,
                                       height: 38,
-                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                        Text(
-                                          subCharacteristicName == '' ? 'Значение' : subCharacteristicName,
-                                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                                        ),
-                                        PopupMenuButton(
-                                          onSelected: (value) {
-                                            subCharacteristicsValueLast =
-                                                Characteristics(id: value.id, value: value.value);
-
-                                            // subCharacteristicsValue!.add(value as Characteristics);
-                                            //sizeId = value.id.toString();
-
-                                            subCharacteristicId = value.id.toString();
-                                            subCharacteristicName = value.value ?? 'Пустое';
-
-                                            subCharacteristics;
-                                            setState(() {});
-                                          },
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(15.0),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              subCharacteristicName == ''
+                                                  ? 'Значение'
+                                                  : subCharacteristicName,
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400),
                                             ),
-                                          ),
-                                          icon: SvgPicture.asset('assets/icons/dropdown.svg'),
-                                          position: PopupMenuPosition.under,
-                                          offset: const Offset(0, 0),
-                                          itemBuilder: (
-                                            BuildContext bc,
-                                          ) {
-                                            return subCharacteristics!.map<PopupMenuItem>((e) {
-                                              return PopupMenuItem(
-                                                value: e,
-                                                child: Text(
-                                                  e.value ?? 'Пустое',
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                  ),
+                                            PopupMenuButton(
+                                              onSelected: (value) {
+                                                subCharacteristicsValueLast =
+                                                    Characteristics(
+                                                        id: value.id,
+                                                        value: value.value);
+
+                                                // subCharacteristicsValue!.add(value as Characteristics);
+                                                //sizeId = value.id.toString();
+
+                                                subCharacteristicId =
+                                                    value.id.toString();
+                                                subCharacteristicName =
+                                                    value.value ?? 'Пустое';
+
+                                                subCharacteristics;
+                                                setState(() {});
+                                              },
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(15.0),
                                                 ),
-                                              );
-                                            }).toList();
-                                          },
-                                        )
-                                      ]),
+                                              ),
+                                              icon: SvgPicture.asset(
+                                                  'assets/icons/dropdown.svg'),
+                                              position: PopupMenuPosition.under,
+                                              offset: const Offset(0, 0),
+                                              itemBuilder: (
+                                                BuildContext bc,
+                                              ) {
+                                                return subCharacteristics!
+                                                    .map<PopupMenuItem>((e) {
+                                                  return PopupMenuItem(
+                                                    value: e,
+                                                    child: Text(
+                                                      e.value ?? 'Пустое',
+                                                      style: const TextStyle(
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }).toList();
+                                              },
+                                            )
+                                          ]),
                                     ),
                                   ),
                                 ],
@@ -746,12 +851,17 @@ class _EditProductPageState extends State<EditProductPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (subCharacteristicsValueLast != null && characteristicsValuelast != null) {
+                            if (subCharacteristicsValueLast != null &&
+                                characteristicsValuelast != null) {
                               bool exists = false;
 
-                              for (int index = 0; index < characteristicsValue!.length; index++) {
-                                if (characteristicsValue![index].key == characteristicsValuelast!.key) {
-                                  if (subCharacteristicsValue![index].value == subCharacteristicsValueLast!.value) {
+                              for (int index = 0;
+                                  index < characteristicsValue!.length;
+                                  index++) {
+                                if (characteristicsValue![index].key ==
+                                    characteristicsValuelast!.key) {
+                                  if (subCharacteristicsValue![index].value ==
+                                      subCharacteristicsValueLast!.value) {
                                     exists = true;
                                     setState(() {});
                                   }
@@ -761,29 +871,35 @@ class _EditProductPageState extends State<EditProductPage> {
 
                               if (!exists) {
                                 characteristicsValue!.add(Characteristics(
-                                    id: characteristicsValuelast!.id!, key: characteristicsValuelast!.key));
+                                    id: characteristicsValuelast!.id!,
+                                    key: characteristicsValuelast!.key));
                                 subCharacteristicsValue!.add(Characteristics(
-                                    id: subCharacteristicsValueLast!.id!, value: subCharacteristicsValueLast!.value));
+                                    id: subCharacteristicsValueLast!.id!,
+                                    value: subCharacteristicsValueLast!.value));
 
                                 setState(() {});
                               } else {
                                 // Get.to(() => {})
-                                Get.snackbar('Ошибка', 'Данные уже имеется!', backgroundColor: Colors.redAccent);
+                                Get.snackbar('Ошибка', 'Данные уже имеется!',
+                                    backgroundColor: Colors.redAccent);
                               }
                             } else {
-                              Get.snackbar('Ошибка', 'Нет данных!', backgroundColor: Colors.redAccent);
+                              Get.snackbar('Ошибка', 'Нет данных!',
+                                  backgroundColor: Colors.redAccent);
                             }
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration:
-                                BoxDecoration(color: AppColors.kPrimaryColor, borderRadius: BorderRadius.circular(8)),
+                            decoration: BoxDecoration(
+                                color: AppColors.kPrimaryColor,
+                                borderRadius: BorderRadius.circular(8)),
                             alignment: Alignment.center,
                             width: 102,
                             height: 38,
                             child: const Text(
                               '+',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w400),
                             ),
                           ),
                         ),
@@ -798,7 +914,8 @@ class _EditProductPageState extends State<EditProductPage> {
                 child: ListView.separated(
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: characteristicsValue?.length ?? 0,
-                  separatorBuilder: (context, index) => const SizedBox(height: 15),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 15),
                   itemBuilder: (context, index) {
                     return ConstrainedBox(
                       constraints: const BoxConstraints(
@@ -811,7 +928,9 @@ class _EditProductPageState extends State<EditProductPage> {
                             child: Container(
                               padding: const EdgeInsets.all(4),
                               alignment: Alignment.center,
-                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8)),
                               child: Text(
                                 characteristicsValue?[index].key ?? 'Пустое',
                                 maxLines: 3,
@@ -827,9 +946,12 @@ class _EditProductPageState extends State<EditProductPage> {
                             child: Container(
                               padding: const EdgeInsets.all(4),
                               alignment: Alignment.center,
-                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8)),
                               child: Text(
-                                subCharacteristicsValue?[index].value ?? 'Пустое',
+                                subCharacteristicsValue?[index].value ??
+                                    'Пустое',
                                 maxLines: 3,
                                 style: const TextStyle(
                                   fontSize: 12,
@@ -854,7 +976,8 @@ class _EditProductPageState extends State<EditProductPage> {
                               alignment: Alignment.center,
                               width: 102,
                               height: 38,
-                              child: SvgPicture.asset('assets/icons/basket_1.svg'),
+                              child:
+                                  SvgPicture.asset('assets/icons/basket_1.svg'),
                             ),
                           )
                         ],
@@ -907,22 +1030,29 @@ class _EditProductPageState extends State<EditProductPage> {
 
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8)),
                 alignment: Alignment.center,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
                       'Предзаказ,если нет в наличии',
-                      style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                          color: AppColors.kPrimaryColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
                     ),
                     Switch(
                       onChanged: toggleSwitchBs,
                       value: isSwitchedBs,
                       activeColor: AppColors.kPrimaryColor,
                       activeTrackColor: AppColors.kPrimaryColor,
-                      inactiveThumbColor: const Color.fromRGBO(245, 245, 245, 1),
-                      inactiveTrackColor: const Color.fromRGBO(237, 237, 237, 1),
+                      inactiveThumbColor:
+                          const Color.fromRGBO(245, 245, 245, 1),
+                      inactiveTrackColor:
+                          const Color.fromRGBO(237, 237, 237, 1),
                     ),
                   ],
                 ),
@@ -932,22 +1062,29 @@ class _EditProductPageState extends State<EditProductPage> {
               Container(
                 width: 166,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8)),
                 alignment: Alignment.center,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
                       'Real FBS',
-                      style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                          color: AppColors.kPrimaryColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
                     ),
                     Switch(
                       onChanged: toggleSwitchFBS,
                       value: isSwitchedFBS,
                       activeColor: AppColors.kPrimaryColor,
                       activeTrackColor: AppColors.kPrimaryColor,
-                      inactiveThumbColor: const Color.fromRGBO(245, 245, 245, 1),
-                      inactiveTrackColor: const Color.fromRGBO(237, 237, 237, 1),
+                      inactiveThumbColor:
+                          const Color.fromRGBO(245, 245, 245, 1),
+                      inactiveTrackColor:
+                          const Color.fromRGBO(237, 237, 237, 1),
                     ),
                   ],
                 ),
@@ -958,22 +1095,29 @@ class _EditProductPageState extends State<EditProductPage> {
               Container(
                 width: 166,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8)),
                 alignment: Alignment.center,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
                       'FBS',
-                      style: TextStyle(color: AppColors.kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                          color: AppColors.kPrimaryColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
                     ),
                     Switch(
                       onChanged: toggleSwitchFBS,
                       value: !isSwitchedFBS,
                       activeColor: AppColors.kPrimaryColor,
                       activeTrackColor: AppColors.kPrimaryColor,
-                      inactiveThumbColor: const Color.fromRGBO(245, 245, 245, 1),
-                      inactiveTrackColor: const Color.fromRGBO(237, 237, 237, 1),
+                      inactiveThumbColor:
+                          const Color.fromRGBO(245, 245, 245, 1),
+                      inactiveTrackColor:
+                          const Color.fromRGBO(237, 237, 237, 1),
                     ),
                   ],
                 ),
@@ -983,11 +1127,17 @@ class _EditProductPageState extends State<EditProductPage> {
               isSwitchedFBS == false
                   ? const Text(
                       'FBS - это схема продажи, при которой вы храните товары у себя на складе, следите за новыми заказами, собираете их и передаёте в доставку CDEK.',
-                      style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                          color: AppColors.kGray300,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400),
                     )
                   : const Text(
                       'real FBS - это схема продажи, при которой вы храните товары у себя на складе, следите за новыми заказами, собираете их и доставляете собственными силами.',
-                      style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                          color: AppColors.kGray300,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400),
                     ),
 
               const SizedBox(height: 28),
@@ -997,15 +1147,17 @@ class _EditProductPageState extends State<EditProductPage> {
                   children: [
                     const Text(
                       'Оптом',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 10),
                     GetStorage().read('seller_partner') == '1'
                         ? Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             margin: const EdgeInsets.only(bottom: 10),
-                            decoration:
-                                BoxDecoration(color: const Color(0xff42BB5D), borderRadius: BorderRadius.circular(8)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xff42BB5D),
+                                borderRadius: BorderRadius.circular(8)),
                             alignment: Alignment.center,
                             // width: 343,
                             height: 38,
@@ -1018,7 +1170,10 @@ class _EditProductPageState extends State<EditProductPage> {
                                 SizedBox(width: 10),
                                 Text(
                                   'У вас есть партнерство с этой компанией.',
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.white),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
                                 ),
                               ],
                             ),
@@ -1030,7 +1185,9 @@ class _EditProductPageState extends State<EditProductPage> {
                           //alignment: Alignment.topCenter,
                           padding: const EdgeInsets.only(bottom: 6),
                           margin: const EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
                           width: 102,
                           height: 38,
                           child: TextField(
@@ -1039,12 +1196,14 @@ class _EditProductPageState extends State<EditProductPage> {
                             },
                             textAlign: TextAlign.center,
                             controller: optomCountController,
-                            keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: false),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: false),
                             onSubmitted: (_) {},
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Количество',
-                              hintStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                              hintStyle: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white),
                                 // borderRadius: BorderRadius.circular(3),
@@ -1056,17 +1215,21 @@ class _EditProductPageState extends State<EditProductPage> {
                           //alignment: Alignment.topCenter,
                           padding: const EdgeInsets.only(bottom: 6),
                           margin: const EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
                           width: 102,
                           height: 38,
                           child: TextField(
                             textAlign: TextAlign.center,
                             controller: optomPriceController,
-                            keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: false),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: false),
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Введите цену',
-                              hintStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                              hintStyle: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white),
                                 // borderRadius: BorderRadius.circular(3),
@@ -1077,7 +1240,9 @@ class _EditProductPageState extends State<EditProductPage> {
                         GestureDetector(
                           onTap: () {
                             if (GetStorage().read('seller_partner') != '1') {
-                              Get.snackbar('Ошибка оптом', 'У вас нет партнерство', backgroundColor: Colors.redAccent);
+                              Get.snackbar(
+                                  'Ошибка оптом', 'У вас нет партнерство',
+                                  backgroundColor: Colors.redAccent);
                               return;
                             }
 
@@ -1087,9 +1252,12 @@ class _EditProductPageState extends State<EditProductPage> {
                               optomPriceDto? optomCountLast;
                               // if (optomCount.isNotEmpty) {
 
-                              optomCountLast = optomCount.isNotEmpty ? optomCount.last : null;
+                              optomCountLast = optomCount.isNotEmpty
+                                  ? optomCount.last
+                                  : null;
                               for (var element in optomCount) {
-                                if (element.count == optomCountController.text) {
+                                if (element.count ==
+                                    optomCountController.text) {
                                   exists = true;
                                   setState(() {});
                                 }
@@ -1098,30 +1266,36 @@ class _EditProductPageState extends State<EditProductPage> {
                               //   }
 
                               if (!exists) {
-                                optomCount.add(
-                                    optomPriceDto(price: optomPriceController.text, count: optomCountController.text));
+                                optomCount.add(optomPriceDto(
+                                    price: optomPriceController.text,
+                                    count: optomCountController.text));
 
                                 setState(() {});
                               } else {
                                 // Get.to(() => {})
-                                Get.snackbar('Ошибка', 'Данные уже имеется!', backgroundColor: Colors.redAccent);
+                                Get.snackbar('Ошибка', 'Данные уже имеется!',
+                                    backgroundColor: Colors.redAccent);
                               }
                             } else {
-                              Get.snackbar('Ошибка', 'Нет данных!', backgroundColor: Colors.redAccent);
+                              Get.snackbar('Ошибка', 'Нет данных!',
+                                  backgroundColor: Colors.redAccent);
                             }
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                                 color:
-                                    GetStorage().read('seller_partner') == '1' ? AppColors.kPrimaryColor : Colors.grey,
+                                    GetStorage().read('seller_partner') == '1'
+                                        ? AppColors.kPrimaryColor
+                                        : Colors.grey,
                                 borderRadius: BorderRadius.circular(8)),
                             alignment: Alignment.center,
                             width: 102,
                             height: 38,
                             child: const Text(
                               '+',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w400),
                             ),
                           ),
                         ),
@@ -1141,23 +1315,29 @@ class _EditProductPageState extends State<EditProductPage> {
                           Container(
                             alignment: Alignment.center,
                             margin: const EdgeInsets.only(right: 10, top: 15),
-                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
                             width: 102,
                             height: 38,
                             child: Text(
                               optomCount[index].count,
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                              style: const TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
                             ),
                           ),
                           Container(
                             alignment: Alignment.center,
                             margin: const EdgeInsets.only(right: 10, top: 15),
-                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
                             width: 102,
                             height: 38,
                             child: Text(
                               '${optomCount[index].price} руб',
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                              style: const TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
                             ),
                           ),
                           GestureDetector(
@@ -1166,14 +1346,16 @@ class _EditProductPageState extends State<EditProductPage> {
                               setState(() {});
                             }),
                             child: Container(
-                              margin: const EdgeInsets.only(right: 10, top: 15, left: 10),
+                              margin: const EdgeInsets.only(
+                                  right: 10, top: 15, left: 10),
                               decoration: BoxDecoration(
                                   // color: AppColors.kPrimaryColor,
                                   borderRadius: BorderRadius.circular(8)),
                               alignment: Alignment.center,
                               width: 102,
                               height: 38,
-                              child: SvgPicture.asset('assets/icons/basket_1.svg'),
+                              child:
+                                  SvgPicture.asset('assets/icons/basket_1.svg'),
                             ),
                           )
                         ],
@@ -1183,15 +1365,21 @@ class _EditProductPageState extends State<EditProductPage> {
               const SizedBox(height: 10),
               const Text(
                 'Изоброжения товара',
-                style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                    color: AppColors.kGray900,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-                child: BlocListener<deleteImageCubit.DeleteImageCubit, deleteImageCubit.DeleteImageState>(
+                child: BlocListener<deleteImageCubit.DeleteImageCubit,
+                    deleteImageCubit.DeleteImageState>(
                   listener: (context, state) {
                     if (state is deleteImageCubit.LoadedState) {
                       _networkImage.remove(state.deletingImagePath);
-                      BlocProvider.of<deleteImageCubit.DeleteImageCubit>(context).toInit();
+                      BlocProvider.of<deleteImageCubit.DeleteImageCubit>(
+                              context)
+                          .toInit();
                       setState(() {});
                     }
                   },
@@ -1207,17 +1395,28 @@ class _EditProductPageState extends State<EditProductPage> {
                                   Row(
                                       children: (_networkImage)
                                           .map((e) => Padding(
-                                                padding: const EdgeInsets.all(8.0),
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
                                                 child: Stack(children: [
                                                   CircleAvatar(
-                                                    backgroundImage: NetworkImage("http://185.116.193.73/storage/$e"),
+                                                    backgroundImage: NetworkImage(
+                                                        "https://lunamarket.ru/storage/$e"),
                                                     radius: 34,
                                                   ),
                                                   GestureDetector(
                                                     onTap: () {
-                                                      if (widget.product.id != null) {
-                                                        BlocProvider.of<deleteImageCubit.DeleteImageCubit>(context)
-                                                            .deleteImage(imagePath: e, productId: widget.product.id!);
+                                                      if (widget.product.id !=
+                                                          null) {
+                                                        BlocProvider.of<
+                                                                    deleteImageCubit
+                                                                    .DeleteImageCubit>(
+                                                                context)
+                                                            .deleteImage(
+                                                                imagePath: e,
+                                                                productId:
+                                                                    widget
+                                                                        .product
+                                                                        .id!);
                                                       }
                                                     },
                                                     child: const Icon(
@@ -1232,7 +1431,8 @@ class _EditProductPageState extends State<EditProductPage> {
                                       children: (_image)
                                           .map(
                                             (e) => Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Stack(children: [
                                                 CircleAvatar(
                                                   backgroundImage: FileImage(
@@ -1242,7 +1442,9 @@ class _EditProductPageState extends State<EditProductPage> {
                                                 ),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    _image.removeAt(_image.indexWhere((element) => element == e));
+                                                    _image.removeAt(_image
+                                                        .indexWhere((element) =>
+                                                            element == e));
                                                     setState(() {
                                                       _image;
                                                     });
@@ -1262,7 +1464,10 @@ class _EditProductPageState extends State<EditProductPage> {
                           : Container(),
                       const Text(
                         'Формат - jpg, png',
-                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                            color: AppColors.kGray900),
                       ),
                       const SizedBox(
                         height: 10,
@@ -1292,19 +1497,25 @@ class _EditProductPageState extends State<EditProductPage> {
                           },
                           child: Container(
                             height: 50,
-                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.camera_alt,
-                                  color: change == false ? AppColors.kGray300 : AppColors.kPrimaryColor,
+                                  color: change == false
+                                      ? AppColors.kGray300
+                                      : AppColors.kPrimaryColor,
                                 ),
                                 const SizedBox(width: 10),
                                 const Text(
                                   'Добавить изображение',
-                                  style:
-                                      TextStyle(color: AppColors.kGray300, fontSize: 16, fontWeight: FontWeight.w400),
+                                  style: TextStyle(
+                                      color: AppColors.kGray300,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
                                 )
                               ],
                             ),
@@ -1314,7 +1525,10 @@ class _EditProductPageState extends State<EditProductPage> {
                       ),
                       const Text(
                         'Минимальный/максимальный размер одной из сторон: от 500 до 2000 пикселей;- Основная фотография должна быть студийного качества на белом фоне без водяных знаков;- Минимальное/максимальное количество фотографий в карточке: от 3 до 5',
-                        style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                        style: TextStyle(
+                            color: AppColors.kGray300,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
                       )
                     ],
                   ),
@@ -1326,7 +1540,10 @@ class _EditProductPageState extends State<EditProductPage> {
               ),
               const Text(
                 'Видео товара',
-                style: TextStyle(color: AppColors.kGray900, fontSize: 16, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                    color: AppColors.kGray900,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0, bottom: 10),
@@ -1335,9 +1552,14 @@ class _EditProductPageState extends State<EditProductPage> {
                   children: [
                     const Text(
                       'Формат - mp4,mpeg',
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          color: AppColors.kGray900),
                     ),
-                    if (_video != null && _controller != null && _controller!.value.isInitialized)
+                    if (_video != null &&
+                        _controller != null &&
+                        _controller!.value.isInitialized)
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Center(
@@ -1345,8 +1567,9 @@ class _EditProductPageState extends State<EditProductPage> {
                             height: 200,
                             child: AspectRatio(
                               aspectRatio: _controller!.value.aspectRatio,
-                              child:
-                                  ClipRRect(borderRadius: BorderRadius.circular(12), child: VideoPlayer(_controller!)),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: VideoPlayer(_controller!)),
                             ),
                           ),
                         ),
@@ -1379,18 +1602,25 @@ class _EditProductPageState extends State<EditProductPage> {
                       },
                       child: Container(
                         height: 50,
-                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset(
                               'assets/icons/video.svg',
-                              color: _video == null ? AppColors.kGray300 : AppColors.kPrimaryColor,
+                              color: _video == null
+                                  ? AppColors.kGray300
+                                  : AppColors.kPrimaryColor,
                             ),
                             const SizedBox(width: 10),
                             const Text(
                               'Добавить видео',
-                              style: TextStyle(color: AppColors.kGray300, fontSize: 16, fontWeight: FontWeight.w400),
+                              style: TextStyle(
+                                  color: AppColors.kGray300,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
                             )
                           ],
                         ),
@@ -1401,7 +1631,10 @@ class _EditProductPageState extends State<EditProductPage> {
                     ),
                     const Text(
                       'Разрешение — 1080×1350 px — для горизонтального; 566×1080 px — для вертикального; Расширение — mov, mp4; jpg, png; Размер — 4 ГБ — для видео, 30 МБ — для фото; Длительность — от 3 до 60 секунд.',
-                      style: TextStyle(color: AppColors.kGray300, fontSize: 12, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                          color: AppColors.kGray300,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
@@ -1432,7 +1665,8 @@ class _EditProductPageState extends State<EditProductPage> {
           builder: (context, state) {
             return Container(
               color: Colors.white,
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 16, bottom: 26),
               child: InkWell(
                 onTap: () async {
                   if (state is! LoadingState) {
@@ -1441,7 +1675,8 @@ class _EditProductPageState extends State<EditProductPage> {
                           heightController.text.isEmpty ||
                           deepController.text.isEmpty ||
                           massaController.text.isEmpty) {
-                        Get.snackbar("Ошибка Доставка", "Заполните данные для доставки",
+                        Get.snackbar(
+                            "Ошибка Доставка", "Заполните данные для доставки",
                             backgroundColor: Colors.orangeAccent);
                         return;
                       }
@@ -1492,12 +1727,16 @@ class _EditProductPageState extends State<EditProductPage> {
                     ),
                     width: MediaQuery.of(context).size.width,
                     child: state is LoadingState
-                        ? const Center(child: CircularProgressIndicator.adaptive())
+                        ? const Center(
+                            child: CircularProgressIndicator.adaptive())
                         : const Padding(
                             padding: EdgeInsets.all(16),
                             child: Text(
                               'Сохранить',
-                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16),
                               textAlign: TextAlign.center,
                             ),
                           )),
@@ -1550,12 +1789,18 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
             children: [
               Text(
                 widget.titleText,
-                style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                    color: AppColors.kGray900),
               ),
               widget.star != true
                   ? const Text(
                       '*',
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Colors.red),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          color: Colors.red),
                     )
                   : Container()
             ],
@@ -1564,20 +1809,25 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
             height: 4,
           ),
           Container(
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: Padding(
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
                 readOnly: widget.readOnly,
                 controller: widget.controller,
-                keyboardType: (widget.textInputNumber == false || widget.textInputNumber == null)
+                keyboardType: (widget.textInputNumber == false ||
+                        widget.textInputNumber == null)
                     ? TextInputType.text
-                    : const TextInputType.numberWithOptions(signed: true, decimal: true),
+                    : const TextInputType.numberWithOptions(
+                        signed: true, decimal: true),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: widget.hintText,
                   hintStyle: const TextStyle(
-                      color: Color.fromRGBO(194, 197, 200, 1), fontSize: 16, fontWeight: FontWeight.w400),
+                      color: Color.fromRGBO(194, 197, 200, 1),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
                   enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                     // borderRadius: BorderRadius.circular(3),
@@ -1585,7 +1835,8 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                   suffixIcon: IconButton(
                       onPressed: widget.onPressed,
                       icon: widget.arrow == true
-                          ? SvgPicture.asset('assets/icons/back_menu.svg', color: Colors.grey)
+                          ? SvgPicture.asset('assets/icons/back_menu.svg',
+                              color: Colors.grey)
                           : SvgPicture.asset('')),
                 ),
               ),

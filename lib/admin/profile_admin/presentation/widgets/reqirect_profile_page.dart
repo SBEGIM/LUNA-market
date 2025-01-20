@@ -57,45 +57,57 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
 
   @override
   void initState() {
-    if (_box.read('seller_name') != null && _box.read('seller_name') != 'null') {
+    if (_box.read('seller_name') != null &&
+        _box.read('seller_name') != 'null') {
       shopNameController.text = _box.read('seller_name') ?? '11';
     }
-    if (_box.read('seller_phone') != null && _box.read('seller_phone') != 'null') {
-      phoneController.text = maskFormatter.maskText(_box.read('seller_phone') ?? '22');
+    if (_box.read('seller_phone') != null &&
+        _box.read('seller_phone') != 'null') {
+      phoneController.text =
+          maskFormatter.maskText(_box.read('seller_phone') ?? '22');
 
       // phoneController.value = maskFormatter.updateMask(mask: "+#(###)-###-##-##"); // -> "12-34-56-78"
     }
 
-    if (_box.read('seller_email') != null && _box.read('seller_email') != 'null') {
+    if (_box.read('seller_email') != null &&
+        _box.read('seller_email') != 'null') {
       emailController.text = _box.read('seller_email') ?? '33';
     }
 
-    if (_box.read('seller_country') != null && _box.read('seller_country') != 'null') {
+    if (_box.read('seller_country') != null &&
+        _box.read('seller_country') != 'null') {
       countryController.text = _box.read('seller_country') ?? '55';
     }
 
-    if (_box.read('seller_city') != null && _box.read('seller_city') != 'null') {
+    if (_box.read('seller_city') != null &&
+        _box.read('seller_city') != 'null') {
       cityController.text = _box.read('seller_city') ?? '55';
     }
 
-    if (_box.read('seller_userName') != null && _box.read('seller_userName') != 'null') {
+    if (_box.read('seller_userName') != null &&
+        _box.read('seller_userName') != 'null') {
       nameController.text = _box.read('seller_userName') ?? '55';
     }
 
-    if (_box.read('seller_home') != null && _box.read('seller_home') != 'null') {
+    if (_box.read('seller_home') != null &&
+        _box.read('seller_home') != 'null') {
       homeController.text = _box.read('seller_home') ?? '66';
     }
-    if (_box.read('seller_street') != null && _box.read('seller_street') != 'null') {
+    if (_box.read('seller_street') != null &&
+        _box.read('seller_street') != 'null') {
       streetController.text = _box.read('seller_street') ?? '77';
     }
     if (_box.read('seller_iin') != null && _box.read('seller_iin') != 'null') {
       iinController.text = _box.read('seller_iin') ?? '88';
     }
-    if (_box.read('seller_check') != null && _box.read('seller_check') != 'null') {
+    if (_box.read('seller_check') != null &&
+        _box.read('seller_check') != 'null') {
       checkController.text = _box.read('seller_check') ?? '99';
     }
-    if (_box.read('seller_type_organization') != null && _box.read('seller_type_organization') != 'null') {
-      typeOrganization = _box.read('seller_type_organization') == 'ИП' ? false : true;
+    if (_box.read('seller_type_organization') != null &&
+        _box.read('seller_type_organization') != 'null') {
+      typeOrganization =
+          _box.read('seller_type_organization') == 'ИП' ? false : true;
     }
 
     super.initState();
@@ -118,7 +130,9 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
           ),
         ),
         actions: [
-          Padding(padding: const EdgeInsets.only(right: 16.0), child: SvgPicture.asset('assets/icons/notification.svg'))
+          Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: SvgPicture.asset('assets/icons/notification.svg'))
         ],
       ),
       body: ListView(
@@ -155,7 +169,8 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
               },
               child: CircleAvatar(
                 backgroundColor: AppColors.kGray200,
-                backgroundImage: NetworkImage('http://185.116.193.73/storage/${GetStorage().read('seller_image')}'),
+                backgroundImage: NetworkImage(
+                    'https://lunamarket.ru/storage/${GetStorage().read('seller_image')}'),
                 radius: 34,
                 child: Align(
                   alignment: Alignment.bottomRight,
@@ -168,7 +183,10 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
             ),
             title: Text(
               '${GetStorage().read('seller_name')}',
-              style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.kGray900, fontSize: 16),
+              style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.kGray900,
+                  fontSize: 16),
             ),
           ),
           const SizedBox(
@@ -183,7 +201,10 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
               children: [
                 const Text(
                   'Чтобы поменять текущий пароль, необходимо сначала ввести старый правильно, а затем придумать новый',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.kGray300),
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.kGray300),
                 ),
                 const SizedBox(
                   height: 10,
@@ -249,21 +270,24 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                             ),
                             width: 130,
                             height: 47,
-                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                              const Text(
-                                'ИП',
-                                textAlign: TextAlign.center,
-                              ),
-                              Checkbox(
-                                shape: const CircleBorder(),
-                                value: !typeOrganization,
-                                activeColor: AppColors.kPrimaryColor,
-                                onChanged: ((value) {
-                                  typeOrganization = !typeOrganization;
-                                  setState(() {});
-                                }),
-                              ),
-                            ]),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'ИП',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Checkbox(
+                                    shape: const CircleBorder(),
+                                    value: !typeOrganization,
+                                    activeColor: AppColors.kPrimaryColor,
+                                    onChanged: ((value) {
+                                      typeOrganization = !typeOrganization;
+                                      setState(() {});
+                                    }),
+                                  ),
+                                ]),
                           ),
                           const SizedBox(
                             width: 20,
@@ -278,21 +302,24 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                             ),
                             width: 130,
                             height: 47,
-                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                              const Text(
-                                'OOO',
-                                textAlign: TextAlign.center,
-                              ),
-                              Checkbox(
-                                value: typeOrganization,
-                                shape: const CircleBorder(),
-                                activeColor: AppColors.kPrimaryColor,
-                                onChanged: ((value) {
-                                  typeOrganization = !typeOrganization;
-                                  setState(() {});
-                                }),
-                              ),
-                            ]),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'OOO',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Checkbox(
+                                    value: typeOrganization,
+                                    shape: const CircleBorder(),
+                                    activeColor: AppColors.kPrimaryColor,
+                                    onChanged: ((value) {
+                                      typeOrganization = !typeOrganization;
+                                      setState(() {});
+                                    }),
+                                  ),
+                                ]),
                           ),
                         ],
                       ),
@@ -396,7 +423,8 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          final data = await Get.to(() => const CountryWidget());
+                          final data =
+                              await Get.to(() => const CountryWidget());
                           countryController.text = data;
                           setState(() {});
                         },
@@ -602,7 +630,8 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
       ),
       bottomSheet: Container(
         color: Colors.transparent,
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
         child: InkWell(
           onTap: () async {
             await BlocProvider.of<ProfileEditAdminCubit>(context).edit(
@@ -634,7 +663,10 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
               padding: const EdgeInsets.all(16),
               child: const Text(
                 'Сохранить',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16),
                 textAlign: TextAlign.center,
               )),
         ),

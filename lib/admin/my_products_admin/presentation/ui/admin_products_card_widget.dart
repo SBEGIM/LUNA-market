@@ -66,8 +66,8 @@ class _AdminProductCardWidgetState extends State<AdminProductCardWidget> {
               children: [
                 Image.network(
                   widget.product.path != null
-                      ? "http://185.116.193.73/storage/${widget.product.path!.path}"
-                      : "http://185.116.193.73/storage/banners/2.png",
+                      ? "https://lunamarket.ru/storage/${widget.product.path!.path}"
+                      : "https://lunamarket.ru/storage/banners/2.png",
                   height: 104,
                   width: 104,
                   errorBuilder: (context, error, stackTrace) =>

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/basket_admin_order_model.dart';
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class BasketAdminRepository {
   final Basket _basket = Basket();

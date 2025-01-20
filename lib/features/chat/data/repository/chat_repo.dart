@@ -7,7 +7,7 @@ import 'package:haji_market/features/basket/data/models/basket_show_model.dart';
 import 'package:haji_market/features/chat/data/model/chat_model.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 const _tag = 'ChatRepository';
 
 class ChatRepository {

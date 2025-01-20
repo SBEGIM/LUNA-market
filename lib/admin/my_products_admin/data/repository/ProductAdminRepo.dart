@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import '../DTO/size_count_dto.dart';
 import '../models/admin_products_model.dart';
 
-const baseUrl = 'http://185.116.193.73/api';
+const baseUrl = 'https://lunamarket.ru/api';
 
 class ProductAdminRepository {
   final ProductToApi _productToApi = ProductToApi();
@@ -119,9 +119,11 @@ class ProductAdminRepository {
 
   Future<dynamic> delete(String productId) => _productToApi.delete(productId);
 
-  Future<String?> ad(int productId, int price) => _productToApi.ad(productId, price);
+  Future<String?> ad(int productId, int price) =>
+      _productToApi.ad(productId, price);
 
-  Future<List<AdminProductsModel>> products(String? name, int page) => _productToApi.products(name, page);
+  Future<List<AdminProductsModel>> products(String? name, int page) =>
+      _productToApi.products(name, page);
 
   Future<dynamic> deleteImage({
     required int productId,
@@ -209,7 +211,8 @@ class ProductToApi {
       }
       if (subIds?.isNotEmpty ?? false) {
         for (var i = 0; i < subIds!.length; i++) {
-          subCharacteristicIds['sub_characteristic_ids[]'] = subIds[i].toString();
+          subCharacteristicIds['sub_characteristic_ids[]'] =
+              subIds[i].toString();
         }
       }
 
@@ -365,11 +368,14 @@ class ProductToApi {
     final headers = {
       'Authorization': 'Bearer $token',
     };
-    final response = await http.post(Uri.parse('$baseUrl/seller/product/delete'), headers: headers, body: {
-      'shop_id': _box.read('seller_id'),
-      'token': _box.read('seller_token'),
-      'product_id': productId,
-    });
+    final response = await http.post(
+        Uri.parse('$baseUrl/seller/product/delete'),
+        headers: headers,
+        body: {
+          'shop_id': _box.read('seller_id'),
+          'token': _box.read('seller_token'),
+          'product_id': productId,
+        });
 
     return response.statusCode;
   }
@@ -379,12 +385,16 @@ class ProductToApi {
       final sellerId = _box.read('seller_id');
       final String? token = _box.read('token');
 
-      final response = await http.get(Uri.parse('$baseUrl/seller/products?shop_id=$sellerId&name=$name&page=$page'),
+      final response = await http.get(
+          Uri.parse(
+              '$baseUrl/seller/products?shop_id=$sellerId&name=$name&page=$page'),
           headers: {"Authorization": "Bearer $token"});
 
       final data = jsonDecode(response.body);
 
-      return (data['data'] as List).map((e) => AdminProductsModel.fromJson(e as Map<String, Object?>)).toList();
+      return (data['data'] as List)
+          .map((e) => AdminProductsModel.fromJson(e as Map<String, Object?>))
+          .toList();
     } catch (e) {
       log(e.toString());
       throw Exception(e.toString());
@@ -398,7 +408,8 @@ class ProductToApi {
       int view = 300;
 
       final response = await http.get(
-          Uri.parse('$baseUrl/seller/ad/payment/?product_id=$productId&price=$price&view=$view'),
+          Uri.parse(
+              '$baseUrl/seller/ad/payment/?product_id=$productId&price=$price&view=$view'),
           headers: {"Authorization": "Bearer $token"});
 
       final data = jsonDecode(response.body);
@@ -415,7 +426,8 @@ class ProductToApi {
     required String imagePath,
   }) async {
     try {
-      final response = await http.post(Uri.parse('$baseUrl/seller/product/delete/image'), body: {
+      final response = await http
+          .post(Uri.parse('$baseUrl/seller/product/delete/image'), body: {
         'product_id': productId.toString(),
         'path': imagePath,
       });
@@ -433,8 +445,8 @@ class ProductToApi {
       final String? token = _box.read('token');
       // int view = 300;
 
-      final response =
-          await http.get(Uri.parse('$baseUrl/seller/last/articul'), headers: {"Authorization": "Bearer $token"});
+      final response = await http.get(Uri.parse('$baseUrl/seller/last/articul'),
+          headers: {"Authorization": "Bearer $token"});
 
       final data = jsonDecode(response.body);
 
@@ -451,11 +463,14 @@ class ProductToApi {
       final String? token = _box.read('token');
       // int view = 300;
 
-      final response = await http.get(Uri.parse('$baseUrl/list/ads'), headers: {"Authorization": "Bearer $token"});
+      final response = await http.get(Uri.parse('$baseUrl/list/ads'),
+          headers: {"Authorization": "Bearer $token"});
 
       final data = jsonDecode(response.body);
 
-      return ((data as List?) ?? []).map((e) => AdDTO.fromJson(e as Map<String, Object?>)).toList();
+      return ((data as List?) ?? [])
+          .map((e) => AdDTO.fromJson(e as Map<String, Object?>))
+          .toList();
     } catch (e) {
       log(e.toString());
       throw Exception(e.toString());

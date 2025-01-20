@@ -24,7 +24,12 @@ class MessagePage extends StatefulWidget {
   String? avatar;
   int? chatId;
 
-  MessagePage({required this.userId, this.name, required this.avatar, this.chatId, super.key});
+  MessagePage(
+      {required this.userId,
+      this.name,
+      required this.avatar,
+      this.chatId,
+      super.key});
 
   @override
   State<MessagePage> createState() => _MessagePageState();
@@ -49,11 +54,17 @@ class _MessagePageState extends State<MessagePage> {
     final chat = BlocProvider.of<MessageCubit>(context);
 
     String? data = await chat.imageStore(
-      _image != null ? _image?.path ?? '': "",
+      _image != null ? _image?.path ?? '' : "",
     );
 
-    String text = jsonEncode(
-        {'action': 'file', 'text': null, 'path': data, 'type': 'image', 'to': widget.userId, 'chat_id': widget.chatId});
+    String text = jsonEncode({
+      'action': 'file',
+      'text': null,
+      'path': data,
+      'type': 'image',
+      'to': widget.userId,
+      'chat_id': widget.chatId
+    });
 
     channel.sink.add(text);
   }
@@ -85,7 +96,8 @@ class _MessagePageState extends State<MessagePage> {
 
   bool ready = false;
 
-  final GroupedItemScrollController itemScrollController = GroupedItemScrollController();
+  final GroupedItemScrollController itemScrollController =
+      GroupedItemScrollController();
 
   // Future<void> onRefresh() async {
   //   channel.sink.close();
@@ -98,7 +110,8 @@ class _MessagePageState extends State<MessagePage> {
   // }
 
   Future<void> onLoading() async {
-    await BlocProvider.of<MessageCubit>(context).paginationMessage(widget.chatId ?? 0, widget.userId ?? 0);
+    await BlocProvider.of<MessageCubit>(context)
+        .paginationMessage(widget.chatId ?? 0, widget.userId ?? 0);
     await Future.delayed(const Duration(milliseconds: 2000));
     _refreshController.loadComplete();
   }
@@ -116,8 +129,10 @@ class _MessagePageState extends State<MessagePage> {
 
   @override
   void initState() {
-    BlocProvider.of<MessageCubit>(context).getMessage(widget.chatId ?? 0, widget.userId ?? 0);
-    channel = IOWebSocketChannel.connect("ws://185.116.193.73:1995/?user_id=$myId");
+    BlocProvider.of<MessageCubit>(context)
+        .getMessage(widget.chatId ?? 0, widget.userId ?? 0);
+    channel =
+        IOWebSocketChannel.connect("ws://lunamarket.ru:1995/?user_id=$myId");
 
     channel.ready.then((value) {
       ready = true;
@@ -141,14 +156,13 @@ class _MessagePageState extends State<MessagePage> {
 
       if (data['action'] == 'message' || data['action'] == 'file') {
         log(data.toString());
-        BlocProvider.of<MessageCubit>(context).newMessage(MessageDto.fromJson(data));
+        BlocProvider.of<MessageCubit>(context)
+            .newMessage(MessageDto.fromJson(data));
       }
     });
 
     super.initState();
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -173,8 +187,10 @@ class _MessagePageState extends State<MessagePage> {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage:
-                      widget.avatar != null ? NetworkImage('http://185.116.193.73/storage/${widget.avatar}') : null,
+                  backgroundImage: widget.avatar != null
+                      ? NetworkImage(
+                          'https://lunamarket.ru/storage/${widget.avatar}')
+                      : null,
                   backgroundColor: Colors.grey,
                   radius: 16,
                 ),
@@ -238,7 +254,8 @@ class _MessagePageState extends State<MessagePage> {
                             // optional
                             // order: StickyGroupedListOrder.DESC, // optional
                             // reverse: true,
-                            groupSeparatorBuilder: (DateTime element) => Container(
+                            groupSeparatorBuilder: (DateTime element) =>
+                                Container(
                               margin: const EdgeInsets.only(top: 8, bottom: 8),
                               alignment: Alignment.center,
                               height: 20,
@@ -247,23 +264,34 @@ class _MessagePageState extends State<MessagePage> {
                                   element,
                                 ),
                                 // element.createdAt ?? '01.01.2023 00:00:00',
-                                style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
+                                style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ),
                             itemBuilder: (context, dynamic element) => Align(
-                              alignment:
-                                  element.userId != int.parse(myId) ? Alignment.centerLeft : Alignment.centerRight,
+                              alignment: element.userId != int.parse(myId)
+                                  ? Alignment.centerLeft
+                                  : Alignment.centerRight,
                               child: Card(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                margin: const EdgeInsets.only(top: 4, bottom: 4, left: 16, right: 16),
-                                color: element.userId == int.parse(myId) ? Colors.white : AppColors.kPrimaryColor,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12)),
+                                margin: const EdgeInsets.only(
+                                    top: 4, bottom: 4, left: 16, right: 16),
+                                color: element.userId == int.parse(myId)
+                                    ? Colors.white
+                                    : AppColors.kPrimaryColor,
                                 child: element.type == 'message'
                                     ? Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
                                           element.text ?? '2',
                                           style: TextStyle(
-                                              color: element.userId == int.parse(myId) ? Colors.black : Colors.white),
+                                              color: element.userId ==
+                                                      int.parse(myId)
+                                                  ? Colors.black
+                                                  : Colors.white),
                                         ))
                                     : Container(
                                         // margin: const EdgeInsets.only(
@@ -276,10 +304,11 @@ class _MessagePageState extends State<MessagePage> {
                                         decoration: BoxDecoration(
                                           image: DecorationImage(
                                               image: NetworkImage(
-                                                "http://185.116.193.73/storage/${element.path ?? ''}",
+                                                "https://lunamarket.ru/storage/${element.path ?? ''}",
                                               ),
                                               fit: BoxFit.cover),
-                                          borderRadius: BorderRadius.circular(12),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
 
                                           //color: const Color(0xFFF0F5F5))),
                                         ),
@@ -292,7 +321,8 @@ class _MessagePageState extends State<MessagePage> {
                       ),
                       Container(
                         height: 40,
-                        margin: const EdgeInsets.only(left: 16, right: 16, bottom: 36),
+                        margin: const EdgeInsets.only(
+                            left: 16, right: 16, bottom: 36),
                         //  padding: EdgeInsets.only(left: 16, right: 16, bottom: 36),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -307,7 +337,8 @@ class _MessagePageState extends State<MessagePage> {
                                       middleText: '',
                                       textConfirm: 'Камера',
                                       textCancel: 'Фото',
-                                      titlePadding: const EdgeInsets.only(top: 40),
+                                      titlePadding:
+                                          const EdgeInsets.only(top: 40),
                                       onConfirm: () {
                                         change = true;
                                         setState(() {
@@ -341,17 +372,17 @@ class _MessagePageState extends State<MessagePage> {
                               // ),
                             ),
                             Column(
-                                                                  mainAxisSize: MainAxisSize.max,
-
+                              mainAxisSize: MainAxisSize.max,
                               children: [
                                 Container(
-                                  margin: const EdgeInsets.only(left: 10, right: 10),
+                                  margin: const EdgeInsets.only(
+                                      left: 10, right: 10),
                                   padding: const EdgeInsets.only(left: 16),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(30),
-                                      border: Border.all(width: 0.3, color: Colors.grey)),
-                                  
-                                  width: 243, 
+                                      border: Border.all(
+                                          width: 0.3, color: Colors.grey)),
+                                  width: 243,
                                   child: TextField(
                                     autocorrect: false,
                                     maxLines: null,
@@ -384,7 +415,8 @@ class _MessagePageState extends State<MessagePage> {
                   );
                 }
               } else {
-                return const Center(child: CircularProgressIndicator(color: Colors.red));
+                return const Center(
+                    child: CircularProgressIndicator(color: Colors.red));
               }
             }));
   }
