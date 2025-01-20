@@ -27,7 +27,8 @@ import 'package:http/http.dart' as http;
 import 'package:haji_market/features/app/presentaion/base_new.dart';
 import 'package:haji_market/features/app/widgets/custom_loading_widget.dart';
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:uni_links5/uni_links.dart';
+// import 'package:uni_links/uni_links.dart';
 
 @RoutePage(name: 'LauncherRoute')
 class LauncherApp extends StatefulWidget {

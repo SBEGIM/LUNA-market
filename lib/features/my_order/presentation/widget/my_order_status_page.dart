@@ -13,7 +13,7 @@ import 'package:haji_market/features/auth/presentation/widgets/default_button.da
 import 'package:haji_market/features/basket/data/models/basket_order_model.dart';
 import 'package:haji_market/features/my_order/presentation/widget/cancel_order_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+// import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import '../../../../admin/my_orders_admin/data/bloc/order_status_admin_cubit.dart';
 import '../../../chat/presentation/message.dart';
@@ -610,19 +610,19 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             onTap: () {
                                               // setState(() {});
 
-                                              Navigator.of(context)
-                                                  .push(MaterialPageRoute(
-                                                builder: (context) =>
-                                                    QRViewExample(
-                                                        id: widget
-                                                            .basketOrder.id!,
-                                                        product_id: widget
-                                                            .basketOrder
-                                                            .product!
-                                                            .first
-                                                            .id!,
-                                                        fulfillment: 'fbs'),
-                                              ));
+                                              // Navigator.of(context)
+                                              //     .push(MaterialPageRoute(
+                                              //   builder: (context) =>
+                                              //       QRViewExample(
+                                              //           id: widget
+                                              //               .basketOrder.id!,
+                                              //           product_id: widget
+                                              //               .basketOrder
+                                              //               .product!
+                                              //               .first
+                                              //               .id!,
+                                              //           fulfillment: 'fbs'),
+                                              // ));
                                             },
                                             child: Container(
                                               height: 38,
@@ -1643,19 +1643,19 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             onTap: () {
                                               // setState(() {});
 
-                                              Navigator.of(context)
-                                                  .push(MaterialPageRoute(
-                                                builder: (context) =>
-                                                    QRViewExample(
-                                                        id: widget
-                                                            .basketOrder.id!,
-                                                        product_id: widget
-                                                            .basketOrder
-                                                            .product!
-                                                            .first
-                                                            .id!,
-                                                        fulfillment: 'realFBS'),
-                                              ));
+                                              // Navigator.of(context)
+                                              //     .push(MaterialPageRoute(
+                                              //   builder: (context) =>
+                                              //       QRViewExample(
+                                              //           id: widget
+                                              //               .basketOrder.id!,
+                                              //           product_id: widget
+                                              //               .basketOrder
+                                              //               .product!
+                                              //               .first
+                                              //               .id!,
+                                              //           fulfillment: 'realFBS'),
+                                              // ));
                                             },
                                             child: Container(
                                               height: 38,
@@ -2300,199 +2300,199 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
   }
 }
 
-class QRViewExample extends StatefulWidget {
-  int id;
-  int product_id;
-  String fulfillment;
-  QRViewExample(
-      {required this.id,
-      required this.product_id,
-      required this.fulfillment,
-      Key? key})
-      : super(key: key);
+// class QRViewExample extends StatefulWidget {
+//   int id;
+//   int product_id;
+//   String fulfillment;
+//   QRViewExample(
+//       {required this.id,
+//       required this.product_id,
+//       required this.fulfillment,
+//       Key? key})
+//       : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() => _QRViewExampleState();
-}
+//   @override
+//   State<StatefulWidget> createState() => _QRViewExampleState();
+// }
 
-class _QRViewExampleState extends State<QRViewExample> {
-  Barcode? result;
-  QRViewController? controller;
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+// class _QRViewExampleState extends State<QRViewExample> {
+//   Barcode? result;
+//   QRViewController? controller;
+//   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  // In order to get hot reload to work we need to pause the camera if the platform
-  // is android, or resume the camera if the platform is iOS.
-  @override
-  void reassemble() {
-    super.reassemble();
-    if (Platform.isAndroid) {
-      controller!.pauseCamera();
-    }
-    controller!.resumeCamera();
-  }
+//   // In order to get hot reload to work we need to pause the camera if the platform
+//   // is android, or resume the camera if the platform is iOS.
+//   @override
+//   void reassemble() {
+//     super.reassemble();
+//     if (Platform.isAndroid) {
+//       controller!.pauseCamera();
+//     }
+//     controller!.resumeCamera();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Expanded(flex: 4, child: _buildQrView(context)),
-          Expanded(
-            flex: 1,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                if (result != null)
-                  Container(
-                      margin: const EdgeInsets.all(8),
-                      child: DefaultButton(
-                        width: 350,
-                        color: Colors.white,
-                        backgroundColor: AppColors.kPrimaryColor,
-                        text: '${result?.code ?? 'Код не найден'}',
-                        press: () async {
-                          if (result?.code == widget.id.toString()) {
-                            Get.snackbar('Заказ', 'возврат оформлен',
-                                backgroundColor: Colors.greenAccent);
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Column(
+//         children: <Widget>[
+//           Expanded(flex: 4, child: _buildQrView(context)),
+//           Expanded(
+//             flex: 1,
+//             child: Column(
+//               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//               children: <Widget>[
+//                 if (result != null)
+//                   Container(
+//                       margin: const EdgeInsets.all(8),
+//                       child: DefaultButton(
+//                         width: 350,
+//                         color: Colors.white,
+//                         backgroundColor: AppColors.kPrimaryColor,
+//                         text: '${result?.code ?? 'Код не найден'}',
+//                         press: () async {
+//                           if (result?.code == widget.id.toString()) {
+//                             Get.snackbar('Заказ', 'возврат оформлен',
+//                                 backgroundColor: Colors.greenAccent);
 
-                            BlocProvider.of<OrderStatusAdminCubit>(context)
-                                .basketStatus(
-                                    'cancel',
-                                    widget.id.toString(),
-                                    widget.product_id.toString(),
-                                    widget.fulfillment);
-                          } else {
-                            Get.snackbar('Заказ', 'код товара не совпал',
-                                backgroundColor: Colors.greenAccent);
-                          }
-                        },
-                      ))
-                else
-                  SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: const CircularProgressIndicator()),
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     crossAxisAlignment: CrossAxisAlignment.center,
-                //     children: <Widget>[
-                //       Container(
-                //         margin: const EdgeInsets.all(8),
-                //         child: ElevatedButton(
-                //             onPressed: () async {
-                //               await controller?.toggleFlash();
-                //               setState(() {});
-                //             },
-                //             child: FutureBuilder(
-                //               future: controller?.getFlashStatus(),
-                //               builder: (context, snapshot) {
-                //                 return Text('Свет: ${snapshot.data != false ? 'включен' : 'выключен'}');
-                //               },
-                //             )),
-                //       ),
-                //       Container(
-                //         margin: const EdgeInsets.all(8),
-                //         child: ElevatedButton(
-                //             onPressed: () async {
-                //               await controller?.flipCamera();
-                //               setState(() {});
-                //             },
-                //             child: FutureBuilder(
-                //               future: controller?.getCameraInfo(),
-                //               builder: (context, snapshot) {
-                //                 if (snapshot.data != null) {
-                //                   return Text(
-                //                       'Камера: ${describeEnum(snapshot.data!) != 'back' ? 'передняя' : 'задняя'}');
-                //                 } else {
-                //                   return const Text('loading');
-                //                 }
-                //               },
-                //             )),
-                //       )
-                //     ],
-                //   ),
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     crossAxisAlignment: CrossAxisAlignment.center,
-                //     children: <Widget>[
-                //       Container(
-                //         margin: const EdgeInsets.all(8),
-                //         child: ElevatedButton(
-                //           onPressed: () async {
-                //             await controller?.pauseCamera();
-                //           },
-                //           child: const Text('Пауза', style: TextStyle(fontSize: 20)),
-                //         ),
-                //       ),
-                //       Container(
-                //         margin: const EdgeInsets.all(8),
-                //         child: ElevatedButton(
-                //           onPressed: () async {
-                //             await controller?.resumeCamera();
-                //           },
-                //           child: const Text('Продолжать', style: TextStyle(fontSize: 20)),
-                //         ),
-                //       )
-                //     ],
-                //   ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
+//                             BlocProvider.of<OrderStatusAdminCubit>(context)
+//                                 .basketStatus(
+//                                     'cancel',
+//                                     widget.id.toString(),
+//                                     widget.product_id.toString(),
+//                                     widget.fulfillment);
+//                           } else {
+//                             Get.snackbar('Заказ', 'код товара не совпал',
+//                                 backgroundColor: Colors.greenAccent);
+//                           }
+//                         },
+//                       ))
+//                 else
+//                   SizedBox(
+//                       height: 50,
+//                       width: 50,
+//                       child: const CircularProgressIndicator()),
+//                 //   Row(
+//                 //     mainAxisAlignment: MainAxisAlignment.center,
+//                 //     crossAxisAlignment: CrossAxisAlignment.center,
+//                 //     children: <Widget>[
+//                 //       Container(
+//                 //         margin: const EdgeInsets.all(8),
+//                 //         child: ElevatedButton(
+//                 //             onPressed: () async {
+//                 //               await controller?.toggleFlash();
+//                 //               setState(() {});
+//                 //             },
+//                 //             child: FutureBuilder(
+//                 //               future: controller?.getFlashStatus(),
+//                 //               builder: (context, snapshot) {
+//                 //                 return Text('Свет: ${snapshot.data != false ? 'включен' : 'выключен'}');
+//                 //               },
+//                 //             )),
+//                 //       ),
+//                 //       Container(
+//                 //         margin: const EdgeInsets.all(8),
+//                 //         child: ElevatedButton(
+//                 //             onPressed: () async {
+//                 //               await controller?.flipCamera();
+//                 //               setState(() {});
+//                 //             },
+//                 //             child: FutureBuilder(
+//                 //               future: controller?.getCameraInfo(),
+//                 //               builder: (context, snapshot) {
+//                 //                 if (snapshot.data != null) {
+//                 //                   return Text(
+//                 //                       'Камера: ${describeEnum(snapshot.data!) != 'back' ? 'передняя' : 'задняя'}');
+//                 //                 } else {
+//                 //                   return const Text('loading');
+//                 //                 }
+//                 //               },
+//                 //             )),
+//                 //       )
+//                 //     ],
+//                 //   ),
+//                 //   Row(
+//                 //     mainAxisAlignment: MainAxisAlignment.center,
+//                 //     crossAxisAlignment: CrossAxisAlignment.center,
+//                 //     children: <Widget>[
+//                 //       Container(
+//                 //         margin: const EdgeInsets.all(8),
+//                 //         child: ElevatedButton(
+//                 //           onPressed: () async {
+//                 //             await controller?.pauseCamera();
+//                 //           },
+//                 //           child: const Text('Пауза', style: TextStyle(fontSize: 20)),
+//                 //         ),
+//                 //       ),
+//                 //       Container(
+//                 //         margin: const EdgeInsets.all(8),
+//                 //         child: ElevatedButton(
+//                 //           onPressed: () async {
+//                 //             await controller?.resumeCamera();
+//                 //           },
+//                 //           child: const Text('Продолжать', style: TextStyle(fontSize: 20)),
+//                 //         ),
+//                 //       )
+//                 //     ],
+//                 //   ),
+//               ],
+//             ),
+//           )
+//         ],
+//       ),
+//     );
+//   }
 
-  Widget _buildQrView(BuildContext context) {
-    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 150.0
-        : 300.0;
-    // To ensure the Scanner view is properly sizes after rotation
-    // we need to listen for Flutter SizeChanged notification and update controller
-    return QRView(
-      key: qrKey,
-      onQRViewCreated: _onQRViewCreated,
-      overlay: QrScannerOverlayShape(
-          borderColor: Colors.red,
-          borderRadius: 10,
-          borderLength: 30,
-          borderWidth: 10,
-          cutOutSize: scanArea),
-      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
-    );
-  }
+//   // Widget _buildQrView(BuildContext context) {
+//   //   // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
+//   //   var scanArea = (MediaQuery.of(context).size.width < 400 ||
+//   //           MediaQuery.of(context).size.height < 400)
+//   //       ? 150.0
+//   //       : 300.0;
+//   //   // To ensure the Scanner view is properly sizes after rotation
+//   //   // we need to listen for Flutter SizeChanged notification and update controller
+//   //   return QRView(
+//   //     key: qrKey,
+//   //     onQRViewCreated: _onQRViewCreated,
+//   //     overlay: QrScannerOverlayShape(
+//   //         borderColor: Colors.red,
+//   //         borderRadius: 10,
+//   //         borderLength: 30,
+//   //         borderWidth: 10,
+//   //         cutOutSize: scanArea),
+//   //     onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+//   //   );
+//   // }
 
-  void _onQRViewCreated(QRViewController controller) {
-    setState(() {
-      this.controller = controller;
-    });
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        if (result?.code != null) {
-          if (result?.code == scanData.code) {
-            result = scanData;
-          }
-        } else {
-          result = scanData;
-        }
-      });
-    });
-  }
+//   // void _onQRViewCreated(QRViewController controller) {
+//   //   setState(() {
+//   //     this.controller = controller;
+//   //   });
+//   //   controller.scannedDataStream.listen((scanData) {
+//   //     setState(() {
+//   //       if (result?.code != null) {
+//   //         if (result?.code == scanData.code) {
+//   //           result = scanData;
+//   //         }
+//   //       } else {
+//   //         result = scanData;
+//   //       }
+//   //     });
+//   //   });
+//   // }
 
-  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
-    if (!p) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('no Permission')),
-      );
-    }
-  }
+//   // void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+//   //   log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+//   //   if (!p) {
+//   //     ScaffoldMessenger.of(context).showSnackBar(
+//   //       const SnackBar(content: Text('no Permission')),
+//   //     );
+//   //   }
+//   // }
 
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
-  }
-}
+//   @override
+//   void dispose() {
+//     controller?.dispose();
+//     super.dispose();
+//   }
+// }

@@ -787,7 +787,9 @@ class Banners extends StatefulWidget {
 }
 
 class _BannersState extends State<Banners> {
-  final CarouselController carouselController = CarouselController();
+  final CarouselSliderController carouselController =
+      CarouselSliderController();
+
   int _current = 0;
   @override
   Widget build(BuildContext context) {

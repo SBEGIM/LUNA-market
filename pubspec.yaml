@@ -22,7 +22,7 @@ dependencies:
   freezed_annotation:
   mask_text_input_formatter: ^2.1.0
   pin_code_fields: ^8.0.1
-  carousel_slider: ^4.2.1
+  carousel_slider: ^5.0.0
   flutter_bloc: ^8.1.2
   flutter_rating_bar: ^4.0.1
   http: ^0.13.5
@@ -50,16 +50,17 @@ dependencies:
   flutter_html: ^3.0.0-alpha.3
   yandex_mapkit: ^3.2.0
   cupertino_icons: ^1.0.2
-  uni_links: ^0.5.1
- # screenshot: ^2.5.0
-  share_plus: ^6.3.2
+  uni_links5: ^0.5.4
+  #uni_links: ^0.5.1
+  #screenshot: ^2.5.0
+  share_plus: ^10.1.4
   path_provider: ^2.0.14
   firebase_core: ^2.13.1
   firebase_messaging: ^14.6.2
-  flutter_local_notifications: ^14.1.1
+  flutter_local_notifications: ^18.0.1
   shimmer_animation: ^2.1.0+1
   shimmer: ^3.0.0
-  qr_code_scanner: ^1.0.1
+  #qr_code_scanner: ^1.0.1
   qr_flutter: ^4.0.0
   flutter_widget_from_html: ^0.9.1
   htmltopdfwidgets: ^0.0.9+1

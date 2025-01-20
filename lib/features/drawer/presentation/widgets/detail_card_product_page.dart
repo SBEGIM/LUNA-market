@@ -48,7 +48,7 @@ class DetailCardProductPage extends StatefulWidget {
 class _DetailCardProductPageState extends State<DetailCardProductPage> {
   int count = 0;
   int optom = 2;
-  int git = false;
+
   bool isvisible = false;
 
   int? selectedIndex = -1;

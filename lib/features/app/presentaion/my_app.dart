@@ -84,7 +84,7 @@ import 'package:haji_market/features/tape/presentation/data/bloc/subs_cubit.dart
 import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart';
 import 'package:haji_market/features/tape/presentation/data/repository/sub_repo.dart';
 import 'package:haji_market/features/tape/presentation/data/repository/tape_repo.dart';
-import 'package:uni_links/uni_links.dart';
+// import 'package:uni_links/uni_links.dart';
 
 import '../../../admin/chat/data/cubit/chat_admin_cubit.dart';
 import '../../../admin/chat/data/cubit/message_admin_cubit.dart';
@@ -254,33 +254,65 @@ class MultiBlocWrapper extends StatelessWidget {
             loginBloggerRepository: LoginBloggerRepository(),
           ),
         ),
-        BlocProvider(create: (_) => SmsCubit(registerRepository: RegisterRepository())),
-        BlocProvider(create: (_) => RegisterCubit(registerRepository: RegisterRepository())),
-        BlocProvider(create: (_) => CatsCubit(listRepository: ListRepository())),
-        BlocProvider(create: (_) => SubCatsCubit(subCatRepository: SubCatsRepository())),
-        BlocProvider(create: (_) => BannersCubit(listRepository: ListRepository())),
-        BlocProvider(create: (_) => PopularShopsCubit(popularShopsRepository: PopularShopsRepository())),
-        BlocProvider(create: (_) => ShopsDrawerCubit(shopsDrawerRepository: ShopsDrawerRepository())),
-        BlocProvider(create: (_) => ProductCubit(productRepository: ProductRepository())),
-        BlocProvider(create: (_) => FavoriteCubit(favoriteRepository: FavoriteRepository())),
-        BlocProvider(create: (_) => BasketCubit(basketRepository: BasketRepository())),
-        BlocProvider(create: (_) => OrderCubit(basketRepository: BasketRepository())),
-        BlocProvider(create: (_) => BrandCubit(brandRepository: BrandsRepository())),
-        BlocProvider(create: (_) => LastArticulCubit(repository: ProductAdminRepository())),
-        BlocProvider(create: (_) => LoginAdminCubit(loginAdminRepository: LoginAdminRepository())),
-        BlocProvider(create: (_) => ProductAdminCubit(productAdminRepository: ProductAdminRepository())),
-        BlocProvider(create: (_) => BasketAdminCubit(basketRepository: BasketAdminRepository())),
         BlocProvider(
-            create: (_) => OrderStatusAdminCubit(basketAdminRepository: BasketAdminRepository(), BasketRepository())),
-        BlocProvider(create: (_) => ColorCubit(colorRepository: ColorAdminRepository())),
-        BlocProvider(create: (_) => TapeCubit(tapeRepository: TapeRepository())),
-        BlocProvider(create: (_) => SubsCubit(subsRepository: SubsRepository())),
+            create: (_) => SmsCubit(registerRepository: RegisterRepository())),
         BlocProvider(
             create: (_) =>
-                ProfileStaticsBloggerCubit(profileStaticsBloggerRepository: ProfileStaticsBloggerRepository())),
+                RegisterCubit(registerRepository: RegisterRepository())),
+        BlocProvider(
+            create: (_) => CatsCubit(listRepository: ListRepository())),
+        BlocProvider(
+            create: (_) => SubCatsCubit(subCatRepository: SubCatsRepository())),
+        BlocProvider(
+            create: (_) => BannersCubit(listRepository: ListRepository())),
+        BlocProvider(
+            create: (_) => PopularShopsCubit(
+                popularShopsRepository: PopularShopsRepository())),
+        BlocProvider(
+            create: (_) => ShopsDrawerCubit(
+                shopsDrawerRepository: ShopsDrawerRepository())),
+        BlocProvider(
+            create: (_) =>
+                ProductCubit(productRepository: ProductRepository())),
+        BlocProvider(
+            create: (_) =>
+                FavoriteCubit(favoriteRepository: FavoriteRepository())),
+        BlocProvider(
+            create: (_) => BasketCubit(basketRepository: BasketRepository())),
+        BlocProvider(
+            create: (_) => OrderCubit(basketRepository: BasketRepository())),
+        BlocProvider(
+            create: (_) => BrandCubit(brandRepository: BrandsRepository())),
+        BlocProvider(
+            create: (_) =>
+                LastArticulCubit(repository: ProductAdminRepository())),
+        BlocProvider(
+            create: (_) =>
+                LoginAdminCubit(loginAdminRepository: LoginAdminRepository())),
+        BlocProvider(
+            create: (_) => ProductAdminCubit(
+                productAdminRepository: ProductAdminRepository())),
+        BlocProvider(
+            create: (_) =>
+                BasketAdminCubit(basketRepository: BasketAdminRepository())),
+        BlocProvider(
+            create: (_) => OrderStatusAdminCubit(
+                basketAdminRepository: BasketAdminRepository(),
+                BasketRepository())),
+        BlocProvider(
+            create: (_) => ColorCubit(colorRepository: ColorAdminRepository())),
+        BlocProvider(
+            create: (_) => TapeCubit(tapeRepository: TapeRepository())),
+        BlocProvider(
+            create: (_) => SubsCubit(subsRepository: SubsRepository())),
+        BlocProvider(
+            create: (_) => ProfileStaticsBloggerCubit(
+                profileStaticsBloggerRepository:
+                    ProfileStaticsBloggerRepository())),
         BlocProvider(
             create: (_) => ProfileMonthStaticsBloggerCubit(
-                profileMonthStaticsBloggerRepository: ProfileMonthStaticsBloggerRepository())),
+                profileMonthStaticsBloggerRepository:
+                    ProfileMonthStaticsBloggerRepository())),
         BlocProvider(
           create: (_) => EditBloggerCubit(
             editBloggerRepository: EditBloggerRepository(),
@@ -288,7 +320,8 @@ class MultiBlocWrapper extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => BloggerProductStatisticsCubit(
-            bloggerProductStatisticsRepository: BloggerProductsStatisticsRepository(),
+            bloggerProductStatisticsRepository:
+                BloggerProductsStatisticsRepository(),
           ),
         ),
         BlocProvider(
@@ -297,10 +330,13 @@ class MultiBlocWrapper extends StatelessWidget {
           ),
         ),
         BlocProvider(
-            create: (_) => BloggerVideoProductsCubit(bloggerShopProductsRepository: BloggerVideoProductsRepository())),
+            create: (_) => BloggerVideoProductsCubit(
+                bloggerShopProductsRepository:
+                    BloggerVideoProductsRepository())),
         BlocProvider(
           create: (_) => UploadVideoBLoggerCubit(
-            uploadVideoBloggerCubitRepository: UploadVideoBloggerCubitRepository(),
+            uploadVideoBloggerCubitRepository:
+                UploadVideoBloggerCubitRepository(),
           ),
         ),
         BlocProvider(
@@ -325,7 +361,8 @@ class MultiBlocWrapper extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => ProfileMonthStaticsAdminCubit(
-            profileMonthStaticsBloggerRepository: ProfileMonthStaticsAdminRepository(),
+            profileMonthStaticsBloggerRepository:
+                ProfileMonthStaticsAdminRepository(),
           ),
         ),
         BlocProvider(
