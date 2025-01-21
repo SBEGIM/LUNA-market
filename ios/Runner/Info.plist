@@ -30,7 +30,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>W9W892FKAR.com.thousand.hajiMarket</string>
+			<string>W9W892FKAR.com.example.hajiMarket</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>lunamarket.ru</string>

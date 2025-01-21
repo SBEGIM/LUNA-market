@@ -3,14 +3,11 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:haji_market/admin/chat/presentation/message_admin_page.dart';
-import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/chat/presentation/message.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/admin_app/presentation/base_admin_new.dart';
@@ -20,9 +17,7 @@ import 'package:haji_market/bloger/admin_app/presentation/base_blogger_new.dart'
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
-import 'package:haji_market/features/drawer/presentation/widgets/detail_card_product_page.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart';
-import 'package:haji_market/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:haji_market/features/app/presentaion/base_new.dart';
 import 'package:haji_market/features/app/widgets/custom_loading_widget.dart';
