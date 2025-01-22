@@ -1,16 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
+
 import 'package:haji_market/admin/chat/presentation/message_admin_page.dart';
-import 'package:haji_market/core/common/constants.dart';
 import 'package:haji_market/features/chat/presentation/message.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/admin/admin_app/presentation/base_admin_new.dart';
@@ -20,15 +17,12 @@ import 'package:haji_market/bloger/admin_app/presentation/base_blogger_new.dart'
 import 'package:haji_market/features/app/bloc/app_bloc.dart';
 import 'package:haji_market/features/app/router/app_router.dart';
 import 'package:haji_market/features/drawer/data/models/product_model.dart';
-import 'package:haji_market/features/drawer/presentation/widgets/detail_card_product_page.dart';
 import 'package:haji_market/features/tape/presentation/data/bloc/tape_cubit.dart';
-import 'package:haji_market/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:haji_market/features/app/presentaion/base_new.dart';
 import 'package:haji_market/features/app/widgets/custom_loading_widget.dart';
 import 'package:haji_market/features/auth/presentation/ui/view_auth_register_page.dart';
-import 'package:uni_links5/uni_links.dart';
-// import 'package:uni_links/uni_links.dart';
+import 'package:app_links/app_links.dart';
 
 @RoutePage(name: 'LauncherRoute')
 class LauncherApp extends StatefulWidget {
@@ -38,353 +32,164 @@ class LauncherApp extends StatefulWidget {
 }
 
 class _LauncherAppState extends State<LauncherApp> {
+  late final AppLinks _appLinks;
+  StreamSubscription? _sub;
+
   @override
   void initState() {
-    initUniLinks();
-    initUniLinkss();
-    BlocProvider.of<AppBloc>(context).add(const AppEvent.checkAuth());
-
-    checkInitialMessage();
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-
-      final String? data = message.data['type'].toString();
-
-      // if (Platform.isAndroid && (data == 'chat' || data == 'shop')) {
-      //   flutterLocalNotificationsPlugin.cancelAll();
-      // }
-
-      // if (Platform.isIOS && (data == 'chat' || data == 'shop')) {
-      //   flutterLocalNotificationsPlugin.cancelAll();
-      // }
-      AppBloc appBloc = BlocProvider.of<AppBloc>(context);
-
-      if (data == 'shop') {
-        final basket = BasketAdminOrderModel.fromJson(
-            jsonDecode(message.data['basket'].toString()));
-
-        Get.snackbar('${notification?.title}', '${notification?.body}',
-            onTap: (value) {
-          Get.to(DetailMyOrdersPage(basket: basket));
-        },
-            backgroundColor: Colors.blueAccent,
-            duration: const Duration(seconds: 10));
-
-        // appBloc.state.maybeWhen(
-        //   inAppAdminState: (i) {
-        //     context.router.push(DetailMyOrdersRoute(basket: basket));
-        //   },
-        //   orElse: () {
-        //     Get.to(DetailMyOrdersPage(basket: basket));
-        //   },
-        // );
-      }
-      if (data == 'chat') {
-        final chat = jsonDecode(message.data['chat']);
-
-        Get.snackbar('${notification?.title}', '${notification?.body}',
-            onTap: (value) {
-          appBloc.state.maybeWhen(
-            inAppUserState: (i) {
-              Get.to(() => MessagePage(
-                  userId: chat['user_id'],
-                  name: chat['name'],
-                  avatar: chat['avatar'],
-                  chatId: chat['chat_id']));
-            },
-            orElse: () {
-              Get.to(() => MessageAdmin(
-                  userId: chat['user_id'],
-                  userName: chat['name'],
-                  chatId: chat['chat_id']));
-            },
-          );
-        },
-            backgroundColor: Colors.blueAccent,
-            duration: const Duration(seconds: 10));
-      }
-
-      if (Platform.isAndroid && (data != 'chat' || data != 'shop')) {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification?.title,
-          notification?.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              channelDescription: channel.description,
-              color: Colors.blue,
-              playSound: true,
-              icon: '@mipmap/launcher_icon',
-            ),
-          ),
-        );
-      }
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-
-      final String? data = message.data['type'].toString();
-
-      // if (Platform.isAndroid && (data == 'chat' || data == 'shop')) {
-      //   flutterLocalNotificationsPlugin.cancelAll();
-      // }
-
-      // if (Platform.isIOS && (data == 'chat' || data == 'shop')) {
-      //   flutterLocalNotificationsPlugin.cancelAll();
-      // }
-
-      AppBloc appBloc = BlocProvider.of<AppBloc>(context);
-
-      if (data == 'shop') {
-        final basket = BasketAdminOrderModel.fromJson(
-            jsonDecode(message.data['basket'].toString()));
-
-        // Get.snackbar('${notification?.title}', '${notification?.body}', onTap: (value) {
-        Get.to(DetailMyOrdersPage(basket: basket));
-        //  }, backgroundColor: AppColors.kPrimaryColor, duration: const Duration(seconds: 10));
-
-        // appBloc.state.maybeWhen(
-        //   inAppAdminState: (i) {
-        //     context.router.push(DetailMyOrdersRoute(basket: basket));
-        //   },
-        //   orElse: () {
-        //     Get.to(DetailMyOrdersPage(basket: basket));
-        //   },
-        // );
-      }
-      if (data == 'chat') {
-        final chat = jsonDecode(message.data['chat']);
-
-        appBloc.state.maybeWhen(
-          inAppUserState: (i) {
-            Get.to(() => MessagePage(
-                userId: chat['user_id'],
-                name: chat['name'],
-                avatar: chat['avatar'],
-                chatId: chat['chat_id']));
-          },
-          orElse: () {
-            Get.to(() => MessageAdmin(
-                userId: chat['user_id'],
-                userName: chat['name'],
-                chatId: chat['chat_id']));
-          },
-        );
-
-        //  Get.snackbar('${notification?.title}', '${notification?.body}',
-        //         onTap: (value) {}, backgroundColor: AppColors.kPrimaryColor, duration: const Duration(seconds: 10));
-      }
-
-      if (Platform.isAndroid && (data != 'chat' || data != 'shop')) {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification?.title,
-          notification?.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              channelDescription: channel.description,
-              color: Colors.blue,
-              playSound: true,
-              icon: '@mipmap/launcher_icon',
-            ),
-          ),
-        );
-      }
-    });
-
-    // FirebaseMessaging.onBackgroundMessage((message) => null).listen((RemoteMessage message) {
-    //     RemoteNotification? notification = message.notification;
-
     super.initState();
+    _appLinks = AppLinks();
+    initAppLinks();
+    BlocProvider.of<AppBloc>(context).add(const AppEvent.checkAuth());
+    checkInitialMessage();
+    FirebaseMessaging.onMessage.listen(_handleFirebaseMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleFirebaseMessageOpened);
   }
 
-  Future<void> checkInitialMessage() async {
-    final RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
-    if (initialMessage != null) {
-      final RemoteMessage message = initialMessage;
-      log('checkInitialMessage:: ${initialMessage.data}');
+  Future<void> initAppLinks() async {
+    _appLinks = AppLinks();
+
+    // Get the initial link
+    final Uri? initialLink = await _appLinks.getInitialLink();
+    if (initialLink != null) {
+      handleDeepLink(initialLink);
+    }
+
+    // Listen to link stream
+    final linkSubscription = _appLinks.uriLinkStream.listen((Uri? uri) {
+      if (uri != null) {
+        handleDeepLink(uri);
+      }
+    });
+  }
+
+  void handleDeepLink(Uri uri) {
+    final appBloc = BlocProvider.of<AppBloc>(context);
+    final bloggerId = uri.queryParameters['blogger_id'] ?? '';
+    final productId = uri.queryParameters['product_id'] ?? '';
+    final shopName = uri.queryParameters['shop_name'] ?? '';
+    final index = uri.queryParameters['index'] ?? '';
+
+    if (productId.isNotEmpty && productId != 'null') {
+      GetStorage().write('deep_blogger_id', bloggerId);
+      GetStorage().write('deep_product_id', productId);
+      getProductById(productId);
+    }
+
+    if (shopName.isNotEmpty && shopName != 'null') {
+      appBloc.state.maybeWhen(
+        inAppUserState: (i) {
+          context.router.push(DetailTapeCardRoute(
+            index: int.parse(index),
+            shopName: shopName,
+            tapeBloc: BlocProvider.of<TapeCubit>(context),
+          ));
+        },
+        orElse: () {},
+      );
     }
   }
 
-  final bool token = GetStorage().hasData('token');
-  ProductModel? product;
-  Future<void> initUniLinks() async {
-    AppBloc appBloc = BlocProvider.of<AppBloc>(context);
-    try {
-      final initialLink = await getInitialLink();
-
-      print('$initialLink deeplink');
-
-      if (initialLink != null) {
-        // print(bloggerId + '222');
-        // print(productId + 'wwww');
-
-        String bloggerId = Uri.parse(initialLink.toString())
-            .queryParameters['blogger_id']
-            .toString();
-        String productId = Uri.parse(initialLink.toString())
-            .queryParameters['product_id']
-            .toString();
-
-        String shopName = Uri.parse(initialLink.toString())
-            .queryParameters['shop_name']
-            .toString();
-        String index = Uri.parse(initialLink.toString())
-            .queryParameters['index']
-            .toString();
-
-        if (productId != '' && productId != 'null') {
-          GetStorage().write('deep_blogger_id', bloggerId);
-          GetStorage().write('deep_product_id', productId);
-          getProductById(productId);
-        }
-        if (shopName != '' && shopName != 'null') {
-          appBloc.state.maybeWhen(
-            inAppUserState: (i) {
-              context.router.push(DetailTapeCardRoute(
-                  index: int.parse(index),
-                  shopName: shopName,
-                  tapeBloc: BlocProvider.of<TapeCubit>(context)));
-            },
-            orElse: () {},
-          );
-          // BlocProvider.of<NavigationCubit>(context).emit(DetailTapeState(int.parse(index), shopName));
-        }
-      }
-    } on PlatformException {}
+  Future<void> checkInitialMessage() async {
+    final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    if (initialMessage != null) {
+      log('checkInitialMessage: ${initialMessage.data}');
+    }
   }
 
-  late StreamSubscription _sub;
-
-  Future<void> initUniLinkss() async {
-    AppBloc appBloc = BlocProvider.of<AppBloc>(context);
-    _sub = linkStream.listen((String? link) async {
-      if (link != null) {
-        String bloggerId =
-            Uri.parse(link).queryParameters['blogger_id'].toString();
-        String productId =
-            Uri.parse(link).queryParameters['product_id'].toString();
-        String shopName =
-            Uri.parse(link).queryParameters['shop_name'].toString();
-        String index = Uri.parse(link).queryParameters['index'].toString();
-
-        if (productId != '' && productId != 'null') {
-          GetStorage().write('deep_blogger_id', bloggerId);
-          GetStorage().write('deep_product_id', productId);
-
-          getProductById(productId);
-        }
-
-        if (shopName != '' && shopName != 'null') {
-          // BlocProvider.of<NavigationCubit>(context)
-          //     .getNavBarItem(NavigationState.tape())
-          //     .whenComplete(
-          //   () {
-          //     Get.to(() => DetailTapeCardPage(
-          //           index: int.parse(index),
-          //           shop_name: shopName,
-          //         ));
-          //   },
-          // );
-
-          appBloc.state.maybeWhen(
-            inAppUserState: (i) {
-              context.router.push(DetailTapeCardRoute(
-                  index: int.parse(index),
-                  shopName: shopName,
-                  tapeBloc: BlocProvider.of<TapeCubit>(context)));
-            },
-            orElse: () {},
-          );
-          // BlocProvider.of<NavigationCubit>(context).emit(DetailTapeState(int.parse(index), shopName));
-        }
-      }
-    }, onError: (err) {});
-  }
-
-  Future<void> getProductById(
-    productId,
-  ) async {
-    AppBloc appBloc = BlocProvider.of<AppBloc>(context);
+  Future<void> getProductById(String productId) async {
     const baseUrl = 'https://lunamarket.ru/api';
-
-    final String? authToken = GetStorage().read('token');
-
+    final authToken = GetStorage().read<String>('token');
     final response = await http.get(
-      Uri.parse(
-        '$baseUrl/shop/show?id=$productId',
-      ),
+      Uri.parse('$baseUrl/shop/show?id=$productId'),
       headers: {"Authorization": "Bearer $authToken"},
     );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
+      final product = ProductModel.fromJson(data['data']);
 
-      product = ProductModel.fromJson(data['data']);
-
-      appBloc.state.maybeWhen(
-        inAppUserState: (i) {
-          context.router.push(DetailCardProductRoute(product: product!));
-        },
-        orElse: () {},
-      );
-      // Get.to(() => DetailCardProductPage(product: product!));
-
-      // Get.snackbar('Промокод активирован',
-      //     'покупайте товары и получайте скидку от Блогера',
-      //     backgroundColor: Colors.blueAccent);
-    } else {
-      // Get.snackbar('Ошибка промокод', 'продукт или блогер не найден',
-      //     backgroundColor: Colors.redAccent);
+      BlocProvider.of<AppBloc>(context).state.maybeWhen(
+            inAppUserState: (i) {
+              context.router.push(DetailCardProductRoute(product: product));
+            },
+            orElse: () {},
+          );
     }
+  }
+
+  void _handleFirebaseMessage(RemoteMessage message) {
+    final notification = message.notification;
+    final data = message.data['type'];
+
+    if (data == 'shop') {
+      final basket = BasketAdminOrderModel.fromJson(
+        jsonDecode(message.data['basket']),
+      );
+      Get.snackbar(
+        notification?.title ?? '',
+        notification?.body ?? '',
+        onTap: (_) => Get.to(DetailMyOrdersPage(basket: basket)),
+        backgroundColor: Colors.blueAccent,
+        duration: const Duration(seconds: 10),
+      );
+    } else if (data == 'chat') {
+      final chat = jsonDecode(message.data['chat']);
+      final appBloc = BlocProvider.of<AppBloc>(context);
+
+      Get.snackbar(
+        notification?.title ?? '',
+        notification?.body ?? '',
+        onTap: (_) => appBloc.state.maybeWhen(
+          inAppUserState: (i) => Get.to(MessagePage(
+            userId: chat['user_id'],
+            name: chat['name'],
+            avatar: chat['avatar'],
+            chatId: chat['chat_id'],
+          )),
+          orElse: () => Get.to(MessageAdmin(
+            userId: chat['user_id'],
+            userName: chat['name'],
+            chatId: chat['chat_id'],
+          )),
+        ),
+        backgroundColor: Colors.blueAccent,
+        duration: const Duration(seconds: 10),
+      );
+    }
+  }
+
+  void _handleFirebaseMessageOpened(RemoteMessage message) {
+    _handleFirebaseMessage(message);
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppBloc, AppState>(
-      listener: (context, state) {
-        state.whenOrNull(
-            // inAppState: () {
-            //   BlocProvider.of<ProfileBLoC>(context).add(const ProfileEvent.getProfile());
-            //   BlocProvider.of<AppBloc>(context).add(const AppEvent.sendDeviceToken());
-            // },
-            // errorState: (message) {
-            //   buildErrorCustomSnackBar(context, 'AppBloc => $message');
-            // },
-            );
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return state.maybeWhen(
-          notAuthorizedState: () {
-            log('not auth ');
-            return const ViewAuthRegisterPage();
-          },
+          notAuthorizedState: () => const ViewAuthRegisterPage(),
           loadingState: () => const _Scaffold(child: CustomLoadingWidget()),
           inAppBlogerState: (index) => const BaseBloggerNew(),
           inAppAdminState: (index) => const BaseAdminNew(),
-          inAppUserState: (index) => BaseNew(
-            index: index,
-          ),
+          inAppUserState: (index) => BaseNew(index: index),
           orElse: () => const BaseNew(),
         );
       },
-    ); // OnBoardingPage();
+    );
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
   }
 }
 
 class _Scaffold extends StatelessWidget {
   final Widget child;
-  const _Scaffold({
-    required this.child,
-    // super.key,
-  });
+  const _Scaffold({required this.child});
 
   @override
   Widget build(BuildContext context) {
