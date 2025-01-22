@@ -151,7 +151,6 @@ class Basket {
 
     final data = jsonDecode(response.body);
 
-
     return data['data_tinkoff']['PaymentURL'];
   }
 
