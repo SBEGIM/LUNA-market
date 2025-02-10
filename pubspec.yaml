@@ -51,7 +51,6 @@ dependencies:
   yandex_mapkit: ^3.2.0
   cupertino_icons: ^1.0.2
   uni_links5: ^0.5.4
-  app_links: ^6.3.3
   #uni_links: ^0.5.1
   #screenshot: ^2.5.0
   share_plus: ^10.1.4
