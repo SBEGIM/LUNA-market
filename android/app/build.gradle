@@ -6,11 +6,7 @@ plugins {
 }
 
 android {
-<<<<<<< HEAD
-    namespace = "com.thousand.haji_market"
-=======
-    namespace = "com.example.hajiMarket"
->>>>>>> 07c55d4fda87c7eb11c690d768f5354c75991376
+    namespace = "com.thousand.luna_market"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -25,11 +21,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-<<<<<<< HEAD
-        applicationId = "com.thousand.haji_market"
-=======
-        applicationId = "com.example.hajiMarket"
->>>>>>> 07c55d4fda87c7eb11c690d768f5354c75991376
+        applicationId = "com.thousand.luna_market"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
