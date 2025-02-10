@@ -1,4 +1,4 @@
-package com.thousand.haji_market
+package com.thousand.luna_market
 
 import io.flutter.embedding.android.FlutterActivity
 
