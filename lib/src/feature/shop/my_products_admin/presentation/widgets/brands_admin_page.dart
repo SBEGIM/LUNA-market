@@ -18,7 +18,7 @@ class BrandsAdminPage extends StatefulWidget {
 
 class _BrandsAdminPageState extends State<BrandsAdminPage> {
   int _selectedIndex = -1;
-  Cats? _cat;
+  CatsModel? _cat;
 
   @override
   void initState() {

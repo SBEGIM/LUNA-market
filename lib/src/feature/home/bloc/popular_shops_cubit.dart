@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:haji_market/src/feature/home/data/bloc/popular_shops_state.dart';
+import 'package:haji_market/src/feature/home/bloc/popular_shops_state.dart';
 import 'package:haji_market/src/feature/home/data/model/popular_shops_model.dart';
 import 'package:haji_market/src/feature/home/data/repository/popular_shops_repo.dart';
 

@@ -1,19 +1,20 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import '../model/banners.dart';
-import '../repository/cats_repo.dart';
+import 'package:haji_market/src/feature/home/data/repository/banner_repository.dart';
+import '../data/model/banners.dart';
+import '../data/repository/cats_repo.dart';
 import 'banners_state.dart';
 
 class BannersCubit extends Cubit<BannersState> {
-  final ListRepository listRepository;
+  final IBannersRepository bannersRepository;
 
-  BannersCubit({required this.listRepository}) : super(InitState());
+  BannersCubit({required this.bannersRepository}) : super(InitState());
 
   Future<void> banners() async {
     try {
       emit(LoadingState());
-      final List<Banners> data = await listRepository.banners();
+      final List<Banners> data = await bannersRepository.getBanners();
 
       emit(LoadedState(data));
     } catch (e) {

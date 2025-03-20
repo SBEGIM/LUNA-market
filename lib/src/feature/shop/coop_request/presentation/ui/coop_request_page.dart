@@ -12,10 +12,8 @@ import 'package:haji_market/src/feature/shop/auth/data/bloc/register_admin_cubit
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
-import 'package:haji_market/src/feature/home/data/bloc/meta_cubit.dart'
-    as metaCubit;
-import 'package:haji_market/src/feature/home/data/bloc/meta_state.dart'
-    as metaState;
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
+import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import '../../../../home/data/model/cats.dart';
 import '../../../my_products_admin/presentation/widgets/cats_admin_page.dart';
 
@@ -30,7 +28,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
   bool isChecked = false;
   bool typeOrganization = false;
 
-  Cats cats = Cats(id: 0, name: 'Выберите категорию');
+  CatsModel cats = CatsModel(id: 0, name: 'Выберите категорию');
 
   TextEditingController iinController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -218,7 +216,7 @@ class _CoopRequestPageState extends State<CoopRequestPage> {
                 onPressed: () async {
                   final data = await Get.to(const CatsAdminPage());
                   if (data != null) {
-                    final Cats cat = data;
+                    final CatsModel cat = data;
 
                     setState(() {});
                     catController.text = cat.id.toString();

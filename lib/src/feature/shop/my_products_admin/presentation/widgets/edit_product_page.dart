@@ -16,7 +16,7 @@ import 'package:haji_market/src/feature/shop/my_products_admin/presentation/widg
 import 'package:haji_market/src/feature/bloger/blogger_ad.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/drawer/data/bloc/sub_cats_cubit.dart';
-import 'package:haji_market/src/feature/home/data/bloc/cats_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/cats_cubit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../app/widgets/custom_back_button.dart';
@@ -61,8 +61,8 @@ class _EditProductPageState extends State<EditProductPage> {
   String subCharacteristicName = '';
   String subCharacteristicId = '';
 
-  List<Cats>? mockSizes = [];
-  List<Cats>? mockSizeAdds = [];
+  List<CatsModel>? mockSizes = [];
+  List<CatsModel>? mockSizeAdds = [];
 
   String sizeName = '';
 
@@ -122,10 +122,10 @@ class _EditProductPageState extends State<EditProductPage> {
   TextEditingController pointsController = TextEditingController();
   TextEditingController pointsBloggerController = TextEditingController();
 
-  Cats? cats;
-  Cats? subCats;
-  Cats? brands;
-  Cats? colors;
+  CatsModel? cats;
+  CatsModel? subCats;
+  CatsModel? brands;
+  CatsModel? colors;
 
   Future<void> CatById() async {
     cats = await BlocProvider.of<CatsCubit>(context)
@@ -135,7 +135,7 @@ class _EditProductPageState extends State<EditProductPage> {
       brands = await BlocProvider.of<BrandCubit>(context)
           .brandById(widget.product.brandId.toString());
     } else {
-      brands = Cats(id: 0, name: 'Не выбрано');
+      brands = CatsModel(id: 0, name: 'Не выбрано');
     }
 
     subCats = await BlocProvider.of<SubCatsCubit>(context).subCatById(
@@ -145,7 +145,7 @@ class _EditProductPageState extends State<EditProductPage> {
       colors = await BlocProvider.of<ColorCubit>(context)
           .ColorById(widget.product.color!.first);
     } else {
-      Cats colors = Cats(id: 0, name: 'Выберите цвет');
+      CatsModel colors = CatsModel(id: 0, name: 'Выберите цвет');
     }
 
     setState(() {
@@ -380,7 +380,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 onPressed: () async {
                   final data = await Get.to(const CatsAdminPage());
                   if (data != null) {
-                    final Cats cat = data;
+                    final CatsModel cat = data;
                     setState(() {});
                     cats = cat;
                   }
@@ -401,7 +401,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 onPressed: () async {
                   final data = await Get.to(const BrandsAdminPage());
                   if (data != null) {
-                    final Cats brand = data;
+                    final CatsModel brand = data;
                     setState(() {});
                     brands = brand;
                   }
@@ -428,7 +428,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 onPressed: () async {
                   final data = await Get.to(SubCatsAdminPage(cats: cats));
                   if (data != null) {
-                    final Cats cat = data;
+                    final CatsModel cat = data;
                     setState(() {});
                     subCats = cat;
                   }
@@ -449,7 +449,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 onPressed: () async {
                   final data = await Get.to(const ColorsAdminPage());
                   if (data != null) {
-                    final Cats cat = data;
+                    final CatsModel cat = data;
                     color_id = cat.id ?? 0;
                     setState(() {});
                     colors = cat;
@@ -573,7 +573,7 @@ class _EditProductPageState extends State<EditProductPage> {
                               //   }
 
                               if (!exists) {
-                                mockSizeAdds!.add(Cats(name: sizeName));
+                                mockSizeAdds!.add(CatsModel(name: sizeName));
 
                                 sizeCount.add(sizeCountDto(
                                     id: sizeId,

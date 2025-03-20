@@ -9,8 +9,8 @@ import 'package:haji_market/src/feature/drawer/data/bloc/sub_cats_state.dart'
     as subCatState;
 
 import '../../../../app/widgets/custom_back_button.dart';
-import '../../../../home/data/bloc/cats_cubit.dart';
-import '../../../../home/data/bloc/cats_state.dart';
+import '../../../../home/bloc/cats_cubit.dart';
+import '../../../../home/bloc/cats_state.dart';
 import '../../../../home/data/model/cats.dart';
 
 class CategoryAdminPage extends StatefulWidget {
@@ -23,8 +23,8 @@ class CategoryAdminPage extends StatefulWidget {
 class _CategoryAdminPageState extends State<CategoryAdminPage> {
   int _selectedIndex = -1;
   int _selectedIndex2 = -1;
-  Cats? _subCat;
-  Cats? _cat;
+  CatsModel? _subCat;
+  CatsModel? _cat;
 
   @override
   void initState() {

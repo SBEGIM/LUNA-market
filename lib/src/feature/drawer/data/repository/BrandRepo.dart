@@ -7,20 +7,20 @@ const baseUrl = 'https://lunamarket.ru/api';
 class BrandsRepository {
   final BrandApi _brandApi = BrandApi();
 
-  Future<List<Cats>> brandApi({
+  Future<List<CatsModel>> brandApi({
     int? subCatId,
   }) =>
       _brandApi.brands(subCatId: subCatId);
 }
 
 class BrandApi {
-  Future<List<Cats>> brands({
+  Future<List<CatsModel>> brands({
     int? subCatId,
   }) async {
     final response = await http.get(Uri.parse(
         '$baseUrl/list/brands${subCatId != null ? '?sub_cat_id=$subCatId' : ''}'));
     final data = jsonDecode(response.body);
 
-    return (data as List).map((e) => Cats.fromJson(e)).toList();
+    return (data as List).map((e) => CatsModel.fromJson(e)).toList();
   }
 }

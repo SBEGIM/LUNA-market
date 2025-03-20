@@ -7,16 +7,16 @@ const baseUrl = 'https://lunamarket.ru/api';
 class SubCatsRepository {
   final SubCatApi _subCatsApi = SubCatApi();
 
-  Future<List<Cats>> subCatApi(subCatId) => _subCatsApi.subCats(subCatId);
+  Future<List<CatsModel>> subCatApi(subCatId) => _subCatsApi.subCats(subCatId);
 }
 
 class SubCatApi {
-  Future<List<Cats>> subCats(subCatId) async {
+  Future<List<CatsModel>> subCats(subCatId) async {
     final response = await http
         .get(Uri.parse('$baseUrl/list/sub/cats?sub_cat_id=$subCatId'));
 
     final data = jsonDecode(response.body);
 
-    return (data as List).map((e) => Cats.fromJson(e)).toList();
+    return (data as List).map((e) => CatsModel.fromJson(e)).toList();
   }
 }

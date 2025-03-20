@@ -32,8 +32,8 @@ import '../widgets/product_ad_card.dart';
 
 @RoutePage()
 class ProductsPage extends StatefulWidget {
-  final Cats cats;
-  final Cats? subCats;
+  final CatsModel cats;
+  final CatsModel? subCats;
 
   int? brandId;
   String? shopId;

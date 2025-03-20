@@ -6,8 +6,8 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/utils/url_util.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
-import 'package:haji_market/src/feature/home/data/bloc/meta_cubit.dart';
-import 'package:haji_market/src/feature/home/data/bloc/meta_state.dart';
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/meta_state.dart';
 import 'package:haji_market/src/feature/home/data/repository/popular_shops_repo.dart';
 
 class AdvertBottomSheet extends StatefulWidget {

@@ -1,21 +1,21 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:haji_market/src/feature/home/data/repository/cats_repository.dart';
 
-import '../model/cats.dart';
-import '../repository/cats_repo.dart';
+import '../data/model/cats.dart';
 import 'cats_state.dart';
 
 class CatsCubit extends Cubit<CatsState> {
-  final ListRepository listRepository;
+  final ICatsRepository catsRepository;
 
-  CatsCubit({required this.listRepository}) : super(InitState());
+  CatsCubit({required this.catsRepository}) : super(InitState());
 
-  List<Cats> _cats = [];
+  List<CatsModel> _cats = [];
   Future<void> cats() async {
     try {
       emit(LoadingState());
-      final List<Cats> data = await listRepository.cats();
+      final List<CatsModel> data = await catsRepository.getCats();
       _cats = data;
 
       emit(LoadedState(data));
@@ -36,7 +36,7 @@ class CatsCubit extends Cubit<CatsState> {
       // final List<City> data = await listRepository.cities();
       // _cities = data;
     }
-    List<Cats> temp = [];
+    List<CatsModel> temp = [];
     for (int i = 0; i < _cats.length; i++) {
       if (_cats[i].name != null &&
           _cats[i].name!.toLowerCase().contains(name.toLowerCase())) {
@@ -53,7 +53,7 @@ class CatsCubit extends Cubit<CatsState> {
       // final List<City> data = await listRepository.cities();
       // _cities = data;
     }
-    Cats cat = Cats(id: 0, name: '');
+    CatsModel cat = CatsModel(id: 0, name: '');
     for (int i = 0; i < _cats.length; i++) {
       if (_cats[i].id.toString() == id) {
         cat = _cats[i];

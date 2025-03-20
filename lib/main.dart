@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/src/core/constant/config.dart';
+import 'package:haji_market/src/core/utils/refined_logger.dart';
 import 'package:haji_market/src/feature/app/presentaion/my_app.dart';
+import 'package:haji_market/src/feature/initialization/logic/composition_root.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
@@ -31,6 +34,9 @@ Future<void> getDeviceToken() async {
     await box.write('device_token', deviceToken.toString());
   }
 }
+
+// configs
+const config = Config();
 
 void main() async {
   try {
@@ -78,7 +84,11 @@ void main() async {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   } catch (e) {
     if (kDebugMode) print(e);
-  }
+  } finally {
+    final result = await CompositionRoot(config, logger).compose();
 
-  runApp(const MultiBlocWrapper(child: MyApp()));
+    runApp(MyApp(
+      result: result,
+    ));
+  }
 }

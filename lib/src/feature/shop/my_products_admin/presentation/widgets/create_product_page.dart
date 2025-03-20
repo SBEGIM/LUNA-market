@@ -13,10 +13,8 @@ import 'package:haji_market/src/feature/shop/my_products_admin/presentation/widg
 import 'package:haji_market/src/feature/bloger/blogger_ad.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
-import 'package:haji_market/src/feature/home/data/bloc/meta_cubit.dart'
-    as metaCubit;
-import 'package:haji_market/src/feature/home/data/bloc/meta_state.dart'
-    as metaState;
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
+import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../app/widgets/custom_back_button.dart';
@@ -29,8 +27,8 @@ import '../../data/bloc/product_admin_cubit.dart';
 import '../../data/bloc/product_admin_state.dart';
 
 class CreateProductPage extends StatefulWidget {
-  final Cats cat;
-  final Cats? subCat;
+  final CatsModel cat;
+  final CatsModel? subCat;
   const CreateProductPage({required this.cat, required this.subCat, Key? key})
       : super(key: key);
 
@@ -39,10 +37,10 @@ class CreateProductPage extends StatefulWidget {
 }
 
 class _CreateProductPageState extends State<CreateProductPage> {
-  Cats? cats;
-  Cats? subCats;
-  Cats? brands;
-  Cats? colors;
+  CatsModel? cats;
+  CatsModel? subCats;
+  CatsModel? brands;
+  CatsModel? colors;
 
   TextEditingController articulController = TextEditingController();
   TextEditingController priceController = TextEditingController();
@@ -86,10 +84,10 @@ class _CreateProductPageState extends State<CreateProductPage> {
   String fulfillment = 'fbs';
 
   List<colorCountDto> colorCount = [];
-  List<Cats>? mockSizeAdds = [];
+  List<CatsModel>? mockSizeAdds = [];
   List<optomPriceDto> optomCount = [];
   List<sizeCountDto> sizeCount = [];
-  List<Cats>? mockSizes = [];
+  List<CatsModel>? mockSizes = [];
 
   List<Characteristics>? characteristics = [];
   List<Characteristics>? characteristicsValue = [];
@@ -185,8 +183,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
   void initState() {
     cats = widget.cat;
     subCats = widget.subCat;
-    brands = Cats(id: 0, name: 'Выберите бренд');
-    colors = Cats(id: 0, name: 'Выберите цвет');
+    brands = CatsModel(id: 0, name: 'Выберите бренд');
+    colors = CatsModel(id: 0, name: 'Выберите цвет');
     _sizeArray();
     _charactisticsArray();
     if (BlocProvider.of<metaCubit.MetaCubit>(context).state
@@ -466,7 +464,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   onPressed: () async {
                     final data = await Get.to(const BrandsAdminPage());
                     if (data != null) {
-                      final Cats brand = data;
+                      final CatsModel brand = data;
                       setState(() {});
                       brands = brand;
                     }
@@ -517,7 +515,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                   onPressed: () async {
                     final data = await Get.to(const ColorsAdminPage());
                     if (data != null) {
-                      final Cats cat = data;
+                      final CatsModel cat = data;
                       setState(() {});
                       colors = cat;
                     }
@@ -640,7 +638,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                 //   }
 
                                 if (!exists) {
-                                  mockSizeAdds!.add(Cats(name: sizeName));
+                                  mockSizeAdds!.add(CatsModel(name: sizeName));
 
                                   sizeCount.add(sizeCountDto(
                                       id: sizeId,
@@ -1814,7 +1812,7 @@ class FieldsProductRequest extends StatefulWidget {
   final bool arrow;
   final bool? hintColor;
   final TextEditingController? controller;
-  final Cats? cats;
+  final CatsModel? cats;
   final bool? textInputNumber;
   final bool readOnly;
   final void Function()? onPressed;

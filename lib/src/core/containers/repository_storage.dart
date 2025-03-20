@@ -1,6 +1,10 @@
 import 'package:haji_market/src/feature/auth/data/auth_remote_ds.dart';
 import 'package:haji_market/src/feature/auth/data/auth_repository.dart';
 import 'package:haji_market/src/feature/auth/database/auth_dao.dart';
+import 'package:haji_market/src/feature/home/data/repository/banner_repository.dart';
+import 'package:haji_market/src/feature/home/data/repository/banners_remote_ds.dart';
+import 'package:haji_market/src/feature/home/data/repository/cats_remote_ds.dart';
+import 'package:haji_market/src/feature/home/data/repository/cats_repository.dart';
 import 'package:haji_market/src/feature/profile/data/profile_remote_ds.dart';
 import 'package:haji_market/src/feature/profile/data/profile_repository.dart';
 import 'package:haji_market/src/feature/settings/data/app_settings_datasource.dart';
@@ -24,10 +28,13 @@ abstract class IRepositoryStorage {
   // Repositories
   IAuthRepository get authRepository;
   IProfileRepository get profileRepository;
+  ICatsRepository get catsRepository;
+  IBannersRepository get bannersRepository;
 
   // Data sources
   IAuthRemoteDS get authRemoteDS;
   IProfileRemoteDS get profileRemoteDS;
+  ICatsRemoteDS get catsRemoteDS;
 
   void close();
 }
@@ -58,9 +65,9 @@ class RepositoryStorage implements IRepositoryStorage {
   ///
   @override
   IRestClient get restClient => _restClient ??= RestClientDio(
-        baseUrl: 'http://82.146.39.192/api', // TODO: Env.apiUrl,
+        baseUrl: 'https://lunamarket.ru/api', // TODO: Env.apiUrl,
         dioClient: DioClient(
-          baseUrl: 'http://82.146.39.192/api',
+          baseUrl: 'https://lunamartket.ru/api',
           interceptor: const DioInterceptor(),
           authDao: authDao,
           packageInfo: _packageInfo,
@@ -84,12 +91,36 @@ class RepositoryStorage implements IRepositoryStorage {
         authDao: authDao,
       );
 
+  @override
+  ICatsRepository get catsRepository => CatsRepositoryImpl(
+        remoteDS: catsRemoteDS,
+      );
+
+  @override
+  IBannersRepository get bannersRepository => BannersRepositoryImpl(
+        remoteDS: bannersRemoteDS,
+      );
+
   ///
   /// Remote datasources
   ///
-
   @override
   IProfileRemoteDS get profileRemoteDS => ProfileRemoteDSImpl(
+        restClient: restClient,
+      );
+
+  @override
+  IAuthRemoteDS get authRemoteDS => AuthRemoteDSImpl(
+        restClient: restClient,
+      );
+
+  @override
+  ICatsRemoteDS get catsRemoteDS => CatsRemoteDSImpl(
+        restClient: restClient,
+      );
+
+  @override
+  IBannersRemoteDS get bannersRemoteDS => BannersRemoteDSImpl(
         restClient: restClient,
       );
 
@@ -98,8 +129,4 @@ class RepositoryStorage implements IRepositoryStorage {
   ///
   @override
   IAuthDao get authDao => AuthDao(sharedPreferences: _sharedPreferences);
-
-  @override
-  // TODO: implement authRemoteDS
-  IAuthRemoteDS get authRemoteDS => throw UnimplementedError();
 }

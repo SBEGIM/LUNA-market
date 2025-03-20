@@ -9,12 +9,12 @@ class ColorCubit extends Cubit<ColorState> {
 
   ColorCubit({required this.colorRepository}) : super(InitState());
 
-  List<Cats> _colors = [];
+  List<CatsModel> _colors = [];
 
   Future<void> brands() async {
     try {
       emit(LoadingState());
-      final List<Cats> data = await colorRepository.get();
+      final List<CatsModel> data = await colorRepository.get();
       _colors = data;
       emit(LoadedState(data));
     } catch (e) {
@@ -32,7 +32,7 @@ class ColorCubit extends Cubit<ColorState> {
       // final List<City> data = await listRepository.cities();
       // _cities = data;
     }
-    Cats color = Cats(id: 0, name: 'Выберите цвет');
+    CatsModel color = CatsModel(id: 0, name: 'Выберите цвет');
 
     for (int i = 0; i < _colors.length; i++) {
       if (_colors[i].name != null &&

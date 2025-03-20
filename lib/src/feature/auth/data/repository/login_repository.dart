@@ -62,6 +62,7 @@ class LoginToApi {
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
+
       _box.write('token', data['access_token'].toString());
       _box.write('push', data['push'].toString());
       _box.write('user_id', data['id'].toString());

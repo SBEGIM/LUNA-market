@@ -8,10 +8,8 @@ import 'package:haji_market/src/feature/auth/presentation/ui/register_check_sms_
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
-import 'package:haji_market/src/feature/home/data/bloc/meta_cubit.dart'
-    as metaCubit;
-import 'package:haji_market/src/feature/home/data/bloc/meta_state.dart'
-    as metaState;
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
+import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../../app/widgets/scroll_wrapper.dart';
 import '../../data/DTO/register.dart';

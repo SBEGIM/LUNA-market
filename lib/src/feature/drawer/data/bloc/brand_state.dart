@@ -9,7 +9,7 @@ class LoadingState extends BrandState {}
 class NoDataState extends BrandState {}
 
 class LoadedState extends BrandState {
-  List<Cats> cats;
+  List<CatsModel> cats;
   LoadedState(this.cats);
 }
 

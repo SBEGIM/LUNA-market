@@ -1,3 +1,8 @@
+import 'package:haji_market/src/core/containers/repository_storage.dart';
+import 'package:haji_market/src/core/presentation/scopes/repository_scope.dart';
+import 'package:haji_market/src/core/utils/extensions/context_extension.dart';
+import 'package:haji_market/src/feature/home/data/repository/cats_repository.dart';
+import 'package:haji_market/src/feature/initialization/logic/composition_root.dart';
 import 'package:haji_market/src/feature/shop/auth/data/bloc/register_admin_cubit.dart';
 import 'package:haji_market/src/feature/shop/auth/data/bloc/sms_admin_cubit.dart';
 import 'package:haji_market/src/feature/shop/auth/data/repository/register_admin_repo.dart';
@@ -27,8 +32,8 @@ import 'package:haji_market/src/feature/drawer/data/repository/address_repo.dart
 import 'package:haji_market/src/feature/drawer/data/repository/bonus_repo.dart';
 import 'package:haji_market/src/feature/drawer/data/repository/profit_repo.dart';
 import 'package:haji_market/src/feature/drawer/data/repository/respublic_repo.dart';
-import 'package:haji_market/src/feature/home/data/bloc/meta_cubit.dart';
-import 'package:haji_market/src/feature/home/data/bloc/partner_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/partner_cubit.dart';
 import 'package:haji_market/src/feature/home/data/repository/meta_repo.dart';
 import 'package:haji_market/src/feature/home/data/repository/partner_repo.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +73,7 @@ import 'package:haji_market/src/feature/drawer/data/repository/basket_repo.dart'
 import 'package:haji_market/src/feature/drawer/data/repository/credit_repo.dart';
 import 'package:haji_market/src/feature/drawer/data/repository/favorite_repo.dart';
 import 'package:haji_market/src/feature/drawer/data/repository/shops_drawer_repo.dart';
-import 'package:haji_market/src/feature/home/data/bloc/banners_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/banners_cubit.dart';
 import 'package:haji_market/src/feature/home/data/repository/cats_repo.dart';
 import 'package:haji_market/src/feature/home/data/repository/popular_shops_repo.dart';
 import 'package:haji_market/src/feature/tape/presentation/data/bloc/subs_cubit.dart';
@@ -116,11 +121,13 @@ import '../../drawer/data/bloc/sub_cats_cubit.dart';
 import '../../drawer/data/repository/product_ad_repo.dart';
 import '../../drawer/data/repository/product_repo.dart';
 import '../../drawer/data/repository/review_product_repo.dart';
-import '../../home/data/bloc/cats_cubit.dart';
-import '../../home/data/bloc/popular_shops_cubit.dart';
+import '../../home/bloc/cats_cubit.dart';
+import '../../home/bloc/popular_shops_cubit.dart';
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key, required this.result});
+
+  final CompositionResult result;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -130,94 +137,97 @@ class _MyAppState extends State<MyApp> {
   final bool token = GetStorage().hasData('token');
   ProductModel? product;
 
-  AppRouter appRouter = AppRouter();
-
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Haji Market',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        //  fontFamily: 'Nunito',
-        primarySwatch: Colors.blue,
+    return RepositoryScope(
+      create: (context) => RepositoryStorage(
+        sharedPreferences: widget.result.dependencies.sharedPreferences,
+        packageInfo: widget.result.dependencies.packageInfo,
+        appSettingsDatasource: widget.result.dependencies.appSettingsDatasource,
       ),
-      home: MediaQuery(
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-        child: AppRouterBuilder(
-          // createRouter: (context) => appRouter,
-          createRouter: (context) => AppRouter(),
-          builder: (context, parser, delegate) => MaterialApp.router(
-            // builder: (context, child) => SizedBox(),
-            // backButtonDispatcher:RootBackButtonDispatcher(),
-            // routeInformationProvider: appRouter.routeInfoProvider(),
-            // routerConfig: appRouter.config(
-            //   deepLinkBuilder: (deepLink) async {
-            //     return DeepLink.single(DetailCardProductRoute(product: ProductModel()));
-            //     String bloggerId = Uri.parse(deepLink.path.toString()).queryParameters['blogger_id'].toString();
-            //     String productId = Uri.parse(deepLink.path.toString()).queryParameters['product_id'].toString();
+      child: MultiBlocWrapper(
+        child: GetMaterialApp(
+          title: 'Haji Market',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            //  fontFamily: 'Nunito',
+            primarySwatch: Colors.blue,
+          ),
+          home: MediaQuery.withNoTextScaling(
+            child: AppRouterBuilder(
+              createRouter: (context) => AppRouter(),
+              builder: (context, parser, delegate) => MaterialApp.router(
+                // builder: (context, child) => SizedBox(),
+                // backButtonDispatcher:RootBackButtonDispatcher(),
+                // routeInformationProvider: appRouter.routeInfoProvider(),
+                // routerConfig: appRouter.config(
+                //   deepLinkBuilder: (deepLink) async {
+                //     return DeepLink.single(DetailCardProductRoute(product: ProductModel()));
+                //     String bloggerId = Uri.parse(deepLink.path.toString()).queryParameters['blogger_id'].toString();
+                //     String productId = Uri.parse(deepLink.path.toString()).queryParameters['product_id'].toString();
 
-            //     String shopName = Uri.parse(deepLink.path.toString()).queryParameters['shop_name'].toString();
-            //     String index = Uri.parse(deepLink.path.toString()).queryParameters['index'].toString();
-            //     print(deepLink.path,);
-            //     print(shopName,);
-            //     print(index,);
-            //     // if (productId != '' && productId != 'null') {
-            //     //   print('wwww Success product');
-            //     //   GetStorage().write('deep_blogger_id', bloggerId);
-            //     //   GetStorage().write('deep_product_id', productId);
-            //     //   const baseUrl = 'https://lunamarket.ru/api';
+                //     String shopName = Uri.parse(deepLink.path.toString()).queryParameters['shop_name'].toString();
+                //     String index = Uri.parse(deepLink.path.toString()).queryParameters['index'].toString();
+                //     print(deepLink.path,);
+                //     print(shopName,);
+                //     print(index,);
+                //     // if (productId != '' && productId != 'null') {
+                //     //   print('wwww Success product');
+                //     //   GetStorage().write('deep_blogger_id', bloggerId);
+                //     //   GetStorage().write('deep_product_id', productId);
+                //     //   const baseUrl = 'https://lunamarket.ru/api';
 
-            //     //   final String? authToken = GetStorage().read('token');
+                //     //   final String? authToken = GetStorage().read('token');
 
-            //     //   final response = await http.get(
-            //     //     Uri.parse(
-            //     //       '$baseUrl/shop/show?id=$productId',
-            //     //     ),
-            //     //     headers: {"Authorization": "Bearer $authToken"},
-            //     //   );
+                //     //   final response = await http.get(
+                //     //     Uri.parse(
+                //     //       '$baseUrl/shop/show?id=$productId',
+                //     //     ),
+                //     //     headers: {"Authorization": "Bearer $authToken"},
+                //     //   );
 
-            //     //   if (response.statusCode == 200) {
-            //     //     final data = jsonDecode(response.body);
+                //     //   if (response.statusCode == 200) {
+                //     //     final data = jsonDecode(response.body);
 
-            //     //     product = ProductModel.fromJson(data['data']);
-            //     //     return DeepLink([DetailCardProductRoute(product: product!)]);
-            //     //     // Get.to(() => DetailCardProductPage(product: product!));
+                //     //     product = ProductModel.fromJson(data['data']);
+                //     //     return DeepLink([DetailCardProductRoute(product: product!)]);
+                //     //     // Get.to(() => DetailCardProductPage(product: product!));
 
-            //     //     // Get.snackbar('Промокод активирован',
-            //     //     //     'покупайте товары и получайте скидку от Блогера',
-            //     //     //     backgroundColor: Colors.blueAccent);
-            //     //   } else {
-            //     //     // Get.snackbar('Ошибка промокод', 'продукт или блогер не найден',
-            //     //     //     backgroundColor: Colors.redAccent);
-            //     //   }
-            //     // }
-            //     if (shopName != '' && shopName != 'null') {
+                //     //     // Get.snackbar('Промокод активирован',
+                //     //     //     'покупайте товары и получайте скидку от Блогера',
+                //     //     //     backgroundColor: Colors.blueAccent);
+                //     //   } else {
+                //     //     // Get.snackbar('Ошибка промокод', 'продукт или блогер не найден',
+                //     //     //     backgroundColor: Colors.redAccent);
+                //     //   }
+                //     // }
+                //     if (shopName != '' && shopName != 'null') {
 
-            //       return const DeepLink([LauncherRoute(children: [BasketRoute()])]);
-            //       // return DeepLink([
-            //       //   LauncherRoute(children: [
-            //       //     BaseTapeTab(children: [DetailTapeCardRoute(index: int.parse(index), shopName: shopName)])
-            //       //   ])
-            //       // ]);
-            //       // BlocProvider.of<NavigationCubit>(context)
-            //       //     .emit(DetailTapeState(int.parse(index), shopName));
-            //     } else {
-            //       return const DeepLink([LauncherRoute(children: [BasketRoute()])]);
-            //     }
-            //   },
-            // ),
+                //       return const DeepLink([LauncherRoute(children: [BasketRoute()])]);
+                //       // return DeepLink([
+                //       //   LauncherRoute(children: [
+                //       //     BaseTapeTab(children: [DetailTapeCardRoute(index: int.parse(index), shopName: shopName)])
+                //       //   ])
+                //       // ]);
+                //       // BlocProvider.of<NavigationCubit>(context)
+                //       //     .emit(DetailTapeState(int.parse(index), shopName));
+                //     } else {
+                //       return const DeepLink([LauncherRoute(children: [BasketRoute()])]);
+                //     }
+                //   },
+                // ),
 
-            routeInformationParser: parser,
-            routerDelegate: delegate,
-            // onGenerateTitle: (context) => context.localized.appTitle,
-            // theme: ThemeData.light(),
-            // darkTheme: ThemeData.dark(),
-            // themeMode: themeMode,
+                routeInformationParser: parser,
+                routerDelegate: delegate,
+                // onGenerateTitle: (context) => context.localized.appTitle,
+                // theme: ThemeData.light(),
+                // darkTheme: ThemeData.dark(),
+                // themeMode: themeMode,
+              ),
+            ),
           ),
         ),
       ),
-// const BaseAdmin()
-      // const SelectCountryPage()
     );
   }
 }
@@ -249,11 +259,16 @@ class MultiBlocWrapper extends StatelessWidget {
             create: (_) =>
                 RegisterCubit(registerRepository: RegisterRepository())),
         BlocProvider(
-            create: (_) => CatsCubit(listRepository: ListRepository())),
+          create: (_) => CatsCubit(
+            catsRepository: context.repository.catsRepository,
+          ),
+        ),
         BlocProvider(
             create: (_) => SubCatsCubit(subCatRepository: SubCatsRepository())),
         BlocProvider(
-            create: (_) => BannersCubit(listRepository: ListRepository())),
+            create: (_) => BannersCubit(
+                  bannersRepository: context.repository.bannersRepository,
+                )),
         BlocProvider(
             create: (_) => PopularShopsCubit(
                 popularShopsRepository: PopularShopsRepository())),

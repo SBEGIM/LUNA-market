@@ -10,7 +10,7 @@ import '../../../../drawer/data/bloc/sub_cats_state.dart';
 import '../../../../home/data/model/cats.dart';
 
 class SubCatsAdminPage extends StatefulWidget {
-  Cats? cats;
+  CatsModel? cats;
   SubCatsAdminPage({required this.cats, Key? key}) : super(key: key);
 
   @override
@@ -20,7 +20,7 @@ class SubCatsAdminPage extends StatefulWidget {
 class _SubCatsAdminPageState extends State<SubCatsAdminPage> {
   int _selectedIndex = -1;
   final int _selectedIndex2 = -1;
-  Cats? _cat;
+  CatsModel? _cat;
 
   @override
   void initState() {

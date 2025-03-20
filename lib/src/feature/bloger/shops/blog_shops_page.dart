@@ -4,13 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
-import 'package:haji_market/src/feature/home/data/bloc/meta_cubit.dart'
-    as metaCubit;
-import 'package:haji_market/src/feature/home/data/bloc/meta_state.dart'
-    as metaState;
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
+import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import '../../../core/common/constants.dart';
-import '../../home/data/bloc/popular_shops_cubit.dart';
-import '../../home/data/bloc/popular_shops_state.dart';
+import '../../home/bloc/popular_shops_cubit.dart';
+import '../../home/bloc/popular_shops_state.dart';
 import '../my_products_admin/presentation/ui/shop_products_page.dart';
 
 @RoutePage()

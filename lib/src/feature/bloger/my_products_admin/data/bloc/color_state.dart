@@ -7,7 +7,7 @@ class InitState extends ColorState {}
 class LoadingState extends ColorState {}
 
 class LoadedState extends ColorState {
-  List<Cats> cats;
+  List<CatsModel> cats;
   LoadedState(this.cats);
 }
 

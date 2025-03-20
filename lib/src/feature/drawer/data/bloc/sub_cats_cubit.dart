@@ -8,7 +8,7 @@ class SubCatsCubit extends Cubit<SubCatsState> {
   final SubCatsRepository subCatRepository;
 
   SubCatsCubit({required this.subCatRepository}) : super(InitState());
-  List<Cats> _subCats = [];
+  List<CatsModel> _subCats = [];
 
   Future<void> subCats(
     subCatId, {
@@ -17,13 +17,13 @@ class SubCatsCubit extends Cubit<SubCatsState> {
     try {
       emit(LoadingState());
 
-      final List<Cats> data = await subCatRepository.subCatApi(subCatId);
+      final List<CatsModel> data = await subCatRepository.subCatApi(subCatId);
 
       _subCats = data;
       if (isAddAllProducts == false) {
       } else {
         _subCats.insert(
-            0, Cats(id: 1, name: "Все товары", icon: 'cats/book.png'));
+            0, CatsModel(id: 1, name: "Все товары", icon: 'cats/book.png'));
       }
 
       emit(LoadedState(data));
@@ -42,7 +42,7 @@ class SubCatsCubit extends Cubit<SubCatsState> {
     if (_subCats.isEmpty) {
       await subCats(subCatId);
     }
-    List<Cats> temp = [];
+    List<CatsModel> temp = [];
     for (int i = 0; i < _subCats.length; i++) {
       if (_subCats[i].name != null &&
           _subCats[i].name!.toLowerCase().contains(cats.toLowerCase())) {
@@ -52,10 +52,10 @@ class SubCatsCubit extends Cubit<SubCatsState> {
     emit(LoadedState(temp));
   }
 
-  Future<Cats> subCatById(String id, String catId) async {
-    final List<Cats> data = await subCatRepository.subCatApi(id);
+  Future<CatsModel> subCatById(String id, String catId) async {
+    final List<CatsModel> data = await subCatRepository.subCatApi(id);
 
-    Cats cat = Cats(id: 0, name: 'Выберите тип');
+    CatsModel cat = CatsModel(id: 0, name: 'Выберите тип');
     for (int i = 0; i < data.length; i++) {
       if (data[i].id.toString() == catId) {
         cat = data[i];

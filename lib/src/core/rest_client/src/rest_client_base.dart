@@ -158,7 +158,7 @@ abstract base class RestClientBase implements IRestClient {
     if (body == null) return null;
 
     assert(
-      body is String || body is Map<String, Object?> || body is List<int>,
+      body is String || body is Map<String, Object?> || body is List,
       'Unexpected response body type: ${body.runtimeType}',
     );
 
@@ -171,6 +171,9 @@ abstract base class RestClientBase implements IRestClient {
               }
             : await _decodeString(str),
         final List<int> bytes => await _decodeBytes(bytes),
+        final List<dynamic> list => {
+            'data': list.cast<Map<String, dynamic>>(),
+          },
         _ => throw WrongResponseTypeException(
             message: 'Unexpected response: ${body.runtimeType}',
             statusCode: statusCode,

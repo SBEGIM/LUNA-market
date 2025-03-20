@@ -9,12 +9,12 @@ class SizeCubit extends Cubit<SizeState> {
 
   SizeCubit({required this.sizeRepository}) : super(InitState());
 
-  List<Cats> _colors = [];
+  List<CatsModel> _colors = [];
 
-  Future<List<Cats>?> sizes() async {
+  Future<List<CatsModel>?> sizes() async {
     try {
       emit(LoadingState());
-      final List<Cats> data = await sizeRepository.get();
+      final List<CatsModel> data = await sizeRepository.get();
       _colors = data;
       emit(LoadedState(data));
       return _colors;
@@ -34,7 +34,7 @@ class SizeCubit extends Cubit<SizeState> {
       // final List<City> data = await listRepository.cities();
       // _cities = data;
     }
-    Cats color = Cats(id: 0, name: 'Выберите цвет');
+    CatsModel color = CatsModel(id: 0, name: 'Выберите цвет');
     for (int i = 0; i < _colors.length; i++) {
       if (_colors[i].name == name) {
         color = _colors[i];

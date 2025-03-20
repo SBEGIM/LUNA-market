@@ -7,10 +7,8 @@ import 'package:haji_market/src/feature/bloger/auth/data/bloc/login_blogger_cubi
 import 'package:haji_market/src/feature/bloger/auth/data/bloc/login_blogger_state.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
-import 'package:haji_market/src/feature/home/data/bloc/meta_cubit.dart'
-    as metaCubit;
-import 'package:haji_market/src/feature/home/data/bloc/meta_state.dart'
-    as metaState;
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
+import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import '../../../auth/data/DTO/register_blogger_dto.dart';
 
 class BlogRequestPage extends StatefulWidget {

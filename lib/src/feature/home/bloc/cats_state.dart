@@ -1,4 +1,4 @@
-import '../model/cats.dart';
+import '../data/model/cats.dart';
 
 abstract class CatsState {}
 
@@ -7,7 +7,7 @@ class InitState extends CatsState {}
 class LoadingState extends CatsState {}
 
 class LoadedState extends CatsState {
-  List<Cats> cats;
+  List<CatsModel> cats;
   LoadedState(this.cats);
 }
 

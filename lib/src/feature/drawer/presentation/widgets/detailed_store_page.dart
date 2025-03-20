@@ -271,7 +271,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
                         .write('shopFilterId', _selectedListSort.toString());
 
                     context.router.push(ProductsRoute(
-                      cats: Cats(id: 0, name: ''),
+                      cats: CatsModel(id: 0, name: ''),
                       shopId: widget.shop.shop!.id.toString(),
                     ));
                     // Get.to(ProductsPage(

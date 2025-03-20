@@ -7,7 +7,7 @@ class InitState extends SizeState {}
 class LoadingState extends SizeState {}
 
 class LoadedState extends SizeState {
-  List<Cats> cats;
+  List<CatsModel> cats;
   LoadedState(this.cats);
 }
 

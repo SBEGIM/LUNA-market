@@ -1,4 +1,4 @@
-import '../model/banners.dart';
+import '../data/model/banners.dart';
 
 abstract class BannersState {}
 

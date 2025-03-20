@@ -15,18 +15,16 @@ import 'package:haji_market/src/feature/drawer/data/bloc/product_ad_state.dart'
     as productAdState;
 import 'package:haji_market/src/feature/drawer/presentation/widgets/advert_bottom_sheet.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
-import 'package:haji_market/src/feature/home/data/bloc/banners_cubit.dart'
+import 'package:haji_market/src/feature/home/bloc/banners_cubit.dart'
     as bannerCubit;
-import 'package:haji_market/src/feature/home/data/bloc/banners_state.dart'
+import 'package:haji_market/src/feature/home/bloc/banners_state.dart'
     as bannerState;
-import 'package:haji_market/src/feature/home/data/bloc/partner_cubit.dart'
+import 'package:haji_market/src/feature/home/bloc/partner_cubit.dart'
     as partnerCubit;
-import 'package:haji_market/src/feature/home/data/bloc/partner_state.dart'
+import 'package:haji_market/src/feature/home/bloc/partner_state.dart'
     as partnerState;
-import 'package:haji_market/src/feature/home/data/bloc/meta_cubit.dart'
-    as metaCubit;
-import 'package:haji_market/src/feature/home/data/bloc/meta_state.dart'
-    as metaState;
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
+import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import 'package:haji_market/src/feature/home/data/model/cats.dart';
 import 'package:haji_market/src/feature/home/presentation/widgets/gridLayout_popular.dart';
 import 'package:haji_market/src/feature/home/presentation/widgets/gridlayout_categor.dart';
@@ -38,10 +36,10 @@ import '../../../drawer/data/bloc/product_state.dart' as productState;
 import '../../../drawer/data/bloc/sub_cats_cubit.dart' as subCatCubit;
 import '../../../drawer/data/bloc/sub_cats_state.dart' as subCatState;
 import '../../../drawer/presentation/widgets/product_ad_card.dart';
-import '../../data/bloc/cats_cubit.dart' as catCubit;
-import '../../data/bloc/cats_state.dart' as catState;
-import '../../data/bloc/popular_shops_cubit.dart' as popShopsCubit;
-import '../../data/bloc/popular_shops_state.dart' as popShopsState;
+import '../../bloc/cats_cubit.dart' as catCubit;
+import '../../bloc/cats_state.dart' as catState;
+import '../../bloc/popular_shops_cubit.dart' as popShopsCubit;
+import '../../bloc/popular_shops_state.dart' as popShopsState;
 
 @RoutePage()
 class HomePage extends StatefulWidget {
@@ -1242,7 +1240,7 @@ class _PopularShopsState extends State<PopularShops> {
 
                                 // GetStorage().write('shopSelectedIndexSort', index);
                                 context.router.push(ProductsRoute(
-                                  cats: Cats(id: 0, name: ''),
+                                  cats: CatsModel(id: 0, name: ''),
                                   shopId:
                                       state.popularShops[index].id.toString(),
                                 ));

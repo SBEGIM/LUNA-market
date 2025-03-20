@@ -17,7 +17,7 @@ class ColorsAdminPage extends StatefulWidget {
 
 class _ColorsAdminPageState extends State<ColorsAdminPage> {
   int _selectedIndex = -1;
-  Cats? _cat;
+  CatsModel? _cat;
 
   @override
   void initState() {

@@ -11,7 +11,7 @@ import '../../../home/data/model/cats.dart';
 
 @RoutePage()
 class UnderCatalogPage extends StatefulWidget {
-  final Cats cats;
+  final CatsModel cats;
   const UnderCatalogPage({required this.cats, Key? key}) : super(key: key);
 
   @override

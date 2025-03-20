@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import '../../../home/data/bloc/cats_cubit.dart';
-import '../../../home/data/bloc/cats_state.dart';
+import '../../../home/bloc/cats_cubit.dart';
+import '../../../home/bloc/cats_state.dart';
 
 @RoutePage()
 class CatalogPage extends StatefulWidget {

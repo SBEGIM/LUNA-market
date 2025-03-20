@@ -2325,7 +2325,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         await BlocProvider.of<ProductCubit>(context).products();
 
                         context.router.push(ProductsRoute(
-                          cats: Cats(id: 0, name: ''),
+                          cats: CatsModel(id: 0, name: ''),
                           shopId: widget.product.shop!.id.toString(),
                         ));
                       } else if (index == 1) {
@@ -2339,7 +2339,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         await BlocProvider.of<ProductCubit>(context).products();
 
                         context.router.push(ProductsRoute(
-                            cats: Cats(id: 0, name: ''),
+                            cats: CatsModel(id: 0, name: ''),
                             brandId: widget.product.brandId));
                         // Get.to(() => ProductsPage(
                         //       cats: Cats(id: 0, name: ''),
@@ -2357,7 +2357,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         await BlocProvider.of<ProductCubit>(context).products();
 
                         context.router.push(ProductsRoute(
-                          cats: Cats(
+                          cats: CatsModel(
                               id: widget.product.catId,
                               name: widget.product.catName),
                         ));

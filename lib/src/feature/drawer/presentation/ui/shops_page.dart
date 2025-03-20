@@ -6,8 +6,8 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
 import 'package:haji_market/src/feature/home/data/model/cats.dart';
-import '../../../home/data/bloc/popular_shops_cubit.dart';
-import '../../../home/data/bloc/popular_shops_state.dart';
+import '../../../home/bloc/popular_shops_cubit.dart';
+import '../../../home/bloc/popular_shops_state.dart';
 
 @RoutePage()
 class ShopsPage extends StatefulWidget {
@@ -116,7 +116,7 @@ class _ShopsPageState extends State<ShopsPage> {
                               'shopFilterId', selectedListSort.toString());
                           // GetStorage().write('shopSelectedIndexSort', index);
                           context.router.push(ProductsRoute(
-                            cats: Cats(id: 0, name: ''),
+                            cats: CatsModel(id: 0, name: ''),
                             shopId: state.popularShops[index].id.toString(),
                           ));
                         },

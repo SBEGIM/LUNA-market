@@ -7,8 +7,8 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../../core/common/constants.dart';
 import '../../../app/widgets/custom_back_button.dart';
-import '../../../home/data/bloc/cats_cubit.dart';
-import '../../../home/data/bloc/cats_state.dart';
+import '../../../home/bloc/cats_cubit.dart';
+import '../../../home/bloc/cats_state.dart';
 import '../../../home/data/model/cats.dart';
 import 'package:haji_market/src/feature/drawer/data/bloc/sub_cats_cubit.dart'
     as subCatCubit;
@@ -25,8 +25,8 @@ class CategoriesPage extends StatefulWidget {
 class _CategoriesPageState extends State<CategoriesPage> {
   int _selectedIndex = -1;
   //int _selectedIndex2 = -1;
-  Cats? _subCat;
-  Cats? _cat;
+  CatsModel? _subCat;
+  CatsModel? _cat;
 
   final List<int> _selectedListIndex2 = [];
 

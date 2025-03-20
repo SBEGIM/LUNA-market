@@ -156,7 +156,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
 
                                 // await BlocProvider.of<ProductCubit>(context).products();
                                 context.router.push(ProductsRoute(
-                                    cats: Cats(
+                                    cats: CatsModel(
                                         id: 0,
                                         name: state.productModel[index].name),
                                     subCats: null));

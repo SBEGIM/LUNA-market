@@ -12,7 +12,7 @@ import '../../data/bloc/sub_cats_state.dart';
 
 @RoutePage()
 class SubCatalogPage extends StatefulWidget {
-  final Cats? cats;
+  final CatsModel? cats;
 
   const SubCatalogPage({Key? key, this.cats}) : super(key: key);
 
@@ -158,7 +158,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
 
                               context.router.push(ProductsRoute(
                                   cats: widget.cats ??
-                                      Cats(
+                                      CatsModel(
                                           id: widget.cats?.id ?? 0,
                                           name: widget.cats?.name ?? ''),
                                   subCats: state.cats[index]));

@@ -1,5 +1,5 @@
-class Cats {
-  Cats({
+class CatsModel {
+  CatsModel({
     int? id,
     String? name,
     String? icon,
@@ -19,7 +19,7 @@ class Cats {
     _updatedAt = updatedAt;
   }
 
-  Cats.fromJson(dynamic json) {
+  CatsModel.fromJson(dynamic json) {
     _id = json['id'];
     _name = json['name'];
     _icon = json['icon'];

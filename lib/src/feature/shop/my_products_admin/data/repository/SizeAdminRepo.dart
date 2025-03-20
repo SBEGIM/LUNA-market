@@ -9,15 +9,15 @@ const baseUrl = 'https://lunamarket.ru/api';
 class SizeAdminRepository {
   final SizeToApi _sizeToApi = SizeToApi();
 
-  Future<List<Cats>> get() => _sizeToApi.get();
+  Future<List<CatsModel>> get() => _sizeToApi.get();
 }
 
 class SizeToApi {
-  Future<List<Cats>> get() async {
+  Future<List<CatsModel>> get() async {
     final response = await http.get(Uri.parse('$baseUrl/list/sizes'));
 
     final data = jsonDecode(response.body);
 
-    return (data as List).map((e) => Cats.fromJson(e)).toList();
+    return (data as List).map((e) => CatsModel.fromJson(e)).toList();
   }
 }

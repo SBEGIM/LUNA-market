@@ -9,7 +9,7 @@ class LoadingState extends SubCatsState {}
 class NoDataState extends SubCatsState {}
 
 class LoadedState extends SubCatsState {
-  List<Cats> cats;
+  List<CatsModel> cats;
   LoadedState(this.cats);
 }
 

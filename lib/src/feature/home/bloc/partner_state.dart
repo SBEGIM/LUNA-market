@@ -1,4 +1,4 @@
-import '../model/partner_model.dart';
+import '../data/model/partner_model.dart';
 
 abstract class PartnerState {}
 

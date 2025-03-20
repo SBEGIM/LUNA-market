@@ -1,4 +1,4 @@
-import '../model/popular_shops_model.dart';
+import '../data/model/popular_shops_model.dart';
 
 abstract class PopularShopsState {}
 

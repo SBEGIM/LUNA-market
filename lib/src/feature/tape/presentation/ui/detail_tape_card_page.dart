@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/count_zero_dialog.dart';
-import 'package:haji_market/src/feature/home/data/bloc/meta_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
 import 'package:haji_market/src/feature/tape/presentation/data/bloc/tape_check_cubit.dart';
 import 'package:haji_market/src/feature/tape/presentation/data/repository/tape_repo.dart';
 import 'package:video_player/video_player.dart';
@@ -593,7 +593,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             selectedListSort.toString());
 
                                         context.router.push(ProductsRoute(
-                                          cats: Cats(id: 0, name: ''),
+                                          cats: CatsModel(id: 0, name: ''),
                                           shopId: state
                                               .tapeModel[index].shop!.id
                                               .toString(),
@@ -1030,7 +1030,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                             selectedListSort.toString());
 
                                         context.router.push(ProductsRoute(
-                                          cats: Cats(id: 0, name: ''),
+                                          cats: CatsModel(id: 0, name: ''),
                                           shopId: state
                                               .tapeModel[index].shop!.id
                                               .toString(),
