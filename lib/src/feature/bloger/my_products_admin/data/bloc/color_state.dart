@@ -1,0 +1,17 @@
+import 'package:haji_market/src/feature/home/data/model/cats.dart';
+
+abstract class ColorState {}
+
+class InitState extends ColorState {}
+
+class LoadingState extends ColorState {}
+
+class LoadedState extends ColorState {
+  List<Cats> cats;
+  LoadedState(this.cats);
+}
+
+class ErrorState extends ColorState {
+  String message;
+  ErrorState({required this.message});
+}

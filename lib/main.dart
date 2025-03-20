@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/features/app/presentaion/my_app.dart';
+import 'package:haji_market/src/feature/app/presentaion/my_app.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
@@ -63,7 +63,8 @@ void main() async {
 
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    NotificationSettings settings = await messaging.requestPermission(
+    // NotificationSettings settings =
+    await messaging.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
