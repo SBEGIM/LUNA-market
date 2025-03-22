@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -62,6 +63,9 @@ class _PaymentWebviewPageState extends State<PaymentWebviewPage> {
                 Icons.arrow_back_ios_new,
               ),
               onPressed: () {
+                // FIXME: Убрать getx
+                Get.back();
+                // TODO: этот виджет для магазина,блогера и клиента
                 context.router.pushAndPopUntil(
                   const LauncherRoute(
                     children: [BasketRoute()],

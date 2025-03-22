@@ -191,7 +191,7 @@ class _EditProductPageState extends State<EditProductPage> {
     isSwitchedBs = widget.product.pre_order == 1 ? true : false;
 
     // BlocProvider.of<ProductAdminCubit>(context)
-    articulController.text = widget.product.articul ?? '1';
+    articulController.text = widget.product.id.toString().padLeft(10, '0');
     priceController.text =
         widget.product.price != null ? widget.product.price.toString() : '0';
     compoundController.text = widget.product.compound != null

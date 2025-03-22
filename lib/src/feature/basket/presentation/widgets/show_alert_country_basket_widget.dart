@@ -154,13 +154,8 @@ Future<dynamic> showAlertCountryBasketWidget(
           //   },
           // ),
         ],
-        cancelButton: CupertinoActionSheetAction(
-          child: const Text(
-            'Выбрать',
-            style: TextStyle(
-                color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
-          ),
-          onPressed: () {
+        cancelButton: GestureDetector(
+          onTap: () {
             Get.back();
             // GetStorage().write('country', 'Казахстан');
             // GetStorage().write('user_country_id', countryId.toString());
@@ -172,6 +167,14 @@ Future<dynamic> showAlertCountryBasketWidget(
 
             showAlertCityBasketWidget(context, shop);
           },
+          child: CupertinoActionSheetAction(
+            child: const Text(
+              'Выбрать',
+              style: TextStyle(
+                  color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
+            ),
+            onPressed: () {},
+          ),
         ),
       );
     }),

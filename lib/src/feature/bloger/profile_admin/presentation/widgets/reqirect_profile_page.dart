@@ -44,6 +44,9 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     });
   }
 
+  bool _obscureText = true;
+  bool _obscureTextRepeat = true;
+
   @override
   void initState() {
     nameController.text = GetStorage().read('blogger_name') ?? '';
@@ -318,45 +321,65 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                             ),
                           ),
                           ListTile(
-                            leading: SvgPicture.asset(
-                              'assets/icons/password.svg',
-                              height: 24,
-                              width: 24,
-                            ),
-                            title: TextField(
-                              keyboardType: TextInputType.text,
-                              // inputFormatters: [maskFormatter],
-                              controller: passwordController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: ' Пароль',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
+                              leading: SvgPicture.asset(
+                                'assets/icons/password.svg',
+                                height: 24,
+                                width: 24,
                               ),
-                            ),
-                          ),
+                              title: TextField(
+                                keyboardType: TextInputType.text,
+                                // inputFormatters: [maskFormatter],
+                                controller: passwordController,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: ' Пароль',
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    // borderRadius: BorderRadius.circular(3),
+                                  ),
+                                ),
+                                obscureText: _obscureText,
+                              ),
+                              trailing: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _obscureText = !_obscureText;
+                                  });
+                                },
+                                child: Icon(_obscureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                              )),
                           ListTile(
-                            leading: SvgPicture.asset(
-                              'assets/icons/password.svg',
-                              height: 24,
-                              width: 24,
-                            ),
-                            title: TextField(
-                              keyboardType: TextInputType.text,
-                              // inputFormatters: [maskFormatter],
-                              controller: reapatPasswordController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Подтвердите пароль',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
+                              leading: SvgPicture.asset(
+                                'assets/icons/password.svg',
+                                height: 24,
+                                width: 24,
                               ),
-                            ),
-                          ),
+                              title: TextField(
+                                keyboardType: TextInputType.text,
+                                // inputFormatters: [maskFormatter],
+                                controller: reapatPasswordController,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Подтвердите пароль',
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    // borderRadius: BorderRadius.circular(3),
+                                  ),
+                                ),
+                                obscureText: _obscureTextRepeat,
+                              ),
+                              trailing: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _obscureTextRepeat = !_obscureTextRepeat;
+                                  });
+                                },
+                                child: Icon(_obscureTextRepeat
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                              )),
                         ],
                       ),
                     ),

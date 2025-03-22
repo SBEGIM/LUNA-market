@@ -181,13 +181,8 @@ Future<dynamic> showAlertCityBasketWidget(
           //   },
           // ),
         ],
-        cancelButton: CupertinoActionSheetAction(
-          child: const Text(
-            'Выбрать',
-            style: TextStyle(
-                color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
-          ),
-          onPressed: () async {
+        cancelButton: GestureDetector(
+          onTap: () async {
             // city != null ? GetStorage().write('country', country) : null;
             // Get.back();
             // if (!shop) {
@@ -221,6 +216,14 @@ Future<dynamic> showAlertCityBasketWidget(
 
             // callBack?.call();
           },
+          child: CupertinoActionSheetAction(
+            child: const Text(
+              'Выбрать',
+              style: TextStyle(
+                  color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
+            ),
+            onPressed: () async {},
+          ),
         ),
       );
     }),

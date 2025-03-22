@@ -237,6 +237,7 @@ class _ShowAdTypesAlertState extends State<ShowAdTypesAlert> {
             );
             final data = await BlocProvider.of<ProductAdminCubit>(context)
                 .ad(widget.product.id!, adPrice);
+
             load = false;
             setState(
               () {},

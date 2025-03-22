@@ -522,7 +522,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 //   height: 8,
                 // ),
                 Text(
-                  'Код товара: ${widget.product.id}',
+                  'Код товара: ${(widget.product.id).toString().padLeft(10, '0')}',
                   style: const TextStyle(
                       color: AppColors.kGray300,
                       fontSize: 12,
