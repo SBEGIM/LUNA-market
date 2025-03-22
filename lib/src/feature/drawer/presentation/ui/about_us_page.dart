@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/theme/resources.dart' show Assets;
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -46,16 +47,11 @@ class _AboutUsPageState extends State<AboutUsPage> {
           Container(
             padding: const EdgeInsets.only(top: 16, bottom: 4),
             color: Colors.white,
-            child: Center(
-              child: Image.asset(
-                'assets/images/appIcon.png',
-                height: 80,
-                width: 80,
-              ),
-            ),
+            child: Center(child: Assets.icons.appIconNewSvg.svg(height: 80)),
           ),
           Container(
-              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, bottom: 16, top: 10),
               color: Colors.white,
               child: Row(
                 children: const [

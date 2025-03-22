@@ -70,7 +70,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
@@ -98,295 +98,302 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         }
       }, builder: (context, state) {
         if (state is InitState) {
-          return ListView(
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              ListTile(
-                horizontalTitleGap: 12,
-                leading: GestureDetector(
-                  onTap: () {
-                    if (_image == null) {
-                      Get.defaultDialog(
-                          title: "Изменить фото",
-                          middleText: '',
-                          textConfirm: 'Камера',
-                          textCancel: 'Фото',
-                          titlePadding: const EdgeInsets.only(top: 40),
-                          onConfirm: () {
-                            change = true;
-                            setState(() {
-                              change;
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                ListTile(
+                  horizontalTitleGap: 12,
+                  leading: GestureDetector(
+                    onTap: () {
+                      if (_image == null) {
+                        Get.defaultDialog(
+                            title: "Изменить фото",
+                            middleText: '',
+                            textConfirm: 'Камера',
+                            textCancel: 'Фото',
+                            titlePadding: const EdgeInsets.only(top: 40),
+                            onConfirm: () {
+                              change = true;
+                              setState(() {
+                                change;
+                              });
+                              _getImage();
+                            },
+                            onCancel: () {
+                              change = false;
+                              setState(() {
+                                change;
+                              });
+                              _getImage();
                             });
-                            _getImage();
-                          },
-                          onCancel: () {
-                            change = false;
-                            setState(() {
-                              change;
-                            });
-                            _getImage();
-                          });
-                    }
-                  },
-                  child: Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(60),
-                        image: DecorationImage(
-                          image: _box.read('blogger_avatar') != null
-                              ? NetworkImage(
-                                  "https://lunamarket.ru/storage/${_box.read('blogger_avatar')}")
-                              : const AssetImage('assets/icons/profile2.png')
-                                  as ImageProvider,
-                          fit: BoxFit.cover,
-                        )),
+                      }
+                    },
+                    child: Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(60),
+                          image: DecorationImage(
+                            image: _box.read('blogger_avatar') != null
+                                ? NetworkImage(
+                                    "https://lunamarket.ru/storage/${_box.read('blogger_avatar')}")
+                                : const AssetImage('assets/icons/profile2.png')
+                                    as ImageProvider,
+                            fit: BoxFit.cover,
+                          )),
+                    ),
+                  ),
+                  title: Text(
+                    _box.read('blogger_nick_name') ?? 'Никнэйм не найден',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.kGray900,
+                        fontSize: 16),
                   ),
                 ),
-                title: Text(
-                  _box.read('blogger_nick_name') ?? 'Никнэйм не найден',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.kGray900,
-                      fontSize: 16),
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Divider(
-                color: AppColors.kGray700,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Чтобы поменять текущий пароль, необходимо сначала ввести старый правильно, а затем придумать новый',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.kGray300),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        children: [
-                          ListTile(
-                            leading: SvgPicture.asset(
-                              'assets/icons/user.svg',
-                              height: 24,
-                              width: 24,
-                            ),
-                            title: TextField(
-                              controller: nameController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Имя и фамилия',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                            ),
-                            // trailing: SvgPicture.asset(
-                            //   'assets/icons/delete_circle.svg',
-                            //   height: 24,
-                            //   width: 24,
-                            // ),
-                          ),
-                          ListTile(
-                            leading: Image.asset(
-                              'assets/icons/company.png',
-                              height: 24,
-                              width: 24,
-                            ),
-                            title: TextField(
-                              controller: nickNameController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Никнейм',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                            ),
-                            // trailing: SvgPicture.asset(
-                            //   'assets/icons/delete_circle.svg',
-                            //   height: 24,
-                            //   width: 24,
-                            // ),
-                          ),
-                          ListTile(
-                            leading: Image.asset(
-                              'assets/icons/check.png',
-                              height: 24,
-                              width: 24,
-                            ),
-                            title: TextField(
-                              controller: checkController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Счёт',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            leading: SvgPicture.asset(
-                              'assets/icons/phone.svg',
-                              height: 24,
-                              width: 24,
-                            ),
-                            title: TextField(
-                              keyboardType: TextInputType.phone,
-                              inputFormatters: [maskFormatter],
-                              controller: phoneController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: '+7(777) 777-71-18',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            leading: Image.asset(
-                              'assets/icons/bin.png',
-                              height: 24,
-                              width: 24,
-                            ),
-                            title: TextField(
-                              keyboardType: TextInputType.number,
-                              controller: iinController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'ИИН',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            leading: SvgPicture.asset(
-                              'assets/icons/street.svg',
-                              height: 24,
-                              width: 24,
-                            ),
-                            title: TextField(
-                              keyboardType: TextInputType.number,
-                              controller: socialNetworkController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Ссылка на соц сеть',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            leading: Image.asset(
-                              'assets/icons/email.png',
-                              height: 24,
-                              width: 24,
-                            ),
-                            title: TextField(
-                              keyboardType: TextInputType.number,
-                              controller: emailController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Email',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  // borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                              leading: SvgPicture.asset(
-                                'assets/icons/password.svg',
-                                height: 24,
-                                width: 24,
-                              ),
-                              title: TextField(
-                                keyboardType: TextInputType.text,
-                                // inputFormatters: [maskFormatter],
-                                controller: passwordController,
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: ' Пароль',
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    // borderRadius: BorderRadius.circular(3),
-                                  ),
-                                ),
-                                obscureText: _obscureText,
-                              ),
-                              trailing: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _obscureText = !_obscureText;
-                                  });
-                                },
-                                child: Icon(_obscureText
-                                    ? Icons.visibility_off
-                                    : Icons.visibility),
-                              )),
-                          ListTile(
-                              leading: SvgPicture.asset(
-                                'assets/icons/password.svg',
-                                height: 24,
-                                width: 24,
-                              ),
-                              title: TextField(
-                                keyboardType: TextInputType.text,
-                                // inputFormatters: [maskFormatter],
-                                controller: reapatPasswordController,
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Подтвердите пароль',
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    // borderRadius: BorderRadius.circular(3),
-                                  ),
-                                ),
-                                obscureText: _obscureTextRepeat,
-                              ),
-                              trailing: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _obscureTextRepeat = !_obscureTextRepeat;
-                                  });
-                                },
-                                child: Icon(_obscureTextRepeat
-                                    ? Icons.visibility_off
-                                    : Icons.visibility),
-                              )),
-                        ],
+                const Divider(
+                  color: AppColors.kGray700,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Чтобы поменять текущий пароль, необходимо сначала ввести старый правильно, а затем придумать новый',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.kGray300),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: SvgPicture.asset(
+                                'assets/icons/user.svg',
+                                height: 24,
+                                width: 24,
+                              ),
+                              title: TextField(
+                                controller: nameController,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Имя и фамилия',
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    // borderRadius: BorderRadius.circular(3),
+                                  ),
+                                ),
+                              ),
+                              // trailing: SvgPicture.asset(
+                              //   'assets/icons/delete_circle.svg',
+                              //   height: 24,
+                              //   width: 24,
+                              // ),
+                            ),
+                            ListTile(
+                              leading: Image.asset(
+                                'assets/icons/company.png',
+                                height: 24,
+                                width: 24,
+                              ),
+                              title: TextField(
+                                controller: nickNameController,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Никнейм',
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    // borderRadius: BorderRadius.circular(3),
+                                  ),
+                                ),
+                              ),
+                              // trailing: SvgPicture.asset(
+                              //   'assets/icons/delete_circle.svg',
+                              //   height: 24,
+                              //   width: 24,
+                              // ),
+                            ),
+                            ListTile(
+                              leading: Image.asset(
+                                'assets/icons/check.png',
+                                height: 24,
+                                width: 24,
+                              ),
+                              title: TextField(
+                                controller: checkController,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Счёт',
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    // borderRadius: BorderRadius.circular(3),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              leading: SvgPicture.asset(
+                                'assets/icons/phone.svg',
+                                height: 24,
+                                width: 24,
+                              ),
+                              title: TextField(
+                                keyboardType: TextInputType.phone,
+                                inputFormatters: [maskFormatter],
+                                controller: phoneController,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: '+7(777) 777-71-18',
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    // borderRadius: BorderRadius.circular(3),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              leading: Image.asset(
+                                'assets/icons/bin.png',
+                                height: 24,
+                                width: 24,
+                              ),
+                              title: TextField(
+                                keyboardType: TextInputType.number,
+                                controller: iinController,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'ИИН',
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    // borderRadius: BorderRadius.circular(3),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              leading: SvgPicture.asset(
+                                'assets/icons/street.svg',
+                                height: 24,
+                                width: 24,
+                              ),
+                              title: TextField(
+                                keyboardType: TextInputType.number,
+                                controller: socialNetworkController,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Ссылка на соц сеть',
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    // borderRadius: BorderRadius.circular(3),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              leading: Image.asset(
+                                'assets/icons/email.png',
+                                height: 24,
+                                width: 24,
+                              ),
+                              title: TextField(
+                                keyboardType: TextInputType.number,
+                                controller: emailController,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Email',
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    // borderRadius: BorderRadius.circular(3),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                                leading: SvgPicture.asset(
+                                  'assets/icons/password.svg',
+                                  height: 24,
+                                  width: 24,
+                                ),
+                                title: TextField(
+                                  keyboardType: TextInputType.text,
+                                  // inputFormatters: [maskFormatter],
+                                  controller: passwordController,
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: ' Пароль',
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                      // borderRadius: BorderRadius.circular(3),
+                                    ),
+                                  ),
+                                  obscureText: _obscureText,
+                                ),
+                                trailing: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _obscureText = !_obscureText;
+                                    });
+                                  },
+                                  child: Icon(_obscureText
+                                      ? Icons.visibility_off
+                                      : Icons.visibility),
+                                )),
+                            ListTile(
+                                leading: SvgPicture.asset(
+                                  'assets/icons/password.svg',
+                                  height: 24,
+                                  width: 24,
+                                ),
+                                title: TextField(
+                                  keyboardType: TextInputType.text,
+                                  // inputFormatters: [maskFormatter],
+                                  controller: reapatPasswordController,
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Подтвердите пароль',
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                      // borderRadius: BorderRadius.circular(3),
+                                    ),
+                                  ),
+                                  obscureText: _obscureTextRepeat,
+                                ),
+                                trailing: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _obscureTextRepeat = !_obscureTextRepeat;
+                                    });
+                                  },
+                                  child: Icon(_obscureTextRepeat
+                                      ? Icons.visibility_off
+                                      : Icons.visibility),
+                                )),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 100,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           );
         } else {
           return const Center(

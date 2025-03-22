@@ -29,26 +29,11 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
     'Ноябрь',
     'Декабрь',
   ];
-  int year = 2023;
+  int year = 2025;
   int _selectIndex = -1;
-  final int _SelectSecondIndex = -1;
-  int _summBonus = 0;
+  int _summConfirm = 0;
+  int _summFreeze = 0;
   int _summBonusYear = 0;
-
-  incrementSumm(List<int> Bonus) {
-    Bonus.forEach((element) {
-      _summBonus += element;
-    });
-
-    setState(() {});
-  }
-
-  incrementSummYear(List<int> Bonus) {
-    Bonus.forEach((element) {
-      _summBonusYear += element;
-    });
-    setState(() {});
-  }
 
   @override
   void initState() {
@@ -158,10 +143,13 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                       BlocProvider.of<ProfileMonthStaticsBloggerCubit>(context)
                           .statics(_selectIndex + 1, year);
 
-                      _summBonus = 0;
+                      _summConfirm = 0;
+                      _summFreeze = 0;
+
                       setState(() {
                         _selectIndex;
-                        _summBonus;
+                        _summFreeze;
+                        _summConfirm;
                       });
                     },
                     child: Padding(
@@ -213,13 +201,15 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
               listener: (context, state) {
                 if (state is LoadedState) {
                   if (state.loadedProfile.isNotEmpty) {
-                    // _summBonus = state.loadedProfile.first.total ?? 0;
                     _summBonusYear = state.loadedProfile.first.totalYear ?? 0;
-                    incrementSumm(state.loadedProfile.map((e) {
-                      return e.bonus ?? 1;
-                    }).toList());
+                    state.loadedProfile.map((e) {
+                      if (e.status == 'CONFIRMED') {
+                        _summConfirm += e.price ?? 0;
+                      } else {
+                        _summFreeze += e.price ?? 0;
+                      }
+                    }).toList();
                   }
-                  print(state.loadedProfile.first.totalYear);
                   setState(() {});
                 }
               },
@@ -354,7 +344,26 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                     'Мой заработок',
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   ),
-                  Text('$_summBonus ₽',
+                  Text('$_summConfirm ₽',
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w400)),
+                ],
+              ),
+            ),
+            const SizedBox(height: 4),
+            Container(
+              height: 36,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(6)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'В замарозке',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                  ),
+                  Text('$_summFreeze ₽',
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w400)),
                 ],

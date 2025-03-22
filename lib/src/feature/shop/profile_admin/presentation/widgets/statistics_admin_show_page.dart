@@ -33,22 +33,14 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
     'Ноябрь',
     'Декабрь',
   ];
-  int year = 2024;
+  int year = 2025;
   int _selectIndex = -1;
-  final int _SelectSecondIndex = -1;
-  int _summBonus = 0;
+  int _summConfirm = 0;
+  int _summFreeze = 0;
+
   int _total = 0;
 
   Function? summPrice;
-
-  incrementSumm(List<int> bonuses) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      bonuses.forEach((element) {
-        _summBonus += element;
-      });
-      setState(() {});
-    });
-  }
 
   @override
   void initState() {
@@ -158,9 +150,11 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                   return GestureDetector(
                     onTap: () {
                       _selectIndex = index;
-                      _summBonus = 0;
+                      _summConfirm = 0;
+                      _summFreeze = 0;
                       setState(() {
-                        _summBonus;
+                        _summConfirm;
+                        _summFreeze;
                         _selectIndex;
                       });
                       BlocProvider.of<ProfileMonthStaticsAdminCubit>(context)
@@ -218,9 +212,17 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
               listener: (context, state) {
                 // if (state is LoadedState) {}
                 if (state is LoadedState) {
-                  incrementSumm(
-                      state.loadedProfile.map((e) => e.price ?? 1).toList());
+                  _total = state.loadedProfile.first.total ?? 0;
+
+                  state.loadedProfile.map((e) {
+                    if (e.status == 'CONFIRMED') {
+                      _summConfirm += e.price ?? 0;
+                    } else {
+                      _summFreeze += e.price ?? 0;
+                    }
+                  }).toList();
                 }
+                setState(() {});
               },
               builder: (context, state) {
                 if (state is LoadedState) {
@@ -340,7 +342,25 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                     'Мой заработок',
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   ),
-                  Text('$_summBonus ₽',
+                  Text('$_summConfirm ₽',
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w400)),
+                ],
+              ),
+            ),
+            Container(
+              height: 36,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(6)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'В заморозке',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                  ),
+                  Text('$_summFreeze ₽',
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w400)),
                 ],

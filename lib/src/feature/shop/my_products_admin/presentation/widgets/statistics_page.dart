@@ -32,7 +32,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
     'Декабрь',
   ];
   int _summBonus = 0;
-  int year = 2023;
+  int year = 2025;
   int _selectIndex = -1;
 
   @override

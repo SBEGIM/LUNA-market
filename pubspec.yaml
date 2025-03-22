@@ -5,7 +5,7 @@ description: A new Flutter project.
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 4.3.4+1
+version: 4.3.5+1
 
 environment:
   # sdk: ">=2.19.0"
@@ -101,6 +101,7 @@ dev_dependencies:
   freezed: ^2.3.2
   lint: ^2.6.1
   change_app_package_name: ^1.4.0
+  flutter_launcher_icons: ^0.14.3
 
 
 
@@ -109,9 +110,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
   generate: false
 
@@ -123,31 +121,13 @@ flutter:
     - assets/images/png/
     - assets/images/webp/
     - assets/lottie/
+
   fonts:
     - family: Nunito
       fonts:
         - asset: fonts/Nunito-Italic-VariableFont_wght.ttf
         - asset: fonts/Nunito-VariableFont_wght.ttf
           style: italic
-
-flutter_icons:
-  android: "launcher_icon"
-  ios: true 
-  image_path: "assets/icons/luna_market_logo.png"
-  min_sdk_android: 21 # android min sdk min:16, default 21
-  web:
-    generate: true
-    image_path: "assets/icons/luna_market_logo.png"
-    background_color: "#hexcode"
-    theme_color: "#hexcode"
-  windows:
-    generate: true
-    image_path: "assets/icons/luna_market_logo.png"
-    icon_size: 48 # min:48, max:256, default: 48
-  macos:
-    generate: true
-    image_path: "assets/icons/luna_market_logo.png"
-    # - assets/translations/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -183,6 +163,7 @@ flutter_icons:
 
 flutter_gen:
   output: lib/src/core/constant/generated
+  package_parameter_enabled: true
   line_length: 120
   integrations:
     flutter_svg: true

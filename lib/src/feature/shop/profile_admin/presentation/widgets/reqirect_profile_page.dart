@@ -116,7 +116,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.kWhite,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
@@ -639,11 +639,10 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                                 ? Icons.visibility_off
                                 : Icons.visibility),
                           )),
-
-                      const SizedBox(height: 100),
                     ],
                   ),
                 ),
+                const SizedBox(height: 100),
               ],
             ),
           )

@@ -8,6 +8,7 @@ class ProfileMonthStatics {
     int? bonusPercent,
     int? bonus,
     int? total,
+    String? status,
   }) {
     _id = id;
     _name = name;
@@ -17,6 +18,7 @@ class ProfileMonthStatics {
     _bonusPercent = bonusPercent;
     _bonus = bonus;
     _total = total;
+    _status = status;
   }
 
   ProfileMonthStatics.fromJson(dynamic json) {
@@ -28,6 +30,7 @@ class ProfileMonthStatics {
     _bonusPercent = json['bonus_percent'];
     _bonus = json['bonus'];
     _total = json['total'];
+    _status = json['status'];
   }
   int? _id;
   String? _name;
@@ -37,6 +40,7 @@ class ProfileMonthStatics {
   int? _bonusPercent;
   int? _bonus;
   int? _total;
+  String? _status;
 
   int? get id => _id;
   String? get name => _name;
@@ -46,6 +50,7 @@ class ProfileMonthStatics {
   int? get bonusPercent => _bonusPercent;
   int? get bonus => _bonus;
   int? get total => _total;
+  String? get status => _status;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -57,6 +62,7 @@ class ProfileMonthStatics {
     map['bonus_percent'] = _bonusPercent;
     map['bonus'] = _bonus;
     map['total'] = _total;
+    map['status'] = _status;
     return map;
   }
 }

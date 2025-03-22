@@ -164,28 +164,26 @@ Future<dynamic> showAlertAddressWidget(
             ),
             onPressed: () {},
           ),
-          CupertinoActionSheetAction(
-            child: const Text(
-              'Добавить новый адрес',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16),
-            ),
-            onPressed: () {
+          GestureDetector(
+            onTap: () {
               // showAlertAddWidget(context, product);
               Navigator.pop(context);
               showAlertStoreWidget(context);
             },
+            child: CupertinoActionSheetAction(
+              child: const Text(
+                'Добавить новый адрес',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16),
+              ),
+              onPressed: () {},
+            ),
           ),
         ],
-        cancelButton: CupertinoActionSheetAction(
-          child: const Text(
-            'Выбрать',
-            style: TextStyle(
-                color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
-          ),
-          onPressed: () {
+        cancelButton: GestureDetector(
+          onTap: () {
             country != null ? GetStorage().write('country', country) : null;
             city != null ? GetStorage().write('city', city) : null;
             street != null ? GetStorage().write('street', street) : null;
@@ -199,6 +197,14 @@ Future<dynamic> showAlertAddressWidget(
             // Get.to(() => new BasketOrderAddressPage());
             callBack?.call();
           },
+          child: CupertinoActionSheetAction(
+            child: const Text(
+              'Выбрать',
+              style: TextStyle(
+                  color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
+            ),
+            onPressed: () {},
+          ),
         ),
       );
     }),

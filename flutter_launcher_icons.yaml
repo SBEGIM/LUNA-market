@@ -1,0 +1,17 @@
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app_logo_new.jpg"
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: "assets/icons/app_logo_new.jpg"
+    background_color: "#FFFFFF"  # Specify a valid hex code
+    theme_color: "#000000"       # Specify a valid hex code
+  windows:
+    generate: true
+    image_path: "assets/icons/app_logo_new.jpg"
+    icon_size: 48
+  macos:
+    generate: true
+    image_path: "assets/icons/app_logo_new.jpg"
