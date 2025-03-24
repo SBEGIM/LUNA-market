@@ -14,7 +14,7 @@ class MetasPage extends StatefulWidget {
 }
 
 class _MetasPageState extends State<MetasPage> {
-  String htmlText = '''<h1>AppFlowyEditor</h1>
+  String htmlText = r"""<h1>AppFlowyEditor</h1>
 <h2>👋 <strong>Welcome to</strong> <strong><em><a href="appflowy.io">AppFlowy Editor</a></em></strong></h2>
   <p>AppFlowy Editor is a <strong>highly customizable</strong> <em>rich-text editor</em></p>
 <hr />
@@ -55,7 +55,7 @@ class _MetasPageState extends State<MetasPage> {
   <label for="option2">Option 2</label>
   <input type="checkbox" id="option3"> 
   <label for="option3">Option 3</label>
-  ''';
+  """;
 
   bool load = false;
 
@@ -133,8 +133,8 @@ class _MetasPageState extends State<MetasPage> {
                     await Share.share("$baseUrl/pdf/$type");
                   })
             ]),
-        body: CustomScrollView(slivers: [
-          Html(data: widget.body),
-        ]));
+        body: SingleChildScrollView(
+          child: Html(data: widget.body),
+        ));
   }
 }
