@@ -26,10 +26,23 @@ Future<dynamic> showAlertCityBasketWidget(
       return CustomCupertinoActionSheet(
         actions: <Widget>[
           CupertinoActionSheetAction(
-            child: const Text(
-              'Выберите город для СДЕК',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+            isDefaultAction: false,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Выберите город',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w400),
+                ),
+                GestureDetector(
+                  onTap: () => Get.back(),
+                  child: Icon(
+                    Icons.close,
+                    color: AppColors.kDark,
+                  ),
+                )
+              ],
             ),
             onPressed: () {},
           ),
@@ -48,12 +61,14 @@ Future<dynamic> showAlertCityBasketWidget(
                         padding: const EdgeInsets.all(8),
                         child: CupertinoTextField(
                           controller: controller,
+                          placeholder: 'Поиск городов ...',
                           onChanged: (value) {
                             BlocProvider.of<CityCubit>(context)
                                 .searchCdekCity(value);
                           },
                         ),
                       ),
+                      SizedBox(height: 10),
                       Container(
                         constraints: BoxConstraints(
                             maxHeight:
