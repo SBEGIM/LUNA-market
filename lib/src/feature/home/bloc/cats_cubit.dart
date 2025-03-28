@@ -1,9 +1,7 @@
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:haji_market/src/feature/home/data/repository/cats_repository.dart';
-
-import '../data/model/cats.dart';
+import '../data/model/cat_model.dart';
 import 'cats_state.dart';
 
 class CatsCubit extends Cubit<CatsState> {

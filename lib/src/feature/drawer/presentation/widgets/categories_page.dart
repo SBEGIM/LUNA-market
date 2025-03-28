@@ -9,10 +9,10 @@ import '../../../../core/common/constants.dart';
 import '../../../app/widgets/custom_back_button.dart';
 import '../../../home/bloc/cats_cubit.dart';
 import '../../../home/bloc/cats_state.dart';
-import '../../../home/data/model/cats.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/sub_cats_cubit.dart'
+import '../../../home/data/model/cat_model.dart';
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart'
     as subCatCubit;
-import 'package:haji_market/src/feature/drawer/data/bloc/sub_cats_state.dart'
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart'
     as subCatState;
 
 class CategoriesPage extends StatefulWidget {

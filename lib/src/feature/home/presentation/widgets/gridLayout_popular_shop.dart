@@ -11,32 +11,31 @@ class GridLayoutPopularShop {
   });
 }
 
-List<GridLayoutPopularShop> optionsPopularshop = [
-  GridLayoutPopularShop(
-    title: 'Technodom',
-    icon: 'assets/images/reclama.png',
-  ),
-  GridLayoutPopularShop(
-    title: 'Magnum',
-    icon: 'assets/images/reclama.png',
-  ),
-  GridLayoutPopularShop(
-    title: 'Alser',
-    icon: 'assets/images/reclama.png',
-  ),
-  GridLayoutPopularShop(
-    title: 'Sulpak',
-    icon: 'assets/images/reclama.png',
-  ),
-  GridLayoutPopularShop(
-    title: 'Мечта',
-    icon: 'assets/images/reclama.png',
-  ),
-  GridLayoutPopularShop(
-    title: 'Small',
-    icon: 'assets/images/reclama.png',
-  ),
-];
+//   GridLayoutPopularShop(
+//     title: 'Technodom',
+//     icon: 'assets/images/reclama.png',
+//   ),
+//   GridLayoutPopularShop(
+//     title: 'Magnum',
+//     icon: 'assets/images/reclama.png',
+//   ),
+//   GridLayoutPopularShop(
+//     title: 'Alser',
+//     icon: 'assets/images/reclama.png',
+//   ),
+//   GridLayoutPopularShop(
+//     title: 'Sulpak',
+//     icon: 'assets/images/reclama.png',
+//   ),
+//   GridLayoutPopularShop(
+//     title: 'Мечта',
+//     icon: 'assets/images/reclama.png',
+//   ),
+//   GridLayoutPopularShop(
+//     title: 'Small',
+//     icon: 'assets/images/reclama.png',
+//   ),
+// ];
 
 class GridOptionsPopularShop extends StatelessWidget {
   final GridLayoutPopularShop? layout;

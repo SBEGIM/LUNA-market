@@ -8,7 +8,7 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/country_cubit.dart'
+import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart'
     as countryCubit;
 import '../../basket/presentation/widgets/show_alert_country_widget.dart';
 

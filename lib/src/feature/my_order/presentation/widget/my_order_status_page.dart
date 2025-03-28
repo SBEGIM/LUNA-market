@@ -14,8 +14,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import '../../../shop/my_orders_admin/data/bloc/order_status_admin_cubit.dart';
 import '../../../chat/presentation/message.dart';
-import '../../../drawer/data/bloc/basket_cubit.dart';
-import '../../../drawer/data/bloc/review_cubit.dart';
+import '../../../basket/bloc/basket_cubit.dart';
+import '../../../drawer/bloc/review_cubit.dart';
 
 class MyOrderStatusPage extends StatefulWidget {
   final BasketOrderModel basketOrder;

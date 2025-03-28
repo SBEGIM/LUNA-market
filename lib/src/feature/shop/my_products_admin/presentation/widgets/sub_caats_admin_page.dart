@@ -5,9 +5,9 @@ import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 
 import '../../../../app/widgets/custom_back_button.dart';
-import '../../../../drawer/data/bloc/sub_cats_cubit.dart';
-import '../../../../drawer/data/bloc/sub_cats_state.dart';
-import '../../../../home/data/model/cats.dart';
+import '../../../../drawer/bloc/sub_cats_cubit.dart';
+import '../../../../drawer/bloc/sub_cats_state.dart';
+import '../../../../home/data/model/cat_model.dart';
 
 class SubCatsAdminPage extends StatefulWidget {
   CatsModel? cats;

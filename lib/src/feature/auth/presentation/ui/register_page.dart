@@ -13,8 +13,8 @@ import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../../app/widgets/scroll_wrapper.dart';
 import '../../data/DTO/register.dart';
-import '../../data/bloc/sms_cubit.dart';
-import '../../data/bloc/sms_state.dart';
+import '../../bloc/sms_cubit.dart';
+import '../../bloc/sms_state.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);

@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:haji_market/src/feature/home/bloc/partner_state.dart';
 import 'package:haji_market/src/feature/home/data/model/partner_model.dart';
-import '../data/repository/partner_repo.dart';
+import '../data/repository/partner_repository..dart';
 
 class PartnerCubit extends Cubit<PartnerState> {
   final PartnerRepository partnerRepository;

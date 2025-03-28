@@ -5,9 +5,9 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/city_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
 
-import '../../data/bloc/city_state.dart';
+import '../../bloc/city_state.dart';
 
 class CityPage extends StatefulWidget {
   const CityPage({Key? key}) : super(key: key);

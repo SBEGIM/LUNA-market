@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_cupertino_action_sheet.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/city_cubit.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/city_state.dart';
+import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/city_state.dart';
 import '../../../shop/profile_admin/data/bloc/profile_edit_admin_cubit.dart';
 import '../../../../core/common/constants.dart';
-import '../../../auth/data/bloc/login_cubit.dart';
+import '../../../auth/bloc/login_cubit.dart';
 
 Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
   int? city;

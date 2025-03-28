@@ -1,9 +1,8 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:haji_market/src/feature/home/data/model/banner_model.dart';
 import 'package:haji_market/src/feature/home/data/repository/banner_repository.dart';
-import '../data/model/banners.dart';
-import '../data/repository/cats_repo.dart';
 import 'banners_state.dart';
 
 class BannersCubit extends Cubit<BannersState> {
@@ -14,7 +13,7 @@ class BannersCubit extends Cubit<BannersState> {
   Future<void> banners() async {
     try {
       emit(LoadingState());
-      final List<Banners> data = await bannersRepository.getBanners();
+      final List<BannerModel> data = await bannersRepository.getBanners();
 
       emit(LoadedState(data));
     } catch (e) {

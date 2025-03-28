@@ -7,8 +7,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_cupertino_action_sheet.dart';
 import 'package:haji_market/src/feature/basket/presentation/ui/map_picker.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/city_cubit.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/city_state.dart';
+import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/city_state.dart';
 import '../../../../core/common/constants.dart';
 
 Future<dynamic> showAlertCityBasketWidget(

@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import '../../data/bloc/product_cubit.dart';
+import '../../../product/cubit/product_cubit.dart';
 
 class SortingPage extends StatefulWidget {
   const SortingPage({Key? key}) : super(key: key);

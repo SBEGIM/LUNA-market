@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/feature/bloger/my_products_admin/data/bloc/blogger_product_statistics_state.dart';
-import 'package:haji_market/src/feature/drawer/presentation/ui/products_page.dart';
+import 'package:haji_market/src/feature/product/presentation/widgets/chip_date_widget.dart';
 
 import '../../../../../core/common/constants.dart';
 import '../../data/bloc/blogger_product_statistics_cubit.dart';

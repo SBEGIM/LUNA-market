@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-
-import '../../../../home/data/model/cats.dart';
+import '../../../../home/data/model/cat_model.dart';
 
 const baseUrl = 'https://lunamarket.ru/api';
 

@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../../core/common/constants.dart';
-import '../../data/bloc/shops_drawer_cubit.dart';
-import '../../data/bloc/shops_drawer_state.dart';
+import '../../bloc/shops_drawer_cubit.dart';
+import '../../bloc/shops_drawer_state.dart';
 
 class ShopsFiltrPage extends StatefulWidget {
   const ShopsFiltrPage({Key? key}) : super(key: key);

@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_cupertino_action_sheet.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_city_basket_widget.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/city_cubit.dart'
+import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart'
     as cityCubit;
-import 'package:haji_market/src/feature/drawer/data/bloc/country_state.dart';
+import 'package:haji_market/src/feature/drawer/bloc/country_state.dart';
 import '../../../../core/common/constants.dart';
-import '../../../drawer/data/bloc/country_cubit.dart';
+import '../../../drawer/bloc/country_cubit.dart';
 
 Future<dynamic> showAlertCountryBasketWidget(
     BuildContext context, Function()? callBack, bool shop) async {

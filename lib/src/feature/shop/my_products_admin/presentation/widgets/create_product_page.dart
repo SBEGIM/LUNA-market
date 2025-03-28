@@ -10,7 +10,6 @@ import 'package:haji_market/src/feature/shop/my_products_admin/data/bloc/last_ar
 import 'package:haji_market/src/feature/shop/my_products_admin/data/bloc/size_cubit.dart';
 import 'package:haji_market/src/feature/shop/my_products_admin/presentation/widgets/brands_admin_page.dart';
 import 'package:haji_market/src/feature/shop/my_products_admin/presentation/widgets/colors_admin_page.dart';
-import 'package:haji_market/src/feature/bloger/blogger_ad.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
@@ -18,8 +17,8 @@ import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../app/widgets/custom_back_button.dart';
-import '../../../../home/data/model/cats.dart';
-import '../../../../home/data/model/characteristics.dart';
+import '../../../../home/data/model/cat_model.dart';
+import '../../../../home/data/model/characteristic_model.dart';
 import '../../data/DTO/color_count_dto.dart';
 import '../../data/DTO/optom_price_dto.dart';
 import '../../data/bloc/characteristics_cubit.dart';
@@ -89,13 +88,13 @@ class _CreateProductPageState extends State<CreateProductPage> {
   List<sizeCountDto> sizeCount = [];
   List<CatsModel>? mockSizes = [];
 
-  List<Characteristics>? characteristics = [];
-  List<Characteristics>? characteristicsValue = [];
-  Characteristics? characteristicsValuelast;
+  List<CharacteristicsModel>? characteristics = [];
+  List<CharacteristicsModel>? characteristicsValue = [];
+  CharacteristicsModel? characteristicsValuelast;
 
-  List<Characteristics>? subCharacteristics = [];
-  List<Characteristics>? subCharacteristicsValue = [];
-  Characteristics? subCharacteristicsValueLast;
+  List<CharacteristicsModel>? subCharacteristics = [];
+  List<CharacteristicsModel>? subCharacteristicsValue = [];
+  CharacteristicsModel? subCharacteristicsValueLast;
 
   String characteristicName = '';
   String characteristicId = '';
@@ -786,7 +785,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                               PopupMenuButton(
                                                 onSelected: (value) async {
                                                   characteristicsValuelast =
-                                                      Characteristics(
+                                                      CharacteristicsModel(
                                                           id: value.id,
                                                           key: value.key);
                                                   //sizeId = value.id.toString();
@@ -871,7 +870,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                               PopupMenuButton(
                                                 onSelected: (value) {
                                                   subCharacteristicsValueLast =
-                                                      Characteristics(
+                                                      CharacteristicsModel(
                                                           id: value.id,
                                                           value: value.value);
 
@@ -941,13 +940,15 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                 }
 
                                 if (!exists) {
-                                  characteristicsValue!.add(Characteristics(
-                                      id: characteristicsValuelast!.id!,
-                                      key: characteristicsValuelast!.key));
-                                  subCharacteristicsValue!.add(Characteristics(
-                                      id: subCharacteristicsValueLast!.id!,
-                                      value:
-                                          subCharacteristicsValueLast!.value));
+                                  characteristicsValue!.add(
+                                      CharacteristicsModel(
+                                          id: characteristicsValuelast!.id!,
+                                          key: characteristicsValuelast!.key));
+                                  subCharacteristicsValue!.add(
+                                      CharacteristicsModel(
+                                          id: subCharacteristicsValueLast!.id!,
+                                          value: subCharacteristicsValueLast!
+                                              .value));
 
                                   setState(() {});
                                 } else {

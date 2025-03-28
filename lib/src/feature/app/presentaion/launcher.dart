@@ -17,8 +17,8 @@ import 'package:haji_market/src/feature/shop/my_orders_admin/presentation/widget
 import 'package:haji_market/src/feature/bloger/admin_app/presentation/base_blogger_new.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/drawer/data/models/product_model.dart';
-import 'package:haji_market/src/feature/tape/presentation/data/bloc/tape_cubit.dart';
+import 'package:haji_market/src/feature/product/data/model/product_model.dart';
+import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
 import 'package:http/http.dart' as http;
 import 'package:haji_market/src/feature/app/presentaion/base_new.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_loading_widget.dart';

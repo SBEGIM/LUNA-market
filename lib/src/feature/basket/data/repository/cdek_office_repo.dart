@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/src/feature/basket/data/DTO/cdek_office_old_model.dart';
+import 'package:haji_market/src/feature/basket/data/models/cdek_office_old_model.dart';
 import 'package:http/http.dart' as http;
 
 const baseUrl = 'https://lunamarket.ru/api';

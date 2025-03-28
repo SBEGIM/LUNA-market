@@ -19,8 +19,8 @@ class CdekOfficeModel {
     bool? allowedCod,
     List<OfficeImageList>? officeImageList,
     List<WorkTimeList>? workTimeList,
-    double? weightMin,
-    double? weightMax,
+    int? weightMin,
+    int? weightMax,
     Location? location,
     bool? fulfillment,
   }) {
@@ -109,8 +109,8 @@ class CdekOfficeModel {
   bool? _allowedCod;
   List<OfficeImageList>? _officeImageList;
   List<WorkTimeList>? _workTimeList;
-  double? _weightMin;
-  double? _weightMax;
+  int? _weightMin;
+  int? _weightMax;
   Location? _location;
   bool? _fulfillment;
 
@@ -133,8 +133,8 @@ class CdekOfficeModel {
   bool? get allowedCod => _allowedCod;
   List<OfficeImageList>? get officeImageList => _officeImageList;
   List<WorkTimeList>? get workTimeList => _workTimeList;
-  double? get weightMin => _weightMin;
-  double? get weightMax => _weightMax;
+  int? get weightMin => _weightMin;
+  int? get weightMax => _weightMax;
   Location? get location => _location;
   bool? get fulfillment => _fulfillment;
 

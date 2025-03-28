@@ -1,17 +1,14 @@
 import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/app/presentaion/base.dart';
-import 'package:haji_market/src/feature/tape/presentation/data/bloc/tape_cubit.dart';
+import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
 import 'package:haji_market/src/feature/tape/presentation/widgets/tape_card_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
-import '../data/bloc/tape_state.dart';
+import '../../bloc/tape_state.dart';
 import '../widgets/anim_search_widget.dart';
 
 @RoutePage()

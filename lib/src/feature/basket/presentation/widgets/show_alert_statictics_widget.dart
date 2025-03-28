@@ -6,8 +6,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_cupertino_action_sheet.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_statictics_edit_destroy_widget.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_store_widget.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/address_cubit.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/address_state.dart';
+import 'package:haji_market/src/feature/drawer/bloc/address_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/address_state.dart';
 import '../../../../core/common/constants.dart';
 
 Future<dynamic> showAlertAddressWidget(
@@ -79,7 +79,7 @@ Future<dynamic> showAlertAddressWidget(
                                   ),
                                   const SizedBox(width: 6),
                                   SizedBox(
-                                    width: 300,
+                                    width: 280,
                                     child: Text(
                                       "${(state.addressModel[index].country ?? '*') + ', г. ' + (state.addressModel[index].city ?? '*') + ', ул. ' + (state.addressModel[index].street ?? '*') + ', дом ' + (state.addressModel[index].home ?? '*') + ',подъезд ' + (state.addressModel[index].porch ?? '*') + ',этаж ' + (state.addressModel[index].floor ?? '*') + ',кв ' + (state.addressModel[index].room ?? '*')}",
                                       style: const TextStyle(

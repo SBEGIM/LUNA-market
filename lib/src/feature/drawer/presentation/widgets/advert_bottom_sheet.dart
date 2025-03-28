@@ -8,7 +8,7 @@ import 'package:haji_market/src/core/utils/url_util.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_state.dart';
-import 'package:haji_market/src/feature/home/data/repository/popular_shops_repo.dart';
+import 'package:haji_market/src/feature/home/data/repository/popular_shops_repository.dart';
 
 class AdvertBottomSheet extends StatefulWidget {
   String? url;

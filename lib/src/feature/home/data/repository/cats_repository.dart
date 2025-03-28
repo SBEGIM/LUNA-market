@@ -1,4 +1,4 @@
-import 'package:haji_market/src/feature/home/data/model/cats.dart';
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/home/data/repository/cats_remote_ds.dart';
 
 abstract interface class ICatsRepository {

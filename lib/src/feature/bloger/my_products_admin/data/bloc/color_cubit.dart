@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
-import '../../../../home/data/model/cats.dart';
+import '../../../../home/data/model/cat_model.dart';
 import '../repository/color_admin_repo.dart';
 import 'color_state.dart';
 

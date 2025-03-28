@@ -10,17 +10,17 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_switch_button.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
 import 'package:haji_market/src/feature/chat/presentation/message.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/product_ad_cubit.dart'
+import 'package:haji_market/src/feature/product/cubit/product_ad_cubit.dart'
     as productAdCubit;
-import 'package:haji_market/src/feature/drawer/data/bloc/product_ad_state.dart'
+import 'package:haji_market/src/feature/product/cubit/product_ad_state.dart'
     as productAdState;
 import 'package:haji_market/src/feature/drawer/presentation/widgets/count_zero_dialog.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../../drawer/data/bloc/basket_cubit.dart';
-import '../../../drawer/data/bloc/basket_state.dart';
-import '../../../drawer/presentation/widgets/product_ad_card.dart';
-import '../../data/DTO/basketorder_dto.dart';
+import '../../bloc/basket_cubit.dart';
+import '../../bloc/basket_state.dart';
+import '../../../product/presentation/widgets/product_ad_card.dart';
+import '../../data/DTO/basket_order_dto.dart';
 
 @RoutePage()
 class BasketPage extends StatefulWidget {

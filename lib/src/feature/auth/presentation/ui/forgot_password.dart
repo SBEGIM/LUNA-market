@@ -6,11 +6,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
-import 'package:haji_market/src/feature/auth/data/bloc/sms_state.dart';
+import 'package:haji_market/src/feature/auth/bloc/sms_state.dart';
 
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 
-import '../../data/bloc/sms_cubit.dart';
+import '../../bloc/sms_cubit.dart';
 import '../widgets/login_forget_password_modal_bottom.dart';
 
 @RoutePage()

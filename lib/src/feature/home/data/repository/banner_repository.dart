@@ -1,9 +1,9 @@
 import 'package:haji_market/src/feature/home/data/repository/banners_remote_ds.dart';
 
-import '../model/banners.dart';
+import '../model/banner_model.dart';
 
 abstract interface class IBannersRepository {
-  Future<List<Banners>> getBanners();
+  Future<List<BannerModel>> getBanners();
 }
 
 class BannersRepositoryImpl implements IBannersRepository {
@@ -14,7 +14,7 @@ class BannersRepositoryImpl implements IBannersRepository {
   final IBannersRemoteDS _remoteDS;
 
   @override
-  Future<List<Banners>> getBanners() async {
+  Future<List<BannerModel>> getBanners() async {
     try {
       return await _remoteDS.getBanners();
     } catch (e) {

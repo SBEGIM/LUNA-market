@@ -7,17 +7,17 @@ import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/basket/data/DTO/cdek_office_old_model.dart';
-import 'package:haji_market/src/feature/basket/data/DTO/map_geo.dart';
-import 'package:haji_market/src/feature/basket/data/bloc/cdek_office_cubit.dart';
-import 'package:haji_market/src/feature/basket/data/bloc/cdek_office_state.dart';
+import 'package:haji_market/src/feature/basket/data/models/cdek_office_old_model.dart';
+import 'package:haji_market/src/feature/basket/data/DTO/map_geo_dto.dart';
+import 'package:haji_market/src/feature/basket/bloc/cdek_office_cubit.dart';
+import 'package:haji_market/src/feature/basket/bloc/cdek_office_state.dart';
 import 'package:haji_market/src/feature/basket/presentation/ui/basket_order_page.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import 'package:http/http.dart' as http;
 
 @RoutePage()
 class MapPickerPage extends StatefulWidget {
-  final MapGeo? mapGeo;
+  final MapGeoDTO? mapGeo;
   final int? cc;
   final double? lat;
   final double? long;

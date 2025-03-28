@@ -4,10 +4,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/product_cubit.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/profit_cubit.dart'
+import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/profit_cubit.dart'
     as profitCubit;
-import 'package:haji_market/src/feature/drawer/data/bloc/profit_state.dart'
+import 'package:haji_market/src/feature/drawer/bloc/profit_state.dart'
     as profitState;
 import 'package:haji_market/src/feature/drawer/presentation/widgets/pre_order_dialog.dart';
 import 'package:video_player/video_player.dart';
@@ -19,20 +19,20 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/basket_cubit.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/review_cubit.dart'
+import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/review_cubit.dart'
     as reviewProductCubit;
-import 'package:haji_market/src/feature/drawer/data/bloc/review_state.dart'
+import 'package:haji_market/src/feature/drawer/bloc/review_state.dart'
     as reviewProductState;
-import 'package:haji_market/src/feature/drawer/data/models/product_model.dart';
+import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/product_imags_page.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/specifications_page.dart';
-import 'package:haji_market/src/feature/home/data/model/cats.dart';
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../home/presentation/widgets/product_mb_interesting_card.dart';
 import '../../../home/presentation/widgets/product_watching_card.dart';
-import '../../data/bloc/favorite_cubit.dart';
-import '../../data/bloc/product_state.dart';
+import '../../../favorite/bloc/favorite_cubit.dart';
+import '../../../product/cubit/product_state.dart';
 
 @RoutePage()
 class DetailCardProductPage extends StatefulWidget {

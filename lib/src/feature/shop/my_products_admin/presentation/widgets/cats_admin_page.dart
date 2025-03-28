@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/sub_cats_cubit.dart'
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart'
     as subCatCubit;
 import '../../../../app/widgets/custom_back_button.dart';
 import '../../../../home/bloc/cats_cubit.dart';
 import '../../../../home/bloc/cats_state.dart';
-import '../../../../home/data/model/cats.dart';
+import '../../../../home/data/model/cat_model.dart';
 
 class CatsAdminPage extends StatefulWidget {
   const CatsAdminPage({Key? key}) : super(key: key);

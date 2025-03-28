@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:haji_market/src/feature/shop/my_products_admin/data/bloc/size_state.dart';
-import '../../../../home/data/model/cats.dart';
+import '../../../../home/data/model/cat_model.dart';
 import '../repository/SizeAdminRepo.dart';
 
 class SizeCubit extends Cubit<SizeState> {

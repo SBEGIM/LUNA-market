@@ -1,4 +1,4 @@
-import '../data/model/banners.dart';
+import '../data/model/banner_model.dart';
 
 abstract class BannersState {}
 
@@ -7,7 +7,7 @@ class InitState extends BannersState {}
 class LoadingState extends BannersState {}
 
 class LoadedState extends BannersState {
-  List<Banners> banners;
+  List<BannerModel> banners;
   LoadedState(this.banners);
 }
 

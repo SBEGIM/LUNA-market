@@ -3,8 +3,8 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/count_zero_dialog.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
-import 'package:haji_market/src/feature/tape/presentation/data/bloc/tape_check_cubit.dart';
-import 'package:haji_market/src/feature/tape/presentation/data/repository/tape_repo.dart';
+import 'package:haji_market/src/feature/tape/bloc/tape_check_cubit.dart';
+import 'package:haji_market/src/feature/tape/data/repository/tape_repository.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,18 +14,18 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
-import 'package:haji_market/src/feature/home/data/model/cats.dart';
-import 'package:haji_market/src/feature/tape/presentation/data/bloc/subs_cubit.dart';
-import 'package:haji_market/src/feature/tape/presentation/data/models/TapeModel.dart';
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
+import 'package:haji_market/src/feature/tape/bloc/subs_cubit.dart';
+import 'package:haji_market/src/feature/tape/data/models/tape_model.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 //import 'package:video_player/video_player.dart';
 import '../../../chat/presentation/message.dart';
-import '../../../drawer/data/bloc/basket_cubit.dart' as basCubit;
-import '../../../drawer/data/bloc/favorite_cubit.dart' as favCubit;
+import '../../../basket/bloc/basket_cubit.dart' as basCubit;
+import '../../../favorite/bloc/favorite_cubit.dart' as favCubit;
 import '../../../drawer/presentation/widgets/pre_order_dialog.dart';
-import '../data/bloc/tape_cubit.dart' as tapeCubit;
-import '../data/bloc/tape_state.dart' as tapeState;
+import '../../bloc/tape_cubit.dart' as tapeCubit;
+import '../../bloc/tape_state.dart' as tapeState;
 
 @RoutePage()
 class DetailTapeCardPage extends StatefulWidget implements AutoRouteWrapper {

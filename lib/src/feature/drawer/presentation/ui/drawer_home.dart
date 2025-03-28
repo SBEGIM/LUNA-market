@@ -8,7 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/auth/data/bloc/login_cubit.dart';
+import 'package:haji_market/src/feature/auth/bloc/login_cubit.dart';
 import 'package:haji_market/src/feature/drawer/presentation/ui/about_us_page.dart';
 import 'package:haji_market/src/feature/drawer/presentation/ui/top_menu.dart';
 import 'package:url_launcher/url_launcher.dart';

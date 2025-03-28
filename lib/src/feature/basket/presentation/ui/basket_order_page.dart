@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/order_cubit.dart'
+import 'package:haji_market/src/feature/drawer/bloc/order_cubit.dart'
     as orderCubit;
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
@@ -12,8 +12,8 @@ import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import 'package:share_plus/share_plus.dart';
 import '../../../../core/common/constants.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
-import '../../../drawer/data/bloc/basket_cubit.dart';
-import '../../../drawer/data/bloc/basket_state.dart';
+import '../../bloc/basket_cubit.dart';
+import '../../bloc/basket_state.dart';
 import '../../../drawer/presentation/widgets/credit_info_detail_page.dart';
 
 @RoutePage()

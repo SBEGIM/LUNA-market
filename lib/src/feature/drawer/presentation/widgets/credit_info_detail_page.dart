@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/respublic_cubit.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/respublic_state.dart';
+import 'package:haji_market/src/feature/drawer/bloc/respublic_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/respublic_state.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/credit_info_detail_show_page.dart';
 
 class CreditInfoDetailPage extends StatefulWidget {

@@ -5,10 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/product_cubit.dart';
-import 'package:haji_market/src/feature/drawer/data/models/product_model.dart';
-import 'package:haji_market/src/feature/home/data/model/cats.dart';
-import '../../../drawer/data/bloc/product_state.dart';
+import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
+import 'package:haji_market/src/feature/product/data/model/product_model.dart';
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
+import '../../../product/cubit/product_state.dart';
 
 @RoutePage()
 class SearchProductPage extends StatefulWidget {

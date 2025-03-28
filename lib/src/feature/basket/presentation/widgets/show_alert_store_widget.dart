@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/address_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/address_cubit.dart';
 import '../../../../core/common/constants.dart';
 import '../ui/basket_order_address_page.dart';
 

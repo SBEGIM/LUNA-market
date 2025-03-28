@@ -1,6 +1,6 @@
 import 'package:haji_market/src/core/rest_client/rest_client.dart';
 import 'package:haji_market/src/core/utils/talker_logger_util.dart';
-import 'package:haji_market/src/feature/home/data/model/cats.dart';
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 
 abstract interface class ICatsRemoteDS {
   Future<List<CatsModel>> getCats();

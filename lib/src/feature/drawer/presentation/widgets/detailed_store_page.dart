@@ -7,13 +7,13 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/review_cubit.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/review_state.dart';
-import 'package:haji_market/src/feature/home/data/model/cats.dart';
+import 'package:haji_market/src/feature/drawer/bloc/review_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/review_state.dart';
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/common/constants.dart';
 import '../../../chat/presentation/message.dart';
-import '../../data/models/product_model.dart';
+import '../../../product/data/model/product_model.dart';
 
 @RoutePage()
 class DetailStorePage extends StatefulWidget {

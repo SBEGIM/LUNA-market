@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 
-import '../../data/models/product_model.dart';
+import '../../../product/data/model/product_model.dart';
 
 class SpecificationsPage extends StatefulWidget {
   final ProductModel product;

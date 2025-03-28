@@ -8,8 +8,8 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import '../../data/bloc/sms_cubit.dart';
-import '../../data/bloc/sms_state.dart';
+import '../../bloc/sms_cubit.dart';
+import '../../bloc/sms_state.dart';
 
 class LoginForgotPasswordModalBottom extends StatefulWidget {
   final String textEditingController;

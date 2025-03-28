@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_cupertino_action_sheet.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_edit_widget.dart';
 
-import '../../../drawer/data/bloc/address_cubit.dart';
+import '../../../drawer/bloc/address_cubit.dart';
 
 Future<dynamic> showAlertEditDestroyWidget(BuildContext context, int id,
     country, city, street, home, floor, porch, room) async {

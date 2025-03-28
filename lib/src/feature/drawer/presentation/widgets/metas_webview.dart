@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:haji_market/src/feature/home/data/repository/popular_shops_repo.dart';
+import 'package:haji_market/src/feature/home/data/repository/popular_shops_repository.dart';
 import 'package:share_plus/share_plus.dart';
 
 class MetasPage extends StatefulWidget {

@@ -7,12 +7,12 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/categories_page.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/shops_filtr_page.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/sorting_page.dart';
-import '../../data/bloc/brand_cubit.dart';
-import '../../data/bloc/brand_state.dart';
-import '../../data/bloc/product_cubit.dart' as productCubit;
-import '../../data/bloc/product_state.dart' as productState;
-import '../../data/bloc/shops_drawer_cubit.dart' as shopsCubit;
-import '../../data/bloc/shops_drawer_state.dart' as shopsState;
+import '../../bloc/brand_cubit.dart';
+import '../../bloc/brand_state.dart';
+import '../../../product/cubit/product_cubit.dart' as productCubit;
+import '../../../product/cubit/product_state.dart' as productState;
+import '../../bloc/shops_drawer_cubit.dart' as shopsCubit;
+import '../../bloc/shops_drawer_state.dart' as shopsState;
 import 'brands_page.dart';
 
 class FilterPage extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:haji_market/src/feature/shop/my_products_admin/data/bloc/characteristics_state.dart';
-import '../../../../home/data/model/characteristics.dart';
+import '../../../../home/data/model/characteristic_model.dart';
 import '../repository/characteristic_admin_repo.dart';
 
 class CharacteristicsCubit extends Cubit<CharacteristicsState> {
@@ -9,12 +9,13 @@ class CharacteristicsCubit extends Cubit<CharacteristicsState> {
   CharacteristicsCubit({required this.characteristicRepository})
       : super(InitState());
 
-  List<Characteristics> _characteristics = [];
+  List<CharacteristicsModel> _characteristics = [];
 
-  Future<List<Characteristics>?> characteristic() async {
+  Future<List<CharacteristicsModel>?> characteristic() async {
     try {
       emit(LoadingState());
-      final List<Characteristics> data = await characteristicRepository.get();
+      final List<CharacteristicsModel> data =
+          await characteristicRepository.get();
       _characteristics = data;
       emit(LoadedState(data));
       return _characteristics;
@@ -24,10 +25,10 @@ class CharacteristicsCubit extends Cubit<CharacteristicsState> {
     return null;
   }
 
-  Future<List<Characteristics>?> subCharacteristic({id}) async {
+  Future<List<CharacteristicsModel>?> subCharacteristic({id}) async {
     try {
       emit(LoadingState());
-      final List<Characteristics> data =
+      final List<CharacteristicsModel> data =
           await characteristicRepository.subGet(id);
       _characteristics = data;
       emit(LoadedState(data));
@@ -47,8 +48,8 @@ class CharacteristicsCubit extends Cubit<CharacteristicsState> {
       // final List<City> data = await listRepository.cities();
       // _cities = data;
     }
-    Characteristics color =
-        Characteristics(id: 0, key: 'Выберите характеристику');
+    CharacteristicsModel color =
+        CharacteristicsModel(id: 0, key: 'Выберите характеристику');
     for (int i = 0; i < _characteristics.length; i++) {
       if (_characteristics[i].key == name) {
         color = _characteristics[i];

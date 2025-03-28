@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/product_cubit.dart';
+import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
 import '../../../../core/common/constants.dart';
-import '../../data/bloc/brand_cubit.dart';
-import '../../data/bloc/brand_state.dart';
+import '../../bloc/brand_cubit.dart';
+import '../../bloc/brand_state.dart';
 
 class BrandsPage extends StatefulWidget {
   const BrandsPage({Key? key}) : super(key: key);

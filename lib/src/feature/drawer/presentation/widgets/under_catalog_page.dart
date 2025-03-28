@@ -5,9 +5,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/sub_cats_cubit.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/sub_cats_state.dart';
-import '../../../home/data/model/cats.dart';
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart';
+import '../../../home/data/model/cat_model.dart';
 
 @RoutePage()
 class UnderCatalogPage extends StatefulWidget {

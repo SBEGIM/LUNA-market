@@ -1,4 +1,4 @@
-import '../../../../home/data/model/characteristics.dart';
+import '../../../../home/data/model/characteristic_model.dart';
 
 abstract class CharacteristicsState {}
 
@@ -7,7 +7,7 @@ class InitState extends CharacteristicsState {}
 class LoadingState extends CharacteristicsState {}
 
 class LoadedState extends CharacteristicsState {
-  List<Characteristics> characteristics;
+  List<CharacteristicsModel> characteristics;
   LoadedState(this.characteristics);
 }
 

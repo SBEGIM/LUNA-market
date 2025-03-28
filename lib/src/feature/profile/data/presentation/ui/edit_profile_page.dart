@@ -8,7 +8,7 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../../../app/widgets/custom_back_button.dart';
-import '../../../../auth/data/bloc/login_cubit.dart';
+import '../../../../auth/bloc/login_cubit.dart';
 
 class EditProfilePage extends StatefulWidget {
   final String name;

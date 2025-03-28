@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/favorite_cubit.dart';
+import 'package:haji_market/src/feature/favorite/bloc/favorite_cubit.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../../drawer/data/bloc/favorite_state.dart';
+import '../../bloc/favorite_state.dart';
 import 'favorite_products.dart';
 
 @RoutePage()

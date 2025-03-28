@@ -5,13 +5,13 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_country_basket_widget.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/address_cubit.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/country_cubit.dart'
+import 'package:haji_market/src/feature/drawer/bloc/address_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart'
     as countryCubit;
 import '../../../../core/common/constants.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
-import '../../../drawer/data/bloc/basket_cubit.dart';
-import '../../../drawer/data/bloc/basket_state.dart';
+import '../../bloc/basket_cubit.dart';
+import '../../bloc/basket_state.dart';
 import '../widgets/show_alert_statictics_widget.dart';
 
 @RoutePage()

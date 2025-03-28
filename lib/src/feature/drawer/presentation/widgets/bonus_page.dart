@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/bonus_cubit.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/bonus_state.dart';
+import 'package:haji_market/src/feature/drawer/bloc/bonus_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/bonus_state.dart';
 
 class BonusUserPage extends StatefulWidget {
   const BonusUserPage({Key? key}) : super(key: key);

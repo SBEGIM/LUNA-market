@@ -8,7 +8,7 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 
 import '../../../basket/presentation/widgets/show_alert_country_widget.dart';
-import '../../../drawer/data/bloc/country_cubit.dart' as countryCubit;
+import '../../../drawer/bloc/country_cubit.dart' as countryCubit;
 
 // ignore: unused_element
 const _tag = 'BaseNew';

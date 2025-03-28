@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/tape/presentation/data/bloc/tape_cubit.dart';
+import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:haji_market/src/feature/tape/presentation/data/models/TapeModel.dart';
+import 'package:haji_market/src/feature/tape/data/models/tape_model.dart';
 
 class TapeCardWidget extends StatefulWidget {
   final TapeModel tape;

@@ -1,20 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/shop/auth/data/DTO/register_admin_dto.dart';
 import 'package:haji_market/src/feature/shop/auth/data/bloc/register_admin_cubit.dart';
-
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
 import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
-import '../../../../home/data/model/cats.dart';
+import '../../../../home/data/model/cat_model.dart';
 import '../../../my_products_admin/presentation/widgets/cats_admin_page.dart';
 
 class CoopRequestPage extends StatefulWidget {

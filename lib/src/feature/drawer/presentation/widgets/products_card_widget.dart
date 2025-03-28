@@ -5,10 +5,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/basket_cubit.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/favorite_cubit.dart';
-import 'package:haji_market/src/feature/drawer/data/models/product_model.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/product_cubit.dart'
+import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
+import 'package:haji_market/src/feature/favorite/bloc/favorite_cubit.dart';
+import 'package:haji_market/src/feature/product/data/model/product_model.dart';
+import 'package:haji_market/src/feature/product/cubit/product_cubit.dart'
     as productCubit;
 
 class ProductCardWidget extends StatefulWidget {

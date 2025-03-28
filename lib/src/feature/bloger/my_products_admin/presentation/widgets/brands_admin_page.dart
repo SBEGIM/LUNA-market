@@ -4,9 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import '../../../../app/widgets/custom_back_button.dart';
-import '../../../../drawer/data/bloc/brand_cubit.dart';
-import '../../../../drawer/data/bloc/brand_state.dart';
-import '../../../../home/data/model/cats.dart';
+import '../../../../drawer/bloc/brand_cubit.dart';
+import '../../../../drawer/bloc/brand_state.dart';
+import '../../../../home/data/model/cat_model.dart';
 
 class BrandsAdminPage extends StatefulWidget {
   const BrandsAdminPage({Key? key}) : super(key: key);

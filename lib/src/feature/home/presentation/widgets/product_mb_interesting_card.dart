@@ -4,9 +4,9 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
-import 'package:haji_market/src/feature/drawer/data/models/product_model.dart';
+import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 
-import '../../../drawer/data/bloc/favorite_cubit.dart';
+import '../../../favorite/bloc/favorite_cubit.dart';
 
 class ProductMbInterestingCard extends StatefulWidget {
   final ProductModel product;

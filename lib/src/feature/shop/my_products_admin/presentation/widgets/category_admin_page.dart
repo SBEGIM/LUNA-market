@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/feature/shop/my_products_admin/presentation/widgets/create_product_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/drawer/data/bloc/sub_cats_cubit.dart'
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart'
     as subCatCubit;
-import 'package:haji_market/src/feature/drawer/data/bloc/sub_cats_state.dart'
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart'
     as subCatState;
 
 import '../../../../app/widgets/custom_back_button.dart';
 import '../../../../home/bloc/cats_cubit.dart';
 import '../../../../home/bloc/cats_state.dart';
-import '../../../../home/data/model/cats.dart';
+import '../../../../home/data/model/cat_model.dart';
 
 class CategoryAdminPage extends StatefulWidget {
   const CategoryAdminPage({Key? key}) : super(key: key);

@@ -6,7 +6,7 @@ import 'package:haji_market/src/feature/shop/my_products_admin/data/bloc/color_c
 import 'package:haji_market/src/core/common/constants.dart';
 import '../../../../shop/my_products_admin/data/bloc/color_state.dart';
 import '../../../../app/widgets/custom_back_button.dart';
-import '../../../../home/data/model/cats.dart';
+import '../../../../home/data/model/cat_model.dart';
 
 class ColorsAdminPage extends StatefulWidget {
   const ColorsAdminPage({Key? key}) : super(key: key);

@@ -1,4 +1,4 @@
-import '../data/model/cats.dart';
+import '../data/model/cat_model.dart';
 
 abstract class CatsState {}
 

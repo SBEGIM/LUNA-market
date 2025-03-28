@@ -5,7 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
-import 'package:haji_market/src/feature/home/data/model/cats.dart';
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import '../../../home/bloc/popular_shops_cubit.dart';
 import '../../../home/bloc/popular_shops_state.dart';
 
