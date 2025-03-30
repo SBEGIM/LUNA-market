@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/tape_card_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
-import '../../../my_orders_admin/presentation/widgets/tape_card_widget.dart';
-import '../../data/cubit/tape_blogger_cubit.dart';
-import '../../data/cubit/tape_blogger_state.dart';
+import '../../bloc/tape_blogger_cubit.dart';
+import '../../bloc/tape_blogger_state.dart';
 
 // import '../widgets/grid_tape_list.dart';
 @RoutePage()

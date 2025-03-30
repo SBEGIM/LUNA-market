@@ -12,7 +12,7 @@ import 'package:haji_market/src/feature/my_order/presentation/widget/cancel_orde
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:timeline_tile/timeline_tile.dart';
-import '../../../shop/my_orders_admin/data/bloc/order_status_admin_cubit.dart';
+import '../../../seller/order/bloc/order_status_seller_cubit.dart';
 import '../../../chat/presentation/message.dart';
 import '../../../basket/bloc/basket_cubit.dart';
 import '../../../drawer/bloc/review_cubit.dart';
@@ -516,8 +516,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             'end')
                                           const SizedBox()
                                         else
-                                          BlocConsumer<OrderStatusAdminCubit,
-                                                  OrderStatusAdminState>(
+                                          BlocConsumer<OrderStatusSellerCubit,
+                                                  OrderStatusSellerState>(
                                               listener: (context, state) {
                                             if (state is LoadedState) {
                                               BlocProvider.of<BasketCubit>(
@@ -548,7 +548,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                     );
                                                   } else {
                                                     BlocProvider.of<
-                                                                OrderStatusAdminCubit>(
+                                                                OrderStatusSellerCubit>(
                                                             context)
                                                         .basketStatus(
                                                             'end',
@@ -1549,8 +1549,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             'end')
                                           const SizedBox()
                                         else
-                                          BlocConsumer<OrderStatusAdminCubit,
-                                                  OrderStatusAdminState>(
+                                          BlocConsumer<OrderStatusSellerCubit,
+                                                  OrderStatusSellerState>(
                                               listener: (context, state) {
                                             if (state is LoadedState) {
                                               BlocProvider.of<BasketCubit>(
@@ -1581,7 +1581,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                     );
                                                   } else {
                                                     BlocProvider.of<
-                                                                OrderStatusAdminCubit>(
+                                                                OrderStatusSellerCubit>(
                                                             context)
                                                         .basketStatus(
                                                             'end',

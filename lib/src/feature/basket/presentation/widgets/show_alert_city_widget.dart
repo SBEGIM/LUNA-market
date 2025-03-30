@@ -5,7 +5,7 @@ import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_cupertino_action_sheet.dart';
 import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/city_state.dart';
-import '../../../shop/profile_admin/data/bloc/profile_edit_admin_cubit.dart';
+import '../../../seller/profile/data/bloc/profile_edit_admin_cubit.dart';
 import '../../../../core/common/constants.dart';
 import '../../../auth/bloc/login_cubit.dart';
 

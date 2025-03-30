@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
-import 'package:haji_market/src/feature/shop/my_orders_admin/data/bloc/order_status_admin_cubit.dart';
+import 'package:haji_market/src/feature/seller/order/bloc/order_status_seller_cubit.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
 
@@ -163,7 +163,7 @@ class _CancelOrderWidgetState extends State<CancelOrderWidget> {
           )
         ],
       ),
-      bottomSheet: BlocConsumer<OrderStatusAdminCubit, OrderStatusAdminState>(
+      bottomSheet: BlocConsumer<OrderStatusSellerCubit, OrderStatusSellerState>(
           listener: (context, state) {
         if (state is CancelState) {
           int count = 0;
@@ -171,7 +171,7 @@ class _CancelOrderWidgetState extends State<CancelOrderWidget> {
           BlocProvider.of<BasketCubit>(context).basketOrderShow();
           Get.snackbar('Заказ', 'Заказ успешно отменен',
               backgroundColor: Colors.blueAccent);
-          BlocProvider.of<OrderStatusAdminCubit>(context).toInitState();
+          BlocProvider.of<OrderStatusSellerCubit>(context).toInitState();
         }
       }, builder: (context, state) {
         return Container(
@@ -185,7 +185,7 @@ class _CancelOrderWidgetState extends State<CancelOrderWidget> {
                 Get.snackbar('Ошибка', 'Выберите причину отказа!',
                     backgroundColor: Colors.red);
               } else {
-                BlocProvider.of<OrderStatusAdminCubit>(context)
+                BlocProvider.of<OrderStatusSellerCubit>(context)
                     .cancelOrder(widget.id, 'cancel', cancel[selectIndex]);
               }
             },

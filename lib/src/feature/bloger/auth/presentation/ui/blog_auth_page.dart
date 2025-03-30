@@ -8,8 +8,8 @@ import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../data/bloc/login_blogger_cubit.dart';
-import '../../data/bloc/login_blogger_state.dart';
+import '../../bloc/login_blogger_cubit.dart';
+import '../../bloc/login_blogger_state.dart';
 
 class BlogAuthPage extends StatefulWidget {
   const BlogAuthPage({Key? key}) : super(key: key);

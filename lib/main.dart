@@ -7,7 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/config.dart';
 import 'package:haji_market/src/core/utils/refined_logger.dart';
-import 'package:haji_market/src/feature/app/presentaion/my_app.dart';
+import 'package:haji_market/src/feature/app/presentation/my_app.dart';
 import 'package:haji_market/src/feature/initialization/logic/composition_root.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
