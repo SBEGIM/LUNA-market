@@ -87,7 +87,7 @@ import '../../seller/chat/data/repository/message_seller_repository.dart';
 import '../../seller/product/bloc/characteristic_seller_cubit.dart';
 import '../../seller/product/bloc/color_seller_cubit.dart';
 import '../../seller/product/bloc/delete_image_seller_cubit.dart';
-import '../../seller/product/bloc/product_seller_cubit.dart';
+// import '../../seller/product/bloc/product_seller_cubit.dart';
 import '../../seller/product/bloc/statistic_product_seller_cubit.dart';
 import '../../seller/product/data/repository/product_seller_repository.dart';
 import '../../seller/product/data/repository/statistic_product_seller_repository.dart';
@@ -289,9 +289,9 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
             create: (_) => LoginSellerCubit(
                 loginAdminRepository: LoginSellerRepository())),
-        BlocProvider(
-            create: (_) => ProductSellerCubit(
-                productAdminRepository: ProductSellerRepository())),
+        // BlocProvider(
+        //     create: (_) => ProductSellerCubit(
+        //         productAdminRepository: ProductSellerRepository())),
         BlocProvider(
             create: (_) =>
                 BasketSellerCubit(basketRepository: BasketSellerRepository())),
@@ -458,7 +458,7 @@ class MultiBlocWrapper extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => SizeSellerCubit(
-            sizeRepository: ProductSellerRepository(),
+            sizeRepository: SizeSellerRepository(),
           ),
         ),
         BlocProvider(

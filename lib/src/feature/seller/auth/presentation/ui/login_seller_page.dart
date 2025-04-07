@@ -9,7 +9,7 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 
 class LoginSellerPage extends StatefulWidget {
-  const LoginSellerPage({Key? key}) : super(key: key);
+  const LoginSellerPage({super.key});
 
   @override
   State<LoginSellerPage> createState() => _LoginSellerPageState();
@@ -58,8 +58,7 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
         body: BlocConsumer<LoginSellerCubit, LoginSellerState>(
             listener: (context, state) {
           if (state is LoadedState) {
-            context.router
-                .push(RegisterShopRoute(shopName: nameController.text));
+            context.router.push(InitSellerRoute(shopName: nameController.text));
             // Navigator.push(
             //   context,
             //   MaterialPageRoute(
@@ -165,7 +164,7 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    context.router.push(const ForgotPasswordAdminRoute());
+                    context.router.push(const ForgotPasswordSellerRoute());
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(

@@ -19,7 +19,7 @@ import '../widgets/bonus_page.dart';
 
 @RoutePage()
 class DrawerPage extends StatefulWidget {
-  const DrawerPage({Key? key}) : super(key: key);
+  const DrawerPage({super.key});
 
   @override
   State<DrawerPage> createState() => _DrawerPageState();
@@ -250,7 +250,7 @@ class _DrawerPageState extends State<DrawerPage> {
                         ? BlocProvider.of<AppBloc>(context).add(
                             const AppEvent.chageState(
                                 state: AppState.inAppAdminState()))
-                        : context.router.push(AdminAuthRoute());
+                        : context.router.push(AuthSellerRoute());
                   },
                   child: const DrawerListTile(
                     text: 'Кабинет продавца',

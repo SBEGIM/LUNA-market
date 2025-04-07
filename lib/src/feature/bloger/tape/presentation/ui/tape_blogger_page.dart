@@ -11,7 +11,7 @@ import '../../bloc/tape_blogger_state.dart';
 // import '../widgets/grid_tape_list.dart';
 @RoutePage()
 class TapeBloggerPage extends StatefulWidget {
-  const TapeBloggerPage({Key? key}) : super(key: key);
+  const TapeBloggerPage({super.key});
 
   @override
   State<TapeBloggerPage> createState() => _TapeBloggerPageState();
@@ -137,7 +137,7 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
                                 borderRadius: BorderRadius.circular(12),
                                 color: Colors.grey.withOpacity(0.6),
                               ),
-                              child: BloggerTapeCardWidget(
+                              child: BloggerTapeCardPage(
                                 tape: state.tapeModel[index],
                                 index: index,
                               )));

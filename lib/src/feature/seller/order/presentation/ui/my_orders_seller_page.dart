@@ -4,11 +4,10 @@ import 'package:haji_market/src/feature/seller/order/presentation/widgets/all_or
 import 'package:haji_market/src/feature/seller/order/presentation/widgets/done_order_seller_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import '../../../../app/widgets/custom_switch_button.dart';
-import '../widgets/all_orders_real_fbs_seller_page.dart';
 
 @RoutePage()
 class MyOrdersSellerPage extends StatefulWidget {
-  const MyOrdersSellerPage({Key? key}) : super(key: key);
+  const MyOrdersSellerPage({super.key});
 
   @override
   State<MyOrdersSellerPage> createState() => _MyOrdersSellerPageState();

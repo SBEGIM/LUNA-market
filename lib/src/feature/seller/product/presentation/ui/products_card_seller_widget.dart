@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:haji_market/src/feature/seller/product/bloc/product_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/data/models/product_seller_model.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:share_plus/share_plus.dart';
 import '../widgets/show_alert_statictics_seller_widget.dart';
 
-class ProductCardSellerWidget extends StatefulWidget {
+class ProductCardSellerPage extends StatefulWidget {
   final ProductSellerModel product;
 
-  const ProductCardSellerWidget({required this.product, Key? key})
-      : super(key: key);
+  ProductSellerCubit cubit;
+  BuildContext context;
+
+  ProductCardSellerPage(
+      {required this.product,
+      required this.context,
+      required this.cubit,
+      super.key});
 
   @override
-  State<ProductCardSellerWidget> createState() =>
-      _ProductCardSellerWidgetState();
+  State<ProductCardSellerPage> createState() => _ProductCardSellerPageState();
 }
 
-class _ProductCardSellerWidgetState extends State<ProductCardSellerWidget> {
+class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
   int count = 0;
   bool isvisible = false;
   bool inFavorite = false;
@@ -352,8 +358,8 @@ class _ProductCardSellerWidgetState extends State<ProductCardSellerWidget> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            await showAlertStaticticsSellerWidget(
-                                context, widget.product);
+                            showProductOptions(
+                                widget.context, widget.product, widget.cubit);
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(

@@ -13,7 +13,7 @@ import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart'
 import '../../basket/presentation/widgets/show_alert_country_widget.dart';
 
 // ignore: unused_element
-const _tag = 'BaseNew';
+const _tag = 'Base';
 
 class Base extends StatefulWidget {
   final int? index;

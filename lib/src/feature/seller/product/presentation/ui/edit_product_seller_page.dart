@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,6 +13,7 @@ import 'package:haji_market/src/feature/seller/product/bloc/delete_image_seller_
     as deleteImageCubit;
 import 'package:haji_market/src/feature/seller/product/bloc/product_seller_state.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/size_seller_cubit.dart';
+import 'package:haji_market/src/feature/seller/product/data/repository/product_seller_repository.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/sub_cats_seller_page.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/ui/blogger_ad_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
@@ -29,13 +31,23 @@ import '../widgets/brand_seller_page.dart';
 import '../widgets/cats_seller_page.dart';
 import '../widgets/colors_seller_page.dart';
 
-class EditProductSellerPage extends StatefulWidget {
+@RoutePage()
+class EditProductSellerPage extends StatefulWidget implements AutoRouteWrapper {
   final ProductSellerModel product;
-  const EditProductSellerPage({required this.product, Key? key})
-      : super(key: key);
+  const EditProductSellerPage({required this.product, super.key});
 
   @override
   State<EditProductSellerPage> createState() => _EditProductSellerPageState();
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          ProductSellerCubit(productAdminRepository: ProductSellerRepository())
+            ..products(''),
+      child: this,
+    );
+  }
 }
 
 class _EditProductSellerPageState extends State<EditProductSellerPage> {

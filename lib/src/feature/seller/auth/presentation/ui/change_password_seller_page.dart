@@ -6,17 +6,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/sms_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/sms_seller_state.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
+import 'package:haji_market/src/feature/seller/auth/presentation/ui/login_seller_page.dart';
 
 @RoutePage()
 class ChangePasswordSellerPage extends StatefulWidget {
   final String textEditingController;
   const ChangePasswordSellerPage({
-    Key? key,
+    super.key,
     required this.textEditingController,
-  }) : super(key: key);
+  });
 
   @override
   State<ChangePasswordSellerPage> createState() =>
@@ -78,7 +78,7 @@ class _ChangePasswordSellerPageState extends State<ChangePasswordSellerPage> {
           //   MaterialPageRoute(builder: (context) => const AdminAuthPage()),
           // );
           context.router
-              .popUntil((route) => route.settings.name == AdminAuthRoute.name);
+              .popUntil((route) => route.settings.name == LoginSellerPage());
         }
       }, builder: (context, state) {
         if (state is InitState) {

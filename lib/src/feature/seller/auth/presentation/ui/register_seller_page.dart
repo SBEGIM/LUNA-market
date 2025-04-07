@@ -15,6 +15,7 @@ import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import '../../../../home/data/model/cat_model.dart';
 import '../../../product/presentation/widgets/cats_seller_page.dart';
 
+@RoutePage()
 class RegisterSellerPage extends StatefulWidget {
   const RegisterSellerPage({Key? key}) : super(key: key);
 
@@ -24,11 +25,28 @@ class RegisterSellerPage extends StatefulWidget {
 
 class _CoopRequestPageState extends State<RegisterSellerPage> {
   bool isChecked = false;
-  bool typeOrganization = false;
+  int typeOrganization = 1;
 
   CatsModel cats = CatsModel(id: 0, name: 'Выберите категорию');
 
   TextEditingController iinController = TextEditingController();
+  TextEditingController kppController = TextEditingController();
+  TextEditingController ogvnController = TextEditingController();
+  TextEditingController ogkvadController = TextEditingController();
+  TextEditingController taxAuthorityController = TextEditingController();
+  TextEditingController registerDateController = TextEditingController();
+  TextEditingController legalAddressController = TextEditingController();
+  TextEditingController founderController = TextEditingController();
+  TextEditingController birthdayController = TextEditingController();
+  TextEditingController nationalityController = TextEditingController();
+  TextEditingController nameCompanyController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController generalDirectorController = TextEditingController();
+  TextEditingController typeofActivityController = TextEditingController();
+  TextEditingController organizationController = TextEditingController();
+  TextEditingController bankController = TextEditingController();
+  TextEditingController articulController = TextEditingController();
+
   TextEditingController nameController = TextEditingController();
   TextEditingController contactController = TextEditingController();
   TextEditingController checkController = TextEditingController();
@@ -83,7 +101,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Укажите данные Вашего бизнеса',
+                'Данные организации',
                 style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 16,
@@ -122,7 +140,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    width: 168,
+                    width: 100,
                     height: 47,
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -133,10 +151,10 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                           ),
                           Checkbox(
                             shape: const CircleBorder(),
-                            value: !typeOrganization,
+                            value: typeOrganization == 1,
                             activeColor: AppColors.kPrimaryColor,
                             onChanged: ((value) {
-                              typeOrganization = !typeOrganization;
+                              typeOrganization = 1;
                               setState(() {});
                             }),
                           ),
@@ -152,7 +170,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    width: 168,
+                    width: 100,
                     height: 47,
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,11 +180,41 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                             textAlign: TextAlign.center,
                           ),
                           Checkbox(
-                            value: typeOrganization,
+                            value: typeOrganization == 2,
                             shape: const CircleBorder(),
                             activeColor: AppColors.kPrimaryColor,
                             onChanged: ((value) {
-                              typeOrganization = !typeOrganization;
+                              typeOrganization = 2;
+                              setState(() {});
+                            }),
+                          ),
+                        ]),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    width: 100,
+                    height: 47,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'ОГРН',
+                            textAlign: TextAlign.center,
+                          ),
+                          Checkbox(
+                            shape: const CircleBorder(),
+                            value: typeOrganization == 3,
+                            activeColor: AppColors.kPrimaryColor,
+                            onChanged: ((value) {
+                              typeOrganization = 3;
                               setState(() {});
                             }),
                           ),
@@ -185,11 +233,119 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                 controller: iinController,
               ),
               FieldsCoopRequest(
+                titleText: 'КПП',
+                hintText: 'Введите КПП',
+                star: false,
+                arrow: false,
+                controller: kppController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'ОГВН',
+                hintText: 'Введите ОГВН',
+                star: false,
+                arrow: false,
+                controller: ogvnController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'ОКВэД',
+                hintText: 'Введите ОКВэД',
+                star: false,
+                arrow: false,
+                controller: ogkvadController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Налоговый орган',
+                hintText: 'Введите Налоговый орган',
+                star: false,
+                arrow: false,
+                controller: taxAuthorityController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Дата регистрации',
+                hintText: 'Введите Дата регистрации',
+                star: false,
+                arrow: false,
+                controller: registerDateController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Юридический адрес',
+                hintText: 'Введите Юридический адрес',
+                star: false,
+                arrow: false,
+                controller: legalAddressController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Учредитель',
+                hintText: 'Введите Учредителя',
+                star: false,
+                arrow: false,
+                controller: founderController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Дата рождения',
+                hintText: 'Введите Дата рождения',
+                star: false,
+                arrow: false,
+                controller: birthdayController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Гражданство',
+                hintText: 'Введите Гражданство',
+                star: false,
+                arrow: false,
+                controller: nationalityController,
+              ),
+              FieldsCoopRequest(
                 titleText: 'Название компании или ИП ',
                 hintText: 'Введите название компании',
                 star: false,
                 arrow: false,
-                controller: userNameController,
+                controller: nameCompanyController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Адрес ',
+                hintText: 'Введите Адрес',
+                star: false,
+                arrow: false,
+                controller: addressController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Ген.директор',
+                hintText: 'Введите Ген.директор',
+                star: false,
+                arrow: false,
+                controller: generalDirectorController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Вид деятельности',
+                hintText: 'Введите Вид деятельности',
+                star: false,
+                arrow: false,
+                controller: typeofActivityController,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Организация ФР',
+                hintText: 'Введите Организация ФР',
+                star: false,
+                arrow: false,
+                controller: organizationController,
+              ),
+              FieldsCoopRequest(
+                titleText: ' Банк',
+                hintText: 'Введите Банк',
+                star: false,
+                arrow: false,
+                controller: bankController,
+              ),
+              const Text(
+                'Информация о магазине',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: AppColors.kGray900),
+              ),
+              const SizedBox(
+                height: 10,
               ),
               FieldsCoopRequest(
                 titleText: 'Название магазина',
@@ -205,22 +361,15 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                 arrow: false,
                 controller: checkController,
               ),
-              FieldsCoopRequest(
-                titleText: 'Основная категория товаров ',
-                hintText: cats.name.toString(),
-                star: false,
-                arrow: true,
-                // controller: catController,
-                onPressed: () async {
-                  final data = await Get.to(const CatsSellerPage());
-                  if (data != null) {
-                    final CatsModel cat = data;
-
-                    setState(() {});
-                    catController.text = cat.id.toString();
-                    cats = cat;
-                  }
-                },
+              const Text(
+                'Контактные даныне',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: AppColors.kGray900),
+              ),
+              const SizedBox(
+                height: 10,
               ),
               FieldsCoopRequest(
                 titleText: 'Контактное имя ',
@@ -250,11 +399,28 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                 arrow: false,
                 controller: passwordController,
               ),
+              FieldsCoopRequest(
+                titleText: 'Основная категория товаров ',
+                hintText: cats.name.toString(),
+                star: false,
+                arrow: true,
+                // controller: catController,
+                onPressed: () async {
+                  final data = await Get.to(const CatsSellerPage());
+                  if (data != null) {
+                    final CatsModel cat = data;
+
+                    setState(() {});
+                    catController.text = cat.id.toString();
+                    cats = cat;
+                  }
+                },
+              ),
               const SizedBox(
                 height: 10,
               ),
               SizedBox(
-                height: 150,
+                height: 160,
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -295,7 +461,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                                 const TextSpan(
                                   text: "принимаю ",
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w400),
                                 ),
                                 TextSpan(
@@ -307,20 +473,20 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                                   text: 'Пользовательское \nсоглашение ',
                                   style: const TextStyle(
                                       color: AppColors.kPrimaryColor,
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w400),
                                 ),
                                 const TextSpan(
                                   text:
                                       "и даю согласие  на  обработку \nперсональных ",
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w400),
                                 ),
                                 const TextSpan(
                                   text: "данных в  соответсвии \nс ",
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w400),
                                 ),
                                 TextSpan(
@@ -332,7 +498,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                                   text: 'Политикой  Конфиденциальности',
                                   style: const TextStyle(
                                       color: AppColors.kPrimaryColor,
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w400),
                                 ),
                               ],
@@ -376,7 +542,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                 await BlocProvider.of<RegisterSellerCubit>(context)
                     .register(registerDto);
                 if (!mounted) return;
-                context.router.push(AdminAuthRoute());
+                context.router.push(AuthSellerRoute());
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(builder: (context) => AuthAdminPage()),

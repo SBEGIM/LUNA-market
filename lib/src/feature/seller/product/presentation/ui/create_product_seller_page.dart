@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +9,7 @@ import 'package:haji_market/src/feature/seller/product/data/DTO/size_count_selle
 import 'package:haji_market/src/feature/seller/product/bloc/last_articul_seller_cubit.dart'
     as lastArticul;
 import 'package:haji_market/src/feature/seller/product/bloc/size_seller_cubit.dart';
+import 'package:haji_market/src/feature/seller/product/data/repository/product_seller_repository.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/brand_seller_page.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/colors_seller_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
@@ -25,16 +27,27 @@ import '../../bloc/characteristic_seller_cubit.dart';
 import '../../bloc/product_seller_cubit.dart';
 import '../../bloc/product_seller_state.dart';
 
-class CreateProductSellerPage extends StatefulWidget {
+@RoutePage()
+class CreateProductSellerPage extends StatefulWidget
+    implements AutoRouteWrapper {
   final CatsModel cat;
   final CatsModel? subCat;
   const CreateProductSellerPage(
-      {required this.cat, required this.subCat, Key? key})
-      : super(key: key);
+      {required this.cat, required this.subCat, super.key});
 
   @override
   State<CreateProductSellerPage> createState() =>
       _CreateProductSellerPageState();
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          ProductSellerCubit(productAdminRepository: ProductSellerRepository())
+            ..products(''),
+      child: this,
+    );
+  }
 }
 
 class _CreateProductSellerPageState extends State<CreateProductSellerPage> {

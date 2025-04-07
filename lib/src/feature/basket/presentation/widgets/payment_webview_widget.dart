@@ -63,15 +63,17 @@ class _PaymentWebviewPageState extends State<PaymentWebviewPage> {
                 Icons.arrow_back_ios_new,
               ),
               onPressed: () {
+                Navigator.pop(context);
+
                 // FIXME: Убрать getx
-                Get.back();
+                // Get.back();
                 // TODO: этот виджет для магазина,блогера и клиента
-                context.router.pushAndPopUntil(
-                  const LauncherRoute(
-                    children: [BasketRoute()],
-                  ),
-                  predicate: (_) => false,
-                );
+                // context.router.pushAndPopUntil(
+                //   const LauncherRoute(
+                //     children: [BasketRoute()],
+                //   ),
+                //   predicate: (_) => false,
+                // );
                 //  Navigator.pop(context);
                 // if (widget.role == 'shop') {
                 //   Get.to(const BaseAdmin(index: 1));

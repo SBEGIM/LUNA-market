@@ -1,31 +1,30 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_state.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_model.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/delete_video_dialog.dart';
-
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class BloggerTapeCardWidget extends StatefulWidget {
+@RoutePage()
+class BloggerTapeCardPage extends StatefulWidget {
   final TapeBloggerModel tape;
   final int index;
-  const BloggerTapeCardWidget({
+  const BloggerTapeCardPage({
     required this.tape,
     required this.index,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
-  State<BloggerTapeCardWidget> createState() => _BloggerTapeCardWidgetState();
+  State<BloggerTapeCardPage> createState() => _BloggerTapeCardPageState();
 }
 
-class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
+class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
   VideoPlayerController? _controller;
   bool isLoaded = false;
 
@@ -94,26 +93,11 @@ class _BloggerTapeCardWidgetState extends State<BloggerTapeCardWidget> {
                   ),
                 )
               : const SizedBox(),
-          InkWell(
-            onTap: () {
-              context.router.push(BloggerDetailTapeCardRoute(
-                  index: widget.index, shopName: widget.tape.shop?.name ?? ''));
-              // BlocProvider.of<AdminNavigationCubit>(context).emit(
-              //     DetailTapeAdminState(widget.index, widget.tape.shop!.name!));
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //       builder: (context) => const Base(
-              //             index: 4,
-              //           )),
-              // );
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8.0, top: 8),
-              child: Align(
-                  alignment: Alignment.topRight,
-                  child: SvgPicture.asset('assets/icons/play.svg')),
-            ),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0, top: 8),
+            child: Align(
+                alignment: Alignment.topRight,
+                child: SvgPicture.asset('assets/icons/play.svg')),
           ),
           BlocListener<UploadVideoBLoggerCubit, UploadVideoBloggerCubitState>(
             listener: (context, state) {

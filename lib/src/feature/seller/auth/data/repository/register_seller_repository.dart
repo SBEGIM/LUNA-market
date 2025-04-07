@@ -39,6 +39,18 @@ class RegisterToApi {
       deviceType = 'android';
     }
 
+    String? org;
+    switch (register.typeOrganization) {
+      case 1:
+        org = 'ИП';
+      case 2:
+        org = 'ТОО';
+      case 3:
+        org = 'ОГРН';
+      default:
+        org = 'ИП';
+    }
+
     final headers = {
       'Authorization': 'Bearer $token',
     };
@@ -52,7 +64,7 @@ class RegisterToApi {
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'device_token': deviceToken.toString(),
       'device_type': deviceType,
-      'type_organization': register.typeOrganization == false ? 'ИП' : 'ТОО',
+      'type_organization': org,
     };
 
     final request = http.MultipartRequest(

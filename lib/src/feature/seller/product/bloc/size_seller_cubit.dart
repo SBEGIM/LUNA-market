@@ -5,7 +5,7 @@ import '../../../home/data/model/cat_model.dart';
 import '../data/repository/size_seller_repository.dart';
 
 class SizeSellerCubit extends Cubit<SizeSellerState> {
-  final SizeAdminRepository sizeRepository;
+  final SizeSellerRepository sizeRepository;
 
   SizeSellerCubit({required this.sizeRepository}) : super(InitState());
 

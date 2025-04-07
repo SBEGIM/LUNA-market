@@ -1,93 +1,134 @@
-import 'dart:developer';
+import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:haji_market/src/feature/seller/product/bloc/ad_seller_cubit.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/product_seller_cubit.dart';
+import 'package:haji_market/src/feature/seller/product/data/models/product_seller_model.dart';
 import 'package:haji_market/src/feature/seller/product/data/repository/product_seller_repository.dart';
-import 'package:haji_market/src/feature/seller/product/presentation/ui/edit_product_seller_page.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_alert_add_seller_widget.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/statistics_seller_page.dart';
+import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_month_statics_admin_state.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../../../../core/common/constants.dart';
-import '../../data/models/product_seller_model.dart';
-
-Future<dynamic> showAlertStaticticsSellerWidget(
-    BuildContext context, ProductSellerModel product) async {
-  return showCupertinoModalPopup(
-    context: context,
-    builder: (BuildContext context) => CupertinoActionSheet(
-      actions: <Widget>[
-        CupertinoActionSheetAction(
-          child: const Text(
-            'Редактировать',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => EditProductSellerPage(
-                        product: product,
-                      )),
-            );
-          },
+void showProductOptions(BuildContext context, ProductSellerModel product,
+    ProductSellerCubit cubit) {
+  showMaterialModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20), // Округляем верхний левый угол
+          topRight: Radius.circular(20), // Округляем верхний правый угол
         ),
-        CupertinoActionSheetAction(
-          child: const Text(
-            'Статистика',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => StatisticsSellerPage(product: product)),
-            );
-          },
-        ),
-        CupertinoActionSheetAction(
-          child: const Text(
-            'Рекламировать товар',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-          ),
-          onPressed: () {
-            // Navigator.pop(context, 'Cancel');
-            showCupertinoModalPopup<void>(
-              context: context,
-              builder: (context) => BlocProvider(
-                create: (context) =>
-                    AdSellerCubit(repository: ProductSellerRepository())
-                      ..getAdsList(),
-                child: ShowAdTypesAlertSellerWidget(product: product),
-              ),
-            );
-          },
-        ),
-        CupertinoActionSheetAction(
-          child: const Text(
-            'Удалить',
-            style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500),
-          ),
-          onPressed: () async {
-            await BlocProvider.of<ProductSellerCubit>(context)
-                .delete(product.id.toString());
-            BlocProvider.of<ProductSellerCubit>(context).products('');
-            Navigator.pop(context, 'Two');
-          },
-        ),
-      ],
-      cancelButton: CupertinoActionSheetAction(
-        child: const Text(
-          'Отмена',
-          style: TextStyle(
-              color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
-        ),
-        onPressed: () {
-          Navigator.pop(context, 'Cancel');
-        },
       ),
+      builder: (context) {
+        return BlocProvider.value(
+            value: cubit, // Убедитесь, что создается ProductSellerCubit
+            child: SingleChildScrollView(
+              controller: ModalScrollController.of(context),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  SizedBox(
+                    height: 20,
+                  ),
+                  _buildOptionTile(
+                    context: context,
+                    icon: Icons.edit,
+                    color: Colors.blue,
+                    title: 'Редактировать',
+                    onTap: () {
+                      Navigator.pop(context, 'edit');
+                      context
+                          .pushRoute(EditProductSellerRoute(product: product));
+                    },
+                  ),
+                  _buildOptionTile(
+                    context: context,
+                    icon: Icons.show_chart,
+                    color: Colors.blue,
+                    title: 'Статистика',
+                    onTap: () {
+                      Navigator.pop(context, 'stats');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              StatisticsSellerPage(product: product),
+                        ),
+                      );
+                    },
+                  ),
+                  _buildOptionTile(
+                    context: context,
+                    icon: Icons.ads_click,
+                    color: Colors.blue,
+                    title: 'Рекламировать товар',
+                    onTap: () {
+                      Navigator.pop(context, 'ads');
+                      showAdsOptions(context, product);
+                    },
+                  ),
+                  _buildOptionTile(
+                    context: context,
+                    icon: Icons.delete,
+                    color: Colors.red,
+                    title: 'Удалить',
+                    onTap: () async {
+                      await cubit.delete(product.id.toString());
+                      cubit
+                        ..resetState()
+                        ..products('');
+
+                      // AutoRouter.of(context).back();
+                      AutoRouter.of(context)
+                          .replace(const MyProductsAdminRoute());
+
+                      context.router.popTop();
+
+                      print('q');
+                    },
+                  ),
+                  // Убираем Divider
+                  SizedBox(height: 10),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Закрыть диалог
+                      },
+                      child: Text(
+                        'Отмена',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ));
+      });
+}
+
+Widget _buildOptionTile({
+  required BuildContext context,
+  required IconData icon,
+  required Color color,
+  required String title,
+  required VoidCallback onTap,
+}) {
+  return ListTile(
+    contentPadding: EdgeInsets.symmetric(
+        vertical: 5, horizontal: 10), // Минимальные отступы
+    leading: Icon(icon, color: color),
+    title: Text(title, style: TextStyle(color: Colors.black)),
+    onTap: onTap,
+    tileColor: Colors.transparent, // Убираем фон у Tile, если он есть
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20), // Скругляем угол
     ),
   );
 }

@@ -170,6 +170,7 @@ class ProductSellerCubit extends Cubit<ProductAdminState> {
 
   Future<void> products(String? name) async {
     try {
+      print('emiit');
       page = 1;
       emit(LoadingState());
       final List<ProductSellerModel> data =
@@ -210,8 +211,10 @@ class ProductSellerCubit extends Cubit<ProductAdminState> {
     final data = await productAdminRepository.delete(productId);
 
     if (data == 200) {
+      log('delete product changeState');
       emit(InitState());
       emit(ChangeState());
+      await products('');
     }
 
     if (data == 500) {
@@ -227,4 +230,6 @@ class ProductSellerCubit extends Cubit<ProductAdminState> {
     final data = await productAdminRepository.ad(productId, price);
     return data;
   }
+
+  void resetState() => emit(InitState());
 }

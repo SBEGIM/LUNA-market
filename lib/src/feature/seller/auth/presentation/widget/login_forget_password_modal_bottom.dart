@@ -73,7 +73,7 @@ class _LoginForgotSellerPasswordModalBottom
         log(widget.textEditingController);
         // Get.to( () => ChangePasswordPage( textEditingController: widget.textEditingController));
         FocusScope.of(context).requestFocus(FocusNode());
-        context.router.push(ChangePasswordAdminRoute(
+        context.router.push(ChangePasswordSellerRoute(
             textEditingController: widget.textEditingController));
         // Navigator.push(
         //   context,

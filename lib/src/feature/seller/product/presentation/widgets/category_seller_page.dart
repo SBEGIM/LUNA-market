@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/ui/create_product_seller_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart'
@@ -295,12 +297,14 @@ class _CategorySellerPageState extends State<CategorySellerPage> {
         child: InkWell(
           onTap: () {
             if (_cat != null) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        CreateProductSellerPage(cat: _cat!, subCat: _subCat)),
-              );
+              context.pushRoute(
+                  CreateProductSellerRoute(cat: _cat!, subCat: _subCat!));
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //       builder: (context) =>
+              //           CreateProductSellerPage(cat: _cat!, subCat: _subCat)),
+              // );
             }
 
             // Navigator.pop(context);

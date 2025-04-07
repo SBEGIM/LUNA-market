@@ -39,8 +39,8 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
       // endDrawer: BaseDrawer(),
       routes: const [
         MyProductsAdminRoute(),
-        ChatAdminRoute(),
-        MyOrdersAdminRoute(),
+        ChatSellerRoute(),
+        MyOrdersSellerRoute(),
         ProfileAdminRoute(),
       ],
       backgroundColor: Colors.white,

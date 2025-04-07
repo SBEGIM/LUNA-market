@@ -22,4 +22,9 @@ class AdSellerCubit extends Cubit<AdSellerState> {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
+
+  Future<String?> ad(int productId, int price) async {
+    final data = await repository.ad(productId, price);
+    return data;
+  }
 }

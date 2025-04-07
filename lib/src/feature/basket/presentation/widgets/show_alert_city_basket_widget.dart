@@ -98,7 +98,7 @@ Future<dynamic> showAlertCityBasketWidget(
                                       Icon(
                                         city == index
                                             ? Icons.check_circle
-                                            : Icons.check_box_outline_blank,
+                                            : Icons.radio_button_unchecked,
                                         color: AppColors.kPrimaryColor,
                                         size: 24.0,
                                       ),

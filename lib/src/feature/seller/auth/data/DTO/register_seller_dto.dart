@@ -7,7 +7,7 @@ class RegisterSellerDTO {
   final String userName;
   final String catName;
   final String check;
-  final bool typeOrganization;
+  final int typeOrganization;
 
   const RegisterSellerDTO(
       {required this.iin,

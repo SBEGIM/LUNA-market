@@ -1,13 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_model.dart';
+import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/tape_card_widget.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/change_password_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/forgot_password_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/init_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/auth_seller_page.dart';
+import 'package:haji_market/src/feature/seller/auth/presentation/ui/register_seller_page.dart';
 import 'package:haji_market/src/feature/seller/chat/presentation/chat_seller_page.dart';
 import 'package:haji_market/src/feature/seller/order/data/models/basket_order_seller_model.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/ui/my_orders_seller_page.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/widgets/detail_order_seller_page.dart';
+import 'package:haji_market/src/feature/seller/product/data/models/product_seller_model.dart';
+import 'package:haji_market/src/feature/seller/product/presentation/ui/create_product_seller_page.dart';
+import 'package:haji_market/src/feature/seller/product/presentation/ui/edit_product_seller_page.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/ui/products_seller_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/ui/admin_profile_page.dart';
 import 'package:haji_market/src/feature/seller/tape_admin/presentation/ui/tape_admin_page.dart';
@@ -83,14 +89,14 @@ class AppRouter extends _$AppRouter {
             AutoRoute(page: BaseAdminTapeTab.page, children: [
               // AutoRoute(page: TapeAdminRoute.page, initial: true),
               AutoRoute(page: TapeBloggerRoute.page, initial: true),
-              AutoRoute(page: BloggerDetailTapeCardRoute.page),
+              AutoRoute(page: BloggerTapeCardRoute.page),
             ]),
             AutoRoute(page: BlogShopsRoute.page),
             AutoRoute(page: ProfileBloggerRoute.page),
 
-            ///For Admin
-            AutoRoute(page: MyOrdersAdminRoute.page),
-            AutoRoute(page: ChatAdminRoute.page),
+            ///For Seller
+            AutoRoute(page: MyOrdersSellerRoute.page),
+            AutoRoute(page: ChatSellerRoute.page),
             AutoRoute(page: MyProductsAdminRoute.page),
             AutoRoute(page: ProfileAdminRoute.page),
           ],
@@ -113,17 +119,21 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: DetailCardProductRoute.page),
 
         ///Auth Routes
-        AutoRoute(page: AuthAdminRoute.page),
-        AutoRoute(page: AdminAuthRoute.page),
-        AutoRoute(page: ForgotPasswordAdminRoute.page),
+        AutoRoute(page: AuthSellerRoute.page),
+        // AutoRoute(page: AdminAuthRoute.page),
+        AutoRoute(page: ForgotPasswordSellerRoute.page),
 
-        AutoRoute(page: ChangePasswordAdminRoute.page),
+        AutoRoute(page: ChangePasswordSellerRoute.page),
         AutoRoute(page: ForgotPasswordBLoggerRoute.page),
-        AutoRoute(page: RegisterShopRoute.page),
+        AutoRoute(page: RegisterSellerRoute.page),
         AutoRoute(page: BlogAuthRegisterRoute.page),
 
         AutoRoute(page: ChangePasswordRoute.page),
         AutoRoute(page: ForgotPasswordRoute.page),
+
+        //Seller pages
+        AutoRoute(page: EditProductSellerRoute.page),
+        AutoRoute(page: CreateProductSellerRoute.page),
       ];
 }
 

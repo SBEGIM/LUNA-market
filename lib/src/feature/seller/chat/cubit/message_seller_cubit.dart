@@ -11,7 +11,7 @@ class MessageSellerCubit extends Cubit<MessageSellerState> {
 
   int _page = 1;
 
-  final MessageAdminRepository messageRepository;
+  final MessageSellerRepository messageRepository;
 
   MessageSellerCubit({required this.messageRepository}) : super(InitState());
 
