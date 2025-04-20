@@ -4,6 +4,7 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_switch_button.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/login_seller_page.dart';
+import 'package:haji_market/src/feature/seller/auth/presentation/ui/new_register_seller_page.dart';
 
 import 'register_seller_page.dart';
 

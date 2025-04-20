@@ -6,6 +6,7 @@ import 'package:haji_market/src/feature/seller/auth/presentation/ui/change_passw
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/forgot_password_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/init_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/auth_seller_page.dart';
+import 'package:haji_market/src/feature/seller/auth/presentation/ui/new_register_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/register_seller_page.dart';
 import 'package:haji_market/src/feature/seller/chat/presentation/chat_seller_page.dart';
 import 'package:haji_market/src/feature/seller/order/data/models/basket_order_seller_model.dart';
@@ -120,6 +121,8 @@ class AppRouter extends _$AppRouter {
 
         ///Auth Routes
         AutoRoute(page: AuthSellerRoute.page),
+        AutoRoute(page: InitSellerRoute.page),
+
         // AutoRoute(page: AdminAuthRoute.page),
         AutoRoute(page: ForgotPasswordSellerRoute.page),
 

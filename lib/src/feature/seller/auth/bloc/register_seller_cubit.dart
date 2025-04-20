@@ -24,7 +24,7 @@ class RegisterSellerCubit extends Cubit<RegisterSellerState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
+        Get.snackbar('Ошибка запроса!', 'Телефон или ИИН занят',
             backgroundColor: Colors.redAccent);
       }
       if (data == 500) {

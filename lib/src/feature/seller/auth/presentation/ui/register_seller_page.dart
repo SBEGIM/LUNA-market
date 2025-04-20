@@ -16,14 +16,14 @@ import '../../../../home/data/model/cat_model.dart';
 import '../../../product/presentation/widgets/cats_seller_page.dart';
 
 @RoutePage()
-class RegisterSellerPage extends StatefulWidget {
-  const RegisterSellerPage({Key? key}) : super(key: key);
+class OldRegisterSellerPage extends StatefulWidget {
+  const OldRegisterSellerPage({Key? key}) : super(key: key);
 
   @override
-  State<RegisterSellerPage> createState() => _CoopRequestPageState();
+  State<OldRegisterSellerPage> createState() => _CoopRequestPageState();
 }
 
-class _CoopRequestPageState extends State<RegisterSellerPage> {
+class _CoopRequestPageState extends State<OldRegisterSellerPage> {
   bool isChecked = false;
   int typeOrganization = 1;
 
@@ -42,7 +42,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
   TextEditingController nameCompanyController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController generalDirectorController = TextEditingController();
-  TextEditingController typeofActivityController = TextEditingController();
+  // TextEditingController typeofActivityController = TextEditingController();
   TextEditingController organizationController = TextEditingController();
   TextEditingController bankController = TextEditingController();
   TextEditingController articulController = TextEditingController();
@@ -132,6 +132,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                 height: 5,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -140,7 +141,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    width: 100,
+                    width: 140,
                     height: 47,
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -170,7 +171,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    width: 100,
+                    width: 140,
                     height: 47,
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -190,36 +191,36 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                           ),
                         ]),
                   ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    width: 100,
-                    height: 47,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'ОГРН',
-                            textAlign: TextAlign.center,
-                          ),
-                          Checkbox(
-                            shape: const CircleBorder(),
-                            value: typeOrganization == 3,
-                            activeColor: AppColors.kPrimaryColor,
-                            onChanged: ((value) {
-                              typeOrganization = 3;
-                              setState(() {});
-                            }),
-                          ),
-                        ]),
-                  ),
+                  // const SizedBox(
+                  //   width: 20,
+                  // ),
+                  // Container(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 8),
+                  //   alignment: Alignment.centerLeft,
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white,
+                  //     borderRadius: BorderRadius.circular(8),
+                  //   ),
+                  //   width: 100,
+                  //   height: 47,
+                  //   child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //       children: [
+                  //         const Text(
+                  //           'ОГРН',
+                  //           textAlign: TextAlign.center,
+                  //         ),
+                  //         Checkbox(
+                  //           shape: const CircleBorder(),
+                  //           value: typeOrganization == 3,
+                  //           activeColor: AppColors.kPrimaryColor,
+                  //           onChanged: ((value) {
+                  //             typeOrganization = 3;
+                  //             setState(() {});
+                  //           }),
+                  //         ),
+                  //       ]),
+                  // ),
                 ],
               ),
               const SizedBox(
@@ -232,20 +233,22 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                 arrow: false,
                 controller: iinController,
               ),
-              FieldsCoopRequest(
-                titleText: 'КПП',
-                hintText: 'Введите КПП',
-                star: false,
-                arrow: false,
-                controller: kppController,
-              ),
-              FieldsCoopRequest(
-                titleText: 'ОГВН',
-                hintText: 'Введите ОГВН',
-                star: false,
-                arrow: false,
-                controller: ogvnController,
-              ),
+              if (typeOrganization == 2)
+                FieldsCoopRequest(
+                  titleText: 'КПП',
+                  hintText: 'Введите КПП',
+                  star: false,
+                  arrow: false,
+                  controller: kppController,
+                ),
+              if (typeOrganization == 2)
+                FieldsCoopRequest(
+                  titleText: 'ОГРН',
+                  hintText: 'Введите ОГРН',
+                  star: false,
+                  arrow: false,
+                  controller: ogvnController,
+                ),
               FieldsCoopRequest(
                 titleText: 'ОКВэД',
                 hintText: 'Введите ОКВэД',
@@ -274,55 +277,60 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                 arrow: false,
                 controller: legalAddressController,
               ),
+              if (typeOrganization == 2)
+                FieldsCoopRequest(
+                  titleText: 'Учредитель',
+                  hintText: 'Введите Учредителя',
+                  star: false,
+                  arrow: false,
+                  controller: founderController,
+                ),
+              if (typeOrganization == 2)
+                FieldsCoopRequest(
+                  titleText: 'Дата рождения',
+                  hintText: 'Введите Дата рождения',
+                  star: false,
+                  arrow: false,
+                  controller: birthdayController,
+                ),
+              if (typeOrganization == 2)
+                FieldsCoopRequest(
+                  titleText: 'Гражданство',
+                  hintText: 'Введите Гражданство',
+                  star: false,
+                  arrow: false,
+                  controller: nationalityController,
+                ),
               FieldsCoopRequest(
-                titleText: 'Учредитель',
-                hintText: 'Введите Учредителя',
-                star: false,
-                arrow: false,
-                controller: founderController,
-              ),
-              FieldsCoopRequest(
-                titleText: 'Дата рождения',
-                hintText: 'Введите Дата рождения',
-                star: false,
-                arrow: false,
-                controller: birthdayController,
-              ),
-              FieldsCoopRequest(
-                titleText: 'Гражданство',
-                hintText: 'Введите Гражданство',
-                star: false,
-                arrow: false,
-                controller: nationalityController,
-              ),
-              FieldsCoopRequest(
-                titleText: 'Название компании или ИП ',
+                titleText: 'Название компании ',
                 hintText: 'Введите название компании',
                 star: false,
                 arrow: false,
                 controller: nameCompanyController,
               ),
-              FieldsCoopRequest(
-                titleText: 'Адрес ',
-                hintText: 'Введите Адрес',
-                star: false,
-                arrow: false,
-                controller: addressController,
-              ),
-              FieldsCoopRequest(
-                titleText: 'Ген.директор',
-                hintText: 'Введите Ген.директор',
-                star: false,
-                arrow: false,
-                controller: generalDirectorController,
-              ),
-              FieldsCoopRequest(
-                titleText: 'Вид деятельности',
-                hintText: 'Введите Вид деятельности',
-                star: false,
-                arrow: false,
-                controller: typeofActivityController,
-              ),
+              if (typeOrganization == 2)
+                FieldsCoopRequest(
+                  titleText: 'Адрес ',
+                  hintText: 'Введите Адрес',
+                  star: false,
+                  arrow: false,
+                  controller: addressController,
+                ),
+              if (typeOrganization == 2)
+                FieldsCoopRequest(
+                  titleText: 'Ген.директор',
+                  hintText: 'Введите Ген.директор',
+                  star: false,
+                  arrow: false,
+                  controller: generalDirectorController,
+                ),
+              // FieldsCoopRequest(
+              //   titleText: 'Вид деятельности',
+              //   hintText: 'Введите Вид деятельности',
+              //   star: false,
+              //   arrow: false,
+              //   controller: typeofActivityController,
+              // ),
               FieldsCoopRequest(
                 titleText: 'Организация ФР',
                 hintText: 'Введите Организация ФР',
@@ -524,7 +532,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                   nameController.text.isNotEmpty &&
                   phoneController.text.length == 17 &&
                   emailController.text.isNotEmpty &&
-                  userNameController.text.isNotEmpty &&
+                  nameCompanyController.text.isNotEmpty &&
                   catController.text.isNotEmpty &&
                   checkController.text.isNotEmpty &&
                   isChecked == true) {
@@ -535,9 +543,22 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                     phone: phoneController.text,
                     password: passwordController.text,
                     iin: iinController.text,
-                    userName: userNameController.text,
+                    userName: nameCompanyController.text,
                     check: checkController.text,
-                    typeOrganization: typeOrganization);
+                    typeOrganization: typeOrganization,
+                    kpp: kppController.text,
+                    ogrn: ogvnController.text,
+                    okved: ogkvadController.text,
+                    tax_authority: taxAuthorityController.text,
+                    date_register: registerDateController.text,
+                    founder: founderController.text,
+                    date_of_birth: birthdayController.text,
+                    citizenship: nationalityController.text,
+                    CEO: generalDirectorController.text,
+                    organization_fr: organizationController.text,
+                    bank: bankController.text,
+                    company_name: nameCompanyController.text,
+                    legal_address: legalAddressController.text);
 
                 await BlocProvider.of<RegisterSellerCubit>(context)
                     .register(registerDto);

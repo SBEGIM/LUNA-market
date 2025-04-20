@@ -89,6 +89,8 @@ dependencies:
   fluttertoast: ^8.2.12
   pure: ^0.3.0
   modal_bottom_sheet: ^3.0.0
+  easy_stepper: ^0.8.5+1
+
 
 
 

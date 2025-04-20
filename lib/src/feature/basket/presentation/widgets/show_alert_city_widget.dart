@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_cupertino_action_sheet.dart';
 import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/city_state.dart';
@@ -12,6 +13,7 @@ import '../../../auth/bloc/login_cubit.dart';
 Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
   int? city;
   int? cityCode;
+  String? cityName;
   TextEditingController controller = TextEditingController();
 
   return showCupertinoModalPopup(
@@ -64,6 +66,8 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
                                   onTap: () {
                                     city = index;
                                     cityCode = state.city[index].code as int;
+
+                                    cityName = state.city[index].city;
                                     setState(() {});
                                   },
                                   child: Row(
@@ -183,6 +187,8 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
               await BlocProvider.of<ProfileEditAdminCubit>(context)
                   .cityCode(cityCode);
             }
+
+            GetStorage().write('city_shop', cityName);
 
             Get.back();
           },

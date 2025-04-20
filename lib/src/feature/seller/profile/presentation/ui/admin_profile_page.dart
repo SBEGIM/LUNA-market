@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/admin_cards_page.dart';
+import 'package:haji_market/src/feature/seller/profile/presentation/widgets/seller_service_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/statistics_admin_show_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
@@ -360,6 +361,39 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                     children: [
                       Text(
                         'Способ оплаты',
+                        style: TextStyle(
+                            color: AppColors.kGray900,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                        color: AppColors.kGray300,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              const Divider(
+                color: AppColors.kGray400,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SellerServicePage()),
+                  );
+                },
+                child: const Padding(
+                  padding: EdgeInsets.only(
+                      top: 15.0, bottom: 15, right: 15, left: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Список сервисов',
                         style: TextStyle(
                             color: AppColors.kGray900,
                             fontSize: 16,

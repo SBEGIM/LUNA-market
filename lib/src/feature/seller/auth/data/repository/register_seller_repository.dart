@@ -65,6 +65,19 @@ class RegisterToApi {
       'device_token': deviceToken.toString(),
       'device_type': deviceType,
       'type_organization': org,
+      'kpp': register.kpp ?? '',
+      'ogrn': register.ogrn ?? '',
+      'okved': register.okved ?? '',
+      'tax_authority': register.tax_authority ?? '',
+      'date_register': register.date_register ?? '',
+      'legal_address': register.legal_address ?? '',
+      'founder': register.founder ?? '',
+      'date_of_birth': register.date_of_birth ?? '',
+      'citizenship': register.citizenship ?? '',
+      'CEO': register.CEO ?? '',
+      'organization_fr': register.organization_fr ?? '',
+      'bank': register.bank ?? '',
+      'company_name': register.company_name ?? '',
     };
 
     final request = http.MultipartRequest(

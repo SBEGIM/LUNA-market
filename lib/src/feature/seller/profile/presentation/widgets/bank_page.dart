@@ -12,14 +12,14 @@ import '../../../../drawer/presentation/ui/city_page.dart';
 import '../../../../drawer/presentation/widgets/country_widget.dart';
 import '../../data/bloc/profile_edit_admin_cubit.dart';
 
-class ReqirectProfilePage extends StatefulWidget {
-  const ReqirectProfilePage({Key? key}) : super(key: key);
+class BankPage extends StatefulWidget {
+  const BankPage({Key? key}) : super(key: key);
 
   @override
-  State<ReqirectProfilePage> createState() => _ReqirectProfilePageState();
+  State<BankPage> createState() => _BankPageState();
 }
 
-class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
+class _BankPageState extends State<BankPage> {
   final _box = GetStorage();
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
@@ -191,7 +191,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          'Редактирование профиля',
+          'Тинькофф банк',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
@@ -208,19 +208,55 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildProfileHeader(),
-            const Divider(height: 0.00, color: AppColors.kGray200),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Чтобы поменять текущий пароль, необходимо сначала ввести старый правильно, а затем придумать новый',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.kGray500,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Для подключения банковского сервиса:',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.kGray500,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      const Text(
+                        'Если вы зарегистрированы как ИП — необходимо перейти на ООО.\n'
+                        'Если вы уже ООО — обновите данные, которые не прошли проверку.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.kGray500,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      const Text(
+                        'Пожалуйста, обновите данные вашей организации, указав:',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.kGray500,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      const Text(
+                        '• Наименование компании\n'
+                        '• ИНН, КПП, ОГРН\n'
+                        '• ОКВЭД, налоговую инспекцию\n'
+                        '• Юридический адрес\n'
+                        '• Расчетный счёт, банк\n'
+                        '• Генерального директора и учредителя\n'
+                        '• Дату регистрации компании',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.kGray500,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   _buildOrganizationSection(),
@@ -228,8 +264,6 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                   _buildShopInfoSection(),
                   const SizedBox(height: 24),
                   _buildContactInfoSection(),
-                  const SizedBox(height: 24),
-                  _buildPasswordSection(),
                   const SizedBox(height: 100),
                 ],
               ),
@@ -238,86 +272,6 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         ),
       ),
       bottomSheet: _buildSaveButton(context),
-    );
-  }
-
-  Widget _buildProfileHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              if (_image == null) {
-                Get.defaultDialog(
-                  title: "Изменить фото",
-                  middleText: '',
-                  textConfirm: 'Камера',
-                  textCancel: 'Галерея',
-                  titlePadding: const EdgeInsets.only(top: 40),
-                  onConfirm: () {
-                    change = true;
-                    _getImage();
-                  },
-                  onCancel: () {
-                    change = false;
-                    _getImage();
-                  },
-                );
-              }
-            },
-            child: Stack(
-              children: [
-                CircleAvatar(
-                  radius: 40,
-                  backgroundColor: AppColors.kGray200,
-                  backgroundImage: NetworkImage(
-                    'https://lunamarket.ru/storage/${GetStorage().read('seller_image')}',
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: AppColors.kPrimaryColor,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
-                    ),
-                    child: const Icon(Icons.camera_alt,
-                        size: 16, color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${GetStorage().read('seller_name')}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.kGray900,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '${GetStorage().read('seller_email')}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: AppColors.kGray500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -586,54 +540,6 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     );
   }
 
-  Widget _buildPasswordSection() {
-    return Card(
-      color: AppColors.kGray,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.grey.shade200, width: 1),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Смена пароля',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: AppColors.kGray900,
-              ),
-            ),
-            const SizedBox(height: 16),
-            _buildPasswordField(
-              controller: passwordController,
-              hintText: 'Старый пароль',
-              obscureText: _obscureText,
-              onToggle: () {
-                setState(() {
-                  _obscureText = !_obscureText;
-                });
-              },
-            ),
-            _buildPasswordField(
-              controller: passwordRepeatController,
-              hintText: 'Новый пароль',
-              obscureText: _obscureTextRepeat,
-              onToggle: () {
-                setState(() {
-                  _obscureTextRepeat = !_obscureTextRepeat;
-                });
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildFormField({
     required IconData icon,
     required TextEditingController controller,
@@ -798,7 +704,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
             bankController.text,
             companyNameController.text,
           );
-          Get.back(result: 'ok');
+          Navigator.of(context).pop();
         },
         child: const Text(
           'Сохранить',

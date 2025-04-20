@@ -176,6 +176,19 @@ class _AdminCardPageState extends State<AdminCardPage> {
                 '',
                 cardController.text,
                 null,
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
                 '');
             // print('object');
             //  final edit = BlocProvider.of<EditAdminCubit>(context);

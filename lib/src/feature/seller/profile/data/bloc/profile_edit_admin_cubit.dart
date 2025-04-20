@@ -26,6 +26,19 @@ class ProfileEditAdminCubit extends Cubit<ProfileEditAdminState> {
     String? card,
     bool? typeOrganization,
     String? address,
+    String? kpp,
+    String? ogrn,
+    String? okved,
+    String? tax_authority,
+    String? date_register,
+    String? legal_address,
+    String? founder,
+    String? date_of_birth,
+    String? citizenship,
+    String? CEO,
+    String? organization_fr,
+    String? bank,
+    String? company_name,
   ) async {
     try {
       //  emit(LoadingState());
@@ -50,7 +63,20 @@ class ProfileEditAdminCubit extends Cubit<ProfileEditAdminState> {
           email,
           card,
           typeOrganization,
-          address);
+          address,
+          kpp,
+          ogrn,
+          okved,
+          tax_authority,
+          date_register,
+          legal_address,
+          founder,
+          date_of_birth,
+          citizenship,
+          CEO,
+          organization_fr,
+          bank,
+          company_name);
 
       // if (data != null) {
       //  emit(LoadedState(loadedProfile: data));

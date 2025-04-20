@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_order_model.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
@@ -143,11 +145,16 @@ class Basket {
     final String? token = _box.read('token');
 
     final response = await http.post(
-        Uri.parse('$baseUrl/payment/tinkoff/payment'),
+        Uri.parse('$baseUrl/payment/tinkoff/payment/v1'),
         headers: {"Authorization": "Bearer $token"},
         body: {'address': address, 'bonus': bonus, 'fulfillment': fulfillment});
 
     final data = jsonDecode(response.body);
+
+    if (!data['data_tinkoff']['Success']) {
+      Get.snackbar('Ошибка Тинькофф банк', '${data['data_tinkoff']['Details']}',
+          backgroundColor: Colors.orange);
+    }
 
     return data['data_tinkoff']['PaymentURL'];
   }
