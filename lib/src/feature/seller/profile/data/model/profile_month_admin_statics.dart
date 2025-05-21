@@ -3,6 +3,7 @@ class ProfileMonthStatics {
     int? id,
     String? name,
     String? path,
+    String? pointBlogger,
     int? price,
     int? count,
     int? bonusPercent,
@@ -17,6 +18,7 @@ class ProfileMonthStatics {
     _count = count;
     _bonusPercent = bonusPercent;
     _bonus = bonus;
+    _pointBlogger = pointBlogger;
     _total = total;
     _status = status;
   }
@@ -29,6 +31,7 @@ class ProfileMonthStatics {
     _count = json['count'];
     _bonusPercent = json['bonus_percent'];
     _bonus = json['bonus'];
+    _pointBlogger = json['point_blogger'];
     _total = json['total'];
     _status = json['status'];
   }
@@ -39,6 +42,7 @@ class ProfileMonthStatics {
   int? _count;
   int? _bonusPercent;
   int? _bonus;
+  String? _pointBlogger;
   int? _total;
   String? _status;
 
@@ -49,6 +53,7 @@ class ProfileMonthStatics {
   int? get count => _count;
   int? get bonusPercent => _bonusPercent;
   int? get bonus => _bonus;
+  String? get pointBlogger => _pointBlogger;
   int? get total => _total;
   String? get status => _status;
 
@@ -61,6 +66,7 @@ class ProfileMonthStatics {
     map['count'] = _count;
     map['bonus_percent'] = _bonusPercent;
     map['bonus'] = _bonus;
+    map['point_blogger'] = _pointBlogger;
     map['total'] = _total;
     map['status'] = _status;
     return map;

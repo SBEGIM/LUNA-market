@@ -8,12 +8,14 @@ class DefaultButton extends StatelessWidget {
       required this.press,
       required this.color,
       required this.backgroundColor,
-      required this.width});
+      required this.width,
+      this.textStyle});
   final String text;
   final Function? press;
   final Color color;
   final double width;
   final Color backgroundColor;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +28,12 @@ class DefaultButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           backgroundColor: backgroundColor,
+          elevation: 0,
         ),
         onPressed: press as void Function()?,
         child: Text(
           text,
-          style: AppTextStyles.defButtonTextStyle,
+          style: textStyle ?? AppTextStyles.defButtonTextStyle,
         ),
       ),
     );

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/product_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/data/models/product_seller_model.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:intl/intl.dart';
 import '../widgets/show_alert_statictics_seller_widget.dart';
 
 class ProductCardSellerPage extends StatefulWidget {
@@ -30,6 +28,11 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
   int compoundPrice = 0;
   int optomCount = 0;
 
+  String formatPrice(int price) {
+    final format = NumberFormat('#,###', 'ru_RU');
+    return format.format(price).replaceAll(',', ' ');
+  }
+
   @override
   void initState() {
     // count += widget.product.basketCount ?? 0;
@@ -51,7 +54,7 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 160,
+      height: 164,
       margin: const EdgeInsets.only(left: 16, top: 7, bottom: 8, right: 16),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -59,7 +62,7 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
             BoxShadow(
               offset: Offset(0, 2),
               // blurRadius: 4,
-              color: Colors.white,
+              color: AppColors.kGray1,
             ),
           ]),
       // height: MediaQuery.of(context).size.height * 0.86,
@@ -68,19 +71,53 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 7.0, left: 16, right: 16),
+            padding: const EdgeInsets.only(top: 8.0, left: 8, right: 12),
             child: Stack(
               children: [
-                Image.network(
-                  widget.product.path != null
-                      ? "https://lunamarket.ru/storage/${widget.product.path!.path}"
-                      : "https://lunamarket.ru/storage/banners/2.png",
+                Container(
                   height: 104,
                   width: 104,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const ErrorImageWidget(
-                    height: 104,
-                    width: 104,
+                  decoration: BoxDecoration(
+                    color: AppColors.kWhite,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 8,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(5), // White border effect
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                        12), // Slightly smaller than container
+                    child: Image.network(
+                      widget.product.path != null
+                          ? "https://lunamarket.ru/storage/${widget.product.path!.path}"
+                          : "https://lunamarket.ru/storage/banners/2.png",
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Container(
+                          color: Colors.grey[100],
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: Colors.grey[100],
+                        child:
+                            const Icon(Icons.broken_image, color: Colors.grey),
+                      ),
+                    ),
                   ),
                 ),
                 Padding(
@@ -90,298 +127,189 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
+                        width: 52,
+                        height: 22,
                         decoration: BoxDecoration(
-                            color: AppColors.kPrimaryColor,
+                            color: AppColors.kYellowDark,
                             borderRadius: BorderRadius.circular(4)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 4, right: 4, top: 2, bottom: 2),
-                          child: Text(
-                            widget.product.fulfillment ?? 'Доставка',
+                        child: Text(widget.product.fulfillment ?? 'Доставка',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 9,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
+                            style: AppTextStyles.statisticsTextStyle),
                       ),
                       const SizedBox(
                         height: 4,
                       ),
                       widget.product.point != 0
                           ? Container(
+                              width: 52,
+                              height: 22,
+                              alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                  color: Colors.black,
+                                  gradient: LinearGradient(
+                                    begin: Alignment(-0.6,
+                                        -1), // приблизительное направление 128.49°
+                                    end: Alignment(1, 1),
+                                    colors: [
+                                      Color(0xFF7D2DFF),
+                                      Color(0xFF41DDFF),
+                                    ],
+                                    stops: [
+                                      0.2685,
+                                      1.0
+                                    ], // соответствуют 26.85% и 100%
+                                  ),
                                   borderRadius: BorderRadius.circular(4)),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 4, right: 4, top: 2, bottom: 2),
-                                child: Text(
-                                  '${widget.product.point ?? 0}% Б',
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.w400),
-                                ),
+                              child: Text(
+                                '${widget.product.point ?? 0}% Б',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.statisticsTextStyle
+                                    .copyWith(color: AppColors.kWhite),
                               ),
                             )
                           : const SizedBox(),
                       SizedBox(
                         height: widget.product.point != 0 ? 22 : 0,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(4)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 4.0, right: 4, top: 2, bottom: 2),
-                          child: Text(
-                            '-${widget.product.compound} %',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 9,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      ),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //       color: Colors.red,
+                      //       borderRadius: BorderRadius.circular(4)),
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.only(
+                      //         left: 4.0, right: 4, top: 2, bottom: 2),
+                      //     child: Text(
+                      //       '-${widget.product.compound} %',
+                      //       textAlign: TextAlign.center,
+                      //       style: const TextStyle(
+                      //           color: Colors.white,
+                      //           fontSize: 9,
+                      //           fontWeight: FontWeight.w400),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(
-            width: 16,
-          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  height: 40,
-                  padding: const EdgeInsets.only(right: 6),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 40,
-                        width: 145,
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          widget.product.name.toString(),
-                          // 'qweqweq qweqweqw qweqweqweqw qweqweqwe qweqweqweqweqw',
-                          style: const TextStyle(
-                              fontSize: 12,
-                              color: AppColors.kGray900,
-                              fontWeight: FontWeight.w500),
-                          textAlign: TextAlign.start,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 3),
+                      child: Text(
+                        '${widget.product.catName}',
+                        style: const TextStyle(
+                            color: AppColors.kGray300,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        showProductOptions(
+                            widget.context, widget.product, widget.cubit);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Icon(
+                          Icons.more_vert,
+                          color: AppColors.kGray300,
                         ),
                       ),
-
-                      GestureDetector(
-                          onTap: () async {
-                            await Share.share(
-                                '$kDeepLinkUrl/?product_id=${widget.product.id}');
-                          },
-                          child: SvgPicture.asset(
-                            'assets/icons/share.svg',
-                            height: 24,
-                            width: 24,
-                          ))
-                      // IconButton(
-                      //     onPressed: () async {
-                      //       // final favorite =
-                      //       //     BlocProvider.of<FavoriteCubit>(context);
-                      //       // await favorite.favorite(widget.product.id.toString());
-                      //       setState(() {
-                      //         inFavorite = !inFavorite;
-                      //       });
-                      //     },
-                      //     splashRadius: 1.00,
-                      //     icon: inFavorite == true
-                      //         ? SvgPicture.asset('assets/icons/heart_fill.svg')
-                      //         : SvgPicture.asset(
-                      //             'assets/icons/favorite.svg',
-                      //             color: inFavorite == true
-                      //                 ? Colors.red
-                      //                 : Colors.grey,
-                      //           ))
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 0, bottom: 3),
+                Container(
+                  width: 280,
+                  alignment: Alignment.centerLeft,
                   child: Text(
-                    '${widget.product.catName}',
+                    widget.product.name.toString(),
                     style: const TextStyle(
-                        color: AppColors.kGray300,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
+                      fontSize: 14,
+                      color: AppColors.kLightBlackColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                   ),
                 ),
-                // Row(
-                //   children: [
-                //     RatingBar(
-                //       ignoreGestures: true,
-                //       initialRating:
-                //           double.parse(widget.product.rating.toString()),
-                //       minRating: 0,
-                //       maxRating: 5,
-                //       itemCount: 5,
-                //       // unratedColor: const Color(0x30F11712),
-                //       itemSize: 14,
-                //       unratedColor: const Color(0xFFFFC107),
-                //       // itemPadding:
-                //       // const EdgeInsets.symmetric(horizontal: 4.0),
-                //       ratingWidget: RatingWidget(
-                //         full: const Icon(
-                //           Icons.star,
-                //           color: Color(0xFFFFC107),
-                //         ),
-                //         half: const Icon(
-                //           Icons.star,
-                //           color: Colors.grey,
-                //         ),
-                //         empty: const Icon(
-                //           Icons.star,
-                //           color: Colors.grey,
-                //         ),
-                //       ),
-                //       onRatingUpdate: (double value) {},
-                //     ),
-                //     Text(
-                //       "(${widget.product.count} отзыва)",
-                //       style: const TextStyle(
-                //           color: AppColors.kGray300,
-                //           fontSize: 12,
-                //           fontWeight: FontWeight.w400),
-                //     ),
-                //   ],
-                // ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 20,
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          color: AppColors.mainPurpleColor.withOpacity(0.20)),
+                      child: Text(
+                        'В наличии: ${widget.product.count} шт',
+                        style: AppTextStyles.statisticsTextStyle
+                            .copyWith(color: AppColors.mainPurpleColor),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          color: AppColors.mainPurpleColor.withOpacity(0.20)),
+                      child: Text(
+                        'Кешбэк блогера: ${widget.product.count} %',
+                        style: AppTextStyles.statisticsTextStyle.copyWith(
+                            color: AppColors.mainPurpleColor, fontSize: 14),
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(
                   height: 8,
                 ),
                 compoundPrice != 0
-                    ?
-                    // Row(
-                    //     children: [
-                    //       Text(
-                    //         '${compoundPrice}  ₸ ',
-                    //         style: const TextStyle(
-                    //             color: Colors.red,
-                    //             fontWeight: FontWeight.w500,
-                    //             fontSize: 16),
-                    //       ),
-                    //       Text(
-                    //         '${widget.product.price}₸ ',
-                    //         style: const TextStyle(
-                    //           color: AppColors.kGray900,
-                    //           fontWeight: FontWeight.w500,
-                    //           fontSize: 14,
-                    //           decoration: TextDecoration.lineThrough,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   )
-
-                    Row(
+                    ? Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
                             // width: 75,
                             child: Text(
-                              '$compoundPrice ₽ ',
+                              '${formatPrice(compoundPrice)} ₽ ',
                               style: const TextStyle(
-                                  color: Colors.red,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16),
                             ),
                           ),
                           Text(
-                            '${widget.product.price}₽ ',
+                            '${formatPrice(widget.product.price!)} ₽ ',
                             style: const TextStyle(
-                              color: AppColors.kGray900,
+                              color: AppColors.kGray300,
                               fontWeight: FontWeight.w500,
                               fontSize: 14,
                               decoration: TextDecoration.lineThrough,
+                              decorationColor: AppColors.kGray300,
                             ),
                           ),
                         ],
                       )
                     : Text(
-                        '${widget.product.price}₽ ',
+                        '${formatPrice(widget.product.price!)} ₽ ',
                         style: const TextStyle(
                           color: AppColors.kGray900,
                           fontWeight: FontWeight.w500,
                           fontSize: 14,
                         ),
                       ),
-                const SizedBox(
-                  height: 7,
-                ),
-                Container(
-                    // height: 100,
-                    padding: const EdgeInsets.only(right: 6, top: 6),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'В наличии: ${widget.product.count}x',
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(height: 6),
-                              Text(
-                                'Оптом: ${optomCount}x',
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            showProductOptions(
-                                widget.context, widget.product, widget.cubit);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 6),
-                            // width: 99,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF1DC4CF),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'Управление',
-                              // textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
               ],
             ),
           )

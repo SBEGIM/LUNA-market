@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/seller/product/data/repository/product_seller_repository.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/category_seller_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
@@ -46,7 +47,100 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
     TextEditingController nameController = TextEditingController();
 
     return Scaffold(
-      backgroundColor: AppColors.kBackgroundColor,
+      backgroundColor: AppColors.kWhite,
+      appBar: AppBar(
+        backgroundColor: AppColors.kWhite,
+        title: Text(
+          'Мои товары',
+          style: AppTextStyles.defaultAppBarTextStyle,
+        ),
+        // bottom: PopupMenuButton(
+        //   onSelected: (value) {
+        //     if (value == 0) {
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //             builder: (context) => const CategorySellerPage()),
+        //       );
+        //     }
+        //   },
+        //   shape: const RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.all(Radius.circular(15.0))),
+        //   icon: SvgPicture.asset('assets/icons/plus.svg'),
+        //   itemBuilder: (BuildContext bc) {
+        //     return [
+        //       PopupMenuItem(
+        //           value: 0,
+        //           child: Column(
+        //             children: [
+
+        //             ],
+        //           )),
+        //     ];
+        //   },
+        // ),
+      ),
+      bottomSheet: Container(
+        color: Colors.white, // White background for the bottom sheet
+        padding: const EdgeInsets.fromLTRB(
+            16, 0, 16, 70), // Padding only left/right/bottom
+        child: SafeArea(
+          top: false, // Don't add padding at the top
+          child: Material(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onTap: () async {
+                context.pushRoute(CreateProductSellerRoute(
+                    cat: CatsModel(id: 0, name: 'Не выбран'),
+                    subCat: CatsModel(id: 0, name: 'Не выбран')));
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => const CategorySellerPage()),
+                // );
+              },
+              splashColor: AppColors.mainPurpleColor.withOpacity(0.2),
+              highlightColor: AppColors.mainPurpleColor.withOpacity(0.1),
+              child: Container(
+                width: 358,
+                height: 52,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors.mainPurpleColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Text(
+                  'Добавить товар',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: [
+      //     const Text(
+      //       "Добавить товар",
+      //       style: TextStyle(color: Colors.black),
+      //     ),
+      //     SvgPicture.asset('assets/icons/lenta1.svg'),
+      //   ],
+      // ),
       body: // Выполняем загрузку продуктов только при открытии страницы
           Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -54,59 +148,31 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            color: Colors.white,
-            height: 50,
-          ),
-          Container(
-            color: Colors.white,
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+                color: AppColors.kGray2,
+                borderRadius: BorderRadius.circular(12)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 16.0),
-                  child: Text(
-                    'LUNA market',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.kGray900),
-                  ),
+                // const Padding(
+                //   padding: EdgeInsets.only(left: 16.0),
+                //   child: Text(
+                //     'LUNA market',
+                //     style: TextStyle(
+                //         fontSize: 20,
+                //         fontWeight: FontWeight.w700,
+                //         color: AppColors.kGray900),
+                //   ),
+                // ),
+                const SizedBox(
+                  width: 18,
                 ),
-                PopupMenuButton(
-                  onSelected: (value) {
-                    if (value == 0) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CategorySellerPage()),
-                      );
-                    }
-                  },
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                  icon: SvgPicture.asset('assets/icons/plus.svg'),
-                  itemBuilder: (BuildContext bc) {
-                    return [
-                      PopupMenuItem(
-                          value: 0,
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Добавить товар",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  SvgPicture.asset('assets/icons/lenta1.svg'),
-                                ],
-                              ),
-                            ],
-                          )),
-                    ];
-                  },
+                Icon(
+                  Icons.search,
+                  color: AppColors.kGray300,
                 ),
+
                 const SizedBox(
                   width: 10,
                 ),
@@ -122,7 +188,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                       border: InputBorder.none,
                       hintText: 'Поиск продуктов',
                       hintStyle: TextStyle(
-                          color: Color.fromRGBO(194, 197, 200, 1),
+                          color: AppColors.kGray300,
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                       enabledBorder: UnderlineInputBorder(
@@ -138,11 +204,9 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
           BlocConsumer<ProductSellerCubit, ProductAdminState>(
               listener: (context, state) {
             if (state is ChangeState) {
-              log('ChangeState123');
               BlocProvider.of<ProductSellerCubit>(context).products('');
             }
             if (state is LoadedState) {
-              log('setSatetUpdate');
               setState(() {});
               refreshController.refreshCompleted();
             }

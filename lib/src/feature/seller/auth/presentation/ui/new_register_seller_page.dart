@@ -7,6 +7,7 @@ import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/register_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/register_seller_cubit.dart';
 import 'package:haji_market/src/core/common/constants.dart';
@@ -14,6 +15,10 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
 import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
+import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_login_phone_widget.dart';
+import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_register_type_widget.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
+import '../../../../../core/constant/generated/assets.gen.dart';
 import '../../../../home/data/model/cat_model.dart';
 import '../../../product/presentation/widgets/cats_seller_page.dart';
 
@@ -30,6 +35,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
   int typeOrganization = 1;
 
   CatsModel cats = CatsModel(id: 0, name: 'Выберите категорию');
+  CountrySellerDto? countrySellerDto;
 
   TextEditingController iinController = TextEditingController();
   TextEditingController kppController = TextEditingController();
@@ -55,7 +61,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
   TextEditingController catController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
   TextEditingController phoneController =
-      MaskedTextController(mask: '+7(000)-000-00-00');
+      MaskedTextController(mask: '(000)-000-00-00');
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -69,7 +75,16 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
 
   List<String> metasBody = [];
 
-  int _currentStep = 0;
+  int filledCount = 1;
+  double segmentHeight = 8;
+  double segmentWidth = 8;
+  double segmentSpacing = 2;
+  int filledSegments = 1; // Начинаем с 1 заполненного сегмента
+  int totalSegments = 3; // Всего сегментов
+  Color filledColor = AppColors.mainPurpleColor;
+  Color emptyColor = Colors.grey[200]!;
+  double spacing = 5.0;
+  String title = "Юридические данные";
 
   @override
   void initState() {
@@ -77,13 +92,16 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
         is! metaState.LoadedState) {
       BlocProvider.of<metaCubit.MetaCubit>(context).partners();
     }
+
+    countrySellerDto = CountrySellerDto(
+        code: '+7', flagPath: Assets.icons.ruFlagIcon.path, name: 'Россия');
     super.initState();
   }
 
   void _nextStep() {
-    if (_currentStep < 2) {
+    if (filledSegments < 2) {
       setState(() {
-        _currentStep++;
+        filledSegments++;
       });
     } else {
       ScaffoldMessenger.of(context)
@@ -95,601 +113,772 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: AppColors.kBackgroundColor,
-      // appBar: AppBar(
-      //     iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-      //     backgroundColor: Colors.white,
-      //     elevation: 0,
-      //     centerTitle: true,
-      //     title: const Text(
-      //       'Заявка на сотрудничество',
-      //       style: TextStyle(
-      //         color: Colors.black,
-      //         fontSize: 16,
-      //         fontWeight: FontWeight.w500,
-      //       ),
-      //     )),
-      body: Column(mainAxisSize: MainAxisSize.max, children: [
-        EasyStepper(
-          enableStepTapping: false,
-          activeStep: _currentStep,
-          activeStepTextColor: Colors.white,
-          finishedStepTextColor: Colors.white,
-          internalPadding: 10,
-          stepRadius: 20,
-          showLoadingAnimation: true,
-          showStepBorder: false,
-          activeStepIconColor: AppColors.kPrimaryColor,
-          activeStepBorderColor: Colors.white,
-          finishedStepBackgroundColor: AppColors.kPrimaryColor,
-          activeStepBackgroundColor: AppColors.kGray400,
-          unreachedStepBackgroundColor: Colors.grey,
-          stepAnimationCurve: Curves.easeInQuart,
-          lineStyle: LineStyle(
-            lineLength: 80,
-            lineSpace: 5,
-            lineType: LineType.dashed,
-            defaultLineColor: AppColors.kPrimaryColor,
-            unreachedLineColor: Colors.grey,
-            activeLineColor: AppColors.kPrimaryColor,
-            finishedLineColor: AppColors.kPrimaryColor,
-            lineWidth: 0,
-            lineThickness: 1,
-            // progress: 1,
-            // //  lineSpace: 5,
-            // // unreachedLineType : ,
-            // progressColor: Colors.green,
-            // progress: ,
-          ),
-          steps: [
-            EasyStep(
-              customStep: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Opacity(
-                  opacity: _currentStep >= 0 ? 1 : 0.3,
-                  child: Icon(
-                    Icons.business_sharp,
-                    color: Colors.white,
-                  ),
+      backgroundColor: AppColors.kGray,
+      appBar: AppBar(
+        leading: InkWell(
+            onTap: () {
+              if (filledCount != 1) {
+                filledCount--;
+                if (filledCount == 2) {
+                  title = 'Реквизиты банка';
+                } else {
+                  title = 'Юридические данные';
+                }
+
+                setState(() {
+                  filledSegments = filledCount;
+                });
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+            child: Icon(Icons.arrow_back)),
+      ),
+      // iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+      // backgroundColor: Colors.white,
+      // elevation: 0,
+      // centerTitle: true,
+      // title: const Text(
+      //   'Заявка на сотрудничество',
+      //   style: TextStyle(
+      //     color: Colors.black,
+      //     fontSize: 16,
+      //     fontWeight: FontWeight.w500,
+      //   ),
+      // )),
+      body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: SizedBox(
+                width: 300,
+                child: Text(
+                  'Регистрация аккаунта продавца',
+                  maxLines: 2,
+                  style: AppTextStyles.defaultAppBarTextStyle,
                 ),
-              ),
-              customTitle: const Text(
-                'Данные организации',
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
-                    color: AppColors.kGray900),
-                textAlign: TextAlign.center,
               ),
             ),
-            EasyStep(
-              customStep: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Opacity(
-                  opacity: _currentStep >= 1 ? 1 : 0.3,
-                  child: Icon(
-                    Icons.shop_2,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              customTitle: const Text(
-                'Информация о магазине',
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                title,
                 style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
-                    color: AppColors.kGray900),
-                textAlign: TextAlign.center,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.kGray300),
               ),
             ),
-            EasyStep(
-                customStep: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Opacity(
-                    opacity: _currentStep >= 2 ? 1 : 0.3,
-                    child: Icon(
-                      Icons.man,
-                      color: Colors.white,
-                    ),
-                  ),
+            const SizedBox(height: 8),
+
+            // Прогресс-бар с пробелами
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: SizedBox(
+                height: segmentHeight,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: totalSegments,
+                  separatorBuilder: (_, __) => SizedBox(width: segmentSpacing),
+                  itemBuilder: (context, index) {
+                    bool isFilled = index < filledCount;
+                    return Container(
+                      width: (MediaQuery.of(context).size.width -
+                              (totalSegments - 1) * segmentSpacing -
+                              32) /
+                          totalSegments,
+                      decoration: BoxDecoration(
+                        color: isFilled ? filledColor : emptyColor,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    );
+                  },
                 ),
-                customTitle: const Text(
-                  'Контактные   данные',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
-                      color: AppColors.kGray900),
-                  textAlign: TextAlign.center,
-                )),
-          ],
-          onStepReached: (index) => setState(() => _currentStep = index),
-        ),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(children: [
-                Visibility(
-                  visible: _currentStep == 0 ? true : false,
-                  child: ListView(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Row(
+              ),
+            ),
+
+            SizedBox(height: 20),
+            // EasyStepper(
+            //   enableStepTapping: false,
+            //   activeStep: filledSegments,
+            //   activeStepTextColor: Colors.white,
+            //   finishedStepTextColor: Colors.white,
+            //   internalPadding: 10,
+            //   stepRadius: 20,
+            //   showLoadingAnimation: true,
+            //   showStepBorder: false,
+            //   activeStepIconColor: AppColors.kPrimaryColor,
+            //   activeStepBorderColor: Colors.white,
+            //   finishedStepBackgroundColor: AppColors.kPrimaryColor,
+            //   activeStepBackgroundColor: AppColors.kGray400,
+            //   unreachedStepBackgroundColor: Colors.grey,
+            //   stepAnimationCurve: Curves.easeInQuart,
+            //   lineStyle: LineStyle(
+            //     lineLength: 80,
+            //     lineSpace: 5,
+            //     lineType: LineType.dashed,
+            //     defaultLineColor: AppColors.kPrimaryColor,
+            //     unreachedLineColor: Colors.grey,
+            //     activeLineColor: AppColors.kPrimaryColor,
+            //     finishedLineColor: AppColors.kPrimaryColor,
+            //     lineWidth: 0,
+            //     lineThickness: 1,
+            //     // progress: 1,
+            //     // //  lineSpace: 5,
+            //     // // unreachedLineType : ,
+            //     // progressColor: Colors.green,
+            //     // progress: ,
+            //   ),
+            //   steps: [
+            //     EasyStep(
+            //       customStep: ClipRRect(
+            //         borderRadius: BorderRadius.circular(15),
+            //         child: Opacity(
+            //           opacity: filledSegments >= 1 ? 1 : 0.3,
+            //           child: Icon(
+            //             Icons.business_sharp,
+            //             color: Colors.white,
+            //           ),
+            //         ),
+            //       ),
+            //       customTitle: const Text(
+            //         'Юридические данные',
+            //         style: TextStyle(
+            //             fontWeight: FontWeight.w500,
+            //             fontSize: 12,
+            //             color: AppColors.kGray900),
+            //         textAlign: TextAlign.center,
+            //       ),
+            //     ),
+            //     EasyStep(
+            //       customStep: ClipRRect(
+            //         borderRadius: BorderRadius.circular(15),
+            //         child: Opacity(
+            //           opacity: filledSegments >= 2 ? 1 : 0.3,
+            //           child: Icon(
+            //             Icons.shop_2,
+            //             color: Colors.white,
+            //           ),
+            //         ),
+            //       ),
+            //       customTitle: const Text(
+            //         'Реквизиты банка',
+            //         style: TextStyle(
+            //             fontWeight: FontWeight.w500,
+            //             fontSize: 12,
+            //             color: AppColors.kGray900),
+            //         textAlign: TextAlign.center,
+            //       ),
+            //     ),
+            //     EasyStep(
+            //         customStep: ClipRRect(
+            //           borderRadius: BorderRadius.circular(15),
+            //           child: Opacity(
+            //             opacity: filledSegments >= 3 ? 1 : 0.3,
+            //             child: Icon(
+            //               Icons.man,
+            //               color: Colors.white,
+            //             ),
+            //           ),
+            //         ),
+            //         customTitle: const Text(
+            //           'Контактные   данные',
+            //           style: TextStyle(
+            //               fontWeight: FontWeight.w500,
+            //               fontSize: 12,
+            //               color: AppColors.kGray900),
+            //           textAlign: TextAlign.center,
+            //         )),
+            //   ],
+            //   onStepReached: (index) => setState(() => filledSegments = index),
+            // ),
+
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(children: [
+                    Visibility(
+                      visible: filledSegments == 1 ? true : false,
+                      child: ListView(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
                           children: [
-                            Text(
-                              'Выберите тип организаций ',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                  color: AppColors.kGray900),
-                            ),
-                            Text(
-                              '*',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                  color: Colors.red),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              width: 140,
-                              height: 47,
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      'ИП',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Checkbox(
-                                      shape: const CircleBorder(),
-                                      value: typeOrganization == 1,
-                                      activeColor: AppColors.kPrimaryColor,
-                                      onChanged: ((value) {
-                                        typeOrganization = 1;
-                                        setState(() {});
-                                      }),
-                                    ),
-                                  ]),
-                            ),
                             const SizedBox(
-                              width: 20,
+                              height: 10,
                             ),
-                            Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              width: 140,
-                              height: 47,
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      'OОО',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Checkbox(
-                                      value: typeOrganization == 2,
-                                      shape: const CircleBorder(),
-                                      activeColor: AppColors.kPrimaryColor,
-                                      onChanged: ((value) {
-                                        typeOrganization = 2;
-                                        setState(() {});
-                                      }),
-                                    ),
-                                  ]),
-                            ),
+                            // const Row(
+                            //   children: [
+                            //     Text(
+                            //       'Выберите тип организаций ',
+                            //       style: TextStyle(
+                            //           fontWeight: FontWeight.w400,
+                            //           fontSize: 12,
+                            //           color: AppColors.kGray900),
+                            //     ),
+                            //     Text(
+                            //       '*',
+                            //       style: TextStyle(
+                            //           fontWeight: FontWeight.w400,
+                            //           fontSize: 12,
+                            //           color: Colors.red),
+                            //     )
+                            //   ],
+                            // ),
                             // const SizedBox(
-                            //   width: 20,
+                            //   height: 5,
                             // ),
-                            // Container(
-                            //   padding: const EdgeInsets.symmetric(horizontal: 8),
-                            //   alignment: Alignment.centerLeft,
-                            //   decoration: BoxDecoration(
-                            //     color: Colors.white,
-                            //     borderRadius: BorderRadius.circular(8),
-                            //   ),
-                            //   width: 100,
-                            //   height: 47,
-                            //   child: Row(
-                            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //       children: [
-                            //         const Text(
-                            //           'ОГРН',
-                            //           textAlign: TextAlign.center,
-                            //         ),
-                            //         Checkbox(
-                            //           shape: const CircleBorder(),
-                            //           value: typeOrganization == 3,
-                            //           activeColor: AppColors.kPrimaryColor,
-                            //           onChanged: ((value) {
-                            //             typeOrganization = 3;
-                            //             setState(() {});
-                            //           }),
-                            //         ),
-                            //       ]),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     Container(
+                            //       padding:
+                            //           const EdgeInsets.symmetric(horizontal: 8),
+                            //       alignment: Alignment.centerLeft,
+                            //       decoration: BoxDecoration(
+                            //         color: Colors.white,
+                            //         borderRadius: BorderRadius.circular(8),
+                            //       ),
+                            //       width: 140,
+                            //       height: 47,
+                            //       child: Row(
+                            //           mainAxisAlignment:
+                            //               MainAxisAlignment.spaceBetween,
+                            //           children: [
+                            //             const Text(
+                            //               'ИП',
+                            //               textAlign: TextAlign.center,
+                            //             ),
+                            //             Checkbox(
+                            //               shape: const CircleBorder(),
+                            //               value: typeOrganization == 1,
+                            //               activeColor:
+                            //                   AppColors.mainPurpleColor,
+                            //               onChanged: ((value) {
+                            //                 typeOrganization = 1;
+                            //                 setState(() {});
+                            //               }),
+                            //             ),
+                            //           ]),
+                            //     ),
+                            //     const SizedBox(
+                            //       width: 20,
+                            //     ),
+                            //     Container(
+                            //       padding:
+                            //           const EdgeInsets.symmetric(horizontal: 8),
+                            //       alignment: Alignment.centerLeft,
+                            //       decoration: BoxDecoration(
+                            //         color: Colors.white,
+                            //         borderRadius: BorderRadius.circular(8),
+                            //       ),
+                            //       width: 140,
+                            //       height: 47,
+                            //       child: Row(
+                            //           mainAxisAlignment:
+                            //               MainAxisAlignment.spaceBetween,
+                            //           children: [
+                            //             const Text(
+                            //               'OОО',
+                            //               textAlign: TextAlign.center,
+                            //             ),
+                            //             Checkbox(
+                            //               value: typeOrganization == 2,
+                            //               shape: const CircleBorder(),
+                            //               activeColor:
+                            //                   AppColors.mainPurpleColor,
+                            //               onChanged: ((value) {
+                            //                 typeOrganization = 2;
+                            //                 setState(() {});
+                            //               }),
+                            //             ),
+                            //           ]),
+                            //     ),
+                            //     // const SizedBox(
+                            //     //   width: 20,
+                            //     // ),
+                            //     // Container(
+                            //     //   padding: const EdgeInsets.symmetric(horizontal: 8),
+                            //     //   alignment: Alignment.centerLeft,
+                            //     //   decoration: BoxDecoration(
+                            //     //     color: Colors.white,
+                            //     //     borderRadius: BorderRadius.circular(8),
+                            //     //   ),
+                            //     //   width: 100,
+                            //     //   height: 47,
+                            //     //   child: Row(
+                            //     //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //     //       children: [
+                            //     //         const Text(
+                            //     //           'ОГРН',
+                            //     //           textAlign: TextAlign.center,
+                            //     //         ),
+                            //     //         Checkbox(
+                            //     //           shape: const CircleBorder(),
+                            //     //           value: typeOrganization == 3,
+                            //     //           activeColor: AppColors.kPrimaryColor,
+                            //     //           onChanged: ((value) {
+                            //     //             typeOrganization = 3;
+                            //     //             setState(() {});
+                            //     //           }),
+                            //     //         ),
+                            //     //       ]),
+                            //     // ),
+                            //   ],
                             // ),
-                          ],
-                        ),
+
+                            // const SizedBox(
+                            //   height: 10,
+                            // ),
+                            FieldsCoopRequest(
+                              titleText: 'ИНН ',
+                              hintText: 'Введите ИНН',
+                              star: false,
+                              arrow: false,
+                              controller: iinController,
+                            ),
+                            FieldsCoopRequest(
+                              titleText: 'Выберите тип организаций ',
+                              hintText: 'Выберите из списка',
+                              star: false,
+                              arrow: true,
+                              // controller: catController,
+                              onPressed: () async {
+                                showSellerRegisterType(
+                                  context,
+                                  typeOrganization,
+                                  typeCall: (type) {
+                                    typeOrganization = type;
+                                    setState(() {});
+                                  },
+                                );
+                              },
+                            ),
+                            if (typeOrganization == 2)
+                              FieldsCoopRequest(
+                                titleText: 'КПП',
+                                hintText: 'Введите КПП',
+                                star: false,
+                                arrow: false,
+                                controller: kppController,
+                              ),
+                            if (typeOrganization == 2)
+                              FieldsCoopRequest(
+                                titleText: 'ОГРН',
+                                hintText: 'Введите ОГРН',
+                                star: false,
+                                arrow: false,
+                                controller: ogvnController,
+                              ),
+                            FieldsCoopRequest(
+                              titleText: 'ОКВэД',
+                              hintText: 'Введите ОКВэД',
+                              star: false,
+                              arrow: false,
+                              controller: ogkvadController,
+                            ),
+                            FieldsCoopRequest(
+                              titleText: 'Налоговый орган',
+                              hintText: 'Введите Налоговый орган',
+                              star: false,
+                              arrow: false,
+                              controller: taxAuthorityController,
+                            ),
+                            FieldsCoopRequest(
+                              titleText: 'Дата регистрации',
+                              hintText: 'Введите Дата регистрации',
+                              star: false,
+                              arrow: false,
+                              controller: registerDateController,
+                            ),
+                            FieldsCoopRequest(
+                              titleText: 'Юридический адрес',
+                              hintText: 'Введите Юридический адрес',
+                              star: false,
+                              arrow: false,
+                              controller: legalAddressController,
+                            ),
+                            if (typeOrganization == 2)
+                              FieldsCoopRequest(
+                                titleText: 'Учредитель',
+                                hintText: 'Введите Учредителя',
+                                star: false,
+                                arrow: false,
+                                controller: founderController,
+                              ),
+                            if (typeOrganization == 2)
+                              FieldsCoopRequest(
+                                titleText: 'Дата рождения',
+                                hintText: 'Введите Дата рождения',
+                                star: false,
+                                arrow: false,
+                                controller: birthdayController,
+                              ),
+                            if (typeOrganization == 2)
+                              FieldsCoopRequest(
+                                titleText: 'Гражданство',
+                                hintText: 'Введите Гражданство',
+                                star: false,
+                                arrow: false,
+                                controller: nationalityController,
+                              ),
+                            FieldsCoopRequest(
+                              titleText: 'Название компании ',
+                              hintText: 'Введите название компании',
+                              star: false,
+                              arrow: false,
+                              controller: nameCompanyController,
+                            ),
+                            if (typeOrganization == 2)
+                              FieldsCoopRequest(
+                                titleText: 'Адрес ',
+                                hintText: 'Введите Адрес',
+                                star: false,
+                                arrow: false,
+                                controller: addressController,
+                              ),
+                            if (typeOrganization == 2)
+                              FieldsCoopRequest(
+                                titleText: 'Ген.директор',
+                                hintText: 'Введите Ген.директор',
+                                star: false,
+                                arrow: false,
+                                controller: generalDirectorController,
+                              ),
+                            // FieldsCoopRequest(
+                            //   titleText: 'Вид деятельности',
+                            //   hintText: 'Введите Вид деятельности',
+                            //   star: false,
+                            //   arrow: false,
+                            //   controller: typeofActivityController,
+                            // ),
+                            FieldsCoopRequest(
+                              titleText: 'Организация ФР',
+                              hintText: 'Введите Организация ФР',
+                              star: false,
+                              arrow: false,
+                              controller: organizationController,
+                            ),
+                            FieldsCoopRequest(
+                              titleText: ' Банк',
+                              hintText: 'Введите Банк',
+                              star: false,
+                              arrow: false,
+                              controller: bankController,
+                            ),
+                          ]),
+                    ),
+                    //bankController
+                    //organizationController
+                    //if==2
+                    //generalDirectorController
+                    //if==2
+                    //addressController
+                    //nameCompanyController
+                    //if==2
+                    //nationalityController
+                    //if==2
+                    //birthdayController
+                    //if==2
+                    //founderController
+                    //legalAddressController
+                    //registerDateController
+                    //taxAuthorityController
+                    //ogkvadController
+                    //if==2
+                    //ogvnController
+                    //if==2
+                    //kppController
+                    //iinController
+                    //typeOrganization
+
+                    ///2
+                    Visibility(
+                      visible: filledSegments == 2 ? true : false,
+                      child: ListView(shrinkWrap: true, children: [
                         const SizedBox(
                           height: 10,
                         ),
                         FieldsCoopRequest(
-                          titleText: 'ИНН ',
-                          hintText: 'Введите ИНН',
+                          titleText: 'Название магазина',
+                          hintText: 'Введите название магазина',
                           star: false,
                           arrow: false,
-                          controller: iinController,
-                        ),
-                        if (typeOrganization == 2)
-                          FieldsCoopRequest(
-                            titleText: 'КПП',
-                            hintText: 'Введите КПП',
-                            star: false,
-                            arrow: false,
-                            controller: kppController,
-                          ),
-                        if (typeOrganization == 2)
-                          FieldsCoopRequest(
-                            titleText: 'ОГРН',
-                            hintText: 'Введите ОГРН',
-                            star: false,
-                            arrow: false,
-                            controller: ogvnController,
-                          ),
-                        FieldsCoopRequest(
-                          titleText: 'ОКВэД',
-                          hintText: 'Введите ОКВэД',
-                          star: false,
-                          arrow: false,
-                          controller: ogkvadController,
+                          controller: nameController,
                         ),
                         FieldsCoopRequest(
-                          titleText: 'Налоговый орган',
-                          hintText: 'Введите Налоговый орган',
+                          titleText: 'Счёт',
+                          hintText: 'Введите счёт',
                           star: false,
                           arrow: false,
-                          controller: taxAuthorityController,
-                        ),
-                        FieldsCoopRequest(
-                          titleText: 'Дата регистрации',
-                          hintText: 'Введите Дата регистрации',
-                          star: false,
-                          arrow: false,
-                          controller: registerDateController,
-                        ),
-                        FieldsCoopRequest(
-                          titleText: 'Юридический адрес',
-                          hintText: 'Введите Юридический адрес',
-                          star: false,
-                          arrow: false,
-                          controller: legalAddressController,
-                        ),
-                        if (typeOrganization == 2)
-                          FieldsCoopRequest(
-                            titleText: 'Учредитель',
-                            hintText: 'Введите Учредителя',
-                            star: false,
-                            arrow: false,
-                            controller: founderController,
-                          ),
-                        if (typeOrganization == 2)
-                          FieldsCoopRequest(
-                            titleText: 'Дата рождения',
-                            hintText: 'Введите Дата рождения',
-                            star: false,
-                            arrow: false,
-                            controller: birthdayController,
-                          ),
-                        if (typeOrganization == 2)
-                          FieldsCoopRequest(
-                            titleText: 'Гражданство',
-                            hintText: 'Введите Гражданство',
-                            star: false,
-                            arrow: false,
-                            controller: nationalityController,
-                          ),
-                        FieldsCoopRequest(
-                          titleText: 'Название компании ',
-                          hintText: 'Введите название компании',
-                          star: false,
-                          arrow: false,
-                          controller: nameCompanyController,
-                        ),
-                        if (typeOrganization == 2)
-                          FieldsCoopRequest(
-                            titleText: 'Адрес ',
-                            hintText: 'Введите Адрес',
-                            star: false,
-                            arrow: false,
-                            controller: addressController,
-                          ),
-                        if (typeOrganization == 2)
-                          FieldsCoopRequest(
-                            titleText: 'Ген.директор',
-                            hintText: 'Введите Ген.директор',
-                            star: false,
-                            arrow: false,
-                            controller: generalDirectorController,
-                          ),
-                        // FieldsCoopRequest(
-                        //   titleText: 'Вид деятельности',
-                        //   hintText: 'Введите Вид деятельности',
-                        //   star: false,
-                        //   arrow: false,
-                        //   controller: typeofActivityController,
-                        // ),
-                        FieldsCoopRequest(
-                          titleText: 'Организация ФР',
-                          hintText: 'Введите Организация ФР',
-                          star: false,
-                          arrow: false,
-                          controller: organizationController,
-                        ),
-                        FieldsCoopRequest(
-                          titleText: ' Банк',
-                          hintText: 'Введите Банк',
-                          star: false,
-                          arrow: false,
-                          controller: bankController,
+                          controller: checkController,
                         ),
                       ]),
-                ),
-                //bankController
-                //organizationController
-                //if==2
-                //generalDirectorController
-                //if==2
-                //addressController
-                //nameCompanyController
-                //if==2
-                //nationalityController
-                //if==2
-                //birthdayController
-                //if==2
-                //founderController
-                //legalAddressController
-                //registerDateController
-                //taxAuthorityController
-                //ogkvadController
-                //if==2
-                //ogvnController
-                //if==2
-                //kppController
-                //iinController
-                //typeOrganization
-
-                ///2
-                Visibility(
-                  visible: _currentStep == 1 ? true : false,
-                  child: ListView(shrinkWrap: true, children: [
-                    const SizedBox(
-                      height: 10,
                     ),
-                    FieldsCoopRequest(
-                      titleText: 'Название магазина',
-                      hintText: 'Введите название магазина',
-                      star: false,
-                      arrow: false,
-                      controller: nameController,
-                    ),
-                    FieldsCoopRequest(
-                      titleText: 'Счёт',
-                      hintText: 'Введите счёт',
-                      star: false,
-                      arrow: false,
-                      controller: checkController,
-                    ),
-                  ]),
-                ),
 
-                ///3
+                    ///3
 
-                Visibility(
-                  visible: _currentStep == 2 ? true : false,
-                  child: ListView(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        FieldsCoopRequest(
-                          titleText: 'Контактное имя ',
-                          hintText: 'Введите контактное имя',
-                          star: false,
-                          arrow: false,
-                          controller: contactController,
-                        ),
-                        FieldsCoopRequest(
-                          titleText: 'Мобильный телефон ',
-                          hintText: 'Введите мобильный телефон ',
-                          star: false,
-                          arrow: false,
-                          controller: phoneController,
-                        ),
-                        FieldsCoopRequest(
-                          titleText: 'Email ',
-                          hintText: 'Введите Email',
-                          star: false,
-                          arrow: false,
-                          controller: emailController,
-                        ),
-                        FieldsCoopRequest(
-                          titleText: 'Пароль ',
-                          hintText: 'Введите пароль',
-                          star: false,
-                          arrow: false,
-                          controller: passwordController,
-                        ),
-                        FieldsCoopRequest(
-                          titleText: 'Основная категория товаров ',
-                          hintText: cats.name.toString(),
-                          star: false,
-                          arrow: true,
-                          // controller: catController,
-                          onPressed: () async {
-                            final data = await Get.to(const CatsSellerPage());
-                            if (data != null) {
-                              final CatsModel cat = data;
+                    Visibility(
+                      visible: filledSegments == 3 ? true : false,
+                      child: ListView(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          children: [
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            FieldsCoopRequest(
+                              titleText: 'Контактное имя ',
+                              hintText: 'Введите контактное имя',
+                              star: false,
+                              arrow: false,
+                              controller: contactController,
+                            ),
 
-                              setState(() {});
-                              catController.text = cat.id.toString();
-                              cats = cat;
-                            }
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        SizedBox(
-                            height: 140,
-                            child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    alignment: Alignment.topLeft,
-                                    child: Checkbox(
-                                      visualDensity: const VisualDensity(
-                                          horizontal: 0, vertical: 0),
-                                      checkColor: Colors.white,
-                                      // fillColor: MaterialStateProperty.resolveWith(Colors.),
-                                      value: isChecked,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          isChecked = value!;
-                                        });
-                                      },
+                            Text('Номер телефона',
+                                textAlign: TextAlign.start,
+                                style: AppTextStyles.categoryTextStyle.copyWith(
+                                  fontSize: 12,
+                                )),
+                            SizedBox(height: 6),
+                            Row(children: [
+                              InkWell(
+                                onTap: () {
+                                  showSellerLoginPhone(
+                                    context,
+                                    countryCall: (dto) {
+                                      countrySellerDto = dto;
+                                      setState(() {});
+                                    },
+                                  );
+                                },
+                                child: Shimmer(
+                                  child: Container(
+                                    height: 52,
+                                    width: 83,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 12),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.kWhite,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          countrySellerDto!.flagPath,
+                                          width: 24,
+                                          height: 24,
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text('${countrySellerDto!.code}',
+                                            style: TextStyle(fontSize: 16)),
+                                      ],
                                     ),
                                   ),
-                                  BlocBuilder<metaCubit.MetaCubit,
-                                          metaState.MetaState>(
-                                      builder: (context, state) {
-                                    if (state is metaState.LoadedState) {
-                                      metasBody.addAll([
-                                        state.metas.terms_of_use!,
-                                        state.metas.privacy_policy!,
-                                        state.metas.contract_offer!,
-                                        state.metas.shipping_payment!,
-                                        state.metas.TTN!,
-                                      ]);
-                                      return Container(
-                                        alignment: Alignment.topRight,
-                                        child: RichText(
-                                          textAlign: TextAlign.left,
-                                          text: TextSpan(
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black),
-                                            children: <TextSpan>[
-                                              const TextSpan(
-                                                text: "принимаю ",
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                              TextSpan(
-                                                recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () => Get.to(
-                                                          () => MetasPage(
-                                                                title: metas[0],
-                                                                body: metasBody[
-                                                                    0],
-                                                              )),
-                                                text:
-                                                    'Пользовательское \nсоглашение ',
-                                                style: const TextStyle(
-                                                    color:
-                                                        AppColors.kPrimaryColor,
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                              const TextSpan(
-                                                text:
-                                                    "и даю согласие  на  обработку \nперсональных ",
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                              const TextSpan(
-                                                text:
-                                                    "данных в  соответсвии \nс ",
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                              TextSpan(
-                                                recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () => Get.to(
-                                                          () => MetasPage(
-                                                                title: metas[2],
-                                                                body: metasBody[
-                                                                    2],
-                                                              )),
-                                                text:
-                                                    'Политикой  Конфиденциальности',
-                                                style: const TextStyle(
-                                                    color:
-                                                        AppColors.kPrimaryColor,
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      return Center();
-                                    }
-                                  }),
-                                ])),
-                      ]),
-                ),
-                SizedBox(height: 100)
-              ]),
-            ),
-          ),
-        )
-      ]),
+                                ),
+                              ),
+                              SizedBox(width: 6),
+                              // Поле ввода
+                              Flexible(
+                                child: Container(
+                                  height: 52,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 12),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.kWhite,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: TextField(
+                                    controller: phoneController,
+                                    keyboardType: TextInputType.phone,
+                                    decoration: InputDecoration(
+                                      hintText: '(000)-000-00-00',
+                                      helperStyle: AppTextStyles
+                                          .categoryTextStyle
+                                          .copyWith(
+                                        fontSize: 12,
+                                        color: AppColors.reviewStar,
+                                      ),
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ]),
+                            // FieldsCoopRequest(
+                            //   titleText: 'Мобильный телефон ',
+                            //   hintText: 'Введите мобильный телефон ',
+                            //   star: false,
+                            //   arrow: false,
+                            //   controller: phoneController,
+                            // ),
+                            FieldsCoopRequest(
+                              titleText: 'Email ',
+                              hintText: 'Введите Email',
+                              star: false,
+                              arrow: false,
+                              controller: emailController,
+                            ),
+                            FieldsCoopRequest(
+                              titleText: 'Пароль ',
+                              hintText: 'Введите пароль',
+                              star: false,
+                              arrow: false,
+                              controller: passwordController,
+                            ),
+                            FieldsCoopRequest(
+                              titleText: 'Основная категория товаров ',
+                              hintText: cats.name.toString(),
+                              star: false,
+                              arrow: true,
+                              // controller: catController,
+                              onPressed: () async {
+                                final data =
+                                    await Get.to(const CatsSellerPage());
+                                if (data != null) {
+                                  final CatsModel cat = data;
 
+                                  setState(() {});
+                                  catController.text = cat.id.toString();
+                                  cats = cat;
+                                }
+                              },
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            SizedBox(
+                                height: 140,
+                                child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.topLeft,
+                                        child: Checkbox(
+                                          visualDensity: const VisualDensity(
+                                              horizontal: 0, vertical: 0),
+                                          checkColor: Colors.white,
+                                          // fillColor: MaterialStateProperty.resolveWith(Colors.),
+                                          value: isChecked,
+                                          onChanged: (bool? value) {
+                                            setState(() {
+                                              isChecked = value!;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      BlocBuilder<metaCubit.MetaCubit,
+                                              metaState.MetaState>(
+                                          builder: (context, state) {
+                                        if (state is metaState.LoadedState) {
+                                          metasBody.addAll([
+                                            state.metas.terms_of_use!,
+                                            state.metas.privacy_policy!,
+                                            state.metas.contract_offer!,
+                                            state.metas.shipping_payment!,
+                                            state.metas.TTN!,
+                                          ]);
+                                          return Container(
+                                            alignment: Alignment.topRight,
+                                            child: RichText(
+                                              textAlign: TextAlign.left,
+                                              text: TextSpan(
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black),
+                                                children: <TextSpan>[
+                                                  const TextSpan(
+                                                    text: "принимаю ",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  TextSpan(
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () =>
+                                                              Get.to(
+                                                                  () =>
+                                                                      MetasPage(
+                                                                        title:
+                                                                            metas[0],
+                                                                        body: metasBody[
+                                                                            0],
+                                                                      )),
+                                                    text:
+                                                        'Пользовательское \nсоглашение ',
+                                                    style: const TextStyle(
+                                                        color: AppColors
+                                                            .kPrimaryColor,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  const TextSpan(
+                                                    text:
+                                                        "и даю согласие  на  обработку \nперсональных ",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  const TextSpan(
+                                                    text:
+                                                        "данных в  соответсвии \nс ",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  TextSpan(
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () =>
+                                                              Get.to(
+                                                                  () =>
+                                                                      MetasPage(
+                                                                        title:
+                                                                            metas[2],
+                                                                        body: metasBody[
+                                                                            2],
+                                                                      )),
+                                                    text:
+                                                        'Политикой  Конфиденциальности',
+                                                    style: const TextStyle(
+                                                        color: AppColors
+                                                            .kPrimaryColor,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return Center();
+                                        }
+                                      }),
+                                    ])),
+                          ]),
+                    ),
+                    SizedBox(height: 100)
+                  ]),
+                ),
+              ),
+            )
+          ]),
       bottomSheet: Container(
         color: Colors.white,
         padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
         child: InkWell(
             onTap: () async {
-              if (_currentStep == 0) {
+              if (filledSegments == 1) {
                 if (typeOrganization == 1) {
                   print('tpye =1');
                   if (iinController.text.isEmpty ||
@@ -707,7 +896,9 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                     return;
                   }
                   setState(() {
-                    _currentStep = 1;
+                    filledSegments = 2;
+                    filledCount = 2;
+                    title = 'Реквизиты банка';
                   });
                   print('next step then ip ');
 
@@ -744,7 +935,9 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                     return;
                   }
                   setState(() {
-                    _currentStep = 1;
+                    filledSegments = 2;
+                    filledCount = 2;
+                    title = 'Реквизиты банка';
                   });
                   print('succes next step ooo ');
 
@@ -776,7 +969,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
               //iinController
               //typeOrganization
 
-              if (_currentStep == 1) {
+              if (filledSegments == 2) {
                 if (nameController.text.isEmpty ||
                     checkController.text.isEmpty) {
                   Get.snackbar('Ошибка', 'Заполните все данные о магазине *',
@@ -785,14 +978,16 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                   return;
                 }
                 setState(() {
-                  _currentStep = 2;
+                  filledSegments = 3;
+                  filledCount = 3;
+                  title = 'Контактные данные';
                 });
                 print('succes next step user ');
 
                 return;
               }
 
-              if (_currentStep == 2) {
+              if (filledSegments == 3) {
                 if (contactController.text.isEmpty ||
                     phoneController.text.isEmpty ||
                     emailController.text.isEmpty ||
@@ -858,13 +1053,13 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                         height: 46,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: AppColors.kPrimaryColor,
+                          color: AppColors.mainPurpleColor,
                         ),
                         width: MediaQuery.of(context).size.width,
                         alignment: Alignment.center,
                         // padding: const EdgeInsets.only(left: 16, right: 16),
                         child: const Text(
-                          'Продолжить',
+                          'Далее',
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w400,

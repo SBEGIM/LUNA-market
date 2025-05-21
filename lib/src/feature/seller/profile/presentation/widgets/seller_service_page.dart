@@ -283,41 +283,6 @@ class _SellerServicePage extends State<SellerServicePage> {
               },
             ),
           ),
-          Container(
-            margin: EdgeInsets.all(10),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 2,
-                  blurRadius: 8,
-                  offset: const Offset(0, -2),
-                ),
-              ],
-            ),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.kPrimaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              onPressed: () async {
-                launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false);
-              },
-              child: const Text(
-                'Техподдержка',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          )
         ]),
       ),
     );

@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 
 import '../../../basket/presentation/widgets/show_alert_country_widget.dart';
@@ -38,6 +39,7 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
     return AutoTabsScaffold(
       // endDrawer: BaseDrawer(),
       routes: const [
+        HomeSellerAdminRoute(),
         MyProductsAdminRoute(),
         ChatSellerRoute(),
         MyOrdersSellerRoute(),
@@ -93,56 +95,75 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
               tabsRouter.setActiveIndex(index);
             }
           },
-          selectedItemColor: AppColors.kPrimaryColor,
-          unselectedItemColor: AppColors.kGray200,
+          selectedItemColor: AppColors.kLightBlackColor,
+          unselectedItemColor: AppColors.kunSelectColor,
           selectedFontSize: 12,
           elevation: 4,
           showSelectedLabels: true,
           showUnselectedLabels: true,
           type: BottomNavigationBarType.fixed,
+          selectedLabelStyle: AppTextStyles.navigationSelectLabelStyle,
+          unselectedLabelStyle: AppTextStyles.navigationUnSelectLabelStyle,
           items: [
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/date.svg',
-                color: AppColors.kGray200,
+              icon: Image.asset(
+                Assets.icons.sellerHomeNavigationIcon.path,
+                scale: 1.9,
+                color: AppColors.kunSelectColor,
+              ),
+              label: 'Главная',
+              activeIcon: Image.asset(
+                Assets.icons.sellerHomeNavigationIcon.path,
+                scale: 1.9,
+                color: Colors.black,
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                Assets.icons.sellerMyProductsNavigationIcon.path,
+                scale: 1.9,
+                color: AppColors.kunSelectColor,
               ),
               label: 'Мои товары',
-              activeIcon: SvgPicture.asset(
-                'assets/icons/date.svg',
-                color: AppColors.kPrimaryColor,
+              activeIcon: Image.asset(
+                Assets.icons.sellerMyProductsNavigationIcon.path,
+                scale: 1.9,
+                color: Colors.black,
               ),
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
                 'assets/icons/chat_2.svg',
-                color: AppColors.kGray200,
+                color: AppColors.kunSelectColor,
               ),
               label: 'Чат',
               activeIcon: SvgPicture.asset(
                 'assets/icons/chat_2.svg',
-                color: AppColors.kPrimaryColor,
+                color: Colors.black,
               ),
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
                 'assets/icons/docs.svg',
-                color: AppColors.kGray200,
+                color: AppColors.kunSelectColor,
               ),
               label: 'Заказы',
               activeIcon: SvgPicture.asset(
                 'assets/icons/docs.svg',
-                color: AppColors.kPrimaryColor,
+                color: Colors.black,
               ),
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/account.svg',
-                color: AppColors.kGray200,
+              icon: Image.asset(
+                Assets.icons.sellerNavigationIcon.path,
+                color: AppColors.kunSelectColor,
+                scale: 1.9,
               ),
               label: 'Профиль',
-              activeIcon: SvgPicture.asset(
-                'assets/icons/account.svg',
-                color: AppColors.kPrimaryColor,
+              activeIcon: Image.asset(
+                Assets.icons.sellerNavigationIcon.path,
+                scale: 1.9,
+                color: Colors.black,
               ),
             ),
           ],

@@ -13,11 +13,11 @@ class BasketSellerCubit extends Cubit<BasketAdminState> {
   List<BasketOrderSellerModel> activeOrdersRealFBS = [];
   List<BasketOrderSellerModel> endOrders = [];
 
-  Future<void> basketOrderShow(fulfillment) async {
+  Future<void> basketOrderShow(status) async {
     try {
       emit(LoadingState());
       final List<BasketOrderSellerModel> data =
-          await basketRepository.basketOrderShow('fbs');
+          await basketRepository.basketOrderShow(status);
       activeOrders.clear();
       activeOrders.addAll(data);
       emit(LoadedState(activeOrders, activeOrdersRealFBS, endOrders));

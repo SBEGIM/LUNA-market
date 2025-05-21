@@ -10,10 +10,10 @@ class LoginSellerCubit extends Cubit<LoginSellerState> {
 
   LoginSellerCubit({required this.loginAdminRepository}) : super(InitState());
 
-  Future<void> login(String name, String password) async {
+  Future<void> login(String phone, String password) async {
     try {
       emit(LoadingState());
-      final data = await loginAdminRepository.login(name, password);
+      final data = await loginAdminRepository.login(phone, password);
 
       if (data == 200) {
         emit(LoadedState());

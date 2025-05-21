@@ -132,6 +132,18 @@ flutter:
         - asset: fonts/Nunito-Italic-VariableFont_wght.ttf
         - asset: fonts/Nunito-VariableFont_wght.ttf
           style: italic
+    - family: SFProDisplay
+      fonts:
+        - asset: fonts/SF-Pro-Display-Regular.otf
+          weight: 400
+        - asset: fonts/SF-Pro-Display-Semibold.otf
+          weight: 700
+
+       
+       
+          
+
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

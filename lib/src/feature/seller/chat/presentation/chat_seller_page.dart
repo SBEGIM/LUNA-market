@@ -72,7 +72,7 @@ class _ChatSellerPageState extends State<ChatSellerPage> {
           //   ),
           // ),
           title: const Text(
-            'Сообщение',
+            'Чат',
             style: TextStyle(
                 color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
           ),
@@ -108,13 +108,18 @@ class _ChatSellerPageState extends State<ChatSellerPage> {
                       children: [
                         Container(
                           height: 46,
-                          margin: const EdgeInsets.only(top: 20),
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          margin: const EdgeInsets.only(
+                              top: 10, left: 16, right: 16),
+                          // padding: const EdgeInsets.symmetric(horizontal: 16),
                           alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: AppColors.kGray2,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: TextField(
                             keyboardType: TextInputType.text,
                             controller: searchController,
-                            textAlign: TextAlign.center,
+                            textAlign: TextAlign.start,
                             onChanged: ((value) {
                               BlocProvider.of<ChatSellerCubit>(context)
                                   .searchChats(searchController.text);
@@ -122,28 +127,31 @@ class _ChatSellerPageState extends State<ChatSellerPage> {
                               setState(() {});
                             }),
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(width: 1)),
+                              // border: OutlineInputBorder(
+                              //     borderRadius: BorderRadius.circular(8),
+                              //     borderSide: const BorderSide(width: 1)),
 
                               prefixIcon: searchController.text.isEmpty
                                   ? Transform.translate(
-                                      offset: const Offset(85, 0),
+                                      offset: const Offset(0, 0),
                                       child: const Icon(
                                         Icons.search,
                                         color: Colors.grey,
                                       ),
                                     )
                                   : null,
-                              hintText: 'Поиск клиентов',
+                              hintText: 'Поиск',
+                              border:
+                                  InputBorder.none, // Remove default underline
+                              contentPadding: EdgeInsets.all(12),
                               hintStyle: const TextStyle(
                                   color: Colors.grey,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(
-                                      width: 0.3, color: Colors.grey)),
+                              // enabledBorder: OutlineInputBorder(
+                              //     borderRadius: BorderRadius.circular(8),
+                              //     borderSide: const BorderSide(
+                              //         width: 0.1, color: AppColors.kGray300)),
                               // suffixIcon: IconButton(
                               //     onPressed: () {},
                               //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',

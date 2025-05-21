@@ -63,6 +63,8 @@ class _MessageSellerState extends State<MessageSeller> {
     channel.sink.add(text);
   }
 
+  bool isFullScreen = false;
+
   late WebSocketChannel channel;
 
   final TextEditingController _chatTextController = TextEditingController();
@@ -161,12 +163,12 @@ class _MessageSellerState extends State<MessageSeller> {
           leading: GestureDetector(
             onTap: () {
               BlocProvider.of<ChatSellerCubit>(context).chat();
-
               Get.back();
             },
             child: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.kPrimaryColor,
+              Icons.arrow_back,
+              color: AppColors.kLightBlackColor,
+              size: 25,
             ),
           ),
           title: Text(
@@ -249,49 +251,68 @@ class _MessageSellerState extends State<MessageSeller> {
                                           ? Alignment.centerLeft
                                           : Alignment.centerRight,
                                   child: Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    margin: const EdgeInsets.only(
-                                        top: 4, bottom: 4, left: 16, right: 16),
-                                    color: element.userId == int.parse(sellerId)
-                                        ? Colors.white
-                                        : AppColors.kPrimaryColor,
-                                    child: element.type == 'message'
-                                        ? Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              element.text ?? '2',
-                                              style: TextStyle(
-                                                  color: element.userId ==
-                                                          int.parse(sellerId)
-                                                      ? Colors.black
-                                                      : Colors.white),
-                                            ),
-                                          )
-                                        : Container(
-                                            // margin: const EdgeInsets.only(
-                                            //     top: 12, left: 10),
-                                            // alignment: Alignment.center,
-                                            padding: EdgeInsets.zero,
-                                            margin: EdgeInsets.zero,
-                                            height: 320,
-                                            width: 210,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey,
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                  "https://lunamarket.ru/storage/${element.path ?? ''}",
-                                                ),
-                                                fit: BoxFit.cover,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      margin: const EdgeInsets.only(
+                                          top: 4,
+                                          bottom: 4,
+                                          left: 16,
+                                          right: 16),
+                                      color:
+                                          element.userId == int.parse(sellerId)
+                                              ? AppColors.kPinkChatColor
+                                              : AppColors.kGray2,
+                                      child: element.type == 'message'
+                                          ? Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                element.text ?? '2',
+                                                style: TextStyle(
+                                                    color: element.userId ==
+                                                            int.parse(sellerId)
+                                                        ? Colors.black
+                                                        : Colors.black),
                                               ),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
+                                            )
+                                          : GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  isFullScreen =
+                                                      !isFullScreen; // Toggle full-screen mode
+                                                });
+                                              },
+                                              child: isFullScreen
+                                                  ? _buildFullScreenImage(
+                                                      element.path ?? '')
+                                                  : _buildThumbnailImage(
+                                                      element.path ?? ''),
+                                            )
 
-                                              //color: const Color(0xFFF0F5F5))),
-                                            ),
-                                          ),
-                                  ),
+                                      // Container(
+                                      //     // margin: const EdgeInsets.only(
+                                      //     //     top: 12, left: 10),
+                                      //     // alignment: Alignment.center,
+                                      //     padding: EdgeInsets.zero,
+                                      //     margin: EdgeInsets.zero,
+                                      //     height: 80,
+                                      //     width: 80,
+                                      //     decoration: BoxDecoration(
+                                      //       color: Colors.grey,
+                                      //       image: DecorationImage(
+                                      //         image: NetworkImage(
+                                      //           "https://lunamarket.ru/storage/${element.path ?? ''}",
+                                      //         ),
+                                      //         fit: BoxFit.cover,
+                                      //       ),
+                                      //       borderRadius:
+                                      //           BorderRadius.circular(12),
+
+                                      //       //color: const Color(0xFFF0F5F5))),
+                                      //     ),
+                                      //   ),
+                                      ),
                                 ),
                                 // optional
                               ),
@@ -366,7 +387,7 @@ class _MessageSellerState extends State<MessageSeller> {
                                         maxLines: null,
                                         decoration: const InputDecoration(
                                           border: InputBorder.none,
-                                          hintText: 'Напишите клиенту',
+                                          hintText: 'Напишите сообщение',
                                         ),
                                         controller: _chatTextController,
                                       ),
@@ -378,8 +399,8 @@ class _MessageSellerState extends State<MessageSeller> {
                                     SendData();
                                   },
                                   child: const Icon(
-                                    Icons.send,
-                                    color: Colors.black,
+                                    Icons.send_sharp,
+                                    color: AppColors.mainPurpleColor,
                                   ),
                                 )
                               ],
@@ -416,5 +437,48 @@ class _MessageSellerState extends State<MessageSeller> {
         //   },
         // ),
         );
+  }
+
+  Widget _buildThumbnailImage(String imagePath) {
+    return Container(
+      height: 80,
+      width: 80,
+      decoration: BoxDecoration(
+        color: Colors.grey,
+        image: DecorationImage(
+          image: NetworkImage("https://lunamarket.ru/storage/$imagePath"),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+    );
+  }
+
+// Helper method for full-screen image
+  Widget _buildFullScreenImage(String imagePath) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: EdgeInsets.zero,
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            isFullScreen = false; // Close full-screen on tap
+          });
+        },
+        child: InteractiveViewer(
+          // Allows pinch-to-zoom
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage("https://lunamarket.ru/storage/$imagePath"),
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

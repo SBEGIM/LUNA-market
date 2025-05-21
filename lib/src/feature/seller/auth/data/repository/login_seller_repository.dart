@@ -9,14 +9,14 @@ const baseUrl = 'https://lunamarket.ru/api';
 class LoginSellerRepository {
   final LoginToApi _loginToApi = LoginToApi();
 
-  Future<dynamic> login(String name, String password) =>
-      _loginToApi.login(name, password);
+  Future<dynamic> login(String phone, String password) =>
+      _loginToApi.login(phone, password);
 }
 
 class LoginToApi {
   final _box = GetStorage();
 
-  Future<dynamic> login(String name, String password) async {
+  Future<dynamic> login(String phone, String password) async {
     final deviceToken = await _box.read('device_token');
     String? deviceType;
     if (Platform.isIOS == true) {
@@ -26,7 +26,7 @@ class LoginToApi {
     }
 
     final response = await http.post(Uri.parse('$baseUrl/seller/login'), body: {
-      'name': name,
+      'phone': phone.replaceAll(RegExp('[^0-9]'), ''),
       'password': password,
       'device_token': deviceToken.toString(),
       'device_type': deviceType

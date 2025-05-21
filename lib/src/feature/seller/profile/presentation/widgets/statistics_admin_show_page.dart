@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/product/presentation/widgets/chip_date_widget.dart';
 import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_month_statics_admin_cubit.dart';
 import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_month_statics_admin_state.dart';
@@ -34,7 +35,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
     'Декабрь',
   ];
   int year = 2025;
-  int _selectIndex = -1;
+  int _selectIndex = 0;
   int _summConfirm = 0;
   int _summFreeze = 0;
 
@@ -58,337 +59,659 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.kBackgroundColor,
-      appBar: AppBar(
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: const Text(
-            'Статистика',
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          )),
-      body: ListView(shrinkWrap: true, children: [
-        const SizedBox(
-          height: 10,
-        ),
-        Container(
-          // color: Colors.white,
-          padding: const EdgeInsets.all(16),
-
-          child: Row(
-            children: [
-              const Text(
-                'Год',
-                style: TextStyle(
-                    color: AppColors.kGray900,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16),
-              ),
-              const SizedBox(
-                width: 15,
-              ),
-              GestureDetector(
-                onTap: () {
-                  year--;
-                  setState(() {});
-                },
-                child: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                  size: 15.0,
+      backgroundColor: AppColors.kWhite,
+      // appBar: AppBar(
+      //     iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+      //     backgroundColor: Colors.white,
+      //     elevation: 0,
+      //     centerTitle: true,
+      //     title: const Text(
+      //       'Мой заработок',
+      //       style: TextStyle(
+      //         color: Colors.black,
+      //       ),
+      //     )),
+      body: ListView(shrinkWrap: true, padding: EdgeInsets.zero, children: [
+        Stack(
+          children: [
+            Container(
+                height: 220,
+                width: 390,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment(-0.75, -1),
+                    end: Alignment(1, 1),
+                    colors: [
+                      Color(0xFF7D2DFF),
+                      Color(0xFF41DDFF),
+                    ],
+                    stops: [0.2685, 1.0],
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Text(
-                '$year',
-                style: const TextStyle(
-                    color: AppColors.kGray900,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              GestureDetector(
-                onTap: () {
-                  year++;
-                  setState(() {});
-                },
-                child: const Icon(
-                  Icons.arrow_forward,
-                  color: Colors.black,
-                  size: 15.0,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          // color: Colors.white,
-          padding: const EdgeInsets.all(16),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text(
-              'Месяцы',
-              style: TextStyle(
-                  color: AppColors.kGray900,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16),
-            ),
-            SizedBox(
-              height: 50,
-              width: 500,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: months.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      _selectIndex = index;
-                      _summConfirm = 0;
-                      _summFreeze = 0;
-                      setState(() {
-                        _summConfirm;
-                        _summFreeze;
-                        _selectIndex;
-                      });
-                      BlocProvider.of<ProfileMonthStaticsAdminCubit>(context)
-                          .statics(
-                        year,
-                        _selectIndex + 1,
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 8.0, bottom: 4, left: 4, right: 4),
-                      child: chipDate(
-                        months[index],
-                        index,
-                        _selectIndex,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 50.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(width: 5),
+                          InkWell(
+                            onTap: () => Navigator.pop(context),
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(width: 105),
+                          Text(
+                            'Мой заработок',
+                            style:
+                                AppTextStyles.defaultButtonTextStyle.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-
-                    // GestureDetector(
-                    //   child: chipDate('Январь', false),
-                    // ),
-                    // chipDate('Февраль', false),
-                    // chipDate('Март', false),
-                    // chipDate('Апрель', false),
-                    // chipDate('Май', false),
-                    // chipDate('Июнь', false),
-                  );
-                },
-              ),
-            ),
-
-            // SingleChildScrollView(
-            //     scrollDirection: Axis.horizontal,
-            //     child: Padding(
-            //       padding: const EdgeInsets.only(bottom: 8),
-            //       child: Wrap(
-            //         spacing: 6,
-            //         runSpacing: 6,
-            //         children: [
-            //           chipDate('Июль', true),
-            //           chipDate('Август', false),
-            //           chipDate('Сентябрь', false),
-            //           chipDate('Октябрь', false),
-            //           chipDate('Ноябрь', false),
-            //           chipDate('Декабрь', false),
-            //         ],
-            //       ),
-            //     )),
-            const SizedBox(
-              height: 10,
-            ),
-
-            BlocConsumer<ProfileMonthStaticsAdminCubit,
-                ProfileMonthStaticsAdminState>(
-              listener: (context, state) {
-                // if (state is LoadedState) {}
-                if (state is LoadedState) {
-                  _total = state.loadedProfile.first.total ?? 0;
-
-                  state.loadedProfile.map((e) {
-                    if (e.status == 'CONFIRMED') {
-                      _summConfirm += e.price ?? 0;
-                    } else {
-                      _summFreeze += e.price ?? 0;
-                    }
-                  }).toList();
-                }
-                setState(() {});
-              },
-              builder: (context, state) {
-                if (state is LoadedState) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height / 2.3,
-                    child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: state.loadedProfile.length,
-                        itemBuilder: (context, index) {
-                          _total = state.loadedProfile[index].total ?? 0;
-
-                          return Container(
-                            height: 80,
-                            width: 343,
-                            margin: const EdgeInsets.only(top: 10),
-                            child: Container(
-                              padding: const EdgeInsets.only(
-                                  top: 16, bottom: 10, left: 10, right: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 0.0, top: 28),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 80,
+                              width: 120,
                               decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Row(
+                                  color: Colors.white.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(16)),
+                              child: Column(
                                 children: [
-                                  SizedBox(
-                                    height: 60,
-                                    width: 60,
-                                    child: Image.network(
-                                      'https://lunamarket.ru/storage/${state.loadedProfile[index].path}',
-                                      fit: BoxFit.cover,
-                                    ),
+                                  SizedBox(height: 12.5),
+                                  Image.asset(
+                                    Assets.icons.moneyIcon.path,
+                                    height: 16.5,
+                                    width: 22.5,
                                   ),
-                                  const SizedBox(
-                                    width: 16,
+                                  SizedBox(height: 6.5),
+                                  Text(
+                                    '$_summConfirm ₽',
+                                    style: AppTextStyles.appBarTextStylea
+                                        .copyWith(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontFamily: 'SFProDisplay'),
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        state.loadedProfile[index].name ?? '',
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                            color: AppColors.kGray900,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        'Магазин: ${GetStorage().read('seller_name')} ',
-                                        style: const TextStyle(
-                                            color: AppColors.kGray900,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-
-                                      Row(
-                                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Text(
-                                            state.loadedProfile[index].price
-                                                .toString(),
-                                            style: const TextStyle(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          const SizedBox(width: 45),
-                                          Text(
-                                              'x${state.loadedProfile[index].count.toString()}',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400)),
-                                          const SizedBox(width: 45),
-                                          Text(
-                                              '${(state.loadedProfile[index].price! * state.loadedProfile[index].count!)} ₽',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400)),
-                                        ],
-                                      )
-                                      // Text(
-                                      //   'Дата добавления:${widget.product.}',
-                                      //   style: TextStyle(
-                                      //       color: AppColors.kGray900,
-                                      //       fontSize: 12,
-                                      //       fontWeight: FontWeight.w500),
-                                      // )
-                                    ],
+                                  SizedBox(height: 3),
+                                  Text(
+                                    'Мой заработок',
+                                    style: AppTextStyles.bannerTextStyle,
                                   )
                                 ],
                               ),
                             ),
-                          );
-                        }),
-                  );
-                } else {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent));
-                }
-              },
-            ),
+                            SizedBox(width: 3),
+                            Container(
+                              height: 80,
+                              width: 120,
+                              decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(16)),
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 12.5),
+                                  Image.asset(
+                                    Assets.icons.lock.path,
+                                    height: 16.5,
+                                    width: 22.5,
+                                  ),
+                                  SizedBox(height: 6.5),
+                                  Text(
+                                    '$_summFreeze ₽',
+                                    style: AppTextStyles.appBarTextStylea
+                                        .copyWith(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontFamily: 'SFProDisplay'),
+                                  ),
+                                  SizedBox(height: 3),
+                                  Text(
+                                    'В заморозке',
+                                    style: AppTextStyles.bannerTextStyle,
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 3),
+                            Container(
+                              height: 80,
+                              width: 120,
+                              decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(16)),
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 12.5),
+                                  Image.asset(
+                                    Assets.icons.sumMoney.path,
+                                    height: 16.5,
+                                    width: 22.5,
+                                  ),
+                                  SizedBox(height: 6.5),
+                                  Text(
+                                    '$_total ₽',
+                                    style: AppTextStyles.appBarTextStylea
+                                        .copyWith(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontFamily: 'SFProDisplay'),
+                                  ),
+                                  SizedBox(height: 3),
+                                  Text(
+                                    'Заработок за год',
+                                    style: AppTextStyles.bannerTextStyle,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(12)),
+              // color: Colors.white,
+              margin: const EdgeInsets.only(top: 210),
+              padding: const EdgeInsets.all(16),
 
-            Container(
-              height: 36,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(6)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Мой заработок',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 160,
+                        height: 36,
+                        padding: EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                            color: AppColors.kBackgroundColor,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: GestureDetector(
+                          onTap: () =>
+                              _showYearPickerBottomSheet(context, year),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '$year',
+                                style: const TextStyle(
+                                  color: AppColors.kGray900,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Icon(Icons.arrow_drop_down)
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 160,
+                        height: 36,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: AppColors.kBackgroundColor,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(12),
+                          onTap: () {
+                            _showMonthPickerBottomSheet(context, _selectIndex,
+                                (int selectedIndex) {
+                              _selectIndex = selectedIndex;
+                              _summConfirm = 0;
+                              _summFreeze = 0;
+
+                              setState(() {}); // достаточно одного вызова
+
+                              BlocProvider.of<ProfileMonthStaticsAdminCubit>(
+                                      context)
+                                  .statics(
+                                year,
+                                _selectIndex + 1,
+                              );
+                            });
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                months[_selectIndex],
+                                style: const TextStyle(
+                                  color: AppColors.kGray900,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const Icon(
+                                Icons.arrow_drop_down,
+                                color: AppColors.kGray900,
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  Text('$_summConfirm ₽',
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w400)),
+                  Container(
+                    padding: const EdgeInsets.only(top: 0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          BlocConsumer<ProfileMonthStaticsAdminCubit,
+                              ProfileMonthStaticsAdminState>(
+                            listener: (context, state) {
+                              // if (state is LoadedState) {}
+                              if (state is LoadedState) {
+                                _total = state.loadedProfile.first.total ?? 0;
+
+                                state.loadedProfile.map((e) {
+                                  if (e.status == 'CONFIRMED') {
+                                    _summConfirm += e.price ?? 0;
+                                  } else {
+                                    _summFreeze += e.price ?? 0;
+                                  }
+                                }).toList();
+                              }
+                              setState(() {});
+                            },
+                            builder: (context, state) {
+                              if (state is LoadedState) {
+                                return SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height / 1.9,
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: state.loadedProfile.length,
+                                      itemBuilder: (context, index) {
+                                        _total =
+                                            state.loadedProfile[index].total ??
+                                                0;
+
+                                        return state.loadedProfile[index].id ==
+                                                0
+                                            ? Center(
+                                                child: Container(
+                                                  margin:
+                                                      EdgeInsets.only(top: 130),
+                                                  alignment: Alignment.center,
+                                                  child: Column(
+                                                    children: [
+                                                      Image.asset(
+                                                        Assets.icons.emptyIcon
+                                                            .path,
+                                                        height: 72,
+                                                        width: 72,
+                                                      ),
+                                                      SizedBox(height: 10),
+                                                      Text(
+                                                        'Список пока пуст',
+                                                        style: AppTextStyles
+                                                            .aboutTextStyle
+                                                            .copyWith(
+                                                                color: AppColors
+                                                                    .kGray300),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                            : Container(
+                                                height: 148,
+                                                width: 343,
+                                                margin:
+                                                    EdgeInsets.only(top: 10),
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 16,
+                                                          bottom: 10,
+                                                          left: 10,
+                                                          right: 20),
+                                                  decoration: BoxDecoration(
+                                                      color: AppColors
+                                                          .kBackgroundColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16)),
+                                                  child: Row(
+                                                    children: [
+                                                      Container(
+                                                        height: 88,
+                                                        width: 88,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              AppColors.kWhite,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                        ),
+                                                        child: Center(
+                                                          child: Image.network(
+                                                            'https://lunamarket.ru/storage/${state.loadedProfile[index].path}',
+                                                            height: 72,
+                                                            width: 72,
+                                                            fit: BoxFit.contain,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 16,
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 200,
+                                                            child: Text(
+                                                              state
+                                                                      .loadedProfile[
+                                                                          index]
+                                                                      .name ??
+                                                                  '',
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 1,
+                                                              style: AppTextStyles
+                                                                  .kcolorPrimaryTextStyle
+                                                                  .copyWith(
+                                                                      color: AppColors
+                                                                          .kLightBlackColor),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                'Магазин: ',
+                                                                style: AppTextStyles
+                                                                    .drawer2TextStyle
+                                                                    .copyWith(
+                                                                        color: AppColors
+                                                                            .kGray300,
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontFamily:
+                                                                            'SFProDisplay'),
+                                                              ),
+                                                              Text(
+                                                                '${GetStorage().read('seller_name')} ',
+                                                                style: AppTextStyles
+                                                                    .drawer2TextStyle
+                                                                    .copyWith(
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontFamily:
+                                                                            'SFProDisplay'),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                'Комиссия: ',
+                                                                style: AppTextStyles
+                                                                    .drawer2TextStyle
+                                                                    .copyWith(
+                                                                        color: AppColors
+                                                                            .kGray300,
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontFamily:
+                                                                            'SFProDisplay'),
+                                                              ),
+                                                              Text(
+                                                                '${state.loadedProfile[index].bonusPercent} %',
+                                                                style: AppTextStyles
+                                                                    .drawer2TextStyle
+                                                                    .copyWith(
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontFamily:
+                                                                            'SFProDisplay'),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                'Вознаградение блогера: ',
+                                                                style: AppTextStyles.drawer2TextStyle.copyWith(
+                                                                    color: AppColors
+                                                                        .kGray300,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w300,
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontFamily:
+                                                                        'SFProDisplay'),
+                                                              ),
+                                                              Text(
+                                                                '${state.loadedProfile[index].pointBlogger ?? '0'} %',
+                                                                style: AppTextStyles
+                                                                    .drawer2TextStyle
+                                                                    .copyWith(
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontFamily:
+                                                                            'SFProDisplay'),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: 5),
+                                                          Row(
+                                                            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                            children: [
+                                                              Text(
+                                                                ' ${state.loadedProfile[index].price.toString()}₽',
+                                                                style: AppTextStyles
+                                                                    .statisticsTextStyle,
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 45),
+                                                              Text(
+                                                                  'x${state.loadedProfile[index].count.toString()}',
+                                                                  style: AppTextStyles
+                                                                      .statisticsTextStyle
+                                                                      .copyWith(
+                                                                          color:
+                                                                              AppColors.kGray200)),
+                                                              const SizedBox(
+                                                                  width: 45),
+                                                              Text(
+                                                                  '= ${(state.loadedProfile[index].price! * state.loadedProfile[index].count!)} ₽',
+                                                                  style: AppTextStyles
+                                                                      .statisticsTextStyle
+                                                                      .copyWith(
+                                                                          color:
+                                                                              AppColors.mainPurpleColor)),
+                                                            ],
+                                                          )
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                      }),
+                                );
+                              } else {
+                                return const Center(
+                                    child: CircularProgressIndicator(
+                                        color: Colors.indigoAccent));
+                              }
+                            },
+                          ),
+                        ]),
+                  ),
                 ],
               ),
             ),
-            Container(
-              height: 36,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(6)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'В заморозке',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                  ),
-                  Text('$_summFreeze ₽',
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w400)),
-                ],
-              ),
-            ),
-            Container(
-              height: 36,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(6)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Заработок за год',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                  ),
-                  Text('$_total ₽',
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w400)),
-                ],
-              ),
-            )
-          ]),
+          ],
+        ),
+        const SizedBox(
+          height: 10,
         ),
       ]),
     );
   }
+}
+
+void _showMonthPickerBottomSheet(
+    BuildContext context, int selectedMonth, Function(int) onMonthSelected) {
+  final List<String> months = [
+    'Январь',
+    'Февраль',
+    'Март',
+    'Апрель',
+    'Май',
+    'Июнь',
+    'Июль',
+    'Август',
+    'Сентябрь',
+    'Октябрь',
+    'Ноябрь',
+    'Декабрь'
+  ];
+
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    backgroundColor: Colors.white,
+    builder: (context) {
+      return SizedBox(
+        height: 400,
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Выберите месяц',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.kGray900,
+                ),
+              ),
+            ),
+            const Divider(),
+            Expanded(
+              child: ListView.builder(
+                itemCount: months.length,
+                itemBuilder: (context, index) {
+                  final isSelected = selectedMonth == index;
+                  return ListTile(
+                    title: Text(
+                      months[index],
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: isSelected
+                            ? AppColors.mainBackgroundPurpleColor
+                            : AppColors.kGray900,
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.normal,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      onMonthSelected(index);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+void _showYearPickerBottomSheet(BuildContext context, int currentYear) {
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    backgroundColor: Colors.white,
+    builder: (context) {
+      final List<int> years = List.generate(50, (index) => currentYear - index);
+
+      return SizedBox(
+        height: 400,
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Выберите год',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.kGray900,
+                ),
+              ),
+            ),
+            const Divider(),
+            Expanded(
+              child: ListView.separated(
+                itemCount: years.length,
+                separatorBuilder: (_, __) => Divider(),
+                itemBuilder: (context, index) {
+                  final year = years[index];
+                  return ListTile(
+                    title: Text(
+                      '$year',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: AppColors.kGray900,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      // сделай что-то с выбранным годом
+                      print("Selected year: $year");
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
 
 class StatisticWidgetContainer extends StatelessWidget {

@@ -13,7 +13,8 @@ import '../../../../drawer/presentation/widgets/country_widget.dart';
 import '../../data/bloc/profile_edit_admin_cubit.dart';
 
 class ReqirectProfilePage extends StatefulWidget {
-  const ReqirectProfilePage({Key? key}) : super(key: key);
+  final String title;
+  ReqirectProfilePage({required this.title, Key? key}) : super(key: key);
 
   @override
   State<ReqirectProfilePage> createState() => _ReqirectProfilePageState();
@@ -184,52 +185,42 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       backgroundColor: AppColors.kWhite,
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         backgroundColor: AppColors.kWhite,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Редактирование профиля',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-          ),
+        title: Text(
+          widget.title,
+          style: AppTextStyles.appBarTextStyle,
         ),
-        actions: [
-          IconButton(
-            icon: SvgPicture.asset('assets/icons/bell.svg',
-                color: AppColors.kPrimaryColor),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildProfileHeader(),
-            const Divider(height: 0.00, color: AppColors.kGray200),
+            // _buildProfileHeader(),
+            // const Divider(height: 0.00, color: AppColors.kGray200),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Чтобы поменять текущий пароль, необходимо сначала ввести старый правильно, а затем придумать новый',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.kGray500,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  _buildOrganizationSection(),
-                  const SizedBox(height: 24),
-                  _buildShopInfoSection(),
-                  const SizedBox(height: 24),
-                  _buildContactInfoSection(),
-                  const SizedBox(height: 24),
-                  _buildPasswordSection(),
+                  // const Text(
+                  //   'Чтобы поменять текущий пароль, необходимо сначала ввести старый правильно, а затем придумать новый',
+                  //   style: TextStyle(
+                  //     fontSize: 14,
+                  //     color: AppColors.kGray500,
+                  //   ),
+                  // ),
+                  if (widget.title == 'Юридические данные')
+                    _buildOrganizationSection(),
+                  if (widget.title == 'Реквизиты банка')
+                    _buildShopInfoSection(),
+                  if (widget.title == 'Контактные данные')
+                    _buildContactInfoSection(),
+                  if (widget.title == 'Контактные данные')
+                    _buildPasswordSection(),
                   const SizedBox(height: 100),
                 ],
               ),
@@ -237,7 +228,11 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
           ],
         ),
       ),
-      bottomSheet: _buildSaveButton(context),
+      bottomSheet: Material(
+        color: Colors.white,
+        elevation: 0,
+        child: _buildSaveButton(context),
+      ),
     );
   }
 
@@ -322,119 +317,95 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   }
 
   Widget _buildOrganizationSection() {
-    return Card(
-      color: AppColors.kGray,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.grey.shade200, width: 1),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Данные организации',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: AppColors.kGray900,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildOrganizationTypeToggle(),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            _buildFormField(
-              icon: Icons.fingerprint,
-              controller: iinController,
-              hintText: 'ИНН/БИН',
-            ),
-            if (typeOrganization)
-              _buildFormField(
-                icon: Icons.document_scanner,
-                controller: kppController,
-                hintText: 'КПП',
-              ),
-            if (typeOrganization)
-              _buildFormField(
-                icon: Icons.business,
-                controller: ogrnController,
-                hintText: 'ОГРН',
-              ),
-            _buildFormField(
-              icon: Icons.business_center,
-              controller: okved,
-              hintText: 'ОКВэД',
-            ),
-            _buildFormField(
-              icon: Icons.account_balance,
-              controller: taxAuthority,
-              hintText: 'Налоговый орган',
-            ),
-            _buildFormField(
-              icon: Icons.calendar_today,
-              controller: dateRegister,
-              hintText: 'Дата регистрации',
-            ),
-            _buildFormField(
-              icon: Icons.location_city,
-              controller: legalAddress,
-              hintText: 'Юридический адрес',
-            ),
-            if (typeOrganization)
-              _buildFormField(
-                icon: Icons.foundation,
-                controller: founderController,
-                hintText: 'Учредитель',
-              ),
-            if (typeOrganization)
-              _buildFormField(
-                icon: Icons.calendar_today,
-                controller: dateBirthday,
-                hintText: 'Дата рождения',
-              ),
-            if (typeOrganization)
-              _buildFormField(
-                icon: Icons.south_america,
-                controller: citizenshipController,
-                hintText: 'Гражданство',
-              ),
-            _buildFormField(
-              icon: Icons.business,
-              controller: companyNameController,
-              hintText: 'Название компании',
-            ),
-            // _buildFormField(
-            //   icon: Icons.assignment,
-            //   controller: addressController,
-            //   hintText: 'Адрес',
-            // ),
-            if (typeOrganization)
-              _buildFormField(
-                icon: Icons.account_balance_wallet,
-                controller: generalDirectorController,
-                hintText: 'Ген.директор',
-              ),
-            _buildFormField(
-              icon: Icons.assignment,
-              controller: frOrganizations,
-              hintText: 'Организации ФР',
-            ),
-            _buildFormField(
-              icon: Icons.account_balance_wallet,
-              controller: bankController,
-              hintText: 'Банк',
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // const Text(
+        //   'Юридические данные',
+        //   style: TextStyle(
+        //     fontSize: 16,
+        //     fontWeight: FontWeight.w600,
+        //     color: AppColors.kGray900,
+        //   ),
+        // ),
+        // const SizedBox(height: 16),
+        // Row(
+        //   children: [
+        //     Expanded(
+        //       child: _buildOrganizationTypeToggle(),
+        //     ),
+        //   ],
+        // ),
+        const SizedBox(height: 16),
+        _buildFormField(
+          controller: iinController,
+          label: 'ИНН/БИН',
         ),
-      ),
+
+        if (typeOrganization)
+          _buildFormField(
+            controller: kppController,
+            label: 'КПП',
+          ),
+        if (typeOrganization)
+          _buildFormField(
+            controller: ogrnController,
+            label: 'ОГРН',
+          ),
+        _buildFormField(
+          controller: okved,
+          label: 'ОКВэД',
+        ),
+        _buildFormField(
+          controller: taxAuthority,
+          label: 'Налоговый орган',
+        ),
+        _buildFormField(
+          controller: dateRegister,
+          label: 'Дата регистрации',
+        ),
+        _buildFormField(
+          controller: legalAddress,
+          label: 'Юридический адрес',
+        ),
+        if (typeOrganization)
+          _buildFormField(
+            controller: founderController,
+            label: 'Учредитель',
+          ),
+        if (typeOrganization)
+          _buildFormField(
+            controller: dateBirthday,
+            label: 'Дата рождения',
+          ),
+        if (typeOrganization)
+          _buildFormField(
+            controller: citizenshipController,
+            label: 'Гражданство',
+          ),
+        _buildFormField(
+          controller: companyNameController,
+          label: 'Название компании',
+        ),
+        // _buildFormField(
+        //   icon: Icons.assignment,
+        //   controller: addressController,
+        //   hintText: 'Адрес',
+        // ),
+        if (typeOrganization)
+          _buildFormField(
+            controller: generalDirectorController,
+            label: 'Ген.директор',
+          ),
+        _buildFormField(
+          controller: frOrganizations,
+          label: 'Организации ФР',
+        ),
+        _buildFormField(
+          controller: bankController,
+          label: 'Банк',
+        ),
+      ],
     );
   }
 
@@ -468,277 +439,282 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   }
 
   Widget _buildShopInfoSection() {
-    return Card(
-      color: AppColors.kGray,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.grey.shade200, width: 1),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Информация о магазине',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: AppColors.kGray900,
-              ),
-            ),
-            const SizedBox(height: 16),
-            _buildFormField(
-              icon: Icons.store,
-              controller: shopNameController,
-              hintText: 'Название Магазина',
-            ),
-            _buildFormField(
-              icon: Icons.credit_card,
-              controller: checkController,
-              hintText: 'Счёт',
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // const Text(
+        //   'Реквизиты банка',
+        //   style: TextStyle(
+        //     fontSize: 16,
+        //     fontWeight: FontWeight.w600,
+        //     color: AppColors.kGray900,
+        //   ),
+        // ),
+        _buildFormField(
+          controller: shopNameController,
+          label: 'Название Магазина',
         ),
-      ),
+        _buildFormField(
+          controller: checkController,
+          label: 'Счёт',
+        ),
+      ],
     );
   }
 
   Widget _buildContactInfoSection() {
-    return Card(
-      color: AppColors.kGray,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.grey.shade200, width: 1),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Контактные данные',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: AppColors.kGray900,
-              ),
-            ),
-            const SizedBox(height: 16),
-            _buildFormField(
-              icon: Icons.person,
-              controller: nameController,
-              hintText: 'Контактное имя',
-            ),
-            _buildFormField(
-              icon: Icons.phone,
-              controller: phoneController,
-              hintText: '+7(###)-###-##-##',
-              keyboardType: TextInputType.phone,
-              inputFormatters: [maskFormatter],
-            ),
-            _buildFormField(
-              icon: Icons.email,
-              controller: emailController,
-              hintText: 'Email',
-              keyboardType: TextInputType.emailAddress,
-            ),
-            _buildSelectableField(
-              icon: Icons.public,
-              controller: countryController,
-              hintText: 'Страна',
-              onTap: () async {
-                final data = await Get.to(() => const CountryWidget());
-                countryController.text = data;
-                setState(() {});
-              },
-            ),
-            _buildSelectableField(
-              icon: Icons.location_city,
-              controller: cityController,
-              hintText: 'Город',
-              onTap: () async {
-                final data = await Get.to(() => const CityPage());
-                cityController.text = data;
-                setState(() {});
-              },
-            ),
-            _buildFormField(
-              icon: Icons.route,
-              controller: streetController,
-              hintText: 'Улица',
-            ),
-            _buildFormField(
-              icon: Icons.home,
-              controller: homeController,
-              hintText: 'Дом',
-            ),
-            _buildFormField(
-              icon: Icons.map,
-              controller: addressController,
-              hintText: 'Адрес',
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // const Text(
+        //   'Контактные данные',
+        //   style: TextStyle(
+        //     fontSize: 16,
+        //     fontWeight: FontWeight.w600,
+        //     color: AppColors.kGray900,
+        //   ),
+        // ),
+        // const SizedBox(height: 16),
+        _buildFormField(
+          controller: nameController,
+          label: 'Контактное имя',
         ),
-      ),
+        _buildFormField(
+          controller: phoneController,
+          label: '+7(###)-###-##-##',
+          keyboardType: TextInputType.phone,
+          inputFormatters: [maskFormatter],
+        ),
+        _buildFormField(
+          controller: emailController,
+          label: 'Email',
+          keyboardType: TextInputType.emailAddress,
+        ),
+        _buildSelectableField(
+          controller: countryController,
+          label: 'Страна',
+          onTap: () async {
+            final data = await Get.to(() => const CountryWidget());
+            countryController.text = data;
+            setState(() {});
+          },
+        ),
+        _buildSelectableField(
+          controller: cityController,
+          label: 'Город',
+          onTap: () async {
+            final data = await Get.to(() => const CityPage());
+            cityController.text = data;
+            setState(() {});
+          },
+        ),
+        _buildFormField(
+          controller: streetController,
+          label: 'Улица',
+        ),
+        _buildFormField(
+          controller: homeController,
+          label: 'Дом',
+        ),
+        _buildFormField(
+          controller: addressController,
+          label: 'Адрес',
+        ),
+      ],
     );
   }
 
   Widget _buildPasswordSection() {
-    return Card(
-      color: AppColors.kGray,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.grey.shade200, width: 1),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Смена пароля',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: AppColors.kGray900,
-              ),
-            ),
-            const SizedBox(height: 16),
-            _buildPasswordField(
-              controller: passwordController,
-              hintText: 'Старый пароль',
-              obscureText: _obscureText,
-              onToggle: () {
-                setState(() {
-                  _obscureText = !_obscureText;
-                });
-              },
-            ),
-            _buildPasswordField(
-              controller: passwordRepeatController,
-              hintText: 'Новый пароль',
-              obscureText: _obscureTextRepeat,
-              onToggle: () {
-                setState(() {
-                  _obscureTextRepeat = !_obscureTextRepeat;
-                });
-              },
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // const Text(
+        //   'Смена пароля',
+        //   style: TextStyle(
+        //     fontSize: 16,
+        //     fontWeight: FontWeight.w600,
+        //     color: AppColors.kGray900,
+        //   ),
+        // ),
+        // const SizedBox(height: 16),
+        _buildPasswordField(
+          controller: passwordController,
+          label: 'Старый пароль',
+          obscureText: _obscureText,
+          onToggle: () {
+            setState(() {
+              _obscureText = !_obscureText;
+            });
+          },
         ),
-      ),
+        _buildPasswordField(
+          controller: passwordRepeatController,
+          label: 'Новый пароль',
+          obscureText: _obscureTextRepeat,
+          onToggle: () {
+            setState(() {
+              _obscureTextRepeat = !_obscureTextRepeat;
+            });
+          },
+        ),
+      ],
     );
   }
 
   Widget _buildFormField({
-    required IconData icon,
     required TextEditingController controller,
-    required String hintText,
+    required String label,
     TextInputType? keyboardType,
     List<TextInputFormatter>? inputFormatters,
     bool readOnly = false,
+    VoidCallback? onTap,
+    bool showArrow = false,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: TextField(
-        controller: controller,
-        keyboardType: keyboardType,
-        inputFormatters: inputFormatters,
-        readOnly: readOnly,
-        decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: AppColors.kPrimaryColor),
-          hintText: hintText,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
+            ),
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+          const SizedBox(height: 8),
+          GestureDetector(
+            onTap: readOnly ? onTap : null,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: AbsorbPointer(
+                      absorbing: readOnly,
+                      child: TextField(
+                        controller: controller,
+                        keyboardType: keyboardType,
+                        inputFormatters: inputFormatters,
+                        readOnly: readOnly,
+                        decoration:
+                            const InputDecoration.collapsed(hintText: ''),
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  if (showArrow)
+                    const Icon(Icons.arrow_forward_ios,
+                        size: 16, color: Colors.grey),
+                ],
+              ),
+            ),
           ),
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        ),
+        ],
       ),
     );
   }
 
   Widget _buildSelectableField({
-    required IconData icon,
     required TextEditingController controller,
-    required String hintText,
+    required String label,
     required VoidCallback onTap,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: InkWell(
-        onTap: onTap,
-        child: IgnorePointer(
-          child: TextField(
-            controller: controller,
-            decoration: InputDecoration(
-              prefixIcon: Icon(icon, color: AppColors.kPrimaryColor),
-              suffixIcon: const Icon(Icons.arrow_drop_down, color: Colors.grey),
-              hintText: hintText,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey.shade300),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey.shade300),
-              ),
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
             ),
           ),
-        ),
+          const SizedBox(height: 8),
+          InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              height: 56,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      controller.text,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  const Icon(Icons.arrow_forward_ios_rounded,
+                      size: 16, color: Colors.grey),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildPasswordField({
     required TextEditingController controller,
-    required String hintText,
+    required String label,
     required bool obscureText,
     required VoidCallback onToggle,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: TextField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.lock, color: AppColors.kPrimaryColor),
-          suffixIcon: IconButton(
-            icon: Icon(
-              obscureText ? Icons.visibility_off : Icons.visibility,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 14,
               color: Colors.grey,
             ),
-            onPressed: onToggle,
           ),
-          hintText: hintText,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: controller,
+                    obscureText: obscureText,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                    ),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(
+                    obscureText ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.grey,
+                    size: 20,
+                  ),
+                  onPressed: onToggle,
+                ),
+              ],
+            ),
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.grey.shade300),
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        ),
+        ],
       ),
     );
   }
@@ -747,20 +723,21 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     return Container(
       padding: const EdgeInsets.all(16),
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 8,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
+      // decoration: BoxDecoration(
+      //   boxShadow: [
+      //     BoxShadow(
+      //       color: Colors.grey.withOpacity(0.2),
+      //       spreadRadius: 0,
+      //       blurRadius: 0,
+      //       offset: const Offset(0, -2),
+      //     ),
+      //   ],
+      // ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.kPrimaryColor,
+          backgroundColor: AppColors.mainPurpleColor,
+          elevation: 0, // Убирает тень от кнопки
+          shadowColor: Colors.white, // Подстраховка
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

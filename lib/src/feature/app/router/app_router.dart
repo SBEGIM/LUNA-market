@@ -9,6 +9,7 @@ import 'package:haji_market/src/feature/seller/auth/presentation/ui/auth_seller_
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/new_register_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/register_seller_page.dart';
 import 'package:haji_market/src/feature/seller/chat/presentation/chat_seller_page.dart';
+import 'package:haji_market/src/feature/seller/main/presentation/main_seller_page.dart';
 import 'package:haji_market/src/feature/seller/order/data/models/basket_order_seller_model.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/ui/my_orders_seller_page.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/widgets/detail_order_seller_page.dart';
@@ -96,6 +97,7 @@ class AppRouter extends _$AppRouter {
             AutoRoute(page: ProfileBloggerRoute.page),
 
             ///For Seller
+            AutoRoute(page: HomeSellerAdminRoute.page),
             AutoRoute(page: MyOrdersSellerRoute.page),
             AutoRoute(page: ChatSellerRoute.page),
             AutoRoute(page: MyProductsAdminRoute.page),

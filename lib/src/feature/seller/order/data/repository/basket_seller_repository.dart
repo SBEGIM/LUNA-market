@@ -10,8 +10,8 @@ const baseUrl = 'https://lunamarket.ru/api';
 class BasketSellerRepository {
   final Basket _basket = Basket();
 
-  Future<List<BasketOrderSellerModel>> basketOrderShow(fulfillment) =>
-      _basket.basketOrderShow(fulfillment);
+  Future<List<BasketOrderSellerModel>> basketOrderShow(status) =>
+      _basket.basketOrderShow(status);
 
   Future<List<BasketOrderSellerModel>> basketOrderRealFbsShow(fulfillment) =>
       _basket.basketOrderRealFbsShow(fulfillment);
@@ -26,13 +26,11 @@ class BasketSellerRepository {
 class Basket {
   final _box = GetStorage();
 
-  Future<List<BasketOrderSellerModel>> basketOrderShow(
-      String? fulfillment) async {
+  Future<List<BasketOrderSellerModel>> basketOrderShow(String? status) async {
     final String? token = _box.read('seller_token');
 
     final response = await http.get(
-        Uri.parse(
-            "$baseUrl/basket/order/seller/status?status=active&page=1&fulfillment=$fulfillment"),
+        Uri.parse("$baseUrl/basket/order/seller/status?status=$status"),
         headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);

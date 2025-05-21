@@ -2,9 +2,23 @@ import 'package:flutter/material.dart';
 
 mixin AppColors {
   static const Color kBackgroundColor = Color(0xffF1F1F1);
+  static const Color kButtonColor = Color(0xffEAECED);
+  static const Color kunSelectColor = Color(0xffAEAEB2);
+
+  static const Color mainPurpleColor = Color(0xff6F32F8);
+  static const Color mainPurpleGradient = Color(0xffCEE31C);
+
+  static const Color mainIconPurpleColor = Color(0x106F32F8);
+
+  static const Color mainBackgroundPurpleColor = Color(
+    0x1A6F32F8,
+  );
+
   static const Color kPrimaryColor = Color(0xFF1DC4CF);
   static const Color kBlueColor = Color.fromRGBO(129, 222, 232, 1);
   static const Color kPinkColor = Color(0xffEE46BC);
+  static const Color kPinkChatColor = Color(0xffF1EBFE);
+
   static const Color kLightBlackColor = Color(0xff1F1F1F);
   static const Color kGray = Color(0xffF9FAFB);
   static const Color kGray1 = Color(0xffF8F8F8);
@@ -21,6 +35,7 @@ mixin AppColors {
   static const Color kBg = Color(0xfff2f3f6);
   static const Color kBlueAlpha32 = Color(0x51ADD3FF);
   static const Color kYellowLight = Color.fromRGBO(255, 213, 79, 1);
+  static const Color kYellowDark = Color(0xffCEE31C);
 
   ///
   static const Color kDark = Color(0xff404D61);
@@ -61,11 +76,18 @@ mixin AppColors {
   );
   static const Color reviewStar = Color.fromRGBO(255, 195, 0, 1);
   static const Color kReviewBg = Color(0xffF7F7FC);
+  static const Color arrowColor = Color.fromRGBO(8, 19, 41, 1);
 }
 
 mixin AppTextStyles {
   static const appBarTextStyle = TextStyle(
     fontSize: 17,
+    color: AppColors.kLightBlackColor,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const sellerNameTextStyle = TextStyle(
+    fontSize: 16,
     color: AppColors.kLightBlackColor,
     fontWeight: FontWeight.w500,
   );
@@ -109,6 +131,7 @@ mixin AppTextStyles {
     fontSize: 11,
     color: Colors.white,
     fontWeight: FontWeight.w400,
+    fontFamily: 'SFProDisplay',
   );
   static const bannerTextDateStyle = TextStyle(
     fontSize: 12,
@@ -128,6 +151,17 @@ mixin AppTextStyles {
     fontWeight: FontWeight.w400,
   );
 
+  static const defaultButtonTextStyle = TextStyle(
+      fontSize: 18,
+      color: Colors.black,
+      fontWeight: FontWeight.w600,
+      fontFamily: 'SFProDisplay');
+
+  static const defaultAppBarTextStyle = TextStyle(
+      fontSize: 22,
+      color: Colors.black,
+      fontWeight: FontWeight.w700,
+      fontFamily: 'SFProDisplay');
   static const timerInReRegTextStyle = TextStyle(
     fontSize: 17,
     color: Color(0xFFAAAEB3),
@@ -137,6 +171,54 @@ mixin AppTextStyles {
     fontSize: 16,
     color: AppColors.kGray400,
     fontWeight: FontWeight.w500,
+  );
+
+  static const counterSellerProfileTextStyle = TextStyle(
+    fontSize: 16,
+    color: Color(0xFF333333),
+    fontWeight: FontWeight.w700,
+    fontFamily: 'SFProDisplay',
+  );
+  static const counterSellerTitleTextStyle = TextStyle(
+    fontSize: 11,
+    color: Color(0xFF959595),
+    fontWeight: FontWeight.w400,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const navigationSelectLabelStyle = TextStyle(
+    fontSize: 11,
+    color: Color(0xFFAEAEB2),
+    fontWeight: FontWeight.w500,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const navigationUnSelectLabelStyle = TextStyle(
+    fontSize: 11,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w500,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const aboutTextStyle = TextStyle(
+    fontSize: 16,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w400,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const statisticsTextStyle = TextStyle(
+    fontSize: 14,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w400,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const titleTextStyle = TextStyle(
+    fontSize: 18,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w600,
+    fontFamily: 'SFProDisplay',
   );
 }
 
