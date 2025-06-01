@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 
+import '../../../../core/constant/generated/assets.gen.dart';
+
 // ignore: unused_element
 const _tag = 'BaseBloggerNew';
 
@@ -55,47 +57,60 @@ class _BaseBloggerState extends State<BaseBlogger>
               tabsRouter.setActiveIndex(index);
             }
           },
-          selectedItemColor: AppColors.kPrimaryColor,
-          unselectedItemColor: AppColors.kGray200,
+          selectedItemColor: AppColors.kLightBlackColor,
+          unselectedItemColor: AppColors.kunSelectColor,
+          selectedLabelStyle: AppTextStyles.navigationSelectLabelStyle,
+          unselectedLabelStyle: AppTextStyles.navigationUnSelectLabelStyle,
           selectedFontSize: 12,
           elevation: 4,
           showSelectedLabels: true,
           showUnselectedLabels: true,
           backgroundColor:
-              tabsRouter.activeIndex == 1 ? Colors.transparent : Colors.white,
+              tabsRouter.activeIndex == 1 ? Colors.white : Colors.white,
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                'assets/icons/tape.svg',
+                'assets/icons/shop1.svg',
                 color: AppColors.kGray200,
+                height: 19.5,
+                width: 19.5,
               ),
               label: 'Магазины',
               activeIcon: SvgPicture.asset(
-                'assets/icons/tape.svg',
-                color: AppColors.kPrimaryColor,
+                'assets/icons/shop1.svg',
+                color: AppColors.kLightBlackColor,
+                height: 19.5,
+                width: 19.5,
               ),
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                'assets/icons/docs.svg',
+                'assets/icons/reels.svg',
                 color: AppColors.kGray200,
+                height: 19.5,
+                width: 19.5,
               ),
               label: 'Видео обзоры',
               activeIcon: SvgPicture.asset(
-                'assets/icons/docs.svg',
-                color: AppColors.kPrimaryColor,
+                'assets/icons/reels.svg',
+                color: AppColors.kLightBlackColor,
+                height: 19.5,
+                width: 19.5,
               ),
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                'assets/icons/account.svg',
-                color: AppColors.kGray200,
+                Assets.icons.accountSvg.path,
+                height: 19.5,
+                width: 19.5,
               ),
               label: 'Профиль',
               activeIcon: SvgPicture.asset(
-                'assets/icons/account.svg',
-                color: AppColors.kPrimaryColor,
+                Assets.icons.accountSvg.path,
+                height: 19.5,
+                width: 19.5,
+                color: AppColors.kLightBlackColor,
               ),
             ),
           ],

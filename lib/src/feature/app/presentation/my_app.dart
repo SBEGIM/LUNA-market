@@ -1,12 +1,18 @@
 import 'package:haji_market/src/core/containers/repository_storage.dart';
 import 'package:haji_market/src/core/presentation/scopes/repository_scope.dart';
 import 'package:haji_market/src/core/utils/extensions/context_extension.dart';
+import 'package:haji_market/src/feature/bloger/shop/bloc/blogger_notification_cubit.dart';
+import 'package:haji_market/src/feature/bloger/shop/data/repository/blogger_notification_repo.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/repository/upload_video_blogger_repo.dart';
 import 'package:haji_market/src/feature/initialization/logic/composition_root.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/register_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/sms_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/auth/data/repository/register_seller_repository.dart';
+import 'package:haji_market/src/feature/seller/main/cubit/news_seller_cubit.dart';
+import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_cubit.dart';
+import 'package:haji_market/src/feature/seller/main/data/repository/news_repository.dart';
+import 'package:haji_market/src/feature/seller/main/data/repository/stories_repository.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/order_status_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/last_articul_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/size_seller_cubit.dart';
@@ -265,6 +271,15 @@ class MultiBlocWrapper extends StatelessWidget {
             create: (_) => BannersCubit(
                   bannersRepository: context.repository.bannersRepository,
                 )),
+
+        BlocProvider(
+            create: (_) => NewsSellerCubit(
+                  newsSellerRepository: NewsSellerRepository(),
+                )),
+        BlocProvider(
+            create: (_) => StoriesSellerCubit(
+                  storesSellerRepository: StoriesSellerRepository(),
+                )),
         BlocProvider(
             create: (_) => PopularShopsCubit(
                 popularShopsRepository: PopularShopsRepository())),
@@ -334,6 +349,12 @@ class MultiBlocWrapper extends StatelessWidget {
         //     create: (_) => BloggerVideoProductsCubit(
         //         bloggerShopProductsRepository:
         //             BloggerVideoProductsRepository())),
+
+        BlocProvider(
+          create: (_) => BloggerNotificationCubit(
+            bloggerNotificationRepository: BloggerNotificationRepository(),
+          ),
+        ),
         BlocProvider(
           create: (_) => UploadVideoBLoggerCubit(
             uploadVideoBloggerCubitRepository:

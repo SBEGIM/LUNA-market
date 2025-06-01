@@ -65,13 +65,13 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
             Navigator.pop(context);
           },
           icon: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.kPrimaryColor,
+            Icons.arrow_back,
+            color: AppColors.kLightBlackColor,
           ),
         ),
         // iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         title: const Text(
-          'Загрузить видео',
+          'Добавить видеообзор',
           style: TextStyle(
               fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
         ),
@@ -82,21 +82,9 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Видео товара',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Формат - mp4,mpeg',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
+            Text('Прикрепите видеообзор товара',
+                style: AppTextStyles.statisticsTextStyle
+                    .copyWith(fontWeight: FontWeight.w600)),
             const SizedBox(height: 12),
             if (_image != null &&
                 _controller != null &&
@@ -139,40 +127,99 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                 // }
               },
               child: Container(
-                  width: 343,
-                  height: 56,
+                  width: 120,
+                  height: 120,
                   //  alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Row(
+                      color: AppColors.kGray1,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(width: 1, color: AppColors.kGray300)),
+                  child: Column(
                     //crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SvgPicture.asset(
                         'assets/icons/video.svg',
                         color: _image != null
-                            ? AppColors.kPrimaryColor
+                            ? AppColors.mainPurpleColor
                             : Colors.grey,
-                      ),
-                      const SizedBox(width: 10),
-                      const Text(
-                        'Добавить видео',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey),
                       ),
                     ],
                   )),
             ),
             const SizedBox(height: 12),
-            const Text(
-              'Разрешение — 1080×1350 px — для горизонтального; 566×1080 px — для вертикального; Расширение — mov, mp4; jpg, png; Размер — 4 ГБ — для видео, 30 МБ — для фото; Длительность — от 3 до 60 секунд.',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey),
+            Container(
+              height: 200,
+              width: 358,
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors.kGray1),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Требования к видео',
+                      style: AppTextStyles.statisticsTextStyle
+                          .copyWith(fontWeight: FontWeight.w600)),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: AppColors.mainPurpleColor,
+                      ),
+                      SizedBox(width: 10),
+                      const Text(
+                        'Разрешение — 1080×1350/566×1080',
+                        style: AppTextStyles.statisticsTextStyle,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: AppColors.mainPurpleColor,
+                      ),
+                      SizedBox(width: 10),
+                      const Text(
+                        'Формат — mp4,mov',
+                        style: AppTextStyles.statisticsTextStyle,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: AppColors.mainPurpleColor,
+                      ),
+                      SizedBox(width: 10),
+                      const Text(
+                        'Размер — 4 ГБ',
+                        style: AppTextStyles.statisticsTextStyle,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: AppColors.mainPurpleColor,
+                      ),
+                      SizedBox(width: 10),
+                      const Text(
+                        'Длительность — от 3 до 60 секунд.',
+                        style: AppTextStyles.statisticsTextStyle,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -210,17 +257,19 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                             height: 46,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: AppColors.kPrimaryColor,
+                              color: _image != null
+                                  ? AppColors.mainPurpleColor
+                                  : AppColors.mainPurpleColor.withOpacity(0.3),
                             ),
                             width: MediaQuery.of(context).size.width,
                             alignment: Alignment.center,
                             // padding: const EdgeInsets.only(left: 16, right: 16),
                             child: state is LoadingState
                                 ? const CircularProgressIndicator()
-                                : const Text(
-                                    'Готово',
+                                : Text(
+                                    'Опубликовать',
                                     style: TextStyle(
-                                        color: Colors.white,
+                                        color: AppColors.kWhite,
                                         fontWeight: FontWeight.w400,
                                         fontSize: 16),
                                     textAlign: TextAlign.center,

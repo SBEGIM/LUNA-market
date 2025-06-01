@@ -1,6 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:haji_market/src/feature/auth/presentation/ui/register_page.dart';
+import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_model.dart';
+import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/detail_tape_card_page.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/tape_card_widget.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/change_password_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/forgot_password_seller_page.dart';
@@ -8,6 +11,7 @@ import 'package:haji_market/src/feature/seller/auth/presentation/ui/init_seller_
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/auth_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/new_register_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/register_seller_page.dart';
+import 'package:haji_market/src/feature/seller/auth/presentation/ui/success_register_seller_page.dart';
 import 'package:haji_market/src/feature/seller/chat/presentation/chat_seller_page.dart';
 import 'package:haji_market/src/feature/seller/main/presentation/main_seller_page.dart';
 import 'package:haji_market/src/feature/seller/order/data/models/basket_order_seller_model.dart';
@@ -86,6 +90,7 @@ class AppRouter extends _$AppRouter {
             AutoRoute(page: FavoriteRoute.page),
             AutoRoute(page: BasketRoute.page),
             AutoRoute(page: DrawerRoute.page),
+            AutoRoute(page: RegisterRoute.page),
 
             /// For Blogger
             AutoRoute(page: BaseAdminTapeTab.page, children: [
@@ -124,7 +129,7 @@ class AppRouter extends _$AppRouter {
         ///Auth Routes
         AutoRoute(page: AuthSellerRoute.page),
         AutoRoute(page: InitSellerRoute.page),
-
+        AutoRoute(page: SuccessSellerRegisterRoute.page),
         // AutoRoute(page: AdminAuthRoute.page),
         AutoRoute(page: ForgotPasswordSellerRoute.page),
 

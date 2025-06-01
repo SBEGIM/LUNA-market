@@ -1,14 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
-import 'package:haji_market/src/feature/product/presentation/widgets/chip_date_widget.dart';
 import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_month_statics_admin_cubit.dart';
 import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_month_statics_admin_state.dart';
-
 import '../../../../../core/common/constants.dart';
 
 class StatisticsAdminShowPage extends StatefulWidget {
@@ -76,7 +72,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
           children: [
             Container(
                 height: 220,
-                width: 390,
+                width: double.infinity,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment(-0.75, -1),
@@ -91,7 +87,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 50.0),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -119,6 +115,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                       Padding(
                         padding: const EdgeInsets.only(left: 0.0, top: 28),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Container(
                               height: 80,
@@ -700,6 +697,7 @@ void _showYearPickerBottomSheet(BuildContext context, int currentYear) {
                     ),
                     onTap: () {
                       Navigator.pop(context);
+
                       // сделай что-то с выбранным годом
                       print("Selected year: $year");
                     },

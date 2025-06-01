@@ -44,4 +44,25 @@ class PopularShopsCubit extends Cubit<PopularShopsState> {
     }
     emit(LoadedState(temp));
   }
+
+  searchByIdShops(int id) async {
+    if (id == 0) {
+      emit(LoadedState(_shops));
+      return;
+    }
+    // if (name.isEmpty) return _shops;
+    if (_shops.isEmpty) {
+      // print('emit');
+      await popShops();
+      // final List<City> data = await listRepository.cities();
+      // _cities = data;
+    }
+    List<PopularShops> temp = [];
+    for (int i = 0; i < _shops.length; i++) {
+      if (_shops[i].catId != null && _shops[i].catId! == id) {
+        temp.add(_shops[i]);
+      }
+    }
+    emit(LoadedState(temp));
+  }
 }

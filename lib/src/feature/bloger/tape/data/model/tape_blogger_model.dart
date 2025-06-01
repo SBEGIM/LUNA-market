@@ -14,6 +14,9 @@ class TapeBloggerModel {
       bool? inFavorite,
       bool? inSubscribe,
       bool? isDelete,
+      int? viewCount,
+      int? basketCount,
+      int? shareCount,
       Shop? shop}) {
     _id = id;
     _tapeId = tapeId;
@@ -29,6 +32,9 @@ class TapeBloggerModel {
     _inFavorite = inFavorite;
     _inSubscribe = inSubscribe;
     _isDelete = isDelete;
+    _viewCount = viewCount;
+    _basketCount = basketCount;
+    _shareCount = shareCount;
     _shop = shop;
   }
 
@@ -47,6 +53,9 @@ class TapeBloggerModel {
     _inFavorite = json['in_favorite'];
     _inSubscribe = json['in_subscribe'];
     _isDelete = json['is_delete'];
+    _viewCount = json['view_count'];
+    _basketCount = json['basket_count'];
+    _shareCount = json['share_count'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
   }
   int? _id;
@@ -63,6 +72,9 @@ class TapeBloggerModel {
   bool? _inFavorite;
   bool? _inSubscribe;
   bool? _isDelete;
+  int? _viewCount;
+  int? _basketCount;
+  int? _shareCount;
   Shop? _shop;
 
   int? get id => _id;
@@ -79,6 +91,9 @@ class TapeBloggerModel {
   bool? get inFavorite => _inFavorite;
   bool? get inSubscribe => _inSubscribe;
   bool? get isDelete => _isDelete;
+  int? get viewCount => _viewCount;
+  int? get basketCount => _basketCount;
+  int? get shareCount => _shareCount;
   Shop? get shop => _shop;
 
   Map<String, dynamic> toJson() {
@@ -97,6 +112,9 @@ class TapeBloggerModel {
     map['in_favorite'] = _inFavorite;
     map['inSubscribe'] = _inSubscribe;
     map['isDelete'] = _isDelete;
+    map['view_count'] = _viewCount;
+    map['basket_count'] = _basketCount;
+    map['share_count'] = _shareCount;
     if (_shop != null) {
       map['shop'] = _shop?.toJson();
     }

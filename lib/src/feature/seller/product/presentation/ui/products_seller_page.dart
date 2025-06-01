@@ -81,9 +81,9 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
         // ),
       ),
       bottomSheet: Container(
-        color: Colors.white, // White background for the bottom sheet
+        color: Colors.transparent, // White background for the bottom sheet
         padding: const EdgeInsets.fromLTRB(
-            16, 0, 16, 70), // Padding only left/right/bottom
+            16, 0, 16, 100), // Padding only left/right/bottom
         child: SafeArea(
           top: false, // Don't add padding at the top
           child: Material(
@@ -131,6 +131,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
           ),
         ),
       ),
+
       // Row(
       //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
       //   children: [
@@ -200,6 +201,9 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                 const SizedBox(width: 10)
               ],
             ),
+          ),
+          const SizedBox(
+            height: 12,
           ),
           BlocConsumer<ProductSellerCubit, ProductAdminState>(
               listener: (context, state) {

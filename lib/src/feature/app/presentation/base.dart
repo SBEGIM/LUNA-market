@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart'
     as countryCubit;
@@ -102,7 +102,7 @@ class _BaseState extends State<Base> with TickerProviderStateMixin {
               }
             }
           },
-          selectedItemColor: AppColors.kPrimaryColor,
+          selectedItemColor: AppColors.kLightBlackColor,
           unselectedItemColor: AppColors.kGray200,
           selectedFontSize: 12,
           elevation: 4,
@@ -113,58 +113,68 @@ class _BaseState extends State<Base> with TickerProviderStateMixin {
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/reels.svg',
-                color: AppColors.kGray200,
+              icon: Image.asset(
+                Assets.icons.rollsBottomIcon.path,
+                scale: 1.9,
+                color: AppColors.kunSelectColor,
               ),
-              label: 'Лента',
-              activeIcon: SvgPicture.asset(
-                'assets/icons/reels.svg',
-                color: AppColors.kPrimaryColor,
+              label: 'Roolls',
+              activeIcon: Image.asset(
+                Assets.icons.rollsBotoomFullIcon.path,
+                scale: 1.9,
+                color: Colors.black,
               ),
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/store.svg',
-                color: AppColors.kGray200,
+              icon: Image.asset(
+                Assets.icons.sellerNavigationIcon.path,
+                scale: 1.9,
+                color: AppColors.kunSelectColor,
               ),
               label: 'Маркет',
-              activeIcon: SvgPicture.asset(
-                'assets/icons/store.svg',
-                color: AppColors.kPrimaryColor,
+              activeIcon: Image.asset(
+                Assets.icons.sellerNavigationIcon.path,
+                scale: 1.9,
+                color: Colors.black,
               ),
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/favorite.svg',
-                color: AppColors.kGray200,
+              icon: Image.asset(
+                Assets.icons.favoriteBottomIcon.path,
+                scale: 1.9,
+                color: AppColors.kunSelectColor,
               ),
               label: 'Избранное',
-              activeIcon: SvgPicture.asset(
-                'assets/icons/heart_fill.svg',
-                color: AppColors.kPrimaryColor,
+              activeIcon: Image.asset(
+                Assets.icons.favoriteBottomIcon.path,
+                scale: 1.9,
+                color: Colors.black,
               ),
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/basket.svg',
-                color: AppColors.kGray200,
+              icon: Image.asset(
+                Assets.icons.basketBottomIcon.path,
+                scale: 1.9,
+                color: AppColors.kunSelectColor,
               ),
               label: 'Корзина',
-              activeIcon: SvgPicture.asset(
-                'assets/icons/basket.svg',
-                color: AppColors.kPrimaryColor,
+              activeIcon: Image.asset(
+                Assets.icons.basketBottomIcon.path,
+                scale: 1.9,
+                color: Colors.black,
               ),
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/ionMenu.svg',
-                color: AppColors.kGray200,
+              icon: Image.asset(
+                Assets.icons.accountBottomIcon.path,
+                scale: 1.9,
+                color: AppColors.kunSelectColor,
               ),
-              label: 'Меню',
-              activeIcon: SvgPicture.asset(
-                'assets/icons/ionMenu.svg',
-                color: AppColors.kPrimaryColor,
+              label: 'Профиль',
+              activeIcon: Image.asset(
+                Assets.icons.accountBottomFullIcon.path,
+                scale: 1.9,
+                color: Colors.black,
               ),
             ),
           ],

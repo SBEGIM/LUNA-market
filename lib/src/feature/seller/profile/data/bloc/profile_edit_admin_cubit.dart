@@ -43,10 +43,14 @@ class ProfileEditAdminCubit extends Cubit<ProfileEditAdminState> {
     try {
       //  emit(LoadingState());
       String repPhone = '';
-      if (phone != null) {
-        String subPhone = phone.substring(2);
-        repPhone = subPhone.replaceAll(RegExp('[^0-9]'), '');
+
+      if (phone != '') {
+        if (phone != null) {
+          String subPhone = phone.substring(2);
+          repPhone = subPhone.replaceAll(RegExp('[^0-9]'), '');
+        }
       }
+
       await profileEditAdminRepository.edit(
           name,
           repPhone,

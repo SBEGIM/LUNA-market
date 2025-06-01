@@ -23,6 +23,10 @@ class CatsCubit extends Cubit<CatsState> {
     }
   }
 
+  Future<List<CatsModel>> catsList() async {
+    return _cats;
+  }
+
   void saveCats() {
     emit(LoadedState(_cats));
   }

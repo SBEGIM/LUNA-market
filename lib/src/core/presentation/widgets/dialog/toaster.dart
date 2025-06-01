@@ -106,7 +106,7 @@ class Toaster {
               mainAxisSize: MainAxisSize.min,
               children: [
                 SvgPicture.asset(
-                  Assets.icons.account.path,
+                  Assets.icons.accountPng.path,
                   width: 22,
                   height: 22,
                 ),

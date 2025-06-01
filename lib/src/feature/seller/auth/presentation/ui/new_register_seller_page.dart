@@ -15,6 +15,7 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
 import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
+import 'package:haji_market/src/feature/seller/auth/presentation/ui/success_register_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_login_phone_widget.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_register_type_widget.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -434,12 +435,13 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                             //   height: 10,
                             // ),
                             FieldsCoopRequest(
-                              titleText: 'ИНН ',
-                              hintText: 'Введите ИНН',
+                              titleText: 'Название магазина',
+                              hintText: 'Введите название магазина',
                               star: false,
                               arrow: false,
-                              controller: iinController,
+                              controller: nameController,
                             ),
+
                             FieldsCoopRequest(
                               titleText: 'Выберите тип организаций ',
                               hintText: 'Выберите из списка',
@@ -457,42 +459,12 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                                 );
                               },
                             ),
-                            if (typeOrganization == 2)
-                              FieldsCoopRequest(
-                                titleText: 'КПП',
-                                hintText: 'Введите КПП',
-                                star: false,
-                                arrow: false,
-                                controller: kppController,
-                              ),
-                            if (typeOrganization == 2)
-                              FieldsCoopRequest(
-                                titleText: 'ОГРН',
-                                hintText: 'Введите ОГРН',
-                                star: false,
-                                arrow: false,
-                                controller: ogvnController,
-                              ),
                             FieldsCoopRequest(
-                              titleText: 'ОКВэД',
-                              hintText: 'Введите ОКВэД',
+                              titleText: 'ИНН ',
+                              hintText: 'Введите ИНН',
                               star: false,
                               arrow: false,
-                              controller: ogkvadController,
-                            ),
-                            FieldsCoopRequest(
-                              titleText: 'Налоговый орган',
-                              hintText: 'Введите Налоговый орган',
-                              star: false,
-                              arrow: false,
-                              controller: taxAuthorityController,
-                            ),
-                            FieldsCoopRequest(
-                              titleText: 'Дата регистрации',
-                              hintText: 'Введите Дата регистрации',
-                              star: false,
-                              arrow: false,
-                              controller: registerDateController,
+                              controller: iinController,
                             ),
                             FieldsCoopRequest(
                               titleText: 'Юридический адрес',
@@ -501,30 +473,68 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                               arrow: false,
                               controller: legalAddressController,
                             ),
-                            if (typeOrganization == 2)
-                              FieldsCoopRequest(
-                                titleText: 'Учредитель',
-                                hintText: 'Введите Учредителя',
-                                star: false,
-                                arrow: false,
-                                controller: founderController,
-                              ),
-                            if (typeOrganization == 2)
-                              FieldsCoopRequest(
-                                titleText: 'Дата рождения',
-                                hintText: 'Введите Дата рождения',
-                                star: false,
-                                arrow: false,
-                                controller: birthdayController,
-                              ),
-                            if (typeOrganization == 2)
-                              FieldsCoopRequest(
-                                titleText: 'Гражданство',
-                                hintText: 'Введите Гражданство',
-                                star: false,
-                                arrow: false,
-                                controller: nationalityController,
-                              ),
+                            // if (typeOrganization == 2)
+                            //   FieldsCoopRequest(
+                            //     titleText: 'КПП',
+                            //     hintText: 'Введите КПП',
+                            //     star: false,
+                            //     arrow: false,
+                            //     controller: kppController,
+                            //   ),
+                            // if (typeOrganization == 2)
+                            //   FieldsCoopRequest(
+                            //     titleText: 'ОГРН',
+                            //     hintText: 'Введите ОГРН',
+                            //     star: false,
+                            //     arrow: false,
+                            //     controller: ogvnController,
+                            //   ),
+                            // FieldsCoopRequest(
+                            //   titleText: 'ОКВэД',
+                            //   hintText: 'Введите ОКВэД',
+                            //   star: false,
+                            //   arrow: false,
+                            //   controller: ogkvadController,
+                            // ),
+                            // FieldsCoopRequest(
+                            //   titleText: 'Налоговый орган',
+                            //   hintText: 'Введите Налоговый орган',
+                            //   star: false,
+                            //   arrow: false,
+                            //   controller: taxAuthorityController,
+                            // ),
+                            FieldsCoopRequest(
+                              titleText: 'Дата регистрации',
+                              hintText: 'Введите Дата регистрации',
+                              star: false,
+                              arrow: false,
+                              controller: registerDateController,
+                            ),
+
+                            // if (typeOrganization == 2)
+                            //   FieldsCoopRequest(
+                            //     titleText: 'Учредитель',
+                            //     hintText: 'Введите Учредителя',
+                            //     star: false,
+                            //     arrow: false,
+                            //     controller: founderController,
+                            //   ),
+                            // if (typeOrganization == 2)
+                            //   FieldsCoopRequest(
+                            //     titleText: 'Дата рождения',
+                            //     hintText: 'Введите Дата рождения',
+                            //     star: false,
+                            //     arrow: false,
+                            //     controller: birthdayController,
+                            //   ),
+                            // if (typeOrganization == 2)
+                            //   FieldsCoopRequest(
+                            //     titleText: 'Гражданство',
+                            //     hintText: 'Введите Гражданство',
+                            //     star: false,
+                            //     arrow: false,
+                            //     controller: nationalityController,
+                            //   ),
                             FieldsCoopRequest(
                               titleText: 'Название компании ',
                               hintText: 'Введите название компании',
@@ -532,22 +542,22 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                               arrow: false,
                               controller: nameCompanyController,
                             ),
-                            if (typeOrganization == 2)
-                              FieldsCoopRequest(
-                                titleText: 'Адрес ',
-                                hintText: 'Введите Адрес',
-                                star: false,
-                                arrow: false,
-                                controller: addressController,
-                              ),
-                            if (typeOrganization == 2)
-                              FieldsCoopRequest(
-                                titleText: 'Ген.директор',
-                                hintText: 'Введите Ген.директор',
-                                star: false,
-                                arrow: false,
-                                controller: generalDirectorController,
-                              ),
+                            // if (typeOrganization == 2)
+                            //   FieldsCoopRequest(
+                            //     titleText: 'Адрес ',
+                            //     hintText: 'Введите Адрес',
+                            //     star: false,
+                            //     arrow: false,
+                            //     controller: addressController,
+                            //   ),
+                            // if (typeOrganization == 2)
+                            //   FieldsCoopRequest(
+                            //     titleText: 'Ген.директор',
+                            //     hintText: 'Введите Ген.директор',
+                            //     star: false,
+                            //     arrow: false,
+                            //     controller: generalDirectorController,
+                            //   ),
                             // FieldsCoopRequest(
                             //   titleText: 'Вид деятельности',
                             //   hintText: 'Введите Вид деятельности',
@@ -555,20 +565,13 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                             //   arrow: false,
                             //   controller: typeofActivityController,
                             // ),
-                            FieldsCoopRequest(
-                              titleText: 'Организация ФР',
-                              hintText: 'Введите Организация ФР',
-                              star: false,
-                              arrow: false,
-                              controller: organizationController,
-                            ),
-                            FieldsCoopRequest(
-                              titleText: ' Банк',
-                              hintText: 'Введите Банк',
-                              star: false,
-                              arrow: false,
-                              controller: bankController,
-                            ),
+                            // FieldsCoopRequest(
+                            //   titleText: 'Организация ФР',
+                            //   hintText: 'Введите Организация ФР',
+                            //   star: false,
+                            //   arrow: false,
+                            //   controller: organizationController,
+                            // ),
                           ]),
                     ),
                     //bankController
@@ -603,11 +606,11 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                           height: 10,
                         ),
                         FieldsCoopRequest(
-                          titleText: 'Название магазина',
-                          hintText: 'Введите название магазина',
+                          titleText: ' Банк',
+                          hintText: 'Введите Банк',
                           star: false,
                           arrow: false,
-                          controller: nameController,
+                          controller: bankController,
                         ),
                         FieldsCoopRequest(
                           titleText: 'Счёт',
@@ -748,10 +751,10 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                               },
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 30,
                             ),
                             SizedBox(
-                                height: 140,
+                                height: 160,
                                 child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -784,79 +787,69 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                                           ]);
                                           return Container(
                                             alignment: Alignment.topRight,
-                                            child: RichText(
-                                              textAlign: TextAlign.left,
-                                              text: TextSpan(
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.black),
-                                                children: <TextSpan>[
-                                                  const TextSpan(
-                                                    text: "принимаю ",
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                  TextSpan(
-                                                    recognizer:
-                                                        TapGestureRecognizer()
-                                                          ..onTap = () =>
-                                                              Get.to(
-                                                                  () =>
-                                                                      MetasPage(
-                                                                        title:
-                                                                            metas[0],
-                                                                        body: metasBody[
-                                                                            0],
-                                                                      )),
-                                                    text:
-                                                        'Пользовательское \nсоглашение ',
-                                                    style: const TextStyle(
-                                                        color: AppColors
-                                                            .kPrimaryColor,
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                  const TextSpan(
-                                                    text:
-                                                        "и даю согласие  на  обработку \nперсональных ",
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                  const TextSpan(
-                                                    text:
-                                                        "данных в  соответсвии \nс ",
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                  TextSpan(
-                                                    recognizer:
-                                                        TapGestureRecognizer()
-                                                          ..onTap = () =>
-                                                              Get.to(
-                                                                  () =>
-                                                                      MetasPage(
-                                                                        title:
-                                                                            metas[2],
-                                                                        body: metasBody[
-                                                                            2],
-                                                                      )),
-                                                    text:
-                                                        'Политикой  Конфиденциальности',
-                                                    style: const TextStyle(
-                                                        color: AppColors
-                                                            .kPrimaryColor,
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                ],
+                                            child: Flexible(
+                                              child: RichText(
+                                                textAlign: TextAlign.left,
+                                                text: TextSpan(
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      color:
+                                                          AppColors.kGray300),
+                                                  children: <TextSpan>[
+                                                    const TextSpan(
+                                                      text:
+                                                          "Нажимая зарегистрироваться вы \nпринимаете",
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                    TextSpan(
+                                                      recognizer:
+                                                          TapGestureRecognizer()
+                                                            ..onTap = () =>
+                                                                Get.to(() =>
+                                                                    MetasPage(
+                                                                      title:
+                                                                          metas[
+                                                                              2],
+                                                                      body:
+                                                                          metasBody[
+                                                                              2],
+                                                                    )),
+                                                      text:
+                                                          ' политику конфиденциаль- \nности и',
+                                                      style: const TextStyle(
+                                                          color: AppColors
+                                                              .mainPurpleColor,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                    TextSpan(
+                                                      recognizer:
+                                                          TapGestureRecognizer()
+                                                            ..onTap = () =>
+                                                                Get.to(() =>
+                                                                    MetasPage(
+                                                                      title:
+                                                                          metas[
+                                                                              0],
+                                                                      body:
+                                                                          metasBody[
+                                                                              0],
+                                                                    )),
+                                                      text:
+                                                          ' условия использования',
+                                                      style: const TextStyle(
+                                                          color: AppColors
+                                                              .mainPurpleColor,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           );
@@ -882,12 +875,13 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                 if (typeOrganization == 1) {
                   print('tpye =1');
                   if (iinController.text.isEmpty ||
-                      organizationController.text.isEmpty ||
-                      nameCompanyController.text.isEmpty ||
-                      legalAddressController.text.isEmpty ||
-                      registerDateController.text.isEmpty ||
-                      taxAuthorityController.text.isEmpty ||
-                      ogkvadController.text.isEmpty) {
+                          // organizationController.text.isEmpty ||
+                          nameCompanyController.text.isEmpty ||
+                          legalAddressController.text.isEmpty ||
+                          registerDateController.text.isEmpty
+                      //     taxAuthorityController.text.isEmpty ||
+                      //    ogkvadController.text.isEmpty) {
+                      ) {
                     Get.snackbar('Ошибка', 'Заполните все данные ИП *',
                         backgroundColor: Colors.blueAccent);
 
@@ -970,7 +964,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
               //typeOrganization
 
               if (filledSegments == 2) {
-                if (nameController.text.isEmpty ||
+                if (bankController.text.isEmpty ||
                     checkController.text.isEmpty) {
                   Get.snackbar('Ошибка', 'Заполните все данные о магазине *',
                       backgroundColor: Colors.blueAccent);
@@ -1028,7 +1022,11 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                 await BlocProvider.of<RegisterSellerCubit>(context)
                     .register(registerDto);
                 if (!mounted) return;
-                context.router.push(AuthSellerRoute());
+
+                context.router.push(SuccessSellerRegisterRoute());
+                // Get.to(SuccessSellerRegisterPage());
+
+                // context.router.push(AuthSellerRoute());
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(builder: (context) => AuthAdminPage()),

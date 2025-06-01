@@ -11,15 +11,15 @@ import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
 import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import '../../../auth/data/DTO/register_blogger_dto.dart';
 
-class BlogRequestPage extends StatefulWidget {
+class BlogRegisterPage extends StatefulWidget {
   final Function(int status)? onTap;
-  const BlogRequestPage({Key? key, this.onTap}) : super(key: key);
+  const BlogRegisterPage({Key? key, this.onTap}) : super(key: key);
 
   @override
-  State<BlogRequestPage> createState() => _BlogRequestPageState();
+  State<BlogRegisterPage> createState() => _BlogRegisterPageState();
 }
 
-class _BlogRequestPageState extends State<BlogRequestPage> {
+class _BlogRegisterPageState extends State<BlogRegisterPage> {
   bool isChecked = false;
 
   TextEditingController nameController = TextEditingController();
@@ -49,13 +49,45 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
     'Типовой договор на оказание рекламных услуг'
   ];
 
+  int filledCount = 1;
+  double segmentHeight = 8;
+  double segmentWidth = 8;
+  double segmentSpacing = 2;
+  int filledSegments = 1; // Начинаем с 1 заполненного сегмента
+  int totalSegments = 3; // Всего сегментов
+  Color filledColor = AppColors.mainPurpleColor;
+  Color emptyColor = Colors.grey[200]!;
+  double spacing = 5.0;
+  String title = "Юридические данные";
+
   List<String> metasBody = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.kBackgroundColor,
+      backgroundColor: AppColors.kWhite,
+      appBar: AppBar(
+        backgroundColor: AppColors.kWhite,
+        leading: InkWell(
+            onTap: () {
+              if (filledCount != 1) {
+                filledCount--;
+                if (filledCount == 2) {
+                  title = 'Социальные сети';
+                } else {
+                  title = 'Юридические данные';
+                }
+
+                setState(() {
+                  filledSegments = filledCount;
+                });
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+            child: Icon(Icons.arrow_back)),
+      ),
       // appBar: AppBar(
       //     iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
       //     backgroundColor: Colors.white,
@@ -79,149 +111,226 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
           );
         }
         return Container(
-          padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
+          padding: const EdgeInsets.only(left: 16, right: 16),
           child: ListView(
             shrinkWrap: true,
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Укажите данные ип или физ.лица',
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    color: AppColors.kGray900),
+              Padding(
+                padding: EdgeInsets.only(top: 16, right: 26),
+                child: SizedBox(
+                  width: 300,
+                  child: Text(
+                    'Регистрация аккаунта блогера',
+                    maxLines: 2,
+                    style: AppTextStyles.defaultAppBarTextStyle,
+                  ),
+                ),
               ),
+              SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.kGray300),
+                ),
+              ),
+              SizedBox(height: 8),
+              // const SizedBox(height: 8),
+              // const Text(
+              //   'Укажите данные ип или физ.лица',
+              //   style: TextStyle(
+              //       fontWeight: FontWeight.w700,
+              //       fontSize: 16,
+              //       color: AppColors.kGray900),
+              // ),
+
+              // Прогресс-бар с пробелами
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                child: SizedBox(
+                  height: segmentHeight,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: totalSegments,
+                    separatorBuilder: (_, __) =>
+                        SizedBox(width: segmentSpacing),
+                    itemBuilder: (context, index) {
+                      bool isFilled = index < filledCount;
+                      return Container(
+                        width: (MediaQuery.of(context).size.width -
+                                (totalSegments - 1) * segmentSpacing -
+                                32) /
+                            totalSegments,
+                        decoration: BoxDecoration(
+                          color: isFilled ? filledColor : emptyColor,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 20),
               const SizedBox(
                 height: 10,
               ),
-              FieldsCoopRequest(
-                titleText: 'ИНН',
-                hintText: 'Введите инн',
-                star: false,
-                arrow: false,
-                controller: iinController,
-              ),
-              FieldsCoopRequest(
-                titleText: 'Никнейм блогера',
-                hintText: 'Введите никнейм блогера',
-                star: false,
-                arrow: false,
-                controller: nameController,
-              ),
-              FieldsCoopRequest(
-                titleText: 'ФИО',
-                hintText: 'Введите ФИО',
-                star: false,
-                arrow: false,
-                controller: userNameController,
-              ),
-              FieldsCoopRequest(
-                titleText: 'Счет',
-                hintText: 'Введите счет',
-                star: false,
-                arrow: false,
-                controller: checkController,
-              ),
-              FieldsCoopRequest(
-                titleText: 'Ссылка на соц сеть',
-                hintText: 'Введите ссылку на соц сеть',
-                star: false,
-                arrow: false,
-                controller: socialNetworkController,
-              ),
-              FieldsCoopRequest(
-                titleText: 'Мобильный телефон ',
-                hintText: 'Введите мобильный телефон ',
-                star: false,
-                arrow: false,
-                number: true,
-                controller: phoneController,
-              ),
-              FieldsCoopRequest(
-                titleText: 'Email ',
-                hintText: 'Введите Email',
-                star: false,
-                arrow: false,
-                controller: emailController,
-              ),
-              FieldsCoopRequest(
-                titleText: 'Пароль ',
-                hintText: 'Введите пароль',
-                star: false,
-                arrow: false,
-                controller: passwordController,
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    alignment: Alignment.topLeft,
-                    child: Checkbox(
-                      visualDensity:
-                          const VisualDensity(horizontal: 0, vertical: 0),
-                      checkColor: Colors.white,
-                      // fillColor: MaterialStateProperty.resolveWith(Colors.),
-                      value: isChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isChecked = value!;
-                        });
-                      },
-                    ),
-                  ),
-                  BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
-                      builder: (context, state) {
-                    if (state is metaState.LoadedState) {
-                      metasBody.addAll([
-                        state.metas.terms_of_use!,
-                        state.metas.privacy_policy!,
-                        state.metas.contract_offer!,
-                        state.metas.shipping_payment!,
-                        state.metas.TTN!,
-                      ]);
-                      return GestureDetector(
-                        onTap: () {
-                          Get.to(() => MetasPage(
-                                title: metas[4],
-                                body: metasBody[4],
-                              ));
-                        },
-                        child: Container(
-                          alignment: Alignment.bottomLeft,
-                          child: RichText(
-                            textAlign: TextAlign.left,
-                            text: const TextSpan(
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.black),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: "принимаю ",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                TextSpan(
-                                  text: "Оферту для блогеров",
-                                  style: TextStyle(
-                                      color: AppColors.kPrimaryColor,
-                                      fontSize: 16),
-                                ),
-                              ],
+
+              Visibility(
+                  visible: filledSegments == 1 ? true : false,
+                  child: Column(
+                    children: [
+                      FieldsCoopRequest(
+                        titleText: 'ФИО',
+                        hintText: 'Введите ФИО',
+                        star: false,
+                        arrow: false,
+                        controller: userNameController,
+                      ),
+                      FieldsCoopRequest(
+                        titleText: 'ИНН',
+                        hintText: 'Введите инн',
+                        star: false,
+                        arrow: false,
+                        controller: iinController,
+                      ),
+                      FieldsCoopRequest(
+                        titleText: 'Счет',
+                        hintText: 'Введите счет',
+                        star: false,
+                        arrow: false,
+                        controller: checkController,
+                      ),
+                    ],
+                  )),
+
+              Visibility(
+                  visible: filledSegments == 2 ? true : false,
+                  child: Column(
+                    children: [
+                      FieldsCoopRequest(
+                        titleText: 'Никнейм блогера',
+                        hintText: 'Введите никнейм блогера',
+                        star: false,
+                        arrow: false,
+                        controller: nameController,
+                      ),
+                      FieldsCoopRequest(
+                        titleText: 'Ссылка на соц сеть',
+                        hintText: 'Введите ссылку на соц сеть',
+                        star: false,
+                        arrow: false,
+                        controller: socialNetworkController,
+                      ),
+                    ],
+                  )),
+
+              Visibility(
+                  visible: filledSegments == 3 ? true : false,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FieldsCoopRequest(
+                        titleText: 'Мобильный телефон ',
+                        hintText: 'Введите мобильный телефон ',
+                        star: false,
+                        arrow: false,
+                        number: true,
+                        controller: phoneController,
+                      ),
+                      FieldsCoopRequest(
+                        titleText: 'Email ',
+                        hintText: 'Введите Email',
+                        star: false,
+                        arrow: false,
+                        controller: emailController,
+                      ),
+                      FieldsCoopRequest(
+                        titleText: 'Пароль ',
+                        hintText: 'Введите пароль',
+                        star: false,
+                        arrow: false,
+                        controller: passwordController,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            child: Checkbox(
+                              visualDensity: const VisualDensity(
+                                  horizontal: 0, vertical: 0),
+                              checkColor: Colors.white,
+                              // fillColor: MaterialStateProperty.resolveWith(Colors.),
+                              value: isChecked,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isChecked = value!;
+                                });
+                              },
                             ),
                           ),
-                        ),
-                      );
-                    } else {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                              color: Colors.indigoAccent));
-                    }
-                  }),
-                ],
-              ),
-              const SizedBox(height: 100)
+                          BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
+                              builder: (context, state) {
+                            if (state is metaState.LoadedState) {
+                              metasBody.addAll([
+                                state.metas.terms_of_use!,
+                                state.metas.privacy_policy!,
+                                state.metas.contract_offer!,
+                                state.metas.shipping_payment!,
+                                state.metas.TTN!,
+                              ]);
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.to(() => MetasPage(
+                                        title: metas[4],
+                                        body: metasBody[4],
+                                      ));
+                                },
+                                child: Container(
+                                  alignment: Alignment.bottomLeft,
+                                  child: RichText(
+                                    textAlign: TextAlign.left,
+                                    text: const TextSpan(
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.black),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text:
+                                              "Нажимая зарегистрироваться вы \nпринимаете ",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        TextSpan(
+                                          text: "Оферту для блогеров",
+                                          style: TextStyle(
+                                              color: AppColors.mainPurpleColor,
+                                              fontSize: 14),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return const Center(
+                                  child: CircularProgressIndicator(
+                                      color: Colors.indigoAccent));
+                            }
+                          }),
+                        ],
+                      ),
+                      const SizedBox(height: 100)
+                    ],
+                  )),
             ],
           ),
         );
@@ -231,38 +340,67 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
         padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
         child: InkWell(
             onTap: () async {
-              if (socialNetworkController.text.isNotEmpty &&
-                  iinController.text.isNotEmpty &&
-                  nameController.text.isNotEmpty &&
-                  phoneController.text.isNotEmpty &&
-                  emailController.text.isNotEmpty &&
-                  userNameController.text.isNotEmpty &&
-                  passwordController.text.isNotEmpty &&
-                  isChecked == true) {
-                final data = RegisterBloggerDTO(
-                    iin: iinController.text,
-                    name: userNameController.text,
-                    social_network: socialNetworkController.text,
-                    phone: phoneController.text,
-                    email: emailController.text,
-                    nick_name: nameController.text,
-                    password: passwordController.text,
-                    check: checkController.text);
+              if (filledSegments == 1) {
+                if (checkController.text.isNotEmpty &&
+                    iinController.text.isNotEmpty &&
+                    userNameController.text.isNotEmpty) {
+                  setState(() {
+                    filledSegments = 2;
+                    filledCount = 2;
+                    title = 'Социальные сети';
+                  });
+                  return;
+                } else {
+                  Get.snackbar('Ошибка', 'Заполните основную информацию *',
+                      backgroundColor: Colors.blueAccent);
+                }
+              }
 
-                final register = BlocProvider.of<LoginBloggerCubit>(context);
+              if (filledSegments == 2) {
+                if (nameController.text.isNotEmpty &&
+                    socialNetworkController.text.isNotEmpty) {
+                  setState(() {
+                    filledSegments = 3;
+                    filledCount = 3;
+                    title = 'Контактные данные';
+                  });
+                  return;
+                } else {
+                  Get.snackbar('Ошибка', 'Заполните социальные данные сети*',
+                      backgroundColor: Colors.blueAccent);
+                }
+              }
 
-                final statuCode = await register.register(data);
+              if (filledSegments == 3) {
+                if (phoneController.text.isNotEmpty &&
+                    emailController.text.isNotEmpty &&
+                    passwordController.text.isNotEmpty &&
+                    isChecked == true) {
+                  final data = RegisterBloggerDTO(
+                      iin: iinController.text,
+                      name: userNameController.text,
+                      social_network: socialNetworkController.text,
+                      phone: phoneController.text,
+                      email: emailController.text,
+                      nick_name: nameController.text,
+                      password: passwordController.text,
+                      check: checkController.text);
 
-                widget.onTap?.call(statuCode ?? 200);
+                  final register = BlocProvider.of<LoginBloggerCubit>(context);
 
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => BlogAuthRegisterPage()),
-                // );
-              } else {
-                Get.snackbar('Ошибка', 'Заполните все данные *',
-                    backgroundColor: Colors.blueAccent);
+                  final statuCode = await register.register(data);
+
+                  widget.onTap?.call(statuCode ?? 200);
+
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => BlogAuthRegisterPage()),
+                  // );
+                } else {
+                  Get.snackbar('Ошибка', 'Заполните контактные данные *',
+                      backgroundColor: Colors.blueAccent);
+                }
               }
 
               // Navigator.pop(context);
@@ -276,17 +414,15 @@ class _BlogRequestPageState extends State<BlogRequestPage> {
                         height: 46,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: AppColors.kPrimaryColor,
+                          color: AppColors.mainPurpleColor,
                         ),
                         width: MediaQuery.of(context).size.width,
                         alignment: Alignment.center,
                         // padding: const EdgeInsets.only(left: 16, right: 16),
-                        child: const Text(
+                        child: Text(
                           'Продолжить',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
+                          style: AppTextStyles.defaultButtonTextStyle
+                              .copyWith(color: AppColors.kWhite),
                           textAlign: TextAlign.center,
                         )),
                   ],
@@ -333,7 +469,7 @@ class FieldsCoopRequest extends StatelessWidget {
                 style: const TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 12,
-                    color: AppColors.kGray900),
+                    color: AppColors.kGray300),
               ),
               star != true
                   ? const Text(
@@ -354,7 +490,8 @@ class FieldsCoopRequest extends StatelessWidget {
             padding: const EdgeInsets.only(left: 12),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                color: AppColors.kGray2,
+                borderRadius: BorderRadius.circular(10)),
             child: TextField(
               keyboardType:
                   number == true ? TextInputType.number : TextInputType.text,

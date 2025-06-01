@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/bloger/shop/bloc/blogger_shop_products_state.dart';
+import 'package:haji_market/src/feature/bloger/shop/presentation/ui/upload_product_video.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:share_plus/share_plus.dart';
 import '../../../../../core/common/constants.dart';
-import '../../../../tape/presentation/widgets/anim_search_widget.dart';
 import '../../bloc/blogger_shop_products_cubit.dart';
 import 'blogger_products_card_widget.dart';
 
@@ -21,6 +21,10 @@ class ShopProductsBloggerPage extends StatefulWidget {
 }
 
 class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
+  bool _visibleIconClear = false;
+  bool isSelected = false;
+  int selectedIndex = 0;
+
   @override
   void initState() {
     BlocProvider.of<BloggerShopProductsCubit>(context).products('', widget.id);
@@ -46,72 +50,125 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
     final TextEditingController nameController = TextEditingController();
 
     return Scaffold(
+      backgroundColor: AppColors.kWhite,
       appBar: AppBar(
         actions: [
-          AnimSearchBar(
-            helpText: 'Поиск..',
-            onChanged: (String? value) {
-              BlocProvider.of<BloggerShopProductsCubit>(context)
-                  .products(searchController.text, widget.id);
-            },
-            style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: Color.fromRGBO(153, 162, 173, 1)),
-            textController: searchController,
-            onSuffixTap: () {
-              searchController.clear();
-            },
-            onArrowTap: () {
-              visible = !visible;
-              // print(visible.toString());
-              setState(() {
-                visible;
-              });
-              searchController.clear();
-            },
-            width: MediaQuery.of(context).size.width,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          GestureDetector(
-              onTap: () async {
-                await Share.share('$kDeepLinkUrl/?blogger/shop_${widget.id}');
-              },
-              child: SvgPicture.asset(
-                'assets/icons/share.svg',
-                height: 28,
-                width: 28,
-              )),
-          const SizedBox(
-            width: 10,
-          ),
+          // AnimSearchBar(
+          //   helpText: 'Поиск..',
+          //   onChanged: (String? value) {
+          //     BlocProvider.of<BloggerShopProductsCubit>(context)
+          //         .products(searchController.text, widget.id);
+          //   },
+          //   style: const TextStyle(
+          //       fontSize: 14,
+          //       fontWeight: FontWeight.w400,
+          //       color: Color.fromRGBO(153, 162, 173, 1)),
+          //   textController: searchController,
+          //   onSuffixTap: () {
+          //     searchController.clear();
+          //   },
+          //   onArrowTap: () {
+          //     visible = !visible;
+          //     // print(visible.toString());
+          //     setState(() {
+          //       visible;
+          //     });
+          //     searchController.clear();
+          //   },
+          //   width: MediaQuery.of(context).size.width,
+          // ),
+          // const SizedBox(
+          //   width: 10,
+          // ),
+          // GestureDetector(
+          //     onTap: () async {
+          //       await Share.share('$kDeepLinkUrl/?blogger/shop_${widget.id}');
+          //     },
+          //     child: SvgPicture.asset(
+          //       'assets/icons/share.svg',
+          //       height: 28,
+          //       width: 28,
+          //     )),
+          // const SizedBox(
+          //   width: 10,
+          // ),
         ],
-        iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.kWhite,
         centerTitle: true,
         elevation: 0,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back,
+            size: 30,
+          ),
+        ),
         // titleSpacing: 16,
         // automaticallyImplyLeading: false,
         title: Text(
           widget.title,
-          style: const TextStyle(color: Colors.black),
+          style: AppTextStyles.defaultAppBarTextStyle,
         ),
       ),
       body: Column(
         // shrinkWrap: true,
         children: [
           Container(
-            height: 30,
-            margin: const EdgeInsets.only(left: 16, bottom: 12),
-            alignment: Alignment.bottomLeft,
-            color: AppColors.kBackgroundColor,
-            child: const Text('Выберите товар',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700)),
+            height: 44,
+            alignment: Alignment.center,
+            margin:
+                const EdgeInsets.only(top: 10, bottom: 12, left: 12, right: 12),
+            decoration: BoxDecoration(
+              color: AppColors.kGray1,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.search,
+                  color: AppColors.kGray200,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: TextField(
+                    onChanged: (value) {
+                      // print(value);
+                      BlocProvider.of<BloggerShopProductsCubit>(context)
+                          .products(searchController.text, widget.id);
+                    },
+                    keyboardType: TextInputType.text,
+                    controller: searchController,
+                    decoration: const InputDecoration(
+                      hintText: 'Поиск товаров',
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      isCollapsed: true, // Убирает внутренние отступы
+                    ),
+                    style:
+                        TextStyle(height: 1.2), // Центрирует текст по вертикали
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _visibleIconClear = false;
+                    searchController.clear();
+                    setState(() {
+                      _visibleIconClear;
+                    });
+                  },
+                  child: _visibleIconClear == true
+                      ? SvgPicture.asset(
+                          'assets/icons/delete_circle.svg',
+                        )
+                      : const SizedBox(width: 5),
+                ),
+              ],
+            ),
           ),
           BlocConsumer<BloggerShopProductsCubit, BloggerShopProductsState>(
               listener: (context, state) {},
@@ -179,6 +236,15 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                         itemBuilder: (BuildContext context, int index) {
                           return BloggerProductCardWidget(
                             product: state.productModel[index],
+                            isSelected: isSelected,
+                            index: selectedIndex,
+                            onSelectionChanged: (selected, setIndex) {
+                              print('set ${setIndex}');
+                              setState(() {
+                                isSelected = selected;
+                                selectedIndex = setIndex;
+                              });
+                            },
                           );
                           //  product: state.productModel[index]);
                         }),
@@ -251,6 +317,36 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                 }
               })
         ],
+      ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GestureDetector(
+          onTap: () async {
+            if (selectedIndex != 0) {
+              Get.to(() => UploadProductVideoPage(id: selectedIndex));
+            } else {
+              Get.snackbar('Ошибка', 'Сначала выберите товар для обзора',
+                  backgroundColor: AppColors.kBlueColor);
+            }
+          },
+          child: Container(
+            // width: 99,
+            height: 52,
+            decoration: BoxDecoration(
+              color: selectedIndex != 0
+                  ? AppColors.mainPurpleColor
+                  : AppColors.mainPurpleColor.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              'Сделать обзор',
+              // textAlign: TextAlign.center,
+              style: AppTextStyles.defaultButtonTextStyle
+                  .copyWith(color: AppColors.kWhite),
+            ),
+          ),
+        ),
       ),
     );
   }

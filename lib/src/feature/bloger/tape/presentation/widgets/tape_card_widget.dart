@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_state.dart';
@@ -48,7 +49,7 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(0),
       child: Stack(
         children: [
           Positioned.fill(
@@ -62,86 +63,135 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
                     child: AspectRatio(
                       aspectRatio: _controller!.value.aspectRatio,
                       child: Opacity(
-                          opacity: widget.tape.isDelete == true ? 0.3 : 1,
+                          opacity: widget.tape.isDelete == true ? 0.6 : 1,
                           child: VideoPlayer(_controller!)),
                     ),
                   )),
             ),
           ),
           widget.tape.isDelete == true
-              ? const Positioned(
-                  top: 150,
-                  left: 0,
+              ? Center(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.close_outlined),
+                      Icon(Icons.delete_forever_outlined,
+                          color: Colors.redAccent.shade200),
                       SizedBox(
                         height: 25,
                         child: Text(
-                          'Товар удален продавцом',
+                          'Товар удален',
                           maxLines: 2,
                           style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
-                              color: Colors.black),
+                              color: Colors.redAccent.shade200),
                         ),
                       )
                     ],
                   ),
                 )
               : const SizedBox(),
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0, top: 8),
-            child: Align(
-                alignment: Alignment.topRight,
-                child: SvgPicture.asset('assets/icons/play.svg')),
-          ),
-          BlocListener<UploadVideoBLoggerCubit, UploadVideoBloggerCubitState>(
-            listener: (context, state) {
-              if (state is LoadedOrderState) {
-                if (isLoaded) {
-                  BlocProvider.of<TapeBloggerCubit>(context)
-                      .tapes(false, false, '');
-                  isLoaded = false;
-                }
-              }
-            },
-            child: Positioned(
-                top: 4,
-                left: 4,
-                child: Material(
+          // Padding(
+          //   padding: const EdgeInsets.only(right: 8.0, top: 8),
+          //   child: Align(
+          //       alignment: Alignment.topRight,
+          //       child: SvgPicture.asset('assets/icons/play.svg')),
+          // ),
+
+          Positioned(
+              top: 4,
+              left: 4,
+              child: Material(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.transparent,
+                child: InkWell(
                   borderRadius: BorderRadius.circular(15),
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(15),
-                    onTap: () {
-                      showCupertinoModalPopup<void>(
-                        context: context,
-                        builder: (context) => DeleteVideoDialog(
-                          onYesTap: () {
-                            if (widget.tape.tapeId != null) {
-                              BlocProvider.of<UploadVideoBLoggerCubit>(context)
-                                  .delete(tapeId: widget.tape.tapeId!);
-                              isLoaded = true;
-                              Navigator.pop(context);
-                            }
-                          },
-                        ),
-                      );
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(6.0),
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.red,
+                  child: Padding(
+                    padding: EdgeInsets.all(6.0),
+                    child: Text(
+                      '${widget.tape.shop!.name}',
+                      style: AppTextStyles.aboutTextStyle.copyWith(
+                        color: AppColors.kWhite,
+                        height: 20 / 14,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.0,
                       ),
                     ),
                   ),
-                )),
-          )
+                ),
+              )),
+
+          Positioned(
+              bottom: 4,
+              left: 4,
+              child: Material(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.transparent,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.remove_red_eye,
+                      color: AppColors.kWhite,
+                    ),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Padding(
+                        padding: EdgeInsets.all(6.0),
+                        child: Text(
+                          '${widget.tape.viewCount}',
+                          style: AppTextStyles.aboutTextStyle
+                              .copyWith(color: AppColors.kBGMessage),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+          // BlocListener<UploadVideoBLoggerCubit, UploadVideoBloggerCubitState>(
+          //   listener: (context, state) {
+          //     if (state is LoadedOrderState) {
+          //       if (isLoaded) {
+          //         BlocProvider.of<TapeBloggerCubit>(context)
+          //             .tapes(false, false, '');
+          //         isLoaded = false;
+          //       }
+          //     }
+          //   },
+          //   child: Positioned(
+          //       top: 4,
+          //       left: 4,
+          //       child: Material(
+          //         borderRadius: BorderRadius.circular(15),
+          //         color: Colors.transparent,
+          //         child: InkWell(
+          //           borderRadius: BorderRadius.circular(15),
+          //           onTap: () {
+          //             showCupertinoModalPopup<void>(
+          //               context: context,
+          //               builder: (context) => DeleteVideoDialog(
+          //                 onYesTap: () {
+          //                   if (widget.tape.tapeId != null) {
+          //                     BlocProvider.of<UploadVideoBLoggerCubit>(context)
+          //                         .delete(tapeId: widget.tape.tapeId!);
+          //                     isLoaded = true;
+          //                     Navigator.pop(context);
+          //                   }
+          //                 },
+          //               ),
+          //             );
+          //           },
+          //           child: const Padding(
+          //             padding: EdgeInsets.all(6.0),
+          //             child: Icon(
+          //               Icons.delete,
+          //               color: Colors.red,
+          //             ),
+          //           ),
+          //         ),
+          //       )),
+          // )
           // Container(
           //   alignment: Alignment.center,
           //   margin: const EdgeInsets.only(top: 225),

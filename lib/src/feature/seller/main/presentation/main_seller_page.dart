@@ -1,10 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/widgets/shimmer_box.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
+import 'package:haji_market/src/feature/seller/main/cubit/news_seller_cubit.dart';
+import 'package:haji_market/src/feature/seller/main/cubit/news_seller_state.dart';
+import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_cubit.dart'
+    as sellerStoriesCubit;
+import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_state.dart'
+    as sellerStoriesState;
+import 'package:haji_market/src/feature/seller/main/presentation/notification_seller_page.dart';
 import 'package:haji_market/src/feature/seller/main/presentation/widget/news_card_widget%20copy.dart';
 import 'package:haji_market/src/feature/seller/main/presentation/widget/stories_card_widget.dart';
 
@@ -17,6 +26,8 @@ class HomeSellerAdminPage extends StatefulWidget {
 }
 
 class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
+  int unreadCount = 3;
+
   List<String> images = [
     Assets.images.storyFirst.path,
     Assets.images.storySecond.path,
@@ -44,6 +55,16 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
   ];
 
   @override
+  void initState() {
+    BlocProvider.of<NewsSellerCubit>(context).news();
+
+    BlocProvider.of<sellerStoriesCubit.StoriesSellerCubit>(context).news();
+
+    print('newsCubit');
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.kWhite,
@@ -56,106 +77,284 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
                 .copyWith(color: AppColors.mainPurpleColor),
           ),
           actions: [
-            Icon(Icons.notifications, color: AppColors.kLightBlackColor)
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: InkWell(
+                onTap: () {
+                  Get.to(NotificationSellerPage());
+                },
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Icon(Icons.notifications, color: AppColors.mainPurpleColor),
+                    if (unreadCount > 0)
+                      Positioned(
+                        right: -8,
+                        top: -16,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          constraints: const BoxConstraints(
+                            minWidth: 20,
+                            minHeight: 20,
+                          ),
+                          child: Text(
+                            '$unreadCount',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
           ],
           // leading: Icon(Icons.notifications, color: AppColors.kPinkColor),
         ),
         body: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: SizedBox(
-                height: 100,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: images.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () => Get.to(StoryScreen()),
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 5),
-                          padding: const EdgeInsets.all(1),
-                          height: 79,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: index == 0
-                                  ? AppColors.mainPurpleColor
-                                  : Colors.white,
-                              width: 2,
+            BlocBuilder<sellerStoriesCubit.StoriesSellerCubit,
+                    sellerStoriesState.StoriesSellerState>(
+                builder: (context, state) {
+              if (state is sellerStoriesState.ErrorState) {
+                return Center(
+                  child: Text(
+                    state.message,
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                  ),
+                );
+              }
+              if (state is sellerStoriesState.LoadedState) {
+                return Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.storiesSeelerModel.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () => Get.to(StoryScreen(
+                                stories:
+                                    state.storiesSeelerModel[index].stories)),
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 5),
+                              padding: const EdgeInsets.all(1),
+                              height: 79,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: index == 0
+                                      ? AppColors.mainPurpleColor
+                                      : Colors.white,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    10), // 14 - (4 padding + 2 border) = 8, but 10 looks better
+                                child: Image.network(
+                                  "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                10), // 14 - (4 padding + 2 border) = 8, but 10 looks better
-                            child: Image.asset(
-                              images[index],
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              ),
-            ),
-            SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: SizedBox(
-                height: 400,
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: news.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          Get.to(NewsScreen());
-                        },
-                        child: Container(
-                            margin: const EdgeInsets.only(left: 5, bottom: 5),
+                          );
+                        }),
+                  ),
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: images.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: const EdgeInsets.only(left: 5),
                             padding: const EdgeInsets.all(1),
-                            height: 148,
+                            height: 79,
+                            width: 100,
                             decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                transform: const GradientRotation(
-                                    4.2373), // 242.73 degrees in radians
-                                colors: [
-                                  Color(0xFFAD32F8), // #AD32F8
-                                  Color(0xFF3275F8), // #3275F8
-                                ],
+                              border: Border.all(
+                                color: index == 0
+                                    ? AppColors.mainPurpleColor
+                                    : Colors.white,
+                                width: 2,
                               ),
                               borderRadius: BorderRadius.circular(14),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(
-                                      news[index].name!,
-                                      style: AppTextStyles
-                                          .defaultAppBarTextStyle
-                                          .copyWith(
-                                              color:
-                                                  AppColors.kBackgroundColor),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    10), // 14 - (4 padding + 2 border) = 8, but 10 looks better
+                                child: ShimmerBox()),
+                          );
+                        }),
+                  ),
+                );
+              }
+            }),
+
+            SizedBox(height: 15),
+            BlocBuilder<NewsSellerCubit, NewsSellerState>(
+                builder: (context, state) {
+              if (state is ErrorState) {
+                return Center(
+                  child: Text(
+                    state.message,
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                  ),
+                );
+              }
+              if (state is LoadedState) {
+                return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: state.newsSeelerModel.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                              onTap: () {
+                                Get.to(NewsScreen(
+                                  news: state.newsSeelerModel[index],
+                                ));
+                              },
+                              child: Container(
+                                  margin:
+                                      const EdgeInsets.only(left: 5, bottom: 5),
+                                  padding: const EdgeInsets.all(1),
+                                  height: 148,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      transform: const GradientRotation(
+                                          4.2373), // 242.73 degrees in radians
+                                      colors: [
+                                        Color(0xFFAD32F8), // #AD32F8
+                                        Color(0xFF3275F8), // #3275F8
+                                      ],
                                     ),
+                                    borderRadius: BorderRadius.circular(14),
                                   ),
-                                  Text(
-                                    news[index].createdAt!,
-                                    style: AppTextStyles.statisticsTextStyle
-                                        .copyWith(color: AppColors.kGray300),
-                                  )
-                                ],
-                              ),
-                            )),
-                      );
-                    }),
-              ),
-            ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          state.newsSeelerModel[index].title!,
+                                          style: AppTextStyles
+                                              .defaultAppBarTextStyle
+                                              .copyWith(
+                                                  color: AppColors
+                                                      .kBackgroundColor),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Text(
+                                          state.newsSeelerModel[index]
+                                              .description!,
+                                          textAlign: TextAlign.start,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                          style: AppTextStyles
+                                              .statisticsTextStyle
+                                              .copyWith(
+                                                  color: AppColors.kGray300),
+                                        )
+                                      ],
+                                    ),
+                                  )));
+                        }),
+                  ),
+                );
+              } else {
+                return Container(
+                  color: Colors.white,
+                  height: 200,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ShimmerBox(
+                      height: 200,
+                      width: MediaQuery.of(context).size.width - 32,
+                      radius: 8,
+                    ),
+                  ),
+                );
+              }
+            }),
+            // Padding(
+            //   padding: const EdgeInsets.all(5.0),
+            //   child: SizedBox(
+            //     height: 400,
+            //     child: ListView.builder(
+            //         scrollDirection: Axis.vertical,
+            //         itemCount: news.length,
+            //         itemBuilder: (context, index) {
+            //           return InkWell(
+            //             onTap: () {
+            //               Get.to(NewsScreen());
+            //             },
+            //             child: Container(
+            //                 margin: const EdgeInsets.only(left: 5, bottom: 5),
+            //                 padding: const EdgeInsets.all(1),
+            //                 height: 148,
+            //                 decoration: BoxDecoration(
+            //                   gradient: LinearGradient(
+            //                     begin: Alignment.topLeft,
+            //                     end: Alignment.bottomRight,
+            //                     transform: const GradientRotation(
+            //                         4.2373), // 242.73 degrees in radians
+            //                     colors: [
+            //                       Color(0xFFAD32F8), // #AD32F8
+            //                       Color(0xFF3275F8), // #3275F8
+            //                     ],
+            //                   ),
+            //                   borderRadius: BorderRadius.circular(14),
+            //                 ),
+            //                 child: Padding(
+            //                   padding: const EdgeInsets.all(4.0),
+            //                   child: Column(
+            //                     children: [
+            //                       Padding(
+            //                         padding: const EdgeInsets.all(4.0),
+            //                         child: Text(
+            //                           news[index].name!,
+            //                           style: AppTextStyles
+            //                               .defaultAppBarTextStyle
+            //                               .copyWith(
+            //                                   color:
+            //                                       AppColors.kBackgroundColor),
+            //                         ),
+            //                       ),
+            //                       Text(
+            //                         news[index].createdAt!,
+            //                         style: AppTextStyles.statisticsTextStyle
+            //                             .copyWith(color: AppColors.kGray300),
+            //                       )
+            //                     ],
+            //                   ),
+            //                 )),
+            //           );
+            //         }),
+            //   ),
+            // ),
           ],
         ));
   }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,7 +8,8 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
-import 'package:haji_market/src/feature/seller/profile/presentation/widgets/admin_cards_page.dart';
+import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_edit_admin_cubit.dart'
+    as editCubit;
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/edit_profile_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/seller_service_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/statistics_admin_show_page.dart';
@@ -17,7 +20,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../drawer/presentation/ui/about_us_page.dart';
 import '../../data/bloc/profile_statics_admin_cubit.dart';
 import '../../data/bloc/profile_statics_admin_state.dart';
-import '../widgets/reqirect_profile_page.dart';
 
 @RoutePage()
 class ProfileAdminPage extends StatefulWidget {
@@ -32,10 +34,44 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
   bool change = false;
-  Future<void> _getImage() async {
+
+  Future<void> _getImage(context) async {
     final image = change == true
         ? await _picker.pickImage(source: ImageSource.camera)
         : await _picker.pickImage(source: ImageSource.gallery);
+
+    print(' ${image!.path}');
+    BlocProvider.of<editCubit.ProfileEditAdminCubit>(context).edit(
+      '',
+      '',
+      image.path,
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      null,
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+    );
 
     setState(() {
       _image = image;
@@ -93,23 +129,21 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      if (_image == null) {
-                        Get.defaultDialog(
-                          title: "Изменить фото",
-                          middleText: '',
-                          textConfirm: 'Камера',
-                          textCancel: 'Галерея',
-                          titlePadding: const EdgeInsets.only(top: 40),
-                          onConfirm: () {
-                            change = true;
-                            _getImage();
-                          },
-                          onCancel: () {
-                            change = false;
-                            _getImage();
-                          },
-                        );
-                      }
+                      Get.defaultDialog(
+                        title: "Изменить фото",
+                        middleText: '',
+                        textConfirm: 'Камера',
+                        textCancel: 'Галерея',
+                        titlePadding: const EdgeInsets.only(top: 40),
+                        onConfirm: () {
+                          change = true;
+                          _getImage(context);
+                        },
+                        onCancel: () {
+                          change = false;
+                          _getImage(context);
+                        },
+                      );
                     },
                     child: Stack(
                       children: [
@@ -119,9 +153,11 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                           child: CircleAvatar(
                             radius: 59.5,
                             backgroundColor: AppColors.kGray200,
-                            backgroundImage: NetworkImage(
-                              'https://lunamarket.ru/storage/${GetStorage().read('seller_image')}',
-                            ),
+                            backgroundImage: _image != null
+                                ? FileImage(File(_image!.path))
+                                : NetworkImage(
+                                    'https://lunamarket.ru/storage/${GetStorage().read('seller_image')}',
+                                  ) as ImageProvider,
                           ),
                         ),
                         Positioned(
@@ -190,7 +226,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                         borderRadius: BorderRadius.zero,
                       ),
                       child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           // crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(

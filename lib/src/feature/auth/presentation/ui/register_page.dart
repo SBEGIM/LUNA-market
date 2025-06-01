@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +17,7 @@ import '../../data/DTO/register.dart';
 import '../../bloc/sms_cubit.dart';
 import '../../bloc/sms_state.dart';
 
+@RoutePage()
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
@@ -74,232 +76,203 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SmsCubit, SmsState>(listener: (context, state) {
-      if (state is InitState) {
-        FocusScope.of(context).requestFocus(FocusNode());
-        //   Navigator.pop(context);
-      }
-      if (state is LoadedState) {
-        showModalBottomSheet(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.0),
-                  topRight: Radius.circular(10.0)),
-            ),
-            context: context,
-            builder: (context) {
-              return RegisterSmsCheckModalBottom(
-                  textEditingController: phoneControllerRegister.text,
-                  registerDTO: RegisterDTO(
-                      name: nameControllerRegister.text,
-                      phone: phoneControllerRegister.text,
-                      password: passwordControllerRegister.text));
-            });
-      }
-    }, builder: (context, state) {
-      if (state is LoadingState) {
-        return const Center(
-          child: CircularProgressIndicator(color: Colors.indigoAccent),
-        );
-      }
-      return Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 45),
-        child: ScrollWrapper(
+    return Scaffold(
+      backgroundColor: AppColors.kGray1,
+      appBar: AppBar(
+        backgroundColor: AppColors.kGray1,
+        leading: InkWell(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Icon(Icons.arrow_back)),
+      ),
+      body: BlocConsumer<SmsCubit, SmsState>(listener: (context, state) {
+        if (state is InitState) {
+          FocusScope.of(context).requestFocus(FocusNode());
+          //   Navigator.pop(context);
+        }
+        if (state is LoadedState) {
+          showModalBottomSheet(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0)),
+              ),
+              context: context,
+              builder: (context) {
+                return RegisterSmsCheckModalBottom(
+                    textEditingController: phoneControllerRegister.text,
+                    registerDTO: RegisterDTO(
+                        name: nameControllerRegister.text,
+                        phone: phoneControllerRegister.text,
+                        password: passwordControllerRegister.text));
+              });
+        }
+      }, builder: (context, state) {
+        if (state is LoadingState) {
+          return const Center(
+            child: CircularProgressIndicator(color: Colors.indigoAccent),
+          );
+        }
+        return Padding(
+          padding:
+              const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 45),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8)),
-                child: Column(
-                  children: [
-                    ListTile(
-                      horizontalTitleGap: 5,
-                      leading: SvgPicture.asset(
-                        'assets/icons/user.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      trailing: GestureDetector(
-                        onTap: () {
-                          _visibleIconClearName = false;
-                          nameControllerRegister.clear();
-                          setState(() {});
-                        },
-                        child: _visibleIconClearName == true
-                            ? SvgPicture.asset(
-                                'assets/icons/delete_circle.svg',
-                              )
-                            : const SizedBox(width: 5),
-                      ),
-                      title: TextField(
-                        focusNode: myFocusNodeName,
-                        controller: nameControllerRegister,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Имя и фамилия',
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            // borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                        onChanged: (value) {
-                          _visibleIconClearName = true;
-                          if (nameControllerRegister.text.isNotEmpty) {
-                            setIsButtonEnabled(true);
-                          } else {
-                            setIsButtonEnabled(false);
-                          }
-                        },
-                      ),
-                      // trailing: SvgPicture.asset(
-                      //   'assets/icons/delete_circle.svg',
-                      //   height: 24,
-                      //   width: 24,
-                      // ),
-                    ),
-                    ListTile(
-                      horizontalTitleGap: 5,
-                      leading: SvgPicture.asset(
-                        'assets/icons/phone.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      title: TextField(
-                        focusNode: myFocusNodePhone,
-                        keyboardType: TextInputType.phone,
-                        // inputFormatters: [maskFormatter],
-                        controller: phoneControllerRegister,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Номер телефона',
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            // borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                        onChanged: (value) {
-                          _visibleIconClearPhone = true;
-
-                          if (phoneControllerRegister.text.length == 17) {
-                            setIsButtonEnabled(true);
-                            FocusScope.of(context).requestFocus(FocusNode());
-                          } else {
-                            setIsButtonEnabled(false);
-                          }
-                        },
-                      ),
-                      trailing: GestureDetector(
-                        onTap: () {
-                          _visibleIconClearPhone = false;
-                          phoneControllerRegister.clear();
-                          setState(() {});
-                        },
-                        child: _visibleIconClearPhone == true
-                            ? SvgPicture.asset(
-                                'assets/icons/delete_circle.svg',
-                              )
-                            : const SizedBox(width: 5),
-                      ),
-                    ),
-                    ListTile(
-                      horizontalTitleGap: 5,
-                      leading: SvgPicture.asset(
-                        'assets/icons/password.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      title: TextField(
-                        // inputFormatters: [maskFormatter],
-                        controller: passwordControllerRegister,
-                        obscureText: !_passwordVisible,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Пароль',
-                        ),
-                        onChanged: (value) {
-                          passwordControllerRegister.text.length.toInt() == 0
-                              ? _visibleIconView = false
-                              : _visibleIconView = true;
-                          setState(() {});
-                        },
-                      ),
-                      trailing: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _passwordVisible = !_passwordVisible;
-                          });
-                        },
-                        child: _visibleIconView == true
-                            ? Icon(
-                                _passwordVisible
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                                color: const Color.fromRGBO(177, 179, 181, 1),
-                              )
-                            : const SizedBox(width: 5),
-                      ),
-                    ),
-                    ListTile(
-                      horizontalTitleGap: 5,
-                      leading: SvgPicture.asset(
-                        'assets/icons/password.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      title: TextField(
-                        // inputFormatters: [maskFormatter],
-                        controller: repePasswordControllerRegister,
-                        obscureText: !_passwordVisible,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Подтвердите пароль',
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            // borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                        onChanged: (value) {
-                          repePasswordControllerRegister.text.isEmpty
-                              ? _visibleIconViewRepeat = false
-                              : _visibleIconViewRepeat = true;
-                          if (passwordControllerRegister.text ==
-                              repePasswordControllerRegister.text) {
-                            setIsButtonEnabled(true);
-                          } else {
-                            setIsButtonEnabled(false);
-                          }
-                        },
-                      ),
-                      trailing: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _passwordVisible = !_passwordVisible;
-                          });
-                        },
-                        child: _visibleIconViewRepeat == true
-                            ? Icon(
-                                _passwordVisible
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                                color: const Color.fromRGBO(177, 179, 181, 1),
-                              )
-                            : const SizedBox(width: 5),
-                      ),
-                    ),
-                  ],
+              Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: SizedBox(
+                  width: 300,
+                  child: Text(
+                    'Регистрация аккаунта пользователя',
+                    maxLines: 2,
+                    style: AppTextStyles.defaultAppBarTextStyle,
+                  ),
                 ),
               ),
-              const SizedBox(
-                height: 16,
+              FieldsCoopRequest(
+                titleText: 'Контактное имя ',
+                hintText: 'Введите контактное имя',
+                star: false,
+                controller: nameControllerRegister,
               ),
-              Center(
-                child: Row(
-                  children: [
-                    const SizedBox(
-                      width: 10,
-                    ),
+              FieldsCoopRequest(
+                titleText: 'Номер телефона ',
+                hintText: 'Введите номер телефона',
+                star: false,
+                isPhone: true,
+                controller: phoneControllerRegister,
+              ),
+              FieldsCoopRequest(
+                titleText: 'Пароль ',
+                hintText: 'Введите пароль',
+                star: false,
+                controller: passwordControllerRegister,
+                isPassword: true,
+                onChanged: (_) => setState(() {
+                  // Обнови логику валидности пароля
+                }),
+              ),
+              FieldsCoopRequest(
+                titleText: 'Подтвердите пароль ',
+                hintText: 'Введите пароль повторно',
+                star: false,
+                controller: repePasswordControllerRegister,
+                isPassword: true,
+                onChanged: (value) {
+                  if (value == passwordControllerRegister.text) {
+                    setIsButtonEnabled(true);
+                  } else {
+                    setIsButtonEnabled(false);
+                  }
+                },
+              ),
+              // Container(
+              //   decoration: BoxDecoration(
+              //       color: Colors.white,
+              //       borderRadius: BorderRadius.circular(8)),
+              //   child: Column(
+              //     children: [
+              //       ListTile(
+              //         horizontalTitleGap: 5,
+              //         leading: SvgPicture.asset(
+              //           'assets/icons/password.svg',
+              //           height: 24,
+              //           width: 24,
+              //         ),
+              //         title: TextField(
+              //           // inputFormatters: [maskFormatter],
+              //           controller: passwordControllerRegister,
+              //           obscureText: !_passwordVisible,
+              //           decoration: const InputDecoration(
+              //             border: InputBorder.none,
+              //             hintText: 'Пароль',
+              //           ),
+              //           onChanged: (value) {
+              //             passwordControllerRegister.text.length.toInt() == 0
+              //                 ? _visibleIconView = false
+              //                 : _visibleIconView = true;
+              //             setState(() {});
+              //           },
+              //         ),
+              //         trailing: GestureDetector(
+              //           onTap: () {
+              //             setState(() {
+              //               _passwordVisible = !_passwordVisible;
+              //             });
+              //           },
+              //           child: _visibleIconView == true
+              //               ? Icon(
+              //                   _passwordVisible
+              //                       ? Icons.visibility_off
+              //                       : Icons.visibility,
+              //                   color: const Color.fromRGBO(177, 179, 181, 1),
+              //                 )
+              //               : const SizedBox(width: 5),
+              //         ),
+              //       ),
+              //       ListTile(
+              //         horizontalTitleGap: 5,
+              //         leading: SvgPicture.asset(
+              //           'assets/icons/password.svg',
+              //           height: 24,
+              //           width: 24,
+              //         ),
+              //         title: TextField(
+              //           // inputFormatters: [maskFormatter],
+              //           controller: repePasswordControllerRegister,
+              //           obscureText: !_passwordVisible,
+              //           decoration: const InputDecoration(
+              //             border: InputBorder.none,
+              //             hintText: 'Подтвердите пароль',
+              //             enabledBorder: UnderlineInputBorder(
+              //               borderSide: BorderSide(color: Colors.white),
+              //               // borderRadius: BorderRadius.circular(3),
+              //             ),
+              //           ),
+              //           onChanged: (value) {
+              //             repePasswordControllerRegister.text.isEmpty
+              //                 ? _visibleIconViewRepeat = false
+              //                 : _visibleIconViewRepeat = true;
+              //             if (passwordControllerRegister.text ==
+              //                 repePasswordControllerRegister.text) {
+              //               setIsButtonEnabled(true);
+              //             } else {
+              //               setIsButtonEnabled(false);
+              //             }
+              //           },
+              //         ),
+              //         trailing: GestureDetector(
+              //           onTap: () {
+              //             setState(() {
+              //               _passwordVisible = !_passwordVisible;
+              //             });
+              //           },
+              //           child: _visibleIconViewRepeat == true
+              //               ? Icon(
+              //                   _passwordVisible
+              //                       ? Icons.visibility_off
+              //                       : Icons.visibility,
+              //                   color: const Color.fromRGBO(177, 179, 181, 1),
+              //                 )
+              //               : const SizedBox(width: 5),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 16,
+              // ),
 
+              SizedBox(height: 20),
+              Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
                         builder: (context, state) {
                       if (state is metaState.LoadedState) {
@@ -316,7 +289,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           text: TextSpan(
                             style: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w400),
                             children: <TextSpan>[
                               const TextSpan(
@@ -328,10 +301,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                         title: metas[0],
                                         body: metasBody[0],
                                       )),
-                                text: 'Пользовательское \n соглашение',
+                                text: 'Пользовательское соглашение',
                                 style: const TextStyle(
-                                    color: AppColors.kPrimaryColor,
-                                    fontSize: 16,
+                                    color: AppColors.mainPurpleColor,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w400),
                               ),
                               const TextSpan(
@@ -346,8 +319,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                       )),
                                 text: 'Политикой Конфиденциальности',
                                 style: const TextStyle(
-                                    color: AppColors.kPrimaryColor,
-                                    fontSize: 16,
+                                    color: AppColors.mainPurpleColor,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w400),
                               ),
                             ],
@@ -371,6 +344,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ],
                 ),
               ),
+
               const Spacer(),
               Padding(
                 padding: EdgeInsets.only(
@@ -380,7 +354,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     backgroundColor: (nameControllerRegister.text.isNotEmpty &&
                             phoneControllerRegister.text.length >= 17 &&
                             passwordControllerRegister.text.isNotEmpty)
-                        ? AppColors.kPrimaryColor
+                        ? AppColors.mainPurpleColor
                         : const Color(0xFFD6D8DB),
                     text: 'Зарегистрироваться',
                     press: () {
@@ -412,14 +386,145 @@ class _RegisterPageState extends State<RegisterPage> {
                       // );
                     },
                     color: Colors.white,
-                    width: 343),
+                    width: double.infinity),
               ),
             ],
           ),
-        ),
 
-        // SizedBox(height: 20,),
-      );
+          // SizedBox(height: 20,),
+        );
+      }),
+    );
+  }
+}
+
+class FieldsCoopRequest extends StatefulWidget {
+  final String titleText;
+  final String hintText;
+  final bool star;
+  final bool isPassword;
+  final bool isPhone;
+  final TextEditingController controller;
+  final void Function(String)? onChanged;
+
+  const FieldsCoopRequest({
+    required this.titleText,
+    required this.hintText,
+    required this.controller,
+    this.star = false,
+    this.isPassword = false,
+    this.isPhone = false,
+    this.onChanged,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<FieldsCoopRequest> createState() => _FieldsCoopRequestState();
+}
+
+class _FieldsCoopRequestState extends State<FieldsCoopRequest> {
+  bool _obscureText = true;
+  bool _showClearIcon = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(() {
+      final shouldShow = widget.controller.text.isNotEmpty;
+      if (_showClearIcon != shouldShow) {
+        setState(() {
+          _showClearIcon = shouldShow;
+        });
+      }
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4.0, bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                widget.titleText,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                  color: AppColors.kGray900,
+                ),
+              ),
+              if (!widget.star)
+                const Text(
+                  '*',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                    color: Colors.red,
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Container(
+            height: 47,
+            padding: const EdgeInsets.only(left: 12),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: TextField(
+              controller: widget.controller,
+              obscureText: widget.isPassword ? _obscureText : false,
+              keyboardType:
+                  widget.isPhone ? TextInputType.phone : TextInputType.text,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: widget.hintText,
+                hintStyle: const TextStyle(
+                  color: Color.fromRGBO(194, 197, 200, 1),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
+                suffixIcon: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (_showClearIcon)
+                      IconButton(
+                        icon: const Icon(Icons.clear, size: 20),
+                        onPressed: () {
+                          widget.controller.clear();
+                          if (widget.onChanged != null) {
+                            widget.onChanged!('');
+                          }
+                        },
+                      ),
+                    if (widget.isPassword)
+                      IconButton(
+                        icon: Icon(
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          size: 20,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      ),
+                  ],
+                ),
+              ),
+              onChanged: widget.onChanged,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

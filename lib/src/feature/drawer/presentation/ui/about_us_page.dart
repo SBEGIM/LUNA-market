@@ -235,7 +235,6 @@ class _AboutUsPageState extends State<AboutUsPage> {
                     style: AppTextStyles.defaultButtonTextStyle,
                     textAlign: TextAlign.right,
                   ),
-                  SizedBox(height: 16),
                   BlocBuilder<MetaCubit, MetaState>(builder: (context, state) {
                     if (state is LoadedState) {
                       metasBody.addAll([
@@ -245,35 +244,33 @@ class _AboutUsPageState extends State<AboutUsPage> {
                         state.metas.shipping_payment!,
                         state.metas.TTN!,
                       ]);
-
-                      return SizedBox(
-                        height: 270,
-                        child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  Get.to(() => MetasPage(
-                                        title: metas[index],
-                                        body: metasBody[index],
-                                      ));
-                                },
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    buildContactItem(
-                                      onTap: () {},
-                                      label: metas[index],
-                                      iconPath: Assets.icons.metaIcon.path,
-                                    ),
-                                    SizedBox(height: 10)
-                                  ],
-                                ),
-                              );
-                            }),
-                      );
+                      return ListView.builder(
+                          padding: EdgeInsets.only(top: 12),
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                Get.to(() => MetasPage(
+                                      title: metas[index],
+                                      body: metasBody[index],
+                                    ));
+                              },
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  buildContactItem(
+                                    onTap: () {},
+                                    label: metas[index],
+                                    iconPath: Assets.icons.metaIcon.path,
+                                  ),
+                                  SizedBox(height: 10)
+                                ],
+                              ),
+                            );
+                          });
                     } else {
                       return Center(
                         child: CircularProgressIndicator(

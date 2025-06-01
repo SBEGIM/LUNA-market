@@ -20,18 +20,17 @@ class TopMenu extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(right: 8, top: 10),
-        padding: const EdgeInsets.only(left: 12),
+        margin: const EdgeInsets.only(right: 4, top: 10, left: 0),
         decoration: BoxDecoration(
-          color: AppColors.kBlueColor,
+          color: AppColors.mainPurpleColor.withOpacity(0.25),
           borderRadius: BorderRadius.circular(12),
         ),
         //  color: AppColors.kBlueColor,
         height: 94,
-        width: 107,
+        width: 127,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(
               icon,

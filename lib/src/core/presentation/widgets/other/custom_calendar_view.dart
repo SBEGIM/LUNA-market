@@ -92,7 +92,7 @@ class _CustomCalendarViewState extends State<CustomCalendarView> {
                         alignment: Alignment.center,
                         transform: Matrix4.rotationY(pi),
                         child: SvgPicture.asset(
-                          Assets.icons.account.path,
+                          Assets.icons.accountPng.path,
                           colorFilter: const ColorFilter.mode(
                               AppColors.green1, BlendMode.srcIn),
                         ),
@@ -132,7 +132,7 @@ class _CustomCalendarViewState extends State<CustomCalendarView> {
                         });
                       },
                       child: SvgPicture.asset(
-                        Assets.icons.account.path,
+                        Assets.icons.accountPng.path,
                         colorFilter: const ColorFilter.mode(
                             AppColors.green1, BlendMode.srcIn),
                       ),
