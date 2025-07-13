@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_edit_admin_cubit.dart'
     as editCubit;
@@ -89,7 +90,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.kWhite,
+        backgroundColor: AppColors.kGray1,
         resizeToAvoidBottomInset: false,
         // backgroundColor: AppColors.kBackgroundColor,
         // appBar: AppBar(
@@ -122,269 +123,271 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
         body: ListView(children: [
           Column(
             children: [
-              SizedBox(height: 24),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.defaultDialog(
-                        title: "Изменить фото",
-                        middleText: '',
-                        textConfirm: 'Камера',
-                        textCancel: 'Галерея',
-                        titlePadding: const EdgeInsets.only(top: 40),
-                        onConfirm: () {
-                          change = true;
-                          _getImage(context);
+              Container(
+                decoration: BoxDecoration(
+                    color: AppColors.kWhite,
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20))),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 24),
+                    SizedBox(
+                      height: 100,
+                      width: 100,
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.defaultDialog(
+                            title: "Изменить фото",
+                            middleText: '',
+                            textConfirm: 'Камера',
+                            textCancel: 'Галерея',
+                            titlePadding: const EdgeInsets.only(top: 40),
+                            onConfirm: () {
+                              change = true;
+                              _getImage(context);
+                            },
+                            onCancel: () {
+                              change = false;
+                              _getImage(context);
+                            },
+                          );
                         },
-                        onCancel: () {
-                          change = false;
-                          _getImage(context);
-                        },
-                      );
-                    },
-                    child: Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: 60,
-                          backgroundColor: AppColors.kAlpha12,
-                          child: CircleAvatar(
-                            radius: 59.5,
-                            backgroundColor: AppColors.kGray200,
-                            backgroundImage: _image != null
-                                ? FileImage(File(_image!.path))
-                                : NetworkImage(
-                                    'https://lunamarket.ru/storage/${GetStorage().read('seller_image')}',
-                                  ) as ImageProvider,
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Image.asset(
-                            Assets.icons.sellerCameraIcon.path,
-                            height: 40,
-                            width: 40,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  Text(
-                    '${GetStorage().read('seller_name')}',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.kGray900,
-                        fontSize: 16),
-                  ),
-                  const SizedBox(height: 5),
-                  GetStorage().read('seller_partner') == '1'
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        child: Stack(
                           children: [
-                            Text(
-                              'Партнер',
-                              style: AppTextStyles.sellerNameTextStyle,
+                            CircleAvatar(
+                              radius: 60,
+                              backgroundColor: AppColors.kAlpha12,
+                              child: CircleAvatar(
+                                radius: 59.5,
+                                backgroundColor: AppColors.kGray200,
+                                backgroundImage: _image != null
+                                    ? FileImage(File(_image!.path))
+                                    : NetworkImage(
+                                        'https://lunamarket.ru/storage/${GetStorage().read('seller_image')}',
+                                      ) as ImageProvider,
+                              ),
                             ),
-                            SizedBox(width: 5),
-                            SvgPicture.asset(Assets.icons.sellerIcon.path),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Image.asset(
+                                Assets.icons.sellerCameraIcon.path,
+                                height: 40,
+                                width: 40,
+                              ),
+                            ),
                           ],
-                        )
-                      : const SizedBox(),
-                  // InkWell(
-                  //   onTap: () async {
-                  //     final data = await Get.to(ReqirectProfilePage());
-
-                  //     if (data != null) {
-                  //       setState(() {});
-                  //     }
-                  //   },
-                  //   child: const Text(
-                  //     'Редактирование',
-                  //     style: TextStyle(
-                  //         color: AppColors.kPrimaryColor,
-                  //         fontSize: 14,
-                  //         fontWeight: FontWeight.w400),
-                  //   ),
-                  // ),
-                ],
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              BlocConsumer<ProfileStaticsAdminCubit, ProfileStaticsAdminState>(
-                listener: (context, state) {},
-                builder: (context, state) {
-                  if (state is LoadedState) {
-                    return Container(
-                      height: 96,
-                      decoration: BoxDecoration(
-                        color: AppColors.kGray1,
-                        borderRadius: BorderRadius.zero,
+                        ),
                       ),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: 72,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                color: AppColors.kWhite,
-                                borderRadius: BorderRadius.circular(8),
+                    ),
+
+                    Text(
+                      '${GetStorage().read('seller_name')}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.kGray900,
+                          fontSize: 16),
+                    ),
+                    const SizedBox(height: 5),
+                    GetStorage().read('seller_partner') == '1'
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Партнер',
+                                style: AppTextStyles.sellerNameTextStyle,
                               ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    state.loadedProfile.videoReview.toString(),
-                                    style: AppTextStyles
-                                        .counterSellerProfileTextStyle,
-                                  ),
-                                  const Text(
-                                    'Видео обзоры',
-                                    style: AppTextStyles
-                                        .counterSellerTitleTextStyle,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            Container(
-                              height: 72,
-                              width: 120,
-                              margin: EdgeInsets.zero,
-                              decoration: BoxDecoration(
-                                color: AppColors.kWhite,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    state.loadedProfile.subscribers.toString(),
-                                    style: AppTextStyles
-                                        .counterSellerProfileTextStyle,
-                                  ),
-                                  const Text(
-                                    'Товары',
-                                    style: AppTextStyles
-                                        .counterSellerTitleTextStyle,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            Container(
-                              height: 72,
-                              width: 120,
-                              margin: EdgeInsets.zero,
-                              decoration: BoxDecoration(
-                                color: AppColors.kWhite,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    state.loadedProfile.sales.toString(),
-                                    style: AppTextStyles
-                                        .counterSellerProfileTextStyle,
-                                  ),
-                                  const Text(
-                                    'Продажи',
-                                    style: AppTextStyles
-                                        .counterSellerTitleTextStyle,
-                                  ),
-                                ],
-                              ),
-                            )
-                          ]),
-                    );
-                  } else {
-                    return const Center(
-                        child: CircularProgressIndicator(
-                            color: Colors.indigoAccent));
-                  }
-                },
+                              SizedBox(width: 5),
+                              SvgPicture.asset(Assets.icons.sellerIcon.path),
+                            ],
+                          )
+                        : const SizedBox(),
+                    // InkWell(
+                    //   onTap: () async {
+                    //     final data = await Get.to(ReqirectProfilePage());
+
+                    //     if (data != null) {
+                    //       setState(() {});
+                    //     }
+                    //   },
+                    //   child: const Text(
+                    //     'Редактирование',
+                    //     style: TextStyle(
+                    //         color: AppColors.kPrimaryColor,
+                    //         fontSize: 14,
+                    //         fontWeight: FontWeight.w400),
+                    //   ),
+                    // ),
+
+                    SizedBox(height: 22)
+                  ],
+                ),
               ),
-              buildProfileItem(
-                onTap: () async {
-                  final data = await Get.to(EditProfilePage());
-                  if (data != null) {
-                    setState(() {});
-                  }
-                },
-                title: 'Мои данные',
-                iconPath: Assets.icons.sellerProfileDataIcon.path,
+              Container(
+                height: 12,
+                color: AppColors.kGray1,
               ),
-              buildProfileItem(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const StatisticsAdminShowPage()),
-                  );
-                },
-                title: 'Мой заработок',
-                iconPath: Assets.icons.sellerTransaction.path,
+              // BlocConsumer<ProfileStaticsAdminCubit, ProfileStaticsAdminState>(
+              //   listener: (context, state) {},
+              //   builder: (context, state) {
+              //     if (state is LoadedState) {
+              //       return
+              //     } else {
+              //       return const Center(
+              //           child: CircularProgressIndicator(
+              //               color: Colors.indigoAccent));
+              //     }
+              //   },
+              // ),
+              Container(
+                height: 114,
+                decoration: BoxDecoration(
+                  color: AppColors.kWhite,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          context.pushRoute(TapeSellerRoute());
+                        },
+                        child: SizedBox(
+                          height: 82,
+                          width: 175,
+                          child: Image.asset(
+                            Assets.icons.frameVideoReview.path,
+                            scale: 2,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 82,
+                        width: 175,
+                        child: Image.asset(
+                          Assets.icons.framePromotion.path,
+                          scale: 2,
+                        ),
+                      ),
+                    ]),
               ),
-              buildProfileItem(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SellerServicePage()),
-                  );
-                },
-                title: 'Список сервисов',
-                iconPath: Assets.icons.sellerService.path,
+
+              SizedBox(
+                height: 12,
               ),
-              buildProfileItem(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AboutUsPage()),
-                  );
-                },
-                title: 'О нас',
-                iconPath: Assets.icons.about.path,
+
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.kWhite,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20)),
+                ),
+                child: Column(
+                  children: [
+                    buildProfileItem(
+                      onTap: () async {
+                        final data = await Get.to(EditProfilePage());
+                        if (data != null) {
+                          setState(() {});
+                        }
+                      },
+                      title: 'Мои данные',
+                      iconPath: Assets.icons.sellerProfileDataIcon.path,
+                    ),
+                    buildProfileItem(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const StatisticsAdminShowPage()),
+                        );
+                      },
+                      title: 'Аналитика продаж',
+                      iconPath: Assets.icons.sellerTransaction.path,
+                    ),
+                    buildProfileItem(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SellerServicePage()),
+                        );
+                      },
+                      title: 'Сервисы',
+                      iconPath: Assets.icons.sellerService.path,
+                    ),
+                    buildProfileItem(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AboutUsPage()),
+                        );
+                      },
+                      title: 'LUNA market',
+                      iconPath: Assets.icons.about.path,
+                    ),
+                    buildProfileItem(
+                      onTap: () => launch("https://t.me/LUNAmarketAdmin",
+                          forceSafariVC: false),
+                      title: 'Техподдержка',
+                      iconPath: Assets.icons.supportCenter.path,
+                    ),
+                    buildProfileItem(
+                      onTap: () {},
+                      switchWidget: true,
+                      switchValue: switchValue,
+                      onSwitchChanged: (value) {
+                        switchValue = value;
+                        print(value);
+                        setState(() {});
+                      },
+                      title: 'Уведомления',
+                      iconPath: Assets.icons.sellerNotification.path,
+                    ),
+                    buildProfileItem(
+                      onTap: () {
+                        BlocProvider.of<AppBloc>(context).add(
+                            const AppEvent.chageState(
+                                state: AppState.inAppUserState(index: 1)));
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
+                        // );
+                      },
+                      title: 'Вернутся в маркет',
+                      iconPath: Assets.icons.sellerBack.path,
+                    ),
+                    SizedBox(height: 10),
+                    DefaultButton(
+                        text: 'Выйти из аккаунта ',
+                        textStyle: AppTextStyles.defaultButtonTextStyle,
+                        press: () {
+                          GetStorage().remove('seller_token');
+                          GetStorage().remove('seller_id');
+                          GetStorage().remove('seller_name');
+                          GetStorage().remove('seller_image');
+
+                          BlocProvider.of<AppBloc>(context).add(
+                              const AppEvent.chageState(
+                                  state: AppState.inAppUserState(index: 1)));
+                        },
+                        color: Colors.black,
+                        backgroundColor: AppColors.kButtonColor,
+                        width: 358),
+                    SizedBox(
+                      height: 20,
+                    )
+                  ],
+                ),
               ),
-              buildProfileItem(
-                onTap: () => launch("https://t.me/LUNAmarketAdmin",
-                    forceSafariVC: false),
-                title: 'Техподдержка',
-                iconPath: Assets.icons.supportCenter.path,
-              ),
-              buildProfileItem(
-                onTap: () {},
-                switchWidget: true,
-                switchValue: switchValue,
-                onSwitchChanged: (value) {
-                  switchValue = value;
-                  print(value);
-                  setState(() {});
-                },
-                title: 'Уведомления',
-                iconPath: Assets.icons.sellerNotification.path,
-              ),
-              buildProfileItem(
-                onTap: () {
-                  BlocProvider.of<AppBloc>(context).add(
-                      const AppEvent.chageState(
-                          state: AppState.inAppUserState(index: 1)));
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
-                  // );
-                },
-                title: 'Вернутся в маркет',
-                iconPath: Assets.icons.sellerBack.path,
-              ),
+
               // InkWell(
               //   onTap: () {
               //     Navigator.push(
@@ -428,23 +431,6 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
               //   ),
               // ),
 
-              SizedBox(height: 38),
-              DefaultButton(
-                  text: 'Выйти из аккаунта ',
-                  textStyle: AppTextStyles.defaultButtonTextStyle,
-                  press: () {
-                    GetStorage().remove('seller_token');
-                    GetStorage().remove('seller_id');
-                    GetStorage().remove('seller_name');
-                    GetStorage().remove('seller_image');
-
-                    BlocProvider.of<AppBloc>(context).add(
-                        const AppEvent.chageState(
-                            state: AppState.inAppUserState(index: 1)));
-                  },
-                  color: Colors.black,
-                  backgroundColor: AppColors.kButtonColor,
-                  width: 358),
               // GestureDetector(
               //   onTap: () {},
               //   child: Container(

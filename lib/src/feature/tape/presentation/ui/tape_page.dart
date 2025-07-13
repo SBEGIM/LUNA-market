@@ -275,10 +275,10 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
                 labelStyle: AppTextStyles.aboutTextStyle,
                 indicatorColor: AppColors.kWhite,
                 labelColor: AppColors.kLightBlackColor,
-                indicator: UnderlineTabIndicator(
+                indicator: FixedWidthIndicator(
+                  width: MediaQuery.of(context).size.width / 3,
                   borderSide: const BorderSide(
                       width: 1, color: AppColors.kLightBlackColor),
-                  insets: const EdgeInsets.symmetric(horizontal: 0),
                 ),
                 controller: _tabs,
                 tabs: const <Widget>[
@@ -534,5 +534,45 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
       ),
       //)
     );
+  }
+}
+
+class FixedWidthIndicator extends Decoration {
+  final double width;
+  final BorderSide borderSide;
+
+  const FixedWidthIndicator({
+    required this.width,
+    required this.borderSide,
+  });
+
+  @override
+  BoxPainter createBoxPainter([VoidCallback? onChanged]) {
+    return _FixedWidthPainter(this, onChanged);
+  }
+}
+
+class _FixedWidthPainter extends BoxPainter {
+  final FixedWidthIndicator decoration;
+
+  _FixedWidthPainter(this.decoration, VoidCallback? onChanged)
+      : super(onChanged);
+
+  @override
+  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
+    final Paint paint = Paint()
+      ..color = decoration.borderSide.color
+      ..strokeWidth = decoration.borderSide.width
+      ..style = PaintingStyle.stroke;
+
+    final double tabCenter = offset.dx + configuration.size!.width / 2;
+    final double y = offset.dy +
+        configuration.size!.height -
+        decoration.borderSide.width / 2;
+
+    final double startX = tabCenter - decoration.width / 2;
+    final double endX = tabCenter + decoration.width / 2;
+
+    canvas.drawLine(Offset(startX, y), Offset(endX, y), paint);
   }
 }

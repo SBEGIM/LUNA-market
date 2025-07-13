@@ -43,10 +43,9 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.kBackgroundColor,
+        backgroundColor: AppColors.kWhite,
         appBar: AppBar(
-            iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-            backgroundColor: Colors.white,
+            backgroundColor: AppColors.kWhite,
             elevation: 0,
             // leading: IconButton(
             //   onPressed: () {
@@ -60,7 +59,7 @@ class _FavoritePageState extends State<FavoritePage> {
             centerTitle: true,
             title: const Text(
               'Избранное',
-              style: TextStyle(color: Colors.black, fontSize: 16),
+              style: AppTextStyles.titleTextStyle,
             )),
         body: BlocConsumer<FavoriteCubit, FavoriteState>(
             listener: (context, state) {},

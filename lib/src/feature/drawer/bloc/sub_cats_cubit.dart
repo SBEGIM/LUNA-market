@@ -33,6 +33,14 @@ class SubCatsCubit extends Cubit<SubCatsState> {
     }
   }
 
+  Future<List<CatsModel>> subCatList(subCatId) async {
+    if (_subCats.isEmpty) {
+      await subCats(subCatId);
+    }
+
+    return _subCats;
+  }
+
   void subSave() {
     emit(LoadedState(_subCats));
   }
@@ -63,5 +71,9 @@ class SubCatsCubit extends Cubit<SubCatsState> {
     }
 
     return cat;
+  }
+
+  Future<List<CatsModel>> subCatsList() async {
+    return _subCats;
   }
 }

@@ -6,6 +6,8 @@ mixin AppColors {
   static const Color kunSelectColor = Color(0xffAEAEB2);
 
   static const Color mainPurpleColor = Color(0xff6F32F8);
+  static const Color purpleBorder = Color(0x4A6F32F8);
+
   static const Color mainPurpleGradient = Color(0xffCEE31C);
 
   static const Color mainIconPurpleColor = Color(0x106F32F8);
@@ -83,49 +85,67 @@ mixin AppTextStyles {
   static const appBarTextStyle = TextStyle(
     fontSize: 17,
     color: AppColors.kLightBlackColor,
+    letterSpacing: 0,
+    fontFamily: 'SFProDisplay',
     fontWeight: FontWeight.w500,
   );
 
   static const sellerNameTextStyle = TextStyle(
     fontSize: 16,
     color: AppColors.kLightBlackColor,
+    letterSpacing: 0,
+    fontFamily: 'SFProDisplay',
     fontWeight: FontWeight.w500,
   );
   static const catalogTextStyle = TextStyle(
     fontSize: 16,
     color: AppColors.kGray900,
+    letterSpacing: 0,
+    fontFamily: 'SFProDisplay',
     fontWeight: FontWeight.w400,
   );
   static const chanheLangTextStyle = TextStyle(
     fontSize: 16,
     color: AppColors.kGray900,
+    letterSpacing: 0,
+    fontFamily: 'SFProDisplay',
     fontWeight: FontWeight.w400,
   );
   static const drawer1TextStyle = TextStyle(
     fontSize: 16,
     color: Colors.white,
+    letterSpacing: 0,
+    fontFamily: 'SFProDisplay',
     fontWeight: FontWeight.w500,
   );
   static const drawer2TextStyle = TextStyle(
     fontSize: 16,
     color: AppColors.kGray900,
+    letterSpacing: 0,
+    fontFamily: 'SFProDisplay',
     fontWeight: FontWeight.w400,
   );
   static const kcolorPrimaryTextStyle = TextStyle(
     fontSize: 14,
+    letterSpacing: 0,
     color: AppColors.kPrimaryColor,
+    fontFamily: 'SFProDisplay',
     fontWeight: FontWeight.w500,
   );
   static const kcolorPartnerTextStyle = TextStyle(
     fontSize: 16,
     color: AppColors.kPrimaryColor,
+    letterSpacing: 0,
+    fontFamily: 'SFProDisplay',
     fontWeight: FontWeight.w400,
   );
 
   static const categoryTextStyle = TextStyle(
-    fontSize: 12,
+    fontSize: 13,
     color: AppColors.kGray900,
     fontWeight: FontWeight.w500,
+    letterSpacing: 0,
+    fontFamily: 'SFProDisplay',
   );
   static const bannerTextStyle = TextStyle(
     fontSize: 11,
@@ -141,12 +161,14 @@ mixin AppTextStyles {
   static const appBarTextStylea = TextStyle(
     fontSize: 20,
     color: AppColors.kGray900,
-    fontFamily: 'Nunito',
+    fontFamily: 'SFProDisplay',
+    letterSpacing: 0,
     fontWeight: FontWeight.w700,
   );
 
   static const defButtonTextStyle = TextStyle(
     fontSize: 17,
+    letterSpacing: 0,
     color: Colors.white,
     fontWeight: FontWeight.w400,
   );
@@ -154,33 +176,39 @@ mixin AppTextStyles {
   static const defaultButtonTextStyle = TextStyle(
       fontSize: 18,
       color: Colors.black,
+      letterSpacing: 0,
       fontWeight: FontWeight.w600,
       fontFamily: 'SFProDisplay');
 
   static const defaultAppBarTextStyle = TextStyle(
       fontSize: 22,
       color: Colors.black,
+      letterSpacing: 0,
       fontWeight: FontWeight.w700,
       fontFamily: 'SFProDisplay');
   static const timerInReRegTextStyle = TextStyle(
     fontSize: 17,
+    letterSpacing: 0,
     color: Color(0xFFAAAEB3),
     fontWeight: FontWeight.w500,
   );
   static const kGray400Text = TextStyle(
     fontSize: 16,
+    letterSpacing: 0,
     color: AppColors.kGray400,
     fontWeight: FontWeight.w500,
   );
 
   static const counterSellerProfileTextStyle = TextStyle(
     fontSize: 16,
+    letterSpacing: 0,
     color: Color(0xFF333333),
     fontWeight: FontWeight.w700,
     fontFamily: 'SFProDisplay',
   );
   static const counterSellerTitleTextStyle = TextStyle(
     fontSize: 11,
+    letterSpacing: 0,
     color: Color(0xFF959595),
     fontWeight: FontWeight.w400,
     fontFamily: 'SFProDisplay',
@@ -188,6 +216,7 @@ mixin AppTextStyles {
 
   static const navigationSelectLabelStyle = TextStyle(
     fontSize: 11,
+    letterSpacing: 0,
     color: Color(0xFFAEAEB2),
     fontWeight: FontWeight.w500,
     fontFamily: 'SFProDisplay',
@@ -195,6 +224,7 @@ mixin AppTextStyles {
 
   static const navigationUnSelectLabelStyle = TextStyle(
     fontSize: 11,
+    letterSpacing: 0,
     color: Color(0xFF0F0F0F),
     fontWeight: FontWeight.w500,
     fontFamily: 'SFProDisplay',
@@ -202,6 +232,7 @@ mixin AppTextStyles {
 
   static const aboutTextStyle = TextStyle(
     fontSize: 16,
+    letterSpacing: 0,
     color: Color(0xFF0F0F0F),
     fontWeight: FontWeight.w400,
     fontFamily: 'SFProDisplay',
@@ -209,6 +240,7 @@ mixin AppTextStyles {
 
   static const statisticsTextStyle = TextStyle(
     fontSize: 14,
+    letterSpacing: 0,
     color: Color(0xFF0F0F0F),
     fontWeight: FontWeight.w400,
     fontFamily: 'SFProDisplay',
@@ -218,6 +250,7 @@ mixin AppTextStyles {
     fontSize: 18,
     color: Color(0xFF0F0F0F),
     fontWeight: FontWeight.w600,
+    letterSpacing: 0,
     fontFamily: 'SFProDisplay',
   );
 }

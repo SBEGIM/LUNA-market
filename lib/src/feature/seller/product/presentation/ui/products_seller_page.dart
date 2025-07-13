@@ -35,6 +35,7 @@ class MyProductsAdminPage extends StatefulWidget implements AutoRouteWrapper {
 class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
   @override
   RefreshController refreshController = RefreshController();
+  TextEditingController nameController = TextEditingController();
 
   Future<void> onLoading() async {
     await BlocProvider.of<ProductSellerCubit>(context).productsPaginate('');
@@ -44,8 +45,6 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController nameController = TextEditingController();
-
     return Scaffold(
       backgroundColor: AppColors.kWhite,
       appBar: AppBar(
@@ -80,51 +79,41 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
         //   },
         // ),
       ),
-      bottomSheet: Container(
-        color: Colors.transparent, // White background for the bottom sheet
-        padding: const EdgeInsets.fromLTRB(
-            16, 0, 16, 100), // Padding only left/right/bottom
-        child: SafeArea(
-          top: false, // Don't add padding at the top
-          child: Material(
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.fromLTRB(16, 0, 16, 16), // отступы
+        child: Material(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.transparent,
+          child: InkWell(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.transparent,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(12),
-              onTap: () async {
-                context.pushRoute(CreateProductSellerRoute(
-                    cat: CatsModel(id: 0, name: 'Не выбран'),
-                    subCat: CatsModel(id: 0, name: 'Не выбран')));
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const CategorySellerPage()),
-                // );
-              },
-              splashColor: AppColors.mainPurpleColor.withOpacity(0.2),
-              highlightColor: AppColors.mainPurpleColor.withOpacity(0.1),
-              child: Container(
-                width: 358,
-                height: 52,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: AppColors.mainPurpleColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Text(
-                  'Добавить товар',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+            onTap: () {
+              context.pushRoute(CreateProductSellerRoute(
+                cat: CatsModel(id: 0, name: 'Выберите из списка'),
+                subCat: CatsModel(id: 0, name: 'Выберите из списка'),
+              ));
+            },
+            splashColor: AppColors.mainPurpleColor.withOpacity(0.2),
+            highlightColor: AppColors.mainPurpleColor.withOpacity(0.1),
+            child: Container(
+              height: 52,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: AppColors.mainPurpleColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
                   ),
+                ],
+              ),
+              child: const Text(
+                'Добавить товар',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
@@ -182,7 +171,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                     controller: nameController,
                     onChanged: (value) {
                       BlocProvider.of<ProductSellerCubit>(context)
-                          .products(value);
+                          .products(nameController.text);
                     },
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(

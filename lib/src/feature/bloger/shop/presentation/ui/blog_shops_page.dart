@@ -372,7 +372,6 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                         context,
                         BlocProvider.of<PopularShopsCubit>(context),
                         _cats, (value) {
-                      print(value);
                       BlocProvider.of<PopularShopsCubit>(context)
                           .searchByIdShops(value);
                     });

@@ -7,15 +7,16 @@ class RegisterBloggerDTO {
   final String phone;
   final String password;
   final String check;
+  final int type;
 
-  const RegisterBloggerDTO({
-    required this.iin,
-    required this.name,
-    required this.social_network,
-    required this.email,
-    required this.nick_name,
-    required this.phone,
-    required this.password,
-    required this.check,
-  });
+  const RegisterBloggerDTO(
+      {required this.iin,
+      required this.name,
+      required this.social_network,
+      required this.email,
+      required this.nick_name,
+      required this.phone,
+      required this.password,
+      required this.check,
+      required this.type});
 }

@@ -39,7 +39,6 @@ class _LauncherAppState extends State<LauncherApp> {
   @override
   void initState() {
     super.initState();
-    _appLinks = AppLinks();
     initAppLinks();
     BlocProvider.of<AppBloc>(context).add(const AppEvent.checkAuth());
     checkInitialMessage();
@@ -48,9 +47,9 @@ class _LauncherAppState extends State<LauncherApp> {
   }
 
   Future<void> initAppLinks() async {
+    // Get the initial link
     _appLinks = AppLinks();
 
-    // Get the initial link
     final Uri? initialLink = await _appLinks.getInitialLink();
     if (initialLink != null) {
       handleDeepLink(initialLink);

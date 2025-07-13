@@ -250,29 +250,31 @@ class SizeDTO {
 }
 
 class BlocDTO {
-  BlocDTO({
-    int? price,
-    int? count,
-  }) {
+  BlocDTO({int? price, int? count, int? total}) {
     _price = price;
     _count = count;
+    _total = total;
   }
 
   BlocDTO.fromJson(dynamic json) {
     _price = json['price'];
     _count = json['count'];
+    _total = json['total'];
   }
 
   int? _price;
   int? _count;
+  int? _total;
 
   int? get price => _price;
   int? get count => _count;
+  int? get total => _total;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['price'] = _price;
     map['count'] = _count;
+    map['total'] = _total;
     return map;
   }
 }

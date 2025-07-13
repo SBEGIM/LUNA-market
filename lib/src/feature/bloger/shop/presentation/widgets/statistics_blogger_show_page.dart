@@ -170,7 +170,6 @@ class _StatisticsBloggerShowPageState extends State<StatisticsBloggerShowPage> {
                         child: GestureDetector(
                           onTap: () => _showYearPickerBottomSheet(
                               context, selectedYear, (year) {
-                            print(year);
                             setState(() {
                               selectedYear = year;
                             });

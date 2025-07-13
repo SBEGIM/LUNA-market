@@ -12,9 +12,7 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
-import 'package:haji_market/src/feature/seller/auth/presentation/ui/new_register_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_login_phone_widget.dart';
-import 'package:pure/pure.dart';
 
 import '../../../../../core/constant/generated/assets.gen.dart';
 
@@ -249,7 +247,7 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
                               passwordController.text);
                         },
                         color: Colors.white,
-                        width: 343),
+                        width: double.infinity),
                   ),
                   const SizedBox(
                     height: 10,

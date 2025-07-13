@@ -33,6 +33,15 @@ class BrandCubit extends Cubit<BrandState> {
     }
   }
 
+  Future<List<CatsModel>> brandsList() async {
+    if (_brands.isEmpty) {
+      await brands();
+      // final List<City> data = await listRepository.cities();
+      // _cities = data;
+    }
+    return _brands;
+  }
+
   brandById(String id) async {
     if (id.isEmpty) return;
     if (_brands.isEmpty) {
@@ -50,21 +59,20 @@ class BrandCubit extends Cubit<BrandState> {
     return brand;
   }
 
-  // Future<void> searchCity(String city) async {
-  //   if(city.isEmpty) return;
-  //   if(_cities.isEmpty) {
-  //     await cities();
-  //     // final List<City> data = await listRepository.cities();
-  //     // _cities = data;
-  //   }
-  //   List<City> temp = [];
-  //   Set<String> citiesSet = {};
-  //   for(int i = 0 ; i < _cities.length; i++) {
-  //     if(_cities[i].name != null && _cities[i].name!.contains(city)) {
-  //       temp.add(_cities[i]);
-  //       citiesSet.add(_cities[i].name.toString());
-  //     }
-  //   }
-  //   emit(LoadedState(temp, citiesSet, ''));
-  // }
+  Future<void> searchBrand(String name) async {
+    if (name.isEmpty) return;
+    if (_brands.isEmpty) {
+      await brands();
+      // final List<City> data = await listRepository.cities();
+      // _cities = data;
+    }
+    List<CatsModel> temp = [];
+    for (int i = 0; i < _brands.length; i++) {
+      if (_brands[i].name != null &&
+          _brands[i].name!.toLowerCase().contains(name.toLowerCase())) {
+        temp.add(_brands[i]);
+      }
+    }
+    emit(LoadedState(temp));
+  }
 }

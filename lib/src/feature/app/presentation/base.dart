@@ -146,7 +146,7 @@ class _BaseState extends State<Base> with TickerProviderStateMixin {
               ),
               label: 'Избранное',
               activeIcon: Image.asset(
-                Assets.icons.favoriteBottomIcon.path,
+                Assets.icons.favoriteBottomFullIcon.path,
                 scale: 1.9,
                 color: Colors.black,
               ),

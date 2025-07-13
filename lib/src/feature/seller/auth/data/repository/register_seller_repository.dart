@@ -129,12 +129,13 @@ class RegisterToApi {
   }
 
   Future<dynamic> resetSend(String phone) async {
-    String s = phone;
-    String result = s.substring(2);
+    // String s = phone;
+    // print(s);
+    // String result = s.substring(2);
 
     final response = await http
         .post(Uri.parse('$baseUrl/seller/password/reset/send-code'), body: {
-      'phone': result.replaceAll(RegExp('[^0-9]'), ''),
+      'phone': phone.replaceAll(RegExp('[^0-9]'), ''),
     });
 
     return response.statusCode;

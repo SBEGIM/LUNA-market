@@ -51,17 +51,18 @@ class _CatsPageState extends State<CatsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Категории',
-                        style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700)),
-                    const SizedBox(
-                      height: 16,
-                    ),
+                    // const Text('Категории',
+                    //     style: TextStyle(
+                    //         color: AppColors.kGray900,
+                    //         fontSize: 16,
+                    //         fontWeight: FontWeight.w700)),
+                    // const SizedBox(
+                    //   height: 16,
+                    // ),
                     SizedBox(
-                      height: 266,
+                      height: 280,
                       child: GridView.builder(
+                          cacheExtent: 10000,
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
                           gridDelegate:

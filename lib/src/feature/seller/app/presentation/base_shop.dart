@@ -113,7 +113,7 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
               ),
               label: 'Главная',
               activeIcon: Image.asset(
-                Assets.icons.sellerHomeNavigationIcon.path,
+                Assets.icons.sellerHomeNavigationFullIcon.path,
                 scale: 1.9,
                 color: Colors.black,
               ),
@@ -126,14 +126,15 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
               ),
               label: 'Мои товары',
               activeIcon: Image.asset(
-                Assets.icons.sellerMyProductsNavigationIcon.path,
+                Assets.icons.sellerNavigationProductFullIcon.path,
                 scale: 1.9,
                 color: Colors.black,
               ),
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/chat_2.svg',
+              icon: Image.asset(
+                Assets.icons.sellerNavigationChatIcon.path,
+                scale: 1.9,
                 color: AppColors.kunSelectColor,
               ),
               label: 'Чат',
@@ -155,7 +156,7 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
-                Assets.icons.sellerNavigationIcon.path,
+                Assets.icons.sellerNavigationUnfullIcon.path,
                 color: AppColors.kunSelectColor,
                 scale: 1.9,
               ),

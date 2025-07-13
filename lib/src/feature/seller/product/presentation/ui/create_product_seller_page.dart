@@ -6,20 +6,33 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
+import 'package:haji_market/src/feature/drawer/bloc/brand_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart';
+import 'package:haji_market/src/feature/home/bloc/cats_cubit.dart';
+import 'package:haji_market/src/feature/home/data/model/city_model.dart';
+import 'package:haji_market/src/feature/home/data/model/country_model.dart';
+import 'package:haji_market/src/feature/seller/product/bloc/color_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/data/DTO/size_count_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/last_articul_seller_cubit.dart'
     as lastArticul;
 import 'package:haji_market/src/feature/seller/product/bloc/size_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/data/repository/product_seller_repository.dart';
-import 'package:haji_market/src/feature/seller/product/presentation/widgets/brand_seller_page.dart';
-import 'package:haji_market/src/feature/seller/product/presentation/widgets/colors_seller_page.dart';
+import 'package:haji_market/src/feature/seller/product/presentation/ui/map_seller_picker.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
 import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
+import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_list_characteristics_widget.dart';
+import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_cats_widget.dart';
+import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_characteristics_widget.dart';
+import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_optom_widget.dart';
+import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_size_counts_widget.dart';
+import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_size_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
-import '../../../../app/widgets/custom_back_button.dart';
 import '../../../../home/data/model/cat_model.dart';
 import '../../../../home/data/model/characteristic_model.dart';
 import '../../data/DTO/color_count_seller_dto.dart';
@@ -71,7 +84,9 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
   TextEditingController sizePriceController = TextEditingController();
   TextEditingController optomPriceController = TextEditingController();
   TextEditingController optomCountController = TextEditingController();
+  TextEditingController optomTotalController = TextEditingController();
   TextEditingController pointsController = TextEditingController();
+  TextEditingController ndsController = TextEditingController();
   TextEditingController pointsBloggerController = TextEditingController();
   TextEditingController feeController = TextEditingController();
   TextEditingController deepController = TextEditingController();
@@ -95,14 +110,23 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
 
   String sizeName = '';
   String sizeId = '';
-  String currencyName = 'Выберите валюту';
+  String currencyName = '₽';
+  String compoundValue = '₽';
+
   String fulfillment = 'fbs';
+
+  List<CatsModel> _cats = [];
+  List<CatsModel> _subCats = [];
+  List<CatsModel> _brands = [];
 
   List<ColorCountSellerDto> colorCount = [];
   List<CatsModel>? mockSizeAdds = [];
   List<OptomPriceSellerDto> optomCount = [];
   List<SizeCountSellerDto> sizeCount = [];
   List<CatsModel>? mockSizes = [];
+
+  List<CatsModel>? mockColors = [];
+  List<CatsModel>? checkColors = [];
 
   List<CharacteristicsModel>? characteristics = [];
   List<CharacteristicsModel>? characteristicsValue = [];
@@ -122,6 +146,50 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
   bool isSwitchedBs = false;
   bool isSwitchedFBS = false;
   bool isChangeState = false;
+  bool isSwitchedOptom = false;
+
+  String _locationSelect = 'Выбор лакации';
+  String _locationSeller = 'Не выбрано';
+
+  List<CatsModel> _locations = [
+    CatsModel(id: 0, name: 'Не выбрано'),
+    CatsModel(id: 1, name: 'Без ограничений'),
+    CatsModel(id: 2, name: 'Вся Россия'),
+    CatsModel(id: 3, name: 'Регион'),
+    CatsModel(id: 4, name: 'Город/населенный пункт'),
+    CatsModel(id: 5, name: 'Моя локация'),
+  ];
+
+  List<CatsModel> _locationsValues = [
+    CatsModel(id: 0, name: 'Пункт 1'),
+    CatsModel(id: 1, name: 'Пункт 2'),
+    CatsModel(id: 2, name: 'Пункт 3'),
+    CatsModel(id: 3, name: 'Пункт 4'),
+    CatsModel(id: 4, name: 'Пункт 5'),
+    CatsModel(id: 5, name: 'Пункт 6'),
+  ];
+
+  List<CatsModel> _regions = [];
+
+  void _regionsArray() async {
+    final List<CountryModel> data =
+        await BlocProvider.of<CountryCubit>(context).countryList();
+    _regions.clear();
+
+    for (int i = 0; i < data.length; i++) {
+      _regions.add(CatsModel(id: data[i].id, name: data[i].name));
+    }
+  }
+
+  void _citiesArray(country) async {
+    final List<CityModel> data =
+        await BlocProvider.of<CityCubit>(context).citiesList(country);
+
+    _regions.clear();
+    for (int i = 0; i < data.length; i++) {
+      _regions.add(CatsModel(id: data[i].code, name: data[i].city));
+    }
+  }
 
   void toggleSwitch(bool value) {
     if (isSwitched == false) {
@@ -161,6 +229,63 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
     }
   }
 
+  void toggleSwitchOptom(bool value) {
+    if (GetStorage().read('seller_partner') != '1' && value == true) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: SizedBox(
+              height: 224,
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Оптовая продажа недоступна",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "Функция станет доступна после подтверждения партнёрства",
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 32),
+                    DefaultButton(
+                        text: 'Понятно',
+                        press: () {
+                          Navigator.pop(context);
+                        },
+                        color: AppColors.kWhite,
+                        backgroundColor: AppColors.mainPurpleColor,
+                        width: 300)
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+
+      return;
+    }
+
+    if (isSwitchedOptom == false) {
+      setState(() {
+        isSwitchedOptom = true;
+      });
+    } else {
+      setState(() {
+        isSwitchedOptom = false;
+      });
+    }
+  }
+
   bool isCheckedFBS = false;
 
   void toggleCheckboxFBS(bool? value) {
@@ -192,6 +317,10 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
     mockSizes = await BlocProvider.of<SizeSellerCubit>(context).sizes();
   }
 
+  void _colorArray() async {
+    mockColors = await BlocProvider.of<ColorSellerCubit>(context).listColor();
+  }
+
   void _charactisticsArray() async {
     characteristics = await BlocProvider.of<CharacteristicSellerCubit>(context)
         .characteristic();
@@ -207,16 +336,41 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
   void initState() {
     cats = widget.cat;
     subCats = widget.subCat;
-    brands = CatsModel(id: 0, name: 'Выберите бренд');
+    brands = CatsModel(id: 0, name: 'Выберите из списка');
     colors = CatsModel(id: 0, name: 'Выберите цвет');
-    _sizeArray();
-    _charactisticsArray();
+
     if (BlocProvider.of<metaCubit.MetaCubit>(context).state
         is! metaState.LoadedState) {
       BlocProvider.of<metaCubit.MetaCubit>(context).partners();
     }
+
+    if (BlocProvider.of<BrandCubit>(context).state is! metaState.LoadedState) {
+      BlocProvider.of<BrandCubit>(context).brands();
+    }
+
     BlocProvider.of<lastArticul.LastArticulSellerCubit>(context)
         .getLastArticul();
+
+    if (BlocProvider.of<CatsCubit>(context).state is! LoadedState) {
+      BlocProvider.of<CatsCubit>(context).cats();
+    }
+
+    if (BlocProvider.of<SubCatsCubit>(context).state is! LoadedState) {
+      BlocProvider.of<SubCatsCubit>(context).subCats(cats?.id ?? 26);
+    }
+
+    if (BlocProvider.of<CountryCubit>(context).state is! LoadedState) {
+      BlocProvider.of<CountryCubit>(context).country();
+    }
+
+    if (BlocProvider.of<CityCubit>(context).state is! LoadedState) {
+      BlocProvider.of<CityCubit>(context).citiesCdek('RU' ?? 'KZ');
+    }
+
+    _sizeArray();
+    _colorArray();
+    _charactisticsArray();
+
     super.initState();
   }
 
@@ -237,7 +391,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
   double segmentWidth = 8;
   double segmentSpacing = 2;
   int filledSegments = 1; // Начинаем с 1 заполненного сегмента
-  int totalSegments = 5; // Всего сегментов
+  int totalSegments = 6; // Всего сегментов
   Color filledColor = AppColors.mainPurpleColor;
   Color emptyColor = Colors.grey[200]!;
   double spacing = 5.0;
@@ -395,15 +549,27 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     // ),
                   ],
                 ),
-
                 if (filledCount == 1)
                   FieldsProductRequest(
                     titleText: 'Категория и тип',
                     hintText: cats!.name ?? 'Выберите категорию',
                     star: true,
-                    arrow: false,
+                    arrow: true,
                     hintColor: true,
                     onPressed: () async {
+                      if (_cats.isEmpty) {
+                        _cats = await BlocProvider.of<CatsCubit>(context)
+                            .catsList();
+                      }
+
+                      showSellerCatsOptions(context, 'Категория и тип', _cats,
+                          (value) {
+                        // BlocProvider.of<CatsCubit>(context).searchCats(value);
+
+                        setState(() {
+                          cats = value;
+                        });
+                      });
                       // final data = await Get.to(const CatsAdminPage());
                       // if (data != null) {
                       //   final Cats cat = data;
@@ -412,14 +578,25 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                       // }
                     },
                   ),
+
                 if (filledCount == 1)
                   FieldsProductRequest(
                     titleText: 'Подкатегория',
                     hintText: subCats?.name ?? '',
                     hintColor: true,
                     star: true,
-                    arrow: false,
+                    arrow: true,
                     onPressed: () async {
+                      if (_subCats.isEmpty) {
+                        _subCats = await BlocProvider.of<SubCatsCubit>(context)
+                            .subCatsList();
+                      }
+                      showSellerCatsOptions(context, 'Подкатегория', _subCats,
+                          (value) {
+                        setState(() {
+                          subCats = value;
+                        });
+                      });
                       // final data = await Get.to(SubCatsAdminPage(cats: cats));
                       // if (data != null) {
                       //   final Cats cat = data;
@@ -432,15 +609,38 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                   FieldsProductRequest(
                     titleText: 'Бренд',
                     hintText: brands!.name.toString(),
-                    star: false,
+                    hintColor: true,
+                    star: true,
                     arrow: true,
                     onPressed: () async {
-                      final data = await Get.to(const BrandSellerPage());
-                      if (data != null) {
-                        final CatsModel brand = data;
-                        setState(() {});
-                        brands = brand;
+                      if (_brands.isEmpty) {
+                        _brands = await BlocProvider.of<BrandCubit>(context)
+                            .brandsList();
                       }
+                      showSellerCatsOptions(
+                        context,
+                        'Бренд',
+                        _brands,
+                        (value) {
+                          setState(() {
+                            brands = value;
+                          });
+
+                          // print(value);
+                          // BlocProvider.of<BrandCubit>(context)
+                          //     .searchBrand(value);
+                          // final CatsModel brand = data;
+                          // setState(() {});
+                          // brands = brand;
+                        },
+                      );
+
+                      // final data = await Get.to(const BrandSellerPage());
+                      // if (data != null) {
+                      //   final CatsModel brand = data;
+                      //   setState(() {});
+                      //   brands = brand;
+                      // }
                     },
                   ),
                 if (filledCount == 1)
@@ -458,10 +658,11 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                       if (stateArticul is lastArticul.LoadedState) {
                         articulController.text = getFormattedArticle(
                             stateArticul.articul.toString());
+                        setState(() {});
                       }
                     },
                     child: FieldsProductRequest(
-                      titleText: 'Артикул ',
+                      titleText: 'Артикул/SKU',
                       hintText: 'Введите артикул  ',
                       star: false,
                       arrow: false,
@@ -479,11 +680,17 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                 //         children: [
                 //           Text(
                 //             'Валюта',
-                //             style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.kGray900),
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.w400,
+                //                 fontSize: 12,
+                //                 color: AppColors.kGray900),
                 //           ),
                 //           Text(
                 //             '*',
-                //             style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Colors.red),
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.w400,
+                //                 fontSize: 12,
+                //                 color: Colors.red),
                 //           )
                 //         ],
                 //       ),
@@ -491,7 +698,9 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                 //         height: 4,
                 //       ),
                 //       Container(
-                //         decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                //         decoration: BoxDecoration(
+                //             color: Colors.white,
+                //             borderRadius: BorderRadius.circular(10)),
                 //         child: Padding(
                 //           padding: const EdgeInsets.only(left: 14.0),
                 //           child: TextField(
@@ -501,7 +710,9 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                 //                 border: InputBorder.none,
                 //                 hintText: currencyName,
                 //                 hintStyle: const TextStyle(
-                //                     color: Color.fromRGBO(194, 197, 200, 1), fontSize: 16, fontWeight: FontWeight.w400),
+                //                     color: Color.fromRGBO(194, 197, 200, 1),
+                //                     fontSize: 16,
+                //                     fontWeight: FontWeight.w400),
                 //                 enabledBorder: const UnderlineInputBorder(
                 //                   borderSide: BorderSide(color: Colors.white),
                 //                   // borderRadius: BorderRadius.circular(3),
@@ -528,7 +739,8 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                 //                       Radius.circular(15.0),
                 //                     ),
                 //                   ),
-                //                   icon: SvgPicture.asset('assets/icons/dropdown.svg'),
+                //                   icon: SvgPicture.asset(
+                //                       'assets/icons/dropdown.svg'),
                 //                   position: PopupMenuPosition.under,
                 //                   offset: const Offset(0, 0),
                 //                   itemBuilder: (
@@ -565,20 +777,222 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
 
                 if (filledCount == 1)
                   FieldsProductRequest(
-                      titleText: 'Цена товара ',
-                      hintText: 'Введите цену  ',
-                      star: false,
-                      arrow: false,
-                      controller: priceController,
-                      textInputNumber: true),
+                    titleText: 'Описание товара',
+                    hintText: 'Расскажите подробнее о товаре',
+                    star: true,
+                    arrow: false,
+                    controller: descriptionController,
+                    maxLines: 4,
+                  ),
+                if (filledCount == 1)
+                  SizedBox(
+                    width: double.infinity,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: FieldsProductRequest(
+                              titleText: 'Цена товара ',
+                              hintText: 'Введите цену  ',
+                              star: false,
+                              arrow: false,
+                              controller: priceController,
+                              textInputNumber: true),
+                        ),
+                        SizedBox(width: 6),
+                        Container(
+                          width: 96,
+                          height: 42,
+                          padding: EdgeInsets.all(6),
+                          margin: EdgeInsets.only(top: 12),
+                          decoration: BoxDecoration(
+                              color: AppColors.kBackgroundColor,
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(currencyName),
+                              PopupMenuButton(
+                                onSelected: (value) {
+                                  currencyName = value;
+
+                                  setState(() {});
+
+                                  // mockSizeAdds!.forEach((element) {
+                                  //   return print(element.name);
+                                  // });
+                                },
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(15.0),
+                                  ),
+                                ),
+                                icon: SvgPicture.asset(
+                                    'assets/icons/dropdown.svg'),
+                                position: PopupMenuPosition.under,
+                                offset: const Offset(0, 0),
+                                itemBuilder: (
+                                  BuildContext bc,
+                                ) {
+                                  return const [
+                                    PopupMenuItem(
+                                      value: '₽',
+                                      child: Text(
+                                        'Российский рубль (RUB)',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: '₸',
+                                      child: Text(
+                                        'Казахстанский тенге (KZT)',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: '₽',
+                                      child: Text(
+                                        'Белорусский рубль (BYN)',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ];
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (filledCount == 1)
+                  SizedBox(
+                    width: double.infinity,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: FieldsProductRequest(
+                              titleText: 'Скидка ,% ',
+                              hintText: 'Введите размер скидки',
+                              star: true,
+                              arrow: false,
+                              controller: compoundController,
+                              textInputNumber: true),
+                        ),
+                        SizedBox(width: 6),
+                        Container(
+                          width: 96,
+                          height: 42,
+                          padding: EdgeInsets.all(6),
+                          margin: EdgeInsets.only(top: 12),
+                          decoration: BoxDecoration(
+                              color: AppColors.kBackgroundColor,
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(compoundValue),
+                              PopupMenuButton(
+                                onSelected: (value) {
+                                  compoundValue = value;
+
+                                  setState(() {});
+
+                                  // mockSizeAdds!.forEach((element) {
+                                  //   return print(element.name);
+                                  // });
+                                },
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(15.0),
+                                  ),
+                                ),
+                                icon: SvgPicture.asset(
+                                    'assets/icons/dropdown.svg'),
+                                position: PopupMenuPosition.under,
+                                offset: const Offset(0, 0),
+                                itemBuilder: (
+                                  BuildContext bc,
+                                ) {
+                                  return const [
+                                    PopupMenuItem(
+                                      value: '₽',
+                                      child: Text(
+                                        'Рубль, ₽',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: ' % ',
+                                      child: Text(
+                                        'Процент, % ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ];
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                 if (filledCount == 1)
                   FieldsProductRequest(
-                      titleText: 'Скидка ,% ',
-                      hintText: 'Введите размер скидки',
-                      star: true,
-                      arrow: false,
-                      controller: compoundController,
-                      textInputNumber: true),
+                    titleText: 'НДС (налог на добавленную стоимость)',
+                    hintText: 'Введите НДС',
+                    star: true,
+                    arrow: true,
+                    controller: ndsController,
+                    textInputNumber: true,
+                    onPressed: () async {
+                      if (_brands.isEmpty) {
+                        _brands = await BlocProvider.of<BrandCubit>(context)
+                            .brandsList();
+                      }
+
+                      final List<CatsModel> _nds = [
+                        CatsModel(id: 0, name: '5 %'),
+                        CatsModel(id: 1, name: '7 %'),
+                        CatsModel(id: 2, name: '10 %'),
+                        CatsModel(id: 3, name: '20 %'),
+                        CatsModel(id: 4, name: 'Не облагается'),
+                      ];
+
+                      showSellerCatsOptions(
+                        context,
+                        'Выбор НДС',
+                        _nds,
+                        (value) {
+                          final CatsModel _data = value;
+
+                          setState(() {
+                            ndsController.text = _data.name!;
+                          });
+
+                          // print(value);
+                          // BlocProvider.of<BrandCubit>(context)
+                          //     .searchBrand(value);
+                          // final CatsModel brand = data;
+                          // setState(() {});
+                          // brands = brand;
+                        },
+                      );
+                    },
+                  ),
                 if (filledCount == 1)
                   FieldsProductRequest(
                     titleText: 'Накопительные бонусы ,% ',
@@ -588,6 +1002,15 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     controller: pointsController,
                     textInputNumber: true,
                   ),
+
+                if (filledCount == 1)
+                  FieldsProductRequest(
+                      titleText: 'Вознаграждение блогеру ,% ',
+                      hintText: 'Введите вознаграждение ',
+                      star: true,
+                      arrow: false,
+                      controller: pointsBloggerController,
+                      textInputNumber: true),
                 if (filledCount == 1)
                   BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
                       builder: (context, state) {
@@ -627,7 +1050,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                                   style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
-                                      color: AppColors.kPrimaryColor),
+                                      color: AppColors.mainPurpleColor),
                                 )
                               ],
                             ),
@@ -640,22 +1063,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                               color: Colors.indigoAccent));
                     }
                   }),
-                if (filledCount == 1)
-                  FieldsProductRequest(
-                      titleText: 'Вознаграждение блогеру ,% ',
-                      hintText: 'Введите вознаграждение ',
-                      star: true,
-                      arrow: false,
-                      controller: pointsBloggerController,
-                      textInputNumber: true),
-                if (filledCount == 1)
-                  FieldsProductRequest(
-                    titleText: 'Описание товара',
-                    hintText: 'Расскажите подробнее о товаре',
-                    star: true,
-                    arrow: false,
-                    controller: descriptionController,
-                  ),
 
                 // if (filledCount == 2)
                 //   const Text(
@@ -666,786 +1073,1357 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                 //         fontWeight: FontWeight.w700),
                 //   ),
 
-                if (filledCount == 2)
+                if (filledCount == 1)
                   FieldsProductRequest(
                     titleText: 'Количество в наличии ',
-                    hintText: 'Выберите количество',
+                    hintText: 'Введите количество',
                     star: false,
                     arrow: false,
                     controller: countController,
                     textInputNumber: true,
                   ),
-                if (filledCount == 2)
-                  FieldsProductRequest(
-                    titleText: 'Цвет ',
-                    hintText: colors!.name.toString(),
-                    hintColor: colors!.id != 0 ? true : false,
-                    star: true,
-                    arrow: true,
-                    onPressed: () async {
-                      final data = await Get.to(const ColorsSellerPage());
-                      if (data != null) {
-                        final CatsModel cat = data;
-                        setState(() {});
-                        colors = cat;
-                      }
-                    },
-                  ),
-                if (filledCount == 2)
+                if (filledCount == 1)
                   Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    height: 82,
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    decoration: BoxDecoration(
+                        color: AppColors.kGray2,
+                        borderRadius: BorderRadius.circular(8)),
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Введите размер и количество',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w700),
+                        Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Разрешить предзаказ',
+                                style: TextStyle(
+                                    color: AppColors.kLightBlackColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const Text(
+                                'Если товара нет в наличии — можно ли оформить заказ?',
+                                style: TextStyle(
+                                    color: AppColors.kLightBlackColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w300),
+                                maxLines: 2,
+                              ),
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.only(right: 10),
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8)),
-                              width: 102,
-                              height: 38,
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      sizeName == '' ? 'Размер' : sizeName,
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    PopupMenuButton(
-                                      onSelected: (value) {
-                                        // mockSizeAdds!.add(value as Cats);
-                                        sizeId = value.id.toString();
-                                        sizeName = value.name ?? 'Пустое';
-
-                                        setState(() {});
-
-                                        // mockSizeAdds!.forEach((element) {
-                                        //   return print(element.name);
-                                        // });
-                                      },
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
-                                        ),
-                                      ),
-                                      icon: SvgPicture.asset(
-                                          'assets/icons/dropdown.svg'),
-                                      position: PopupMenuPosition.under,
-                                      offset: const Offset(0, 0),
-                                      itemBuilder: (
-                                        BuildContext bc,
-                                      ) {
-                                        return mockSizes!
-                                            .map<PopupMenuItem>((e) {
-                                          return PopupMenuItem(
-                                            value: e,
-                                            child: Text(
-                                              e.name ?? 'Пустое',
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          );
-                                        }).toList();
-                                      },
-                                    )
-
-                                    // SvgPicture.asset(
-                                    //     'assets/icons/dropdown.svg')
-                                  ]),
+                        Theme(
+                          data: Theme.of(context).copyWith(
+                            switchTheme: SwitchThemeData(
+                              trackOutlineWidth: MaterialStateProperty.all(
+                                  0), // Полностью убираем границу
                             ),
-                            if (filledCount == 2)
-                              Container(
-                                //alignment: Alignment.topCenter,
-                                padding: const EdgeInsets.only(bottom: 6),
-                                margin: const EdgeInsets.only(right: 10),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8)),
-                                width: 102,
-                                height: 38,
-                                child: TextField(
-                                  textAlign: TextAlign.center,
-                                  controller: sizeCountController,
-                                  keyboardType: TextInputType.text,
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Введите количество',
-                                    hintStyle: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.white),
-                                      // borderRadius: BorderRadius.circular(3),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (filledCount == 2)
-                              GestureDetector(
-                                onTap: () {
-                                  if (sizeCountController.text.isNotEmpty) {
-                                    bool exists = false;
-
-                                    //  Cats? sizeCountLast;
-                                    // if (optomCount.isNotEmpty) {
-
-                                    // sizeCountLast = mockSizeAdds!.isEmpty ? mockSizeAdds!.last : null;
-                                    for (var element in mockSizeAdds!) {
-                                      if (element.name == sizeName) {
-                                        exists = true;
-                                        setState(() {});
-                                      }
-                                      continue;
-                                    }
-                                    //   }
-
-                                    if (!exists) {
-                                      mockSizeAdds!
-                                          .add(CatsModel(name: sizeName));
-
-                                      sizeCount.add(SizeCountSellerDto(
-                                          id: sizeId,
-                                          name: sizeName,
-                                          count: sizeCountController.text));
-
-                                      setState(() {});
-                                    } else {
-                                      // Get.to(() => {})
-                                      Get.snackbar(
-                                          'Ошибка', 'Данные уже имеется!',
-                                          backgroundColor: Colors.redAccent);
-                                    }
-                                  } else {
-                                    Get.snackbar('Ошибка', 'Нет данных!',
-                                        backgroundColor: Colors.redAccent);
-                                  }
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  decoration: BoxDecoration(
-                                      color: AppColors.kPrimaryColor,
-                                      borderRadius: BorderRadius.circular(8)),
-                                  alignment: Alignment.center,
-                                  width: 102,
-                                  height: 38,
-                                  child: const Text(
-                                    '+',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ),
-                              ),
-                          ],
+                          ),
+                          child: Switch(
+                            onChanged: toggleSwitchBs,
+                            value: isSwitchedBs,
+                            activeColor: AppColors.kWhite,
+                            activeTrackColor: AppColors.mainPurpleColor,
+                            inactiveThumbColor: AppColors.kGray300,
+                            inactiveTrackColor: AppColors.kGray2,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                          ),
                         )
                       ],
                     ),
                   ),
 
-                if (filledCount == 2) const SizedBox(height: 15),
-
+                if (filledCount == 1) SizedBox(height: 100),
+                SizedBox(height: 20),
                 if (filledCount == 2)
                   SizedBox(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Оптом',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w700),
-                        ),
                         const SizedBox(height: 10),
-                        GetStorage().read('seller_partner') == '1'
-                            ? Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                margin: const EdgeInsets.only(bottom: 10),
-                                decoration: BoxDecoration(
-                                    color: const Color(0xff42BB5D),
-                                    borderRadius: BorderRadius.circular(8)),
-                                alignment: Alignment.center,
-                                // width: 343,
-                                height: 38,
-                                child: const Row(
+                        Container(
+                          height: 82,
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                              color: AppColors.kGray2,
+                              borderRadius: BorderRadius.circular(8)),
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Icon(
-                                      Icons.check_circle,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      'У вас есть партнерство с этой компанией.',
+                                    const Text(
+                                      'Включить продажу оптом',
                                       style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.white),
+                                          color: AppColors.kLightBlackColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const Text(
+                                      'Доступно только для партнёров платформы',
+                                      style: TextStyle(
+                                          color: AppColors.kLightBlackColor,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w300),
+                                      maxLines: 2,
                                     ),
                                   ],
                                 ),
+                              ),
+                              Theme(
+                                data: Theme.of(context).copyWith(
+                                  switchTheme: SwitchThemeData(
+                                    trackOutlineWidth:
+                                        MaterialStateProperty.all(
+                                            0), // Полностью убираем границу
+                                  ),
+                                ),
+                                child: Switch(
+                                  onChanged: toggleSwitchOptom,
+                                  value: isSwitchedOptom,
+                                  activeColor: AppColors.kWhite,
+                                  activeTrackColor: AppColors.mainPurpleColor,
+                                  inactiveThumbColor: AppColors.kGray300,
+                                  inactiveTrackColor: AppColors.kGray2,
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
                               )
-                            : const SizedBox(),
-                        Row(
-                          children: [
-                            Container(
-                              //alignment: Alignment.topCenter,
-                              padding: const EdgeInsets.only(bottom: 6),
-                              margin: const EdgeInsets.only(right: 10),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8)),
-                              width: 102,
-                              height: 38,
-                              child: TextField(
-                                onChanged: (value) {
-                                  // setState(() {});
-                                },
-                                textAlign: TextAlign.center,
-                                controller: optomCountController,
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        signed: true, decimal: false),
-                                onSubmitted: (_) {},
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Количество',
-                                  hintStyle: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400),
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    // borderRadius: BorderRadius.circular(3),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              //alignment: Alignment.topCenter,
-                              padding: const EdgeInsets.only(bottom: 6),
-                              margin: const EdgeInsets.only(right: 10),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8)),
-                              width: 102,
-                              height: 38,
-                              child: TextField(
-                                textAlign: TextAlign.center,
-                                controller: optomPriceController,
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                        signed: true, decimal: false),
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Введите цену',
-                                  hintStyle: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400),
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    // borderRadius: BorderRadius.circular(3),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                if (GetStorage().read('seller_partner') !=
-                                    '1') {
-                                  Get.snackbar(
-                                      'Ошибка оптом', 'У вас нет партнерство',
-                                      backgroundColor: Colors.redAccent);
-                                  return;
-                                }
-                                if (optomPriceController.text.isNotEmpty) {
-                                  bool exists = false;
+                            ],
+                          ),
+                        ),
 
-                                  OptomPriceSellerDto? optomCountLast;
-                                  // if (optomCount.isNotEmpty) {
+                        // GetStorage().read('seller_partner') == '1'
+                        //     ? Container(
+                        //         padding:
+                        //             const EdgeInsets.symmetric(horizontal: 10),
+                        //         margin: const EdgeInsets.only(bottom: 10),
+                        //         decoration: BoxDecoration(
+                        //             color: const Color(0xff42BB5D),
+                        //             borderRadius: BorderRadius.circular(8)),
+                        //         alignment: Alignment.center,
+                        //         // width: 343,
+                        //         height: 38,
+                        //         child: const Row(
+                        //           children: [
+                        //             Icon(
+                        //               Icons.check_circle,
+                        //               color: Colors.white,
+                        //             ),
+                        //             SizedBox(width: 10),
+                        //             Text(
+                        //               'У вас есть партнерство с этой компанией.',
+                        //               style: TextStyle(
+                        //                   fontSize: 12,
+                        //                   fontWeight: FontWeight.w400,
+                        //                   color: Colors.white),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       )
+                        //     : const SizedBox.shrink(),
 
-                                  optomCountLast = optomCount.isNotEmpty
-                                      ? optomCount.last
-                                      : null;
-                                  for (var element in optomCount) {
-                                    if (element.count ==
-                                        optomCountController.text) {
-                                      exists = true;
-                                      setState(() {});
-                                    }
-                                    continue;
-                                  }
-                                  //   }
-
-                                  if (!exists) {
-                                    optomCount.add(OptomPriceSellerDto(
-                                        price: optomPriceController.text,
-                                        count: optomCountController.text));
-
-                                    setState(() {});
-                                  } else {
-                                    // Get.to(() => {})
-                                    Get.snackbar(
-                                        'Ошибка', 'Данные уже имеется!',
-                                        backgroundColor: Colors.redAccent);
-                                  }
-                                } else {
-                                  Get.snackbar('Ошибка', 'Нет данных!',
-                                      backgroundColor: Colors.redAccent);
-                                }
-                              },
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                    color:
-                                        GetStorage().read('seller_partner') ==
-                                                '1'
-                                            ? AppColors.kPrimaryColor
-                                            : Colors.grey,
-                                    borderRadius: BorderRadius.circular(8)),
-                                alignment: Alignment.center,
-                                width: 102,
-                                height: 38,
-                                child: const Text(
-                                  '+',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
+                        // Row(
+                        //   children: [
+                        //     Container(
+                        //       //alignment: Alignment.topCenter,
+                        //       padding: const EdgeInsets.only(bottom: 6),
+                        //       margin: const EdgeInsets.only(right: 10),
+                        //       decoration: BoxDecoration(
+                        //           color: Colors.white,
+                        //           borderRadius: BorderRadius.circular(8)),
+                        //       width: 102,
+                        //       height: 38,
+                        //       child: TextField(
+                        //         onChanged: (value) {
+                        //           // setState(() {});
+                        //         },
+                        //         textAlign: TextAlign.center,
+                        //         controller: optomCountController,
+                        //         keyboardType:
+                        //             const TextInputType.numberWithOptions(
+                        //                 signed: true, decimal: false),
+                        //         onSubmitted: (_) {},
+                        //         decoration: const InputDecoration(
+                        //           border: InputBorder.none,
+                        //           hintText: 'Количество',
+                        //           hintStyle: TextStyle(
+                        //               fontSize: 12,
+                        //               fontWeight: FontWeight.w400),
+                        //           enabledBorder: UnderlineInputBorder(
+                        //             borderSide: BorderSide(color: Colors.white),
+                        //             // borderRadius: BorderRadius.circular(3),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     Container(
+                        //       //alignment: Alignment.topCenter,
+                        //       padding: const EdgeInsets.only(bottom: 6),
+                        //       margin: const EdgeInsets.only(right: 10),
+                        //       decoration: BoxDecoration(
+                        //           color: Colors.white,
+                        //           borderRadius: BorderRadius.circular(8)),
+                        //       width: 102,
+                        //       height: 38,
+                        //       child: TextField(
+                        //         textAlign: TextAlign.center,
+                        //         controller: optomPriceController,
+                        //         keyboardType:
+                        //             const TextInputType.numberWithOptions(
+                        //                 signed: true, decimal: false),
+                        //         decoration: const InputDecoration(
+                        //           border: InputBorder.none,
+                        //           hintText: 'Введите цену',
+                        //           hintStyle: TextStyle(
+                        //               fontSize: 12,
+                        //               fontWeight: FontWeight.w400),
+                        //           enabledBorder: UnderlineInputBorder(
+                        //             borderSide: BorderSide(color: Colors.white),
+                        //             // borderRadius: BorderRadius.circular(3),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     Container(
+                        //       //alignment: Alignment.topCenter,
+                        //       padding: const EdgeInsets.only(bottom: 6),
+                        //       margin: const EdgeInsets.only(right: 10),
+                        //       decoration: BoxDecoration(
+                        //           color: Colors.white,
+                        //           borderRadius: BorderRadius.circular(8)),
+                        //       width: 50,
+                        //       height: 38,
+                        //       child: TextField(
+                        //         textAlign: TextAlign.center,
+                        //         controller: optomTotalController,
+                        //         keyboardType:
+                        //             const TextInputType.numberWithOptions(
+                        //                 signed: true, decimal: false),
+                        //         decoration: const InputDecoration(
+                        //           border: InputBorder.none,
+                        //           hintText: 'В наличии шт',
+                        //           hintStyle: TextStyle(
+                        //               fontSize: 12,
+                        //               fontWeight: FontWeight.w400),
+                        //           enabledBorder: UnderlineInputBorder(
+                        //             borderSide: BorderSide(color: Colors.white),
+                        //             // borderRadius: BorderRadius.circular(3),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // )
                       ],
                     ),
                   ),
-
+                if (filledCount == 2) SizedBox(height: 5),
                 if (filledCount == 2)
                   SizedBox(
-                    height: 70 * (characteristicsValue?.length.toDouble() ?? 0),
-                    child: ListView.separated(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: characteristicsValue?.length ?? 0,
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 15),
-                      itemBuilder: (context, index) {
-                        return ConstrainedBox(
-                          constraints: const BoxConstraints(
-                            maxHeight: 60,
-                            minHeight: 40,
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: Text(
-                                    characteristicsValue?[index].key ??
-                                        'Пустое',
-                                    maxLines: 3,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: Text(
-                                    subCharacteristicsValue?[index].value ??
-                                        'Пустое',
-                                    maxLines: 3,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              GestureDetector(
-                                onTap: (() {
-                                  subCharacteristicsValue?.removeAt(index);
-                                  characteristicsValue?.removeAt(index);
-
-                                  setState(() {});
-                                }),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    // color: AppColors.kPrimaryColor,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  alignment: Alignment.center,
-                                  width: 102,
-                                  height: 38,
-                                  child: SvgPicture.asset(
-                                      'assets/icons/basket_1.svg'),
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-
-                if (filledCount == 3)
-                  SizedBox(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Характиристика',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          alignment: Alignment.centerLeft,
-                                          margin:
-                                              const EdgeInsets.only(right: 10),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(8)),
-                                          // width: 111,
-                                          height: 38,
-                                          child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  characteristicName == ''
-                                                      ? 'Параметр'
-                                                      : characteristicName,
-                                                  style: const TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                                PopupMenuButton(
-                                                  onSelected: (value) async {
-                                                    characteristicsValuelast =
-                                                        CharacteristicsModel(
-                                                            id: value.id,
-                                                            key: value.key);
-                                                    //sizeId = value.id.toString();
-                                                    characteristicId =
-                                                        value.id.toString();
-                                                    characteristicName =
-                                                        value.key ?? 'Пустое';
-                                                    subCharacteristics =
-                                                        await BlocProvider.of<
-                                                                    CharacteristicSellerCubit>(
-                                                                context)
-                                                            .subCharacteristic(
-                                                                id: value.id
-                                                                    .toString());
-                                                    setState(() {});
-                                                  },
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(15.0),
-                                                    ),
-                                                  ),
-                                                  icon: SvgPicture.asset(
-                                                      'assets/icons/dropdown.svg'),
-                                                  position:
-                                                      PopupMenuPosition.under,
-                                                  offset: const Offset(0, 0),
-                                                  itemBuilder: (
-                                                    BuildContext bc,
-                                                  ) {
-                                                    return characteristics!
-                                                        .map<PopupMenuItem>(
-                                                            (e) {
-                                                      return PopupMenuItem(
-                                                        value: e,
-                                                        child: Text(
-                                                          e.key ?? 'Пустое',
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                      );
-                                                    }).toList();
-                                                  },
-                                                )
-                                              ]),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          alignment: Alignment.centerLeft,
-                                          margin:
-                                              const EdgeInsets.only(right: 10),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(8)),
-                                          // width: 111,
-                                          height: 38,
-                                          child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  subCharacteristicName == ''
-                                                      ? 'Значение'
-                                                      : subCharacteristicName,
-                                                  style: const TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                                PopupMenuButton(
-                                                  onSelected: (value) {
-                                                    subCharacteristicsValueLast =
-                                                        CharacteristicsModel(
-                                                            id: value.id,
-                                                            value: value.value);
-
-                                                    // subCharacteristicsValue!.add(value as Characteristics);
-                                                    //sizeId = value.id.toString();
-                                                    subCharacteristicId =
-                                                        value.id.toString();
-                                                    subCharacteristicName =
-                                                        value.value ?? 'Пустое';
-                                                    setState(() {});
-                                                  },
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(15.0),
-                                                    ),
-                                                  ),
-                                                  icon: SvgPicture.asset(
-                                                      'assets/icons/dropdown.svg'),
-                                                  position:
-                                                      PopupMenuPosition.under,
-                                                  offset: const Offset(0, 0),
-                                                  itemBuilder: (
-                                                    BuildContext bc,
-                                                  ) {
-                                                    return subCharacteristics!
-                                                        .map<PopupMenuItem>(
-                                                            (e) {
-                                                      return PopupMenuItem(
-                                                        value: e,
-                                                        child: Text(
-                                                          e.value ?? 'Пустое',
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                      );
-                                                    }).toList();
-                                                  },
-                                                )
-                                              ]),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            if (filledCount == 2)
-                              GestureDetector(
-                                onTap: () {
-                                  if (subCharacteristicsValueLast != null &&
-                                      characteristicsValuelast != null) {
-                                    bool exists = false;
-
-                                    for (int index = 0;
-                                        index < characteristicsValue!.length;
-                                        index++) {
-                                      if (characteristicsValue![index].key ==
-                                          characteristicsValuelast!.key) {
-                                        if (subCharacteristicsValue![index]
-                                                .value ==
-                                            subCharacteristicsValueLast!
-                                                .value) {
-                                          exists = true;
-                                          setState(() {});
-                                        }
-                                      }
-                                      continue;
-                                    }
-
-                                    if (!exists) {
-                                      characteristicsValue!.add(
-                                          CharacteristicsModel(
-                                              id: characteristicsValuelast!.id!,
-                                              key: characteristicsValuelast!
-                                                  .key));
-                                      subCharacteristicsValue!.add(
-                                          CharacteristicsModel(
-                                              id: subCharacteristicsValueLast!
-                                                  .id!,
-                                              value:
-                                                  subCharacteristicsValueLast!
-                                                      .value));
-
-                                      setState(() {});
-                                    } else {
-                                      // Get.to(() => {})
-                                      Get.snackbar(
-                                          'Ошибка', 'Данные уже имеется!',
-                                          backgroundColor: Colors.redAccent);
-                                    }
-                                  } else {
-                                    Get.snackbar('Ошибка', 'Нет данных!',
-                                        backgroundColor: Colors.redAccent);
-                                  }
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  decoration: BoxDecoration(
-                                      color: AppColors.kPrimaryColor,
-                                      borderRadius: BorderRadius.circular(8)),
-                                  alignment: Alignment.center,
-                                  width: 102,
-                                  height: 38,
-                                  child: const Text(
-                                    '+',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-
-                if (filledCount == 3) const SizedBox(height: 28),
-
-                if (filledCount == 3)
-                  SizedBox(
-                    height: 60 * optomCount.length.toDouble(),
+                    height: optomCount.length * 115,
                     child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        // physics: const NeverScrollableScrollPhysics(),
                         itemCount: optomCount.length,
                         itemBuilder: ((context, index) {
-                          return Row(
-                            children: [
-                              Container(
-                                alignment: Alignment.center,
-                                margin:
-                                    const EdgeInsets.only(right: 10, top: 15),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8)),
-                                width: 102,
-                                height: 38,
-                                child: Text(
-                                  optomCount[index].count,
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400),
+                          return Container(
+                            padding: EdgeInsets.all(12),
+                            margin: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: AppColors.kBackgroundColor),
+                            height: 100,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Минимальный заказ: ',
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              color: AppColors.kGray300,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        Text(
+                                          '${optomCount[index].count} шт',
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Цена за 1 шт, (оптовая): ',
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              color: AppColors.kGray300,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        Text(
+                                          '${optomCount[index].price} ₽',
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Количество в наличии: ',
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              color: AppColors.kGray300,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        Text(
+                                          '${optomCount[index].total} шт',
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                margin:
-                                    const EdgeInsets.only(right: 10, top: 15),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8)),
-                                width: 102,
-                                height: 38,
-                                child: Text(
-                                  '${optomCount[index].price} руб',
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: (() {
-                                  optomCount.removeAt(index);
-                                  setState(() {});
-                                }),
-                                child: Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 10, top: 15, left: 10),
-                                  decoration: BoxDecoration(
-                                      // color: AppColors.kPrimaryColor,
-                                      borderRadius: BorderRadius.circular(8)),
-                                  alignment: Alignment.center,
-                                  width: 102,
-                                  height: 38,
-                                  child: SvgPicture.asset(
-                                      'assets/icons/basket_1.svg'),
-                                ),
-                              )
-                            ],
+                                InkWell(
+                                  onTap: (() {
+                                    optomCount.removeAt(index);
+                                    setState(() {});
+                                  }),
+                                  child: Icon(
+                                    Icons.close,
+                                    color: Colors.red,
+                                  ),
+                                )
+                              ],
+                            ),
                           );
                         })),
                   ),
 
-                if (filledCount == 3)
-                  const SizedBox(
-                    height: 10,
+                if (filledCount == 2 && isSwitchedOptom)
+                  InkWell(
+                    onTap: () {
+                      showSellerOptomOptions(
+                          context, 'Добавить оптовую продажу',
+                          (OptomPriceSellerDto value) {
+                        optomPriceController.text = value.price;
+                        optomCountController.text = value.count;
+                        optomTotalController.text = value.total;
+
+                        if (GetStorage().read('seller_partner') != '1') {
+                          Get.snackbar('Ошибка оптом', 'У вас нет партнерство',
+                              backgroundColor: Colors.redAccent);
+
+                          optomPriceController.clear();
+                          optomCountController.clear();
+                          optomTotalController.clear();
+
+                          return;
+                        }
+                        if (optomPriceController.text.isNotEmpty) {
+                          bool exists = false;
+
+                          OptomPriceSellerDto? optomCountLast;
+                          // if (optomCount.isNotEmpty) {
+
+                          optomCountLast =
+                              optomCount.isNotEmpty ? optomCount.last : null;
+                          for (var element in optomCount) {
+                            if (element.count == optomCountController.text) {
+                              exists = true;
+                              setState(() {});
+                            }
+                            continue;
+                          }
+                          //   }
+
+                          if (!exists) {
+                            optomCount.add(OptomPriceSellerDto(
+                                price: optomPriceController.text,
+                                count: optomCountController.text,
+                                total: optomTotalController.text));
+
+                            setState(() {});
+                          } else {
+                            // Get.to(() => {})
+                            Get.snackbar('Ошибка', 'Данные уже имеется!',
+                                backgroundColor: Colors.redAccent);
+                            optomPriceController.clear();
+                            optomCountController.clear();
+                            optomTotalController.clear();
+                          }
+                        } else {
+                          Get.snackbar('Ошибка', 'Нет данных!',
+                              backgroundColor: Colors.redAccent);
+                          optomPriceController.clear();
+                          optomCountController.clear();
+                          optomTotalController.clear();
+                        }
+
+                        optomPriceController.clear();
+                        optomCountController.clear();
+                        optomTotalController.clear();
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: GetStorage().read('seller_partner') == '1'
+                              ? AppColors.mainBackgroundPurpleColor
+                              : Colors.grey,
+                          borderRadius: BorderRadius.circular(8)),
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      height: 38,
+                      child: const Text(
+                        '+ Добавить оптом',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.mainPurpleColor),
+                      ),
+                    ),
                   ),
+                // if (filledCount == 3)
+                //   SizedBox(
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         const Text(
+                //           'Размер',
+                //           style: TextStyle(
+                //               fontSize: 16, fontWeight: FontWeight.w700),
+                //         ),
+                //         const SizedBox(height: 10),
+                //         GestureDetector(
+                //           onTap: () {
+                //             showSellerSizeOptions(
+                //                 context, 'Добавить размеры', mockSizes,
+                //                 (SizeCountSellerDto value) {
+                //               sizeId = value.id;
+                //               sizeName = value.name;
+                //               sizeCountController.text = value.count;
+
+                //               if (sizeCountController.text.isNotEmpty) {
+                //                 bool exists = false;
+
+                //                 //  Cats? sizeCountLast;
+                //                 // if (optomCount.isNotEmpty) {
+
+                //                 // sizeCountLast = mockSizeAdds!.isEmpty ? mockSizeAdds!.last : null;
+                //                 for (var element in mockSizeAdds!) {
+                //                   if (element.name == sizeName) {
+                //                     exists = true;
+                //                     setState(() {});
+                //                   }
+                //                   continue;
+                //                 }
+                //                 //   }
+
+                //                 if (!exists) {
+                //                   mockSizeAdds!.add(CatsModel(name: sizeName));
+
+                //                   sizeCount.add(SizeCountSellerDto(
+                //                       id: sizeId,
+                //                       name: sizeName,
+                //                       count: sizeCountController.text));
+
+                //                   setState(() {});
+
+                //                   sizeId = '';
+                //                   sizeName = '';
+                //                   sizeCountController.clear();
+                //                 } else {
+                //                   // Get.to(() => {})
+
+                //                   sizeId = '';
+                //                   sizeName = '';
+                //                   sizeCountController.clear();
+                //                   Get.snackbar('Ошибка', 'Данные уже имеется!',
+                //                       backgroundColor: Colors.redAccent);
+                //                 }
+                //               } else {
+                //                 Get.snackbar('Ошибка', 'Нет данных!',
+                //                     backgroundColor: Colors.redAccent);
+                //               }
+                //             });
+                //           },
+                //           child: Container(
+                //             decoration: BoxDecoration(
+                //                 color: AppColors.mainBackgroundPurpleColor,
+                //                 borderRadius: BorderRadius.circular(8)),
+                //             alignment: Alignment.center,
+                //             width: double.infinity,
+                //             height: 38,
+                //             child: const Text(
+                //               '+ Добавить размер',
+                //               style: TextStyle(
+                //                   fontSize: 14,
+                //                   fontWeight: FontWeight.w700,
+                //                   color: AppColors.mainPurpleColor),
+                //             ),
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+
+                // if (filledCount == 3)
+                //   SizedBox(
+                //     height: 88,
+                //     child: ListView.builder(
+                //         scrollDirection: Axis.horizontal,
+                //         // physics: const NeverScrollableScrollPhysics(),
+                //         itemCount: sizeCount.length,
+                //         itemBuilder: ((context, index) {
+                //           return Container(
+                //             padding: EdgeInsets.all(12),
+                //             margin: EdgeInsets.all(5),
+                //             alignment: Alignment.center,
+                //             decoration: BoxDecoration(
+                //                 borderRadius: BorderRadius.circular(12),
+                //                 color: AppColors.kBackgroundColor),
+                //             height: 58,
+                //             child: Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               crossAxisAlignment: CrossAxisAlignment.start,
+                //               children: [
+                //                 Column(
+                //                   mainAxisAlignment: MainAxisAlignment.center,
+                //                   crossAxisAlignment: CrossAxisAlignment.start,
+                //                   children: [
+                //                     Row(
+                //                       children: [
+                //                         Text(
+                //                           'Размер: ',
+                //                           style: const TextStyle(
+                //                               fontSize: 14,
+                //                               color: AppColors.kGray300,
+                //                               fontWeight: FontWeight.w400),
+                //                         ),
+                //                         Text(
+                //                           '${sizeCount[index].name}',
+                //                           style: const TextStyle(
+                //                               fontSize: 14,
+                //                               fontWeight: FontWeight.w500),
+                //                         ),
+                //                       ],
+                //                     ),
+                //                     Row(
+                //                       children: [
+                //                         Text(
+                //                           'Количество: ',
+                //                           style: const TextStyle(
+                //                               fontSize: 14,
+                //                               color: AppColors.kGray300,
+                //                               fontWeight: FontWeight.w400),
+                //                         ),
+                //                         Text(
+                //                           '${sizeCount[index].count} шт',
+                //                           style: const TextStyle(
+                //                               fontSize: 14,
+                //                               fontWeight: FontWeight.w500),
+                //                         ),
+                //                       ],
+                //                     ),
+                //                   ],
+                //                 ),
+                //                 InkWell(
+                //                   onTap: (() {
+                //                     sizeCount.removeAt(index);
+                //                     setState(() {});
+                //                   }),
+                //                   child: Icon(
+                //                     Icons.close,
+                //                     color: Colors.red,
+                //                   ),
+                //                 )
+                //               ],
+                //             ),
+                //           );
+                //         })),
+                //   ),
+
+                // if (filledCount == 3) const SizedBox(height: 15),
+
+                if (filledCount == 3)
+                  FieldsProductRequest(
+                    titleText: 'Укажите размер и количество',
+                    controller: sizeCountController,
+                    hintText: 'Выберите из списка',
+                    hintColor: false,
+                    star: true,
+                    arrow: true,
+                    onPressed: () {
+                      List<SizeCountSellerDto> dataWidget = [];
+
+                      for (var e in mockSizes!) {
+                        // Найдём ранее сохранённое значение (если есть)
+                        final existing = sizeCount.firstWhere(
+                          (i) => i.id == e.id.toString(),
+                          orElse: () => SizeCountSellerDto(
+                            id: e.id.toString(),
+                            name: e.name ?? '',
+                            count: '0',
+                          ),
+                        );
+                        dataWidget
+                            .add(existing); // Используем сохранённый (или с 0)
+                      }
+
+                      showSellerSizeCountOptions(
+                        context,
+                        'Укажите размер и количество',
+                        dataWidget,
+                        (List<SizeCountSellerDto> values) {
+                          // Обновим sizeCount, но не обнуляем
+                          for (var newItem in values) {
+                            final index =
+                                sizeCount.indexWhere((i) => i.id == newItem.id);
+                            if (index != -1) {
+                              // Обновим count
+                              sizeCount[index] = newItem;
+                            } else {
+                              // Добавим, если новое
+                              sizeCount.add(newItem);
+                            }
+                          }
+
+                          // Обновим отображаемый текст
+                          String sizeNames =
+                              sizeCount.map((e) => e.name).join(', ');
+                          sizeCountController.text = sizeNames;
+
+                          setState(() {});
+                        },
+                      );
+                    },
+                  ),
+
+                // if (filledCount == 3)
+                //   SizedBox(
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         const Text(
+                //           'Цвет',
+                //           style: TextStyle(
+                //               fontSize: 16, fontWeight: FontWeight.w700),
+                //         ),
+                //         const SizedBox(height: 10),
+                //         GestureDetector(
+                //           onTap: () {
+                //             showSellerCatsOptions(
+                //                 context, 'Добавить цвет', mockColors!, (value) {
+                //               final CatsModel catsModel = value;
+
+                //               print(catsModel.name);
+
+                //               final colorId = catsModel.id.toString();
+                //               final colorName = catsModel.name ?? 'Пустое';
+
+                //               colorCountController.text = catsModel.name!;
+
+                //               if (colorCountController.text.isNotEmpty) {
+                //                 bool exists = false;
+
+                //                 //  Cats? sizeCountLast;
+                //                 // if (optomCount.isNotEmpty) {
+
+                //                 // sizeCountLast = mockSizeAdds!.isEmpty ? mockSizeAdds!.last : null;
+                //                 for (var element in checkColors!) {
+                //                   if (element.name == colorName) {
+                //                     exists = true;
+                //                     setState(() {});
+                //                   }
+                //                   continue;
+                //                 }
+                //                 //   }
+
+                //                 if (!exists) {
+                //                   checkColors!.add(CatsModel(name: colorName));
+
+                //                   colorCount.add(ColorCountSellerDto(
+                //                       color_id: colorId,
+                //                       name: colorName,
+                //                       count: colorCountController.text));
+
+                //                   setState(() {});
+
+                //                   colorCountController.clear();
+                //                 } else {
+                //                   colorCountController.clear();
+                //                   Get.snackbar('Ошибка', 'Данные уже имеется!',
+                //                       backgroundColor: Colors.redAccent);
+                //                 }
+                //               } else {
+                //                 Get.snackbar('Ошибка', 'Нет данных!',
+                //                     backgroundColor: Colors.redAccent);
+                //               }
+
+                //               setState(() {});
+                //             });
+                //           },
+                //           child: Container(
+                //             decoration: BoxDecoration(
+                //                 color: AppColors.mainBackgroundPurpleColor,
+                //                 borderRadius: BorderRadius.circular(8)),
+                //             alignment: Alignment.center,
+                //             width: double.infinity,
+                //             height: 38,
+                //             child: const Text(
+                //               '+ Добавить цвет',
+                //               style: TextStyle(
+                //                   fontSize: 14,
+                //                   fontWeight: FontWeight.w700,
+                //                   color: AppColors.mainPurpleColor),
+                //             ),
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+
+                if (filledCount == 3)
+                  FieldsProductRequest(
+                    titleText: 'Укажите цвета',
+                    controller: colorCountController,
+                    hintText: 'Выберите из списка',
+                    hintColor: false,
+                    star: true,
+                    arrow: true,
+                    onPressed: () {
+                      List<CatsModel> dataWidget = [];
+
+                      for (var e in mockColors!) {
+                        final isSelected = colorCount
+                            .any((i) => i.color_id == e.id.toString());
+
+                        dataWidget.add(CatsModel(
+                          id: e.id,
+                          name: e.name,
+                          isSelect: isSelected,
+                        ));
+                      }
+                      showSellerCharacteristicsOptions(
+                        context,
+                        'Укажите цвета',
+                        dataWidget,
+                        (List<CatsModel> values) {
+                          for (var e in values) {
+                            final colorId = e.id.toString();
+                            final colorName = e.name ?? 'Пустое';
+
+                            // Если уже есть — обновить, если нет — добавить
+                            final index = colorCount.indexWhere(
+                                (element) => element.color_id == colorId);
+                            if (index != -1) {
+                              colorCount[index] = ColorCountSellerDto(
+                                color_id: colorId,
+                                name: colorName,
+                                count: colorCount[index]
+                                    .count, // сохраняем старый count
+                              );
+                            } else {
+                              colorCount.add(ColorCountSellerDto(
+                                color_id: colorId,
+                                name: colorName,
+                                count: '0',
+                              ));
+                            }
+
+                            // Обновляем checkColors аналогично
+                            final exists =
+                                checkColors!.any((c) => c.name == colorName);
+                            if (!exists) {
+                              checkColors!.add(CatsModel(name: colorName));
+                            }
+                          }
+
+                          String colorNames =
+                              values.map((e) => e.name ?? 'Пустое').join(', ');
+                          colorCountController.text = colorNames;
+                          setState(() {});
+
+                          // Очистим, если нужно полностью перезаписать
+                          // checkColors?.clear();
+                          // colorCount.clear();
+
+                          // for (var e in values) {
+                          //   final colorId = e.id.toString();
+                          //   final colorName = e.name ?? 'Пустое';
+
+                          //   // Проверка, что уже не добавлен
+                          //   final alreadyExists = checkColors!
+                          //       .any((element) => element.name == colorName);
+
+                          //   if (!alreadyExists) {
+                          //     checkColors!.add(CatsModel(name: colorName));
+
+                          //     colorCount.add(ColorCountSellerDto(
+                          //       color_id: colorId,
+                          //       name: colorName,
+                          //       count: '0',
+                          //     ));
+                          //   } else {
+                          //     Get.snackbar('Ошибка', '$colorName уже добавлен!',
+                          //         backgroundColor: Colors.redAccent);
+                          //   }
+                          // }
+                        },
+                      );
+                    },
+                  ),
+
+                // if (filledCount == 3) SizedBox(height: 5),
+
+                // if (filledCount == 3)
+                //   SizedBox(
+                //     height: 62,
+                //     child: ListView.builder(
+                //         scrollDirection: Axis.horizontal,
+                //         // physics: const NeverScrollableScrollPhysics(),
+                //         itemCount: colorCount.length,
+                //         itemBuilder: ((context, index) {
+                //           return Container(
+                //             padding: EdgeInsets.all(8),
+                //             margin: EdgeInsets.all(5),
+                //             alignment: Alignment.topCenter,
+                //             decoration: BoxDecoration(
+                //                 borderRadius: BorderRadius.circular(12),
+                //                 color: AppColors.kBackgroundColor),
+                //             height: 62,
+                //             child: Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               crossAxisAlignment: CrossAxisAlignment.center,
+                //               children: [
+                //                 Padding(
+                //                   padding: const EdgeInsets.only(top: 10.0),
+                //                   child: Text(
+                //                     '${colorCount[index].name}',
+                //                     style: const TextStyle(
+                //                         fontSize: 14,
+                //                         fontWeight: FontWeight.w500),
+                //                   ),
+                //                 ),
+                //                 SizedBox(width: 10),
+                //                 InkWell(
+                //                   onTap: (() {
+                //                     colorCount.removeAt(index);
+                //                     setState(() {});
+                //                   }),
+                //                   child: Icon(
+                //                     Icons.close,
+                //                     color: Colors.red,
+                //                   ),
+                //                 )
+                //               ],
+                //             ),
+                //           );
+                //         })),
+                //   ),
+
+                // if (filledCount == 2)
+                //   FieldsProductRequest(
+                //     titleText: 'Цвет ',
+                //     hintText: colors!.name.toString(),
+                //     hintColor: colors!.id != 0 ? true : false,
+                //     star: true,
+                //     arrow: true,
+                //     onPressed: () async {
+                //       final data = await Get.to(const ColorsSellerPage());
+                //       if (data != null) {
+                //         final CatsModel cat = data;
+                //         setState(() {});
+                //         colors = cat;
+                //       }
+                //     },
+                //   ),
+
+                if (filledCount == 3)
+                  SizedBox(
+                    height: characteristics!.length * 90,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // const Text(
+                        //   'Характиристика',
+                        //   style: TextStyle(
+                        //       fontSize: 16, fontWeight: FontWeight.w700),
+                        // ),
+                        // const SizedBox(height: 10),
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     showSellerCharacteristicsOptions(context,
+                        //         'Добавить характеристику', subCharacteristics,
+                        //         (SizeCountSellerDto value) {
+                        //       {
+                        //         if (subCharacteristicsValueLast != null &&
+                        //             characteristicsValuelast != null) {
+                        //           bool exists = false;
+
+                        //           for (int index = 0;
+                        //               index < characteristicsValue!.length;
+                        //               index++) {
+                        //             if (characteristicsValue![index].key ==
+                        //                 characteristicsValuelast!.key) {
+                        //               if (subCharacteristicsValue![index]
+                        //                       .value ==
+                        //                   subCharacteristicsValueLast!
+                        //                       .value) {
+                        //                 exists = true;
+                        //                 setState(() {});
+                        //               }
+                        //             }
+                        //             continue;
+                        //           }
+
+                        //           if (!exists) {
+                        //             characteristicsValue!.add(
+                        //                 CharacteristicsModel(
+                        //                     id: characteristicsValuelast!.id!,
+                        //                     key: characteristicsValuelast!
+                        //                         .key));
+                        //             subCharacteristicsValue!.add(
+                        //                 CharacteristicsModel(
+                        //                     id: subCharacteristicsValueLast!
+                        //                         .id!,
+                        //                     value:
+                        //                         subCharacteristicsValueLast!
+                        //                             .value));
+
+                        //             setState(() {});
+                        //           } else {
+                        //             // Get.to(() => {})
+                        //             Get.snackbar(
+                        //                 'Ошибка', 'Данные уже имеется!',
+                        //                 backgroundColor: Colors.redAccent);
+                        //           }
+                        //         } else {
+                        //           Get.snackbar('Ошибка', 'Нет данных!',
+                        //               backgroundColor: Colors.redAccent);
+                        //         }
+                        //       }
+                        //     });
+                        //   },
+                        //   child: Container(
+                        //     decoration: BoxDecoration(
+                        //         color: AppColors.mainBackgroundPurpleColor,
+                        //         borderRadius: BorderRadius.circular(8)),
+                        //     alignment: Alignment.center,
+                        //     width: double.infinity,
+                        //     height: 38,
+                        //     child: const Text(
+                        //       '+ Добавить',
+                        //       style: TextStyle(
+                        //           fontSize: 14,
+                        //           fontWeight: FontWeight.w700,
+                        //           color: AppColors.mainPurpleColor),
+                        //     ),
+                        //   ),
+                        // ),
+
+                        Flexible(
+                          child: ListView.builder(
+                            shrinkWrap:
+                                true, // 🔑 делает ListView высотой по содержимому
+                            physics:
+                                const NeverScrollableScrollPhysics(), // 🔑 запретить прокрутку внутри
+                            itemCount: characteristics?.length ?? 0,
+                            itemBuilder: (context, index) {
+                              final item = characteristics![index];
+                              final matched = subCharacteristicsValue
+                                  ?.where((e) => e.mainId == item.id)
+                                  .toList();
+                              final matchedItem =
+                                  matched != null && matched.isNotEmpty
+                                      ? matched.first
+                                      : null;
+                              return FieldsProductRequest(
+                                titleText: item.key ?? '',
+                                hintText:
+                                    matchedItem?.value ?? 'Выберите из списка',
+                                hintColor:
+                                    matchedItem?.value != null ? true : false,
+                                star: true,
+                                arrow: true,
+                                onPressed: () async {
+                                  final subIndexCharacteristics =
+                                      await BlocProvider.of<
+                                                  CharacteristicSellerCubit>(
+                                              context)
+                                          .subCharacteristic(
+                                              id: item.id.toString());
+
+                                  showSellerListCharacteristicsOptions(
+                                      context,
+                                      item.key ?? 'Добавить характеристику',
+                                      'params',
+                                      subIndexCharacteristics!,
+                                      (CharacteristicsModel value) {
+                                    {
+                                      // characteristicsValuelast =
+                                      //     CharacteristicsModel(
+                                      //         id: item.id,
+                                      //         key: item.key,
+                                      //         value: item.value);
+
+                                      // subCharacteristicsValueLast =
+                                      //     CharacteristicsModel(
+                                      //         id: value.id,
+                                      //         mainId: item.id,
+                                      //         key: value.key,
+                                      //         value: value.value);
+                                      // if (subCharacteristicsValueLast != null &&
+                                      //     characteristicsValuelast != null) {
+                                      //   bool exists = false;
+
+                                      //   for (int index = 0;
+                                      //       index <
+                                      //           characteristicsValue!.length;
+                                      //       index++) {
+                                      //     if (characteristicsValue![index]
+                                      //             .key ==
+                                      //         characteristicsValuelast!.key) {
+                                      //       if (subCharacteristicsValue![index]
+                                      //               .value ==
+                                      //           subCharacteristicsValueLast!
+                                      //               .value) {
+                                      //         exists = true;
+                                      //         setState(() {});
+                                      //       }
+                                      //     }
+                                      //     continue;
+                                      //   }
+
+                                      //   if (!exists) {
+                                      //     characteristicsValue!.add(
+                                      //         CharacteristicsModel(
+                                      //             id: characteristicsValuelast!
+                                      //                 .id!,
+                                      //             key: characteristicsValuelast!
+                                      //                 .key));
+                                      //     subCharacteristicsValue!.add(
+                                      //         CharacteristicsModel(
+                                      //             id: subCharacteristicsValueLast!
+                                      //                 .id!,
+                                      //             mainId: item.id,
+                                      //             value:
+                                      //                 subCharacteristicsValueLast!
+                                      //                     .value));
+
+                                      //     setState(() {});
+                                      //   } else {
+                                      //     // Get.to(() => {})
+                                      //     Get.snackbar(
+                                      //         'Ошибка', 'Данные уже имеется!',
+                                      //         backgroundColor:
+                                      //             Colors.redAccent);
+                                      //   }
+                                      // } else {
+                                      //   Get.snackbar('Ошибка', 'Нет данных!',
+                                      //       backgroundColor: Colors.redAccent);
+                                      // }
+
+                                      final newCharacteristic =
+                                          CharacteristicsModel(
+                                        id: item.id,
+                                        key: item.key,
+                                        value: item.value,
+                                      );
+
+                                      final newSubCharacteristic =
+                                          CharacteristicsModel(
+                                        id: value.id,
+                                        mainId: item.id,
+                                        key: value.key,
+                                        value: value.value,
+                                      );
+
+                                      characteristicsValue!
+                                          .removeWhere((e) => e.id == item.id);
+                                      subCharacteristicsValue!.removeWhere(
+                                          (e) => e.mainId == item.id);
+
+                                      characteristicsValue!
+                                          .add(newCharacteristic);
+                                      subCharacteristicsValue!
+                                          .add(newSubCharacteristic);
+
+                                      setState(() {});
+                                    }
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   crossAxisAlignment: CrossAxisAlignment.center,
+                        //   children: [
+                        //     Expanded(
+                        //       child: Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         children: [
+                        //           Row(
+                        //             children: [
+                        //               Expanded(
+                        //                 child: Container(
+                        //                   alignment: Alignment.centerLeft,
+                        //                   margin:
+                        //                       const EdgeInsets.only(right: 10),
+                        //                   padding: const EdgeInsets.symmetric(
+                        //                       horizontal: 10),
+                        //                   decoration: BoxDecoration(
+                        //                       color: Colors.white,
+                        //                       borderRadius:
+                        //                           BorderRadius.circular(8)),
+                        //                   // width: 111,
+                        //                   height: 38,
+                        //                   child: Row(
+                        //                       mainAxisAlignment:
+                        //                           MainAxisAlignment
+                        //                               .spaceBetween,
+                        //                       children: [
+                        //                         Text(
+                        //                           characteristicName == ''
+                        //                               ? 'Параметр'
+                        //                               : characteristicName,
+                        //                           style: const TextStyle(
+                        //                               fontSize: 12,
+                        //                               fontWeight:
+                        //                                   FontWeight.w400),
+                        //                         ),
+                        //                         PopupMenuButton(
+                        //                           onSelected: (value) async {
+                        //                             characteristicsValuelast =
+                        //                                 CharacteristicsModel(
+                        //                                     id: value.id,
+                        //                                     key: value.key);
+                        //                             //sizeId = value.id.toString();
+                        //                             characteristicId =
+                        //                                 value.id.toString();
+                        //                             characteristicName =
+                        //                                 value.key ?? 'Пустое';
+                        //                             subCharacteristics =
+                        //                                 await BlocProvider.of<
+                        //                                             CharacteristicSellerCubit>(
+                        //                                         context)
+                        //                                     .subCharacteristic(
+                        //                                         id: value.id
+                        //                                             .toString());
+                        //                             setState(() {});
+                        //                           },
+                        //                           shape:
+                        //                               const RoundedRectangleBorder(
+                        //                             borderRadius:
+                        //                                 BorderRadius.all(
+                        //                               Radius.circular(15.0),
+                        //                             ),
+                        //                           ),
+                        //                           icon: SvgPicture.asset(
+                        //                               'assets/icons/dropdown.svg'),
+                        //                           position:
+                        //                               PopupMenuPosition.under,
+                        //                           offset: const Offset(0, 0),
+                        //                           itemBuilder: (
+                        //                             BuildContext bc,
+                        //                           ) {
+                        //                             return characteristics!
+                        //                                 .map<PopupMenuItem>(
+                        //                                     (e) {
+                        //                               return PopupMenuItem(
+                        //                                 value: e,
+                        //                                 child: Text(
+                        //                                   e.key ?? 'Пустое',
+                        //                                   style:
+                        //                                       const TextStyle(
+                        //                                     color: Colors.black,
+                        //                                   ),
+                        //                                 ),
+                        //                               );
+                        //                             }).toList();
+                        //                           },
+                        //                         )
+                        //                       ]),
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //           const SizedBox(
+                        //             height: 5,
+                        //           ),
+                        //           Row(
+                        //             children: [
+                        //               Expanded(
+                        //                 child: Container(
+                        //                   alignment: Alignment.centerLeft,
+                        //                   margin:
+                        //                       const EdgeInsets.only(right: 10),
+                        //                   padding: const EdgeInsets.symmetric(
+                        //                       horizontal: 10),
+                        //                   decoration: BoxDecoration(
+                        //                       color: Colors.white,
+                        //                       borderRadius:
+                        //                           BorderRadius.circular(8)),
+                        //                   // width: 111,
+                        //                   height: 38,
+                        //                   child: Row(
+                        //                       mainAxisAlignment:
+                        //                           MainAxisAlignment
+                        //                               .spaceBetween,
+                        //                       children: [
+                        //                         Text(
+                        //                           subCharacteristicName == ''
+                        //                               ? 'Значение'
+                        //                               : subCharacteristicName,
+                        //                           style: const TextStyle(
+                        //                               fontSize: 12,
+                        //                               fontWeight:
+                        //                                   FontWeight.w400),
+                        //                         ),
+                        //                         PopupMenuButton(
+                        //                           onSelected: (value) {
+                        //                             subCharacteristicsValueLast =
+                        //                                 CharacteristicsModel(
+                        //                                     id: value.id,
+                        //                                     value: value.value);
+
+                        //                             // subCharacteristicsValue!.add(value as Characteristics);
+                        //                             //sizeId = value.id.toString();
+                        //                             subCharacteristicId =
+                        //                                 value.id.toString();
+                        //                             subCharacteristicName =
+                        //                                 value.value ?? 'Пустое';
+                        //                             setState(() {});
+                        //                           },
+                        //                           shape:
+                        //                               const RoundedRectangleBorder(
+                        //                             borderRadius:
+                        //                                 BorderRadius.all(
+                        //                               Radius.circular(15.0),
+                        //                             ),
+                        //                           ),
+                        //                           icon: SvgPicture.asset(
+                        //                               'assets/icons/dropdown.svg'),
+                        //                           position:
+                        //                               PopupMenuPosition.under,
+                        //                           offset: const Offset(0, 0),
+                        //                           itemBuilder: (
+                        //                             BuildContext bc,
+                        //                           ) {
+                        //                             return subCharacteristics!
+                        //                                 .map<PopupMenuItem>(
+                        //                                     (e) {
+                        //                               return PopupMenuItem(
+                        //                                 value: e,
+                        //                                 child: Text(
+                        //                                   e.value ?? 'Пустое',
+                        //                                   style:
+                        //                                       const TextStyle(
+                        //                                     color: Colors.black,
+                        //                                   ),
+                        //                                 ),
+                        //                               );
+                        //                             }).toList();
+                        //                           },
+                        //                         )
+                        //                       ]),
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ],
+                        // )
+                      ],
+                    ),
+                  ),
+                // if (filledCount == 3) const SizedBox(height: 28),
+                // if (filledCount == 3)
+                //   SizedBox(
+                //     height:
+                //         (120 * (characteristicsValue?.length ?? 0)).toDouble(),
+                //     width: double.infinity,
+                //     child: ListView.builder(
+                //         scrollDirection: Axis.vertical,
+                //         // physics: const NeverScrollableScrollPhysics(),
+                //         itemCount: characteristicsValue?.length ?? 0,
+                //         itemBuilder: ((context, index) {
+                //           return SizedBox(
+                //             height: 120,
+                //             width: double.infinity,
+                //             child: Column(
+                //               mainAxisAlignment: MainAxisAlignment.start,
+                //               crossAxisAlignment: CrossAxisAlignment.start,
+                //               children: [
+                //                 Row(
+                //                   mainAxisAlignment:
+                //                       MainAxisAlignment.spaceBetween,
+                //                   crossAxisAlignment: CrossAxisAlignment.center,
+                //                   children: [
+                //                     Flexible(
+                //                       child: FieldsProductRequest(
+                //                         titleText:
+                //                             '${characteristics?[index].key}',
+                //                         hintText:
+                //                             '${subCharacteristics?[index].value}',
+                //                         star: false,
+                //                         readOnly: true,
+                //                         arrow: true,
+                //                         hintColor: true,
+                //                         controller: countController,
+                //                         textInputNumber: true,
+                //                       ),
+                //                     ),
+                //                     InkWell(
+                //                       onTap: (() {
+                //                         characteristicsValue?.removeAt(index);
+                //                         subCharacteristics?.removeAt(index);
+                //                         setState(() {});
+                //                       }),
+                //                       child: Icon(
+                //                         Icons.delete_forever,
+                //                         color: Colors.black,
+                //                         size: 30,
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 ),
+                //                 SizedBox(height: 10),
+                //               ],
+                //             ),
+                //           );
+                //         })),
+                //   ),
+
                 // Container(
                 //   padding: const EdgeInsets.symmetric(horizontal: 10),
                 //   decoration: BoxDecoration(
@@ -1480,7 +2458,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                 // const SizedBox(
                 //  height: 10,
                 //  ),
-
                 if (filledCount == 4)
                   const Text(
                     'Прикрепите фото',
@@ -1556,7 +2533,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                                   )),
                               SizedBox(width: 8),
                               _image.isNotEmpty
-                                  ? Container(
+                                  ? SizedBox(
                                       width: 240,
                                       height: 92,
                                       child: ListView.builder(
@@ -1707,7 +2684,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                       ],
                     ),
                   ),
-
                 if (filledCount == 4)
                   const SizedBox(
                     height: 10,
@@ -1914,13 +2890,29 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                             const SizedBox(width: 8),
                             // Текст с переносами
                             Expanded(
-                              child: Text(
-                                'FBS - это схема продажи, при которой вы храните товары у себя на складе, следите за новыми заказами, собираете их и передаёте в доставку CDEK.',
-                                style: TextStyle(
-                                  color: AppColors.kLightBlackColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.3,
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: AppColors.kLightBlackColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.3,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: 'FBS (realFBS)',
+                                      style: TextStyle(
+                                          fontWeight:
+                                              FontWeight.w600), // жирный
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          ' — это модель работы, при которой:\n'
+                                          '• Продавец сам хранит товары у себя (не на складе маркетплейса)\n'
+                                          '• Продавец сам комплектует заказ\n'
+                                          '• Продавец самостоятельно доставляет товар покупателю',
+                                    ),
+                                  ],
                                 ),
                                 softWrap: true,
                               ),
@@ -1966,15 +2958,30 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                               ),
                             ),
                             const SizedBox(width: 8),
-                            // Текст с переносами
                             Expanded(
-                              child: Text(
-                                'RealFBS - это схема продажи, при которой вы храните товары у себя на складе, следите за новыми заказами, собираете их и доставляете собственными силами.',
-                                style: TextStyle(
-                                  color: AppColors.kLightBlackColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.3,
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: AppColors.kLightBlackColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.3,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: 'FBS (Fulfillment by Seller)',
+                                      style: TextStyle(
+                                          fontWeight:
+                                              FontWeight.w600), // жирный
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          ' — это модель работы, при которой:\n'
+                                          '• Продавец сам хранит товары у себя (не на складе маркетплейса)\n'
+                                          '• Продавец сам комплектует заказ\n'
+                                          '• Продавец передаёт заказ логистическому партнёру маркетплейса, который доставляет товар покупателю',
+                                    ),
+                                  ],
                                 ),
                                 softWrap: true,
                               ),
@@ -1985,46 +2992,8 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     ),
                   ),
                 if (filledCount == 5) const SizedBox(height: 10),
-                if (filledCount == 5)
-                  Container(
-                    height: 52,
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                        color: AppColors.kGray2,
-                        borderRadius: BorderRadius.circular(8)),
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Предзаказ,если нет в наличии',
-                          style: TextStyle(
-                              color: AppColors.kLightBlackColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Theme(
-                          data: Theme.of(context).copyWith(
-                            switchTheme: SwitchThemeData(
-                              trackOutlineWidth: MaterialStateProperty.all(
-                                  0), // Полностью убираем границу
-                            ),
-                          ),
-                          child: Switch(
-                            onChanged: toggleSwitchBs,
-                            value: isSwitchedBs,
-                            activeColor: AppColors.kWhite,
-                            activeTrackColor: AppColors.mainPurpleColor,
-                            inactiveThumbColor: AppColors.kGray300,
-                            inactiveTrackColor: AppColors.kGray2,
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                if (filledCount == 5)
+
+                if (filledCount == 5 && isCheckedFBS)
                   FieldsProductRequest(
                     titleText: 'Ширина, мм ',
                     hintText: 'Введите ширину',
@@ -2033,7 +3002,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     controller: widthController,
                     textInputNumber: true,
                   ),
-                if (filledCount == 5)
+                if (filledCount == 5 && isCheckedFBS)
                   FieldsProductRequest(
                     titleText: 'Высота, мм ',
                     hintText: 'Введите высоту',
@@ -2042,7 +3011,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     controller: heightController,
                     textInputNumber: true,
                   ),
-                if (filledCount == 5)
+                if (filledCount == 5 && isCheckedFBS)
                   FieldsProductRequest(
                     titleText: 'Глубина, мм ',
                     hintText: 'Введите глубину',
@@ -2051,7 +3020,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     controller: deepController,
                     textInputNumber: true,
                   ),
-                if (filledCount == 5)
+                if (filledCount == 5 && isCheckedFBS)
                   FieldsProductRequest(
                     titleText: 'Вес, г ',
                     hintText: 'Введите вес',
@@ -2061,6 +3030,73 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     textInputNumber: true,
                   ),
                 if (filledCount == 5) const SizedBox(height: 60),
+
+                // if (filledCount == 6)
+                //   Text(
+                //     'География продаж:',
+                //     style: AppTextStyles.defaultButtonTextStyle
+                //         .copyWith(fontSize: 16, fontWeight: FontWeight.w600),
+                //   ),
+                if (filledCount == 6) SizedBox(height: 10),
+                if (filledCount == 6)
+                  FieldsProductRequest(
+                    titleText: 'География продаж:',
+                    hintText: _locationSelect,
+                    star: false,
+                    arrow: true,
+                    hintColor: false,
+                    onPressed: () {
+                      showSellerCatsOptions(
+                          context, 'Выбор локации', _locations, (value) {
+                        final CatsModel data = value;
+
+                        if (data.name == 'Регион') {
+                          _regionsArray();
+                        }
+                        if (data.name == 'Город/населенный пункт') {
+                          print('ok');
+                          _citiesArray('RU');
+                        }
+
+                        setState(() {
+                          _locationSelect = data.name ?? 'Не выбрано';
+                        });
+                      });
+                    },
+                    controller: massaController,
+                    textInputNumber: false,
+                  ),
+                if (filledCount == 6 &&
+                    (_locationSelect == 'Регион' ||
+                        _locationSelect == 'Город/населенный пункт' ||
+                        _locationSelect == 'Моя локация'))
+                  FieldsProductRequest(
+                    titleText: '$_locationSeller',
+                    hintText: '$_locationSeller',
+                    star: false,
+                    arrow: true,
+                    hintColor: false,
+                    onPressed: () {
+                      if (_locationSelect == 'Регион' ||
+                          _locationSelect == 'Город/населенный пункт') {
+                        showSellerCatsOptions(
+                            context, _locationSelect, _regions, (value) {
+                          setState(() {
+                            cats = value;
+
+                            _locationSeller = cats?.name ?? '';
+                          });
+                        });
+                      } else {
+                        Get.to(MapSellerPickerPage(
+                          lat: 43.238949,
+                          long: 76.889709,
+                        ));
+                      }
+                    },
+                    controller: massaController,
+                    textInputNumber: false,
+                  ),
               ],
             ),
           );
@@ -2092,9 +3128,12 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
             if (filledCount == 5) {
               title = 'Условия продажи';
             }
+            if (filledCount == 6) {
+              title = 'Локация';
+            }
             setState(() {});
 
-            if (filledCount == 6) {
+            if (filledCount == 7) {
               List<int> subIds = [];
 
               if (subCharacteristicsValue?.isNotEmpty ?? false) {
@@ -2102,8 +3141,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                   subIds.add(e.id!.toInt());
                 }
               }
-
-              print(subIds.toString());
 
               isChangeState = true;
               if (_image.isNotEmpty &&
@@ -2187,6 +3224,7 @@ class FieldsProductRequest extends StatefulWidget {
   final bool? textInputNumber;
   final bool readOnly;
   final void Function()? onPressed;
+  final int? maxLines; // добавили
 
   const FieldsProductRequest({
     required this.hintText,
@@ -2200,6 +3238,7 @@ class FieldsProductRequest extends StatefulWidget {
     Key? key,
     this.onPressed,
     this.readOnly = false,
+    this.maxLines, // добавили
   }) : super(key: key);
 
   @override
@@ -2207,11 +3246,6 @@ class FieldsProductRequest extends StatefulWidget {
 }
 
 class _FieldsProductRequestState extends State<FieldsProductRequest> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -2228,7 +3262,7 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                     fontSize: 12,
                     color: AppColors.kGray900),
               ),
-              widget.star != true
+              widget.star == true
                   ? const Text(
                       '*',
                       style: TextStyle(
@@ -2239,9 +3273,7 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                   : Container()
             ],
           ),
-          const SizedBox(
-            height: 4,
-          ),
+          const SizedBox(height: 4),
           Container(
             decoration: BoxDecoration(
                 color: AppColors.kGray2,
@@ -2254,11 +3286,14 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                     (widget.hintColor == false || widget.hintColor == null)
                         ? widget.readOnly
                         : true,
-                keyboardType: (widget.textInputNumber == false ||
-                        widget.textInputNumber == null)
-                    ? TextInputType.text
-                    : const TextInputType.numberWithOptions(
-                        signed: true, decimal: true),
+                keyboardType: (widget.maxLines != null && widget.maxLines! > 1)
+                    ? TextInputType.multiline
+                    : ((widget.textInputNumber == false ||
+                            widget.textInputNumber == null)
+                        ? TextInputType.text
+                        : const TextInputType.numberWithOptions(
+                            signed: true, decimal: true)),
+                maxLines: widget.maxLines ?? 1, // вот оно
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: widget.hintText,
@@ -2271,15 +3306,14 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                       fontWeight: FontWeight.w400),
                   enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
-                    // borderRadius: BorderRadius.circular(3),
                   ),
-                  suffixIcon: IconButton(
-                    onPressed: widget.onPressed,
-                    icon: widget.arrow == true
-                        ? SvgPicture.asset('assets/icons/back_menu.svg',
-                            color: Colors.grey)
-                        : const SizedBox(),
-                  ),
+                  suffixIcon: widget.arrow == true
+                      ? IconButton(
+                          onPressed: widget.onPressed,
+                          icon: SvgPicture.asset('assets/icons/back_menu.svg',
+                              color: Colors.grey),
+                        )
+                      : const SizedBox(),
                 ),
               ),
             ),

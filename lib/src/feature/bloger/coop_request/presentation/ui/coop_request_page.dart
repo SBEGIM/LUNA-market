@@ -6,6 +6,7 @@ import 'package:get/route_manager.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/login_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/login_blogger_state.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/feature/bloger/coop_request/presentation/widget/show_blogger_register_type_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
 import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
@@ -50,6 +51,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
   ];
 
   int filledCount = 1;
+  int type = 0;
   double segmentHeight = 8;
   double segmentWidth = 8;
   double segmentSpacing = 2;
@@ -191,6 +193,23 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                         star: false,
                         arrow: false,
                         controller: userNameController,
+                      ),
+                      FieldsCoopRequest(
+                        titleText: 'Юридический статус',
+                        hintText: 'Выберите из списка',
+                        star: false,
+                        arrow: true,
+                        // controller: catController,
+                        onPressed: () async {
+                          showBloggerRegisterType(
+                            context,
+                            type,
+                            typeCall: (value) {
+                              type = value;
+                              setState(() {});
+                            },
+                          );
+                        },
                       ),
                       FieldsCoopRequest(
                         titleText: 'ИНН',
@@ -384,7 +403,8 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                       email: emailController.text,
                       nick_name: nameController.text,
                       password: passwordController.text,
-                      check: checkController.text);
+                      check: checkController.text,
+                      type: type);
 
                   final register = BlocProvider.of<LoginBloggerCubit>(context);
 

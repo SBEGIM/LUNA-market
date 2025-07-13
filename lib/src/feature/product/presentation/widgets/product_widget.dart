@@ -24,48 +24,53 @@ class _ProductWidgetState extends State<ProductWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProductCubit, ProductState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is ErrorState) {
-            return SliverToBoxAdapter(
-              child: Center(
-                child: Text(
-                  state.message,
-                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-                ),
+    return BlocBuilder<ProductCubit, ProductState>(builder: (context, state) {
+      if (state is ErrorState) {
+        return SliverToBoxAdapter(
+          child: Center(
+            child: Text(
+              state.message,
+              style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+            ),
+          ),
+        );
+      }
+      if (state is LoadingState) {
+        return const SliverToBoxAdapter(
+          child: Center(
+            child: CircularProgressIndicator(color: Colors.indigoAccent),
+          ),
+        );
+      }
+
+      if (state is LoadedState) {
+        return SliverPadding(
+          padding: const EdgeInsets.all(16),
+          sliver: NotificationListener<UserScrollNotification>(
+            onNotification: (notification) {
+              if (notification.metrics.pixels ==
+                  notification.metrics.minScrollExtent) {
+                Future.delayed(const Duration(milliseconds: 100), () {})
+                    .then((s) {
+                  GetStorage().write('scrollView', false);
+                });
+              } else if (notification.direction == ScrollDirection.reverse) {
+                Future.delayed(const Duration(milliseconds: 200), () {})
+                    .then((s) {
+                  GetStorage().write('scrollView', true);
+                });
+              }
+              return true;
+            },
+            child: SliverGrid(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 173 / 300,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
               ),
-            );
-          }
-          if (state is LoadingState) {
-            return const SliverToBoxAdapter(
-              child: Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent)),
-            );
-          }
-
-          if (state is LoadedState) {
-            return NotificationListener<UserScrollNotification>(
-              onNotification: (notification) {
-                if (notification.metrics.pixels ==
-                    notification.metrics.minScrollExtent) {
-                  Future.delayed(const Duration(milliseconds: 100), () {})
-                      .then((s) {
-                    GetStorage().write('scrollView', false);
-                  });
-
-                  // GetStorage().write('scrollView', false);
-                } else if (notification.direction == ScrollDirection.reverse) {
-                  Future.delayed(const Duration(milliseconds: 200), () {})
-                      .then((s) {
-                    GetStorage().write('scrollView', true);
-                  });
-                }
-                return true;
-              },
-              child: SliverList.builder(
-                itemCount: state.productModel.length,
-                itemBuilder: (context, index) {
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
                   return InkWell(
                     onTap: () {
                       context.router.push(
@@ -74,20 +79,25 @@ class _ProductWidgetState extends State<ProductWidget> {
                         ),
                       );
                     },
+                    borderRadius: BorderRadius.circular(12),
                     child: ProductCardWidget(
                       product: state.productModel[index],
                       index: index,
                     ),
                   );
                 },
+                childCount: state.productModel.length,
               ),
-            );
-          } else {
-            return const SliverToBoxAdapter(
-              child: Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent)),
-            );
-          }
-        });
+            ),
+          ),
+        );
+      } else {
+        return const SliverToBoxAdapter(
+          child: Center(
+            child: CircularProgressIndicator(color: Colors.indigoAccent),
+          ),
+        );
+      }
+    });
   }
 }

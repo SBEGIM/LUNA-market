@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
-import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 void showSellerRegisterType(BuildContext context, int? prevType,

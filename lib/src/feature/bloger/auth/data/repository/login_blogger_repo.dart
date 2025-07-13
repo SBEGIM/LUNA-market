@@ -79,6 +79,7 @@ class LoginToApi {
       'email': register.email,
       'invoice': register.check,
       'social_network': register.social_network,
+      'type': register.type,
       'device_token': deviceToken.toString(),
       'device_type': deviceType
     });

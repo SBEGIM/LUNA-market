@@ -167,7 +167,7 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
                               child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
-                                    color: Colors.grey.withOpacity(0.6),
+                                    color: Colors.black.withOpacity(1.0),
                                   ),
                                   child: InkWell(
                                     onTap: () {

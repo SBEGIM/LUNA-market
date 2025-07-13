@@ -63,7 +63,7 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
           ),
         ),
       ),
-      body: ListView(shrinkWrap: true, children: [
+      body: Column(children: [
         const SizedBox(
           height: 10,
         ),
@@ -149,95 +149,89 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
         Container(
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(12)),
-          // color: Colors.white,
-          margin: const EdgeInsets.only(top: 0),
-          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 160,
-                    height: 36,
-                    padding: EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                        color: AppColors.kBackgroundColor,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: GestureDetector(
-                      onTap: () => _showYearPickerBottomSheet(context, year),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '$year',
-                            style: const TextStyle(
-                              color: AppColors.kGray900,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                          Icon(Icons.arrow_drop_down)
-                        ],
+              Container(
+                width: 160,
+                height: 36,
+                padding: EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                    color: AppColors.kBackgroundColor,
+                    borderRadius: BorderRadius.circular(12)),
+                child: GestureDetector(
+                  onTap: () =>
+                      _showYearPickerBottomSheet(context, year, (value) {
+                    year = value;
+                    setState(() {});
+                  }),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '$year',
+                        style: const TextStyle(
+                          color: AppColors.kGray900,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                        ),
                       ),
-                    ),
+                      Icon(Icons.arrow_drop_down)
+                    ],
                   ),
-                  Container(
-                    width: 160,
-                    height: 36,
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: AppColors.kBackgroundColor,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(12),
-                      onTap: () {
-                        _showMonthPickerBottomSheet(context, _selectIndex,
-                            (int selectedIndex) {
-                          _selectIndex = selectedIndex;
-                          BlocProvider.of<StatisticsProductSellerCubit>(context)
-                              .statistics(
-                                  widget.product.id, year, selectedIndex + 1);
-
-                          _summBonus = 0;
-                          setState(() {
-                            _selectIndex;
-                            _summBonus;
-                          });
-                        });
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            months[_selectIndex],
-                            style: const TextStyle(
-                              color: AppColors.kGray900,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                          const Icon(
-                            Icons.arrow_drop_down,
-                            color: AppColors.kGray900,
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
+                ),
               ),
+              Container(
+                width: 160,
+                height: 36,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: AppColors.kBackgroundColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  onTap: () {
+                    _showMonthPickerBottomSheet(context, _selectIndex,
+                        (int selectedIndex) {
+                      _selectIndex = selectedIndex;
+                      BlocProvider.of<StatisticsProductSellerCubit>(context)
+                          .statistics(
+                              widget.product.id, year, selectedIndex + 1);
+
+                      _summBonus = 0;
+                      setState(() {
+                        _selectIndex;
+                        _summBonus;
+                      });
+                    });
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        months[_selectIndex],
+                        style: const TextStyle(
+                          color: AppColors.kGray900,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const Icon(
+                        Icons.arrow_drop_down,
+                        color: AppColors.kGray900,
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
-        SizedBox(height: 10),
         Container(
           color: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -245,32 +239,31 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
                   StatisticProductSellerState>(
                 builder: (context, state) {
                   if (state is LoadedState) {
-                    return SizedBox(
-                      height: 400,
-                      child: ListView(
-                        children: [
-                          StatisticWidgetContainer(
-                            text: state.stats.count_click.toString(),
-                            subText: 'Количество кликов',
-                            url: Assets.images.statiscticsProducts.path,
-                          ),
-                          StatisticWidgetContainer(
-                            text: state.stats.count_favorite.toString(),
-                            subText: 'Добавлен в\nизбранное',
-                            url: Assets.images.statisticsProductsHeart.path,
-                          ),
-                          StatisticWidgetContainer(
-                            text: state.stats.count_basket.toString(),
-                            subText: 'Добавлен в корзину',
-                            url: Assets.images.statisticsProductsBasket.path,
-                          ),
-                          StatisticWidgetContainer(
-                            text: state.stats.count_buy.toString(),
-                            subText: 'Количество покупок',
-                            url: Assets.images.statisticsProductsBuy.path,
-                          )
-                        ],
-                      ),
+                    return ListView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                        StatisticWidgetContainer(
+                          text: state.stats.count_click.toString(),
+                          subText: 'Количество кликов',
+                          url: Assets.images.statiscticsProducts.path,
+                        ),
+                        StatisticWidgetContainer(
+                          text: state.stats.count_favorite.toString(),
+                          subText: 'Добавлен в\nизбранное',
+                          url: Assets.images.statisticsProductsHeart.path,
+                        ),
+                        StatisticWidgetContainer(
+                          text: state.stats.count_basket.toString(),
+                          subText: 'Добавлен в корзину',
+                          url: Assets.images.statisticsProductsBasket.path,
+                        ),
+                        StatisticWidgetContainer(
+                          text: state.stats.count_buy.toString(),
+                          subText: 'Количество покупок',
+                          url: Assets.images.statisticsProductsBuy.path,
+                        )
+                      ],
                     );
                   } else {
                     return const Center(
@@ -287,7 +280,10 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
   }
 
   void _showMonthPickerBottomSheet(
-      BuildContext context, int selectedMonth, Function(int) onMonthSelected) {
+    BuildContext context,
+    int initialSelectedMonth,
+    Function(int) onMonthSelected,
+  ) {
     final List<String> months = [
       'Январь',
       'Февраль',
@@ -303,6 +299,11 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
       'Декабрь'
     ];
 
+    final FixedExtentScrollController scrollController =
+        FixedExtentScrollController(
+      initialItem: initialSelectedMonth,
+    );
+
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -310,55 +311,89 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
       ),
       backgroundColor: Colors.white,
       builder: (context) {
-        return SizedBox(
-          height: 400,
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Выберите месяц',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.kGray900,
-                  ),
-                ),
-              ),
-              const Divider(),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: months.length,
-                  itemBuilder: (context, index) {
-                    final isSelected = selectedMonth == index;
-                    return ListTile(
-                      title: Text(
-                        months[index],
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: isSelected
-                              ? AppColors.mainBackgroundPurpleColor
-                              : AppColors.kGray900,
-                          fontWeight:
-                              isSelected ? FontWeight.bold : FontWeight.normal,
-                        ),
+        int selectedMonth = initialSelectedMonth;
+
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return SizedBox(
+              height: 300,
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Выберите месяц',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.kGray900,
                       ),
-                      onTap: () {
-                        Navigator.pop(context);
+                    ),
+                  ),
+                  Expanded(
+                    child: ListWheelScrollView.useDelegate(
+                      controller: scrollController,
+                      itemExtent: 50,
+                      physics: const FixedExtentScrollPhysics(),
+                      onSelectedItemChanged: (index) {
+                        setModalState(() {
+                          selectedMonth = index;
+                        });
                         onMonthSelected(index);
                       },
-                    );
-                  },
-                ),
+                      childDelegate: ListWheelChildBuilderDelegate(
+                        builder: (context, index) {
+                          if (index < 0 || index >= months.length) return null;
+                          final isSelected = index == selectedMonth;
+                          return Center(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? AppColors.kGray2
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 24),
+                              child: Text(
+                                months[index],
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                  color: isSelected
+                                      ? AppColors.mainBackgroundPurpleColor
+                                      : AppColors.kGray900,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
   }
 
-  void _showYearPickerBottomSheet(BuildContext context, int currentYear) {
+  void _showYearPickerBottomSheet(
+    BuildContext context,
+    int initialSelectedYear,
+    void Function(int) onYearSelected,
+  ) {
+    final List<int> years =
+        List.generate(50, (index) => DateTime.now().year - index);
+    final FixedExtentScrollController scrollController =
+        FixedExtentScrollController(
+      initialItem: years.indexOf(initialSelectedYear),
+    );
+
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -366,50 +401,75 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
       ),
       backgroundColor: Colors.white,
       builder: (context) {
-        final List<int> years =
-            List.generate(50, (index) => currentYear - index);
+        int selectedYear =
+            initialSelectedYear; // Локальный selectedYear для обновления в билдере
 
-        return SizedBox(
-          height: 400,
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Выберите год',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.kGray900,
-                  ),
-                ),
-              ),
-              const Divider(),
-              Expanded(
-                child: ListView.separated(
-                  itemCount: years.length,
-                  separatorBuilder: (_, __) => Divider(),
-                  itemBuilder: (context, index) {
-                    final year = years[index];
-                    return ListTile(
-                      title: Text(
-                        '$year',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: AppColors.kGray900,
-                        ),
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return SizedBox(
+              height: 300,
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Выберите год',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.kGray900,
                       ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        // сделай что-то с выбранным годом
-                        print("Selected year: $year");
+                    ),
+                  ),
+                  Expanded(
+                    child: ListWheelScrollView.useDelegate(
+                      controller: scrollController,
+                      itemExtent: 50,
+                      physics: const FixedExtentScrollPhysics(),
+                      onSelectedItemChanged: (index) {
+                        setModalState(() {
+                          selectedYear = years[index];
+                        });
+                        onYearSelected(years[index]);
                       },
-                    );
-                  },
-                ),
+                      childDelegate: ListWheelChildBuilderDelegate(
+                        builder: (context, index) {
+                          if (index < 0 || index >= years.length) return null;
+                          final year = years[index];
+                          final isSelected = year == selectedYear;
+
+                          return Center(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? AppColors.kGray2
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 24),
+                              child: Text(
+                                '$year',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                  color: isSelected
+                                      ? AppColors.kGray900
+                                      : AppColors.kGray700,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

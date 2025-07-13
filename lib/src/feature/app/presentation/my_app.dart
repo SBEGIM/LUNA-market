@@ -10,8 +10,10 @@ import 'package:haji_market/src/feature/seller/auth/bloc/register_seller_cubit.d
 import 'package:haji_market/src/feature/seller/auth/bloc/sms_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/auth/data/repository/register_seller_repository.dart';
 import 'package:haji_market/src/feature/seller/main/cubit/news_seller_cubit.dart';
+import 'package:haji_market/src/feature/seller/main/cubit/seller_notification_cubit.dart';
 import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/main/data/repository/news_repository.dart';
+import 'package:haji_market/src/feature/seller/main/data/repository/seller_notification_repo.dart';
 import 'package:haji_market/src/feature/seller/main/data/repository/stories_repository.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/order_status_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/last_articul_seller_cubit.dart';
@@ -149,10 +151,10 @@ class _MyAppState extends State<MyApp> {
       ),
       child: MultiBlocWrapper(
         child: GetMaterialApp(
-          title: 'Haji Market',
+          title: 'Luna Market',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            //  fontFamily: 'Nunito',
+            fontFamily: 'SFProDisplay',
             primarySwatch: Colors.blue,
           ),
           home: MediaQuery.withNoTextScaling(
@@ -353,6 +355,11 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (_) => BloggerNotificationCubit(
             bloggerNotificationRepository: BloggerNotificationRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => SellerNotificationCubit(
+            sellerrNotificationRepository: SellerrNotificationRepository(),
           ),
         ),
         BlocProvider(

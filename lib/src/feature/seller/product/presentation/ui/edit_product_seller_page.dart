@@ -14,6 +14,7 @@ import 'package:haji_market/src/feature/seller/product/bloc/delete_image_seller_
 import 'package:haji_market/src/feature/seller/product/bloc/product_seller_state.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/size_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/data/repository/product_seller_repository.dart';
+import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_cats_widget.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/sub_cats_seller_page.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/ui/blogger_ad_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
@@ -76,6 +77,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
 
   List<CatsModel>? mockSizes = [];
   List<CatsModel>? mockSizeAdds = [];
+  List<CatsModel> _brands = [];
 
   String sizeName = '';
 
@@ -119,10 +121,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
   TextEditingController compoundController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController countController = TextEditingController();
-  int cat_id = 0;
-  int color_id = 0;
-  int sub_cat_id = 0;
-  int brand_id = 0;
+  TextEditingController ndsController = TextEditingController();
   TextEditingController heightController = TextEditingController();
   TextEditingController widthController = TextEditingController();
   TextEditingController massaController = TextEditingController();
@@ -132,14 +131,22 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
   TextEditingController sizePriceController = TextEditingController();
   TextEditingController optomPriceController = TextEditingController();
   TextEditingController optomCountController = TextEditingController();
+  TextEditingController optomController = TextEditingController();
   TextEditingController pointsController = TextEditingController();
   TextEditingController pointsBloggerController = TextEditingController();
+
+  int cat_id = 0;
+  int color_id = 0;
+  int sub_cat_id = 0;
+  int brand_id = 0;
 
   CatsModel? cats;
   CatsModel? subCats;
   CatsModel? brands;
   CatsModel? colors;
 
+  String currencyName = '₽';
+  String compoundValue = '₽';
   Future<void> CatById() async {
     cats = await BlocProvider.of<CatsCubit>(context)
         .catById(widget.product.catId.toString());
@@ -233,7 +240,8 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
       for (final BlocDTO e in widget.product.bloc!) {
         optomCount.add(OptomPriceSellerDto(
             price: (e.price ?? 0).toString(),
-            count: (e.count ?? 0).toString()));
+            count: (e.count ?? 0).toString(),
+            total: (e.total ?? 0).toString()));
       }
     }
     pointsController.text =
@@ -293,10 +301,38 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
     // }
   }
 
+  int filledCount = 1;
+  double segmentHeight = 8;
+  double segmentWidth = 8;
+  double segmentSpacing = 2;
+  int filledSegments = 1; // Начинаем с 1 заполненного сегмента
+  int totalSegments = 6; // Всего сегментов
+  Color filledColor = AppColors.mainPurpleColor;
+  Color emptyColor = Colors.grey[200]!;
+  double spacing = 5.0;
+  String title = "Основная информация";
+
+  void increaseProgress() {
+    if (filledSegments < totalSegments) {
+      setState(() {
+        filledSegments++;
+      });
+    }
+  }
+
+  // Функция для уменьшения прогресса
+  void decreaseProgress() {
+    if (filledSegments > 0) {
+      setState(() {
+        filledSegments--;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.kBackgroundColor,
+        backgroundColor: AppColors.kWhite,
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
@@ -317,144 +353,438 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              FieldsProductRequest(
-                titleText: 'Артикул ',
-                hintText: 'Введите артикул  ',
-                star: false,
-                arrow: false,
-                controller: articulController,
-                readOnly: true,
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-              FieldsProductRequest(
-                titleText: 'Цена товара ',
-                hintText: 'Введите цену  ',
-                star: false,
-                arrow: false,
-                controller: priceController,
-              ),
-              FieldsProductRequest(
-                titleText: 'Скидка ,% ',
-                hintText: 'Введите размер скидки',
-                star: true,
-                arrow: false,
-                controller: compoundController,
-              ),
-              FieldsProductRequest(
-                titleText: 'Накопительные бонусы ,% ',
-                hintText: 'Введите размер бонуса',
-                star: true,
-                arrow: false,
-                controller: pointsController,
-                textInputNumber: true,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.to(const BloggerAd());
-                },
-                child: SizedBox(
-                  child: RichText(
-                    textAlign: TextAlign.left,
-                    text: const TextSpan(
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text:
-                              "Предлагая вознаграждение блогеру, вы принимаете условия ",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey),
-                        ),
-                        TextSpan(
-                          text:
-                              "Типового договора на оказание рекламных услуг\n",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.kPrimaryColor),
-                        )
-                      ],
-                    ),
-                  ),
+              const SizedBox(height: 8),
+
+              // Прогресс-бар с пробелами
+              SizedBox(
+                height: segmentHeight,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: totalSegments,
+                  separatorBuilder: (_, __) => SizedBox(width: segmentSpacing),
+                  itemBuilder: (context, index) {
+                    bool isFilled = index < filledCount;
+                    return Container(
+                      width: (MediaQuery.of(context).size.width -
+                              (totalSegments - 1) * segmentSpacing -
+                              32) /
+                          totalSegments,
+                      decoration: BoxDecoration(
+                        color: isFilled ? filledColor : emptyColor,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    );
+                  },
                 ),
               ),
 
-              FieldsProductRequest(
-                  titleText: 'Вознаграждение блогеру ,% ',
-                  hintText: 'Введите вознаграждение ',
+              const SizedBox(height: 8),
+              if (filledCount == 1)
+                FieldsProductRequest(
+                  titleText: 'Категория ',
+                  hintText: cats?.name ?? "",
+                  star: false,
+                  arrow: true,
+                  onPressed: () async {
+                    final data = await Get.to(const CatsSellerPage());
+                    if (data != null) {
+                      final CatsModel cat = data;
+                      setState(() {});
+                      cats = cat;
+                    }
+                  },
+                ),
+              if (filledCount == 1)
+                FieldsProductRequest(
+                  titleText: 'Тип ',
+                  hintText: subCats?.name ?? "",
+                  star: false,
+                  arrow: true,
+                  onPressed: () async {
+                    final data = await Get.to(SubCatsSellerPage(cats: cats));
+                    if (data != null) {
+                      final CatsModel cat = data;
+                      setState(() {});
+                      subCats = cat;
+                    }
+                  },
+                ),
+              if (filledCount == 1)
+                FieldsProductRequest(
+                  titleText: 'Наименование бренда ',
+                  hintText: brands?.name ?? "",
+                  star: false,
+                  arrow: true,
+                  onPressed: () async {
+                    final data = await Get.to(const BrandSellerPage());
+                    if (data != null) {
+                      final CatsModel brand = data;
+                      setState(() {});
+                      brands = brand;
+                    }
+                  },
+                ),
+              if (filledCount == 1)
+                FieldsProductRequest(
+                  titleText: 'Название товара ',
+                  hintText: 'Введите название товара',
+                  star: false,
+                  arrow: false,
+                  controller: nameController,
+                ),
+              if (filledCount == 1)
+                FieldsProductRequest(
+                  titleText: 'Артикул/SKU ',
+                  hintText: 'Введите артикул  ',
+                  star: false,
+                  arrow: false,
+                  controller: articulController,
+                  readOnly: true,
+                ),
+              if (filledCount == 1)
+                FieldsProductRequest(
+                  titleText: 'Описание товара',
+                  hintText: 'Расскажите подробнее о товаре',
+                  maxLines: 4,
                   star: true,
                   arrow: false,
-                  controller: pointsBloggerController,
-                  textInputNumber: true),
-              FieldsProductRequest(
-                titleText: 'Категория ',
-                hintText: cats?.name ?? "",
-                star: false,
-                arrow: true,
-                onPressed: () async {
-                  final data = await Get.to(const CatsSellerPage());
-                  if (data != null) {
-                    final CatsModel cat = data;
-                    setState(() {});
-                    cats = cat;
-                  }
-                },
-              ),
-              FieldsProductRequest(
-                titleText: 'Название товара ',
-                hintText: 'Введите название товара',
-                star: false,
-                arrow: false,
-                controller: nameController,
-              ),
-              FieldsProductRequest(
-                titleText: 'Наименование бренда ',
-                hintText: brands?.name ?? "",
-                star: false,
-                arrow: true,
-                onPressed: () async {
-                  final data = await Get.to(const BrandSellerPage());
-                  if (data != null) {
-                    final CatsModel brand = data;
-                    setState(() {});
-                    brands = brand;
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                'Общие характеристики',
-                style: TextStyle(
-                    color: AppColors.kGray900,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              FieldsProductRequest(
-                titleText: 'Тип ',
-                hintText: subCats?.name ?? "",
-                star: false,
-                arrow: true,
-                onPressed: () async {
-                  final data = await Get.to(SubCatsSellerPage(cats: cats));
-                  if (data != null) {
-                    final CatsModel cat = data;
-                    setState(() {});
-                    subCats = cat;
-                  }
-                },
-              ),
-              FieldsProductRequest(
-                titleText: 'Количество в комплекте ',
-                hintText: 'Выберите количество',
-                star: false,
-                arrow: true,
-                controller: countController,
-              ),
+                  controller: descriptionController,
+                ),
+
+              if (filledCount == 1)
+                SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: FieldsProductRequest(
+                            titleText: 'Цена товара ',
+                            hintText: 'Введите цену  ',
+                            star: false,
+                            arrow: false,
+                            controller: priceController,
+                            textInputNumber: true),
+                      ),
+                      SizedBox(width: 6),
+                      Container(
+                        width: 96,
+                        height: 42,
+                        padding: EdgeInsets.all(6),
+                        margin: EdgeInsets.only(top: 12),
+                        decoration: BoxDecoration(
+                            color: AppColors.kBackgroundColor,
+                            borderRadius: BorderRadius.circular(8)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(currencyName),
+                            PopupMenuButton(
+                              onSelected: (value) {
+                                currencyName = value;
+
+                                setState(() {});
+
+                                // mockSizeAdds!.forEach((element) {
+                                //   return print(element.name);
+                                // });
+                              },
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15.0),
+                                ),
+                              ),
+                              icon:
+                                  SvgPicture.asset('assets/icons/dropdown.svg'),
+                              position: PopupMenuPosition.under,
+                              offset: const Offset(0, 0),
+                              itemBuilder: (
+                                BuildContext bc,
+                              ) {
+                                return const [
+                                  PopupMenuItem(
+                                    value: '₽',
+                                    child: Text(
+                                      'Российский рубль (RUB)',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  PopupMenuItem(
+                                    value: '₸',
+                                    child: Text(
+                                      'Казахстанский тенге (KZT)',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  PopupMenuItem(
+                                    value: '₽',
+                                    child: Text(
+                                      'Белорусский рубль (BYN)',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ];
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+              if (filledCount == 1)
+                SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: FieldsProductRequest(
+                            titleText: 'Скидка ,% ',
+                            hintText: 'Введите размер скидки',
+                            star: true,
+                            arrow: false,
+                            controller: compoundController,
+                            textInputNumber: true),
+                      ),
+                      SizedBox(width: 6),
+                      Container(
+                        width: 96,
+                        height: 42,
+                        padding: EdgeInsets.all(6),
+                        margin: EdgeInsets.only(top: 12),
+                        decoration: BoxDecoration(
+                            color: AppColors.kBackgroundColor,
+                            borderRadius: BorderRadius.circular(8)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(compoundValue),
+                            PopupMenuButton(
+                              onSelected: (value) {
+                                compoundValue = value;
+
+                                setState(() {});
+
+                                // mockSizeAdds!.forEach((element) {
+                                //   return print(element.name);
+                                // });
+                              },
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15.0),
+                                ),
+                              ),
+                              icon:
+                                  SvgPicture.asset('assets/icons/dropdown.svg'),
+                              position: PopupMenuPosition.under,
+                              offset: const Offset(0, 0),
+                              itemBuilder: (
+                                BuildContext bc,
+                              ) {
+                                return const [
+                                  PopupMenuItem(
+                                    value: '₽',
+                                    child: Text(
+                                      'Рубль, ₽',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  PopupMenuItem(
+                                    value: ' % ',
+                                    child: Text(
+                                      'Процент, % ',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ];
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              if (filledCount == 1)
+                FieldsProductRequest(
+                  titleText: 'НДС (налог на добавленную стоимость)',
+                  hintText: 'Введите НДС',
+                  star: true,
+                  arrow: true,
+                  controller: ndsController,
+                  textInputNumber: true,
+                  onPressed: () async {
+                    if (_brands.isEmpty) {
+                      _brands = await BlocProvider.of<BrandCubit>(context)
+                          .brandsList();
+                    }
+
+                    final List<CatsModel> _nds = [
+                      CatsModel(id: 0, name: '5 %'),
+                      CatsModel(id: 1, name: '7 %'),
+                      CatsModel(id: 2, name: '10 %'),
+                      CatsModel(id: 3, name: '20 %'),
+                      CatsModel(id: 4, name: 'Не облагается'),
+                    ];
+
+                    showSellerCatsOptions(
+                      context,
+                      'Выбор НДС',
+                      _nds,
+                      (value) {
+                        final CatsModel _data = value;
+
+                        setState(() {
+                          ndsController.text = _data.name!;
+                        });
+
+                        // print(value);
+                        // BlocProvider.of<BrandCubit>(context)
+                        //     .searchBrand(value);
+                        // final CatsModel brand = data;
+                        // setState(() {});
+                        // brands = brand;
+                      },
+                    );
+                  },
+                ),
+              if (filledCount == 1)
+                FieldsProductRequest(
+                  titleText: 'Накопительные бонусы ,% ',
+                  hintText: 'Введите размер бонуса',
+                  star: true,
+                  arrow: false,
+                  controller: pointsController,
+                  textInputNumber: true,
+                ),
+              if (filledCount == 1)
+                FieldsProductRequest(
+                    titleText: 'Вознаграждение блогеру ,% ',
+                    hintText: 'Введите вознаграждение ',
+                    star: true,
+                    arrow: false,
+                    controller: pointsBloggerController,
+                    textInputNumber: true),
+              if (filledCount == 1)
+                GestureDetector(
+                  onTap: () {
+                    Get.to(const BloggerAd());
+                  },
+                  child: SizedBox(
+                    child: RichText(
+                      textAlign: TextAlign.left,
+                      text: const TextSpan(
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text:
+                                "Предлагая вознаграждение блогеру, вы принимаете условия ",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.grey),
+                          ),
+                          TextSpan(
+                            text:
+                                "Типового договора на оказание рекламных услуг\n",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.mainPurpleColor),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              if (filledCount == 1)
+                FieldsProductRequest(
+                  titleText: 'Количество в комплекте ',
+                  hintText: 'Выберите количество',
+                  star: false,
+                  arrow: true,
+                  controller: countController,
+                ),
+              if (filledCount == 1)
+                Container(
+                  height: 82,
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: BoxDecoration(
+                      color: AppColors.kGray2,
+                      borderRadius: BorderRadius.circular(8)),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Разрешить предзаказ',
+                              style: TextStyle(
+                                  color: AppColors.kLightBlackColor,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            const Text(
+                              'Если товара нет в наличии — можно ли оформить заказ?',
+                              style: TextStyle(
+                                  color: AppColors.kLightBlackColor,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w300),
+                              maxLines: 2,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Theme(
+                        data: Theme.of(context).copyWith(
+                          switchTheme: SwitchThemeData(
+                            trackOutlineWidth: MaterialStateProperty.all(
+                                0), // Полностью убираем границу
+                          ),
+                        ),
+                        child: Switch(
+                          onChanged: toggleSwitchBs,
+                          value: isSwitchedBs,
+                          activeColor: AppColors.kWhite,
+                          activeTrackColor: AppColors.mainPurpleColor,
+                          inactiveThumbColor: AppColors.kGray300,
+                          inactiveTrackColor: AppColors.kGray2,
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+
+              //filled 2
+
               FieldsProductRequest(
                 titleText: 'Цвет ',
                 hintText: colors?.name ?? "Выберите цвет",
@@ -1002,13 +1332,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                   },
                 ),
               ),
-              FieldsProductRequest(
-                titleText: 'Описание товара',
-                hintText: 'Расскажите подробнее о товаре',
-                star: true,
-                arrow: false,
-                controller: descriptionController,
-              ),
+
               const SizedBox(height: 10),
               const Text(
                 'Габариты и вес с упаковкой',
@@ -1284,7 +1608,8 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                               if (!exists) {
                                 optomCount.add(OptomPriceSellerDto(
                                     price: optomPriceController.text,
-                                    count: optomCountController.text));
+                                    count: optomCountController.text,
+                                    total: optomController.text));
 
                                 setState(() {});
                               } else {
@@ -1685,76 +2010,95 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                   left: 16, right: 16, top: 16, bottom: 26),
               child: InkWell(
                 onTap: () async {
-                  if (state is! LoadingState) {
-                    if (fulfillment == 'fbs') {
-                      if (widthController.text.isEmpty ||
-                          heightController.text.isEmpty ||
-                          deepController.text.isEmpty ||
-                          massaController.text.isEmpty) {
-                        Get.snackbar(
-                            "Ошибка Доставка", "Заполните данные для доставки",
-                            backgroundColor: Colors.orangeAccent);
-                        return;
+                  if (filledCount == 1) {
+                    title = 'Основная информация';
+                  }
+                  if (filledCount == 2) {
+                    title = 'Способ реализации';
+                  }
+                  if (filledCount == 3) {
+                    title = 'Описание';
+                  }
+                  if (filledCount == 4) {
+                    title = 'Фото и видео';
+                  }
+                  if (filledCount == 5) {
+                    title = 'Условия продажи';
+                  }
+                  if (filledCount == 6) {
+                    title = 'Локация';
+                  }
+                  setState(() {});
+
+                  if (filledCount == 7) {
+                    if (state is! LoadingState) {
+                      if (fulfillment == 'fbs') {
+                        if (widthController.text.isEmpty ||
+                            heightController.text.isEmpty ||
+                            deepController.text.isEmpty ||
+                            massaController.text.isEmpty) {
+                          Get.snackbar("Ошибка Доставка",
+                              "Заполните данные для доставки",
+                              backgroundColor: Colors.orangeAccent);
+                          return;
+                        }
                       }
-                    }
 
-                    List<int> subIds = [];
+                      List<int> subIds = [];
 
-                    if (subCharacteristicsValue?.isNotEmpty ?? false) {
-                      for (var e in subCharacteristicsValue!) {
-                        subIds.add(e.id!);
+                      if (subCharacteristicsValue?.isNotEmpty ?? false) {
+                        for (var e in subCharacteristicsValue!) {
+                          subIds.add(e.id!);
+                        }
                       }
-                    }
 
-                    BlocProvider.of<ProductSellerCubit>(context).update(
-                      priceController.text,
-                      countController.text,
-                      compoundController.text,
-                      cats?.id.toString() ?? cat_id.toString(),
-                      subCats?.id.toString() ?? sub_cat_id.toString(),
-                      brand_id.toString(),
-                      colors?.id.toString() ?? color_id.toString(),
-                      descriptionController.text,
-                      nameController.text,
-                      heightController.text,
-                      widthController.text,
-                      massaController.text,
-                      widget.product.id.toString(),
-                      articulController.text,
-                      '',
-                      isSwitchedBs,
-                      deepController.text,
-                      _image,
-                      optomCount,
-                      sizeCount,
-                      fulfillment,
-                      _video != null ? _video!.path : null,
-                      pointsController.text,
-                      pointsBloggerController.text,
-                      subIds,
-                    );
+                      BlocProvider.of<ProductSellerCubit>(context).update(
+                        priceController.text,
+                        countController.text,
+                        compoundController.text,
+                        cats?.id.toString() ?? cat_id.toString(),
+                        subCats?.id.toString() ?? sub_cat_id.toString(),
+                        brand_id.toString(),
+                        colors?.id.toString() ?? color_id.toString(),
+                        descriptionController.text,
+                        nameController.text,
+                        heightController.text,
+                        widthController.text,
+                        massaController.text,
+                        widget.product.id.toString(),
+                        articulController.text,
+                        '',
+                        isSwitchedBs,
+                        deepController.text,
+                        _image,
+                        optomCount,
+                        sizeCount,
+                        fulfillment,
+                        _video != null ? _video!.path : null,
+                        pointsController.text,
+                        pointsBloggerController.text,
+                        subIds,
+                      );
+                    }
                   }
                 },
                 child: Container(
-                    height: 51,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: AppColors.kPrimaryColor,
+                      color: AppColors.mainPurpleColor,
                     ),
                     width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(16),
                     child: state is LoadingState
                         ? const Center(
                             child: CircularProgressIndicator.adaptive())
-                        : const Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Text(
-                              'Сохранить',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16),
-                              textAlign: TextAlign.center,
-                            ),
+                        : const Text(
+                            'Далее',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                            textAlign: TextAlign.center,
                           )),
               ),
             );
@@ -1768,20 +2112,27 @@ class FieldsProductRequest extends StatefulWidget {
   final String hintText;
   final bool star;
   final bool arrow;
+  final bool? hintColor;
   final TextEditingController? controller;
-  final void Function()? onPressed;
-  final bool readOnly;
+  final CatsModel? cats;
   final bool? textInputNumber;
+  final bool readOnly;
+  final void Function()? onPressed;
+  final int? maxLines; // добавили
+
   const FieldsProductRequest({
     required this.hintText,
     required this.titleText,
     required this.star,
     required this.arrow,
+    this.hintColor,
     this.controller,
-    this.onPressed,
-    Key? key,
-    this.readOnly = false,
+    this.cats,
     this.textInputNumber,
+    Key? key,
+    this.onPressed,
+    this.readOnly = false,
+    this.maxLines, // добавили
   }) : super(key: key);
 
   @override
@@ -1789,11 +2140,6 @@ class FieldsProductRequest extends StatefulWidget {
 }
 
 class _FieldsProductRequestState extends State<FieldsProductRequest> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -1810,7 +2156,7 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                     fontSize: 12,
                     color: AppColors.kGray900),
               ),
-              widget.star != true
+              widget.star == true
                   ? const Text(
                       '*',
                       style: TextStyle(
@@ -1821,39 +2167,47 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                   : Container()
             ],
           ),
-          const SizedBox(
-            height: 4,
-          ),
+          const SizedBox(height: 4),
           Container(
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                color: AppColors.kGray2,
+                borderRadius: BorderRadius.circular(10)),
             child: Padding(
               padding: const EdgeInsets.only(left: 14.0),
               child: TextField(
-                readOnly: widget.readOnly,
                 controller: widget.controller,
-                keyboardType: (widget.textInputNumber == false ||
-                        widget.textInputNumber == null)
-                    ? TextInputType.text
-                    : const TextInputType.numberWithOptions(
-                        signed: true, decimal: true),
+                readOnly:
+                    (widget.hintColor == false || widget.hintColor == null)
+                        ? widget.readOnly
+                        : true,
+                keyboardType: (widget.maxLines != null && widget.maxLines! > 1)
+                    ? TextInputType.multiline
+                    : ((widget.textInputNumber == false ||
+                            widget.textInputNumber == null)
+                        ? TextInputType.text
+                        : const TextInputType.numberWithOptions(
+                            signed: true, decimal: true)),
+                maxLines: widget.maxLines ?? 1, // вот оно
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: widget.hintText,
-                  hintStyle: const TextStyle(
-                      color: Color.fromRGBO(194, 197, 200, 1),
+                  hintStyle: TextStyle(
+                      color:
+                          (widget.hintColor == null || widget.hintColor != true)
+                              ? const Color.fromRGBO(194, 197, 200, 1)
+                              : Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.w400),
                   enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
-                    // borderRadius: BorderRadius.circular(3),
                   ),
-                  suffixIcon: IconButton(
-                      onPressed: widget.onPressed,
-                      icon: widget.arrow == true
-                          ? SvgPicture.asset('assets/icons/back_menu.svg',
-                              color: Colors.grey)
-                          : SvgPicture.asset('')),
+                  suffixIcon: widget.arrow == true
+                      ? IconButton(
+                          onPressed: widget.onPressed,
+                          icon: SvgPicture.asset('assets/icons/back_menu.svg',
+                              color: Colors.grey),
+                        )
+                      : const SizedBox(),
                 ),
               ),
             ),

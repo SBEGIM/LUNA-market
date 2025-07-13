@@ -866,7 +866,10 @@ Widget buildProfileAvatar(_box) {
     decoration: BoxDecoration(
       color: AppColors.mainPurpleColor.withOpacity(0.5),
       borderRadius: BorderRadius.circular(51),
-      image: DecorationImage(image: avatarImage, scale: 3),
+      image: DecorationImage(
+          image: avatarImage,
+          scale: 3,
+          fit: isAuthorized != true ? BoxFit.contain : BoxFit.cover),
     ),
   );
 }

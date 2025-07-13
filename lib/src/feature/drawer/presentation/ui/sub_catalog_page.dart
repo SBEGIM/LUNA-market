@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../../home/data/model/cat_model.dart';
 import '../../bloc/sub_cats_cubit.dart';
 import '../../bloc/sub_cats_state.dart';
@@ -138,10 +140,11 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                         shrinkWrap: true,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                childAspectRatio: 0.75,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10),
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          childAspectRatio: 114 / 120,
+                        ),
                         itemCount: state.cats.length,
                         itemBuilder: (context, index) {
                           return InkWell(
@@ -153,30 +156,12 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                                   [state.cats[index].id].toString());
                               GetStorage().remove('shopFilterId');
 
-                              //цйуйцуйц
-                              // print(widget.cats?.id ?? 0);
-
                               context.router.push(ProductsRoute(
                                   cats: widget.cats ??
                                       CatsModel(
                                           id: widget.cats?.id ?? 0,
                                           name: widget.cats?.name ?? ''),
                                   subCats: state.cats[index]));
-                              // Get.to(() => ProductsPage(
-                              //       cats: state.cats[index],
-                              //     ));
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => ProductsPage(
-                              //               cats: state.cats[index],
-                              //             )));
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) =>
-                              //           UnderCatalogPage(cats: state.cats[index])),
-                              // );
                             },
                             child: CatalogListTile(
                               title: '${state.cats[index].name}',
@@ -190,38 +175,6 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                   ),
                 ],
               );
-
-              // ListView.builder(
-              //   itemCount: state.cats.length,
-              //   itemBuilder: (context, index) {
-              //     return
-              // return Column(
-              //   mainAxisSize: MainAxisSize.max,
-              //   children: [
-              // if (index == 0) const SizedBox(height: 5),
-              // InkWell(
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (context) =>
-              //               UnderCatalogPage(cats: state.cats[index])),
-              //     );
-              //   },
-              //   child:
-              //     CatalogListTile(
-              //   title: '${state.cats[index].name}',
-              //   url:
-              //       "http://80.87.202.73:8001/storage/${state.cats[index].icon!}",
-              // );
-
-              //   const Divider(
-              //     color: AppColors.kGray400,
-              //   ),
-              // ],
-              // );
-              //},
-              // );
             } else {
               return const Center(
                   child: CircularProgressIndicator(color: Colors.indigoAccent));
@@ -248,110 +201,49 @@ class CatalogListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Color.fromARGB(15, 227, 9, 9),
+        color: AppColors.mainBackgroundPurpleColor,
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: const EdgeInsets.only(top: 10),
-            alignment: Alignment.center,
-            height: 90,
-            width: 90,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(2),
-                image: DecorationImage(
-                    image: NetworkImage(
-                      "${url}",
-                    ),
-                    fit: BoxFit.fill,
-                    onError: (exception, stackTrace) => const ErrorImageWidget(
-                          height: 90,
-                          width: 90,
-                        )),
-                color: const Color(0xFFF0F5F5)),
-            // child: Image.network(
-            //   "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
-            //   width: 70,
-            // ),
+            margin: EdgeInsets.only(top: 8, left: 8),
+            height: 32,
+            child: Text(title,
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: AppTextStyles.categoryTextStyle),
           ),
-          // Container(
-          //   height: 154,
-          //   width: 108,
-          //   decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(8),
-          //       image: DecorationImage(
-          //         image: NetworkImage(
-          //             "http://80.87.202.73:8001/storage/${layout!.image!}"),
-          //         fit: BoxFit.cover,
-          //       )),
-
-          //   // child: CircleAvatar(),
-          // ),
-          // if (credit == 1)
-          //   Container(
-          //     width: 46,
-          //     height: 22,
-          //     decoration: BoxDecoration(
-          //       color: const Color.fromRGBO(31, 196, 207, 1),
-          //       borderRadius: BorderRadius.circular(6),
-          //     ),
-          //     margin: const EdgeInsets.only(top: 10, left: 4),
-          //     alignment: Alignment.center,
-          //     child: const Text(
-          //       "0·0·12",
-          //       style: AppTextStyles.bannerTextStyle,
-          //       textAlign: TextAlign.center,
-          //     ),
-          //   ),
-          // Container(
-          //   width: 46,
-          //   height: 22,
-          //   decoration: BoxDecoration(
-          //     color: Colors.black,
-          //     borderRadius: BorderRadius.circular(6),
-          //   ),
-          //   margin: const EdgeInsets.only(top: 105, left: 4),
-          //   alignment: Alignment.center,
-          //   child: Text(
-          //     "${layout!.bonus.toString()}% Б",
-          //     style: AppTextStyles.bannerTextStyle,
-          //     textAlign: TextAlign.center,
-          //   ),
-          // ),
-          Container(
-            margin: const EdgeInsets.only(top: 5, left: 4),
-            alignment: Alignment.center,
-            child: Text(
-              title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.categoryTextStyle,
-              textAlign: TextAlign.center,
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Image.network(
+              "${url}",
+              height: 80,
+              width: 80,
+              fit: BoxFit.contain,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return SizedBox(
+                  height: 80,
+                  width: 80,
+                  child: Shimmer(
+                    child: Image.asset(Assets.icons.loaderMain.path),
+                  ),
+                );
+                ;
+              },
+              errorBuilder: (context, error, stackTrace) => Container(
+                color: Colors.grey[100],
+                child: const Icon(Icons.broken_image, color: Colors.grey),
+              ),
             ),
           ),
         ],
       ),
     );
-    // ListTile(
-    //   horizontalTitleGap: 0,
-    //   leading: Container(
-    //     height: 20.05,
-    //     width: 20.05,
-    //     decoration: BoxDecoration(
-    //         image: DecorationImage(
-    //       image: NetworkImage("${url}"),
-    //       fit: BoxFit.cover,
-    //     )),
-    //   ),
-    //   title: Text(
-    //     title,
-    //     style: AppTextStyles.catalogTextStyle,
-    //   ),
-    //   trailing:
-    //       SvgPicture.asset('assets/icons/back_menu.svg', height: 12, width: 16),
-    // );
   }
 }

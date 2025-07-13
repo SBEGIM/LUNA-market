@@ -45,9 +45,8 @@ class _NotificationBloggerPageState extends State<NotificationBloggerPage> {
       appBar: AppBar(
         title: Text('Уведомления', style: AppTextStyles.appBarTextStyle),
         leading: InkWell(
-          onTap: () => Navigator.of(context).pop(),
-          child: const Icon(Icons.arrow_back),
-        ),
+            onTap: () => Navigator.of(context).pop(),
+            child: const Icon(Icons.arrow_back)),
       ),
       body: BlocConsumer<BloggerNotificationCubit, BloggerNotificationState>(
         builder: (context, state) {

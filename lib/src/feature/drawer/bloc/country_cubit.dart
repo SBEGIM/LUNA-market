@@ -20,6 +20,13 @@ class CountryCubit extends Cubit<CountryState> {
     }
   }
 
+  Future<List<CountryModel>> countryList() async {
+    if (_cities.isEmpty) {
+      await country();
+    }
+    return _cities;
+  }
+
   cityById(String id) async {
     if (id.isEmpty) return;
     if (_cities.isEmpty) {

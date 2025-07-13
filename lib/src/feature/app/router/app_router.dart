@@ -20,8 +20,10 @@ import 'package:haji_market/src/feature/seller/order/presentation/widgets/detail
 import 'package:haji_market/src/feature/seller/product/data/models/product_seller_model.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/ui/create_product_seller_page.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/ui/edit_product_seller_page.dart';
+import 'package:haji_market/src/feature/seller/product/presentation/ui/map_seller_picker.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/ui/products_seller_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/ui/admin_profile_page.dart';
+import 'package:haji_market/src/feature/seller/profile/presentation/ui/tape_seller_page.dart';
 import 'package:haji_market/src/feature/seller/tape_admin/presentation/ui/tape_admin_page.dart';
 import 'package:haji_market/src/feature/bloger/auth/presentation/ui/blog_auth_register_page.dart';
 import 'package:haji_market/src/feature/bloger/auth/presentation/ui/change_blogger_password.dart';
@@ -31,7 +33,6 @@ import 'package:haji_market/src/feature/bloger/profile/presentation/ui/blogger_t
 import 'package:haji_market/src/feature/bloger/shop/presentation/ui/blog_shops_page.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/ui/tape_blogger_page.dart';
 import 'package:haji_market/src/feature/auth/presentation/ui/change_password.dart';
-import 'package:haji_market/src/feature/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:haji_market/src/feature/basket/data/DTO/map_geo_dto.dart';
 import 'package:haji_market/src/feature/basket/presentation/ui/basket_order_address_page.dart';
 import 'package:haji_market/src/feature/basket/presentation/ui/basket_order_page.dart';
@@ -142,6 +143,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: ForgotPasswordRoute.page),
 
         //Seller pages
+        AutoRoute(page: TapeSellerRoute.page),
         AutoRoute(page: EditProductSellerRoute.page),
         AutoRoute(page: CreateProductSellerRoute.page),
       ];

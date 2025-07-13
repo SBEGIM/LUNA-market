@@ -207,308 +207,321 @@ class _AllOrdersSellerPageState extends State<AllOrdersSellerPage> {
                   },
                   controller: _controller,
                   child: ListView.builder(
+                    padding: EdgeInsets.zero,
                     itemCount: state.basketOrderModel.length,
                     itemBuilder: (context, index) {
                       text(state.basketOrderModel[index].status);
                       textFBS(state.basketOrderModel[index].statusFBS);
                       textRealFBS(state.basketOrderModel[index].statusRealFBS);
 
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // const SizedBox(
-                          //   height: 10,
-                          // ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DetailOrderSellerPage(
-                                        basket: state.basketOrderModel[index])),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10)),
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '№${state.basketOrderModel[index].id}',
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            color: AppColors.kGray300),
-                                      ),
-                                      Text(
-                                        statusFBS,
-                                        style: const TextStyle(
-                                            color: Color(0xFF4BB34B),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      // const Icon(Icons.more_horiz),
-                                    ],
-                                  ),
-                                  SizedBox(height: 4),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '${state.basketOrderModel[index].date}',
-                                        style: AppTextStyles
-                                            .navigationUnSelectLabelStyle
-                                            .copyWith(
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      Text(
-                                          '${state.basketOrderModel[index].priceFBS} ₽',
-                                          style: AppTextStyles
-                                              .counterSellerProfileTextStyle),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  if (state.basketOrderModel[index].productFBS
-                                          ?.isNotEmpty ??
-                                      false)
-                                    Column(
+                      return SizedBox(
+                        height: 138,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // const SizedBox(
+                            //   height: 10,
+                            // ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DetailOrderSellerPage(
+                                              basket: state
+                                                  .basketOrderModel[index])),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10)),
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
+                                        Text(
+                                          '№${state.basketOrderModel[index].id}',
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              color: AppColors.kGray300),
+                                        ),
+                                        Text(
+                                          statusFBS,
+                                          style: const TextStyle(
+                                              color: Color(0xFF4BB34B),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        // const Icon(Icons.more_horiz),
+                                      ],
+                                    ),
+                                    SizedBox(height: 4),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '${state.basketOrderModel[index].date}',
+                                          style: AppTextStyles
+                                              .navigationUnSelectLabelStyle
+                                              .copyWith(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                        ),
+                                        Text(
+                                            '${state.basketOrderModel[index].priceFBS} ₽',
+                                            style: AppTextStyles
+                                                .counterSellerProfileTextStyle),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
+                                    if (state.basketOrderModel[index].productFBS
+                                            ?.isNotEmpty ??
+                                        false)
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 40,
+                                            child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                shrinkWrap: true,
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                itemCount: state
+                                                        .basketOrderModel[index]
+                                                        .productFBS
+                                                        ?.length ??
+                                                    0,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int i) {
+                                                  return Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        height: 48,
+                                                        width: 48,
+                                                        child: Image.network(
+                                                          "https://lunamarket.ru/storage/${state.basketOrderModel[index].productFBS![i].path![0].toString()}",
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                }),
+                                          ),
+                                        ],
+                                      ),
+                                    if ((state.basketOrderModel[index]
+                                                .productFBS?.isNotEmpty ??
+                                            false) &&
+                                        (state.basketOrderModel[index]
+                                                .productRealFBS?.isNotEmpty ??
+                                            false))
+                                      const Divider(
+                                        color: AppColors.kGray400,
+                                      ),
+                                    if (state.basketOrderModel[index]
+                                            .productRealFBS?.isNotEmpty ??
+                                        false)
+                                      Column(children: [
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
                                         SizedBox(
                                           height: (state.basketOrderModel[index]
-                                                      .productFBS?.length ??
+                                                      .productRealFBS?.length ??
                                                   0) *
-                                              60,
+                                              30,
                                           child: ListView.builder(
                                               shrinkWrap: true,
                                               physics:
                                                   const NeverScrollableScrollPhysics(),
                                               itemCount: state
                                                       .basketOrderModel[index]
-                                                      .productFBS
+                                                      .productRealFBS
                                                       ?.length ??
                                                   0,
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int i) {
-                                                return Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      height: 48,
-                                                      width: 48,
-                                                      child: Image.network(
-                                                        "https://lunamarket.ru/storage/${state.basketOrderModel[index].productFBS![i].path![0].toString()}",
+                                                return SizedBox(
+                                                  height: 20,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        state
+                                                            .basketOrderModel[
+                                                                index]
+                                                            .productRealFBS![i]
+                                                            .productName
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            color: AppColors
+                                                                .kGray750,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
                                                       ),
-                                                    ),
-                                                  ],
+                                                      Text(
+                                                        'x' +
+                                                            state
+                                                                .basketOrderModel[
+                                                                    index]
+                                                                .productRealFBS![
+                                                                    i]
+                                                                .count
+                                                                .toString(),
+                                                        style: const TextStyle(
+                                                            color: AppColors
+                                                                .kGray750,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      Text(
+                                                        state
+                                                            .basketOrderModel[
+                                                                index]
+                                                            .productRealFBS![i]
+                                                            .price
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            color: AppColors
+                                                                .kGray750,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      )
+                                                    ],
+                                                  ),
                                                 );
                                               }),
                                         ),
-                                      ],
-                                    ),
-                                  if ((state.basketOrderModel[index].productFBS
-                                              ?.isNotEmpty ??
-                                          false) &&
-                                      (state.basketOrderModel[index]
-                                              .productRealFBS?.isNotEmpty ??
-                                          false))
-                                    const Divider(
-                                      color: AppColors.kGray400,
-                                    ),
-                                  if (state.basketOrderModel[index]
-                                          .productRealFBS?.isNotEmpty ??
-                                      false)
-                                    Column(children: [
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      SizedBox(
-                                        height: (state.basketOrderModel[index]
-                                                    .productRealFBS?.length ??
-                                                0) *
-                                            30,
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemCount: state
-                                                    .basketOrderModel[index]
-                                                    .productRealFBS
-                                                    ?.length ??
-                                                0,
-                                            itemBuilder:
-                                                (BuildContext context, int i) {
-                                              return SizedBox(
-                                                height: 20,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      state
-                                                          .basketOrderModel[
-                                                              index]
-                                                          .productRealFBS![i]
-                                                          .productName
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                          color: AppColors
-                                                              .kGray750,
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                    Text(
-                                                      'x' +
-                                                          state
-                                                              .basketOrderModel[
-                                                                  index]
-                                                              .productRealFBS![
-                                                                  i]
-                                                              .count
-                                                              .toString(),
-                                                      style: const TextStyle(
-                                                          color: AppColors
-                                                              .kGray750,
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                    Text(
-                                                      state
-                                                          .basketOrderModel[
-                                                              index]
-                                                          .productRealFBS![i]
-                                                          .price
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                          color: AppColors
-                                                              .kGray750,
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    )
-                                                  ],
-                                                ),
-                                              );
-                                            }),
-                                      ),
-                                      // const SizedBox(
-                                      //   height: 10,
-                                      // ),
+                                        // const SizedBox(
+                                        //   height: 10,
+                                        // ),
 
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                            'Сумма заказа:',
-                                            style: TextStyle(
-                                                color: AppColors.kGray400,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          Text(
-                                            '${state.basketOrderModel[index].priceRealFBS} ₽',
-                                            style: const TextStyle(
-                                                color: AppColors.kGray750,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500),
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 2,
-                                      ),
-                                      const Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Способ доставки:',
-                                            style: TextStyle(
-                                                color: AppColors.kGray400,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          Text(
-                                            'realFBS',
-                                            style: TextStyle(
-                                                color: AppColors.kGray750,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500),
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 2,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                            'Статус:',
-                                            style: TextStyle(
-                                                color: AppColors.kGray400,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                color: const Color(0x104BB34B),
-                                                borderRadius:
-                                                    BorderRadius.circular(4)),
-                                            padding: const EdgeInsets.all(5),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  statusRealFBS,
-                                                  style: const TextStyle(
-                                                      color: Color(0xFF4BB34B),
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                              ],
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text(
+                                              'Сумма заказа:',
+                                              style: TextStyle(
+                                                  color: AppColors.kGray400,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500),
                                             ),
-                                          ),
-                                        ],
-                                      )
-                                    ]),
-                                ],
+                                            Text(
+                                              '${state.basketOrderModel[index].priceRealFBS} ₽',
+                                              style: const TextStyle(
+                                                  color: AppColors.kGray750,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            )
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 2,
+                                        ),
+                                        const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Способ доставки:',
+                                              style: TextStyle(
+                                                  color: AppColors.kGray400,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            Text(
+                                              'realFBS',
+                                              style: TextStyle(
+                                                  color: AppColors.kGray750,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            )
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 2,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text(
+                                              'Статус:',
+                                              style: TextStyle(
+                                                  color: AppColors.kGray400,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0x104BB34B),
+                                                  borderRadius:
+                                                      BorderRadius.circular(4)),
+                                              padding: const EdgeInsets.all(5),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    statusRealFBS,
+                                                    style: const TextStyle(
+                                                        color:
+                                                            Color(0xFF4BB34B),
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ]),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ],
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),

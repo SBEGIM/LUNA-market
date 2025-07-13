@@ -6,6 +6,7 @@ class CatsModel {
     String? image,
     int? bonus,
     int? credit,
+    bool? isSelect,
     dynamic createdAt,
     dynamic updatedAt,
   }) {
@@ -15,6 +16,7 @@ class CatsModel {
     _image = image;
     _bonus = bonus;
     _credit = credit;
+    _isSelect = isSelect;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
   }
@@ -26,6 +28,7 @@ class CatsModel {
     _image = json['image'];
     _bonus = json['bonus'];
     _credit = json['credit'];
+    _isSelect = json['is_select'];
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
   }
@@ -34,6 +37,7 @@ class CatsModel {
   String? _icon;
   String? _image;
   int? _bonus;
+  bool? _isSelect;
   int? _credit;
   dynamic _createdAt;
   dynamic _updatedAt;
@@ -44,6 +48,8 @@ class CatsModel {
   String? get image => _image;
   int? get bonus => _bonus;
   int? get credit => _credit;
+  bool get isSelect => _isSelect ?? false;
+  set isSelect(bool value) => _isSelect = value;
   dynamic get createdAt => _createdAt;
   dynamic get updatedAt => _updatedAt;
 
@@ -55,8 +61,33 @@ class CatsModel {
     map['image'] = _image;
     map['bonus'] = _bonus;
     map['credit'] = _credit;
+    map['is_select'] = _isSelect;
     map['created_at'] = _createdAt;
     map['updated_at'] = _updatedAt;
     return map;
+  }
+
+  CatsModel copyWith({
+    int? id,
+    String? name,
+    String? icon,
+    String? image,
+    int? bonus,
+    int? credit,
+    bool? isSelect,
+    dynamic createdAt,
+    dynamic updatedAt,
+  }) {
+    return CatsModel(
+      id: id ?? _id,
+      name: name ?? _name,
+      icon: icon ?? _icon,
+      image: image ?? _image,
+      bonus: bonus ?? _bonus,
+      credit: credit ?? _credit,
+      isSelect: isSelect ?? _isSelect,
+      createdAt: createdAt ?? _createdAt,
+      updatedAt: updatedAt ?? _updatedAt,
+    );
   }
 }

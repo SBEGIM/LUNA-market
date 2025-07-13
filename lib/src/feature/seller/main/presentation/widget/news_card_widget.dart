@@ -19,6 +19,7 @@ class _NewsScreenState extends State<NewsScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: AppColors.kWhite,
         title: Text('Новости'),
       ),
       body: Padding(

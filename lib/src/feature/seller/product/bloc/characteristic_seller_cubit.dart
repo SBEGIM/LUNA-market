@@ -39,6 +39,25 @@ class CharacteristicSellerCubit extends Cubit<CharacteristicSellerState> {
     return null;
   }
 
+  listSubCharacteristicsIndex(
+    int index,
+  ) async {
+    if (_characteristics.isEmpty) {
+      await characteristic();
+      // final List<City> data = await listRepository.cities();
+      // _cities = data;
+    }
+    List<CharacteristicsModel> _listSubCharacteristics = [];
+
+    for (int i = 0; i < _characteristics.length; i++) {
+      if (_characteristics[i].id == index) {
+        _listSubCharacteristics.add(_characteristics[i]);
+      }
+    }
+
+    return _listSubCharacteristics;
+  }
+
   ColorById(
     String name,
   ) async {

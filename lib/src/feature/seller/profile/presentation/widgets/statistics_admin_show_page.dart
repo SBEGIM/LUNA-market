@@ -31,6 +31,8 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
     'Декабрь',
   ];
   int year = 2025;
+  int selectedYear = 2025;
+
   int _selectIndex = 0;
   int _summConfirm = 0;
   int _summFreeze = 0;
@@ -44,12 +46,6 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
     BlocProvider.of<ProfileMonthStaticsAdminCubit>(context).statics(year, 1);
 
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
   }
 
   @override
@@ -240,13 +236,18 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                             color: AppColors.kBackgroundColor,
                             borderRadius: BorderRadius.circular(12)),
                         child: GestureDetector(
-                          onTap: () =>
-                              _showYearPickerBottomSheet(context, year),
+                          onTap: () => _showYearPickerBottomSheet(
+                              context, selectedYear, (year) {
+                            print(year);
+                            setState(() {
+                              selectedYear = year;
+                            });
+                          }),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '$year',
+                                '$selectedYear',
                                 style: const TextStyle(
                                   color: AppColors.kGray900,
                                   fontWeight: FontWeight.w400,
@@ -584,7 +585,10 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
 }
 
 void _showMonthPickerBottomSheet(
-    BuildContext context, int selectedMonth, Function(int) onMonthSelected) {
+  BuildContext context,
+  int initialSelectedMonth,
+  Function(int) onMonthSelected,
+) {
   final List<String> months = [
     'Январь',
     'Февраль',
@@ -600,6 +604,11 @@ void _showMonthPickerBottomSheet(
     'Декабрь'
   ];
 
+  final FixedExtentScrollController scrollController =
+      FixedExtentScrollController(
+    initialItem: initialSelectedMonth,
+  );
+
   showModalBottomSheet(
     context: context,
     shape: const RoundedRectangleBorder(
@@ -607,55 +616,89 @@ void _showMonthPickerBottomSheet(
     ),
     backgroundColor: Colors.white,
     builder: (context) {
-      return SizedBox(
-        height: 400,
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Выберите месяц',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.kGray900,
-                ),
-              ),
-            ),
-            const Divider(),
-            Expanded(
-              child: ListView.builder(
-                itemCount: months.length,
-                itemBuilder: (context, index) {
-                  final isSelected = selectedMonth == index;
-                  return ListTile(
-                    title: Text(
-                      months[index],
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: isSelected
-                            ? AppColors.mainBackgroundPurpleColor
-                            : AppColors.kGray900,
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
-                      ),
+      int selectedMonth = initialSelectedMonth;
+
+      return StatefulBuilder(
+        builder: (context, setModalState) {
+          return SizedBox(
+            height: 300,
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Выберите месяц',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.kGray900,
                     ),
-                    onTap: () {
-                      Navigator.pop(context);
+                  ),
+                ),
+                Expanded(
+                  child: ListWheelScrollView.useDelegate(
+                    controller: scrollController,
+                    itemExtent: 50,
+                    physics: const FixedExtentScrollPhysics(),
+                    onSelectedItemChanged: (index) {
+                      setModalState(() {
+                        selectedMonth = index;
+                      });
                       onMonthSelected(index);
                     },
-                  );
-                },
-              ),
+                    childDelegate: ListWheelChildBuilderDelegate(
+                      builder: (context, index) {
+                        if (index < 0 || index >= months.length) return null;
+                        final isSelected = index == selectedMonth;
+                        return Center(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? AppColors.kGray2
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 24),
+                            child: Text(
+                              months[index],
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                color: isSelected
+                                    ? AppColors.mainBackgroundPurpleColor
+                                    : AppColors.kGray900,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       );
     },
   );
 }
 
-void _showYearPickerBottomSheet(BuildContext context, int currentYear) {
+void _showYearPickerBottomSheet(
+  BuildContext context,
+  int initialSelectedYear,
+  void Function(int) onYearSelected,
+) {
+  final List<int> years =
+      List.generate(50, (index) => DateTime.now().year - index);
+  final FixedExtentScrollController scrollController =
+      FixedExtentScrollController(
+    initialItem: years.indexOf(initialSelectedYear),
+  );
+
   showModalBottomSheet(
     context: context,
     shape: const RoundedRectangleBorder(
@@ -663,50 +706,75 @@ void _showYearPickerBottomSheet(BuildContext context, int currentYear) {
     ),
     backgroundColor: Colors.white,
     builder: (context) {
-      final List<int> years = List.generate(50, (index) => currentYear - index);
+      int selectedYear =
+          initialSelectedYear; // Локальный selectedYear для обновления в билдере
 
-      return SizedBox(
-        height: 400,
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Выберите год',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.kGray900,
-                ),
-              ),
-            ),
-            const Divider(),
-            Expanded(
-              child: ListView.separated(
-                itemCount: years.length,
-                separatorBuilder: (_, __) => Divider(),
-                itemBuilder: (context, index) {
-                  final year = years[index];
-                  return ListTile(
-                    title: Text(
-                      '$year',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: AppColors.kGray900,
-                      ),
+      return StatefulBuilder(
+        builder: (context, setModalState) {
+          return SizedBox(
+            height: 300,
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Выберите год',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.kGray900,
                     ),
-                    onTap: () {
-                      Navigator.pop(context);
-
-                      // сделай что-то с выбранным годом
-                      print("Selected year: $year");
+                  ),
+                ),
+                Expanded(
+                  child: ListWheelScrollView.useDelegate(
+                    controller: scrollController,
+                    itemExtent: 50,
+                    physics: const FixedExtentScrollPhysics(),
+                    onSelectedItemChanged: (index) {
+                      setModalState(() {
+                        selectedYear = years[index];
+                      });
+                      onYearSelected(years[index]);
                     },
-                  );
-                },
-              ),
+                    childDelegate: ListWheelChildBuilderDelegate(
+                      builder: (context, index) {
+                        if (index < 0 || index >= years.length) return null;
+                        final year = years[index];
+                        final isSelected = year == selectedYear;
+
+                        return Center(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? AppColors.kGray2
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 24),
+                            child: Text(
+                              '$year',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                color: isSelected
+                                    ? AppColors.kGray900
+                                    : AppColors.kGray700,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       );
     },
   );

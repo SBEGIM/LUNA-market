@@ -9,12 +9,23 @@ class SizeCountSellerDto {
     required this.count,
   });
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = id;
-    map['name'] = name;
-    map['count'] = count;
+  SizeCountSellerDto copyWith({
+    String? id,
+    String? name,
+    String? count,
+  }) {
+    return SizeCountSellerDto(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      count: count ?? this.count,
+    );
+  }
 
-    return map;
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'count': count,
+    };
   }
 }

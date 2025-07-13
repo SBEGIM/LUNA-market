@@ -92,71 +92,85 @@ class _LoginForgotSellerPasswordModalBottom
         padding: const EdgeInsets.all(16.0),
         child: Column(
           //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Введите код подтверждения,\nкоторый был отправлен по номеру\n${widget.textEditingController}',
-                  style: AppTextStyles.appBarTextStyle,
-                ),
-                SvgPicture.asset(
-                  'assets/icons/delete_circle.svg',
-                  height: 24,
-                  width: 24,
-                ),
-              ],
-            ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text(
+                'Восстановление доступа',
+                style: AppTextStyles.defaultAppBarTextStyle,
+              ),
+              SvgPicture.asset(
+                'assets/icons/delete_circle.svg',
+                height: 24,
+                width: 24,
+              ),
+            ]),
             const SizedBox(
-              height: 40,
+              height: 16,
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: PinCodeTextField(
-                length: 4,
-                obscureText: false,
-                keyboardType: TextInputType.phone,
-                appContext: context,
-                pinTheme: PinTheme(
-                  activeColor: Colors.grey,
-                  shape: PinCodeFieldShape.box,
-                  inactiveColor: Colors.grey,
-                  activeFillColor: Colors.white,
-                  borderRadius: BorderRadius.circular(6),
-                  selectedColor: Colors.green,
-                  fieldHeight: 48,
-                  fieldWidth: 48,
-                ),
-                onChanged: (value) {
-                  // log(value);
-                },
-                onCompleted: (value) async {
-                  if (value.length == 4) {
-                    final sms = BlocProvider.of<SmsSellerCubit>(context);
-                    sms.resetCheck(
-                        widget.textEditingController, value.toString());
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => const ChangePasswordPage()),
-                    // );
-                    // final String phoneRep = widget.phoneNumber
-                    //     .replaceAll(RegExp(r"[^0-9]+"), '');
-                    //  BlocProvider.of<RegisterCheckSmsCubit>(
-                    //   context,
-                    // ).send(value, phoneRep);
-                  }
-                },
+            Flexible(
+              child: Text(
+                'Введите код из SMS, отправленный на номер ${widget.textEditingController}',
+                style: AppTextStyles.catalogTextStyle,
               ),
             ),
-            Text(
-              'Вы можете заново отправить код через $_start',
-              style: AppTextStyles.timerInReRegTextStyle,
+            const SizedBox(
+              height: 36,
+            ),
+            Center(
+              child: SizedBox(
+                width: 324,
+                child: PinCodeTextField(
+                  length: 4,
+                  obscureText: false,
+                  keyboardType: TextInputType.phone,
+                  appContext: context,
+                  pinTheme: PinTheme(
+                    activeColor: AppColors.kGray1000,
+                    shape: PinCodeFieldShape.box,
+                    inactiveColor: Colors.grey,
+                    activeFillColor: Colors.grey,
+                    borderRadius: BorderRadius.circular(12),
+                    selectedColor: AppColors.mainPurpleColor,
+                    fieldHeight: 64,
+                    fieldWidth: 64,
+                  ),
+                  onChanged: (value) {
+                    // log(value);
+                  },
+                  onCompleted: (value) async {
+                    if (value.length == 4) {
+                      final sms = BlocProvider.of<SmsSellerCubit>(context);
+                      sms.resetCheck(
+                          widget.textEditingController, value.toString());
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => const ChangePasswordPage()),
+                      // );
+                      // final String phoneRep = widget.phoneNumber
+                      //     .replaceAll(RegExp(r"[^0-9]+"), '');
+                      //  BlocProvider.of<RegisterCheckSmsCubit>(
+                      //   context,
+                      // ).send(value, phoneRep);
+                    }
+                  },
+                ),
+              ),
+            ),
+            Center(
+              child: Text(
+                'Отправить повторно через $_start c',
+                style: AppTextStyles.timerInReRegTextStyle
+                    .copyWith(color: AppColors.mainPurpleColor),
+                textAlign: TextAlign.center,
+              ),
             ),
             const Spacer(),
             DefaultButton(
                 backgroundColor: (_start == 60)
-                    ? AppColors.kPrimaryColor
+                    ? AppColors.mainPurpleColor
                     : const Color(0xFFD6D8DB),
                 text: 'Переотправить код',
                 press: () {

@@ -49,7 +49,7 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(0),
+      borderRadius: BorderRadius.circular(12),
       child: Stack(
         children: [
           Positioned.fill(
@@ -71,25 +71,14 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
           ),
           widget.tape.isDelete == true
               ? Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.delete_forever_outlined,
-                          color: Colors.redAccent.shade200),
-                      SizedBox(
-                        height: 25,
-                        child: Text(
-                          'Товар удален',
-                          maxLines: 2,
-                          style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.redAccent.shade200),
-                        ),
-                      )
-                    ],
+                  child: Text(
+                    'Товар \nнедоступен',
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.kWhite),
                   ),
                 )
               : const SizedBox(),
@@ -113,7 +102,9 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
                     child: Text(
                       '${widget.tape.shop!.name}',
                       style: AppTextStyles.aboutTextStyle.copyWith(
-                        color: AppColors.kWhite,
+                        color: widget.tape.isDelete != true
+                            ? AppColors.kWhite
+                            : AppColors.kWhite.withOpacity(0.5),
                         height: 20 / 14,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 0.0,
@@ -133,7 +124,9 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
                   children: [
                     Icon(
                       Icons.remove_red_eye,
-                      color: AppColors.kWhite,
+                      color: widget.tape.isDelete != true
+                          ? AppColors.kWhite
+                          : AppColors.kWhite.withOpacity(0.5),
                     ),
                     InkWell(
                       borderRadius: BorderRadius.circular(15),
@@ -141,8 +134,11 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
                         padding: EdgeInsets.all(6.0),
                         child: Text(
                           '${widget.tape.viewCount}',
-                          style: AppTextStyles.aboutTextStyle
-                              .copyWith(color: AppColors.kBGMessage),
+                          style: AppTextStyles.aboutTextStyle.copyWith(
+                            color: widget.tape.isDelete != true
+                                ? AppColors.kWhite
+                                : AppColors.kWhite.withOpacity(0.5),
+                          ),
                         ),
                       ),
                     ),

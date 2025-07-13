@@ -220,8 +220,7 @@ Future<dynamic> showAlertCityBasketWidget(
             // Get.back();
 
             if (data != null) {
-              context.router.push(
-                  BasketOrderAddressRoute(fulfillment: 'fbs', office: data));
+              context.router.push(BasketOrderAddressRoute(office: data));
 
               // Get.to(() => BasketOrderAddressPage(
               //       office: data,

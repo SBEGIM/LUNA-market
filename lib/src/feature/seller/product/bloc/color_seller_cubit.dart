@@ -25,6 +25,15 @@ class ColorSellerCubit extends Cubit<ColorSellerState> {
     return null;
   }
 
+  listColor() async {
+    if (_colors.isEmpty) {
+      await brands();
+      // final List<City> data = await listRepository.cities();
+      // _cities = data;
+    }
+    return _colors;
+  }
+
   ColorById(
     String name,
   ) async {

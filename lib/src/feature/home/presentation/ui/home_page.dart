@@ -1,15 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/presentation/widgets/shimmer/shimmer_box.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/product/cubit/product_ad_cubit.dart'
     as productAdCubit;
 import 'package:haji_market/src/feature/product/cubit/product_ad_state.dart'
     as productAdState;
-import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/src/feature/home/bloc/banners_cubit.dart'
     as bannerCubit;
 import 'package:haji_market/src/feature/home/bloc/banners_state.dart'
@@ -22,11 +21,11 @@ import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
 import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import 'package:haji_market/src/feature/home/presentation/ui/banner_page.dart';
 import 'package:haji_market/src/feature/home/presentation/ui/cats_page.dart';
-import 'package:haji_market/src/feature/home/presentation/ui/popular_cats_page.dart';
-import 'package:haji_market/src/feature/home/presentation/ui/popular_shops_page.dart';
 import 'package:haji_market/src/feature/home/presentation/widgets/product_mb_interesting_card.dart';
+import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_cubit.dart';
+import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_state.dart';
+import 'package:haji_market/src/feature/seller/main/presentation/widget/stories_card_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../../product/cubit/product_cubit.dart' as productCubit;
 import '../../../product/cubit/product_state.dart' as productState;
 import '../../../drawer/bloc/sub_cats_cubit.dart' as subCatCubit;
@@ -71,6 +70,10 @@ class _HomePageState extends State<HomePage> {
       BlocProvider.of<bannerCubit.BannersCubit>(context).banners();
     }
 
+    if (BlocProvider.of<StoriesSellerCubit>(context).state is! LoadedState) {
+      BlocProvider.of<StoriesSellerCubit>(context).news();
+    }
+
     // if (BlocProvider.of<productAdCubit.ProductAdCubit>(context).state
     //     is! productAdState.LoadedState) {
     BlocProvider.of<productAdCubit.ProductAdCubit>(context).adProducts(null);
@@ -108,36 +111,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // drawer: const DrawerHome(),
-      backgroundColor: AppColors.kBackgroundColor,
-      appBar: AppBar(
-        centerTitle: false,
-        iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        // leading: IconButton(
-        //   // onPressed: widget.drawerCallback,
-        //   onPressed: () {
-        //     widget.globalKey!.currentState!.openDrawer();
-        //   },
-        //   icon: SvgPicture.asset('assets/icons/menu.svg'),
-        //   color: AppColors.kPrimaryColor,
-        // ),
-        actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 22.0),
-              child: GestureDetector(
-                  onTap: () {
-                    context.router.push(const SearchProductRoute());
-                  },
-                  child: SvgPicture.asset('assets/icons/search.svg')))
-        ],
-        titleSpacing: 16,
-        title: const Text(
-          'LUNA market',
-          style: AppTextStyles.appBarTextStylea,
-        ),
-      ),
+      backgroundColor: AppColors.kGray1,
       body: SmartRefresher(
         controller: refreshController,
         onRefresh: () {
@@ -148,6 +122,7 @@ class _HomePageState extends State<HomePage> {
                 .popShops(),
             BlocProvider.of<catCubit.CatsCubit>(context).cats(),
             BlocProvider.of<bannerCubit.BannersCubit>(context).banners(),
+            BlocProvider.of<StoriesSellerCubit>(context).news(),
           ]);
           refreshController.refreshCompleted();
         },
@@ -155,7 +130,151 @@ class _HomePageState extends State<HomePage> {
           cacheExtent: 5000,
           shrinkWrap: true,
           children: [
+            SizedBox(
+              height: 50,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.location_on,
+                    color: AppColors.mainPurpleColor,
+                  ),
+                  Text(
+                    'Алматы',
+                    style: AppTextStyles.titleTextStyle.copyWith(
+                        color: AppColors.mainPurpleColor,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Spacer(),
+                  Icon(
+                    Icons.notifications,
+                    color: AppColors.mainPurpleColor,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            BlocBuilder<StoriesSellerCubit, StoriesSellerState>(
+                builder: (context, state) {
+              if (state is ErrorState) {
+                return Center(
+                  child: Text(
+                    state.message,
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                  ),
+                );
+              }
+              if (state is LoadedState) {
+                return Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SizedBox(
+                    height: 90,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.storiesSeelerModel.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () => Get.to(StoryScreen(
+                                stories:
+                                    state.storiesSeelerModel[index].stories)),
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 5),
+                              padding: const EdgeInsets.all(2),
+                              height: 90,
+                              width: 90,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: index == 0
+                                      ? AppColors.mainPurpleColor
+                                      : AppColors.kGray200,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    12), // 14 - (4 padding + 2 border) = 8, but 10 looks better
+                                child: Image.network(
+                                  "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                  ),
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SizedBox(
+                    height: 80,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: const EdgeInsets.only(left: 5),
+                            padding: const EdgeInsets.all(1),
+                            height: 80,
+                            width: 80,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: index == 0
+                                    ? AppColors.mainPurpleColor
+                                    : Colors.white,
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    10), // 14 - (4 padding + 2 border) = 8, but 10 looks better
+                                child: ShimmerBox()),
+                          );
+                        }),
+                  ),
+                );
+              }
+            }),
+            SizedBox(
+              height: 16,
+            ),
             const BannerPage(),
+            const SizedBox(
+              height: 16,
+            ),
+            Container(
+              height: 44,
+              margin: EdgeInsets.symmetric(horizontal: 16),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: AppColors.kWhite,
+                  borderRadius: BorderRadius.circular(12)),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 12,
+                  ),
+                  InkWell(
+                      onTap: () {
+                        context.router.push(const SearchProductRoute());
+                      },
+                      child: Icon(Icons.search, color: AppColors.kGray300)),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    'Искать',
+                    style: AppTextStyles.titleTextStyle
+                        .copyWith(color: AppColors.kGray300),
+                  )
+                ],
+              ),
+            ),
             const SizedBox(
               height: 16,
             ),
@@ -163,27 +282,39 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 16,
             ),
-            const PopularCatsHomepage(),
-            const SizedBox(
-              height: 16,
-            ),
-            const PopularShopsPage(),
-            const SizedBox(
-              height: 16,
-            ),
-            Container(
-              color: Colors.white,
+            // const PopularCatsHomepage(),
+            // const SizedBox(
+            //   height: 16,
+            // ),
+            // const PopularShopsPage(),
+            // const SizedBox(
+            //   height: 16,
+            // ),
+            SizedBox(
+              // color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Вы недавно смотрели',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Недавно смотрели',
+                          style: TextStyle(
+                              color: AppColors.kGray900,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        const Text(
+                          'Показать все',
+                          style: TextStyle(
+                              color: AppColors.mainPurpleColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       height: 16,
@@ -209,7 +340,7 @@ class _HomePageState extends State<HomePage> {
 
                           if (state is productState.LoadedState) {
                             return SizedBox(
-                                height: 286,
+                                height: 315,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: state.productModel.length,
@@ -239,29 +370,36 @@ class _HomePageState extends State<HomePage> {
                     //       BannerWatcehRecently(),
                     //       BannerWatcehRecently(),
                     //     ])),
-                    const SizedBox(
-                      height: 20,
-                    ),
                   ],
                 ),
               ),
             ),
-            const SizedBox(
-              height: 16,
-            ),
+
             Container(
-              color: Colors.white,
+              // color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Вас могут заинтересовать',
-                      style: TextStyle(
-                          color: AppColors.kGray900,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Недавно смотрели',
+                          style: TextStyle(
+                              color: AppColors.kGray900,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        const Text(
+                          'Показать все',
+                          style: TextStyle(
+                              color: AppColors.mainPurpleColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       height: 16,
@@ -294,7 +432,7 @@ class _HomePageState extends State<HomePage> {
                             return SizedBox(
                                 // width: 400,
                                 height: state.productModel.length >= 2
-                                    ? MediaQuery.of(context).size.height * 0.64
+                                    ? MediaQuery.of(context).size.height * 0.72
                                     : MediaQuery.of(context).size.height * 0.32,
                                 child: GridView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -302,11 +440,7 @@ class _HomePageState extends State<HomePage> {
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 2,
-                                          childAspectRatio:
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.0009,
+                                          childAspectRatio: 1.70,
                                           crossAxisSpacing: 10,
                                           mainAxisSpacing: 0),
                                   itemCount: state.productModel.length >= 8
@@ -354,123 +488,123 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(
-              height: 16,
+              height: 100,
             ),
-            BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
-                builder: (context, state) {
-              if (state is metaState.LoadedState) {
-                metasBody.addAll([
-                  state.metas.terms_of_use!,
-                  state.metas.privacy_policy!,
-                  state.metas.contract_offer!,
-                  state.metas.shipping_payment!,
-                  state.metas.TTN!,
-                ]);
+            // BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
+            //     builder: (context, state) {
+            //   if (state is metaState.LoadedState) {
+            //     metasBody.addAll([
+            //       state.metas.terms_of_use!,
+            //       state.metas.privacy_policy!,
+            //       state.metas.contract_offer!,
+            //       state.metas.shipping_payment!,
+            //       state.metas.TTN!,
+            //     ]);
 
-                return Container(
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Партнерам',
-                          style: TextStyle(
-                              color: AppColors.kGray900,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        // const SizedBox(
-                        //   height: 20,
-                        // ),
-                        // const Text(
-                        //   'Кабинет продавца',
-                        //   style: AppTextStyles.kcolorPartnerTextStyle,
-                        // ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        SizedBox(
-                          height: 150,
-                          child: ListView.builder(
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    //  print(state.partner[index].url.toString());
-                                    Get.to(() => MetasPage(
-                                          title: metas[index],
-                                          body: metasBody[index],
-                                        ));
-                                  },
-                                  child: SizedBox(
-                                    height: 24,
-                                    child: Text(
-                                      metas[index],
-                                      style:
-                                          AppTextStyles.kcolorPartnerTextStyle,
-                                    ),
-                                  ),
-                                );
-                              }),
-                        ),
+            //     return Container(
+            //       color: Colors.white,
+            //       child: Padding(
+            //         padding: const EdgeInsets.all(16.0),
+            //         child: Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             const Text(
+            //               'Партнерам',
+            //               style: TextStyle(
+            //                   color: AppColors.kGray900,
+            //                   fontSize: 16,
+            //                   fontWeight: FontWeight.w700),
+            //             ),
+            //             // const SizedBox(
+            //             //   height: 20,
+            //             // ),
+            //             // const Text(
+            //             //   'Кабинет продавца',
+            //             //   style: AppTextStyles.kcolorPartnerTextStyle,
+            //             // ),
+            //             const SizedBox(
+            //               height: 20,
+            //             ),
+            //             SizedBox(
+            //               height: 150,
+            //               child: ListView.builder(
+            //                   itemCount: 5,
+            //                   itemBuilder: (context, index) {
+            //                     return GestureDetector(
+            //                       onTap: () {
+            //                         //  print(state.partner[index].url.toString());
+            //                         Get.to(() => MetasPage(
+            //                               title: metas[index],
+            //                               body: metasBody[index],
+            //                             ));
+            //                       },
+            //                       child: SizedBox(
+            //                         height: 24,
+            //                         child: Text(
+            //                           metas[index],
+            //                           style:
+            //                               AppTextStyles.kcolorPartnerTextStyle,
+            //                         ),
+            //                       ),
+            //                     );
+            //                   }),
+            //             ),
 
-                        // const SizedBox(
-                        //   height: 12,
-                        // ),
-                        // InkWell(
-                        //   onTap: () {
-                        //     Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //           builder: (context) =>
-                        //               const UserAgreementPage()),
-                        //     );
-                        //   },
-                        //   child: const Text(
-                        //     'Пользовательское соглашение',
-                        //     style: AppTextStyles.kcolorPartnerTextStyle,
-                        //   ),
-                        // ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              } else {
-                return Shimmer(
-                  duration: const Duration(seconds: 3), //Default value
-                  interval: const Duration(
-                      microseconds: 1), //Default value: Duration(seconds: 0)
-                  color: Colors.white, //Default value
-                  colorOpacity: 0, //Default value
-                  enabled: true, //Default value
-                  direction: const ShimmerDirection.fromLTRB(), //Default Value
-                  child: Container(
-                    margin: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.grey.withOpacity(0.6),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 16,
-                      ),
-                      child: SizedBox(
-                        height: 90,
-                        width: 90,
-                      ),
-                    ),
-                  ),
-                );
-              }
-            }),
-            const SizedBox(
-              height: 60,
-            ),
+            //             // const SizedBox(
+            //             //   height: 12,
+            //             // ),
+            //             // InkWell(
+            //             //   onTap: () {
+            //             //     Navigator.push(
+            //             //       context,
+            //             //       MaterialPageRoute(
+            //             //           builder: (context) =>
+            //             //               const UserAgreementPage()),
+            //             //     );
+            //             //   },
+            //             //   child: const Text(
+            //             //     'Пользовательское соглашение',
+            //             //     style: AppTextStyles.kcolorPartnerTextStyle,
+            //             //   ),
+            //             // ),
+            //             const SizedBox(
+            //               height: 8,
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     );
+            //   } else {
+            //     return Shimmer(
+            //       duration: const Duration(seconds: 3), //Default value
+            //       interval: const Duration(
+            //           microseconds: 1), //Default value: Duration(seconds: 0)
+            //       color: Colors.white, //Default value
+            //       colorOpacity: 0, //Default value
+            //       enabled: true, //Default value
+            //       direction: const ShimmerDirection.fromLTRB(), //Default Value
+            //       child: Container(
+            //         margin: const EdgeInsets.all(16),
+            //         decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(12),
+            //           color: Colors.grey.withOpacity(0.6),
+            //         ),
+            //         child: const Padding(
+            //           padding: EdgeInsets.symmetric(
+            //             vertical: 16,
+            //           ),
+            //           child: SizedBox(
+            //             height: 90,
+            //             width: 90,
+            //           ),
+            //         ),
+            //       ),
+            //     );
+            //   }
+            // }),
+            // const SizedBox(
+            //   height: 60,
+            // ),
           ],
         ),
       ),

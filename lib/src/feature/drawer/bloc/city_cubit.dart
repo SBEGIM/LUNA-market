@@ -28,6 +28,13 @@ class CityCubit extends Cubit<CityState> {
     }
   }
 
+  Future<List<CityModel>> citiesList(country) async {
+    if (_cities.isEmpty) {
+      await citiesCdek(country ?? 'RU');
+    }
+    return _cities;
+  }
+
   Future<void> citiesCdek(String? countryCode) async {
     try {
       emit(LoadingState());
