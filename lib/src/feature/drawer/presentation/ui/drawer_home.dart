@@ -34,11 +34,14 @@ class _DrawerPageState extends State<DrawerPage> {
   bool isSwitchedTouch = false;
   bool? switchValue;
 
+  bool isAuthUser = false;
+
   final _box = GetStorage();
   int index = 0;
 
   @override
   void initState() {
+    isAuthUser = _box.read('name') != 'Не авторизированный' ? true : false;
     _box.read('avatar');
     _box.read('name');
 
@@ -48,7 +51,7 @@ class _DrawerPageState extends State<DrawerPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext dialogContext) {
     return Scaffold(
       backgroundColor: AppColors.kWhite,
       appBar: null,
@@ -60,7 +63,7 @@ class _DrawerPageState extends State<DrawerPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                height: 430,
+                height: 462,
                 padding: const EdgeInsets.only(top: 40),
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -79,7 +82,8 @@ class _DrawerPageState extends State<DrawerPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    _box.read('name') != 'Не авторизированный'
+                    SizedBox(height: 30),
+                    isAuthUser
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,8 +133,8 @@ class _DrawerPageState extends State<DrawerPage> {
                                     SizedBox(height: 20),
                                     Text('Добро пожаловать!',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 22,
                                             color: Colors.white)),
                                     const SizedBox(height: 4),
                                     SizedBox(
@@ -140,6 +144,9 @@ class _DrawerPageState extends State<DrawerPage> {
                                         textAlign: TextAlign.center,
                                         style: AppTextStyles.categoryTextStyle
                                             .copyWith(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 16,
+                                                height: 22 / 16,
                                                 color: AppColors.kGray200),
                                       ),
                                     )
@@ -148,7 +155,7 @@ class _DrawerPageState extends State<DrawerPage> {
                               ],
                             ),
                           ),
-                    _box.read('name') != 'Не авторизированный'
+                    isAuthUser
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,24 +197,20 @@ class _DrawerPageState extends State<DrawerPage> {
                               ),
                             ],
                           )
-                        : SizedBox(),
-                    SizedBox(height: 20),
+                        : SizedBox.shrink(),
+                    SizedBox(height: 12),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DefaultButton(
-                          text: _box.read('name') != 'Не авторизированный'
-                              ? 'Другой кабинет'
-                              : 'Начать',
+                          text: isAuthUser ? 'Другой кабинет' : 'Начать',
                           press: () {
-                            showRolePicker(
-                                context,
-                                _box.read('name') != 'Не авторизированный'
-                                    ? 'change_cabinet'
-                                    : 'auth_user');
+                            showRolePicker(context,
+                                isAuthUser ? 'change_cabinet' : 'auth_user');
                           },
                           color: AppColors.kLightBlackColor,
                           backgroundColor: AppColors.kWhite,
-                          textStyle: AppTextStyles.appBarTextStyle,
+                          textStyle: AppTextStyles.aboutTextStyle.copyWith(
+                              fontSize: 18, fontWeight: FontWeight.w600),
                           width: double.infinity),
                     )
                   ],
@@ -217,39 +220,50 @@ class _DrawerPageState extends State<DrawerPage> {
               Column(
                 children: [
                   SizedBox(height: 15),
-                  buildProfileItem(
-                    onTap: () async {
-                      if (_box.read('name') == 'Не авторизированный') {
-                        GetStorage().remove('token');
-                        BlocProvider.of<AppBloc>(context)
-                            .add(const AppEvent.exiting());
-                      } else {
-                        final data = await Get.to(EditProfilePage(
-                          name: _box.read('name'),
-                          phone: _box.read('phone') ?? '',
-                          gender: _box.read('gender') ?? '',
-                          birthday: _box.read('birthday') ?? '',
-                          country: _box.read('country') ?? '',
-                          city: _box.read('city') ?? '',
-                          street: _box.read('street') ?? '',
-                          home: _box.read('home') ?? '',
-                          porch: _box.read('porch') ?? '',
-                          floor: _box.read('floor') ?? '',
-                          room: _box.read('room') ?? '',
-                          email: _box.read('email') ?? '',
-                        ));
+                  isAuthUser
+                      ? buildProfileItem(
+                          onTap: () async {
+                            if (!isAuthUser) {
+                              GetStorage().remove('token');
+                              BlocProvider.of<AppBloc>(context)
+                                  .add(const AppEvent.exiting());
+                            } else {
+                              final data = await Get.to(EditProfilePage(
+                                name: _box.read('name'),
+                                phone: _box.read('phone') ?? '',
+                                gender: _box.read('gender') ?? '',
+                                birthday: _box.read('birthday') ?? '',
+                                country: _box.read('country') ?? '',
+                                city: _box.read('city') ?? '',
+                                street: _box.read('street') ?? '',
+                                home: _box.read('home') ?? '',
+                                porch: _box.read('porch') ?? '',
+                                floor: _box.read('floor') ?? '',
+                                room: _box.read('room') ?? '',
+                                email: _box.read('email') ?? '',
+                              ));
 
-                        if (data != null) {
-                          setState(() {});
-                        }
-                      }
-                    },
-                    title: 'Мои данные',
-                    iconPath: Assets.icons.sellerProfileDataIcon.path,
-                  ),
-                  const Divider(
-                    color: AppColors.kGray200,
-                  ),
+                              if (data != null) {
+                                setState(() {});
+                              }
+                            }
+                          },
+                          title: 'Мои данные',
+                          iconPath: Assets.icons.sellerProfileDataIcon.path,
+                        )
+                      : SizedBox.shrink(),
+
+                  isAuthUser
+                      ? Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16.0, right: 16, top: 8),
+                          child: const Divider(
+                            thickness: 0.3,
+                            height: 0,
+                            color: AppColors.kGray200,
+                          ),
+                        )
+                      : SizedBox.shrink(),
 
                   buildProfileItem(
                     onTap: () {
@@ -262,8 +276,14 @@ class _DrawerPageState extends State<DrawerPage> {
                     title: 'О нас',
                     iconPath: Assets.icons.about.path,
                   ),
-                  const Divider(
-                    color: AppColors.kGray200,
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 16.0, right: 16, top: 8),
+                    child: const Divider(
+                      thickness: 0.3,
+                      height: 0,
+                      color: AppColors.kGray200,
+                    ),
                   ),
 
                   buildProfileItem(
@@ -272,8 +292,14 @@ class _DrawerPageState extends State<DrawerPage> {
                     title: 'Техподдержка',
                     iconPath: Assets.icons.supportCenter.path,
                   ),
-                  const Divider(
-                    color: AppColors.kGray200,
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 16.0, right: 16, top: 8),
+                    child: const Divider(
+                      thickness: 0.3,
+                      height: 0,
+                      color: AppColors.kGray200,
+                    ),
                   ),
                   buildProfileItem(
                     onTap: () {},
@@ -287,8 +313,14 @@ class _DrawerPageState extends State<DrawerPage> {
                     title: 'Уведомления',
                     iconPath: Assets.icons.sellerNotification.path,
                   ),
-                  const Divider(
-                    color: AppColors.kGray200,
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 16.0, right: 16, top: 8),
+                    child: const Divider(
+                      thickness: 0.3,
+                      height: 0,
+                      color: AppColors.kGray200,
+                    ),
                   ),
                   // InkWell(
                   //   onTap: () {
@@ -463,19 +495,20 @@ class _DrawerPageState extends State<DrawerPage> {
                   //   color: AppColors.kGray200,
                   //   height: 0,
                   // ),
-
-                  buildProfileItem(
-                    onTap: () {
-                      final deviceToken = _box.read('device_token');
-                      GetStorage().erase();
-                      _box.write('device_token', deviceToken);
-                      // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
-                      BlocProvider.of<AppBloc>(context)
-                          .add(const AppEvent.exiting());
-                    },
-                    title: 'Выйти',
-                    iconPath: Assets.icons.sellerBack.path,
-                  ),
+                  isAuthUser
+                      ? buildProfileItem(
+                          onTap: () {
+                            final deviceToken = _box.read('device_token');
+                            GetStorage().erase();
+                            _box.write('device_token', deviceToken);
+                            // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
+                            BlocProvider.of<AppBloc>(context)
+                                .add(const AppEvent.exiting());
+                          },
+                          title: 'Выйти',
+                          iconPath: Assets.icons.sellerBack.path,
+                        )
+                      : SizedBox.shrink(),
 
                   // GestureDetector(
                   //   onTap: () {
@@ -818,10 +851,10 @@ Widget buildProfileItem({
               Text(
                 title,
                 style: const TextStyle(
-                  color: AppColors.kGray900,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
+                    color: AppColors.kGray900,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0),
               ),
             ],
           ),
@@ -856,20 +889,28 @@ Widget buildProfileAvatar(_box) {
       name != null &&
       name != 'Не авторизированный';
 
-  final ImageProvider avatarImage = isAuthorized
-      ? NetworkImage('https://lunamarket.ru/storage/$avatar')
-      : AssetImage(Assets.icons.accountHead.path);
-
-  return Container(
-    height: 94,
-    width: 94,
-    decoration: BoxDecoration(
-      color: AppColors.mainPurpleColor.withOpacity(0.5),
-      borderRadius: BorderRadius.circular(51),
-      image: DecorationImage(
-          image: avatarImage,
-          scale: 3,
-          fit: isAuthorized != true ? BoxFit.contain : BoxFit.cover),
-    ),
-  );
+  return isAuthorized
+      ? ClipRRect(
+          borderRadius: BorderRadius.circular(120),
+          child: Image.network(
+            'https://lunamarket.ru/storage/$avatar',
+            height: 94,
+            width: 94,
+            fit: BoxFit.cover,
+          ),
+        )
+      : Container(
+          height: 94,
+          width: 94,
+          padding: isAuthorized ? EdgeInsets.zero : const EdgeInsets.all(29.5),
+          decoration: BoxDecoration(
+            color: AppColors.mainPurpleColor.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(51),
+          ),
+          child: Image(
+            image: AssetImage(Assets.icons.accountHead.path),
+            fit: isAuthorized ? BoxFit.cover : BoxFit.contain,
+            alignment: Alignment.center,
+          ),
+        );
 }

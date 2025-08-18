@@ -7,6 +7,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
+import 'package:haji_market/src/feature/bloger/profile/presentation/ui/blogger_visit_card_page.dart';
+import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/blogger_show_list_widget.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/edit_profile_page.dart';
 import 'package:haji_market/src/feature/drawer/presentation/ui/about_us_page.dart';
 import 'package:image_picker/image_picker.dart';
@@ -44,6 +46,9 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
     });
   }
 
+  final avatarPath = GetStorage().read('blogger_avatar');
+  final avatarUrl =
+      'https://lunamarket.ru/storage/${GetStorage().read('blogger_avatar')}';
   RefreshController _controller = RefreshController();
 
   @override
@@ -60,100 +65,127 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
       backgroundColor: AppColors.kWhite,
       resizeToAvoidBottomInset: false,
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 24),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  if (_image == null) {
-                    Get.defaultDialog(
-                      title: "Изменить фото",
-                      middleText: '',
-                      textConfirm: 'Камера',
-                      textCancel: 'Галерея',
-                      titlePadding: const EdgeInsets.only(top: 40),
-                      onConfirm: () {
-                        change = true;
-                        _getImage();
-                      },
-                      onCancel: () {
-                        change = false;
-                        _getImage();
-                      },
-                    );
-                  }
-                },
-                child: Stack(
-                  children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundColor: AppColors.kAlpha12,
-                      child: CircleAvatar(
-                        radius: 59.5,
-                        backgroundColor: AppColors.kGray200,
-                        backgroundImage: NetworkImage(
-                          'https://lunamarket.ru/storage/${GetStorage().read('blogger_avatar')}',
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Image.asset(
-                        Assets.icons.sellerCameraIcon.path,
-                        height: 40,
-                        width: 40,
-                      ),
-                    ),
-                  ],
+          SizedBox(height: 80),
+          GestureDetector(
+            onTap: () {
+              if (_image == null) {
+                Get.defaultDialog(
+                  title: "Изменить фото",
+                  middleText: '',
+                  textConfirm: 'Камера',
+                  textCancel: 'Галерея',
+                  titlePadding: const EdgeInsets.only(top: 40),
+                  onConfirm: () {
+                    change = true;
+                    _getImage();
+                  },
+                  onCancel: () {
+                    change = false;
+                    _getImage();
+                  },
+                );
+              }
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(120),
+                  child: Image.network(
+                    avatarUrl,
+                    fit: BoxFit.fill,
+                    height: 90,
+                    width: 90,
+                  ),
                 ),
-              ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Image.asset(
+                    Assets.icons.sellerCameraIcon.path,
+                    height: 28,
+                    width: 28,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 4),
+          Text(
+            '${GetStorage().read('blogger_nick_name')}',
+            style: const TextStyle(
+                fontWeight: FontWeight.w700,
+                color: AppColors.kGray900,
+                fontSize: 16),
+          ),
+          const SizedBox(height: 5),
+          // GetStorage().read('seller_partner') == '1'
+          //     ?
 
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
               Text(
-                '${GetStorage().read('blogger_nick_name')}',
-                style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.kGray900,
-                    fontSize: 16),
+                'Блогер',
+                style: AppTextStyles.sellerNameTextStyle,
               ),
-              const SizedBox(height: 5),
-              GetStorage().read('seller_partner') == '1'
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Блогер',
-                          style: AppTextStyles.sellerNameTextStyle,
-                        ),
-                        SizedBox(width: 5),
-                        SvgPicture.asset(Assets.icons.sellerIcon.path),
-                      ],
-                    )
-                  : const SizedBox(),
-              // InkWell(
-              //   onTap: () async {
-              //     final data = await Get.to(ReqirectProfilePage());
-
-              //     if (data != null) {
-              //       setState(() {});
-              //     }
-              //   },
-              //   child: const Text(
-              //     'Редактирование',
-              //     style: TextStyle(
-              //         color: AppColors.kPrimaryColor,
-              //         fontSize: 14,
-              //         fontWeight: FontWeight.w400),
-              //   ),
-              // ),
+              SizedBox(width: 5),
+              SvgPicture.asset(Assets.icons.sellerIcon.path),
             ],
           ),
+
+          SizedBox(height: 12),
+          InkWell(
+            onTap: () {
+              BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(
+                  state: AppState.inAppUserState(index: 1)));
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
+              // );
+            },
+            child: Container(
+              height: 36,
+              width: 190,
+              decoration: BoxDecoration(
+                color: AppColors.kWhite,
+                border: Border.all(
+                  color: AppColors.kGray200,
+                  width: 0.2,
+                ),
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x0A000000),
+                    offset: Offset(0, 2),
+                    blurRadius: 4,
+                    spreadRadius: 0,
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  SizedBox(width: 13),
+                  Image.asset(
+                    Assets.icons.backClientIcon.path,
+                    height: 18,
+                    width: 18,
+                  ),
+                  SizedBox(width: 9),
+                  Text(
+                    'Вернутся в маркет',
+                    style: AppTextStyles.size16Weight500,
+                  )
+                ],
+              ),
+            ),
+          ),
+
           const SizedBox(
-            height: 8,
+            height: 24,
           ),
           // Container(
           //   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -396,77 +428,104 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const StatisticsBloggerShowPage()),
+                MaterialPageRoute(builder: (context) => BloggerVisitCardPage()),
               );
             },
-            title: 'Мой заработок',
-            iconPath: Assets.icons.sellerTransaction.path,
+            title: 'Визитная карточка',
+            iconPath: Assets.icons.visitCardIcon.path,
           ),
           buildProfileItem(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => BloggerCardPage(
-                          check: _box.read('blogger_invoice') ?? '',
-                          card: _box.read('blogger_card') ?? '',
-                        )),
+                    builder: (context) => const StatisticsBloggerShowPage()),
               );
             },
-            title: 'Cпособ оплаты',
+            title: 'Аналитика продаж',
+            iconPath: Assets.icons.sellerTransaction.path,
+          ),
+          buildProfileItem(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AboutUsPage()),
+              );
+            },
+            title: 'О нас',
             iconPath: Assets.icons.about.path,
           ),
+          // buildProfileItem(
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) => BloggerCardPage(
+          //                 check: _box.read('blogger_invoice') ?? '',
+          //                 card: _box.read('blogger_card') ?? '',
+          //               )),
+          //     );
+          //   },
+          //   title: 'Cпособ оплаты',
+          //   iconPath: Assets.icons.about.path,
+          // ),
           buildProfileItem(
             onTap: () =>
                 launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
             title: 'Техподдержка',
             iconPath: Assets.icons.supportCenter.path,
           ),
+
           buildProfileItem(
-            onTap: () {},
-            switchWidget: true,
-            switchValue: switchValue,
-            onSwitchChanged: (value) {
-              switchValue = value;
-              print(value);
-              setState(() {});
-            },
-            title: 'Уведомления',
-            iconPath: Assets.icons.sellerNotification.path,
+            onTap: () => showBloggerSettingOptions(context, 'Настройка', () {}),
+            title: 'Настройка',
+            count: 3,
+            iconPath: Assets.icons.settingIcon.path,
           ),
-          buildProfileItem(
-            onTap: () {
-              BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(
-                  state: AppState.inAppUserState(index: 1)));
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
-              // );
-            },
-            title: 'Вернутся в маркет',
-            iconPath: Assets.icons.sellerBack.path,
-          ),
+          // buildProfileItem(
+          //   onTap: () {},
+          //   switchWidget: true,
+          //   switchValue: switchValue,
+          //   onSwitchChanged: (value) {
+          //     switchValue = value;
+          //     print(value);
+          //     setState(() {});
+          //   },
+          //   title: 'Уведомления',
+          //   iconPath: Assets.icons.sellerNotification.path,
+          // ),
+          // buildProfileItem(
+          //   onTap: () {
+          //     BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(
+          //         state: AppState.inAppUserState(index: 1)));
+          //     // Navigator.push(
+          //     //   context,
+          //     //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
+          //     // );
+          //   },
+          //   title: 'Вернутся в маркет',
+          //   iconPath: Assets.icons.sellerBack.path,
+          // ),
           Spacer(),
-          SafeArea(
-            top: false,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: DefaultButton(
-                width: double.infinity,
-                text: 'Выйти из аккаунта ',
-                textStyle: AppTextStyles.defaultButtonTextStyle,
-                press: () {
-                  GetStorage().remove('blogger_token');
-                  BlocProvider.of<AppBloc>(context).add(
-                      const AppEvent.chageState(
-                          state: AppState.inAppUserState(index: 1)));
-                },
-                color: Colors.black,
-                backgroundColor: AppColors.kButtonColor,
-              ),
-            ),
-          ),
+          // SafeArea(
+          //   top: false,
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(12.0),
+          //     child: DefaultButton(
+          //       width: double.infinity,
+          //       text: 'Выйти из аккаунта ',
+          //       textStyle: AppTextStyles.defaultButtonTextStyle,
+          //       press: () {
+          //         GetStorage().remove('blogger_token');
+          //         BlocProvider.of<AppBloc>(context).add(
+          //             const AppEvent.chageState(
+          //                 state: AppState.inAppUserState(index: 1)));
+          //       },
+          //       color: Colors.black,
+          //       backgroundColor: AppColors.kButtonColor,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -478,6 +537,7 @@ Widget buildProfileItem({
   required String iconPath,
   required VoidCallback onTap,
   bool? switchWidget,
+  int? count,
   ValueChanged<bool>? onSwitchChanged,
   bool? switchValue,
 }) {
@@ -517,11 +577,26 @@ Widget buildProfileItem({
                     trackOutlineWidth: MaterialStateProperty.all(0.01),
                   ),
                 )
-              : const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: AppColors.arrowColor,
-                )
+              : (count == null
+                  ? const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                      color: AppColors.arrowColor,
+                    )
+                  : Row(
+                      children: [
+                        Text(
+                          '$count',
+                          style: AppTextStyles.size16Weight400,
+                        ),
+                        SizedBox(width: 6),
+                        const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 14,
+                          color: AppColors.arrowColor,
+                        )
+                      ],
+                    ))
         ],
       ),
     ),

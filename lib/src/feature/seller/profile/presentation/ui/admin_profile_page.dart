@@ -11,6 +11,7 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_edit_admin_cubit.dart'
     as editCubit;
+import 'package:haji_market/src/feature/seller/profile/presentation/ui/seller_show_list_widget.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/edit_profile_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/seller_service_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/statistics_admin_show_page.dart';
@@ -222,6 +223,54 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                     //   ),
                     // ),
 
+                    SizedBox(height: 12),
+                    InkWell(
+                      onTap: () {
+                        BlocProvider.of<AppBloc>(context).add(
+                            const AppEvent.chageState(
+                                state: AppState.inAppUserState(index: 1)));
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
+                        // );
+                      },
+                      child: Container(
+                        height: 36,
+                        width: 190,
+                        decoration: BoxDecoration(
+                          color: AppColors.kWhite,
+                          border: Border.all(
+                            color: AppColors.kGray200,
+                            width: 0.2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0x0A000000),
+                              offset: Offset(0, 2),
+                              blurRadius: 4,
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            SizedBox(width: 13),
+                            Image.asset(
+                              Assets.icons.backClientIcon.path,
+                              height: 18,
+                              width: 18,
+                            ),
+                            SizedBox(width: 9),
+                            Text(
+                              'Вернутся в маркет',
+                              style: AppTextStyles.size16Weight500,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+
                     SizedBox(height: 22)
                   ],
                 ),
@@ -339,48 +388,56 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       title: 'Техподдержка',
                       iconPath: Assets.icons.supportCenter.path,
                     ),
-                    buildProfileItem(
-                      onTap: () {},
-                      switchWidget: true,
-                      switchValue: switchValue,
-                      onSwitchChanged: (value) {
-                        switchValue = value;
-                        print(value);
-                        setState(() {});
-                      },
-                      title: 'Уведомления',
-                      iconPath: Assets.icons.sellerNotification.path,
-                    ),
-                    buildProfileItem(
-                      onTap: () {
-                        BlocProvider.of<AppBloc>(context).add(
-                            const AppEvent.chageState(
-                                state: AppState.inAppUserState(index: 1)));
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
-                        // );
-                      },
-                      title: 'Вернутся в маркет',
-                      iconPath: Assets.icons.sellerBack.path,
-                    ),
+                    // buildProfileItem(
+                    //   onTap: () {},
+                    //   switchWidget: true,
+                    //   switchValue: switchValue,
+                    //   onSwitchChanged: (value) {
+                    //     switchValue = value;
+                    //     print(value);
+                    //     setState(() {});
+                    //   },
+                    //   title: 'Уведомления',
+                    //   iconPath: Assets.icons.sellerNotification.path,
+                    // ),
+                    // buildProfileItem(
+                    //   onTap: () {
+                    //     BlocProvider.of<AppBloc>(context).add(
+                    //         const AppEvent.chageState(
+                    //             state: AppState.inAppUserState(index: 1)));
+                    //     // Navigator.push(
+                    //     //   context,
+                    //     //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
+                    //     // );
+                    //   },
+                    //   title: 'Вернутся в маркет',
+                    //   iconPath: Assets.icons.sellerBack.path,
+                    // ),
                     SizedBox(height: 10),
-                    DefaultButton(
-                        text: 'Выйти из аккаунта ',
-                        textStyle: AppTextStyles.defaultButtonTextStyle,
-                        press: () {
-                          GetStorage().remove('seller_token');
-                          GetStorage().remove('seller_id');
-                          GetStorage().remove('seller_name');
-                          GetStorage().remove('seller_image');
 
-                          BlocProvider.of<AppBloc>(context).add(
-                              const AppEvent.chageState(
-                                  state: AppState.inAppUserState(index: 1)));
-                        },
-                        color: Colors.black,
-                        backgroundColor: AppColors.kButtonColor,
-                        width: 358),
+                    buildProfileItem(
+                      onTap: () =>
+                          showSellerSettingOptions(context, 'Настройка', () {}),
+                      title: 'Настройка',
+                      count: 3,
+                      iconPath: Assets.icons.settingIcon.path,
+                    ),
+                    // DefaultButton(
+                    //     text: 'Выйти из аккаунта ',
+                    //     textStyle: AppTextStyles.defaultButtonTextStyle,
+                    //     press: () {
+                    //       GetStorage().remove('seller_token');
+                    //       GetStorage().remove('seller_id');
+                    //       GetStorage().remove('seller_name');
+                    //       GetStorage().remove('seller_image');
+
+                    //       BlocProvider.of<AppBloc>(context).add(
+                    //           const AppEvent.chageState(
+                    //               state: AppState.inAppUserState(index: 1)));
+                    //     },
+                    //     color: Colors.black,
+                    //     backgroundColor: AppColors.kButtonColor,
+                    //     width: 358),
                     SizedBox(
                       height: 20,
                     )
@@ -467,6 +524,7 @@ Widget buildProfileItem({
   required String iconPath,
   required VoidCallback onTap,
   bool? switchWidget,
+  int? count,
   ValueChanged<bool>? onSwitchChanged,
   bool? switchValue,
 }) {
@@ -506,11 +564,26 @@ Widget buildProfileItem({
                     trackOutlineWidth: MaterialStateProperty.all(0.01),
                   ),
                 )
-              : const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: AppColors.arrowColor,
-                )
+              : (count == null
+                  ? const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                      color: AppColors.arrowColor,
+                    )
+                  : Row(
+                      children: [
+                        Text(
+                          '$count',
+                          style: AppTextStyles.size16Weight400,
+                        ),
+                        SizedBox(width: 6),
+                        const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 14,
+                          color: AppColors.arrowColor,
+                        )
+                      ],
+                    ))
         ],
       ),
     ),

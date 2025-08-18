@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/src/feature/app/presentation/location_page.dart';
 
 part 'app_bloc.freezed.dart';
 
@@ -19,6 +21,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         checkAuth: (_CheckAuth event) async => _checkAuth(event, emit),
         chageState: (_ChangeState event) async => _changeState(event, emit),
         logining: (_Logining event) async => _login(event, emit),
+        location: (_Location event) async => _location(event, emit),
       ),
     );
   }
@@ -32,15 +35,50 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     emit(const AppState.inAppUserState());
   }
 
+  Future<void> _location(
+    _Location event,
+    Emitter<AppState> emit,
+  ) async {
+    bool exists = GetStorage().hasData('user_location_code');
+    String? city = GetStorage().read('city');
+
+    if (!exists) {
+      Get.to(LocationPage());
+
+      // Get.showSnackbar(
+
+      // Get.snackbar(
+      //   'СДЕК',
+      //   city != null
+      //       ? 'Ваш город $city?'
+      //       : 'Ваш город неизвестен для доставки!',
+      //   icon: const Icon(Icons.add_location_sharp),
+      //   duration: const Duration(seconds: 30),
+      //   backgroundColor: Colors.orangeAccent,
+      //   onTap: (snack) {
+      //     Get.closeCurrentSnackbar();
+
+      //     Future.wait(
+      //         [BlocProvider.of<countryCubit.CountryCubit>(context).country()]);
+      //     showAlertCountryWidget(context, () {
+      //       // context.router.pop();
+      //       //  setState(() {});
+      //     }, false);
+      //   },
+      // );
+      // //  / );
+    }
+    if (token) {
+      emit(const AppState.inAppUserState());
+    }
+  }
+
   Future<void> _checkAuth(
     _CheckAuth event,
     Emitter<AppState> emit,
   ) async {
-
-      print('token ${token}');
-
-
     if (token) {
+      print(true);
       emit(const AppState.inAppUserState());
     } else {
       emit(const AppState.notAuthorizedState());
@@ -75,6 +113,8 @@ class AppEvent with _$AppEvent {
   const factory AppEvent.exiting() = _Exiting;
 
   const factory AppEvent.logining() = _Logining;
+
+  const factory AppEvent.location() = _Location;
 
   const factory AppEvent.chageState({
     required AppState state,

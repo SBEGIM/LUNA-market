@@ -194,11 +194,11 @@ class _ProductsPageState extends State<ProductsPage> {
 
               BlocProvider.of<productCubit.ProductCubit>(context).products();
             },
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               contentPadding: EdgeInsets.all(4),
-              prefixIcon: Icon(
-                Icons.search,
-                color: AppColors.kGray300,
+              prefixIcon: Image.asset(
+                Assets.icons.defaultSearchIcon.path,
+                scale: 1.8,
               ),
               hintText: 'Поиск',
               hintMaxLines: 1,
@@ -252,18 +252,12 @@ class _ProductsPageState extends State<ProductsPage> {
                     children: [
                       Text(
                         '${widget.cats.name}',
-                        style: const TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600),
+                        style: AppTextStyles.size16Weight600,
                       ),
                       Text(
-                        'Для тех, кто в форме',
+                        '${widget.cats.text}',
                         textAlign: TextAlign.end,
-                        style: const TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
+                        style: AppTextStyles.size14Weight400,
                       ),
                     ],
                   ),
@@ -271,15 +265,12 @@ class _ProductsPageState extends State<ProductsPage> {
                 Spacer(),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
+                    padding: const EdgeInsets.only(right: 8.0),
                     child: Image.network(
                       "https://lunamarket.ru/storage/${widget.cats.image}",
                       fit: BoxFit.cover,
-                      height: 120,
-                      width: 120,
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) return child;
-
                         return Center(
                           child: SizedBox(
                             width: 24,
@@ -311,7 +302,7 @@ class _ProductsPageState extends State<ProductsPage> {
           ),
 
           const SizedBox(
-            height: 10,
+            height: 16,
           ),
           SizedBox(
             height: 80,
@@ -362,6 +353,14 @@ class _ProductsPageState extends State<ProductsPage> {
                         width: 64,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: brands[index].icon != null
+                                ? NetworkImage(
+                                    "https://lunamarket.ru/storage/${brands[index].icon}")
+                                : const AssetImage('assets/icons/profile2.png')
+                                    as ImageProvider,
+                            fit: BoxFit.cover,
+                          ),
                           color: AppColors.mainBackgroundPurpleColor,
                           border: Border.all(
                             // Добавляем границу
@@ -373,18 +372,6 @@ class _ProductsPageState extends State<ProductsPage> {
                           shape: BoxShape
                               .circle, // Используем shape вместо borderRadius для идеального круга
                         ),
-                        child: Text(
-                          '${brands[index].name}',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 13,
-                            letterSpacing: -1,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
                       ),
                     ]),
                   ),
@@ -392,6 +379,7 @@ class _ProductsPageState extends State<ProductsPage> {
               },
             ),
           ),
+
           InkWell(
             onTap: () {
               showListBrandsOptions(context, 'Подкатегории', 'params', subCats,
@@ -423,18 +411,16 @@ class _ProductsPageState extends State<ProductsPage> {
                   SizedBox(
                     width: 8,
                   ),
-                  SvgPicture.asset(
-                    'assets/icons/filter.svg',
-                    color: Colors.black,
+                  Image.asset(
+                    Assets.icons.subListIcon.path,
+                    height: 20,
+                    width: 20,
                   ),
                   SizedBox(
                     width: 8,
                   ),
-                  Text(
-                    subCat?.name ?? 'Подкатегории',
-                    style: AppTextStyles.appBarTextStyle
-                        .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
+                  Text(subCat?.name ?? 'Подкатегории',
+                      style: AppTextStyles.size16Weight500),
                   Spacer(),
                   Padding(
                     padding: const EdgeInsets.only(right: 10.0),
@@ -601,7 +587,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                                       BorderRadius.circular(
                                                           12)),
                                               child: SvgPicture.asset(
-                                                'assets/icons/filter.svg',
+                                                Assets.icons.filter.path,
                                                 color: Colors.black,
                                               )),
                                           filterIcon == true
@@ -780,77 +766,78 @@ class _ProductsPageState extends State<ProductsPage> {
                       ),
                     ),
                   ),
-                  SliverList.list(children: [
-                    BlocConsumer<ProductAdCubit, ProductAdState>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          if (state is ErrorState) {
-                            return Center(
-                              child: Text(
-                                state.message,
-                                style: const TextStyle(
-                                    fontSize: 20.0, color: Colors.grey),
-                              ),
-                            );
-                          }
-                          if (state is LoadingState) {
-                            return const Center(
-                                child: CircularProgressIndicator(
-                                    color: Colors.indigoAccent));
-                          }
+                  // SliverList.list(children: [
+                  //   BlocConsumer<ProductAdCubit, ProductAdState>(
+                  //       listener: (context, state) {},
+                  //       builder: (context, state) {
+                  //         if (state is ErrorState) {
+                  //           return Center(
+                  //             child: Text(
+                  //               state.message,
+                  //               style: const TextStyle(
+                  //                   fontSize: 20.0, color: Colors.grey),
+                  //             ),
+                  //           );
+                  //         }
+                  //         if (state is LoadingState) {
+                  //           return const Center(
+                  //               child: CircularProgressIndicator(
+                  //                   color: Colors.indigoAccent));
+                  //         }
 
-                          if (state is LoadedState) {
-                            return state.productModel.isNotEmpty
-                                ? LimitedBox(
-                                    maxHeight: 250,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      // shrinkWrap: true,
-                                      itemCount: state.productModel.length < 6
-                                          ? state.productModel.length
-                                          : 6,
-                                      itemBuilder: (BuildContext ctx, index) {
-                                        return GestureDetector(
-                                          onTap: () => context.router.push(
-                                              DetailCardProductRoute(
-                                                  product: state
-                                                      .productModel[index])),
-                                          child: ProductAdCard(
-                                            product: state.productModel[index],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  )
-                                : Container();
-                          } else {
-                            return Container();
-                          }
-                        }),
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
-                    //   BlocBuilder<productCubit.ProductCubit,
-                    //       productState.ProductState>(
-                    //     builder: (context, state) {
-                    //       if (state is productState.LoadedState) {
-                    //         return Container(
-                    //           padding: const EdgeInsets.only(
-                    //               left: 16, top: 11, bottom: 8),
-                    //           alignment: Alignment.centerLeft,
-                    //           child: Text(
-                    //             'Найдено ${state.productModel.length} товаров',
-                    //             style: const TextStyle(
-                    //                 fontSize: 16,
-                    //                 fontWeight: FontWeight.w500,
-                    //                 color: Color.fromRGBO(144, 148, 153, 1)),
-                    //           ),
-                    //         );
-                    //       }
-                    //       return const SizedBox();
-                    //     },
-                    //   )
-                  ]),
+                  //         if (state is LoadedState) {
+                  //           return state.productModel.isNotEmpty
+                  //               ? LimitedBox(
+                  //                   maxHeight: 250,
+                  //                   child: ListView.builder(
+                  //                     scrollDirection: Axis.horizontal,
+                  //                     // shrinkWrap: true,
+                  //                     itemCount: state.productModel.length < 6
+                  //                         ? state.productModel.length
+                  //                         : 6,
+                  //                     itemBuilder: (BuildContext ctx, index) {
+                  //                       return GestureDetector(
+                  //                         onTap: () => context.router.push(
+                  //                             DetailCardProductRoute(
+                  //                                 product: state
+                  //                                     .productModel[index])),
+                  //                         child: ProductAdCard(
+                  //                           product: state.productModel[index],
+                  //                         ),
+                  //                       );
+                  //                     },
+                  //                   ),
+                  //                 )
+                  //               : Container();
+                  //         } else {
+                  //           return Container();
+                  //         }
+                  //       }),
+
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  //   BlocBuilder<productCubit.ProductCubit,
+                  //       productState.ProductState>(
+                  //     builder: (context, state) {
+                  //       if (state is productState.LoadedState) {
+                  //         return Container(
+                  //           padding: const EdgeInsets.only(
+                  //               left: 16, top: 11, bottom: 8),
+                  //           alignment: Alignment.centerLeft,
+                  //           child: Text(
+                  //             'Найдено ${state.productModel.length} товаров',
+                  //             style: const TextStyle(
+                  //                 fontSize: 16,
+                  //                 fontWeight: FontWeight.w500,
+                  //                 color: Color.fromRGBO(144, 148, 153, 1)),
+                  //           ),
+                  //         );
+                  //       }
+                  //       return const SizedBox();
+                  //     },
+                  //   )
+                  // ]),
 
                   const ProductWidget(),
 

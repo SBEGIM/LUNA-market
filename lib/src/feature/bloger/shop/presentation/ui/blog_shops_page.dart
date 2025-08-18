@@ -79,7 +79,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.kGray2,
+      backgroundColor: AppColors.kGray1,
       appBar: AppBar(
         backgroundColor: AppColors.kWhite,
         elevation: 0,
@@ -88,8 +88,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
         titleSpacing: 16,
         title: const Text(
           'Магазины',
-          style: TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+          style: AppTextStyles.size18Weight600,
         ),
         actions: [
           Padding(
@@ -101,11 +100,15 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  Icon(Icons.notifications, color: AppColors.mainPurpleColor),
+                  Image.asset(
+                    Assets.icons.defaultNotificationIcon.path,
+                    height: 22,
+                    width: 22,
+                  ),
                   if (unreadCount > 0)
                     Positioned(
-                      right: -8,
-                      top: -16,
+                      right: -5,
+                      top: -10,
                       child: Container(
                         padding: const EdgeInsets.all(4),
                         decoration: const BoxDecoration(
@@ -113,8 +116,8 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                           shape: BoxShape.circle,
                         ),
                         constraints: const BoxConstraints(
-                          minWidth: 20,
-                          minHeight: 20,
+                          minWidth: 16,
+                          minHeight: 16,
                         ),
                         child: Text(
                           '$unreadCount',
@@ -134,6 +137,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
         ],
       ),
       body: ListView(
+        padding: EdgeInsets.zero,
         children: [
           Container(
             // padding: EdgeInsets.symmetric(horizontal: 0),
@@ -159,41 +163,45 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                     );
                   }
                   if (state is sellerStoriesState.LoadedState) {
-                    return SizedBox(
-                      height: 100,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: state.storiesSeelerModel.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () => Get.to(StoryScreen(
-                                  stories:
-                                      state.storiesSeelerModel[index].stories)),
-                              child: Container(
-                                margin: const EdgeInsets.only(left: 5),
-                                padding: const EdgeInsets.all(1),
-                                height: 79,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: index == 0
-                                        ? AppColors.mainPurpleColor
-                                        : Colors.white,
-                                    width: 2,
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: SizedBox(
+                        height: 87,
+                        child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: state.storiesSeelerModel.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () => Get.to(StoryScreen(
+                                    stories: state
+                                        .storiesSeelerModel[index].stories)),
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 5),
+                                  padding: const EdgeInsets.all(1),
+                                  height: 86,
+                                  width: 86,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: index == 0
+                                          ? AppColors.mainPurpleColor
+                                          : AppColors.kGray300,
+                                      width: 2,
+                                    ),
+                                    borderRadius: BorderRadius.circular(14),
                                   ),
-                                  borderRadius: BorderRadius.circular(14),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      10), // 14 - (4 padding + 2 border) = 8, but 10 looks better
-                                  child: Image.network(
-                                    "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
-                                    fit: BoxFit.cover,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        10), // 14 - (4 padding + 2 border) = 8, but 10 looks better
+                                    child: Image.network(
+                                      "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }),
+                              );
+                            }),
+                      ),
                     );
                   } else {
                     return Padding(
@@ -239,22 +247,24 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.search,
-                        color: AppColors.kGray200,
+                      Image.asset(
+                        Assets.icons.defaultSearchIcon.path,
+                        height: 18,
+                        width: 18,
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: TextField(
                           onChanged: (value) {
-                            print(value);
                             BlocProvider.of<PopularShopsCubit>(context)
                                 .searchShops(value);
                           },
                           keyboardType: TextInputType.text,
                           controller: searchController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             hintText: 'Поиск',
+                            hintStyle: AppTextStyles.size16Weight400
+                                .copyWith(color: AppColors.kGray300),
                             border: InputBorder.none,
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
@@ -356,7 +366,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
               children: [
                 Text(
                   'Все магазины',
-                  style: AppTextStyles.defaultButtonTextStyle,
+                  style: AppTextStyles.size18Weight700,
                 ),
                 InkWell(
                   onTap: () async {
@@ -377,8 +387,8 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                     });
                   },
                   child: SvgPicture.asset(
-                    Assets.icons.filterSvg.path,
-                    color: AppColors.kLightBlackColor,
+                    Assets.icons.filter.path,
+                    color: Colors.black,
                   ),
                 )
               ],
@@ -424,16 +434,16 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                               ),
                               // margin: EdgeInsets.only(right: 5, left: 5),
                               padding: const EdgeInsets.only(
-                                  right: 0, left: 12, top: 12, bottom: 12),
+                                  right: 0, left: 8, top: 8, bottom: 8),
                               margin: EdgeInsets.only(top: 10),
-                              height: 100,
+                              height: 130,
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Container(
-                                    height: 96,
-                                    width: 140,
+                                    height: 114,
+                                    width: 120,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
@@ -465,18 +475,13 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                                       SizedBox(height: 0),
                                       Text(state.popularShops[index].name ?? '',
                                           textAlign: TextAlign.center,
-                                          style: AppTextStyles
-                                              .defaultButtonTextStyle
-                                              .copyWith(
-                                                  color: AppColors
-                                                      .kLightBlackColor,
-                                                  fontWeight: FontWeight.w500)),
+                                          style: AppTextStyles.size14Weight600),
                                       SizedBox(height: 5),
                                       Text(
                                           state.popularShops[index].catName ??
                                               'Одежда',
                                           textAlign: TextAlign.center,
-                                          style: AppTextStyles.categoryTextStyle
+                                          style: AppTextStyles.size13Weight400
                                               .copyWith(
                                                   color: AppColors.kGray300)),
                                       SizedBox(height: 5),
@@ -501,13 +506,11 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                                                 Icons.star,
                                                 color: Color(0xFFFFC107),
                                               ),
-                                              half: const Icon(
-                                                Icons.star,
-                                                color: Colors.grey,
-                                              ),
+                                              half: const Icon(Icons.star,
+                                                  color: AppColors.kGray200),
                                               empty: const Icon(
                                                 Icons.star,
-                                                color: Colors.grey,
+                                                color: AppColors.kGray200,
                                               ),
                                             ),
                                             onRatingUpdate: (double value) {},
@@ -517,11 +520,29 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                                             "${double.parse(state.popularShops[index].rating.toString())}",
                                             style: const TextStyle(
                                                 color: AppColors.kGray300,
-                                                fontSize: 12,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.w400),
                                           ),
                                         ],
                                       ),
+                                      SizedBox(height: 12),
+                                      Container(
+                                        height: 26,
+                                        padding: EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                            color: AppColors
+                                                .mainBackgroundPurpleColor,
+                                            borderRadius:
+                                                BorderRadius.circular(4)),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          'Вознаграждение блогера: ${state.popularShops[index].bonus}%',
+                                          style: AppTextStyles.size13Weight400
+                                              .copyWith(
+                                                  color: AppColors
+                                                      .mainPurpleColor),
+                                        ),
+                                      )
                                     ],
                                   ),
 

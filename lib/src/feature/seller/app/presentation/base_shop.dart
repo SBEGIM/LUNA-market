@@ -144,14 +144,16 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
               ),
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/docs.svg',
+              icon: Image.asset(
+                Assets.icons.subListIcon.path,
                 color: AppColors.kunSelectColor,
+                scale: 1.9,
               ),
               label: 'Заказы',
-              activeIcon: SvgPicture.asset(
-                'assets/icons/docs.svg',
-                color: Colors.black,
+              activeIcon: Image.asset(
+                Assets.icons.subListIcon.path,
+                color: AppColors.kLightBlackColor,
+                scale: 1.9,
               ),
             ),
             BottomNavigationBarItem(

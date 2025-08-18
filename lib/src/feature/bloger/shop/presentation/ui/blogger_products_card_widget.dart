@@ -49,7 +49,7 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
     return Column(
       children: [
         Container(
-          height: 164,
+          height: 150,
           margin: const EdgeInsets.only(left: 16, top: 7, bottom: 8, right: 16),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
@@ -178,18 +178,14 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                           padding: const EdgeInsets.only(top: 8, bottom: 3),
                           child: Text(
                             '${widget.product.catName}',
-                            style: const TextStyle(
-                                color: AppColors.kGray300,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400),
+                            style: AppTextStyles.size13Weight400
+                                .copyWith(color: AppColors.kGray300),
                           ),
                         ),
                         InkWell(
                           onTap: () {
                             widget.onSelectionChanged(
                                 !widget.isSelected, widget.product.id!);
-
-                            print('current ${widget.index}');
                           },
                           child: Container(
                             margin: const EdgeInsets.only(top: 8.0, right: 8.0),
@@ -210,11 +206,7 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         widget.product.name.toString(),
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: AppColors.kLightBlackColor,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: AppTextStyles.size14Weight600,
                         textAlign: TextAlign.start,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
@@ -230,18 +222,13 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                               SizedBox(
                                 child: Text(
                                   '${formatPrice(compoundPrice)} ₽ ',
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16),
+                                  style: AppTextStyles.size16Weight600,
                                 ),
                               ),
                               Text(
                                 '${formatPrice(widget.product.price!)} ₽ ',
-                                style: const TextStyle(
+                                style: AppTextStyles.size13Weight500.copyWith(
                                   color: AppColors.kGray300,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
                                   decoration: TextDecoration.lineThrough,
                                   decorationColor: AppColors.kGray300,
                                 ),
@@ -272,8 +259,8 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                                   AppColors.mainPurpleColor.withOpacity(0.20)),
                           child: Text(
                             'Кешбэк блогера: ${widget.product.bloggerPoint} %',
-                            style: AppTextStyles.statisticsTextStyle.copyWith(
-                                color: AppColors.mainPurpleColor, fontSize: 14),
+                            style: AppTextStyles.size13Weight400
+                                .copyWith(color: AppColors.mainPurpleColor),
                           ),
                         ),
                       ],

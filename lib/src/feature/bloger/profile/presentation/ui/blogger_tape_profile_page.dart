@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart' as tapeAdmin;
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
@@ -18,12 +20,15 @@ import '../../bloc/profile_statics_blogger_state.dart';
 class ProfileBloggerTapePage extends StatefulWidget
     implements AutoRouteWrapper {
   final int bloggerId;
+  final String bloggerCreatedAt;
+
   final String bloggerName;
   final String bloggerAvatar;
   final bool inSubscribe;
   final Function(bool)? onSubChanged;
   ProfileBloggerTapePage(
       {required this.bloggerId,
+      required this.bloggerCreatedAt,
       required this.bloggerName,
       required this.bloggerAvatar,
       Key? key,
@@ -63,7 +68,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
         .statics(widget.bloggerId);
     BlocProvider.of<tapeAdmin.TapeCubit>(context)
         .tapes(false, false, '', widget.bloggerId);
-    BlocProvider.of<tapeAdmin.TapeCubit>(context).toBloggerLoadedState();
+    // BlocProvider.of<tapeAdmin.TapeCubit>(context).toBloggerLoadedState();
     super.initState();
   }
 
@@ -82,7 +87,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
           },
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: AppColors.kPrimaryColor,
+            color: AppColors.kLightBlackColor,
           ),
         ),
         centerTitle: true,
@@ -105,157 +110,206 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
         child: Padding(
           padding: const EdgeInsets.only(top: 12),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              ListTile(
-                horizontalTitleGap: 12,
-                leading: Container(
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(60),
-                      image: DecorationImage(
-                        image: widget.bloggerAvatar != null
-                            ? NetworkImage(
-                                "https://lunamarket.ru/storage/${widget.bloggerAvatar}")
-                            : const AssetImage('assets/icons/profile2.png')
-                                as ImageProvider,
-                        fit: BoxFit.cover,
-                      )),
-                ),
-                title: Text(
-                  widget.bloggerName,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.kGray900,
-                      fontSize: 16),
-                ),
-                trailing: InkWell(
-                  onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => const ReqirectProfilePage()),
-                    // );
+              Container(
+                height: 157,
+                decoration: BoxDecoration(
+                    color: AppColors.kWhite,
+                    borderRadius: BorderRadius.circular(16)),
+                child: Column(
+                  children: [
+                    SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 16),
+                        Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(60),
+                              image: DecorationImage(
+                                image: widget.bloggerAvatar != null
+                                    ? NetworkImage(
+                                        "https://lunamarket.ru/storage/${widget.bloggerAvatar}")
+                                    : const AssetImage(
+                                            'assets/icons/profile2.png')
+                                        as ImageProvider,
+                                fit: BoxFit.cover,
+                              )),
+                        ),
+                        SizedBox(width: 12),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.bloggerName,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.kGray900,
+                                  fontSize: 16),
+                            ),
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                SvgPicture.asset(Assets.icons.sellerIcon.path),
+                                SizedBox(width: 5),
+                                Text(
+                                  'Блогер',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.kLightBlackColor,
+                                      fontSize: 13),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Дата регистрации: ${widget.bloggerCreatedAt}',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.kGray300,
+                                  fontSize: 11),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    InkWell(
+                      onTap: () {
+                        BlocProvider.of<SubsCubit>(context)
+                            .sub(widget.bloggerId);
+                        setState(() {
+                          inSub = !inSub;
+                        });
 
-                    BlocProvider.of<SubsCubit>(context).sub(widget.bloggerId);
-                    setState(() {
-                      inSub = !inSub;
-                    });
-
-                    widget.onSubChanged?.call(inSub);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        width: 1,
-                        color: AppColors.kPrimaryColor,
+                        widget.onSubChanged?.call(inSub);
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: AppColors.mainPurpleColor,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          inSub != true ? 'Подписаться' : 'Отписаться',
+                          style: const TextStyle(
+                              color: AppColors.kWhite,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
+                        ),
                       ),
                     ),
-                    child: Text(
-                      inSub != true ? 'Подписаться' : 'Отписаться',
-                      style: const TextStyle(
-                          color: AppColors.kPrimaryColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ),
+                  ],
                 ),
               ),
               const SizedBox(
                 height: 8,
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                alignment: Alignment.center,
-                width: 500,
-                height: 76,
-                child: BlocConsumer<ProfileStaticsBloggerCubit,
-                    ProfileStaticsBloggerState>(
-                  listener: (context, state) {},
-                  builder: (context, state) {
-                    if (state is LoadedState) {
-                      return Container(
-                        padding: const EdgeInsets.only(top: 16, left: 16),
-                        alignment: Alignment.center,
-                        //  height: 76,
-                        // width: 343,
-                        decoration: BoxDecoration(
-                          color: AppColors.kPrimaryColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            // crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    state.loadedProfile.videoReview.toString(),
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  const Text(
-                                    'Видео обзоров',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 40),
-                              Column(
-                                children: [
-                                  Text(
-                                    ' ${state.loadedProfile.subscribers}',
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  const Text(
-                                    'Подписчиков',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 40),
-                              Column(
-                                children: [
-                                  Text(
-                                    state.loadedProfile.sales.toString(),
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  const Text(
-                                    'Продаж',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                            ]),
-                      );
-                    } else {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                              color: Colors.indigoAccent));
-                    }
-                  },
-                ),
+              BlocBuilder<ProfileStaticsBloggerCubit,
+                  ProfileStaticsBloggerState>(
+                builder: (context, state) {
+                  if (state is LoadedState) {
+                    return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 128,
+                            height: 72,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  state.loadedProfile.videoReview.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                const Text(
+                                  'Видео обзоров',
+                                  style: TextStyle(
+                                      color: AppColors.kGray300,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            width: 128,
+                            height: 72,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  ' ${state.loadedProfile.subscribers}',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                const Text(
+                                  'Подписчики',
+                                  style: TextStyle(
+                                      color: AppColors.kGray300,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            width: 128,
+                            height: 72,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  ' ${state.loadedProfile.sales}',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                const Text(
+                                  'Продаж',
+                                  style: TextStyle(
+                                      color: AppColors.kGray300,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ]);
+                  } else {
+                    return const Center(
+                        child: CircularProgressIndicator(
+                            color: Colors.indigoAccent));
+                  }
+                },
               ),
               Expanded(
                 // padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -264,8 +318,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                 // height: 200,
                 child: Padding(
                   padding: const EdgeInsets.all(12),
-                  child: BlocConsumer<tapeAdmin.TapeCubit, tapeState.TapeState>(
-                    listener: (context, state) {},
+                  child: BlocBuilder<tapeAdmin.TapeCubit, tapeState.TapeState>(
                     builder: (context, state) {
                       if (state is tapeState.BloggerLoadedState) {
                         return SmartRefresher(

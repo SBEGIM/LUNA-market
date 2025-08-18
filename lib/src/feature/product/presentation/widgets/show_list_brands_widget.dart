@@ -26,7 +26,7 @@ void showListBrandsOptions(BuildContext context, String title, String type,
           return ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: 200,
-              maxHeight: (_filteredCategories.length * 85 + 100)
+              maxHeight: (_filteredCategories.length * 75 + 100)
                   .toDouble()
                   .clamp(250, 500),
             ),
@@ -42,13 +42,7 @@ void showListBrandsOptions(BuildContext context, String title, String type,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
-                      ),
+                      Text(title, style: AppTextStyles.size16Weight500),
                       InkWell(
                         onTap: () => Navigator.of(context).pop(),
                         child: const Icon(Icons.close),
@@ -132,13 +126,13 @@ void showListBrandsOptions(BuildContext context, String title, String type,
                               children: [
                                 Text(
                                   category.name!,
-                                  style: TextStyle(
+                                  style: AppTextStyles.size16Weight500.copyWith(
                                     color: isSelected
                                         ? AppColors.mainPurpleColor
                                         : Colors.black,
                                     fontWeight: isSelected
                                         ? FontWeight.w600
-                                        : FontWeight.w400,
+                                        : FontWeight.w500,
                                   ),
                                 ),
                                 if (isSelected)

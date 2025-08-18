@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/seller/chat/presentation/message_seller_page.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -113,7 +114,7 @@ class _ChatSellerPageState extends State<ChatSellerPage> {
                           // padding: const EdgeInsets.symmetric(horizontal: 16),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: AppColors.kGray2,
+                            color: AppColors.kBackgroundColor,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextField(
@@ -131,23 +132,36 @@ class _ChatSellerPageState extends State<ChatSellerPage> {
                               //     borderRadius: BorderRadius.circular(8),
                               //     borderSide: const BorderSide(width: 1)),
 
-                              prefixIcon: searchController.text.isEmpty
-                                  ? Transform.translate(
-                                      offset: const Offset(0, 0),
-                                      child: const Icon(
-                                        Icons.search,
-                                        color: Colors.grey,
-                                      ),
-                                    )
-                                  : null,
-                              hintText: 'Поиск',
+                              // prefixIcon: searchController.text.isEmpty
+                              //     ? Transform.translate(
+                              //         offset: const Offset(0, 0),
+                              //         child: const Icon(
+                              //           Icons.search,
+                              //           color: Colors.grey,
+                              //         ),
+                              //       )
+                              //     : null,
+
+                              prefixIcon: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8), // регулируем вручную
+                                child: Image.asset(
+                                  Assets.icons.defaultSearchIcon.path,
+                                  scale: 1.9,
+                                ),
+                              ),
+                              prefixIconConstraints: const BoxConstraints(
+                                minWidth: 24,
+                                minHeight: 24,
+                              ),
                               border:
                                   InputBorder.none, // Remove default underline
-                              contentPadding: EdgeInsets.all(12),
-                              hintStyle: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
+                              hintText: 'Поиск',
+                              hintStyle: AppTextStyles.size16Weight400
+                                  .copyWith(color: AppColors.kGray300),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 11, horizontal: 0),
+
                               // enabledBorder: OutlineInputBorder(
                               //     borderRadius: BorderRadius.circular(8),
                               //     borderSide: const BorderSide(

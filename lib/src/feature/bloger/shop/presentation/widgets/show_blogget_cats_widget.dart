@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/home/bloc/popular_shops_cubit.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -32,7 +33,7 @@ void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
 
   showMaterialModalBottomSheet(
     context: context,
-
+    backgroundColor: AppColors.kGray1,
     // isScrollControlled: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -56,14 +57,15 @@ void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
                     children: [
                       const Text(
                         'Категория и тип',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
+                        style: AppTextStyles.size16Weight500,
                       ),
                       InkWell(
                         onTap: () => Navigator.of(context).pop(),
-                        child: const Icon(Icons.close),
+                        child: Image.asset(
+                          Assets.icons.defaultCloseIcon.path,
+                          height: 24,
+                          width: 24,
+                        ),
                       ),
                     ],
                   ),
@@ -79,8 +81,12 @@ void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.search, color: Colors.grey),
-                      const SizedBox(width: 8),
+                      Image.asset(
+                        Assets.icons.defaultSearchIcon.path,
+                        height: 18,
+                        width: 18,
+                      ),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: TextField(
                           controller: searchController,
@@ -93,8 +99,10 @@ void showBlogerCatsOptions(BuildContext context, PopularShopsCubit cubit,
                               }).toList();
                             });
                           },
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             hintText: 'Поиск',
+                            hintStyle: AppTextStyles.size16Weight400
+                                .copyWith(color: AppColors.kGray300),
                             border: InputBorder.none,
                           ),
                         ),

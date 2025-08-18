@@ -13,6 +13,7 @@ void showSellerLoginPhone(BuildContext context,
 
   showMaterialModalBottomSheet(
     context: context,
+    backgroundColor: AppColors.kGray1,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(20),

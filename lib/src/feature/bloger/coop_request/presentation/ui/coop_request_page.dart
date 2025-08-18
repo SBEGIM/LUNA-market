@@ -23,6 +23,10 @@ class BlogRegisterPage extends StatefulWidget {
 class _BlogRegisterPageState extends State<BlogRegisterPage> {
   bool isChecked = false;
 
+  TextEditingController userFirstNameController = TextEditingController();
+  TextEditingController userLastNameController = TextEditingController();
+  TextEditingController middleNameController = TextEditingController();
+
   TextEditingController nameController = TextEditingController();
   TextEditingController iinController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
@@ -56,11 +60,11 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
   double segmentWidth = 8;
   double segmentSpacing = 2;
   int filledSegments = 1; // Начинаем с 1 заполненного сегмента
-  int totalSegments = 3; // Всего сегментов
+  int totalSegments = 5; // Всего сегментов
   Color filledColor = AppColors.mainPurpleColor;
   Color emptyColor = Colors.grey[200]!;
   double spacing = 5.0;
-  String title = "Юридические данные";
+  String title = "Оснавная информация";
 
   List<String> metasBody = [];
 
@@ -123,9 +127,9 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                 child: SizedBox(
                   width: 300,
                   child: Text(
-                    'Регистрация аккаунта блогера',
+                    'Регистрация аккаунта\nблогера',
                     maxLines: 2,
-                    style: AppTextStyles.defaultAppBarTextStyle,
+                    style: AppTextStyles.size28Weight700,
                   ),
                 ),
               ),
@@ -135,8 +139,10 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                 child: Text(
                   title,
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: FontWeight.w400,
+                      letterSpacing: 0,
+                      fontFamily: 'SFProDisplay',
                       color: AppColors.kGray300),
                 ),
               ),
@@ -188,18 +194,63 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                   child: Column(
                     children: [
                       FieldsCoopRequest(
-                        titleText: 'ФИО',
-                        hintText: 'Введите ФИО',
+                        titleText: 'Фамилия',
+                        hintText: 'Введите вашу фамилию',
                         star: false,
                         arrow: false,
-                        controller: userNameController,
+                        controller: userLastNameController,
                       ),
                       FieldsCoopRequest(
+                        titleText: 'Имя',
+                        hintText: 'Введите ваше имя',
+                        star: false,
+                        arrow: false,
+                        controller: userFirstNameController,
+                      ),
+                      FieldsCoopRequest(
+                        titleText: 'Отчество',
+                        hintText: 'Введите ваше отчество',
+                        star: false,
+                        arrow: false,
+                        controller: middleNameController,
+                      ),
+                    ],
+                  )),
+
+              Visibility(
+                  visible: filledSegments == 2 ? true : false,
+                  child: Column(
+                    children: [
+                      FieldsCoopRequest(
+                        titleText: 'Никнейм блогера (публичное имя)',
+                        hintText: 'Введите никнейм блогера',
+                        star: false,
+                        arrow: false,
+                        controller: nameController,
+                      ),
+                      FieldsCoopRequest(
+                        titleText: 'Ссылка на соцальную сеть',
+                        hintText: 'Укажите ссылку на ваш профиль в соц.cети',
+                        star: false,
+                        arrow: false,
+                        controller: socialNetworkController,
+                      ),
+                    ],
+                  )),
+
+              Visibility(
+                  visible: filledSegments == 3 ? true : false,
+                  child: Column(
+                    children: [
+                      FieldsCoopRequest(
                         titleText: 'Юридический статус',
-                        hintText: 'Выберите из списка',
+                        hintText: type == 0
+                            ? 'Выберите из списка'
+                            : (type == 1 ? 'ИП' : 'Самозанятый'),
                         star: false,
                         arrow: true,
-                        // controller: catController,
+                        readOnly: true,
+                        trueColor: type != 0 ? true : false,
                         onPressed: () async {
                           showBloggerRegisterType(
                             context,
@@ -218,39 +269,20 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                         arrow: false,
                         controller: iinController,
                       ),
-                      FieldsCoopRequest(
-                        titleText: 'Счет',
-                        hintText: 'Введите счет',
-                        star: false,
-                        arrow: false,
-                        controller: checkController,
-                      ),
                     ],
                   )),
+              filledSegments == 4
+                  ? FieldsCoopRequest(
+                      titleText: 'Счет',
+                      hintText: 'Введите счет',
+                      star: false,
+                      arrow: false,
+                      controller: checkController,
+                    )
+                  : SizedBox.shrink(),
 
               Visibility(
-                  visible: filledSegments == 2 ? true : false,
-                  child: Column(
-                    children: [
-                      FieldsCoopRequest(
-                        titleText: 'Никнейм блогера',
-                        hintText: 'Введите никнейм блогера',
-                        star: false,
-                        arrow: false,
-                        controller: nameController,
-                      ),
-                      FieldsCoopRequest(
-                        titleText: 'Ссылка на соц сеть',
-                        hintText: 'Введите ссылку на соц сеть',
-                        star: false,
-                        arrow: false,
-                        controller: socialNetworkController,
-                      ),
-                    ],
-                  )),
-
-              Visibility(
-                  visible: filledSegments == 3 ? true : false,
+                  visible: filledSegments == 5 ? true : false,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -359,10 +391,12 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
         padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
         child: InkWell(
             onTap: () async {
+              userNameController.text = '${userFirstNameController.text} '
+                  '${userLastNameController.text} '
+                  '${middleNameController.text}';
+
               if (filledSegments == 1) {
-                if (checkController.text.isNotEmpty &&
-                    iinController.text.isNotEmpty &&
-                    userNameController.text.isNotEmpty) {
+                if (userNameController.text.isNotEmpty) {
                   setState(() {
                     filledSegments = 2;
                     filledCount = 2;
@@ -381,16 +415,61 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                   setState(() {
                     filledSegments = 3;
                     filledCount = 3;
-                    title = 'Контактные данные';
+                    title = 'Юридический статус';
                   });
                   return;
                 } else {
-                  Get.snackbar('Ошибка', 'Заполните социальные данные сети*',
+                  Get.snackbar('Ошибка', 'Заполните юридические данные *',
                       backgroundColor: Colors.blueAccent);
                 }
               }
 
               if (filledSegments == 3) {
+                if (type != 0 && iinController.text.isNotEmpty) {
+                  setState(() {
+                    filledSegments = 4;
+                    filledCount = 4;
+                    title = 'Реквизиты банка';
+                  });
+                  return;
+                } else {
+                  Get.snackbar('Ошибка', 'Заполните реквизиты *',
+                      backgroundColor: Colors.blueAccent);
+                }
+              }
+
+              if (filledSegments == 4) {
+                if (checkController.text.isNotEmpty) {
+                  setState(() {
+                    filledSegments = 5;
+                    filledCount = 5;
+                    title = 'Контактные данные';
+                  });
+                  return;
+                } else {
+                  Get.snackbar('Ошибка', 'Заполните контактные данные *',
+                      backgroundColor: Colors.blueAccent);
+                }
+              }
+
+              if (filledSegments == 5) {
+                if (phoneController.text.isNotEmpty &&
+                    emailController.text.isNotEmpty &&
+                    passwordController.text.isNotEmpty &&
+                    isChecked == true) {
+                  setState(() {
+                    filledSegments = 6;
+                    filledCount = 6;
+                    title = 'Контактные данные';
+                  });
+                  return;
+                } else {
+                  Get.snackbar('Ошибка', 'Заполните контактные данные *',
+                      backgroundColor: Colors.blueAccent);
+                }
+              }
+
+              if (filledSegments == 5) {
                 if (phoneController.text.isNotEmpty &&
                     emailController.text.isNotEmpty &&
                     passwordController.text.isNotEmpty &&
@@ -440,7 +519,9 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                         alignment: Alignment.center,
                         // padding: const EdgeInsets.only(left: 16, right: 16),
                         child: Text(
-                          'Продолжить',
+                          filledSegments != 5
+                              ? 'Продолжить'
+                              : 'Зарегистрироваться',
                           style: AppTextStyles.defaultButtonTextStyle
                               .copyWith(color: AppColors.kWhite),
                           textAlign: TextAlign.center,
@@ -459,7 +540,9 @@ class FieldsCoopRequest extends StatelessWidget {
   final String hintText;
   final bool star;
   final bool arrow;
+  final bool readOnly;
   final bool? number;
+  final bool trueColor;
 
   final void Function()? onPressed;
 
@@ -471,7 +554,9 @@ class FieldsCoopRequest extends StatelessWidget {
     required this.arrow,
     this.controller,
     this.onPressed,
+    this.readOnly = false,
     this.number,
+    this.trueColor = false,
     Key? key,
   }) : super(key: key);
 
@@ -487,8 +572,10 @@ class FieldsCoopRequest extends StatelessWidget {
               Text(
                 titleText,
                 style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 13,
+                    fontFamily: 'SFProDisplay',
+                    letterSpacing: 0,
                     color: AppColors.kGray300),
               ),
               star != true
@@ -511,8 +598,9 @@ class FieldsCoopRequest extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: AppColors.kGray2,
-                borderRadius: BorderRadius.circular(10)),
+                borderRadius: BorderRadius.circular(16)),
             child: TextField(
+              readOnly: readOnly,
               keyboardType:
                   number == true ? TextInputType.number : TextInputType.text,
               controller: controller,
@@ -520,8 +608,10 @@ class FieldsCoopRequest extends StatelessWidget {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hintText,
-                hintStyle: const TextStyle(
-                    color: Color.fromRGBO(194, 197, 200, 1),
+                hintStyle: TextStyle(
+                    color: trueColor != false
+                        ? Colors.black
+                        : Color.fromRGBO(194, 197, 200, 1),
                     fontSize: 16,
                     fontWeight: FontWeight.w400),
                 enabledBorder: const UnderlineInputBorder(
@@ -533,7 +623,7 @@ class FieldsCoopRequest extends StatelessWidget {
                   icon: arrow == true
                       ? SvgPicture.asset('assets/icons/back_menu.svg',
                           color: Colors.grey)
-                      : SvgPicture.asset(''),
+                      : SizedBox.shrink(),
                 ),
                 // suffixIcon: IconButton(
                 //     onPressed: () {},

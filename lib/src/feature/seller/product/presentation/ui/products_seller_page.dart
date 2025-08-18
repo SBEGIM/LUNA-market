@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/seller/product/data/repository/product_seller_repository.dart';
@@ -158,11 +159,10 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                 const SizedBox(
                   width: 18,
                 ),
-                Icon(
-                  Icons.search,
-                  color: AppColors.kGray300,
+                Image.asset(
+                  Assets.icons.defaultSearchIcon.path,
+                  scale: 1.9,
                 ),
-
                 const SizedBox(
                   width: 10,
                 ),
@@ -176,7 +176,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Поиск продуктов',
+                      hintText: 'Поиск',
                       hintStyle: TextStyle(
                           color: AppColors.kGray300,
                           fontSize: 16,

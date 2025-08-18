@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/basket_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/widgets/all_orders_seller_page.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/widgets/done_order_seller_page.dart';
@@ -54,17 +55,23 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
                     controller: _searchController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.grey[600],
-                        size: 20,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8), // регулируем вручную
+                        child: Image.asset(
+                          Assets.icons.defaultSearchIcon.path,
+                          scale: 1.9,
+                        ),
                       ),
-                      hintText: 'Поиск...',
-                      hintStyle: TextStyle(
-                        color: Colors.grey[500],
-                        fontSize: 14,
+                      prefixIconConstraints: const BoxConstraints(
+                        minWidth: 24,
+                        minHeight: 24,
                       ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                      hintText: 'Поиск',
+                      hintStyle: AppTextStyles.size16Weight400
+                          .copyWith(color: AppColors.kGray300),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 11, horizontal: 0),
                       suffixIcon: _searchController.text.isNotEmpty
                           ? IconButton(
                               icon: Icon(

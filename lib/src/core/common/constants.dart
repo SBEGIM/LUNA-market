@@ -38,6 +38,7 @@ mixin AppColors {
   static const Color kBlueAlpha32 = Color(0x51ADD3FF);
   static const Color kYellowLight = Color.fromRGBO(255, 213, 79, 1);
   static const Color kYellowDark = Color(0xffCEE31C);
+  static const Color tapeColorGray = Color(0x660F0F0F);
 
   ///
   static const Color kDark = Color(0xff404D61);
@@ -83,11 +84,11 @@ mixin AppColors {
 
 mixin AppTextStyles {
   static const appBarTextStyle = TextStyle(
-    fontSize: 17,
+    fontSize: 18,
     color: AppColors.kLightBlackColor,
     letterSpacing: 0,
     fontFamily: 'SFProDisplay',
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
   );
 
   static const sellerNameTextStyle = TextStyle(
@@ -167,11 +168,11 @@ mixin AppTextStyles {
   );
 
   static const defButtonTextStyle = TextStyle(
-    fontSize: 17,
-    letterSpacing: 0,
-    color: Colors.white,
-    fontWeight: FontWeight.w400,
-  );
+      fontSize: 17,
+      letterSpacing: 0,
+      color: Colors.white,
+      fontWeight: FontWeight.w600,
+      fontFamily: 'SFProDisplay');
 
   static const defaultButtonTextStyle = TextStyle(
       fontSize: 18,
@@ -253,6 +254,109 @@ mixin AppTextStyles {
     letterSpacing: 0,
     fontFamily: 'SFProDisplay',
   );
+
+  static const size13Weight400 = TextStyle(
+    fontSize: 13,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w400,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size13Weight500 = TextStyle(
+    fontSize: 13,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w500,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size14Weight400 = TextStyle(
+    fontSize: 14,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w400,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size14Weight500 = TextStyle(
+    fontSize: 14,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w500,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size14Weight600 = TextStyle(
+    fontSize: 14,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w600,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size16Weight400 = TextStyle(
+    fontSize: 16,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w400,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size16Weight500 = TextStyle(
+    fontSize: 16,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w500,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size16Weight600 = TextStyle(
+    fontSize: 16,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w600,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size18Weight400 = TextStyle(
+    fontSize: 18,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w400,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size18Weight500 = TextStyle(
+    fontSize: 18,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w400,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size18Weight600 = TextStyle(
+    fontSize: 18,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w600,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size18Weight700 = TextStyle(
+    fontSize: 18,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w700,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size28Weight700 = TextStyle(
+      fontSize: 28,
+      color: Colors.black,
+      letterSpacing: 0,
+      fontWeight: FontWeight.w700,
+      fontFamily: 'SFProDisplay');
 }
 
 mixin AppDecorations {

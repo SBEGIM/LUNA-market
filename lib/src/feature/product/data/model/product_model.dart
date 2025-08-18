@@ -15,7 +15,7 @@ class ProductModel {
     String? brandName,
     String? sizeTitle,
     List<String>? size,
-    List<String>? color,
+    List<ProductColors>? color,
     List<Bloc>? bloc,
     List<Characteristic>? characteristics,
     List<String>? path,
@@ -83,7 +83,7 @@ class ProductModel {
     String? brandName,
     String? sizeTitle,
     List<String>? size,
-    List<String>? color,
+    List<ProductColors>? color,
     List<Bloc>? bloc,
     List<Characteristic>? characteristics,
     List<String>? path,
@@ -153,7 +153,12 @@ class ProductModel {
     _brandName = json['brand_name'];
     _sizeTitle = json['size_title'];
     _size = json['size'] != null ? json['size'].cast<String>() : [];
-    _color = json['color'] != null ? json['color'].cast<String>() : [];
+    if (json['color'] != null) {
+      _color = [];
+      json['color'].forEach((v) {
+        _color!.add(ProductColors.fromJson(v));
+      });
+    }
     if (json['bloc'] != null) {
       _bloc = [];
       json['bloc'].forEach((v) {
@@ -202,7 +207,7 @@ class ProductModel {
   String? _brandName;
   String? _sizeTitle;
   List<String>? _size;
-  List<String>? _color;
+  List<ProductColors>? _color;
   List<Bloc>? _bloc;
   List<Characteristic>? _characteristics;
   List<String>? _path;
@@ -235,7 +240,7 @@ class ProductModel {
   String? get brandName => _brandName;
   String? get sizeTitle => _sizeTitle;
   List<String>? get size => _size;
-  List<String>? get color => _color;
+  List<ProductColors>? get color => _color;
   List<Bloc>? get bloc => _bloc;
   List<Characteristic>? get characteristics => _characteristics;
   List<String>? get path => _path;
@@ -464,6 +469,40 @@ class Bloc {
     final map = <String, dynamic>{};
     map['count'] = _count;
     map['price'] = _price;
+
+    return map;
+  }
+}
+
+class ProductColors {
+  ProductColors({
+    int? id,
+    String? name,
+    String? value,
+  }) {
+    _id = id;
+    _name = name;
+    _value = value;
+  }
+
+  ProductColors.fromJson(dynamic json) {
+    _id = json['id'];
+    _name = json['name'];
+    _value = json['value'];
+  }
+  int? _id;
+  String? _name;
+  String? _value;
+
+  int? get id => _id;
+  String? get name => _name;
+  String? get value => _value;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['name'] = _name;
+    map['value'] = _value;
 
     return map;
   }

@@ -1,10 +1,14 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/count_zero_dialog.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_check_cubit.dart';
 import 'package:haji_market/src/feature/tape/data/repository/tape_repository.dart';
+import 'package:intl/intl.dart';
+import 'package:show_image/show_image.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +75,8 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
 
   bool stop = false;
 
+  int compoundPrice = 0;
+
   procentPrice(price, compound) {
     var pp = (((price!.toInt() - compound!.toInt()) / price!.toInt()) * 100)
         as double;
@@ -104,232 +110,17 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
     super.initState();
   }
 
+  String formatPrice(int price) {
+    final format = NumberFormat('#,###', 'ru_RU');
+    return format.format(price).replaceAll(',', ' ');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         //extendBody: true,
-        extendBodyBehindAppBar: true,
+        extendBodyBehindAppBar: false,
         backgroundColor: Colors.black,
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          // excludeHeaderSemantics: true,
-
-          leading: visible == true
-              ? Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: CustomBackButton(onTap: () {
-                    context.router.pop();
-                  }),
-                )
-              : null,
-          toolbarHeight: 26,
-          actions: [
-            BlocBuilder<tapeCubit.TapeCubit, tapeState.TapeState>(
-              builder: (context, state) {
-                if (state is tapeState.LoadedState) {
-                  return BlocConsumer<TapeCheckCubit, TapeCheckState>(
-                    listener: (context, stateCheck) {
-                      if (stateCheck is LoadedState) {
-                        BlocProvider.of<tapeCubit.TapeCubit>(context)
-                            .updateTapeByIndex(
-                                index: currentIndex,
-                                updatedTape: state.tapeModel[currentIndex]
-                                    .copyWith(
-                                        tapeId:
-                                            state
-                                                .tapeModel[currentIndex].tapeId,
-                                        inBasket:
-                                            stateCheck.tapeCheckModel.inBasket,
-                                        inSubscribe:
-                                            stateCheck.tapeCheckModel.inSubs));
-                      }
-                    },
-                    builder: (context, stateCheck) => GestureDetector(
-                      onTap: () async {
-                        // if (GetStorage().read('title_tape').toString() ==
-                        //     'Отписаться') {
-                        //   GetStorage().write('title_tape', 'Подписаться');
-                        // } else {
-                        //   GetStorage().write('title_tape', 'Отписаться');
-                        // }
-
-                        BlocProvider.of<SubsCubit>(context).sub(state
-                            .tapeModel[currentIndex].blogger?.id
-                            .toString());
-
-                        await BlocProvider.of<tapeCubit.TapeCubit>(context)
-                            .update(
-                                state.tapeModel[currentIndex],
-                                currentIndex,
-                                !(state.tapeModel[currentIndex].inSubscribe ??
-                                    true),
-                                state.tapeModel[currentIndex].inBasket,
-                                state.tapeModel[currentIndex].inFavorite,
-                                state.tapeModel[currentIndex].inReport);
-
-                        setState(() {
-                          // inSub = !(state.tapeModel[currentIndex].inSubscribe ??
-                          //     true);
-                        });
-                      },
-                      child: Container(
-                        height: 26,
-                        width: 98,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            width: 0.3,
-                            color: AppColors.kPrimaryColor,
-                          ),
-                        ),
-                        child: Text(
-                          stateCheck is LoadingState
-                              ? ''
-                              : state.tapeModel[currentIndex].inSubscribe ==
-                                      true
-                                  ? 'Отписаться'
-                                  : 'Подписаться',
-                          style: const TextStyle(
-                              color: AppColors.kPrimaryColor, fontSize: 12),
-                        ),
-                      ),
-                    ),
-                  );
-                }
-                return const SizedBox();
-              },
-            ),
-          ],
-          centerTitle: true,
-          title: BlocBuilder<tapeCubit.TapeCubit, tapeState.TapeState>(
-            builder: (context, state) {
-              if (state is tapeState.LoadedState) {
-                return visible == true &&
-                        (state.tapeModel[currentIndex].blogger != null)
-                    ? GestureDetector(
-                        onTap: () {
-                          context.router
-                              .push(ProfileBloggerTapeRoute(
-                            bloggerAvatar:
-                                state.tapeModel[currentIndex].blogger?.image ??
-                                    '',
-                            bloggerId:
-                                state.tapeModel[currentIndex].blogger!.id!,
-                            bloggerName: state.tapeModel[currentIndex].blogger
-                                    ?.nickName ??
-                                '',
-                            inSubscribe:
-                                state.tapeModel[currentIndex].inSubscribe ??
-                                    false,
-                            onSubChanged: (value) {
-                              BlocProvider.of<tapeCubit.TapeCubit>(context)
-                                  .updateTapeByIndex(
-                                      index: currentIndex,
-                                      updatedTape: state.tapeModel[currentIndex]
-                                          .copyWith(
-                                              tapeId: state
-                                                  .tapeModel[currentIndex]
-                                                  .tapeId,
-                                              inSubscribe: value));
-                            },
-                          ))
-                              .whenComplete(() {
-                            stop = false;
-                            BlocProvider.of<tapeCubit.TapeCubit>(context)
-                                .toLoadedState();
-                            setState(() {});
-                          });
-                          stop = true;
-                        },
-                        child: Text(
-                          '${state.tapeModel[currentIndex].blogger?.nickName}',
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ))
-                    : const SizedBox();
-              }
-              return const SizedBox();
-            },
-          ),
-
-          // ? Row(
-          //     mainAxisSize: MainAxisSize.min,
-          //     children: [
-          //       PopupMenuButton(
-          //         color: const Color.fromRGBO(230, 231, 232, 1),
-          //         shape: const RoundedRectangleBorder(
-          //             borderRadius:
-          //                 BorderRadius.all(Radius.circular(15.0))),
-          //         position: PopupMenuPosition.under,
-          //         offset: const Offset(0, 25),
-          //         itemBuilder: (BuildContext bc) {
-          //           return [
-          //             PopupMenuItem(
-          //               onTap: () {
-          //                 title = 'Подписки';
-          //                 BlocProvider.of<tapeCubit.TapeCubit>(context)
-          //                     .tapes(true, false, null);
-          //                 setState(() {});
-          //               },
-          //               value: 0,
-          //               child: Row(
-          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //                 children: [
-          //                   const Text(
-          //                     "Подписки",
-          //                     style: TextStyle(color: Colors.black),
-          //                   ),
-          //                   SvgPicture.asset('assets/icons/lenta1.svg'),
-          //                 ],
-          //               ),
-          //             ),
-          //             PopupMenuItem(
-          //               onTap: () {
-          //                 BlocProvider.of<tapeCubit.TapeCubit>(context)
-          //                     .tapes(false, true, null);
-
-          //                 title = 'Избранное';
-          //                 setState(() {});
-          //               },
-          //               value: 1,
-          //               child: Row(
-          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //                 children: [
-          //                   const Text("Избранное"),
-          //                   SvgPicture.asset('assets/icons/lenta2.svg'),
-          //                 ],
-          //               ),
-          //             ),
-          //           ];
-          //         },
-          //         child: Row(
-          //           children: [
-          //             Text(
-          //               '${title}',
-          //               textAlign: TextAlign.center,
-          //               style: const TextStyle(
-          //                   color: AppColors.kGray900,
-          //                   fontSize: 16,
-          //                   fontWeight: FontWeight.w500),
-          //             ),
-          //             const SizedBox(width: 5),
-          //             Image.asset(
-          //               'assets/icons/down.png',
-          //               height: 16.5,
-          //               width: 9.5,
-          //             )
-          //           ],
-          //         ), // Icon(Icons.done,color: AppColors.kPrimaryColor,size: 16,)
-          //       ),
-          //     ],
-          //   )
-          // : null,
-        ),
         body: BlocConsumer<tapeCubit.TapeCubit, tapeState.TapeState>(
             listener: (context, state) {},
             builder: (context, state) {
@@ -361,449 +152,643 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                     setState(() {});
                   },
                   itemBuilder: (context, index) {
-                    // inFavorite = state.tapeModel[index].inFavorite;
-                    // inBasket = state.tapeModel[index].inBasket;
                     return Stack(
                       children: [
-                        //VideoPlayer(_controller!)5,
                         Videos(tape: state.tapeModel[index]),
-                        // Image.network(
-                        //   'http://80.87.202.73:8001/storage/${widget.tape.image}',
-                        //   fit: BoxFit.cover,
-                        //   height: double.infinity,
-                        //   width: double.infinity,
-                        //   alignment: Alignment.center,
-                        // ),
+                        Positioned(
+                          top: 85,
+                          left: 10,
+                          child: BlocBuilder<tapeCubit.TapeCubit,
+                              tapeState.TapeState>(
+                            builder: (context, state) {
+                              if (state is tapeState.LoadedState) {
+                                compoundPrice = (state
+                                            .tapeModel[currentIndex].price!
+                                            .toInt() *
+                                        (((100 -
+                                                state.tapeModel[currentIndex]
+                                                    .compound!
+                                                    .toInt())) /
+                                            100))
+                                    .toInt();
 
-                        Container(
-                          margin: const EdgeInsets.only(left: 16, right: 16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              // Column(
-                              //   children: [
-                              Container(
-                                width: 61,
-                                height: 28,
-                                decoration: BoxDecoration(
-                                    color: AppColors.kPrimaryColor,
-                                    borderRadius: BorderRadius.circular(6)),
-                                margin: EdgeInsets.only(
-                                    top: MediaQuery.of(context).size.height *
-                                        0.13),
-                                alignment: Alignment.center,
-                                child: const Text(
-                                  '0·0·12',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              state.tapeModel[index].point != 0
-                                  ? Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius:
-                                              BorderRadius.circular(6)),
-                                      // padding: const EdgeInsets.only(
-                                      //     left: 4, right: 4, bottom: 2, top: 2),
-                                      // margin: const EdgeInsets.only(top: 370),
-                                      width: 56,
-                                      height: 28,
-                                      margin: const EdgeInsets.only(top: 4),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '${state.tapeModel[index].point}% Б',
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.white),
-                                      ),
-                                    )
-                                  : const SizedBox(
-                                      height: 28,
-                                    ),
-
-                              state.tapeModel[index].compound != 0
-                                  ? Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius:
-                                              BorderRadius.circular(6)),
-                                      // padding: const EdgeInsets.only(
-                                      //     left: 4, right: 4, bottom: 2, top: 2),
-                                      // margin: const EdgeInsets.only(top: 370),
-                                      width: 48,
-                                      height: 28,
-                                      margin: const EdgeInsets.only(top: 4),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '-${state.tapeModel[index].compound}%',
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.white),
-                                      ),
-                                    )
-                                  : const SizedBox(
-                                      height: 28,
-                                    ),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  // Column(
-                                  //   children: [
-                                  // Container(
-                                  //   width: 61,
-                                  //   height: 28,
-                                  //   decoration: BoxDecoration(
-                                  //       color: AppColors.kPrimaryColor,
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(6)),
-                                  //   margin: const EdgeInsets.only(top: 370),
-                                  //   alignment: Alignment.center,
-                                  //   child: const Text(
-                                  //     '0·0·12',
-                                  //     style: TextStyle(
-                                  //         fontSize: 14,
-                                  //         fontWeight: FontWeight.w400,
-                                  //         color: Colors.white),
-                                  //   ),
-                                  // ),
-                                  // Container(
-                                  //   decoration: BoxDecoration(
-                                  //       color: Colors.black,
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(6)),
-                                  //   // padding: const EdgeInsets.only(
-                                  //   //     left: 4, right: 4, bottom: 2, top: 2),
-                                  //   margin: const EdgeInsets.only(top: 370),
-                                  //   width: 56,
-                                  //   height: 28,
-                                  //   // margin: const EdgeInsets.only(top: 4),
-                                  //   alignment: Alignment.center,
-                                  //   child: const Text(
-                                  //     '10% Б',
-                                  //     style: TextStyle(
-                                  //         fontSize: 12,
-                                  //         fontWeight: FontWeight.w400,
-                                  //         color: Colors.white),
-                                  //   ),
-                                  // ),
-                                  //   ],
-                                  // ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                        top:
-                                            MediaQuery.of(context).size.height *
-                                                0.327),
-                                    child: Column(
-                                      children: [
-                                        inReport(
-                                          tape: state.tapeModel[index],
-                                          index: index,
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        inBaskets(
-                                          tape: state.tapeModel[index],
-                                          index: index,
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        inFavorites(
-                                          tape: state.tapeModel[index],
-                                          index: index,
-                                          isBlogger: false,
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            await Share.share(
-                                                "$kDeepLinkUrl/?index\u003d${widget.index}&shop_name\u003d${widget.shopName}");
-                                          },
-                                          child: SvgPicture.asset(
-                                            'assets/icons/share.svg',
-                                            height: 30,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              const SizedBox(
-                                height: 14,
-                              ),
-                              SizedBox(
-                                //width: 358,
-                                height: 30,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    // if (state.tapeModel[index].blogger != null)
-                                    //   GestureDetector(
-                                    //     onTap: () {
-                                    //       BlocProvider.of<NavigationCubit>(context).emit(DetailBloggerTapeState(
-                                    //           state.tapeModel[index].blogger!.id!,
-                                    //           state.tapeModel[index].blogger?.nickName ?? '',
-                                    //           state.tapeModel[index].blogger?.image ?? ''));
-                                    //     },
-                                    //     child: Row(
-                                    //       children: [
-                                    //         ClipRRect(
-                                    //           borderRadius: BorderRadius.circular(5),
-                                    //           child: state.tapeModel[index].blogger?.image != null
-                                    //               ? Image.network(
-                                    //                   'https://lunamarket.ru/storage/${state.tapeModel[index].blogger?.image}',
-                                    //                   height: 30.6,
-                                    //                   width: 30.6,
-                                    //                 )
-                                    //               : const Icon(Icons.person),
-                                    //         ),
-                                    //         const SizedBox(
-                                    //           width: 8,
-                                    //         ),
-                                    //         Text(
-                                    //           '${state.tapeModel[index].blogger?.nickName}',
-                                    //           style: const TextStyle(
-                                    //               color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
-                                    //         )
-                                    //       ],
-                                    //     ),
-                                    //   )
-                                    // else
-                                    GestureDetector(
-                                      onTap: (() {
-                                        final List<int> selectedListSort = [];
-
-                                        selectedListSort.add(
-                                            state.tapeModel[index].shop!.id!);
-                                        GetStorage().write('shopFilterId',
-                                            selectedListSort.toString());
-
-                                        context.router.push(ProductsRoute(
-                                          cats: CatsModel(id: 0, name: ''),
-                                          shopId: state
-                                              .tapeModel[index].shop!.id
-                                              .toString(),
-                                        ));
-                                      }),
-                                      child: Row(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            child: Image.network(
-                                              'https://lunamarket.ru/storage/${state.tapeModel[index].shop!.image}',
-                                              height: 30.6,
-                                              width: 30.6,
-                                              errorBuilder: (context, error,
-                                                      stackTrace) =>
-                                                  const ErrorImageWidget(
-                                                height: 30.6,
-                                                width: 30.6,
+                                return visible == true &&
+                                        (state.tapeModel[currentIndex]
+                                                .blogger !=
+                                            null)
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          context.router
+                                              .push(ProfileBloggerTapeRoute(
+                                            bloggerAvatar: state
+                                                    .tapeModel[currentIndex]
+                                                    .blogger
+                                                    ?.image ??
+                                                '',
+                                            bloggerId: state
+                                                .tapeModel[currentIndex]
+                                                .blogger!
+                                                .id!,
+                                            bloggerCreatedAt: state
+                                                .tapeModel[currentIndex]
+                                                .blogger!
+                                                .createdAt!,
+                                            bloggerName: state
+                                                    .tapeModel[currentIndex]
+                                                    .blogger
+                                                    ?.nickName ??
+                                                '',
+                                            inSubscribe: state
+                                                    .tapeModel[currentIndex]
+                                                    .inSubscribe ??
+                                                false,
+                                            onSubChanged: (value) {
+                                              BlocProvider.of<
+                                                      tapeCubit
+                                                      .TapeCubit>(context)
+                                                  .updateTapeByIndex(
+                                                      index: currentIndex,
+                                                      updatedTape: state
+                                                          .tapeModel[
+                                                              currentIndex]
+                                                          .copyWith(
+                                                              tapeId: state
+                                                                  .tapeModel[
+                                                                      currentIndex]
+                                                                  .tapeId,
+                                                              inSubscribe:
+                                                                  value));
+                                            },
+                                          ))
+                                              .whenComplete(() {
+                                            stop = false;
+                                            BlocProvider.of<
+                                                    tapeCubit
+                                                    .TapeCubit>(context)
+                                                .toLoadedState();
+                                            setState(() {});
+                                          });
+                                          stop = true;
+                                        },
+                                        child: SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: Row(
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius: BorderRadius.circular(
+                                                    30), // Slightly smaller than container
+                                                child: Image.network(
+                                                  height: 40,
+                                                  width: 40,
+                                                  state.tapeModel[currentIndex]
+                                                              .blogger?.image !=
+                                                          null
+                                                      ? "https://lunamarket.ru/storage/${state.tapeModel[currentIndex].blogger?.image}"
+                                                      : "https://lunamarket.ru/storage/banners/2.png",
+                                                  fit: BoxFit.cover,
+                                                  loadingBuilder: (context,
+                                                      child, loadingProgress) {
+                                                    if (loadingProgress == null)
+                                                      return child;
+                                                    return Container(
+                                                      color: Colors.grey[100],
+                                                      child: Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          value: loadingProgress
+                                                                      .expectedTotalBytes !=
+                                                                  null
+                                                              ? loadingProgress
+                                                                      .cumulativeBytesLoaded /
+                                                                  loadingProgress
+                                                                      .expectedTotalBytes!
+                                                              : null,
+                                                          strokeWidth: 2,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  errorBuilder: (context, error,
+                                                          stackTrace) =>
+                                                      Container(
+                                                    color: Colors.grey[100],
+                                                    child: const Icon(
+                                                        Icons.broken_image,
+                                                        color: Colors.grey),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                              SizedBox(width: 8),
+                                              SizedBox(
+                                                width: 100,
+                                                child: Text(
+                                                  '${state.tapeModel[currentIndex].blogger?.nickName}',
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ),
+                                              SizedBox(width: 8),
+                                              BlocBuilder<tapeCubit.TapeCubit,
+                                                  tapeState.TapeState>(
+                                                builder: (context, state) {
+                                                  if (state is tapeState
+                                                      .LoadedState) {
+                                                    return BlocConsumer<
+                                                        TapeCheckCubit,
+                                                        TapeCheckState>(
+                                                      listener: (context,
+                                                          stateCheck) {
+                                                        if (stateCheck
+                                                            is LoadedState) {
+                                                          BlocProvider.of<tapeCubit.TapeCubit>(context).updateTapeByIndex(
+                                                              index:
+                                                                  currentIndex,
+                                                              updatedTape: state.tapeModel[currentIndex].copyWith(
+                                                                  tapeId: state
+                                                                      .tapeModel[
+                                                                          currentIndex]
+                                                                      .tapeId,
+                                                                  inBasket: stateCheck
+                                                                      .tapeCheckModel
+                                                                      .inBasket,
+                                                                  inSubscribe:
+                                                                      stateCheck
+                                                                          .tapeCheckModel
+                                                                          .inSubs));
+                                                        }
+                                                      },
+                                                      builder: (context,
+                                                              stateCheck) =>
+                                                          GestureDetector(
+                                                        onTap: () async {
+                                                          // if (GetStorage().read('title_tape').toString() ==
+                                                          //     'Отписаться') {
+                                                          //   GetStorage().write('title_tape', 'Подписаться');
+                                                          // } else {
+                                                          //   GetStorage().write('title_tape', 'Отписаться');
+                                                          // }
+
+                                                          BlocProvider.of<
+                                                                      SubsCubit>(
+                                                                  context)
+                                                              .sub(state
+                                                                  .tapeModel[
+                                                                      currentIndex]
+                                                                  .blogger
+                                                                  ?.id
+                                                                  .toString());
+
+                                                          BlocProvider.of<tapeCubit.TapeCubit>(context).update(
+                                                              state.tapeModel[
+                                                                  currentIndex],
+                                                              currentIndex,
+                                                              !(state
+                                                                      .tapeModel[
+                                                                          currentIndex]
+                                                                      .inSubscribe ??
+                                                                  true),
+                                                              state
+                                                                  .tapeModel[
+                                                                      currentIndex]
+                                                                  .inBasket,
+                                                              state
+                                                                  .tapeModel[
+                                                                      currentIndex]
+                                                                  .inFavorite,
+                                                              state
+                                                                      .tapeModel[
+                                                                          currentIndex]
+                                                                      .inReport ??
+                                                                  false);
+
+                                                          setState(() {
+                                                            // inSub = !(state.tapeModel[currentIndex].inSubscribe ??
+                                                            //     true);
+                                                          });
+                                                        },
+                                                        child: Container(
+                                                          height: 26,
+                                                          width: 98,
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: AppColors
+                                                                .tapeColorGray,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8),
+                                                          ),
+                                                          child: Text(
+                                                            stateCheck
+                                                                    is LoadingState
+                                                                ? ''
+                                                                : state.tapeModel[currentIndex]
+                                                                            .inSubscribe ==
+                                                                        true
+                                                                    ? 'Отписаться'
+                                                                    : 'Подписаться',
+                                                            style: const TextStyle(
+                                                                color: AppColors
+                                                                    .kWhite,
+                                                                fontSize: 12),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                  return const SizedBox();
+                                                },
+                                              ),
+                                              Spacer(),
+                                              inReport(
+                                                tape: state.tapeModel[index],
+                                                index: index,
+                                              ),
+                                              SizedBox(width: 4),
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  child: Container(
+                                                    height: 28,
+                                                    width: 28,
+                                                    color:
+                                                        AppColors.tapeColorGray,
+                                                    child: Icon(
+                                                      Icons.close,
+                                                      size: 22,
+                                                      color: AppColors.kWhite,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(width: 16),
+                                            ],
                                           ),
-                                          const SizedBox(
-                                            width: 8,
+                                        ))
+                                    : const SizedBox();
+                              }
+                              return const SizedBox();
+                            },
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 90,
+                          right: 0,
+                          left: 0,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 16, right: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      top: MediaQuery.of(context).size.height *
+                                          0.327),
+                                  child: Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          context.router
+                                              .push(ProfileSellerTapeRoute(
+                                            chatId:
+                                                state.tapeModel[index].chatId ??
+                                                    0,
+                                            sellerAvatar: state
+                                                    .tapeModel[currentIndex]
+                                                    .shop
+                                                    ?.image ??
+                                                '',
+                                            sellerId: state
+                                                .tapeModel[currentIndex]
+                                                .shop!
+                                                .id!,
+                                            sellerCreatedAt: state
+                                                .tapeModel[currentIndex]
+                                                .shop!
+                                                .createdAt!,
+                                            sellerName: state
+                                                    .tapeModel[currentIndex]
+                                                    .shop
+                                                    ?.name ??
+                                                '',
+                                            inSubscribe: state
+                                                    .tapeModel[currentIndex]
+                                                    .inSubscribe ??
+                                                false,
+                                            onSubChanged: (value) {
+                                              BlocProvider.of<
+                                                      tapeCubit
+                                                      .TapeCubit>(context)
+                                                  .updateTapeByIndex(
+                                                      index: currentIndex,
+                                                      updatedTape: state
+                                                          .tapeModel[
+                                                              currentIndex]
+                                                          .copyWith(
+                                                              tapeId: state
+                                                                  .tapeModel[
+                                                                      currentIndex]
+                                                                  .tapeId,
+                                                              inSubscribe:
+                                                                  value));
+                                            },
+                                          ))
+                                              .whenComplete(() {
+                                            stop = false;
+                                            BlocProvider.of<
+                                                    tapeCubit
+                                                    .TapeCubit>(context)
+                                                .toLoadedState();
+                                            setState(() {});
+                                          });
+                                          stop = true;
+                                        },
+                                        child: SizedBox(
+                                          height: 50,
+                                          child: Stack(
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius: BorderRadius.circular(
+                                                    30), // Slightly smaller than container
+                                                child: Image.network(
+                                                  height: 40,
+                                                  width: 40,
+                                                  state.tapeModel[currentIndex]
+                                                              .shop?.image !=
+                                                          null
+                                                      ? "https://lunamarket.ru/storage/${state.tapeModel[currentIndex].shop?.image}"
+                                                      : "https://lunamarket.ru/storage/banners/2.png",
+                                                  fit: BoxFit.cover,
+                                                  loadingBuilder: (context,
+                                                      child, loadingProgress) {
+                                                    if (loadingProgress == null)
+                                                      return child;
+                                                    return Container(
+                                                      color: Colors.grey[100],
+                                                      child: Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          value: loadingProgress
+                                                                      .expectedTotalBytes !=
+                                                                  null
+                                                              ? loadingProgress
+                                                                      .cumulativeBytesLoaded /
+                                                                  loadingProgress
+                                                                      .expectedTotalBytes!
+                                                              : null,
+                                                          strokeWidth: 2,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  errorBuilder: (context, error,
+                                                          stackTrace) =>
+                                                      Container(
+                                                    color: Colors.grey[100],
+                                                    child: const Icon(
+                                                        Icons.broken_image,
+                                                        color: Colors.grey),
+                                                  ),
+                                                ),
+                                              ),
+                                              Positioned(
+                                                bottom: 0,
+                                                child: Container(
+                                                  height: 20,
+                                                  width: 40,
+                                                  decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                        begin: Alignment
+                                                            .bottomRight,
+                                                        end: Alignment.topRight,
+                                                        transform:
+                                                            GradientRotation(
+                                                                4.2373),
+                                                        colors: [
+                                                          Color(0xFFAD32F8),
+                                                          Color(0xFF3275F8),
+                                                        ],
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12)),
+                                                  child: Center(
+                                                    child: SizedBox(
+                                                      height: 11,
+                                                      width: 11,
+                                                      child: Image.asset(
+                                                        Assets
+                                                            .icons
+                                                            .sellerNavigationUnfullIcon
+                                                            .path,
+                                                        color: AppColors.kWhite,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 16),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Column(children: [
+                                          Image.asset(
+                                            Assets.icons.likeIcon.path,
+                                            color: Colors.white,
+                                            scale: 1.9,
                                           ),
                                           Text(
-                                            '${state.tapeModel[index].shop!.name}',
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500),
-                                          )
-                                        ],
+                                            ' ${state.tapeModel[index].count}',
+                                            style: AppTextStyles.size16Weight400
+                                                .copyWith(
+                                                    color: AppColors.kWhite),
+                                          ),
+                                        ]),
                                       ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        // inSubs(
-                                        //   tape: state.tapeModel[index],
-                                        //   index: index,
-                                        // ),
-                                        // SvgPicture.asset(
-                                        //   'assets/icons/notification.svg',
-                                        //   color: Colors.white,
-                                        // ),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            // print(' chat:::${state.tapeModel[index].chatId}');
-                                            // Get.off(ChatPage);
-                                            GetStorage()
-                                                .write('video_stop', true);
-
-                                            // if (state.tapeModel[index].chatId ==
-                                            //     null) {
-                                            Get.to(MessagePage(
-                                                userId: state
-                                                    .tapeModel[index].shop!.id,
-                                                name: state.tapeModel[index]
-                                                    .shop!.name,
-                                                avatar: state.tapeModel[index]
-                                                    .shop!.image,
-                                                chatId: state
-                                                    .tapeModel[index].chatId));
-                                            // } else {
-                                            //   Get.to(() => const ChatPage());
-                                            // }
-
-                                            // Get.to(ProductsPage(
-                                            //   cats: Cats(id: 0, name: ''),
-                                            // ));
-                                            // GetStorage()
-                                            //     .write('shopFilterId', 1);
-                                          },
-                                          child: Container(
-                                            height: 30,
-                                            width: 108,
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      inFavorites(
+                                        tape: state.tapeModel[index],
+                                        index: index,
+                                        isBlogger: false,
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await Share.share(
+                                              "$kDeepLinkUrl/?index\u003d${widget.index}&shop_name\u003d${widget.shopName}");
+                                        },
+                                        child: Column(children: [
+                                          Image.asset(
+                                            Assets.icons.sendIcon.path,
+                                            color: Colors.white,
+                                            scale: 1.9,
+                                          ),
+                                          Text(
+                                            ' ${state.tapeModel[index].count}',
+                                            style: AppTextStyles.size16Weight400
+                                                .copyWith(
+                                                    color: AppColors.kWhite),
+                                          ),
+                                        ]),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 14,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 12),
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                      color: AppColors.kWhite,
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: SizedBox(
+                                    width: 358,
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: 54,
+                                            width: 56,
                                             decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.white),
-                                                borderRadius:
-                                                    BorderRadius.circular(8)),
-                                            // padding: const EdgeInsets.only(
-                                            //     left: 8,
-                                            //     right: 8,
-                                            //     top: 4,
-                                            //     bottom: 4),
-                                            alignment: Alignment.center,
-                                            child: const Text(
-                                              'Написать',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400),
+                                              color: AppColors.kWhite,
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.05),
+                                                  blurRadius: 8,
+                                                  spreadRadius: 2,
+                                                ),
+                                              ],
+                                            ),
+                                            padding: const EdgeInsets.all(
+                                                5), // White border effect
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(
+                                                  12), // Slightly smaller than container
+                                              child: Image.asset(
+                                                Assets.images.aboutImage.path,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 7.4,
-                              ),
-                              SizedBox(
-                                width: 358,
-                                child: Text(
-                                  '${state.tapeModel[index].name}',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              // Text(
-                              //   'Артикул: ${state.tapeModel[index].id}',
-                              //   style: const TextStyle(
-                              //       fontSize: 12,
-                              //       fontWeight: FontWeight.w500,
-                              //       color: Colors.white),
-                              // ),
-
-                              SizedBox(
-                                // width: 358,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          '${(state.tapeModel[index].price!.toInt() - ((state.tapeModel[index].price! / 100) * state.tapeModel[index].compound!).toInt())} ₽ ',
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        Text(
-                                          '${state.tapeModel[index].price} ₽',
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              decoration:
-                                                  TextDecoration.lineThrough),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Text(
-                                          'в рассрочку',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        const SizedBox(
-                                          width: 4,
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                4,
-                                              ),
-                                              color: const Color(
-                                                0x30FFFFFF,
-                                              )),
-                                          padding: const EdgeInsets.only(
-                                            left: 8,
-                                            right: 8,
-                                            top: 4,
-                                            bottom: 4,
+                                          SizedBox(width: 10),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '${state.tapeModel[index].name}',
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style: AppTextStyles
+                                                      .catalogTextStyle,
+                                                ),
+                                                state.tapeModel[index]
+                                                            .compound !=
+                                                        0
+                                                    ? Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          SizedBox(
+                                                            // width: 75,
+                                                            child: Text(
+                                                              '${formatPrice(compoundPrice)} ₽ ',
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  letterSpacing:
+                                                                      0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 16),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            '${formatPrice(state.tapeModel[index].price!)} ₽ ',
+                                                            style:
+                                                                const TextStyle(
+                                                              color: AppColors
+                                                                  .kGray300,
+                                                              letterSpacing: -1,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 14,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .lineThrough,
+                                                              decorationColor:
+                                                                  AppColors
+                                                                      .kGray300,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : Text(
+                                                        '${formatPrice(state.tapeModel[index].price!)} ₽ ',
+                                                        style: const TextStyle(
+                                                          color: AppColors
+                                                              .kGray900,
+                                                          letterSpacing: 0,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                              ],
+                                            ),
                                           ),
-                                          child: Text(
-                                            '${(state.tapeModel[index].price!.toInt() - ((state.tapeModel[index].price! / 100) * state.tapeModel[index].compound!).toInt()) ~/ 3}',
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 4,
-                                        ),
-                                        const Text(
-                                          'х3',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400),
-                                        )
-                                      ],
-                                    )
-                                  ],
+                                          SizedBox(width: 10),
+                                          inBaskets(
+                                            tape: state.tapeModel[index],
+                                            index: index,
+                                            isBlogger: true,
+                                          )
+                                          // Image.asset(
+                                          //     Assets.icons.tapeBasketIcon.path)
+                                        ]),
+                                  ),
                                 ),
-                              )
-                            ],
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                              ],
+                            ),
                           ),
                         )
                       ],
@@ -1353,11 +1338,11 @@ class _VideosState extends State<Videos> {
                       },
                       child: Center(
                           child: SvgPicture.asset(
-                        'assets/icons/play_tape.svg',
-                        color: const Color.fromRGBO(29, 196, 207, 1),
+                        Assets.icons.playTape.path,
+                        color: AppColors.mainPurpleColor,
                       )),
                     )
-                  : Container(),
+                  : SizedBox.shrink(),
               Container(
                 alignment: Alignment.bottomCenter,
                 margin: EdgeInsets.only(
@@ -1465,13 +1450,20 @@ class _inFavoritesState extends State<inFavorites> {
 
         setState(() {});
       },
-      child: SvgPicture.asset(
-        inFavorite == false
-            ? 'assets/icons/save_tape.svg'
-            : 'assets/icons/save_tape_full.svg',
-        height: 30,
-        colorBlendMode: BlendMode.colorDodge,
-      ),
+      child: Column(children: [
+        Image.asset(
+          inFavorite == false
+              ? Assets.icons.favoriteIcon.path
+              : Assets.icons.favoriteFullIcon.path,
+          scale: 1.9,
+          colorBlendMode: BlendMode.colorDodge,
+        ),
+        Text(
+          ' ${inFavorite == false ? widget.tape.count : (widget.tape.count! + 1)}',
+          style:
+              AppTextStyles.size16Weight400.copyWith(color: AppColors.kWhite),
+        ),
+      ]),
     );
   }
 }
@@ -1504,104 +1496,128 @@ class _inBasketsState extends State<inBaskets> {
     return BlocBuilder<tapeCubit.TapeCubit, tapeState.TapeState>(
       builder: (context, state) {
         if (state is tapeState.LoadedState) {
-          return GestureDetector(
-            onTap: () {
-              if (widget.tape.count == 0 && widget.tape.preOrder == 1) {
-                showCupertinoModalPopup<void>(
-                    context: context,
-                    builder: (context) => PreOrderDialog(onYesTap: () {
-                          state.tapeModel[widget.index].inBasket == false
-                              ? BlocProvider.of<basCubit.BasketCubit>(context)
-                                  .basketAdd(
-                                      widget.tape.id.toString(), '1', 0, '', '',
-                                      blogger_id:
-                                          widget.tape.blogger?.id.toString() ??
-                                              '0')
-                              : BlocProvider.of<basCubit.BasketCubit>(context)
-                                  .basketMinus(
-                                      widget.tape.id.toString(), '1', 0, 'fbs');
+          return SizedBox(
+            height: 46,
+            width: 46,
+            child: GestureDetector(
+              onTap: () {
+                if (state.tapeModel.isNotEmpty &&
+                    widget.index < state.tapeModel.length) {
+                  print('ok');
+                } else {
+                  return;
+                }
+                if (widget.tape.count == 0 && widget.tape.preOrder == 1) {
+                  showCupertinoModalPopup<void>(
+                      context: context,
+                      builder: (context) => PreOrderDialog(onYesTap: () {
+                            state.tapeModel[widget.index].inBasket == false
+                                ? BlocProvider.of<basCubit.BasketCubit>(context)
+                                    .basketAdd(widget.tape.id.toString(), '1',
+                                        0, '', '',
+                                        blogger_id: widget.tape.blogger?.id
+                                                .toString() ??
+                                            '0')
+                                : BlocProvider.of<basCubit.BasketCubit>(context)
+                                    .basketMinus(widget.tape.id.toString(), '1',
+                                        0, 'fbs');
 
-                          BlocProvider.of<tapeCubit.TapeCubit>(context).update(
-                              widget.tape,
-                              widget.index,
-                              widget.tape.inSubscribe,
-                              !state.tapeModel[widget.index].inBasket!,
-                              widget.tape.inFavorite,
-                              widget.tape.inReport,
-                              isBlogger: widget.isBlogger);
-                          setState(
-                            () {
-                              inBasket = !inBasket!;
-                            },
-                          );
+                            BlocProvider.of<tapeCubit.TapeCubit>(context)
+                                .update(
+                                    widget.tape,
+                                    widget.index,
+                                    widget.tape.inSubscribe,
+                                    !state.tapeModel[widget.index].inBasket!,
+                                    widget.tape.inFavorite,
+                                    widget.tape.inReport,
+                                    isBlogger: widget.isBlogger);
+                            setState(
+                              () {
+                                inBasket = !inBasket!;
+                              },
+                            );
 
-                          Get.back();
-                        }));
-              } else if (widget.tape.count == 0) {
-                showCupertinoModalPopup<void>(
-                    context: context,
-                    builder: (context) => CountZeroDialog(onYesTap: () {
-                          state.tapeModel[widget.index].inBasket == false
-                              ? BlocProvider.of<basCubit.BasketCubit>(context)
-                                  .basketAdd(
-                                      widget.tape.id.toString(), '1', 0, '', '',
-                                      blogger_id:
-                                          widget.tape.blogger?.id.toString() ??
-                                              '0')
-                              : BlocProvider.of<basCubit.BasketCubit>(context)
-                                  .basketMinus(
-                                      widget.tape.id.toString(), '1', 0, 'fbs');
+                            Get.back();
+                          }));
+                } else if (widget.tape.count == 0) {
+                  showCupertinoModalPopup<void>(
+                      context: context,
+                      builder: (context) => CountZeroDialog(onYesTap: () {
+                            state.tapeModel[widget.index].inBasket == false
+                                ? BlocProvider.of<basCubit.BasketCubit>(context)
+                                    .basketAdd(widget.tape.id.toString(), '1',
+                                        0, '', '',
+                                        blogger_id: widget.tape.blogger?.id
+                                                .toString() ??
+                                            '0')
+                                : BlocProvider.of<basCubit.BasketCubit>(context)
+                                    .basketMinus(widget.tape.id.toString(), '1',
+                                        0, 'fbs');
 
-                          BlocProvider.of<tapeCubit.TapeCubit>(context).update(
-                              widget.tape,
-                              widget.index,
-                              widget.tape.inSubscribe,
-                              !state.tapeModel[widget.index].inBasket!,
-                              widget.tape.inFavorite,
-                              widget.tape.inReport,
-                              isBlogger: widget.isBlogger);
-                          setState(
-                            () {
-                              inBasket = !inBasket!;
-                            },
-                          );
-                        }));
-              } else {
-                state.tapeModel[widget.index].inBasket == false
-                    ? BlocProvider.of<basCubit.BasketCubit>(context).basketAdd(
-                        widget.tape.id.toString(), '1', 0, '', '',
-                        blogger_id: widget.tape.blogger?.id.toString() ?? '0')
-                    : BlocProvider.of<basCubit.BasketCubit>(context)
-                        .basketMinus(widget.tape.id.toString(), '1', 0, 'fbs');
+                            BlocProvider.of<tapeCubit.TapeCubit>(context)
+                                .update(
+                                    widget.tape,
+                                    widget.index,
+                                    widget.tape.inSubscribe,
+                                    !state.tapeModel[widget.index].inBasket!,
+                                    widget.tape.inFavorite,
+                                    widget.tape.inReport,
+                                    isBlogger: widget.isBlogger);
+                            setState(
+                              () {
+                                inBasket = !inBasket!;
+                              },
+                            );
+                          }));
+                } else {
+                  state.tapeModel[widget.index].inBasket == false
+                      ? BlocProvider.of<basCubit.BasketCubit>(context)
+                          .basketAdd(widget.tape.id.toString(), '1', 0, '', '',
+                              blogger_id:
+                                  widget.tape.blogger?.id.toString() ?? '0')
+                      : BlocProvider.of<basCubit.BasketCubit>(context)
+                          .basketMinus(
+                              widget.tape.id.toString(), '1', 0, 'fbs');
 
-                BlocProvider.of<tapeCubit.TapeCubit>(context).update(
-                    widget.tape,
-                    widget.index,
-                    widget.tape.inSubscribe,
-                    !state.tapeModel[widget.index].inBasket!,
-                    widget.tape.inFavorite,
-                    widget.tape.inReport,
-                    isBlogger: widget.isBlogger);
-                setState(
-                  () {
-                    inBasket = !inBasket!;
-                  },
-                );
-                Get.back();
+                  BlocProvider.of<tapeCubit.TapeCubit>(context).update(
+                      widget.tape,
+                      widget.index,
+                      widget.tape.inSubscribe,
+                      !state.tapeModel[widget.index].inBasket!,
+                      widget.tape.inFavorite,
+                      widget.tape.inReport,
+                      isBlogger: false);
+                  setState(
+                    () {
+                      inBasket = !inBasket!;
+                    },
+                  );
 
-                // this.context.router.pushAndPopUntil(
-                //       const LauncherRoute(children: [BasketRoute()]),
-                //       predicate: (route) => false,
-                //     );
-              }
-            },
-            child: SvgPicture.asset(
-              state.tapeModel[widget.index].inBasket != true
-                  ? 'assets/icons/shop_cart.svg'
-                  : 'assets/icons/shop_cart_white.svg',
+                  // Get.back();
 
-              height: state.tapeModel[widget.index].inBasket != true ? 30 : 25,
-              //  color: inBasket == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
+                  // this.context.router.pushAndPopUntil(
+                  //       const LauncherRoute(children: [BasketRoute()]),
+                  //       predicate: (route) => false,
+                  //     );
+                }
+              },
+              child: Stack(children: [
+                Image.asset(
+                  Assets.icons.tapeBasketIcon.path,
+                  height: 46,
+                  width: 36,
+                ),
+                state.tapeModel[widget.index].inBasket != true
+                    ? Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Image.asset(
+                          Assets.icons.doneInBasketIcon.path,
+                          scale: 1.5,
+                        ),
+                      )
+                    : SizedBox.shrink()
+              ]),
             ),
           );
         } else {
@@ -1669,12 +1685,6 @@ class _inReportState extends State<inReport> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        // inReport == false
-        //     ? BlocProvider.of<basCubit.BasketCubit>(context)
-        //         .basketAdd(widget.tape.id.toString(), '1')
-        //     : BlocProvider.of<basCubit.BasketCubit>(context)
-        //         .basketMinus(widget.tape.id.toString(), '1');
-
         showAlertTapeWidget(context);
 
         BlocProvider.of<tapeCubit.TapeCubit>(context).update(
@@ -1690,11 +1700,18 @@ class _inReportState extends State<inReport> {
           inReport = !inReport!;
         });
       },
-      child: SvgPicture.asset(
-        'assets/icons/report.svg',
-        color: inReport != true ? AppColors.kPrimaryColor : null,
-        height: 30,
-        //  color: inBasket == true ? const Color.fromRGBO(255, 50, 72, 1) : null,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Container(
+          height: 28,
+          width: 28,
+          color: AppColors.tapeColorGray,
+          child: Icon(
+            Icons.more_vert,
+            color: AppColors.kWhite,
+            size: 16,
+          ),
+        ),
       ),
     );
   }

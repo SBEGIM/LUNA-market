@@ -1,0 +1,203 @@
+import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
+import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/feature/app/presentation/geo_position_page.dart';
+import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
+import '../../../core/constant/generated/assets.gen.dart';
+
+class LocationPage extends StatefulWidget {
+  const LocationPage({super.key});
+
+  @override
+  State<LocationPage> createState() => _LocationPageState();
+}
+
+class _LocationPageState extends State<LocationPage> {
+  int contryId = 1;
+  String contryCode = 'KZ';
+
+  final List<Map<String, dynamic>> countries = [
+    {
+      'icon': Assets.icons.ruFlagIcon.path,
+      'id': 1,
+      'name': 'Россия',
+      'code': 'RU',
+    },
+    {
+      'icon': Assets.icons.belFlagIcon.path,
+      'id': 2,
+      'name': 'Беларусь',
+      'code': 'BY',
+    },
+    {
+      'icon': Assets.icons.kzFlagIcon.path,
+      'id': 3,
+      'name': 'Казахстан',
+      'code': 'KZ',
+    },
+    {
+      'icon': Assets.icons.krFlagIcon.path,
+      'id': 4,
+      'name': 'Киргизия',
+      'code': 'KG',
+    },
+    {
+      'icon': Assets.icons.arFlagIcon.path,
+      'id': 5,
+      'name': 'Армения',
+      'code': 'AM',
+    },
+    {
+      'icon': Assets.icons.uzFlagIcon.path,
+      'id': 6,
+      'name': 'Узбекстан',
+      'code': 'UZ',
+    },
+  ];
+
+  int _select = -1;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Color(0xFFAD32F8), // Фиолетовый
+              Color(0xFF3275F8), // Синий
+            ],
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 72),
+            Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(16),
+              child: Container(
+                height: 643,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 70,
+                    ),
+                    Text(
+                      'Добро пожаловать!',
+                      style: AppTextStyles.defButtonTextStyle.copyWith(
+                          color: AppColors.kWhite,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 22),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Пожалуйста, выберите страну:',
+                      style: AppTextStyles.catalogTextStyle.copyWith(
+                          color: AppColors.kGray1.withOpacity(0.4),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    const SizedBox(height: 32),
+                    Expanded(
+                      // Это решает проблему ListView
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: countries.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              if (_select == index) {
+                                _select = -1;
+                                contryId = 1;
+                                contryCode = 'KZ';
+
+                                setState(() {});
+                                return;
+                              }
+                              _select = index;
+                              contryId = countries[index]['id'];
+                              contryCode = countries[index]['code'];
+                              setState(() {});
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFEAECED).withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Image.asset(
+                                      '${countries[index]['icon']}',
+                                      height: 32,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      '${countries[index]['name']}',
+                                      style: AppTextStyles.catalogTextStyle
+                                          .copyWith(
+                                              color: AppColors.kWhite,
+                                              fontWeight: FontWeight.w600),
+                                    ),
+                                    Spacer(),
+                                    _select == index
+                                        ? Icon(
+                                            Icons.check_circle,
+                                            color: AppColors.kWhite,
+                                          )
+                                        : Icon(
+                                            Icons.radio_button_unchecked,
+                                            color: AppColors.kWhite,
+                                          )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+              child: DefaultButton(
+                  text: 'Продолжить',
+                  press: () {
+                    Get.off(GeoPositionPage(
+                      contryId: contryId,
+                      countryCode: contryCode,
+                    ));
+                  },
+                  color: AppColors.kLightBlackColor,
+                  backgroundColor: AppColors.kWhite,
+                  textStyle: AppTextStyles.titleTextStyle
+                      .copyWith(height: 1.33, color: Color(0xFF0F0F0F)),
+                  width: double.infinity),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

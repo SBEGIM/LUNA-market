@@ -24,7 +24,7 @@ class ForceUpdatePage extends StatelessWidget {
         title: Localization.currentLocalizations.updateTheApplication,
         subtitle: Localization
             .currentLocalizations.theCurrentVersionTheApplicationInvalid,
-        icon: Assets.images.webp.forceUpdate.path,
+        icon: Assets.images.aboutImage.path,
         onTap: onTap,
       );
 
@@ -35,7 +35,7 @@ class ForceUpdatePage extends StatelessWidget {
         title: Localization.currentLocalizations.noInternetConnection,
         subtitle: Localization
             .currentLocalizations.checkConnectionYourWiFSonyaPhoneTryAgain,
-        icon: Assets.images.webp.noInternet.path,
+        icon: Assets.images.aboutImage.path,
         onTap: onTap,
       );
 
@@ -52,7 +52,7 @@ class ForceUpdatePage extends StatelessWidget {
                 .currentLocalizations.theServiceIsTemporarilyUnavailable,
         subtitle: subtitle ??
             Localization.currentLocalizations.thisProcessWorksPleaseAgainLater,
-        icon: Assets.images.webp.appNotAvailable.path,
+        icon: Assets.images.aboutImage.path,
         onTap: onTap,
         error: error,
         stackTrace: stackTrace,
@@ -65,7 +65,7 @@ class ForceUpdatePage extends StatelessWidget {
         title: Localization.currentLocalizations.weakInternetConnection,
         subtitle: Localization
             .currentLocalizations.checkYourInternetConnectionTryAgainLater,
-        icon: Assets.images.webp.weakInternetConnection.path,
+        icon: Assets.images.aboutImage.path,
         onTap: onTap,
       );
 
@@ -88,7 +88,7 @@ class ForceUpdatePage extends StatelessWidget {
           Stack(
             children: [
               SvgPicture.asset(
-                Assets.images.svg.topGreenCurveContainer.path,
+                Assets.images.aboutImage.path,
                 width: context.screenSize.width,
                 fit: BoxFit.fitWidth,
               ),

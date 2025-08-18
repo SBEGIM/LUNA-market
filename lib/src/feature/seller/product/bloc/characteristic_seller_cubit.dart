@@ -39,6 +39,19 @@ class CharacteristicSellerCubit extends Cubit<CharacteristicSellerState> {
     return null;
   }
 
+  Future<List<CharacteristicsModel>?> subListCharacteristic() async {
+    try {
+      emit(LoadingState());
+      final List<CharacteristicsModel> data =
+          await characteristicRepository.subGet(null);
+      _characteristics = data;
+      return _characteristics;
+    } catch (e) {
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+    return null;
+  }
+
   listSubCharacteristicsIndex(
     int index,
   ) async {

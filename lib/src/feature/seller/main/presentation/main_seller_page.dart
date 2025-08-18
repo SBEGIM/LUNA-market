@@ -70,10 +70,10 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    Icon(
-                      Icons.notifications_active_outlined,
+                    Image.asset(
+                      Assets.icons.defaultNotificationIcon.path,
+                      scale: 1.9,
                       color: AppColors.kLightBlackColor,
-                      size: 30,
                     ),
                     if (unreadCount > 0)
                       Positioned(
@@ -122,9 +122,9 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
               }
               if (state is sellerStoriesState.LoadedState) {
                 return Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.only(left: 8.0),
                   child: SizedBox(
-                    height: 100,
+                    height: 87,
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: state.storiesSeelerModel.length,
@@ -135,9 +135,9 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
                                     state.storiesSeelerModel[index].stories)),
                             child: Container(
                               margin: const EdgeInsets.only(left: 5),
-                              padding: const EdgeInsets.all(2),
-                              height: 79,
-                              width: 100,
+                              padding: const EdgeInsets.all(1),
+                              height: 86,
+                              width: 86,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: index == 0
@@ -172,8 +172,8 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
                           return Container(
                             margin: const EdgeInsets.only(left: 5),
                             padding: const EdgeInsets.all(1),
-                            height: 79,
-                            width: 100,
+                            height: 87,
+                            width: 87,
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: index == 0
@@ -194,7 +194,130 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
               }
             }),
 
-            SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 16),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: AppColors.mainBackgroundPurpleColor),
+                      height: 76,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(22), // половина от 44
+                            child: Container(
+                              color: AppColors.kWhite,
+                              height: 44,
+                              width: 44,
+                              child: Image.asset(
+                                Assets.icons.sellerProductsIcon.path,
+                                scale: 1.9,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ShaderMask(
+                                shaderCallback: (bounds) =>
+                                    const LinearGradient(
+                                  colors: [
+                                    Color(0xFF7D2DFF),
+                                    Color(0xFF41DDFF)
+                                  ],
+                                ).createShader(bounds),
+                                child: Text(
+                                  '30',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: -1,
+                                    color: Colors
+                                        .white, // Неважно — будет заменён градиентом
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                'Товары',
+                                style: AppTextStyles.size13Weight400
+                                    .copyWith(color: AppColors.kGray300),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Flexible(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 16),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: AppColors.mainBackgroundPurpleColor),
+                      height: 76,
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(22),
+                            child: Container(
+                              color: AppColors.kWhite,
+                              height: 44,
+                              width: 44,
+                              child: Image.asset(
+                                Assets.icons.sellerSalesIcon.path,
+                                scale: 1.9,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ShaderMask(
+                                shaderCallback: (bounds) =>
+                                    const LinearGradient(
+                                  colors: [
+                                    Color(0xFF7D2DFF),
+                                    Color(0xFF41DDFF)
+                                  ],
+                                ).createShader(bounds),
+                                child: Text(
+                                  '1 000 ₽',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0,
+                                    color: Colors
+                                        .white, // Неважно — будет заменён градиентом
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                'Продажи',
+                                style: AppTextStyles.size13Weight400
+                                    .copyWith(color: AppColors.kGray300),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
             BlocBuilder<NewsSellerCubit, NewsSellerState>(
                 builder: (context, state) {
               if (state is ErrorState) {
@@ -208,7 +331,7 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
               if (state is LoadedState) {
                 return Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(left: 16.0, right: 16),
                     child: ListView.builder(
                         scrollDirection: Axis.vertical,
                         itemCount: state.newsSeelerModel.length,
@@ -220,9 +343,8 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
                                 ));
                               },
                               child: Container(
-                                  margin:
-                                      const EdgeInsets.only(left: 5, bottom: 5),
-                                  padding: const EdgeInsets.all(1),
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                  padding: const EdgeInsets.all(16),
                                   height: 148,
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
@@ -237,38 +359,36 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
                                     ),
                                     borderRadius: BorderRadius.circular(14),
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width: 300,
-                                              child: Text(
-                                                state.newsSeelerModel[index]
-                                                    .title!,
-                                                style: AppTextStyles
-                                                    .defaultAppBarTextStyle
-                                                    .copyWith(
-                                                        color: AppColors
-                                                            .kBackgroundColor),
-                                                maxLines: 3,
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.start,
-                                              ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: 300,
+                                            child: Text(
+                                              state.newsSeelerModel[index]
+                                                  .title!,
+                                              style: AppTextStyles
+                                                  .defaultAppBarTextStyle
+                                                  .copyWith(
+                                                      color: AppColors
+                                                          .kBackgroundColor),
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.start,
                                             ),
-                                            SizedBox(height: 10),
-                                            Text(
+                                          ),
+                                          SizedBox(height: 8),
+                                          Flexible(
+                                            child: Text(
                                               state.newsSeelerModel[index]
                                                   .description!,
                                               textAlign: TextAlign.start,
@@ -279,16 +399,20 @@ class _HomeSellerAdminPageState extends State<HomeSellerAdminPage> {
                                                   .copyWith(
                                                       color:
                                                           AppColors.kGray200),
-                                            )
-                                          ],
-                                        ),
-                                        Icon(
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 16.0),
+                                        child: Icon(
                                           Icons.arrow_forward_ios,
                                           color: AppColors.kWhite,
                                           size: 20,
-                                        )
-                                      ],
-                                    ),
+                                        ),
+                                      )
+                                    ],
                                   )));
                         }),
                   ),

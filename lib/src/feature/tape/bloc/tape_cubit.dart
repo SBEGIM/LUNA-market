@@ -2,32 +2,36 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_state.dart';
 import 'package:haji_market/src/feature/tape/data/models/tape_model.dart';
-
 import '../data/repository/tape_repository.dart';
 
 class TapeCubit extends Cubit<TapeState> {
   final TapeRepository tapeRepository;
+
   List<TapeModel> array = [];
   List<TapeModel> arrayForBlogger = [];
   int page = 1;
+  bool isLoading = false;
 
   TapeCubit({required this.tapeRepository}) : super(InitState());
+
   Future<void> tapes(
-      bool? inSub, bool? inFav, String? search, int? blogger_id) async {
+      bool? inSub, bool? inFav, String? search, int? bloggerId) async {
     try {
       emit(LoadingState());
       page = 1;
       final data =
-          await tapeRepository.tapes(inSub, inFav, search, blogger_id, page);
+          await tapeRepository.tapes(inSub, inFav, search, bloggerId, page);
+
       if (data.isEmpty) {
         emit(NoDataState());
       } else {
-        if (blogger_id == 0) {
-          array = data;
-          emit(LoadedState(array));
+        if ((bloggerId ?? 0) == 0) {
+          array = List.from(data); // reset
+          emit(LoadedState(List.from(array)));
         } else {
-          arrayForBlogger = data;
-          emit(BloggerLoadedState(arrayForBlogger));
+          print('blogger success');
+          arrayForBlogger = List.from(data); // reset
+          emit(BloggerLoadedState(List.from(arrayForBlogger)));
         }
         page++;
       }
@@ -38,124 +42,95 @@ class TapeCubit extends Cubit<TapeState> {
   }
 
   Future<void> tapePagination(
-      bool? inSub, bool? inFav, String? search, int? blogger_id) async {
+      bool? inSub, bool? inFav, String? search, int? bloggerId) async {
+    if (isLoading) return;
+    isLoading = true;
+
     try {
-      // emit(LoadingState());
       final data =
-          await tapeRepository.tapes(inSub, inFav, search, blogger_id, page);
+          await tapeRepository.tapes(inSub, inFav, search, bloggerId, page);
 
-      // for (int i = 0; i < data.length; i++) {
-      //   array.add(data[i]);
-      // }
-      if (data.isNotEmpty) {
-        page++;
-      }
-
-      if (blogger_id == 0) {
+      if ((bloggerId ?? 0) == 0) {
         array += data;
-        emit(LoadedState(array));
+        emit(LoadedState(List.from(array)));
       } else {
         arrayForBlogger += data;
-        emit(BloggerLoadedState(arrayForBlogger));
+        emit(BloggerLoadedState(List.from(arrayForBlogger)));
       }
+
+      if (data.isNotEmpty) page++;
     } catch (e) {
+      log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
+    } finally {
+      isLoading = false;
     }
   }
 
-  update(TapeModel tape, int index, bool? inSub, bool? inBas, bool? inFav,
+  void update(TapeModel tape, int index, bool? inSub, bool? inBas, bool? inFav,
       bool? inReport,
       {bool isBlogger = false}) {
-    // data!.removeAt(index);
-
     try {
-      final TapeModel tapeModel = TapeModel(
-          id: tape.id,
-          name: tape.name,
-          catName: tape.catName,
-          price: tape.price,
-          description: tape.description,
-          compound: tape.compound,
-          video: tape.video,
-          image: tape.image,
-          blogger: tape.blogger,
-          inBasket: inBas ?? tape.inBasket,
-          inReport: inReport ?? tape.inReport,
-          inFavorite: inFav ?? tape.inFavorite,
-          inSubscribe: inSub ?? tape.inSubscribe,
-          shop: tape.shop);
+      final updatedTape = tape.copyWith(
+        inBasket: inBas ?? tape.inBasket,
+        inReport: inReport ?? tape.inReport,
+        inFavorite: inFav ?? tape.inFavorite,
+        inSubscribe: inSub ?? tape.inSubscribe,
+      );
 
-      // data!.removeAt(index);
-      //data!.u(index);
-
-      if (isBlogger == true) {
-        arrayForBlogger[index] = arrayForBlogger[index].copyWith(
-            id: tapeModel.id,
-            name: tapeModel.name,
-            catName: tapeModel.name,
-            price: tapeModel.price,
-            description: tapeModel.description,
-            compound: tapeModel.compound,
-            video: tapeModel.video,
-            image: tapeModel.image,
-            blogger: tapeModel.blogger,
-            inBasket: inBas ?? tape.inBasket,
-            inReport: inReport ?? tape.inReport,
-            inFavorite: inFav ?? tape.inFavorite,
-            inSubscribe: inSub ?? tape.inSubscribe,
-            shop: tape.shop);
-
-        emit(BloggerLoadedState(arrayForBlogger));
+      if (isBlogger) {
+        if (index >= 0 && index < arrayForBlogger.length) {
+          arrayForBlogger[index] = updatedTape;
+          emit(BloggerLoadedState(List.from(arrayForBlogger)));
+        } else {}
       } else {
-        array[index] = array[index].copyWith(
-            id: tapeModel.id,
-            name: tapeModel.name,
-            catName: tapeModel.name,
-            price: tapeModel.price,
-            description: tapeModel.description,
-            compound: tapeModel.compound,
-            video: tapeModel.video,
-            image: tapeModel.image,
-            blogger: tapeModel.blogger,
-            inBasket: inBas ?? tape.inBasket,
-            inReport: inReport ?? tape.inReport,
-            inFavorite: inFav ?? tape.inFavorite,
-            inSubscribe: inSub ?? tape.inSubscribe,
-            shop: tape.shop);
-
-        emit(LoadedState(array));
+        if (index >= 0 && index < array.length) {
+          array[index] = updatedTape;
+          emit(LoadedState(List.from(array)));
+        } else {}
       }
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  void updateTapeByIndex(
+      {required int index,
+      required TapeModel updatedTape,
+      bool isBlogger = false}) {
+    try {
+      if (isBlogger) {
+        if (index >= 0 && index < arrayForBlogger.length) {
+          arrayForBlogger[index] = updatedTape;
+          emit(BloggerLoadedState(List.from(arrayForBlogger)));
+        }
+      } else {
+        if (index >= 0 && index < array.length) {
+          array[index] = updatedTape;
+          emit(LoadedState(List.from(array)));
+        }
+      }
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка обновления ленты'));
     }
   }
 
   void toBloggerLoadedState() {
-    emit(BloggerLoadedState(arrayForBlogger));
+    emit(BloggerLoadedState(List.from(arrayForBlogger)));
   }
 
   void toLoadedState() {
-    emit(LoadedState(array));
+    emit(LoadedState(List.from(array)));
   }
 
-  view(int id) async {
-    // data!.removeAt(index);
-
+  Future<void> view(int id) async {
     try {
       await tapeRepository.view(id);
     } catch (e) {
       log(e.toString());
-      emit(ErrorState(message: 'Ошибка сервера'));
+      emit(ErrorState(message: 'Ошибка при увеличении просмотров'));
     }
-  }
-
-  void updateTapeByIndex({
-    required int index,
-    required TapeModel updatedTape,
-  }) {
-    log(updatedTape.tapeId.toString());
-    array[index] = updatedTape;
-    emit(LoadedState(array));
   }
 }

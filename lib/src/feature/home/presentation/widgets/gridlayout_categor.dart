@@ -26,51 +26,44 @@ class GridOptionsCategory extends StatelessWidget {
     return InkWell(
       onTap: layout.onTap,
       child: Container(
-        // height: 80,
-        // width: 90,
+        padding: EdgeInsets.only(top: 2, left: 8),
         decoration: BoxDecoration(
           color: AppColors.mainBackgroundPurpleColor,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          // mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              margin: EdgeInsets.only(top: 8, left: 8),
-              height: 36,
-              child: Text(layout.title!,
-                  textAlign: TextAlign.left,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: AppTextStyles.categoryTextStyle),
+            const Spacer(),
+            Text(
+              layout.title!,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.categoryTextStyle,
             ),
+            const Spacer(),
             Align(
               alignment: Alignment.bottomRight,
-              child: Image.network(
-                "https://lunamarket.ru/storage/${layout.image}",
+              child: SizedBox(
                 height: 80,
                 width: 80,
-                fit: BoxFit.contain,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
-                  return SizedBox(
-                    height: 80,
-                    width: 80,
-                    child: Shimmer(
+                child: Image.network(
+                  "https://lunamarket.ru/storage/${layout.image}",
+                  fit: BoxFit.contain,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Shimmer(
                       child: Image.asset(Assets.icons.loaderMain.path),
-                    ),
-                  );
-                },
-                errorBuilder: (context, error, stackTrace) => Container(
-                  color: Colors.grey[100],
-                  child: const Icon(Icons.broken_image, color: Colors.grey),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: Colors.grey[100],
+                    child: const Icon(Icons.broken_image, color: Colors.grey),
+                  ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

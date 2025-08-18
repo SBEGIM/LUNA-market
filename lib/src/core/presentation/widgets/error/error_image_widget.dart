@@ -26,7 +26,7 @@ class ErrorImageWidget extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: SvgPicture.asset(
-            Assets.icons.a2.path,
+            Assets.icons.sellerBack.path,
             width: width,
             height: height,
           ),

@@ -41,6 +41,8 @@ class _LauncherAppState extends State<LauncherApp> {
     super.initState();
     initAppLinks();
     BlocProvider.of<AppBloc>(context).add(const AppEvent.checkAuth());
+    BlocProvider.of<AppBloc>(context).add(const AppEvent.location());
+
     checkInitialMessage();
     FirebaseMessaging.onMessage.listen(_handleFirebaseMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(_handleFirebaseMessageOpened);

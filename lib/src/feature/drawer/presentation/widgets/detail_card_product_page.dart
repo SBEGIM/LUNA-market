@@ -188,8 +188,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   onTap: () async {
                     await Share.share('$productNames');
                   },
-                  child: SvgPicture.asset(
-                    Assets.icons.share.path,
+                  child: Image.asset(
+                    Assets.icons.shareNewIcon.path,
+                    height: 20,
+                    width: 20,
                     color: Colors.black,
                   )))
         ],
@@ -340,7 +342,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           ));
                     }),
                     child: Image.asset(
-                      Assets.icons.fullscreenPng.path,
+                      Assets.icons.fullscreen.path,
                       height: 25,
                       width: 25,
                     ),
@@ -402,20 +404,14 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             // width: 75,
                             child: Text(
                               '${formatPrice(compoundPrice)} ₽ ',
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18),
+                              style: AppTextStyles.size18Weight700,
                             ),
                           ),
                           Text(
                             '${formatPrice(widget.product.price!)} ₽ ',
-                            style: const TextStyle(
+                            style: AppTextStyles.size13Weight400.copyWith(
                               color: AppColors.kGray300,
                               letterSpacing: -1,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 13,
                               decoration: TextDecoration.lineThrough,
                               decorationColor: AppColors.kGray300,
                             ),
@@ -424,12 +420,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       )
                     : Text(
                         '${formatPrice(widget.product.price!)} ₽ ',
-                        style: const TextStyle(
-                          color: AppColors.kGray900,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18,
-                        ),
+                        style: AppTextStyles.size18Weight700,
                       ),
 
                 SizedBox(height: 10),
@@ -441,11 +432,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       child: Text(
                         "${widget.product.name}",
                         maxLines: 2,
-                        style: const TextStyle(
-                            fontSize: 18,
-                            letterSpacing: 0,
-                            color: AppColors.kGray900,
-                            fontWeight: FontWeight.w500),
+                        style: AppTextStyles.size18Weight500,
                       ),
                     ),
                     InkWell(
@@ -458,12 +445,18 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           });
                           BlocProvider.of<ProductCubit>(context).products();
                         },
-                        child: SvgPicture.asset(
-                          inFavorite != true
-                              ? Assets.icons.favoriteProductShow.path
-                              : Assets.icons.heartFill.path,
-                          color: Colors.red,
-                        ))
+                        child: inFavorite != true
+                            ? Image.asset(
+                                Assets.icons.favoriteBottomIcon.path,
+                                height: 19,
+                                width: 19,
+                              )
+                            : Image.asset(
+                                Assets.icons.favoriteBottomFullIcon.path,
+                                height: 19,
+                                width: 19,
+                                color: AppColors.kunSelectColor,
+                              ))
                   ],
                 ),
                 // const SizedBox(
@@ -520,7 +513,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   ],
                 ),
                 SizedBox(height: 8),
-                Divider(),
+                Divider(
+                  thickness: 0.3,
+                  color: AppColors.kGray200,
+                ),
                 if ((widget.product.size ?? []).isNotEmpty)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -603,7 +599,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         height: 6,
                       ),
                       Text(
-                        'Цвет: ${widget.product.color!.first}',
+                        'Цвет:  ${selectedIndex != -1 ? (widget.product.color?[selectedIndex!].name) : 'Не выбран'}',
                         style: TextStyle(
                             color: AppColors.kGray900,
                             fontSize: 14,
@@ -622,7 +618,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             return InkWell(
                               onTap: () {
                                 if (selectedIndex != index) {
-                                  colorValue = widget.product.color![index];
+                                  colorValue =
+                                      widget.product.color![index].value;
                                   setState(() {
                                     selectedIndex = index;
                                   });
@@ -641,7 +638,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                   padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
                                       color: Color(AppColors.getColorFromHex(
-                                          widget.product.color![index])),
+                                          widget.product.color![index].value!)),
                                       borderRadius: BorderRadius.circular(8),
                                       border: selectedIndex == index
                                           ? Border.all(

@@ -53,6 +53,7 @@ import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/home/presentation/ui/home_page.dart';
 import 'package:haji_market/src/feature/home/presentation/widgets/search_product_page.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
+import 'package:haji_market/src/feature/tape/presentation/ui/seller_tape_profile_page.dart';
 import 'package:haji_market/src/feature/tape/presentation/ui/tape_page.dart';
 import 'package:haji_market/src/feature/app/presentation/launcher.dart';
 import 'package:haji_market/src/feature/tape/presentation/ui/detail_tape_card_page.dart';
@@ -84,6 +85,9 @@ class AppRouter extends _$AppRouter {
                 ),
                 AutoRoute(
                   page: ProfileBloggerTapeRoute.page,
+                ),
+                AutoRoute(
+                  page: ProfileSellerTapeRoute.page,
                 ),
               ],
             ),

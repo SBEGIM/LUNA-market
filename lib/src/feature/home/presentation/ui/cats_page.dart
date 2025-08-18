@@ -47,7 +47,7 @@ class _CatsPageState extends State<CatsPage> {
               color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 16.0, top: 16, bottom: 16, right: 16),
+                    left: 16.0, top: 16, bottom: 16, right: 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -60,17 +60,18 @@ class _CatsPageState extends State<CatsPage> {
                     //   height: 16,
                     // ),
                     SizedBox(
-                      height: 280,
+                      height: 248,
                       child: GridView.builder(
                           cacheExtent: 10000,
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 60 / 50,
-                                  crossAxisSpacing: 12,
-                                  mainAxisSpacing: 12),
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8,
+                            childAspectRatio: 114 / 120,
+                          ),
                           itemCount: state.cats.length,
                           itemBuilder: (BuildContext ctx, index) {
                             return GridOptionsCategory(

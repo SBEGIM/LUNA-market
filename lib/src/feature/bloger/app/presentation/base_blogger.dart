@@ -70,47 +70,42 @@ class _BaseBloggerState extends State<BaseBlogger>
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/shop1.svg',
-                color: AppColors.kGray200,
-                height: 19.5,
-                width: 19.5,
+              icon: Image.asset(
+                Assets.icons.sellerNavigationIcon.path,
+                scale: 1.9,
+                color: AppColors.kunSelectColor,
               ),
               label: 'Магазины',
-              activeIcon: SvgPicture.asset(
-                'assets/icons/shop1.svg',
-                color: AppColors.kLightBlackColor,
-                height: 19.5,
-                width: 19.5,
+              activeIcon: Image.asset(
+                Assets.icons.sellerNavigationIcon.path,
+                scale: 1.9,
+                color: Colors.black,
               ),
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/reels.svg',
-                color: AppColors.kGray200,
-                height: 19.5,
-                width: 19.5,
+              icon: Image.asset(
+                Assets.icons.rollsBotoomFullIcon.path,
+                scale: 1.9,
+                color: AppColors.kunSelectColor,
               ),
               label: 'Видео обзоры',
-              activeIcon: SvgPicture.asset(
-                'assets/icons/reels.svg',
-                color: AppColors.kLightBlackColor,
-                height: 19.5,
-                width: 19.5,
+              activeIcon: Image.asset(
+                Assets.icons.rollsBotoomFullIcon.path,
+                scale: 1.9,
+                color: Colors.black,
               ),
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                Assets.icons.accountSvg.path,
-                height: 19.5,
-                width: 19.5,
+              icon: Image.asset(
+                Assets.icons.accountBottomFullIcon.path,
+                scale: 1.9,
+                color: AppColors.kunSelectColor,
               ),
               label: 'Профиль',
-              activeIcon: SvgPicture.asset(
-                Assets.icons.accountSvg.path,
-                height: 19.5,
-                width: 19.5,
-                color: AppColors.kLightBlackColor,
+              activeIcon: Image.asset(
+                Assets.icons.accountBottomFullIcon.path,
+                scale: 1.9,
+                color: Colors.black,
               ),
             ),
           ],

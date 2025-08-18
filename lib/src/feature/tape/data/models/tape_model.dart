@@ -4,6 +4,7 @@ class TapeModel {
     int? tapeId,
     String? name,
     String? catName,
+    int? view,
     int? price,
     int? count,
     int? preOrder,
@@ -26,6 +27,7 @@ class TapeModel {
     _catName = catName;
     _count = count;
     _preOrder = preOrder;
+    _view = view;
     _price = price;
     _description = description;
     _compound = compound;
@@ -46,6 +48,7 @@ class TapeModel {
     int? tapeId,
     String? name,
     String? catName,
+    int? view,
     int? price,
     int? count,
     int? preOrder,
@@ -67,6 +70,7 @@ class TapeModel {
       tapeId: tapeId ?? this.tapeId,
       name: name ?? this.name,
       catName: catName ?? this.catName,
+      view: view ?? this.view,
       price: price ?? this.price,
       count: count ?? this.count,
       preOrder: preOrder ?? this.preOrder,
@@ -89,6 +93,7 @@ class TapeModel {
     _tapeId = json['tape_id'];
     _name = json['name'];
     _catName = json['cat_name'];
+    _view = json['view'];
     _price = json['price'];
     _count = json['count'];
     _preOrder = json['pre_order'];
@@ -104,12 +109,14 @@ class TapeModel {
     _inFavorite = json['in_favorite'];
     _inSubscribe = json['in_subscribe'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
-    _blogger = json['blogger'] != null ? Blogger.fromJson(json['blogger']) : null;
+    _blogger =
+        json['blogger'] != null ? Blogger.fromJson(json['blogger']) : null;
   }
   int? _id;
   int? _tapeId;
   String? _name;
   String? _catName;
+  int? _view;
   int? _price;
   int? _count;
   int? _preOrder;
@@ -130,6 +137,7 @@ class TapeModel {
   int? get tapeId => _tapeId;
   String? get name => _name;
   String? get catName => _catName;
+  int? get view => _view;
   int? get price => _price;
   int? get count => _count;
   int? get preOrder => _preOrder;
@@ -154,6 +162,7 @@ class TapeModel {
     map['cat_name'] = _catName;
     map['count'] = _count;
     map['preOrder'] = _preOrder;
+    map['view'] = _view;
     map['price'] = _price;
     map['description'] = _description;
     map['compound'] = _compound;
@@ -275,16 +284,17 @@ class Shop {
 }
 
 class Blogger {
-  Blogger({
-    int? id,
-    String? name,
-    String? nickName,
-    String? image,
-  }) {
+  Blogger(
+      {int? id,
+      String? name,
+      String? nickName,
+      String? image,
+      String? createdAt}) {
     _id = id;
     _name = name;
     _nickName = nickName;
     _image = image;
+    _createdAt = createdAt;
   }
 
   Blogger.fromJson(dynamic json) {
@@ -292,16 +302,19 @@ class Blogger {
     _name = json['name'];
     _nickName = json['nick_name'];
     _image = json['avatar'];
+    _createdAt = json['created_at'];
   }
   int? _id;
   String? _name;
   String? _nickName;
   String? _image;
+  String? _createdAt;
 
   int? get id => _id;
   String? get name => _name;
   String? get nickName => _nickName;
   String? get image => _image;
+  String? get createdAt => _createdAt;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -309,6 +322,7 @@ class Blogger {
     map['name'] = _name;
     map['nick_name'] = _nickName;
     map['avatar'] = _image;
+    map['created_at'] = _createdAt;
     return map;
   }
 }

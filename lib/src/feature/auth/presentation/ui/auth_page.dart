@@ -68,17 +68,14 @@ class _AuthPageState extends State<AuthPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Войти',
-                textAlign: TextAlign.start,
-                style: AppTextStyles.defaultAppBarTextStyle
-                    .copyWith(fontSize: 28, fontWeight: FontWeight.w700),
-              ),
+              Text('Войти',
+                  textAlign: TextAlign.start,
+                  style: AppTextStyles.size28Weight700),
               SizedBox(height: 23),
               Text('Номер телефона',
                   textAlign: TextAlign.start,
-                  style: AppTextStyles.categoryTextStyle
-                      .copyWith(fontSize: 13, color: AppColors.kGray300)),
+                  style: AppTextStyles.size13Weight500
+                      .copyWith(color: AppColors.kGray300)),
               SizedBox(height: 10),
               Row(
                 children: [
@@ -124,7 +121,7 @@ class _AuthPageState extends State<AuthPage> {
                     child: Container(
                       height: 52,
                       padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         color: AppColors.kGray2,
                         borderRadius: BorderRadius.circular(12),
@@ -144,8 +141,8 @@ class _AuthPageState extends State<AuthPage> {
               SizedBox(height: 20),
               Text('Пароль',
                   textAlign: TextAlign.start,
-                  style: AppTextStyles.categoryTextStyle
-                      .copyWith(fontSize: 13, color: AppColors.kGray300)),
+                  style: AppTextStyles.size13Weight500
+                      .copyWith(color: AppColors.kGray300)),
               SizedBox(height: 10),
               Container(
                 height: 52,
@@ -249,13 +246,11 @@ class _AuthPageState extends State<AuthPage> {
                   // Get.to(const ForgotPasswordPage());
                   context.router.push(const ForgotPasswordRoute());
                 },
-                child: const Center(
+                child: Center(
                   child: Text(
                     'Забыли пароль?',
-                    style: TextStyle(
-                        color: AppColors.mainPurpleColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500),
+                    style: AppTextStyles.size18Weight600
+                        .copyWith(color: AppColors.mainPurpleColor),
                   ),
                 ),
               ),

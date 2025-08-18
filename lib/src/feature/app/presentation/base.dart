@@ -1,16 +1,10 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart'
-    as countryCubit;
-import '../../basket/presentation/widgets/show_alert_country_widget.dart';
+// import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart'
+//     as countryCubit;
 
 // ignore: unused_element
 const _tag = 'Base';
@@ -34,7 +28,6 @@ class _BaseState extends State<Base> with TickerProviderStateMixin {
     if (widget.index != null) {
       tabController?.animateTo(widget.index!,
           duration: const Duration(milliseconds: 500));
-      log('message');
     }
     super.initState();
   }
@@ -71,35 +64,35 @@ class _BaseState extends State<Base> with TickerProviderStateMixin {
             } else {
               tabsRouter.setActiveIndex(index);
 
-              bool exists = GetStorage().hasData('user_location_code');
-              String? city = GetStorage().read('city');
+              // bool exists = GetStorage().hasData('user_location_code');
+              // String? city = GetStorage().read('city');
 
-              if (!exists && (index == 1 || index == 3)) {
-                // Get.showSnackbar(
+              // if (!exists && (index == 1 || index == 3)) {
+              // Get.showSnackbar(
 
-                Get.snackbar(
-                  'СДЕК',
-                  city != null
-                      ? 'Ваш город $city?'
-                      : 'Ваш город неизвестен для доставки!',
-                  icon: const Icon(Icons.add_location_sharp),
-                  duration: const Duration(seconds: 30),
-                  backgroundColor: Colors.orangeAccent,
-                  onTap: (snack) {
-                    Get.closeCurrentSnackbar();
+              // Get.snackbar(
+              //   'СДЕК',
+              //   city != null
+              //       ? 'Ваш город $city?'
+              //       : 'Ваш город неизвестен для доставки!',
+              //   icon: const Icon(Icons.add_location_sharp),
+              //   duration: const Duration(seconds: 30),
+              //   backgroundColor: Colors.orangeAccent,
+              //   onTap: (snack) {
+              //     Get.closeCurrentSnackbar();
 
-                    Future.wait([
-                      BlocProvider.of<countryCubit.CountryCubit>(context)
-                          .country()
-                    ]);
-                    showAlertCountryWidget(context, () {
-                      // context.router.pop();
-                      //  setState(() {});
-                    }, false);
-                  },
-                );
-                //  / );
-              }
+              //     Future.wait([
+              //       BlocProvider.of<countryCubit.CountryCubit>(context)
+              //           .country()
+              //     ]);
+              //     showAlertCountryWidget(context, () {
+              //       // context.router.pop();
+              //       //  setState(() {});
+              //     }, false);
+              //   },
+              // );
+              //  / );
+              // }
             }
           },
           selectedItemColor: AppColors.kLightBlackColor,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/shop/bloc/blogger_shop_products_state.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/ui/upload_product_video.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -127,9 +128,10 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
               children: [
-                Icon(
-                  Icons.search,
-                  color: AppColors.kGray200,
+                Image.asset(
+                  Assets.icons.defaultSearchIcon.path,
+                  height: 19,
+                  width: 19,
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -141,8 +143,10 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                     },
                     keyboardType: TextInputType.text,
                     controller: searchController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Поиск товаров',
+                      hintStyle: AppTextStyles.size16Weight400
+                          .copyWith(color: AppColors.kGray300),
                       border: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
@@ -239,7 +243,13 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                             isSelected: isSelected,
                             index: selectedIndex,
                             onSelectionChanged: (selected, setIndex) {
-                              print('set ${setIndex}');
+                              if (selectedIndex == setIndex) {
+                                isSelected = false;
+                                selectedIndex = -1;
+                                setState(() {});
+                                return;
+                              }
+
                               setState(() {
                                 isSelected = selected;
                                 selectedIndex = setIndex;

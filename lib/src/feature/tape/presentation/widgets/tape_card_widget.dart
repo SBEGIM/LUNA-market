@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
 import 'package:video_player/video_player.dart';
@@ -38,6 +40,16 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
   void dispose() {
     _controller?.dispose();
     super.dispose();
+  }
+
+  String formatViews(int views) {
+    if (views >= 1000000) {
+      return '${(views / 1000000).toStringAsFixed(1)} млн';
+    } else if (views >= 1000) {
+      return '${(views / 1000).toStringAsFixed(1)} тыс';
+    } else {
+      return '$views просм.';
+    }
   }
 
   @override
@@ -81,6 +93,36 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
               child: Align(
                   alignment: Alignment.topRight,
                   child: SvgPicture.asset('assets/icons/play.svg')),
+            ),
+          ),
+
+          InkWell(
+            onTap: () {
+              context.router.push(DetailTapeCardRoute(
+                  index: widget.index,
+                  shopName: widget.tape.shop!.name!,
+                  tapeBloc: BlocProvider.of<TapeCubit>(context)));
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //       builder: (context) => const Base(
+              //             index: 4,
+              //           )),
+              // );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0, bottom: 8),
+              child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Row(children: [
+                    Image.asset(Assets.icons.viewTapeIcon.path, scale: 1.9),
+                    SizedBox(width: 8),
+                    Text(
+                      '${formatViews(widget.tape.view ?? 0)}',
+                      style: AppTextStyles.size14Weight600
+                          .copyWith(color: AppColors.kWhite),
+                    )
+                  ])),
             ),
           ),
           // Container(

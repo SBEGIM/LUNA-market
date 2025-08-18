@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
 import 'package:haji_market/src/feature/tape/presentation/widgets/tape_card_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -234,9 +235,10 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
                     const SizedBox(
                       width: 18,
                     ),
-                    Icon(
-                      Icons.search,
-                      color: AppColors.kGray300,
+                    Image.asset(
+                      Assets.icons.defaultSearchIcon.path,
+                      height: 18,
+                      width: 18,
                     ),
 
                     const SizedBox(
@@ -251,13 +253,11 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
                           setState(() {});
                         },
                         keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Поиск',
-                          hintStyle: TextStyle(
-                              color: AppColors.kGray300,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                          hintStyle: AppTextStyles.size16Weight400
+                              .copyWith(color: AppColors.kGray300),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),

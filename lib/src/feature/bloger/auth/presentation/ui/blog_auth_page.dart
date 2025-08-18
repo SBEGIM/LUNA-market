@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/route_manager.dart';
@@ -76,7 +77,7 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
               const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 45),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
                 'Войти',
@@ -133,18 +134,26 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                     child: Container(
                       height: 52,
                       padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         color: AppColors.kGray2,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: TextField(
                         controller: phoneControllerAuth,
+                        textInputAction: TextInputAction.send,
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                           hintText: 'Введите номер телефона',
                           border: InputBorder.none,
                         ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        onSubmitted: (_) {
+                          FocusScope.of(context)
+                              .unfocus(); // закрыть клавиатуру
+                        },
                       ),
                     ),
                   ),
@@ -244,17 +253,17 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                 onTap: () {
                   context.router.push(const ForgotPasswordBLoggerRoute());
                 },
-                child: const Center(
+                child: Center(
                   child: Text(
                     'Забыли пароль?',
-                    style: TextStyle(
-                        color: AppColors.mainPurpleColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500),
+                    style: AppTextStyles.size18Weight600
+                        .copyWith(color: AppColors.mainPurpleColor),
                   ),
                 ),
               ),
-              const Spacer(),
+              Expanded(
+                child: SizedBox(),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -280,9 +289,6 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                   )
                 ],
               ),
-              const SizedBox(
-                height: 60,
-              )
             ],
           ),
         );

@@ -24,6 +24,7 @@ class _BlogAuthRegisterPageState extends State<BlogAuthRegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.kWhite,
       appBar: AppBar(
         backgroundColor: Colors.white,

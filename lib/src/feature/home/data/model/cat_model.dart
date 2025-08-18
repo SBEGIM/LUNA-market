@@ -4,6 +4,7 @@ class CatsModel {
     String? name,
     String? icon,
     String? image,
+    String? text,
     int? bonus,
     int? credit,
     bool? isSelect,
@@ -14,6 +15,7 @@ class CatsModel {
     _name = name;
     _icon = icon;
     _image = image;
+    _text = text;
     _bonus = bonus;
     _credit = credit;
     _isSelect = isSelect;
@@ -26,6 +28,7 @@ class CatsModel {
     _name = json['name'];
     _icon = json['icon'];
     _image = json['image'];
+    _text = json['text'];
     _bonus = json['bonus'];
     _credit = json['credit'];
     _isSelect = json['is_select'];
@@ -36,6 +39,7 @@ class CatsModel {
   String? _name;
   String? _icon;
   String? _image;
+  String? _text;
   int? _bonus;
   bool? _isSelect;
   int? _credit;
@@ -46,6 +50,7 @@ class CatsModel {
   String? get name => _name;
   String? get icon => _icon;
   String? get image => _image;
+  String? get text => _text;
   int? get bonus => _bonus;
   int? get credit => _credit;
   bool get isSelect => _isSelect ?? false;
@@ -59,6 +64,7 @@ class CatsModel {
     map['name'] = _name;
     map['icon'] = _icon;
     map['image'] = _image;
+    map['text'] = _text;
     map['bonus'] = _bonus;
     map['credit'] = _credit;
     map['is_select'] = _isSelect;
@@ -72,6 +78,7 @@ class CatsModel {
     String? name,
     String? icon,
     String? image,
+    String? text,
     int? bonus,
     int? credit,
     bool? isSelect,
@@ -83,6 +90,7 @@ class CatsModel {
       name: name ?? _name,
       icon: icon ?? _icon,
       image: image ?? _image,
+      text: text ?? _text,
       bonus: bonus ?? _bonus,
       credit: credit ?? _credit,
       isSelect: isSelect ?? _isSelect,

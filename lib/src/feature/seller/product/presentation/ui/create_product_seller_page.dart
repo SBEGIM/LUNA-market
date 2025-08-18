@@ -2764,7 +2764,8 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    SvgPicture.asset(Assets.icons.video.path,
+                                    SvgPicture.asset(
+                                        Assets.icons.videoSellerIcon.path,
                                         color: AppColors.mainPurpleColor),
                                   ],
                                 ),

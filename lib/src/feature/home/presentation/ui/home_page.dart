@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/core/presentation/widgets/shimmer/shimmer_box.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/product/cubit/product_ad_cubit.dart'
@@ -138,9 +139,13 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(
-                    Icons.location_on,
-                    color: AppColors.mainPurpleColor,
+                  Image.asset(
+                    Assets.icons.location.path,
+                    height: 23,
+                    width: 22,
+                  ),
+                  SizedBox(
+                    width: 2.0,
                   ),
                   Text(
                     'Алматы',
@@ -149,10 +154,11 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.w500),
                   ),
                   Spacer(),
-                  Icon(
-                    Icons.notifications,
-                    color: AppColors.mainPurpleColor,
-                  ),
+                  Image.asset(
+                    Assets.icons.defaultNotificationIcon.path,
+                    height: 22,
+                    width: 22,
+                  )
                 ],
               ),
             ),
@@ -244,44 +250,53 @@ class _HomePageState extends State<HomePage> {
               height: 16,
             ),
             const BannerPage(),
-            const SizedBox(
-              height: 16,
-            ),
+            // const SizedBox(
+            //   height: 16,
+            // ),
             Container(
-              height: 44,
-              margin: EdgeInsets.symmetric(horizontal: 16),
+              height: 74,
               width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                   color: AppColors.kWhite,
                   borderRadius: BorderRadius.circular(12)),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 12,
-                  ),
-                  InkWell(
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 16),
+                decoration: BoxDecoration(
+                    color: AppColors.kGray2,
+                    borderRadius: BorderRadius.circular(12)),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 12,
+                    ),
+                    InkWell(
                       onTap: () {
                         context.router.push(const SearchProductRoute());
                       },
-                      child: Icon(Icons.search, color: AppColors.kGray300)),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Text(
-                    'Искать',
-                    style: AppTextStyles.titleTextStyle
-                        .copyWith(color: AppColors.kGray300),
-                  )
-                ],
+                      child: Image.asset(
+                        Assets.icons.defaultSearchIcon.path,
+                        height: 20,
+                        width: 20,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text(
+                      'Искать',
+                      style: AppTextStyles.titleTextStyle
+                          .copyWith(color: AppColors.kGray300),
+                    )
+                  ],
+                ),
               ),
             ),
             const SizedBox(
               height: 16,
             ),
             const CatsPage(),
-            const SizedBox(
-              height: 16,
-            ),
+
             // const PopularCatsHomepage(),
             // const SizedBox(
             //   height: 16,

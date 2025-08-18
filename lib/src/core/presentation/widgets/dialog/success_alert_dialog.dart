@@ -86,19 +86,18 @@ class SuccessAlertDialog extends StatelessWidget {
                             context.router.maybePop();
                           },
                     padding: const EdgeInsets.all(10),
-                    child: SvgPicture.asset(Assets.icons.close.path),
+                    child: SvgPicture.asset(Assets.icons.defaultCloseIcon.path),
                   ),
                 ),
               ),
-            Lottie.asset(
-              switch (successAlertDialogLottieType) {
-                SuccessAlertDialogLottieType.done => Assets.lottie.done.path,
-                SuccessAlertDialogLottieType.question =>
-                  Assets.lottie.question.path,
-              },
-              height: 250,
-              fit: BoxFit.cover,
-            ),
+            // Lottie.asset(
+            //   switch (successAlertDialogLottieType) {
+            //     SuccessAlertDialogLottieType.done => Assets.icons.chat.path,
+            //     SuccessAlertDialogLottieType.question => Assets.icons..path,
+            //   },
+            //   height: 250,
+            //   fit: BoxFit.cover,
+            // ),
             if (title != null) ...[
               Text(
                 title!,

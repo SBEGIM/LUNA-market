@@ -23,160 +23,156 @@ Future<dynamic> showAlertCityWidget(BuildContext context, bool shop) async {
       return CustomCupertinoActionSheet(
         actions: <Widget>[
           CupertinoActionSheetAction(
-            child: const Text(
-              'Выберите город для СДЕК',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-            ),
-            onPressed: () {},
-          ),
-          CupertinoActionSheetAction(
-            child: BlocConsumer<CityCubit, CityState>(
-              listener: (context, state) {
-                if (state is LoadedState) {
-                  setState(() {});
-                }
-              },
-              builder: (context, state) {
-                if (state is LoadedState) {
-                  return Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        child: CupertinoTextField(
-                          controller: controller,
-                          onChanged: (value) {
-                            BlocProvider.of<CityCubit>(context)
-                                .searchCdekCity(value);
-                          },
-                        ),
-                      ),
-                      Container(
-                        constraints: BoxConstraints(
-                            maxHeight:
-                                (MediaQuery.of(context).size.height) * 0.85),
-                        height: state.city.length * 50,
-                        child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            itemCount: state.city.length,
-                            itemBuilder: (context, int index) {
-                              return SizedBox(
-                                height: 50,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    city = index;
-                                    cityCode = state.city[index].code as int;
-
-                                    cityName = state.city[index].city;
-                                    setState(() {});
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        city == index
-                                            ? Icons.check_circle
-                                            : Icons.check_box_outline_blank,
-                                        color: AppColors.kPrimaryColor,
-                                        size: 24.0,
-                                      ),
-                                      const SizedBox(width: 6),
-                                      Expanded(
-                                        child: Text(
-                                          "${state.city[index].city ?? ''}",
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 16),
-                                          maxLines: 1,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 6),
-                                      Text(
-                                        "${state.city[index].code ?? '--'}",
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16),
-                                        maxLines: 1,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                      ),
-                    ],
-                  );
-                  // } else if (state is NoDataState) {
-                  //   return SizedBox(
-                  //     child: Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.center,
-                  //       mainAxisSize: MainAxisSize.max,
-                  //       children: [
-                  //         Image.asset('assets/icons/no_data.png'),
-                  //         const Text(
-                  //           'У вас нет адресов для доставки',
-                  //           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),
-                  //           textAlign: TextAlign.center,
-                  //         ),
-                  //         const Text(
-                  //           'Добавьте адреса для доставки товаров',
-                  //           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
-                  //           textAlign: TextAlign.center,
-                  //         )
-                  //       ],
-                  //     ),
-                  //   );
-                  // }
-                } else if (state is NodataState) {
-                  return SizedBox(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Image.asset('assets/icons/no_data.png'),
-                        const Text(
-                          'Нет данных',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black),
-                          textAlign: TextAlign.center,
-                        ),
-                        const Text(
-                          'Для этой страны не найдены города',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff717171)),
-                          textAlign: TextAlign.center,
-                        )
-                      ],
+            child: Column(children: [
+              Text(
+                'Выберите город',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF5F6F7),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.03),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
                     ),
-                  );
-                } else {
-                  return const CircularProgressIndicator.adaptive();
-                }
-              },
-            ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.search, color: Colors.grey, size: 20),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: CupertinoTextField(
+                        controller: controller,
+                        onChanged: (value) {
+                          BlocProvider.of<CityCubit>(context)
+                              .searchCdekCity(value);
+                        },
+                        placeholder: 'Поиск города',
+                        textAlign: TextAlign.start,
+                        placeholderStyle: const TextStyle(color: Colors.grey),
+                        decoration: null,
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              BlocConsumer<CityCubit, CityState>(
+                listener: (context, state) {
+                  if (state is LoadedState) {
+                    setState(() {});
+                  }
+                },
+                builder: (context, state) {
+                  if (state is LoadedState) {
+                    return Container(
+                      constraints: BoxConstraints(
+                          maxHeight:
+                              (MediaQuery.of(context).size.height) * 0.85),
+                      height: state.city.length * 50,
+                      child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          itemCount: state.city.length,
+                          itemBuilder: (context, int index) {
+                            return GestureDetector(
+                              onTap: () => setState(() {
+                                city = index;
+                                cityCode = state.city[index].code as int;
+
+                                cityName = state.city[index].city;
+                                setState(() {});
+                              }),
+                              child: Container(
+                                margin: const EdgeInsets.only(bottom: 6),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: city == index
+                                      ? BorderRadius.circular(8)
+                                      : null,
+                                  border: city == index
+                                      ? Border.all(
+                                          color: AppColors.mainPurpleColor,
+                                          width: 1.5,
+                                        )
+                                      : const Border(
+                                          bottom: BorderSide(
+                                            color: AppColors.kGray2,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '${state.city[index].city}',
+                                      style: TextStyle(
+                                          color: city == index
+                                              ? AppColors.mainPurpleColor
+                                              : Colors.black,
+                                          fontWeight: city == index
+                                              ? FontWeight.w600
+                                              : FontWeight.w400,
+                                          fontSize: 16),
+                                    ),
+                                    if (city == index)
+                                      const Icon(Icons.check,
+                                          color: AppColors.mainPurpleColor,
+                                          size: 18),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                    );
+                  } else if (state is NodataState) {
+                    return SizedBox(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Image.asset('assets/icons/no_data.png'),
+                          const Text(
+                            'Нет данных',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black),
+                            textAlign: TextAlign.center,
+                          ),
+                          const Text(
+                            'Для этой страны не найдены города',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff717171)),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const CircularProgressIndicator.adaptive();
+                  }
+                },
+              )
+            ]),
             onPressed: () {},
           ),
-          // CupertinoActionSheetAction(
-          //   child: const Text(
-          //     'Добавить новый адрес',
-          //     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
-          //   ),
-          //   onPressed: () {
-          //     // showAlertAddWidget(context, product);
-          //     Navigator.pop(context);
-          //     showAlertStoreWidget(context);
-          //   },
-          // ),
         ],
         cancelButton: GestureDetector(
           onTap: () async {

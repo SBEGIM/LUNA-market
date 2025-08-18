@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/utils/url_util.dart';
 import 'package:haji_market/src/feature/app/widgets/shimmer_box.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/advert_bottom_sheet.dart';
@@ -19,6 +20,8 @@ class _BannerPageState extends State<BannerPage> {
       CarouselSliderController();
 
   int _current = 0;
+
+  int _imageIndex = 0;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BannersCubit, BannersState>(builder: (context, state) {
@@ -35,38 +38,76 @@ class _BannerPageState extends State<BannerPage> {
         //    height: 100,
         // width: 100,
         // child: Row(children:  <Widget>[
-        return Container(
-          height: 120,
-          width: double.infinity,
-          padding: EdgeInsets.zero,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-          child: CarouselSlider.builder(
-            carouselController: carouselController,
-            options: CarouselOptions(
-              autoPlay: true,
-              viewportFraction: 1,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _current = index;
-                });
-              },
+        return Column(
+          children: [
+            Container(
+              height: 120,
+              width: double.infinity,
+              padding: EdgeInsets.zero,
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(12)),
+              child: CarouselSlider.builder(
+                carouselController: carouselController,
+                options: CarouselOptions(
+                  autoPlay: true,
+                  viewportFraction: 1,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _current = index;
+                    });
+                  },
+                ),
+                itemCount: state.banners.length,
+                itemBuilder: (context, index, realIndex) => Builder(
+                  builder: (BuildContext context) {
+                    return BannerImage(
+                      index: index,
+                      title: state.banners[index].title.toString(),
+                      bonus: state.banners[index].bonus as int,
+                      date: state.banners[index].date.toString(),
+                      image: state.banners[index].path.toString(),
+                      url: state.banners[index].url.toString(),
+                      urlAdmin: state.banners[index].urlAdmin.toString(),
+                      description: state.banners[index].description.toString(),
+                    );
+                  },
+                ),
+              ),
             ),
-            itemCount: state.banners.length,
-            itemBuilder: (context, index, realIndex) => Builder(
-              builder: (BuildContext context) {
-                return BannerImage(
-                  index: index,
-                  title: state.banners[index].title.toString(),
-                  bonus: state.banners[index].bonus as int,
-                  date: state.banners[index].date.toString(),
-                  image: state.banners[index].path.toString(),
-                  url: state.banners[index].url.toString(),
-                  urlAdmin: state.banners[index].urlAdmin.toString(),
-                  description: state.banners[index].description.toString(),
-                );
-              },
+            Container(
+              height: 30,
+              decoration: BoxDecoration(
+                  color: AppColors.kWhite,
+                  borderRadius: BorderRadius.circular(16)),
+              //  width: 12,
+              //  alignment: Alignment.r,
+              //     margin: const EdgeInsets.only(
+              // left: 154.0, right: 20, top: 260, bottom: 4),
+              child: Center(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  state.banners.length,
+                  (item) => GestureDetector(
+                    onTap: () {
+                      _current = item;
+                      setState(() {});
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 16),
+                      height: 8,
+                      width: 8,
+                      decoration: BoxDecoration(
+                          color: _current == item
+                              ? AppColors.kGray400
+                              : AppColors.kGray2,
+                          borderRadius: BorderRadius.circular(100)),
+                    ),
+                  ),
+                ),
+              )),
             ),
-          ),
+          ],
         );
       } else {
         return Container(
