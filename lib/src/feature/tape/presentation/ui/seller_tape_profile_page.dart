@@ -118,7 +118,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: 187,
+                height: 157,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                     color: AppColors.kWhite,
@@ -187,117 +187,117 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InkWell(
-                            onTap: () {
-                              GetStorage().write('video_stop', true);
+                          Flexible(
+                            child: InkWell(
+                              onTap: () {
+                                BlocProvider.of<SubsCubit>(context)
+                                    .sub(widget.sellerId);
+                                setState(() {
+                                  inSub = !inSub;
+                                });
 
-                              // if (state.tapeModel[index].chatId ==
-                              //     null) {
-                              Get.to(MessagePage(
-                                  userId: widget.sellerId,
-                                  name: widget.sellerName,
-                                  avatar: widget.sellerAvatar,
-                                  chatId: widget.sellerId));
-                            },
-                            child: Container(
-                              margin:
-                                  EdgeInsets.only(left: 16, top: 15, bottom: 5),
-                              height: 36,
-                              width: 176,
-                              decoration: BoxDecoration(
-                                color: AppColors.kGray2,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Cообщение',
-                                style: const TextStyle(
-                                    color: AppColors.kLightBlackColor,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400),
+                                widget.onSubChanged?.call(inSub);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    left: 8, top: 15, bottom: 5),
+                                height: 36,
+                                decoration: BoxDecoration(
+                                  color: AppColors.mainPurpleColor,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  inSub != true ? 'Подписаться' : 'Отписаться',
+                                  style: const TextStyle(
+                                      color: AppColors.kWhite,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
+                                ),
                               ),
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              BlocProvider.of<SubsCubit>(context)
-                                  .sub(widget.sellerId);
-                              setState(() {
-                                inSub = !inSub;
-                              });
+                          Flexible(
+                            child: InkWell(
+                              onTap: () {
+                                GetStorage().write('video_stop', true);
 
-                              widget.onSubChanged?.call(inSub);
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(
-                                  right: 16, top: 15, bottom: 5),
-                              height: 36,
-                              width: 176,
-                              decoration: BoxDecoration(
-                                color: AppColors.mainPurpleColor,
-                                borderRadius: BorderRadius.circular(12),
+                                // if (state.tapeModel[index].chatId ==
+                                //     null) {
+                                Get.to(MessagePage(
+                                    userId: widget.sellerId,
+                                    name: widget.sellerName,
+                                    avatar: widget.sellerAvatar,
+                                    chatId: widget.sellerId));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    left: 16, top: 15, bottom: 5),
+                                height: 36,
+                                decoration: BoxDecoration(
+                                  color: AppColors.kGray2,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Cообщение',
+                                  style: const TextStyle(
+                                      color: AppColors.kLightBlackColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
+                                ),
                               ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                inSub != true ? 'Подписаться' : 'Отписаться',
-                                style: const TextStyle(
-                                    color: AppColors.kWhite,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                          Flexible(
+                            child: InkWell(
+                              onTap: () {
+                                GetStorage().remove('CatId');
+                                GetStorage().remove('subCatFilterId');
+                                GetStorage().remove('shopFilterId');
+                                GetStorage().remove('search');
+                                GetStorage().write(
+                                    'shopFilter', widget.sellerName ?? '');
+                                // GetStorage().write('shopFilterId', state.popularShops[index].id);
+
+                                List<int> selectedListSort = [];
+
+                                selectedListSort.add(widget.sellerId as int);
+
+                                GetStorage().write('shopFilterId',
+                                    selectedListSort.toString());
+
+                                // GetStorage().write('shopSelectedIndexSort', index);
+                                context.router.push(ProductsRoute(
+                                  cats: CatsModel(
+                                      id: 0,
+                                      name: widget.sellerName,
+                                      text: 'Все товары',
+                                      image:
+                                          'cat/40/image/qRPANK2TsQxyJfmaFlfcoHgOUEdMKKyzc8wlVX8F.png'),
+                                  shopId: widget.sellerId.toString(),
+                                ));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    left: 8, right: 16, top: 15, bottom: 5),
+                                height: 36,
+                                decoration: BoxDecoration(
+                                  color: AppColors.kGray2,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'В магазин',
+                                  style: const TextStyle(
+                                      color: AppColors.kLightBlackColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
+                                ),
                               ),
                             ),
                           ),
                         ]),
-                    Divider(
-                      thickness: 0.2,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        GetStorage().remove('CatId');
-                        GetStorage().remove('subCatFilterId');
-                        GetStorage().remove('shopFilterId');
-                        GetStorage().remove('search');
-                        GetStorage()
-                            .write('shopFilter', widget.sellerName ?? '');
-                        // GetStorage().write('shopFilterId', state.popularShops[index].id);
-
-                        List<int> selectedListSort = [];
-
-                        selectedListSort.add(widget.sellerId as int);
-
-                        GetStorage()
-                            .write('shopFilterId', selectedListSort.toString());
-
-                        // GetStorage().write('shopSelectedIndexSort', index);
-                        context.router.push(ProductsRoute(
-                          cats: CatsModel(
-                              id: 0,
-                              name: widget.sellerName,
-                              text: 'Все товары',
-                              image:
-                                  'cat/40/image/qRPANK2TsQxyJfmaFlfcoHgOUEdMKKyzc8wlVX8F.png'),
-                          shopId: widget.sellerId.toString(),
-                        ));
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Все товары ${widget.sellerName}',
-                              style: AppTextStyles.size16Weight500
-                                  .copyWith(color: AppColors.mainPurpleColor),
-                            ),
-                            const Icon(
-                              Icons.arrow_forward_ios,
-                              size: 14,
-                              color: AppColors.mainPurpleColor,
-                            )
-                          ],
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),

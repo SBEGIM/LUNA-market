@@ -68,15 +68,19 @@ class TapeCubit extends Cubit<TapeState> {
   }
 
   void update(TapeModel tape, int index, bool? inSub, bool? inBas, bool? inFav,
-      bool? inReport,
+      bool? inReport, bool? isLiked, int? like, int? favorite, int? send,
       {bool isBlogger = false}) {
     try {
       final updatedTape = tape.copyWith(
-        inBasket: inBas ?? tape.inBasket,
-        inReport: inReport ?? tape.inReport,
-        inFavorite: inFav ?? tape.inFavorite,
-        inSubscribe: inSub ?? tape.inSubscribe,
-      );
+          inBasket: inBas ?? tape.inBasket,
+          inReport: inReport ?? tape.inReport,
+          inFavorite: inFav ?? tape.inFavorite,
+          inSubscribe: inSub ?? tape.inSubscribe,
+          isLiked: isLiked ?? tape.isLiked,
+          statistics: Statistics(
+              send: send ?? (tape.statistics?.like ?? 0),
+              like: like ?? (tape.statistics?.like ?? 0),
+              favorite: favorite ?? (tape.statistics?.favorite ?? 0)));
 
       if (isBlogger) {
         if (index >= 0 && index < arrayForBlogger.length) {
@@ -128,6 +132,24 @@ class TapeCubit extends Cubit<TapeState> {
   Future<void> view(int id) async {
     try {
       await tapeRepository.view(id);
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка при увеличении просмотров'));
+    }
+  }
+
+  Future<void> like(int id) async {
+    try {
+      await tapeRepository.like(id);
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка при увеличении просмотров'));
+    }
+  }
+
+  Future<void> share(int id) async {
+    try {
+      await tapeRepository.share(id);
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка при увеличении просмотров'));

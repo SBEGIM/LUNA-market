@@ -13,6 +13,8 @@ class TapeRepository {
       _tapeApi.tapes(inSub, inFav, search, bloggerId, page);
 
   view(id) => _tapeApi.view(id);
+  like(id) => _tapeApi.like(id);
+  share(id) => _tapeApi.share(id);
 
   Future<TapeCheckModel> tapeCheck({required int tapeId}) =>
       _tapeApi.tapeCheck(tapeId: tapeId);
@@ -57,6 +59,26 @@ class TapeApi {
     final String? token = _box.read('token');
 
     final response = await http.post(Uri.parse('$baseUrl/shop/tape/view'),
+        body: {'tape_id': id.toString()},
+        headers: {"Authorization": "Bearer $token"});
+
+    return response.statusCode;
+  }
+
+  like(int id) async {
+    final String? token = _box.read('token');
+
+    final response = await http.post(Uri.parse('$baseUrl/shop/tape/like'),
+        body: {'tape_id': id.toString()},
+        headers: {"Authorization": "Bearer $token"});
+
+    return response.statusCode;
+  }
+
+  share(int id) async {
+    final String? token = _box.read('token');
+
+    final response = await http.post(Uri.parse('$baseUrl/shop/tape/share'),
         body: {'tape_id': id.toString()},
         headers: {"Authorization": "Bearer $token"});
 

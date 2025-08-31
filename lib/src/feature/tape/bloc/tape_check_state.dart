@@ -1,7 +1,7 @@
 part of 'tape_check_cubit.dart';
 
-
 class TapeCheckState {}
+
 class InitState extends TapeCheckState {}
 
 class LoadingState extends TapeCheckState {}

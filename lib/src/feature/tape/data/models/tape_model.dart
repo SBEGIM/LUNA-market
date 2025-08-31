@@ -1,26 +1,27 @@
 class TapeModel {
-  TapeModel({
-    int? id,
-    int? tapeId,
-    String? name,
-    String? catName,
-    int? view,
-    int? price,
-    int? count,
-    int? preOrder,
-    String? description,
-    int? compound,
-    int? point,
-    String? video,
-    String? image,
-    bool? inBasket,
-    int? chatId,
-    bool? inReport,
-    bool? inFavorite,
-    bool? inSubscribe,
-    Shop? shop,
-    Blogger? blogger,
-  }) {
+  TapeModel(
+      {int? id,
+      int? tapeId,
+      String? name,
+      String? catName,
+      int? view,
+      int? price,
+      int? count,
+      int? preOrder,
+      String? description,
+      int? compound,
+      int? point,
+      String? video,
+      String? image,
+      bool? inBasket,
+      int? chatId,
+      bool? inReport,
+      bool? inFavorite,
+      bool? inSubscribe,
+      bool? isLiked,
+      Shop? shop,
+      Blogger? blogger,
+      Statistics? statistics}) {
     _id = id;
     _tapeId = tapeId;
     _name = name;
@@ -39,32 +40,35 @@ class TapeModel {
     _inReport = inReport;
     _inFavorite = inFavorite;
     _inSubscribe = inSubscribe;
+    _isLiked = isLiked;
     _shop = shop;
     _blogger = blogger;
+    _statistics = statistics;
   }
 
-  TapeModel copyWith({
-    int? id,
-    int? tapeId,
-    String? name,
-    String? catName,
-    int? view,
-    int? price,
-    int? count,
-    int? preOrder,
-    String? description,
-    int? compound,
-    int? point,
-    String? video,
-    String? image,
-    bool? inBasket,
-    int? chatId,
-    bool? inReport,
-    bool? inFavorite,
-    bool? inSubscribe,
-    Shop? shop,
-    Blogger? blogger,
-  }) {
+  TapeModel copyWith(
+      {int? id,
+      int? tapeId,
+      String? name,
+      String? catName,
+      int? view,
+      int? price,
+      int? count,
+      int? preOrder,
+      String? description,
+      int? compound,
+      int? point,
+      String? video,
+      String? image,
+      bool? inBasket,
+      int? chatId,
+      bool? inReport,
+      bool? inFavorite,
+      bool? inSubscribe,
+      bool? isLiked,
+      Shop? shop,
+      Blogger? blogger,
+      Statistics? statistics}) {
     return TapeModel(
       id: id ?? this.id,
       tapeId: tapeId ?? this.tapeId,
@@ -83,8 +87,10 @@ class TapeModel {
       inBasket: inBasket ?? this.inBasket,
       inFavorite: inFavorite ?? this.inFavorite,
       inSubscribe: inSubscribe ?? this.inSubscribe,
+      isLiked: isLiked ?? this.isLiked,
       shop: shop ?? this.shop,
       blogger: blogger ?? this.blogger,
+      statistics: statistics ?? this.statistics,
     );
   }
 
@@ -108,9 +114,13 @@ class TapeModel {
     _inReport = json['in_report'];
     _inFavorite = json['in_favorite'];
     _inSubscribe = json['in_subscribe'];
+    _isLiked = json['is_liked'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
     _blogger =
         json['blogger'] != null ? Blogger.fromJson(json['blogger']) : null;
+    _statistics = json['statistics'] != null
+        ? Statistics.fromJson(json['statistics'])
+        : null;
   }
   int? _id;
   int? _tapeId;
@@ -130,8 +140,10 @@ class TapeModel {
   bool? _inReport;
   bool? _inFavorite;
   bool? _inSubscribe;
+  bool? _isLiked;
   Shop? _shop;
   Blogger? _blogger;
+  Statistics? _statistics;
 
   int? get id => _id;
   int? get tapeId => _tapeId;
@@ -151,8 +163,10 @@ class TapeModel {
   bool? get inReport => _inReport;
   bool? get inFavorite => _inFavorite;
   bool? get inSubscribe => _inSubscribe;
+  bool? get isLiked => _isLiked;
   Shop? get shop => _shop;
   Blogger? get blogger => _blogger;
+  Statistics? get statistics => _statistics;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -173,13 +187,18 @@ class TapeModel {
     map['chat_id'] = _chatId;
     map['in_report'] = _inReport;
     map['in_favorite'] = _inFavorite;
-    map['inSubscribe'] = _inSubscribe;
+    map['in_subscribe'] = _inSubscribe;
+    map['is_liked'] = _isLiked;
     if (_shop != null) {
       map['shop'] = _shop?.toJson();
     }
     if (_blogger != null) {
       map['blogger'] = _blogger?.toJson();
     }
+    if (_statistics != null) {
+      map['statistics'] = _statistics?.toJson();
+    }
+
     return map;
   }
 }
@@ -323,6 +342,35 @@ class Blogger {
     map['nick_name'] = _nickName;
     map['avatar'] = _image;
     map['created_at'] = _createdAt;
+    return map;
+  }
+}
+
+class Statistics {
+  Statistics({int? like, int? favorite, int? send}) {
+    _like = like;
+    _favorite = favorite;
+    _send = send;
+  }
+
+  Statistics.fromJson(dynamic json) {
+    _like = json['like'];
+    _favorite = json['favorite'];
+    _send = json['send'];
+  }
+  int? _like;
+  int? _favorite;
+  int? _send;
+
+  int? get like => _like;
+  int? get favorite => _favorite;
+  int? get send => _send;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['like'] = _like;
+    map['favorite'] = _favorite;
+    map['send'] = _send;
     return map;
   }
 }
