@@ -19,4 +19,25 @@ class NewsSellerCubit extends Cubit<NewsSellerState> {
       // emit(ErrorState(message: 'Ошибка'));
     }
   }
+
+  like(int id) async {
+    try {
+      await newsSellerRepository.like(id);
+
+      news();
+    } catch (e) {
+      log(e.toString());
+      // emit(ErrorState(message: 'Ошибка'));
+    }
+  }
+
+  view(int id) async {
+    try {
+      await newsSellerRepository.view(id);
+      news();
+    } catch (e) {
+      log(e.toString());
+      // emit(ErrorState(message: 'Ошибка'));
+    }
+  }
 }

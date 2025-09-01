@@ -351,6 +351,13 @@ mixin AppTextStyles {
     fontFamily: 'SFProDisplay',
   );
 
+  static const size22Weight600 = TextStyle(
+      fontSize: 22,
+      color: Colors.black,
+      letterSpacing: 0,
+      fontWeight: FontWeight.w600,
+      fontFamily: 'SFProDisplay');
+
   static const size28Weight700 = TextStyle(
       fontSize: 28,
       color: Colors.black,
