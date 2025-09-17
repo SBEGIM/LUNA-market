@@ -28,7 +28,7 @@ class RegisterToApi {
     final deviceToken = await _box.read('device_token');
 
     String s = register.phone;
-    String result = s.substring(2);
+    String result = s.substring(1);
 
     final String? token = _box.read('token');
 
@@ -93,7 +93,7 @@ class RegisterToApi {
 
   Future<dynamic> resetSend(String phone) async {
     String s = phone;
-    String result = s.substring(2);
+    String result = s.substring(1);
 
     final response = await http
         .post(Uri.parse('$baseUrl/blogger/password/reset/send-code'), body: {
@@ -105,7 +105,7 @@ class RegisterToApi {
 
   Future<dynamic> resetCheck(String phone, String code) async {
     String s = phone;
-    String result = s.substring(2);
+    String result = s.substring(1);
 
     final response = await http
         .post(Uri.parse('$baseUrl/blogger/password/reset/check-code'), body: {
@@ -118,7 +118,7 @@ class RegisterToApi {
 
   Future<dynamic> passwordReset(String phone, String password) async {
     String s = phone;
-    String result = s.substring(2);
+    String result = s.substring(1);
 
     final response =
         await http.post(Uri.parse('$baseUrl/blogger/password/reset'), body: {

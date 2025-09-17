@@ -63,35 +63,36 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
             if (tabsRouter.activeIndex == index) {
               tabsRouter.popTop();
             } else {
-              bool exists = GetStorage().hasData('shop_location_code');
-              String? city = GetStorage().read('city_shop');
+              // bool exists = GetStorage().hasData('shop_location_code');
+              // String? city = GetStorage().read('city_shop');
 
-              if (!exists && (index != 1)) {
-                // Get.showSnackbar(
-                // Get.closeCurrentSnackbar();
-                Get.snackbar(
-                  'СДЕК магазин',
-                  city != null
-                      ? 'Ваш город $city?'
-                      : 'Ваш город неизвестен для cрока доставки!',
-                  icon: const Icon(Icons.add_location_sharp),
-                  duration: const Duration(seconds: 30),
-                  backgroundColor: Colors.orangeAccent,
-                  onTap: (snack) {
-                    Get.closeCurrentSnackbar();
+              // if (!exists && (index != 1)) {
+              //   // Get.showSnackbar(
+              //   // Get.closeCurrentSnackbar();
+              //   Get.snackbar(
+              //     'СДЕК магазин',
+              //     city != null
+              //         ? 'Ваш город $city?'
+              //         : 'Ваш город неизвестен для cрока доставки!',
+              //     icon: const Icon(Icons.add_location_sharp),
+              //     duration: const Duration(seconds: 30),
+              //     backgroundColor: Colors.orangeAccent,
+              //     onTap: (snack) {
+              //       Get.closeCurrentSnackbar();
 
-                    Future.wait([
-                      BlocProvider.of<countryCubit.CountryCubit>(context)
-                          .country()
-                    ]);
-                    showAlertCountryWidget(context, () {
-                      // context.router.pop();
-                      // setState(() {});
-                    }, true);
-                  },
-                );
-                //  / );
-              }
+              //       Future.wait([
+              //         BlocProvider.of<countryCubit.CountryCubit>(context)
+              //             .country()
+              //       ]);
+              //       showAlertCountryWidget(context, () {
+              //         // context.router.pop();
+              //         // setState(() {});
+              //       }, true);
+              //     },
+              //   );
+              //   //  / );
+
+              // }
               tabsRouter.setActiveIndex(index);
             }
           },

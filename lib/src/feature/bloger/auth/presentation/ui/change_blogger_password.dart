@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/sms_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/sms_blogger_state.dart';
 import 'package:haji_market/src/core/common/constants.dart';
@@ -14,9 +15,9 @@ import 'package:haji_market/src/feature/auth/presentation/widgets/default_button
 class ChangePasswordBloggerPage extends StatefulWidget {
   final String textEditingController;
   const ChangePasswordBloggerPage({
-    Key? key,
+    super.key,
     required this.textEditingController,
-  }) : super(key: key);
+  });
 
   @override
   State<ChangePasswordBloggerPage> createState() =>
@@ -27,17 +28,11 @@ class _ChangePasswordBloggerPageState extends State<ChangePasswordBloggerPage> {
   TextEditingController passwordNew = TextEditingController();
   TextEditingController passwordRepeat = TextEditingController();
 
-  bool _visibleIconView = false;
-  bool _visibleIconViewRepeat = false;
-  bool _passwordVisible = false;
-
-  void test() {
-    log("11 ${widget.textEditingController}");
-  }
+  bool _visibleIconView = true;
+  bool _visibleIconViewRepeat = true;
 
   @override
   void initState() {
-    test();
     super.initState();
   }
 
@@ -48,154 +43,63 @@ class _ChangePasswordBloggerPageState extends State<ChangePasswordBloggerPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          'Изменить пароль',
-          style: AppTextStyles.appBarTextStyle,
-        ),
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
           child: CustomBackButton(onTap: () {
             Navigator.pop(context);
           }),
         ),
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.only(right: 22.0),
-        //     child: CustomDropButton(
-        //       onTap: () {},
-        //     ),
-        //   ),
-        // ],
       ),
       body: BlocConsumer<SmsBloggerCubit, SmsBloggerState>(
           listener: (context, state) {
         if (state is ResetSuccessState) {
-          // Get.offAll(() => const LoginAdminPage());
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context)),
-          // );
-
-          // Get.to(LoginAdminPage());
-          context.router.push(BlogAuthRegisterRoute());
+          context.router.popUntil(
+            (route) => route.settings.name == BlogAuthRegisterRoute.name,
+          );
         }
       }, builder: (context, state) {
         if (state is InitState) {
           return Container(
-            color: AppColors.kBackgroundColor,
+            color: AppColors.kWhite,
             child: Padding(
               padding: const EdgeInsets.only(
                   left: 16.0, right: 16, top: 16, bottom: 45),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    color: Colors.white,
-                    child: Column(
-                      children: [
-                        ListTile(
-                          horizontalTitleGap: 0,
-                          leading: SvgPicture.asset(
-                            'assets/icons/password.svg',
-                            height: 24,
-                            width: 24,
-                          ),
-                          title: TextField(
-                            // inputFormatters: [maskFormatter],
-                            controller: passwordNew,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Новый пароль',
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                // borderRadius: BorderRadius.circular(3),
-                              ),
-                            ),
-                            onChanged: (value) {
-                              passwordNew.text.length.toInt() == 0
-                                  ? _visibleIconView = false
-                                  : _visibleIconView = true;
-                              setState(() {});
-                            },
-                          ),
-                          trailing: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _passwordVisible = !_passwordVisible;
-                              });
-                            },
-                            child: _visibleIconView == true
-                                ? Icon(
-                                    _passwordVisible
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color:
-                                        const Color.fromRGBO(177, 179, 181, 1),
-                                  )
-                                : const SizedBox(width: 5),
-                          ),
-                        ),
-                        ListTile(
-                          horizontalTitleGap: 0,
-                          leading: SvgPicture.asset(
-                            'assets/icons/password.svg',
-                            height: 24,
-                            width: 24,
-                          ),
-                          title: TextField(
-                            // inputFormatters: [maskFormatter],
-                            controller: passwordRepeat,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Подтвердите пароль',
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                // borderRadius: BorderRadius.circular(3),
-                              ),
-                            ),
-                            onChanged: (value) {
-                              passwordRepeat.text.length.toInt() == 0
-                                  ? _visibleIconViewRepeat = false
-                                  : _visibleIconViewRepeat = true;
-                              setState(() {});
-                            },
-                          ),
-                          trailing: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _passwordVisible = !_passwordVisible;
-                              });
-                            },
-                            child: _visibleIconViewRepeat == true
-                                ? Icon(
-                                    _passwordVisible
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color:
-                                        const Color.fromRGBO(177, 179, 181, 1),
-                                  )
-                                : const SizedBox(width: 5),
-                          ),
-                        ),
-                      ],
-                    ),
+                  Text(
+                    'Создайте новый пароль',
+                    style: AppTextStyles.size28Weight700,
                   ),
-                  const SizedBox(
-                    height: 16,
+                  SizedBox(height: 16),
+                  FieldsCoopRequest(
+                    titleText: 'Новый пароль',
+                    hintText: 'Введите новый пароль',
+                    star: false,
+                    controller: passwordNew,
+                    arrow: _visibleIconView,
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                    onPressed: () {
+                      _visibleIconView = !_visibleIconView;
+                      setState(() {});
+                    },
                   ),
-                  const Center(
-                    child: SizedBox(
-                      width: 300,
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        'Для смены пароля введите новый пароль, а затем подтвердите',
-                        style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
+                  FieldsCoopRequest(
+                    titleText: 'Повторите пароль',
+                    hintText: 'Повторите новый пароль',
+                    star: false,
+                    arrow: _visibleIconViewRepeat,
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                    onPressed: () {
+                      _visibleIconViewRepeat = !_visibleIconViewRepeat;
+                      setState(() {});
+                    },
+                    controller: passwordRepeat,
                   ),
                   const Spacer(),
                   Padding(
@@ -203,17 +107,23 @@ class _ChangePasswordBloggerPageState extends State<ChangePasswordBloggerPage> {
                       bottom: MediaQuery.of(context).viewInsets.bottom * 0.001,
                     ),
                     child: DefaultButton(
-                        backgroundColor: AppColors.kPrimaryColor,
-                        text: 'Изменить пароль',
+                        backgroundColor: passwordNew.text == passwordRepeat.text
+                            ? AppColors.mainPurpleColor
+                            : AppColors.mainBackgroundPurpleColor,
+                        text: 'Готово',
                         press: () {
-                          log(widget.textEditingController);
-                          log('1111');
-                          final sms = BlocProvider.of<SmsBloggerCubit>(context);
-                          sms.passwordReset(widget.textEditingController,
-                              passwordRepeat.text);
+                          if (passwordNew.text == passwordRepeat.text) {
+                            final sms =
+                                BlocProvider.of<SmsBloggerCubit>(context);
+                            sms.passwordReset(widget.textEditingController,
+                                passwordRepeat.text);
+                          } else {
+                            // Get.snackbar('Ошибка', 'Пароли не совпадают',
+                            //     backgroundColor: Colors.blueAccent);
+                          }
                         },
                         color: Colors.white,
-                        width: 343),
+                        width: double.infinity),
                   ),
                 ],
               ),
@@ -232,6 +142,88 @@ class _ChangePasswordBloggerPageState extends State<ChangePasswordBloggerPage> {
               child: CircularProgressIndicator(color: Colors.indigoAccent));
         }
       }),
+    );
+  }
+}
+
+class FieldsCoopRequest extends StatelessWidget {
+  final String titleText;
+  final String hintText;
+  final bool star;
+  final bool arrow;
+  final void Function()? onPressed;
+  final void Function(String)? onChanged;
+
+  TextEditingController? controller;
+  FieldsCoopRequest({
+    required this.hintText,
+    required this.titleText,
+    required this.star,
+    required this.arrow,
+    this.controller,
+    this.onPressed,
+    required this.onChanged,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4.0, bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(titleText,
+              style: AppTextStyles.size13Weight500
+                  .copyWith(color: Color(0xFF636366))),
+          const SizedBox(
+            height: 4,
+          ),
+          Container(
+            height: 47,
+            padding: const EdgeInsets.only(left: 16, right: 0),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: AppColors.kBackgroundColor,
+                borderRadius: BorderRadius.circular(10)),
+            child: TextField(
+              obscureText: arrow,
+              keyboardType: TextInputType.text,
+              controller: controller,
+              textAlign: TextAlign.left,
+              onChanged: onChanged,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: hintText,
+                hintStyle: AppTextStyles.size16Weight400
+                    .copyWith(color: Color(0xFF8E8E93)),
+                enabledBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  // borderRadius: BorderRadius.circular(3),
+                ),
+                suffixIcon: IconButton(
+                  splashRadius: 20,
+                  onPressed: onPressed,
+                  icon: Image.asset(
+                    arrow
+                        ? Assets.icons.passwordViewHiddenIcon.path
+                        : Assets.icons.passwordViewIcon.path,
+                    scale: 1.9,
+                    height: 22,
+                    width: 22,
+                    color: AppColors.kGray300,
+                  ),
+                ),
+
+                // suffixIcon: IconButton(
+                //     onPressed: () {},
+                //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',
+                //         color: Colors.grey)),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

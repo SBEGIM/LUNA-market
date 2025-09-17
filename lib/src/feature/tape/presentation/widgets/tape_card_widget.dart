@@ -48,7 +48,7 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
     } else if (views >= 1000) {
       return '${(views / 1000).toStringAsFixed(1)} тыс';
     } else {
-      return '$views просм.';
+      return '$views';
     }
   }
 
@@ -89,10 +89,14 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
               // );
             },
             child: Padding(
-              padding: const EdgeInsets.only(right: 8.0, top: 8),
+              padding: const EdgeInsets.only(left: 8.0, top: 8),
               child: Align(
-                  alignment: Alignment.topRight,
-                  child: SvgPicture.asset('assets/icons/play.svg')),
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    '${widget.tape.shop?.name}',
+                    style: AppTextStyles.size14Weight500
+                        .copyWith(color: AppColors.kWhite),
+                  )),
             ),
           ),
 

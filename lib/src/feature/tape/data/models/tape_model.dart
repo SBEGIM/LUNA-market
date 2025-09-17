@@ -18,6 +18,7 @@ class TapeModel {
       bool? inReport,
       bool? inFavorite,
       bool? inSubscribe,
+      bool? inSellerSubscribe,
       bool? isLiked,
       Shop? shop,
       Blogger? blogger,
@@ -40,6 +41,7 @@ class TapeModel {
     _inReport = inReport;
     _inFavorite = inFavorite;
     _inSubscribe = inSubscribe;
+    _inSellerSubscribe = inSellerSubscribe;
     _isLiked = isLiked;
     _shop = shop;
     _blogger = blogger;
@@ -65,6 +67,7 @@ class TapeModel {
       bool? inReport,
       bool? inFavorite,
       bool? inSubscribe,
+      bool? inSellerSubscribe,
       bool? isLiked,
       Shop? shop,
       Blogger? blogger,
@@ -87,6 +90,7 @@ class TapeModel {
       inBasket: inBasket ?? this.inBasket,
       inFavorite: inFavorite ?? this.inFavorite,
       inSubscribe: inSubscribe ?? this.inSubscribe,
+      inSellerSubscribe: inSellerSubscribe ?? this.inSellerSubscribe,
       isLiked: isLiked ?? this.isLiked,
       shop: shop ?? this.shop,
       blogger: blogger ?? this.blogger,
@@ -114,6 +118,7 @@ class TapeModel {
     _inReport = json['in_report'];
     _inFavorite = json['in_favorite'];
     _inSubscribe = json['in_subscribe'];
+    _inSellerSubscribe = json['in_seller_subscribe'];
     _isLiked = json['is_liked'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
     _blogger =
@@ -140,6 +145,7 @@ class TapeModel {
   bool? _inReport;
   bool? _inFavorite;
   bool? _inSubscribe;
+  bool? _inSellerSubscribe;
   bool? _isLiked;
   Shop? _shop;
   Blogger? _blogger;
@@ -163,6 +169,7 @@ class TapeModel {
   bool? get inReport => _inReport;
   bool? get inFavorite => _inFavorite;
   bool? get inSubscribe => _inSubscribe;
+  bool? get inSellerSubscribe => _inSellerSubscribe;
   bool? get isLiked => _isLiked;
   Shop? get shop => _shop;
   Blogger? get blogger => _blogger;
@@ -188,6 +195,7 @@ class TapeModel {
     map['in_report'] = _inReport;
     map['in_favorite'] = _inFavorite;
     map['in_subscribe'] = _inSubscribe;
+    map['in_seller_subscribe'] = _inSellerSubscribe;
     map['is_liked'] = _isLiked;
     if (_shop != null) {
       map['shop'] = _shop?.toJson();

@@ -6,6 +6,7 @@ import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_basket_bottom_sheet_widget.dart';
+import 'package:haji_market/src/feature/home/presentation/widgets/product_buy_with_card.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/profit_cubit.dart'
     as profitCubit;
@@ -1340,7 +1341,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
           Container(
             height: 56,
-            color: Colors.white,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(16)),
             padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -1699,7 +1701,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           Container(
               height: 190,
               padding: EdgeInsets.only(top: 8),
-              color: Colors.white,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(16)),
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: textDescrp.length,
@@ -1793,23 +1796,23 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 },
               )),
           const SizedBox(
-            height: 8,
+            height: 4,
           ),
           Container(
-            padding: const EdgeInsets.all(16),
-            color: Colors.white,
+            margin: const EdgeInsets.all(16),
+            color: AppColors.kBackgroundColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Похожие товары',
+                  'С этим товаром покупают',
                   style: TextStyle(
                       color: AppColors.kGray900,
                       fontSize: 16,
                       fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 8,
                 ),
                 BlocConsumer<ProductCubit, ProductState>(
                     listener: (context, state) {},
@@ -1832,8 +1835,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       if (state is LoadedState) {
                         return state.productModel.isEmpty
                             ? const Center(child: Text('Товары не найдены'))
-                            : SizedBox(
-                                height: 286,
+                            : Container(
+                                height: 275,
+                                decoration: BoxDecoration(
+                                    color: AppColors.kBackgroundColor),
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: state.productModel.length,
@@ -1843,7 +1848,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                           DetailCardProductRoute(
                                               product:
                                                   state.productModel[index])),
-                                      child: ProductMbInterestingCard(
+                                      child: ProductBuyWithCard(
                                         product: state.productModel[index],
                                       ),
                                     );
@@ -1863,19 +1868,19 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           ),
           Container(
             padding: const EdgeInsets.all(16),
-            color: Colors.white,
+            color: AppColors.kBackgroundColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'С этим товаром покупают',
+                  'Похожие товары',
                   style: TextStyle(
                       color: AppColors.kGray900,
                       fontSize: 16,
                       fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 8,
                 ),
                 BlocConsumer<ProductCubit, ProductState>(
                     listener: (context, state) {},
@@ -1899,8 +1904,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         return state.productModel.isEmpty
                             ? const Center(child: Text('Товары не найдены'))
                             : SizedBox(
-                                height:
-                                    state.productModel.length >= 4 ? 608 : 302,
+                                width: 358,
+                                height: 558,
+                                // height:
+                                //     state.productModel.length >= 4 ? 600 : 275,
                                 child: GridView.builder(
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
@@ -1910,8 +1917,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                               state.productModel.length >= 4
                                                   ? 2
                                                   : 1,
-                                          childAspectRatio: 1.6,
-                                          crossAxisSpacing: 20,
+                                          childAspectRatio: 1.50,
+                                          crossAxisSpacing: 8,
                                           mainAxisSpacing: 2),
                                   itemCount: state.productModel.length <= 10
                                       ? state.productModel.length

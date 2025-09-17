@@ -6,7 +6,9 @@ const baseUrl = 'https://lunamarket.ru/api';
 class SubsRepository {
   final SubApi _subApi = SubApi();
 
-  subs(shopId) => _subApi.sub(shopId);
+  subs(bloggerId) => _subApi.sub(bloggerId);
+
+  subSeller(shopId) => _subApi.subSeller(shopId);
 }
 
 class SubApi {
@@ -19,6 +21,18 @@ class SubApi {
       "Authorization": "Bearer $token"
     }, body: {
       "blogger_id": bloggerID.toString(),
+    });
+
+    return response.statusCode;
+  }
+
+  subSeller(shopId) async {
+    final String? token = _box.read('token');
+
+    final response = await http.post(Uri.parse('$baseUrl/user/subs'), headers: {
+      "Authorization": "Bearer $token"
+    }, body: {
+      "seller_id": shopId.toString(),
     });
 
     return response.statusCode;

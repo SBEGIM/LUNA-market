@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/login_blogger_state.dart';
 import '../data/DTO/register_blogger_dto.dart';
 import '../data/repository/login_blogger_repo.dart';
@@ -12,7 +13,8 @@ class LoginBloggerCubit extends Cubit<LoginBloggerState> {
   LoginBloggerCubit({required this.loginBloggerRepository})
       : super(InitState());
 
-  Future<void> login(String phone, String password) async {
+  Future<void> login(
+      BuildContext context, String phone, String password) async {
     try {
       emit(LoadingState());
       final data = await loginBloggerRepository.login(phone, password);
@@ -23,13 +25,23 @@ class LoginBloggerCubit extends Cubit<LoginBloggerState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-            backgroundColor: Colors.redAccent);
+        AppSnackBar.show(
+          context,
+          'Неверный номер телефона или пароль',
+          type: AppSnackType.error,
+        );
       }
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+
+        AppSnackBar.show(
+          Get.context!,
+          'Ошибка сервера',
+          type: AppSnackType.error,
+        );
+
+        // Get.snackbar('500', 'Ошибка сервера',
+        //     backgroundColor: Colors.redAccent);
       }
     } catch (e) {
       log(e.toString());

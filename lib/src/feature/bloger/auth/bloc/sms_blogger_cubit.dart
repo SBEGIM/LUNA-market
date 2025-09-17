@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/sms_blogger_state.dart';
 import 'package:haji_market/src/feature/bloger/auth/data/repository/register_blogger_repo.dart';
 
@@ -87,27 +88,37 @@ class SmsBloggerCubit extends Cubit<SmsBloggerState> {
     }
   }
 
-  Future<void> resetSend(String phone) async {
+  Future<void> resetSend(BuildContext context, phone) async {
     try {
       emit(LoadingState());
       final data = await registerRepository.resetSend(phone);
       if (data == 200) {
-        Get.snackbar('Успешно!', 'Код отправлен на ваш номер!',
-            backgroundColor: Colors.blueAccent);
+        AppSnackBar.show(
+          context,
+          'Код отправлен на ваш номер!',
+          type: AppSnackType.success,
+        );
         emit(LoadedState());
         // Get.to(PasswordResetPage(phone: phone));
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar(
-            'Ошибка запроса!', 'Номер не существует или набран неправильно',
-            backgroundColor: Colors.redAccent);
+
+        AppSnackBar.show(
+          context,
+          'Номер не существует или набран неправильно',
+          type: AppSnackType.error,
+        );
       }
 
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+
+        AppSnackBar.show(
+          context,
+          'Ошибка сервера',
+          type: AppSnackType.error,
+        );
       }
     } catch (e) {
       log(e.toString());

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 mixin AppColors {
-  static const Color kBackgroundColor = Color(0xffF1F1F1);
+  static const Color kBackgroundColor = Color(0xFFF6F6F6);
   static const Color kButtonColor = Color(0xffEAECED);
   static const Color kunSelectColor = Color(0xffAEAEB2);
 
@@ -22,6 +22,9 @@ mixin AppColors {
   static const Color kPinkChatColor = Color(0xffF1EBFE);
 
   static const Color kLightBlackColor = Color(0xff1F1F1F);
+
+  static const Color kNeutralBlackColor = Color(0xFF3A3A3C);
+
   static const Color kGray = Color(0xffF9FAFB);
   static const Color kGray1 = Color(0xffF8F8F8);
   static const Color kGray2 = Color(0xffF1F2F3);
@@ -255,6 +258,30 @@ mixin AppTextStyles {
     fontFamily: 'SFProDisplay',
   );
 
+  static const size11Weight400 = TextStyle(
+    fontSize: 11,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w400,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size12Weight400 = TextStyle(
+    fontSize: 12,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w400,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size12Weight500 = TextStyle(
+    fontSize: 12,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w400,
+    fontFamily: 'SFProDisplay',
+  );
+
   static const size13Weight400 = TextStyle(
     fontSize: 13,
     letterSpacing: 0,
@@ -289,6 +316,21 @@ mixin AppTextStyles {
 
   static const size14Weight600 = TextStyle(
     fontSize: 14,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w600,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size15Weight500 = TextStyle(
+    fontSize: 15,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w500,
+    fontFamily: 'SFProDisplay',
+  );
+  static const size15Weight600 = TextStyle(
+    fontSize: 15,
     letterSpacing: 0,
     color: Color(0xFF0F0F0F),
     fontWeight: FontWeight.w600,
@@ -352,6 +394,13 @@ mixin AppTextStyles {
   );
 
   static const size22Weight600 = TextStyle(
+      fontSize: 22,
+      color: Colors.black,
+      letterSpacing: 0,
+      fontWeight: FontWeight.w600,
+      fontFamily: 'SFProDisplay');
+
+  static const size22Weight700 = TextStyle(
       fontSize: 22,
       color: Colors.black,
       letterSpacing: 0,

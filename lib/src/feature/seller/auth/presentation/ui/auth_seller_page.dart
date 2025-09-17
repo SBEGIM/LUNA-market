@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_switch_button.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/login_seller_page.dart';
@@ -29,6 +30,7 @@ class _AuthSellerPageState extends State<AuthSellerPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        toolbarHeight: 20,
         backgroundColor: Colors.white,
         elevation: 0,
         // centerTitle: true,
@@ -37,14 +39,10 @@ class _AuthSellerPageState extends State<AuthSellerPage> {
         //   style: AppTextStyles.appBarTextStyle,
         // ),
         leading: InkWell(
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-          child: Icon(
-            Icons.arrow_back,
-            size: 25,
-          ),
-        ),
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Image.asset(Assets.icons.defaultBackIcon.path, scale: 2.1)),
         // bottom: PreferredSize(
         //   preferredSize: const Size.fromHeight(60),
         //   child: Column(

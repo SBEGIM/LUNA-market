@@ -75,18 +75,18 @@ class _ProductCardSellerPageState extends State<ProductCardSellerPage> {
             child: Stack(
               children: [
                 Container(
-                  height: 104,
-                  width: 104,
+                  height: 114,
+                  width: 120,
                   decoration: BoxDecoration(
                     color: AppColors.kWhite,
                     borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 8,
-                        spreadRadius: 2,
-                      ),
-                    ],
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     color: Colors.black.withOpacity(0.05),
+                    //     blurRadius: 8,
+                    //     spreadRadius: 2,
+                    //   ),
+                    // ],
                   ),
                   padding: const EdgeInsets.all(5), // White border effect
                   child: ClipRRect(

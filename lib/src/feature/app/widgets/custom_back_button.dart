@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 
 class CustomBackButton extends StatelessWidget {
   final Function() onTap;
@@ -21,14 +22,9 @@ class CustomBackButton extends StatelessWidget {
             vertical: 2,
             // horizontal: 4,
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              Icon(
-                Icons.arrow_back,
-                color: Colors.black,
-              ),
-            ],
+          child: Image.asset(
+            Assets.icons.defaultBackIcon.path,
+            scale: 1.9,
           ),
         ),
       ),

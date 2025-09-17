@@ -3,12 +3,10 @@ import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/seller/product/data/repository/product_seller_repository.dart';
-import 'package:haji_market/src/feature/seller/product/presentation/widgets/category_seller_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import '../../bloc/product_seller_cubit.dart';
 import '../../bloc/product_seller_state.dart';
@@ -24,10 +22,9 @@ class MyProductsAdminPage extends StatefulWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return BlocProvider<ProductSellerCubit>(
-      create: (context) =>
-          ProductSellerCubit(productAdminRepository: ProductSellerRepository())
-            ..products(''),
+    return BlocProvider(
+      create: (_) =>
+          ProductSellerCubit(productAdminRepository: ProductSellerRepository()),
       child: this,
     );
   }
@@ -42,6 +39,22 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
     await BlocProvider.of<ProductSellerCubit>(context).productsPaginate('');
     await Future.delayed(const Duration(milliseconds: 2000));
     refreshController.loadComplete();
+  }
+
+  @override
+  void initState() {
+    if (BlocProvider.of<ProductSellerCubit>(context).state is! LoadedState) {
+      BlocProvider.of<ProductSellerCubit>(context).products('');
+    }
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    refreshController.dispose();
+    super.dispose();
   }
 
   @override
@@ -161,7 +174,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                 ),
                 Image.asset(
                   Assets.icons.defaultSearchIcon.path,
-                  scale: 1.9,
+                  scale: 4.0,
                 ),
                 const SizedBox(
                   width: 10,
@@ -230,9 +243,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                           return ProductCardSellerPage(
                             context: context,
                             product: state.productModel[index],
-                            cubit: ProductSellerCubit(
-                                productAdminRepository:
-                                    ProductSellerRepository()),
+                            cubit: context.read<ProductSellerCubit>(),
                           );
                         })),
               );

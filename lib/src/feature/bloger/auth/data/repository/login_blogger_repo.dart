@@ -31,7 +31,7 @@ class LoginToApi {
     }
     String s = phone;
 
-    String result = s.substring(2);
+    String result = s.substring(1);
 
     final response =
         await http.post(Uri.parse('$baseUrl/blogger/login'), body: {

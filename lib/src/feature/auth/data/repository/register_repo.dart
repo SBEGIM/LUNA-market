@@ -112,7 +112,7 @@ class RegisterToApi {
 
   Future<dynamic> resetSend(String phone) async {
     String s = phone;
-    String result = s.substring(2);
+    String result = s.substring(1);
 
     final response = await http
         .post(Uri.parse('$baseUrl/user/password/reset/send-code'), body: {

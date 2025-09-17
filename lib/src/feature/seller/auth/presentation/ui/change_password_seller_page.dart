@@ -1,17 +1,14 @@
-import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
-import 'package:get/utils.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/sms_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/sms_seller_state.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
-import 'package:haji_market/src/feature/seller/auth/presentation/ui/login_seller_page.dart';
 
 @RoutePage()
 class ChangePasswordSellerPage extends StatefulWidget {
@@ -30,17 +27,11 @@ class _ChangePasswordSellerPageState extends State<ChangePasswordSellerPage> {
   TextEditingController passwordNew = TextEditingController();
   TextEditingController passwordRepeat = TextEditingController();
 
-  bool _visibleIconView = false;
-  bool _visibleIconViewRepeat = false;
-  bool _passwordVisible = false;
-
-  void test() {
-    log("11 ${widget.textEditingController}");
-  }
+  bool _visibleIconView = true;
+  bool _visibleIconViewRepeat = true;
 
   @override
   void initState() {
-    test();
     super.initState();
   }
 
@@ -73,7 +64,7 @@ class _ChangePasswordSellerPageState extends State<ChangePasswordSellerPage> {
       }, builder: (context, state) {
         if (state is InitState) {
           return Container(
-            color: AppColors.kBackgroundColor,
+            color: AppColors.kWhite,
             child: Padding(
               padding: const EdgeInsets.only(
                   left: 16.0, right: 16, top: 16, bottom: 45),
@@ -83,7 +74,7 @@ class _ChangePasswordSellerPageState extends State<ChangePasswordSellerPage> {
                 children: [
                   Text(
                     'Создайте новый пароль',
-                    style: AppTextStyles.defaultAppBarTextStyle,
+                    style: AppTextStyles.size28Weight700,
                   ),
                   SizedBox(height: 16),
                   FieldsCoopRequest(
@@ -186,35 +177,19 @@ class FieldsCoopRequest extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                titleText,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: AppColors.kGray900),
-              ),
-              star != true
-                  ? const Text(
-                      '*',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: Colors.red),
-                    )
-                  : Container()
-            ],
-          ),
+          Text(titleText,
+              style: AppTextStyles.size13Weight500
+                  .copyWith(color: Color(0xFF636366))),
           const SizedBox(
             height: 4,
           ),
           Container(
             height: 47,
-            padding: const EdgeInsets.only(left: 12),
+            padding: const EdgeInsets.only(left: 16, right: 0),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                color: AppColors.kBackgroundColor,
+                borderRadius: BorderRadius.circular(10)),
             child: TextField(
               obscureText: arrow,
               keyboardType: TextInputType.text,
@@ -224,19 +199,23 @@ class FieldsCoopRequest extends StatelessWidget {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hintText,
-                hintStyle: const TextStyle(
-                    color: Color.fromRGBO(194, 197, 200, 1),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
+                hintStyle: AppTextStyles.size16Weight400
+                    .copyWith(color: Color(0xFF8E8E93)),
                 enabledBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                   // borderRadius: BorderRadius.circular(3),
                 ),
                 suffixIcon: IconButton(
+                  splashRadius: 20,
                   onPressed: onPressed,
-                  icon: Icon(
-                    arrow != true ? Icons.visibility : Icons.visibility_off,
-                    color: const Color.fromRGBO(177, 179, 181, 1),
+                  icon: Image.asset(
+                    arrow
+                        ? Assets.icons.passwordViewHiddenIcon.path
+                        : Assets.icons.passwordViewIcon.path,
+                    scale: 1.9,
+                    height: 22,
+                    width: 22,
+                    color: AppColors.kGray300,
                   ),
                 ),
 

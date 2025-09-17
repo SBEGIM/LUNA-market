@@ -23,6 +23,7 @@ class TapeCubit extends Cubit<TapeState> {
           await tapeRepository.tapes(inSub, inFav, search, bloggerId, page);
 
       if (data.isEmpty) {
+        print('NoDataState');
         emit(NoDataState());
       } else {
         if ((bloggerId ?? 0) == 0) {

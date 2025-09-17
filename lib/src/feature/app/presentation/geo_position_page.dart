@@ -4,9 +4,11 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/presentation/guest_user_page.dart';
+import 'package:haji_market/src/feature/app/widget/show_city_widget.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_city_widget.dart';
 import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
+import 'package:haji_market/src/feature/home/data/model/city_model.dart';
 import '../../../core/constant/generated/assets.gen.dart';
 
 class GeoPositionPage extends StatefulWidget {
@@ -31,6 +33,14 @@ class _GeoPositionPageState extends State<GeoPositionPage> {
   ];
 
   int _select = -1;
+
+  List<CityModel> _cities = [];
+
+  @override
+  void initState() {
+    BlocProvider.of<CityCubit>(context).citiesCdek(widget.countryCode);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +73,7 @@ class _GeoPositionPageState extends State<GeoPositionPage> {
             Text(
               'Покажем, какие есть способы доставки',
               style: AppTextStyles.catalogTextStyle.copyWith(
-                  color: AppColors.kLightBlackColor.withOpacity(0.4),
+                  color: AppColors.kNeutralBlackColor,
                   fontWeight: FontWeight.w400,
                   letterSpacing: 0,
                   height: 24 / 18,
@@ -87,17 +97,19 @@ class _GeoPositionPageState extends State<GeoPositionPage> {
                 width: double.infinity),
             const SizedBox(height: 16),
             InkWell(
-              onTap: () {
+              onTap: () async {
                 GetStorage().write('country', 'Казахстан');
                 GetStorage()
                     .write('user_country_id', widget.contryId.toString());
 
-                Future.wait([
-                  BlocProvider.of<CityCubit>(context)
-                      .citiesCdek(widget.countryCode ?? 'KZ')
-                ]);
+                List<CityModel> _cities =
+                    await BlocProvider.of<CityCubit>(context)
+                        .citiesList(widget.countryCode);
 
-                showAlertCityWidget(context, false);
+                showCitiesOptions(context, 'Выберите город', _cities,
+                    (CityModel value) {
+                  GetStorage().write('city_shop', value.city);
+                });
               },
               child: Center(
                 child: Text(

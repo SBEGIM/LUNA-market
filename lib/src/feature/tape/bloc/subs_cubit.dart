@@ -10,9 +10,19 @@ class SubsCubit extends Cubit<SubsState> {
 
   SubsCubit({required this.subsRepository}) : super(InitState());
 
-  sub(shopId) async {
+  sub(bloggerId) async {
     try {
-      subsRepository.subs(shopId);
+      subsRepository.subs(bloggerId);
+      return true;
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  subShop(shopId) async {
+    try {
+      subsRepository.subSeller(shopId);
       return true;
     } catch (e) {
       log(e.toString());

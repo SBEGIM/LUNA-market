@@ -53,7 +53,7 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginState>(listener: (context, state) {
       if (state is LoadedState) {
-        BlocProvider.of<AppBloc>(context).add(const AppEvent.logining());
+        // BlocProvider.of<AppBloc>(context).add(const AppEvent.logining());
         // Navigator.push(
         //   context,
         //   MaterialPageRoute(builder: (context) => const Base()),
@@ -63,7 +63,7 @@ class _AuthPageState extends State<AuthPage> {
       if (state is InitState) {
         return Padding(
           padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 45),
+              const EdgeInsets.only(left: 16, right: 16, top: 22, bottom: 45),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,11 +71,11 @@ class _AuthPageState extends State<AuthPage> {
               Text('Войти',
                   textAlign: TextAlign.start,
                   style: AppTextStyles.size28Weight700),
-              SizedBox(height: 23),
+              SizedBox(height: 24),
               Text('Номер телефона',
                   textAlign: TextAlign.start,
                   style: AppTextStyles.size13Weight500
-                      .copyWith(color: AppColors.kGray300)),
+                      .copyWith(color: Color(0xFF636366))),
               SizedBox(height: 10),
               Row(
                 children: [
@@ -93,22 +93,23 @@ class _AuthPageState extends State<AuthPage> {
                       child: Container(
                         height: 52,
                         width: 83,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                        padding: EdgeInsets.symmetric(horizontal: 15),
                         decoration: BoxDecoration(
                           color: AppColors.kGray2,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset(
                               countrySellerDto!.flagPath,
                               width: 24,
                               height: 24,
                             ),
-                            SizedBox(width: 10),
+                            SizedBox(width: 8),
                             Text('${countrySellerDto!.code}',
-                                style: TextStyle(fontSize: 16)),
+                                style: AppTextStyles.size16Weight400),
                           ],
                         ),
                       ),
@@ -124,13 +125,15 @@ class _AuthPageState extends State<AuthPage> {
                           EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         color: AppColors.kGray2,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                       child: TextField(
                         controller: phoneControllerAuth,
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                           hintText: 'Введите номер телефона',
+                          hintStyle: AppTextStyles.size16Weight400
+                              .copyWith(color: Color(0xFF8E8E93)),
                           border: InputBorder.none,
                         ),
                       ),
@@ -138,19 +141,19 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 12),
               Text('Пароль',
                   textAlign: TextAlign.start,
                   style: AppTextStyles.size13Weight500
-                      .copyWith(color: AppColors.kGray300)),
-              SizedBox(height: 10),
+                      .copyWith(color: Color(0xFF636366))),
+              SizedBox(height: 8),
               Container(
                 height: 52,
                 padding: EdgeInsets.symmetric(
                     horizontal: 16), // Increased horizontal padding
                 decoration: BoxDecoration(
                   color: AppColors.kGray2,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 alignment: Alignment.center,
                 child: Row(
@@ -164,9 +167,8 @@ class _AuthPageState extends State<AuthPage> {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Введите пароль',
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                          ),
+                          hintStyle: AppTextStyles.size16Weight400
+                              .copyWith(color: Color(0xFF8E8E93)),
                           contentPadding:
                               EdgeInsets.zero, // Better control over padding
                           isDense: true,
@@ -188,12 +190,12 @@ class _AuthPageState extends State<AuthPage> {
                       },
                       child: Padding(
                         padding: EdgeInsets.only(left: 8),
-                        child: Icon(
+                        child: Image.asset(
                           _passwordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: AppColors.kGray200,
-                          size: 20,
+                              ? Assets.icons.passwordViewHiddenIcon.path
+                              : Assets.icons.passwordViewIcon.path,
+                          scale: 1.9,
+                          color: AppColors.kGray300,
                         ),
                       ),
                     ),
@@ -396,47 +398,40 @@ class _AuthPageState extends State<AuthPage> {
                 children: [
                   Text(
                     'У вас нет аккаунта? ',
-                    style: AppTextStyles.defaultButtonTextStyle.copyWith(
-                        fontSize: 16,
-                        color: AppColors.kGray300,
-                        fontWeight: FontWeight.w200),
+                    style: AppTextStyles.size18Weight600.copyWith(
+                      color: AppColors.kGray300,
+                    ),
                   ),
                   InkWell(
                     onTap: () {
                       Get.to(RegisterPage());
                       // context.router.push(RegisterRoute()); // тоже верно
-
-                      print('qweqweq');
                     },
                     child: Text(
                       'Зарегистрироваться',
-                      style: AppTextStyles.defaultButtonTextStyle.copyWith(
-                          color: AppColors.mainPurpleColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: AppTextStyles.size18Weight600.copyWith(
+                        color: AppColors.mainPurpleColor,
+                      ),
                     ),
                   )
                 ],
               ),
-              GestureDetector(
-                  onTap: () {
-                    final login = BlocProvider.of<LoginCubit>(context);
-                    login.lateAuth();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 12),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Авторизоваться позже',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: AppColors.mainPurpleColor,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  )),
-              const SizedBox(
-                height: 60,
-              )
+              // GestureDetector(
+              //     onTap: () {
+              //       final login = BlocProvider.of<LoginCubit>(context);
+              //       login.lateAuth();
+              //     },
+              //     child: Container(
+              //       padding: const EdgeInsets.only(top: 12),
+              //       alignment: Alignment.center,
+              //       child: const Text(
+              //         'Авторизоваться позже',
+              //         style: TextStyle(
+              //             fontSize: 16,
+              //             color: AppColors.mainPurpleColor,
+              //             fontWeight: FontWeight.w400),
+              //       ),
+              //     )),
             ],
           ),
         );

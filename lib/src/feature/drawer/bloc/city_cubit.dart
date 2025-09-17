@@ -35,7 +35,7 @@ class CityCubit extends Cubit<CityState> {
     return _cities;
   }
 
-  Future<void> citiesCdek(String? countryCode) async {
+  Future<List<CityModel>> citiesCdek(String? countryCode) async {
     try {
       emit(LoadingState());
       final List<CityModel> data =
@@ -47,9 +47,11 @@ class CityCubit extends Cubit<CityState> {
       } else {
         emit(LoadedState(data));
       }
+      return _cities;
     } catch (e) {
       log("---!- ${e.toString()}");
       emit(ErrorState(message: 'Ошибка сервера'));
+      return _cities;
     }
   }
 

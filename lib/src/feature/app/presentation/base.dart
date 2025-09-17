@@ -18,22 +18,9 @@ class Base extends StatefulWidget {
 }
 
 class _BaseState extends State<Base> with TickerProviderStateMixin {
-  TabController? tabController;
   int? previousIndex;
   String? address;
-
-  @override
-  void initState() {
-    tabController = TabController(length: 5, vsync: this, initialIndex: 2);
-    if (widget.index != null) {
-      tabController?.animateTo(widget.index!,
-          duration: const Duration(milliseconds: 500));
-    }
-    super.initState();
-  }
-
-  // final activeColorFilter = const ColorFilter.mode(AppColors.kGrey400, BlendMode.srcIn);
-  // final disabledColorFilter = const ColorFilter.mode(AppColors.kSecondary100, BlendMode.srcIn);
+  bool _appliedInitialIndex = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,131 +33,144 @@ class _BaseState extends State<Base> with TickerProviderStateMixin {
         const BasketRoute(),
         const DrawerRoute(),
       ],
-      // homeIndex: widget.index ?? -1,
-      backgroundColor: tabController?.index != 0 ? Colors.white : null,
+      backgroundColor: Colors.white,
       extendBody: true,
+      homeIndex: widget.index ?? 0,
       transitionBuilder: (context, child, animation) {
         return child;
       },
-      // floatingActionButton: FloatingActionButton(onPressed: () {
-      //   AutoTabsRouter.of(context).setActiveIndex(2);
-      // }),
       bottomNavigationBuilder: (_, tabsRouter) {
-        return BottomNavigationBar(
-          currentIndex: tabsRouter.activeIndex,
-          onTap: (int index) {
-            if (tabsRouter.activeIndex == index) {
-              tabsRouter.pop();
-            } else {
-              tabsRouter.setActiveIndex(index);
-
-              // bool exists = GetStorage().hasData('user_location_code');
-              // String? city = GetStorage().read('city');
-
-              // if (!exists && (index == 1 || index == 3)) {
-              // Get.showSnackbar(
-
-              // Get.snackbar(
-              //   'СДЕК',
-              //   city != null
-              //       ? 'Ваш город $city?'
-              //       : 'Ваш город неизвестен для доставки!',
-              //   icon: const Icon(Icons.add_location_sharp),
-              //   duration: const Duration(seconds: 30),
-              //   backgroundColor: Colors.orangeAccent,
-              //   onTap: (snack) {
-              //     Get.closeCurrentSnackbar();
-
-              //     Future.wait([
-              //       BlocProvider.of<countryCubit.CountryCubit>(context)
-              //           .country()
-              //     ]);
-              //     showAlertCountryWidget(context, () {
-              //       // context.router.pop();
-              //       //  setState(() {});
-              //     }, false);
-              //   },
-              // );
-              //  / );
-              // }
+        if (!_appliedInitialIndex) {
+          _appliedInitialIndex = true;
+          final idx = widget.index ?? 0;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (idx >= 0 && idx < tabsRouter.pageCount) {
+              tabsRouter.setActiveIndex(idx);
             }
-          },
-          selectedItemColor: AppColors.kLightBlackColor,
-          unselectedItemColor: AppColors.kGray200,
-          selectedFontSize: 12,
-          elevation: 4,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          backgroundColor:
-              tabsRouter.activeIndex == 0 ? Colors.transparent : Colors.white,
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                Assets.icons.rollsBottomIcon.path,
-                scale: 1.9,
-                color: AppColors.kunSelectColor,
-              ),
-              label: 'Roolls',
-              activeIcon: Image.asset(
-                Assets.icons.rollsBotoomFullIcon.path,
-                scale: 1.9,
-                color: Colors.black,
-              ),
+          });
+        }
+        return Container(
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                  color: Color(0x100F0F0F), width: 1), // stroke сверху
             ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                Assets.icons.sellerNavigationIcon.path,
-                scale: 1.9,
-                color: AppColors.kunSelectColor,
+          ),
+          child: BottomNavigationBar(
+            currentIndex: tabsRouter.activeIndex,
+            onTap: (int index) {
+              if (tabsRouter.activeIndex == index) {
+                tabsRouter.pop();
+              } else {
+                tabsRouter.setActiveIndex(index);
+              }
+            },
+            selectedItemColor: AppColors.kLightBlackColor,
+            unselectedItemColor: AppColors.kGray200,
+            selectedFontSize: 12,
+            elevation: 4,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            backgroundColor: Colors.white,
+            type: BottomNavigationBarType.fixed,
+            items: [
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
+                    Assets.icons.rollsBottomIcon.path,
+                    scale: 1.9,
+                    color: AppColors.kunSelectColor,
+                  ),
+                ),
+                label: 'Roolls',
+                activeIcon: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
+                    Assets.icons.rollsBotoomFullIcon.path,
+                    scale: 1.9,
+                    color: Colors.black,
+                  ),
+                ),
               ),
-              label: 'Маркет',
-              activeIcon: Image.asset(
-                Assets.icons.sellerNavigationIcon.path,
-                scale: 1.9,
-                color: Colors.black,
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
+                    Assets.icons.sellerNavigationUnfullIcon.path,
+                    scale: 1.9,
+                    color: AppColors.kunSelectColor,
+                  ),
+                ),
+                label: 'Маркет',
+                activeIcon: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
+                    Assets.icons.sellerNavigationIcon.path,
+                    scale: 1.9,
+                    color: Colors.black,
+                  ),
+                ),
               ),
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                Assets.icons.favoriteBottomIcon.path,
-                scale: 1.9,
-                color: AppColors.kunSelectColor,
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
+                    Assets.icons.favoriteBottomIcon.path,
+                    scale: 1.9,
+                    color: AppColors.kunSelectColor,
+                  ),
+                ),
+                label: 'Избранное',
+                activeIcon: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
+                    Assets.icons.favoriteBottomFullIcon.path,
+                    scale: 1.9,
+                    color: Colors.black,
+                  ),
+                ),
               ),
-              label: 'Избранное',
-              activeIcon: Image.asset(
-                Assets.icons.favoriteBottomFullIcon.path,
-                scale: 1.9,
-                color: Colors.black,
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
+                    Assets.icons.basketBottomIcon.path,
+                    scale: 1.9,
+                    color: AppColors.kunSelectColor,
+                  ),
+                ),
+                label: 'Корзина',
+                activeIcon: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
+                    Assets.icons.basketBottomFullIcon.path,
+                    scale: 1.9,
+                    color: Colors.black,
+                  ),
+                ),
               ),
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                Assets.icons.basketBottomIcon.path,
-                scale: 1.9,
-                color: AppColors.kunSelectColor,
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
+                    Assets.icons.accountBottomIcon.path,
+                    scale: 1.9,
+                    color: AppColors.kunSelectColor,
+                  ),
+                ),
+                label: 'Профиль',
+                activeIcon: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
+                    Assets.icons.accountBottomFullIcon.path,
+                    scale: 1.9,
+                    color: Colors.black,
+                  ),
+                ),
               ),
-              label: 'Корзина',
-              activeIcon: Image.asset(
-                Assets.icons.basketBottomIcon.path,
-                scale: 1.9,
-                color: Colors.black,
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                Assets.icons.accountBottomIcon.path,
-                scale: 1.9,
-                color: AppColors.kunSelectColor,
-              ),
-              label: 'Профиль',
-              activeIcon: Image.asset(
-                Assets.icons.accountBottomFullIcon.path,
-                scale: 1.9,
-                color: Colors.black,
-              ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

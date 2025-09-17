@@ -85,16 +85,15 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
           onPressed: () {
             context.router.pop();
           },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.kLightBlackColor,
+          icon: Image.asset(
+            Assets.icons.defaultBackIcon.path,
+            scale: 1.9,
           ),
         ),
         centerTitle: true,
-        title: const Text(
-          'Профиль блогера',
-          style: TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+        title: Text(
+          '${widget.bloggerName}',
+          style: AppTextStyles.size18Weight600,
         ),
         // actions: [
         //   Padding(
@@ -115,13 +114,13 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: 157,
+                height: 167,
                 decoration: BoxDecoration(
                     color: AppColors.kWhite,
                     borderRadius: BorderRadius.circular(16)),
                 child: Column(
                   children: [
-                    SizedBox(height: 12),
+                    SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,34 +146,23 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.bloggerName,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.kGray900,
-                                  fontSize: 16),
-                            ),
+                            Text(widget.bloggerName,
+                                style: AppTextStyles.size18Weight600),
                             SizedBox(height: 4),
                             Row(
                               children: [
                                 SvgPicture.asset(Assets.icons.sellerIcon.path),
                                 SizedBox(width: 5),
-                                Text(
-                                  'Блогер',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.kLightBlackColor,
-                                      fontSize: 13),
-                                ),
+                                Text('Блогер',
+                                    style: AppTextStyles.size13Weight400),
                               ],
                             ),
                             SizedBox(height: 4),
                             Text(
                               'Дата регистрации: ${widget.bloggerCreatedAt}',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.kGray300,
-                                  fontSize: 11),
+                              style: AppTextStyles.size11Weight400.copyWith(
+                                color: AppColors.kGray300,
+                              ),
                             ),
                           ],
                         ),
@@ -196,16 +184,16 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                             EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                         height: 36,
                         decoration: BoxDecoration(
-                          color: AppColors.mainPurpleColor,
+                          color: inSub != true
+                              ? AppColors.mainPurpleColor
+                              : AppColors.mainPurpleColor.withOpacity(0.5),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          inSub != true ? 'Подписаться' : 'Отписаться',
-                          style: const TextStyle(
-                              color: AppColors.kWhite,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400),
+                          inSub != true ? 'Подписаться' : 'Вы подписаны',
+                          style: AppTextStyles.size14Weight600
+                              .copyWith(color: AppColors.kWhite),
                         ),
                       ),
                     ),
@@ -317,7 +305,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                 // width: 500,
                 // height: 200,
                 child: Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.only(top: 12),
                   child: BlocBuilder<tapeAdmin.TapeCubit, tapeState.TapeState>(
                     builder: (context, state) {
                       if (state is tapeState.BloggerLoadedState) {
@@ -333,13 +321,13 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                               refreshController.refreshCompleted();
                             },
                             child: GridView.builder(
-                              padding: const EdgeInsets.all(1),
+                              padding: EdgeInsets.zero,
                               gridDelegate:
                                   const SliverGridDelegateWithMaxCrossAxisExtent(
                                 maxCrossAxisExtent: 150,
                                 childAspectRatio: 1 / 2,
-                                mainAxisSpacing: 3,
-                                crossAxisSpacing: 3,
+                                mainAxisSpacing: 1,
+                                crossAxisSpacing: 1,
                               ),
                               itemCount: state.tapeModel.length,
                               // children: const [],

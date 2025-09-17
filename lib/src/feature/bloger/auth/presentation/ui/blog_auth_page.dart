@@ -74,7 +74,7 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
       if (state is InitState) {
         return Padding(
           padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 45),
+              const EdgeInsets.only(left: 16, right: 16, top: 22, bottom: 45),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -85,12 +85,12 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                 style: AppTextStyles.defaultAppBarTextStyle
                     .copyWith(fontSize: 28, fontWeight: FontWeight.w700),
               ),
-              SizedBox(height: 23),
+              SizedBox(height: 24),
               Text('Номер телефона',
                   textAlign: TextAlign.start,
-                  style: AppTextStyles.categoryTextStyle
-                      .copyWith(fontSize: 13, color: AppColors.kGray300)),
-              SizedBox(height: 10),
+                  style: AppTextStyles.size13Weight500
+                      .copyWith(color: Color(0xFF636366))),
+              SizedBox(height: 8),
               Row(
                 children: [
                   InkWell(
@@ -107,28 +107,29 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                       child: Container(
                         height: 52,
                         width: 83,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                        padding: EdgeInsets.symmetric(horizontal: 15),
                         decoration: BoxDecoration(
                           color: AppColors.kGray2,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset(
                               countrySellerDto!.flagPath,
                               width: 24,
                               height: 24,
                             ),
-                            SizedBox(width: 10),
+                            SizedBox(width: 8),
                             Text('${countrySellerDto!.code}',
-                                style: TextStyle(fontSize: 16)),
+                                style: AppTextStyles.size16Weight400),
                           ],
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(width: 6),
+                  SizedBox(width: 4),
                   // Поле ввода
                   Flexible(
                     child: Container(
@@ -137,7 +138,7 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                           EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         color: AppColors.kGray2,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                       child: TextField(
                         controller: phoneControllerAuth,
@@ -145,6 +146,8 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                           hintText: 'Введите номер телефона',
+                          hintStyle: AppTextStyles.size16Weight400
+                              .copyWith(color: Color(0xFF8E8E93)),
                           border: InputBorder.none,
                         ),
                         inputFormatters: [
@@ -159,11 +162,11 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 12),
               Text('Пароль',
                   textAlign: TextAlign.start,
-                  style: AppTextStyles.categoryTextStyle
-                      .copyWith(fontSize: 13, color: AppColors.kGray300)),
+                  style: AppTextStyles.size13Weight500
+                      .copyWith(color: Color(0xFF636366))),
               SizedBox(height: 10),
               Container(
                 height: 52,
@@ -171,7 +174,7 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                     horizontal: 16), // Increased horizontal padding
                 decoration: BoxDecoration(
                   color: AppColors.kGray2,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 alignment: Alignment.center,
                 child: Row(
@@ -185,9 +188,8 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Введите пароль',
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                          ),
+                          hintStyle: AppTextStyles.size16Weight400
+                              .copyWith(color: Color(0xFF8E8E93)),
                           contentPadding:
                               EdgeInsets.zero, // Better control over padding
                           isDense: true,
@@ -200,22 +202,18 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                         },
                       ),
                     ),
-                    // if (__visibleIconView) // Only show icon when there's text
                     GestureDetector(
                       onTap: () {
                         setState(() {
                           _passwordVisible = !_passwordVisible;
                         });
                       },
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 8),
-                        child: Icon(
-                          _passwordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: AppColors.kGray200,
-                          size: 20,
-                        ),
+                      child: Image.asset(
+                        _passwordVisible
+                            ? Assets.icons.passwordViewHiddenIcon.path
+                            : Assets.icons.passwordViewIcon.path,
+                        scale: 1.9,
+                        color: AppColors.kGray300,
                       ),
                     ),
                   ],
@@ -236,8 +234,8 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                     if (phoneControllerAuth.text.length >= 15 ||
                         passwordController.text.isEmpty) {
                       final login = BlocProvider.of<LoginBloggerCubit>(context);
-                      login.login(
-                          phoneControllerAuth.text, passwordController.text);
+                      login.login(context, phoneControllerAuth.text,
+                          passwordController.text);
                     } else {
                       Get.snackbar('Ошибка запроса', 'Заполните все данныые',
                           backgroundColor: Colors.blueAccent);
@@ -251,7 +249,7 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
               ),
               InkWell(
                 onTap: () {
-                  context.router.push(const ForgotPasswordBLoggerRoute());
+                  context.router.push(const ForgotPasswordBloggerRoute());
                 },
                 child: Center(
                   child: Text(
@@ -269,10 +267,9 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                 children: [
                   Text(
                     'У вас нет аккаунта? ',
-                    style: AppTextStyles.defaultButtonTextStyle.copyWith(
-                        fontSize: 16,
-                        color: AppColors.kGray300,
-                        fontWeight: FontWeight.w200),
+                    style: AppTextStyles.size18Weight600.copyWith(
+                      color: AppColors.kGray300,
+                    ),
                   ),
                   InkWell(
                     onTap: () {
@@ -281,10 +278,8 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                     },
                     child: Text(
                       'Зарегистрироваться',
-                      style: AppTextStyles.defaultButtonTextStyle.copyWith(
-                          color: AppColors.mainPurpleColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
+                      style: AppTextStyles.size18Weight600
+                          .copyWith(color: AppColors.mainPurpleColor),
                     ),
                   )
                 ],

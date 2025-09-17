@@ -46,275 +46,250 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: AppColors.kWhite,
-        // appBar: AppBar(
-        //   // actions: [
-        //   //   Padding(
-        //   //     padding: const EdgeInsets.only(right: 22.0),
-        //   //     child: CustomDropButton(
-        //   //       onTap: () {},
-        //   //     ),
-        //   //   ),
-        //   // ],
-        //   backgroundColor: Colors.white,
-        //   elevation: 0,
-        //   centerTitle: true,
-        //   title: const Text(
-        //     'Вход',
-        //     style: AppTextStyles.appBarTextStyle,
-        //   ),
-        //   leading: Padding(
-        //     padding: const EdgeInsets.only(left: 22.0),
-        //     child: CustomBackButton(onTap: () {
-        //       Navigator.pop(context);
-        //     }),
-        //   ),
-        // ),
-        body: BlocConsumer<LoginSellerCubit, LoginSellerState>(
-            listener: (context, state) {
-          if (state is LoadedState) {
-            context.router
-                .popUntil((route) => route.settings.name == LauncherRoute.name);
-            BlocProvider.of<AppBloc>(context).add(
-                const AppEvent.chageState(state: AppState.inAppAdminState()));
+    return BlocConsumer<LoginSellerCubit, LoginSellerState>(
+        listener: (context, state) {
+      if (state is LoadedState) {
+        context.router
+            .popUntil((route) => route.settings.name == LauncherRoute.name);
+        BlocProvider.of<AppBloc>(context)
+            .add(const AppEvent.chageState(state: AppState.inAppAdminState()));
 
-            // context.router.push(InitSellerRoute(shopName: nameController.text));
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) =>
-            //           RegisterShopPage(shopName: nameController.text)),
-            // );
-          }
-        }, builder: (context, state) {
-          if (state is InitState) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+        // context.router.push(InitSellerRoute(shopName: nameController.text));
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) =>
+        //           RegisterShopPage(shopName: nameController.text)),
+        // );
+      }
+    }, builder: (context, state) {
+      if (state is InitState) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 22),
+              Text(
+                'Войти',
+                textAlign: TextAlign.start,
+                style: AppTextStyles.defaultAppBarTextStyle
+                    .copyWith(fontSize: 28, fontWeight: FontWeight.w700),
+              ),
+              SizedBox(height: 24),
+              Text('Номер телефона',
+                  textAlign: TextAlign.start,
+                  style: AppTextStyles.size13Weight500
+                      .copyWith(color: Color(0xFF636366))),
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      showSellerLoginPhone(
+                        context,
+                        countryCall: (dto) {
+                          countrySellerDto = dto;
+                          setState(() {});
+                        },
+                      );
+                    },
+                    child: Shimmer(
+                      child: Container(
+                        height: 52,
+                        width: 83,
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        decoration: BoxDecoration(
+                          color: AppColors.kGray2,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              countrySellerDto!.flagPath,
+                              width: 24,
+                              height: 24,
+                            ),
+                            SizedBox(width: 8),
+                            Text('${countrySellerDto!.code}',
+                                style: AppTextStyles.size16Weight400),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 6),
+                  // Поле ввода
+                  Flexible(
+                    child: Container(
+                      height: 52,
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: AppColors.kGray2,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      alignment: Alignment.center,
+                      child: TextField(
+                        controller: phoneControllerAuth,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          hintText: 'Введите номер телефона',
+                          hintStyle: AppTextStyles.size16Weight400
+                              .copyWith(color: Color(0xFF8E8E93)),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 12),
+              Text('Пароль',
+                  textAlign: TextAlign.start,
+                  style: AppTextStyles.size13Weight500
+                      .copyWith(color: Color(0xFF636366))),
+              SizedBox(height: 8),
+              Container(
+                height: 52,
+                padding: EdgeInsets.symmetric(
+                    horizontal: 16), // Increased horizontal padding
+                decoration: BoxDecoration(
+                  color: AppColors.kGray2,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                alignment: Alignment.center,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: passwordController,
+                        textAlign: TextAlign.start,
+                        keyboardType: TextInputType.text,
+                        obscureText: !_passwordVisible,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Введите пароль',
+                          hintStyle: AppTextStyles.size16Weight400
+                              .copyWith(color: Color(0xFF8E8E93)),
+                          contentPadding:
+                              EdgeInsets.zero, // Better control over padding
+                          isDense: true,
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            __visibleIconView = value.isNotEmpty;
+                            isButtonEnabled = value.isNotEmpty;
+                          });
+                        },
+                      ),
+                    ),
+                    // if (__visibleIconView) // Only show icon when there's text
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 8),
+                        child: Image.asset(
+                          _passwordVisible
+                              ? Assets.icons.passwordViewHiddenIcon.path
+                              : Assets.icons.passwordViewIcon.path,
+                          color: AppColors.kGray300,
+                          scale: 1.9,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 36,
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom * 0.01,
+                ),
+                child: DefaultButton(
+                    backgroundColor: AppColors.mainPurpleColor,
+                    text: 'Войти',
+                    press: () {
+                      final login = BlocProvider.of<LoginSellerCubit>(context);
+
+                      login.login(
+                          phoneControllerAuth.text, passwordController.text);
+                    },
+                    color: Colors.white,
+                    width: double.infinity),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              InkWell(
+                onTap: () {
+                  context.router.push(const ForgotPasswordSellerRoute());
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) =>
+                  //           const ForgotPasswordAdminPage()),
+                  // );
+                },
+                child: const Center(
+                  child: Text(
+                    'Забыли пароль?',
+                    style: TextStyle(
+                        color: AppColors.mainPurpleColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ),
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Войти',
-                    textAlign: TextAlign.start,
-                    style: AppTextStyles.defaultAppBarTextStyle
-                        .copyWith(fontSize: 28, fontWeight: FontWeight.w700),
-                  ),
-                  SizedBox(height: 23),
-                  Text('Номер телефона',
-                      textAlign: TextAlign.start,
-                      style: AppTextStyles.categoryTextStyle
-                          .copyWith(fontSize: 13, color: AppColors.kGray300)),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          showSellerLoginPhone(
-                            context,
-                            countryCall: (dto) {
-                              countrySellerDto = dto;
-                              setState(() {});
-                            },
-                          );
-                        },
-                        child: Shimmer(
-                          child: Container(
-                            height: 52,
-                            width: 83,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 12),
-                            decoration: BoxDecoration(
-                              color: AppColors.kGray2,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  countrySellerDto!.flagPath,
-                                  width: 24,
-                                  height: 24,
-                                ),
-                                SizedBox(width: 10),
-                                Text('${countrySellerDto!.code}',
-                                    style: TextStyle(fontSize: 16)),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 6),
-                      // Поле ввода
-                      Flexible(
-                        child: Container(
-                          height: 52,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                          decoration: BoxDecoration(
-                            color: AppColors.kGray2,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: TextField(
-                            controller: phoneControllerAuth,
-                            keyboardType: TextInputType.phone,
-                            decoration: InputDecoration(
-                              hintText: 'Введите номер телефона',
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Text('Пароль',
-                      textAlign: TextAlign.start,
-                      style: AppTextStyles.categoryTextStyle
-                          .copyWith(fontSize: 13, color: AppColors.kGray300)),
-                  SizedBox(height: 10),
-                  Container(
-                    height: 52,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16), // Increased horizontal padding
-                    decoration: BoxDecoration(
-                      color: AppColors.kGray2,
-                      borderRadius: BorderRadius.circular(12),
+                    'У вас нет аккаунта? ',
+                    style: AppTextStyles.size18Weight600.copyWith(
+                      color: AppColors.kGray300,
                     ),
-                    alignment: Alignment.center,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: passwordController,
-                            textAlign: TextAlign.start,
-                            keyboardType: TextInputType.text,
-                            obscureText: !_passwordVisible,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Введите пароль',
-                              hintStyle: TextStyle(
-                                fontSize: 16,
-                              ),
-                              contentPadding: EdgeInsets
-                                  .zero, // Better control over padding
-                              isDense: true,
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                __visibleIconView = value.isNotEmpty;
-                                isButtonEnabled = value.isNotEmpty;
-                              });
-                            },
-                          ),
-                        ),
-                        // if (__visibleIconView) // Only show icon when there's text
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _passwordVisible = !_passwordVisible;
-                            });
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 8),
-                            child: Icon(
-                              _passwordVisible
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: AppColors.kGray200,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 36,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom * 0.01,
-                    ),
-                    child: DefaultButton(
-                        backgroundColor: AppColors.mainPurpleColor,
-                        text: 'Войти',
-                        press: () {
-                          final login =
-                              BlocProvider.of<LoginSellerCubit>(context);
-
-                          login.login(phoneControllerAuth.text,
-                              passwordController.text);
-                        },
-                        color: Colors.white,
-                        width: double.infinity),
-                  ),
-                  const SizedBox(
-                    height: 10,
                   ),
                   InkWell(
                     onTap: () {
-                      context.router.push(const ForgotPasswordSellerRoute());
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) =>
-                      //           const ForgotPasswordAdminPage()),
-                      // );
+                      context.pushRoute(RegisterSellerRoute());
                     },
-                    child: const Center(
-                      child: Text(
-                        'Забыли пароль?',
-                        style: TextStyle(
-                            color: AppColors.mainPurpleColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500),
+                    child: Text(
+                      'Зарегистрироваться',
+                      style: AppTextStyles.size18Weight600.copyWith(
+                        color: AppColors.mainPurpleColor,
                       ),
                     ),
-                  ),
-                  const Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'У вас нет аккаунта? ',
-                        style: AppTextStyles.defaultButtonTextStyle.copyWith(
-                            fontSize: 16,
-                            color: AppColors.kGray300,
-                            fontWeight: FontWeight.w200),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          context.pushRoute(RegisterSellerRoute());
-                        },
-                        child: Text(
-                          'Зарегистрироваться',
-                          style: AppTextStyles.defaultButtonTextStyle.copyWith(
-                              color: AppColors.mainPurpleColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 60,
                   )
                 ],
               ),
-            );
-          }
-          if (state is ErrorState) {
-            return Center(
-              child: Text(
-                state.message,
-                style: const TextStyle(color: Colors.redAccent),
-              ),
-            );
-          } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
-        }));
+              const SizedBox(
+                height: 60,
+              )
+            ],
+          ),
+        );
+      }
+      if (state is ErrorState) {
+        return Center(
+          child: Text(
+            state.message,
+            style: const TextStyle(color: Colors.redAccent),
+          ),
+        );
+      } else {
+        return const Center(
+            child: CircularProgressIndicator(color: Colors.indigoAccent));
+      }
+    });
   }
 }

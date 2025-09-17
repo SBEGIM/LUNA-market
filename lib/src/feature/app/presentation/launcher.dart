@@ -172,7 +172,8 @@ class _LauncherAppState extends State<LauncherApp> {
       listener: (context, state) {},
       builder: (context, state) {
         return state.maybeWhen(
-          notAuthorizedState: () => const ViewAuthRegisterPage(),
+          notAuthorizedState: (button) =>
+              ViewAuthRegisterPage(backButton: button),
           loadingState: () => const _Scaffold(child: CustomLoadingWidget()),
           inAppBlogerState: (index) => const BaseBlogger(),
           inAppAdminState: (index) => const BaseShop(),

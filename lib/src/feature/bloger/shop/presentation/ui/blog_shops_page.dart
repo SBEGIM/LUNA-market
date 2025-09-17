@@ -102,30 +102,27 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                 children: [
                   Image.asset(
                     Assets.icons.defaultNotificationIcon.path,
-                    height: 22,
-                    width: 22,
+                    height: 28,
+                    width: 28,
                   ),
                   if (unreadCount > 0)
                     Positioned(
-                      right: -5,
-                      top: -10,
+                      right: -2,
+                      top: -6,
                       child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                            border:
+                                Border.all(color: AppColors.kWhite, width: 2)),
                         constraints: const BoxConstraints(
-                          minWidth: 16,
-                          minHeight: 16,
+                          minWidth: 18,
+                          minHeight: 18,
                         ),
                         child: Text(
                           '$unreadCount',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: AppTextStyles.size12Weight500
+                              .copyWith(color: AppColors.kWhite),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -144,8 +141,8 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
             decoration: BoxDecoration(
               color: AppColors.kWhite,
               borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(12),
-                bottomRight: Radius.circular(12),
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16),
               ),
             ),
             child: Column(
@@ -178,7 +175,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                                         .storiesSeelerModel[index].stories)),
                                 child: Container(
                                   margin: const EdgeInsets.only(left: 5),
-                                  padding: const EdgeInsets.all(1),
+                                  padding: EdgeInsets.all(index == 0 ? 1 : 2),
                                   height: 86,
                                   width: 86,
                                   decoration: BoxDecoration(
@@ -186,13 +183,13 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                                       color: index == 0
                                           ? AppColors.mainPurpleColor
                                           : AppColors.kGray300,
-                                      width: 2,
+                                      width: index == 0 ? 2 : 1,
                                     ),
-                                    borderRadius: BorderRadius.circular(14),
+                                    borderRadius: BorderRadius.circular(16),
                                   ),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(
-                                        10), // 14 - (4 padding + 2 border) = 8, but 10 looks better
+                                        14), // 14 - (4 padding + 2 border) = 8, but 10 looks better
                                     child: Image.network(
                                       "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
                                       fit: BoxFit.cover,
@@ -386,9 +383,11 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                           .searchByIdShops(value);
                     });
                   },
-                  child: SvgPicture.asset(
-                    Assets.icons.filter.path,
+                  child: Image.asset(
+                    Assets.icons.filterBlackIcon.path,
                     color: Colors.black,
+                    height: 19,
+                    width: 21,
                   ),
                 )
               ],
@@ -430,7 +429,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(16),
                               ),
                               // margin: EdgeInsets.only(right: 5, left: 5),
                               padding: const EdgeInsets.only(

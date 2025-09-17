@@ -10,7 +10,7 @@ class NotificationSellerModel {
     String? description,
     String? created_at,
     bool isRead = false,
-    IconData? icon, // ✅ Добавлено поле
+    IconData? icon,
   }) {
     _id = id;
     _userId = userId;
@@ -20,7 +20,7 @@ class NotificationSellerModel {
     _description = description;
     _created_at = created_at;
     _isRead = isRead;
-    _icon = icon; // ✅ Установка
+    _icon = icon;
   }
 
   NotificationSellerModel.fromJson(dynamic json) {
@@ -32,7 +32,6 @@ class NotificationSellerModel {
     _description = json['description'];
     _created_at = json['created_at'];
     _isRead = json['read'] ?? false;
-    // ⚠️ icon из JSON не загружается, т.к. IconData нельзя сериализовать напрямую
     _icon = null;
   }
 
@@ -44,9 +43,8 @@ class NotificationSellerModel {
   String? _description;
   String? _created_at;
   bool _isRead = false;
-  IconData? _icon; // ✅ Приватное поле
+  IconData? _icon;
 
-  // Геттеры
   int? get id => _id;
   int? get userId => _userId;
   String? get notificationable => _notificationable;
@@ -55,9 +53,8 @@ class NotificationSellerModel {
   String? get description => _description;
   String? get created_at => _created_at;
   bool get isRead => _isRead;
-  IconData? get icon => _icon; // ✅ Геттер
+  IconData? get icon => _icon;
 
-  // Копирование
   NotificationSellerModel copyWith({
     int? id,
     int? userId,
@@ -78,11 +75,10 @@ class NotificationSellerModel {
       description: description ?? _description,
       created_at: created_at ?? _created_at,
       isRead: isRead ?? _isRead,
-      icon: icon ?? _icon, // ✅ Установка
+      icon: icon ?? _icon,
     );
   }
 
-  // Сериализация
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
@@ -93,7 +89,6 @@ class NotificationSellerModel {
     map['description'] = _description;
     map['created_at'] = _created_at;
     map['is_read'] = _isRead;
-    // ⚠️ icon не сериализуется, так как IconData нельзя напрямую сохранить в JSON
     return map;
   }
 }

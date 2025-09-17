@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/favorite/bloc/favorite_cubit.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -47,6 +48,7 @@ class _FavoritePageState extends State<FavoritePage> {
         appBar: AppBar(
             backgroundColor: AppColors.kWhite,
             elevation: 0,
+            surfaceTintColor: AppColors.kWhite,
             // leading: IconButton(
             //   onPressed: () {
             //     Navigator.pop(context);
@@ -59,7 +61,7 @@ class _FavoritePageState extends State<FavoritePage> {
             centerTitle: true,
             title: const Text(
               'Избранное',
-              style: AppTextStyles.titleTextStyle,
+              style: AppTextStyles.size22Weight600,
             )),
         body: BlocConsumer<FavoriteCubit, FavoriteState>(
             listener: (context, state) {},
@@ -78,36 +80,48 @@ class _FavoritePageState extends State<FavoritePage> {
                         CircularProgressIndicator(color: Colors.indigoAccent));
               }
               if (state is NoDataState) {
-                return SizedBox(
-                  width: MediaQuery.of(context).size.height,
+                return Expanded(
                   child: SmartRefresher(
                     controller: refreshController,
-                    onLoading: () {
-                      BlocProvider.of<FavoriteCubit>(context)
-                          .myFavoritesPagination();
-                      refreshController.refreshCompleted();
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Container(
-                            margin: EdgeInsets.only(top: 146),
-                            child: Image.asset('assets/icons/no_data.png')),
-                        const Text(
-                          'В избранном нет товаров',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
-                          textAlign: TextAlign.center,
+                    enablePullDown: true,
+                    enablePullUp:
+                        false, // при пустых данных тянуть вверх обычно не надо
+                    onRefresh: () {
+                      onRefresh();
+                    }, // onLoading можно убрать для пустого состояния
+                    child: CustomScrollView(
+                      physics:
+                          const AlwaysScrollableScrollPhysics(), // тянется даже без контента
+                      slivers: [
+                        SliverFillRemaining(
+                          hasScrollBody:
+                              true, // позволяет занять весь экран и центрировать
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  Assets.icons.defaultNoDataIcon.path,
+                                  height: 72,
+                                  width: 72,
+                                ),
+                                const SizedBox(height: 12),
+                                const Text(
+                                  'Нет товаров',
+                                  style: AppTextStyles.size16Weight500,
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Здесь появятся товары, которые вы добавили \nв избранное',
+                                  style: AppTextStyles.size14Weight400
+                                      .copyWith(color: AppColors.kGray300),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        const Text(
-                          'Для выбора вещей перейдите в маркет',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff717171)),
-                          textAlign: TextAlign.center,
-                        )
                       ],
                     ),
                   ),

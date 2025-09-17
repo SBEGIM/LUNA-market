@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/login_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/login_blogger_state.dart';
 import 'package:haji_market/src/core/common/constants.dart';
@@ -252,6 +253,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                         readOnly: true,
                         trueColor: type != 0 ? true : false,
                         onPressed: () async {
+                          print('ok');
                           showBloggerRegisterType(
                             context,
                             type,
@@ -540,14 +542,15 @@ class FieldsCoopRequest extends StatelessWidget {
   final String hintText;
   final bool star;
   final bool arrow;
-  final bool readOnly;
+  final bool readOnly; // доп. флаг, если поле реально только для чтения
   final bool? number;
   final bool trueColor;
+  final VoidCallback? onPressed; // если задан — поле работает как кнопка
 
-  final void Function()? onPressed;
+  final TextEditingController? controller;
 
-  TextEditingController? controller;
-  FieldsCoopRequest({
+  const FieldsCoopRequest({
+    super.key,
     required this.hintText,
     required this.titleText,
     required this.star,
@@ -557,82 +560,92 @@ class FieldsCoopRequest extends StatelessWidget {
     this.readOnly = false,
     this.number,
     this.trueColor = false,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4.0, bottom: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    final bool tapMode = onPressed != null; // режим «нажатия», без клавиатуры
+
+    return Material(
+      // для правильного InkWell-эффекта
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onPressed, // тап по всей области
+        child: Padding(
+          padding: const EdgeInsets.only(top: 4.0, bottom: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                titleText,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 13,
-                    fontFamily: 'SFProDisplay',
-                    letterSpacing: 0,
-                    color: AppColors.kGray300),
+              // Заголовок + звёздочка
+              Row(
+                children: [
+                  Text(
+                    titleText,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                      fontFamily: 'SFProDisplay',
+                      letterSpacing: 0,
+                      color: AppColors.kGray300,
+                    ),
+                  ),
+                  if (!star)
+                    const Text('*',
+                        style: TextStyle(fontSize: 12, color: Colors.red)),
+                ],
               ),
-              star != true
-                  ? const Text(
-                      '*',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: Colors.red),
-                    )
-                  : Container()
+              const SizedBox(height: 4),
+
+              // Поле
+              Container(
+                height: 47,
+                padding: const EdgeInsets.only(left: 12),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: AppColors.kGray2,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: TextField(
+                  controller: controller,
+                  textAlign: TextAlign.left,
+
+                  // КЛЮЧЕВОЕ: если onPressed задан — не открываем клавиатуру
+                  readOnly: tapMode || readOnly,
+                  showCursor: !(tapMode || readOnly),
+                  enableInteractiveSelection: !(tapMode || readOnly),
+                  onTap: tapMode ? onPressed : null,
+
+                  keyboardType: number == true
+                      ? TextInputType.number
+                      : TextInputType.text,
+
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: hintText,
+                    hintStyle: TextStyle(
+                      color: trueColor ? Colors.black : const Color(0xFFC2C5C8),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    suffixIcon: arrow
+                        ? Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Image.asset(
+                              Assets.icons.defaultArrowForwardIcon.path,
+                              scale: 1.9,
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                  ),
+                ),
+              ),
             ],
           ),
-          const SizedBox(
-            height: 4,
-          ),
-          Container(
-            height: 47,
-            padding: const EdgeInsets.only(left: 12),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: AppColors.kGray2,
-                borderRadius: BorderRadius.circular(16)),
-            child: TextField(
-              readOnly: readOnly,
-              keyboardType:
-                  number == true ? TextInputType.number : TextInputType.text,
-              controller: controller,
-              textAlign: TextAlign.left,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: hintText,
-                hintStyle: TextStyle(
-                    color: trueColor != false
-                        ? Colors.black
-                        : Color.fromRGBO(194, 197, 200, 1),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
-                enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                  // borderRadius: BorderRadius.circular(3),
-                ),
-                suffixIcon: IconButton(
-                  onPressed: onPressed,
-                  icon: arrow == true
-                      ? SvgPicture.asset('assets/icons/back_menu.svg',
-                          color: Colors.grey)
-                      : SizedBox.shrink(),
-                ),
-                // suffixIcon: IconButton(
-                //     onPressed: () {},
-                //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',
-                //         color: Colors.grey)),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

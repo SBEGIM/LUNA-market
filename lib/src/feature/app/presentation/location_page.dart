@@ -81,7 +81,7 @@ class _LocationPageState extends State<LocationPage> {
               alignment: Alignment.center,
               padding: const EdgeInsets.all(16),
               child: Container(
-                height: 643,
+                height: 646,
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.1),
@@ -92,7 +92,7 @@ class _LocationPageState extends State<LocationPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: 70,
+                      height: 54,
                     ),
                     Text(
                       'Добро пожаловать!',
@@ -105,7 +105,7 @@ class _LocationPageState extends State<LocationPage> {
                     Text(
                       'Пожалуйста, выберите страну:',
                       style: AppTextStyles.catalogTextStyle.copyWith(
-                          color: AppColors.kGray1.withOpacity(0.4),
+                          color: AppColors.kGray1.withOpacity(0.7),
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     ),
@@ -132,9 +132,12 @@ class _LocationPageState extends State<LocationPage> {
                               setState(() {});
                             },
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              padding: const EdgeInsets.symmetric(vertical: 6),
                               child: Container(
-                                padding: const EdgeInsets.all(12),
+                                height: 60,
+                                alignment: Alignment.center,
+                                padding:
+                                    const EdgeInsets.only(left: 16, right: 16),
                                 decoration: BoxDecoration(
                                   color: Color(0xFFEAECED).withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(16),
@@ -158,9 +161,9 @@ class _LocationPageState extends State<LocationPage> {
                                     ),
                                     Spacer(),
                                     _select == index
-                                        ? Icon(
-                                            Icons.check_circle,
-                                            color: AppColors.kWhite,
+                                        ? Image.asset(
+                                            Assets.icons.defaultCheckIcon.path,
+                                            scale: 1.9,
                                           )
                                         : Icon(
                                             Icons.radio_button_unchecked,
@@ -179,20 +182,24 @@ class _LocationPageState extends State<LocationPage> {
               ),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+              padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 20),
               child: DefaultButton(
                   text: 'Продолжить',
                   press: () {
-                    Get.off(GeoPositionPage(
-                      contryId: contryId,
-                      countryCode: contryCode,
-                    ));
+                    if (_select != -1) {
+                      Get.off(GeoPositionPage(
+                        contryId: contryId,
+                        countryCode: contryCode,
+                      ));
+                    }
                   },
                   color: AppColors.kLightBlackColor,
                   backgroundColor: AppColors.kWhite,
-                  textStyle: AppTextStyles.titleTextStyle
-                      .copyWith(height: 1.33, color: Color(0xFF0F0F0F)),
+                  textStyle: AppTextStyles.titleTextStyle.copyWith(
+                      height: 1.33,
+                      color: _select != -1
+                          ? Color(0xFF0F0F0F)
+                          : Color(0XFFD1D1D6)),
                   width: double.infinity),
             )
           ],

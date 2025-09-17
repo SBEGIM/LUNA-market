@@ -1,6 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:haji_market/src/feature/auth/presentation/ui/auth_page.dart';
 import 'package:haji_market/src/feature/auth/presentation/ui/register_page.dart';
+import 'package:haji_market/src/feature/auth/presentation/ui/view_auth_register_page.dart';
+import 'package:haji_market/src/feature/auth/presentation/widgets/login_forget_password_modal_bottom.dart';
+import 'package:haji_market/src/feature/bloger/auth/presentation/ui/login_forget_password_modal_bottom.dart';
+import 'package:haji_market/src/feature/bloger/chat/presentation/chat_blogger_page.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_model.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/detail_tape_card_page.dart';
@@ -12,6 +17,7 @@ import 'package:haji_market/src/feature/seller/auth/presentation/ui/auth_seller_
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/new_register_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/register_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/success_register_seller_page.dart';
+import 'package:haji_market/src/feature/seller/auth/presentation/widget/login_forget_password_modal_bottom.dart';
 import 'package:haji_market/src/feature/seller/chat/presentation/chat_seller_page.dart';
 import 'package:haji_market/src/feature/seller/main/presentation/main_seller_page.dart';
 import 'package:haji_market/src/feature/seller/order/data/models/basket_order_seller_model.dart';
@@ -21,6 +27,7 @@ import 'package:haji_market/src/feature/seller/product/data/models/product_selle
 import 'package:haji_market/src/feature/seller/product/presentation/ui/create_product_seller_page.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/ui/edit_product_seller_page.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/ui/map_seller_picker.dart';
+import 'package:haji_market/src/feature/seller/product/presentation/ui/product_promotion_page.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/ui/products_seller_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/ui/admin_profile_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/ui/tape_seller_page.dart';
@@ -80,22 +87,13 @@ class AppRouter extends _$AppRouter {
                   page: TapeRoute.page,
                   initial: true,
                 ),
-                AutoRoute(
-                  page: DetailTapeCardRoute.page,
-                ),
-                AutoRoute(
-                  page: ProfileBloggerTapeRoute.page,
-                ),
-                AutoRoute(
-                  page: ProfileSellerTapeRoute.page,
-                ),
               ],
             ),
+
             AutoRoute(page: HomeRoute.page),
             AutoRoute(page: FavoriteRoute.page),
             AutoRoute(page: BasketRoute.page),
             AutoRoute(page: DrawerRoute.page),
-            AutoRoute(page: RegisterRoute.page),
 
             /// For Blogger
             AutoRoute(page: BaseAdminTapeTab.page, children: [
@@ -105,6 +103,7 @@ class AppRouter extends _$AppRouter {
             ]),
             AutoRoute(page: BlogShopsRoute.page),
             AutoRoute(page: ProfileBloggerRoute.page),
+            AutoRoute(page: ChatBloggerRoute.page),
 
             ///For Seller
             AutoRoute(page: HomeSellerAdminRoute.page),
@@ -114,6 +113,16 @@ class AppRouter extends _$AppRouter {
             AutoRoute(page: ProfileAdminRoute.page),
           ],
         ),
+        AutoRoute(page: RegisterRoute.page),
+        AutoRoute(page: ViewAuthRegisterRoute.page),
+
+        AutoRoute(
+          page: DetailTapeCardRoute.page,
+        ),
+        AutoRoute(
+            page: ProfileBloggerTapeRoute.page, type: RouteType.cupertino()),
+        AutoRoute(
+            page: ProfileSellerTapeRoute.page, type: RouteType.cupertino()),
 
         ///Basket Routes
         AutoRoute(page: PaymentWebviewRoute.page),
@@ -121,7 +130,14 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: BasketOrderRoute.page),
         AutoRoute(page: MapPickerRoute.page),
 
+        AutoRoute(
+          page: LoginForgotSellerPasswordRoute.page,
+        ),
+
         ///Home Routes
+        ///
+        ///
+
         AutoRoute(page: ShopsRoute.page),
         AutoRoute(page: CatalogRoute.page),
         AutoRoute(page: SubCatalogRoute.page),
@@ -132,14 +148,19 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: DetailCardProductRoute.page),
 
         ///Auth Routes
+
         AutoRoute(page: AuthSellerRoute.page),
         AutoRoute(page: InitSellerRoute.page),
         AutoRoute(page: SuccessSellerRegisterRoute.page),
         // AutoRoute(page: AdminAuthRoute.page),
         AutoRoute(page: ForgotPasswordSellerRoute.page),
+        AutoRoute(page: LoginForgotBloggerPasswordRoute.page),
+        AutoRoute(page: LoginForgotPasswordRoute.page),
 
         AutoRoute(page: ChangePasswordSellerRoute.page),
-        AutoRoute(page: ForgotPasswordBLoggerRoute.page),
+        AutoRoute(page: ForgotPasswordBloggerRoute.page),
+        AutoRoute(page: ChangePasswordBloggerRoute.page),
+
         AutoRoute(page: RegisterSellerRoute.page),
         AutoRoute(page: BlogAuthRegisterRoute.page),
 
@@ -150,6 +171,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: TapeSellerRoute.page),
         AutoRoute(page: EditProductSellerRoute.page),
         AutoRoute(page: CreateProductSellerRoute.page),
+        AutoRoute(page: ProductPromotionRoute.page),
       ];
 }
 

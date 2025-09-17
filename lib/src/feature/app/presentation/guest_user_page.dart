@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import '../../../core/constant/generated/assets.gen.dart';
 
@@ -55,17 +58,32 @@ class _GuestUserPageState extends State<GuestUserPage> {
             Text(
               'Чтобы открыть весь функционал',
               style: AppTextStyles.catalogTextStyle.copyWith(
-                  color: AppColors.kLightBlackColor.withOpacity(0.4),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400),
+                  color: AppColors.kNeutralBlackColor,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0,
+                  height: 24 / 18,
+                  fontSize: 18),
             ),
             const SizedBox(height: 32),
             DefaultButton(
                 text: 'Продолжить',
                 press: () {
-                  Get.back();
+                  // Get.back();
+                  // Get.off();
                   // BlocProvider.of<AppBloc>(context)
-                  //     .add(const AppEvent.checkAuth());
+                  //     .add(const AppEvent.chageState(true));
+
+                  GetStorage().write('user_guest', true);
+                  Navigator.pop(context);
+
+                  context
+                      .read<AppBloc>()
+                      .add(const AppEvent.switchState(key: false));
+
+                  // _CheckAuth event,
+                  // Emitter<AppState> emit,
+                  //   emit(const AppState.inAppUserState());
+                  //   emit(const AppState.notAuthorizedState());
                 },
                 color: AppColors.kWhite,
                 backgroundColor: AppColors.mainPurpleColor,
@@ -77,14 +95,26 @@ class _GuestUserPageState extends State<GuestUserPage> {
                 width: double.infinity),
             const SizedBox(height: 16),
             Center(
-              child: Text(
-                'Не сейчас',
-                style: AppTextStyles.aboutTextStyle.copyWith(
-                    color: AppColors.mainPurpleColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600),
+              child: InkWell(
+                onTap: () {
+                  GetStorage().write('user_guest', true);
+
+                  Navigator.pop(context);
+
+                  context
+                      .read<AppBloc>()
+                      .add(const AppEvent.switchState(key: true));
+                },
+                child: Text(
+                  'Не сейчас',
+                  style: AppTextStyles.aboutTextStyle.copyWith(
+                      color: AppColors.mainPurpleColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
             ),
+            SizedBox(height: 34)
           ],
         ),
       ),

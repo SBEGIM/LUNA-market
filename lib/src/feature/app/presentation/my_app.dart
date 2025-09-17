@@ -1,6 +1,9 @@
+import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/containers/repository_storage.dart';
 import 'package:haji_market/src/core/presentation/scopes/repository_scope.dart';
 import 'package:haji_market/src/core/utils/extensions/context_extension.dart';
+import 'package:haji_market/src/feature/bloger/chat/cubit/chat_blogger_cubit.dart';
+import 'package:haji_market/src/feature/bloger/chat/data/repository/chat_blogger_repository.dart';
 import 'package:haji_market/src/feature/bloger/shop/bloc/blogger_notification_cubit.dart';
 import 'package:haji_market/src/feature/bloger/shop/data/repository/blogger_notification_repo.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_cubit.dart';
@@ -88,6 +91,7 @@ import 'package:haji_market/src/feature/tape/bloc/subs_cubit.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
 import 'package:haji_market/src/feature/tape/data/repository/sub_repository.dart';
 import 'package:haji_market/src/feature/tape/data/repository/tape_repository.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../seller/chat/cubit/chat_seller_cubit.dart';
 import '../../seller/chat/cubit/message_seller_cubit.dart';
 import '../../seller/chat/data/repository/chat_seller_repository.dart';
@@ -150,83 +154,101 @@ class _MyAppState extends State<MyApp> {
         appSettingsDatasource: widget.result.dependencies.appSettingsDatasource,
       ),
       child: MultiBlocWrapper(
-        child: GetMaterialApp(
-          title: 'Luna Market',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            fontFamily: 'SFProDisplay',
-            primarySwatch: Colors.blue,
+        child: RefreshConfiguration(
+          headerBuilder: () => ClassicHeader(
+            idleText: 'Потяните вниз, чтобы обновить',
+            releaseText: 'Отпустите для обновления',
+            refreshingText: 'Обновление…',
+            completeText: 'Готово',
+            failedText: 'Не удалось обновить',
+            refreshStyle: RefreshStyle.Front,
           ),
-          home: MediaQuery.withNoTextScaling(
-            child: AppRouterBuilder(
-              createRouter: (context) => AppRouter(),
-              builder: (context, parser, delegate) => MaterialApp.router(
-                // builder: (context, child) => SizedBox(),
-                // backButtonDispatcher:RootBackButtonDispatcher(),
-                // routeInformationProvider: appRouter.routeInfoProvider(),
-                // routerConfig: appRouter.config(
-                //   deepLinkBuilder: (deepLink) async {
-                //     return DeepLink.single(DetailCardProductRoute(product: ProductModel()));
-                //     String bloggerId = Uri.parse(deepLink.path.toString()).queryParameters['blogger_id'].toString();
-                //     String productId = Uri.parse(deepLink.path.toString()).queryParameters['product_id'].toString();
+          footerBuilder: () => ClassicFooter(
+            idleText: 'Потяните вверх, чтобы загрузить ещё',
+            canLoadingText: 'Отпустите для загрузки',
+            loadingText: 'Загрузка…',
+            noDataText: 'Больше нет данных',
+            failedText: 'Не удалось загрузить',
+          ),
+          child: GetMaterialApp(
+            title: 'Luna Market',
+            debugShowCheckedModeBanner: false,
+            color: AppColors.kWhite,
+            theme: ThemeData(
+              fontFamily: 'SFProDisplay',
+              primarySwatch: Colors.blue,
+            ),
+            home: MediaQuery.withNoTextScaling(
+              child: AppRouterBuilder(
+                createRouter: (context) => AppRouter(),
+                builder: (context, parser, delegate) => MaterialApp.router(
+                  // builder: (context, child) => SizedBox(),
+                  // backButtonDispatcher:RootBackButtonDispatcher(),
+                  // routeInformationProvider: appRouter.routeInfoProvider(),
+                  // routerConfig: appRouter.config(
+                  //   deepLinkBuilder: (deepLink) async {
+                  //     return DeepLink.single(DetailCardProductRoute(product: ProductModel()));
+                  //     String bloggerId = Uri.parse(deepLink.path.toString()).queryParameters['blogger_id'].toString();
+                  //     String productId = Uri.parse(deepLink.path.toString()).queryParameters['product_id'].toString();
 
-                //     String shopName = Uri.parse(deepLink.path.toString()).queryParameters['shop_name'].toString();
-                //     String index = Uri.parse(deepLink.path.toString()).queryParameters['index'].toString();
-                //     print(deepLink.path,);
-                //     print(shopName,);
-                //     print(index,);
-                //     // if (productId != '' && productId != 'null') {
-                //     //   print('wwww Success product');
-                //     //   GetStorage().write('deep_blogger_id', bloggerId);
-                //     //   GetStorage().write('deep_product_id', productId);
-                //     //   const baseUrl = 'https://lunamarket.ru/api';
+                  //     String shopName = Uri.parse(deepLink.path.toString()).queryParameters['shop_name'].toString();
+                  //     String index = Uri.parse(deepLink.path.toString()).queryParameters['index'].toString();
+                  //     print(deepLink.path,);
+                  //     print(shopName,);
+                  //     print(index,);
+                  //     // if (productId != '' && productId != 'null') {
+                  //     //   print('wwww Success product');
+                  //     //   GetStorage().write('deep_blogger_id', bloggerId);
+                  //     //   GetStorage().write('deep_product_id', productId);
+                  //     //   const baseUrl = 'https://lunamarket.ru/api';
 
-                //     //   final String? authToken = GetStorage().read('token');
+                  //     //   final String? authToken = GetStorage().read('token');
 
-                //     //   final response = await http.get(
-                //     //     Uri.parse(
-                //     //       '$baseUrl/shop/show?id=$productId',
-                //     //     ),
-                //     //     headers: {"Authorization": "Bearer $authToken"},
-                //     //   );
+                  //     //   final response = await http.get(
+                  //     //     Uri.parse(
+                  //     //       '$baseUrl/shop/show?id=$productId',
+                  //     //     ),
+                  //     //     headers: {"Authorization": "Bearer $authToken"},
+                  //     //   );
 
-                //     //   if (response.statusCode == 200) {
-                //     //     final data = jsonDecode(response.body);
+                  //     //   if (response.statusCode == 200) {
+                  //     //     final data = jsonDecode(response.body);
 
-                //     //     product = ProductModel.fromJson(data['data']);
-                //     //     return DeepLink([DetailCardProductRoute(product: product!)]);
-                //     //     // Get.to(() => DetailCardProductPage(product: product!));
+                  //     //     product = ProductModel.fromJson(data['data']);
+                  //     //     return DeepLink([DetailCardProductRoute(product: product!)]);
+                  //     //     // Get.to(() => DetailCardProductPage(product: product!));
 
-                //     //     // Get.snackbar('Промокод активирован',
-                //     //     //     'покупайте товары и получайте скидку от Блогера',
-                //     //     //     backgroundColor: Colors.blueAccent);
-                //     //   } else {
-                //     //     // Get.snackbar('Ошибка промокод', 'продукт или блогер не найден',
-                //     //     //     backgroundColor: Colors.redAccent);
-                //     //   }
-                //     // }
-                //     if (shopName != '' && shopName != 'null') {
+                  //     //     // Get.snackbar('Промокод активирован',
+                  //     //     //     'покупайте товары и получайте скидку от Блогера',
+                  //     //     //     backgroundColor: Colors.blueAccent);
+                  //     //   } else {
+                  //     //     // Get.snackbar('Ошибка промокод', 'продукт или блогер не найден',
+                  //     //     //     backgroundColor: Colors.redAccent);
+                  //     //   }
+                  //     // }
+                  //     if (shopName != '' && shopName != 'null') {
 
-                //       return const DeepLink([LauncherRoute(children: [BasketRoute()])]);
-                //       // return DeepLink([
-                //       //   LauncherRoute(children: [
-                //       //     BaseTapeTab(children: [DetailTapeCardRoute(index: int.parse(index), shopName: shopName)])
-                //       //   ])
-                //       // ]);
-                //       // BlocProvider.of<NavigationCubit>(context)
-                //       //     .emit(DetailTapeState(int.parse(index), shopName));
-                //     } else {
-                //       return const DeepLink([LauncherRoute(children: [BasketRoute()])]);
-                //     }
-                //   },
-                // ),
+                  //       return const DeepLink([LauncherRoute(children: [BasketRoute()])]);
+                  //       // return DeepLink([
+                  //       //   LauncherRoute(children: [
+                  //       //     BaseTapeTab(children: [DetailTapeCardRoute(index: int.parse(index), shopName: shopName)])
+                  //       //   ])
+                  //       // ]);
+                  //       // BlocProvider.of<NavigationCubit>(context)
+                  //       //     .emit(DetailTapeState(int.parse(index), shopName));
+                  //     } else {
+                  //       return const DeepLink([LauncherRoute(children: [BasketRoute()])]);
+                  //     }
+                  //   },
+                  // ),
 
-                routeInformationParser: parser,
-                routerDelegate: delegate,
-                // onGenerateTitle: (context) => context.localized.appTitle,
-                // theme: ThemeData.light(),
-                // darkTheme: ThemeData.dark(),
-                // themeMode: themeMode,
+                  routeInformationParser: parser,
+                  routerDelegate: delegate,
+                  // onGenerateTitle: (context) => context.localized.appTitle,
+                  // theme: ThemeData.light(),
+                  // darkTheme: ThemeData.dark(),
+                  // themeMode: themeMode,
+                ),
               ),
             ),
           ),
@@ -386,6 +408,12 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (_) => MessageSellerCubit(
             messageRepository: MessageSellerRepository(),
+          ),
+        ),
+
+        BlocProvider(
+          create: (_) => ChatBloggerCubit(
+            chatRepository: ChatBloggerRepository(),
           ),
         ),
         BlocProvider(

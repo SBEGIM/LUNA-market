@@ -35,13 +35,14 @@ void showSellerLoginPhone(BuildContext context,
                     children: [
                       Text(
                         'Выберите страну',
-                        style: AppTextStyles.defaultButtonTextStyle,
+                        style: AppTextStyles.size16Weight500,
                       ),
                       InkWell(
                           onTap: () {
                             Navigator.of(context).pop();
                           },
-                          child: Icon(Icons.close_rounded))
+                          child: Image.asset(Assets.icons.defaultCloseIcon.path,
+                              scale: 1.9))
                     ],
                   ),
                 ),
@@ -161,7 +162,7 @@ void showSellerLoginPhone(BuildContext context,
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 50),
               ],
             ),
           );
@@ -183,23 +184,35 @@ Widget _buildOptionTile(
     margin: EdgeInsets.only(left: 16, top: 8, right: 16),
     alignment: Alignment.center,
     decoration: BoxDecoration(
-        color: AppColors.kWhite, borderRadius: BorderRadius.circular(12)),
+        color: AppColors.kWhite, borderRadius: BorderRadius.circular(16)),
     child: ListTile(
       contentPadding: EdgeInsets.symmetric(
-          vertical: 0, horizontal: 12), // Минимальные отступы
+          vertical: 0, horizontal: 18), // Минимальные отступы
+      minLeadingWidth: 0, // убирает лишний резерв под leading
+      visualDensity:
+          const VisualDensity(horizontal: -4, vertical: 0), // ещё компактнее
+
       leading: Image.asset(
         path,
         scale: 2,
       ),
-      title: Text(title, style: TextStyle(color: Colors.black)),
+      title: Text("$title $number", style: AppTextStyles.size16Weight600),
       onTap: onTap,
       tileColor: Colors.transparent, // Убираем фон у Tile, если он есть
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20), // Скругляем угол
       ),
       trailing: select!.name == title
-          ? Icon(Icons.check_circle)
-          : Icon(Icons.radio_button_unchecked),
+          ? Image.asset(
+              Assets.icons.defaultCheckIcon.path,
+              scale: 1.9,
+              color: AppColors.kLightBlackColor,
+            )
+          : Image.asset(
+              Assets.icons.defaultUncheckIcon.path,
+              scale: 1.9,
+              color: AppColors.kGray200,
+            ),
     ),
   );
 }

@@ -37,6 +37,7 @@ class _BaseBloggerState extends State<BaseBlogger>
       routes: const [
         BlogShopsRoute(),
         BaseAdminTapeTab(),
+        ChatBloggerRoute(),
         ProfileBloggerRoute(),
       ],
       backgroundColor: tabController?.index != 1 ? Colors.white : null,
@@ -71,7 +72,7 @@ class _BaseBloggerState extends State<BaseBlogger>
           items: [
             BottomNavigationBarItem(
               icon: Image.asset(
-                Assets.icons.sellerNavigationIcon.path,
+                Assets.icons.sellerNavigationUnfullIcon.path,
                 scale: 1.9,
                 color: AppColors.kunSelectColor,
               ),
@@ -84,20 +85,32 @@ class _BaseBloggerState extends State<BaseBlogger>
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
-                Assets.icons.rollsBotoomFullIcon.path,
+                Assets.icons.bottomListIcon.path,
                 scale: 1.9,
                 color: AppColors.kunSelectColor,
               ),
-              label: 'Видео обзоры',
+              label: 'Мои обзоры',
               activeIcon: Image.asset(
-                Assets.icons.rollsBotoomFullIcon.path,
+                Assets.icons.bottomListFullIcon.path,
                 scale: 1.9,
                 color: Colors.black,
               ),
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
-                Assets.icons.accountBottomFullIcon.path,
+                Assets.icons.sellerNavigationChatIcon.path,
+                scale: 1.9,
+                color: AppColors.kunSelectColor,
+              ),
+              label: 'Чат',
+              activeIcon: SvgPicture.asset(
+                'assets/icons/chat_2.svg',
+                color: Colors.black,
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                Assets.icons.accountBottomIcon.path,
                 scale: 1.9,
                 color: AppColors.kunSelectColor,
               ),

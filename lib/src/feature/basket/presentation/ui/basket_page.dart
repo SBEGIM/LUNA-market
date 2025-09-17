@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/basket_card_widget.dart';
@@ -332,24 +333,23 @@ class _BasketPageState extends State<BasketPage> {
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                      margin: const EdgeInsets.only(top: 146),
-                      child: Image.asset('assets/icons/no_data.png')),
-                  const Text(
-                    'В корзине нет товаров',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                      margin: EdgeInsets.only(top: 247),
+                      child: Image.asset(
+                        Assets.icons.defaultNoDataIcon.path,
+                        height: 72,
+                        width: 72,
+                      )),
+                  SizedBox(height: 12),
+                  Text(
+                    'Пока здесь пусто',
+                    style: AppTextStyles.size16Weight500
+                        .copyWith(color: Color(0xFF8E8E93)),
                     textAlign: TextAlign.center,
                   ),
-                  const Text(
-                    'Для выбора вещей перейдите в маркет',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff717171)),
-                    textAlign: TextAlign.center,
-                  )
                 ],
               ),
             );

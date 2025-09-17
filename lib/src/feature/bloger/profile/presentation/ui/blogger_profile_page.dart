@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -92,14 +94,45 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(120),
-                  child: Image.network(
-                    avatarUrl,
-                    fit: BoxFit.fill,
-                    height: 90,
-                    width: 90,
-                  ),
+                ClipOval(
+                  child: _image != null
+                      ? Image.file(
+                          File(_image!.path), // <— XFile -> File
+                          width: 90, height: 90,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.network(
+                          avatarUrl, // аватар с сети
+                          width: 90, height: 90,
+                          fit: BoxFit.cover, // не искажает, в отличие от fill
+                          // индикатор загрузки
+                          loadingBuilder: (ctx, child, progress) {
+                            if (progress == null) return child;
+                            return Container(
+                              width: 90,
+                              height: 90,
+                              color: const Color(0xFFE9ECEF),
+                              alignment: Alignment.center,
+                              child: const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2),
+                              ),
+                            );
+                          },
+                          // fallback если ошибка/битая ссылка
+                          errorBuilder: (ctx, error, stack) {
+                            return Container(
+                              width: 90,
+                              height: 90,
+                              color: const Color(0xFFE9ECEF),
+                              alignment: Alignment.center,
+                              child: Icon(Icons.person,
+                                  size: 36, color: Colors.grey[500]),
+                            );
+                          },
+                        ),
                 ),
                 Positioned(
                   bottom: 0,

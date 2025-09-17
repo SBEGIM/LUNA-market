@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_state.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/detail_tape_card_page.dart';
@@ -119,7 +120,8 @@ class _TapeSellerPageState extends State<TapeSellerPage>
                           children: [
                             Container(
                                 margin: const EdgeInsets.only(top: 146),
-                                child: Image.asset('assets/icons/no_data.png')),
+                                child: Image.asset(
+                                    Assets.icons.defaultNoDataIcon.path)),
                             const Text(
                               'В ленте нет данных',
                               style: TextStyle(

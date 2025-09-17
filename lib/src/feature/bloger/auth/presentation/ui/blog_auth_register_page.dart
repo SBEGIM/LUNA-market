@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/auth/presentation/ui/blog_auth_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
@@ -27,12 +28,13 @@ class _BlogAuthRegisterPageState extends State<BlogAuthRegisterPage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.kWhite,
       appBar: AppBar(
+        toolbarHeight: 18,
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: () {
               context.router.pop();
             },
-            child: Icon(Icons.arrow_back)),
+            child: Image.asset(Assets.icons.defaultBackIcon.path, scale: 1.9)),
       ),
       body: BlogAuthPage(),
     );

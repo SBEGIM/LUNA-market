@@ -88,15 +88,12 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
           onPressed: () {
             context.router.pop();
           },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.kLightBlackColor,
-          ),
+          icon: Image.asset(Assets.icons.defaultBackIcon.path, scale: 1.9),
         ),
         centerTitle: true,
-        title: const Text(
-          'Профиль продавца',
-          style: TextStyle(
+        title: Text(
+          '${widget.sellerName}',
+          style: const TextStyle(
               color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
         ),
         // actions: [
@@ -153,10 +150,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                           children: [
                             Text(
                               widget.sellerName,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.kGray900,
-                                  fontSize: 16),
+                              style: AppTextStyles.size18Weight600,
                             ),
                             SizedBox(height: 4),
                             Row(
@@ -165,20 +159,16 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                                 SizedBox(width: 5),
                                 Text(
                                   'Официальный партнер',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.kLightBlackColor,
-                                      fontSize: 13),
+                                  style: AppTextStyles.size13Weight400,
                                 ),
                               ],
                             ),
                             SizedBox(height: 4),
                             Text(
                               'Дата регистрации: ${widget.sellerCreatedAt}',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.kGray300,
-                                  fontSize: 11),
+                              style: AppTextStyles.size11Weight400.copyWith(
+                                color: AppColors.kGray300,
+                              ),
                             ),
                           ],
                         ),
@@ -187,11 +177,11 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Flexible(
+                          Expanded(
                             child: InkWell(
                               onTap: () {
                                 BlocProvider.of<SubsCubit>(context)
-                                    .sub(widget.sellerId);
+                                    .subShop(widget.sellerId);
                                 setState(() {
                                   inSub = !inSub;
                                 });
@@ -200,24 +190,27 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                               },
                               child: Container(
                                 margin: EdgeInsets.only(
-                                    left: 8, top: 15, bottom: 5),
+                                    left: 16, right: 0, top: 15, bottom: 5),
                                 height: 36,
                                 decoration: BoxDecoration(
-                                  color: AppColors.mainPurpleColor,
+                                  color: inSub != true
+                                      ? AppColors.mainPurpleColor
+                                      : AppColors.mainPurpleColor
+                                          .withOpacity(0.5),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  inSub != true ? 'Подписаться' : 'Отписаться',
-                                  style: const TextStyle(
-                                      color: AppColors.kWhite,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
+                                  inSub != true
+                                      ? 'Подписаться'
+                                      : 'Вы подписаны',
+                                  style: AppTextStyles.size14Weight600
+                                      .copyWith(color: AppColors.kWhite),
                                 ),
                               ),
                             ),
                           ),
-                          Flexible(
+                          Expanded(
                             child: InkWell(
                               onTap: () {
                                 GetStorage().write('video_stop', true);
@@ -232,7 +225,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                               },
                               child: Container(
                                 margin: EdgeInsets.only(
-                                    left: 16, top: 15, bottom: 5),
+                                    left: 8, right: 0, top: 15, bottom: 5),
                                 height: 36,
                                 decoration: BoxDecoration(
                                   color: AppColors.kGray2,
@@ -241,15 +234,13 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                                 alignment: Alignment.center,
                                 child: Text(
                                   'Cообщение',
-                                  style: const TextStyle(
-                                      color: AppColors.kLightBlackColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
+                                  style: AppTextStyles.size14Weight600
+                                      .copyWith(color: Color(0xFF636366)),
                                 ),
                               ),
                             ),
                           ),
-                          Flexible(
+                          Expanded(
                             child: InkWell(
                               onTap: () {
                                 GetStorage().remove('CatId');
@@ -289,10 +280,8 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                                 alignment: Alignment.center,
                                 child: Text(
                                   'В магазин',
-                                  style: const TextStyle(
-                                      color: AppColors.kLightBlackColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
+                                  style: AppTextStyles.size14Weight600
+                                      .copyWith(color: Color(0xFF636366)),
                                 ),
                               ),
                             ),
@@ -406,7 +395,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                 // width: 500,
                 // height: 200,
                 child: Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.only(top: 12),
                   child: BlocBuilder<tapeAdmin.TapeCubit, tapeState.TapeState>(
                     builder: (context, state) {
                       if (state is tapeState.BloggerLoadedState) {
@@ -422,13 +411,13 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                               refreshController.refreshCompleted();
                             },
                             child: GridView.builder(
-                              padding: const EdgeInsets.all(1),
+                              padding: EdgeInsets.zero,
                               gridDelegate:
                                   const SliverGridDelegateWithMaxCrossAxisExtent(
                                 maxCrossAxisExtent: 150,
                                 childAspectRatio: 1 / 2,
-                                mainAxisSpacing: 3,
-                                crossAxisSpacing: 3,
+                                mainAxisSpacing: 1,
+                                crossAxisSpacing: 1,
                               ),
                               itemCount: state.tapeModel.length,
                               // children: const [],

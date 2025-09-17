@@ -382,7 +382,7 @@ class CatalogListTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 8, left: 8),
+            margin: EdgeInsets.only(top: 8, left: 8, bottom: 2),
             height: 32,
             child: Text(title,
                 textAlign: TextAlign.left,
@@ -397,24 +397,12 @@ class CatalogListTile extends StatelessWidget {
               height: 80,
               margin: const EdgeInsets.only(right: 8),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Color(0xFF7D2DFF), Color(0xFF41DDFF)],
+                color: AppColors.mainBackgroundPurpleColor,
+                image: DecorationImage(
+                  image: NetworkImage(url),
+                  fit: BoxFit.contain,
                 ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: const EdgeInsets.all(2), // Толщина градиентной рамки
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppColors.mainBackgroundPurpleColor,
-                  image: DecorationImage(
-                    image: NetworkImage(url),
-                    fit: BoxFit.contain,
-                  ),
-                  borderRadius:
-                      BorderRadius.circular(10), // Чуть меньше внешнего
-                ),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
           ),

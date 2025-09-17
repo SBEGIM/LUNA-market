@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/get.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/sms_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/sms_seller_state.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
@@ -46,48 +48,49 @@ class _ForgotPasswordSellerPageState extends State<ForgotPasswordSellerPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: CustomBackButton(onTap: () {
-            Navigator.pop(context);
-          }),
-        ),
+        leading: CustomBackButton(onTap: () {
+          Navigator.pop(context);
+        }),
       ),
       body: BlocConsumer<SmsSellerCubit, SmsSellerState>(
           listener: (context, state) {
         if (state is LoadedState) {
-          showModalBottomSheet(
-              backgroundColor: Colors.white,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    topRight: Radius.circular(10.0)),
-              ),
-              context: context,
-              builder: (context) {
-                return LoginForgotSellerPasswordModalBottom(
-                  textEditingController: phoneControllerAuth.text,
-                );
-              });
+          context.pushRoute(LoginForgotSellerPasswordRoute(
+              countryCode: countrySellerDto!.code,
+              textEditingController: phoneControllerAuth.text));
+          // LoginForgotSellerPasswordPage(
+          //  ,
+          // );
+          // showModalBottomSheet(
+          //     backgroundColor: Colors.white,
+          //     shape: const RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.only(
+          //           topLeft: Radius.circular(10.0),
+          //           topRight: Radius.circular(10.0)),
+          //     ),
+          //     context: context,
+          //     builder: (context) {
+          //       return ();
+          //     });
         }
       }, builder: (context, state) {
         if (state is InitState) {
           return Padding(
             padding: const EdgeInsets.only(
-                left: 16.0, right: 16, top: 16, bottom: 45),
+                left: 16.0, right: 16, top: 16, bottom: 22),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Введите номер телефона',
-                  style: AppTextStyles.defaultButtonTextStyle,
+                  style: AppTextStyles.size28Weight700,
                 ),
                 SizedBox(height: 23),
                 Text('Номер телефона',
                     textAlign: TextAlign.start,
-                    style: AppTextStyles.categoryTextStyle
-                        .copyWith(fontSize: 13, color: AppColors.kGray300)),
+                    style: AppTextStyles.size13Weight500
+                        .copyWith(color: Color(0xFF636366))),
                 SizedBox(height: 10),
                 Row(
                   children: [
@@ -105,22 +108,23 @@ class _ForgotPasswordSellerPageState extends State<ForgotPasswordSellerPage> {
                         child: Container(
                           height: 52,
                           width: 83,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                          padding: EdgeInsets.symmetric(horizontal: 15),
                           decoration: BoxDecoration(
                             color: AppColors.kGray2,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(16),
                           ),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Image.asset(
                                 countrySellerDto!.flagPath,
                                 width: 24,
                                 height: 24,
                               ),
-                              SizedBox(width: 10),
+                              SizedBox(width: 8),
                               Text('${countrySellerDto!.code}',
-                                  style: TextStyle(fontSize: 16)),
+                                  style: AppTextStyles.size16Weight400),
                             ],
                           ),
                         ),
@@ -131,12 +135,12 @@ class _ForgotPasswordSellerPageState extends State<ForgotPasswordSellerPage> {
                     Flexible(
                       child: Container(
                         height: 52,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                        padding: EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
                           color: AppColors.kGray2,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(16),
                         ),
+                        alignment: Alignment.center,
                         child: TextField(
                           onChanged: (value) {
                             phoneControllerAuth.text.length.toInt() != 0
@@ -148,6 +152,8 @@ class _ForgotPasswordSellerPageState extends State<ForgotPasswordSellerPage> {
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             hintText: 'Введите номер телефона',
+                            hintStyle: AppTextStyles.size16Weight400
+                                .copyWith(color: Color(0xFF8E8E93)),
                             border: InputBorder.none,
                           ),
                         ),
@@ -168,10 +174,13 @@ class _ForgotPasswordSellerPageState extends State<ForgotPasswordSellerPage> {
                       press: () {
                         if (phoneControllerAuth.text.length >= 15) {
                           final sms = BlocProvider.of<SmsSellerCubit>(context);
-                          sms.resetSend(phoneControllerAuth.text);
+                          sms.resetSend(context, phoneControllerAuth.text);
                         } else {
-                          Get.snackbar('Номер телефона пустой', 'Заполните',
-                              backgroundColor: Colors.blueAccent);
+                          AppSnackBar.show(
+                            context,
+                            'Номер телефона пустой',
+                            type: AppSnackType.error,
+                          );
                         }
                       },
                       color: Colors.white,

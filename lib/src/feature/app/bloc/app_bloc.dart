@@ -19,6 +19,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       (AppEvent event, Emitter<AppState> emit) async => event.map(
         exiting: (_Exiting event) async => _exit(event, emit),
         checkAuth: (_CheckAuth event) async => _checkAuth(event, emit),
+        switchState: (_SwitchState event) async => _switchState(event, emit),
         chageState: (_ChangeState event) async => _changeState(event, emit),
         logining: (_Logining event) async => _login(event, emit),
         location: (_Location event) async => _location(event, emit),
@@ -41,8 +42,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   ) async {
     bool exists = GetStorage().hasData('user_location_code');
     String? city = GetStorage().read('city');
+    bool guest = GetStorage().hasData('user_guest');
 
-    if (!exists) {
+    if (!exists && !guest) {
       Get.to(LocationPage());
 
       // Get.showSnackbar(
@@ -85,6 +87,17 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
+  Future<void> _switchState(
+    _SwitchState event,
+    Emitter<AppState> emit,
+  ) async {
+    if (event.key) {
+      emit(const AppState.inAppUserState());
+    } else {
+      emit(const AppState.notAuthorizedState());
+    }
+  }
+
   Future<void> _exit(
     _Exiting event,
     Emitter<AppState> emit,
@@ -108,14 +121,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 ///
 @freezed
 class AppEvent with _$AppEvent {
+  const factory AppEvent.switchState({required bool key}) = _SwitchState;
   const factory AppEvent.checkAuth() = _CheckAuth;
-
   const factory AppEvent.exiting() = _Exiting;
-
   const factory AppEvent.logining() = _Logining;
-
   const factory AppEvent.location() = _Location;
-
   const factory AppEvent.chageState({
     required AppState state,
   }) = _ChangeState;
@@ -130,7 +140,9 @@ class AppEvent with _$AppEvent {
 class AppState with _$AppState {
   const factory AppState.loadingState() = _LoadingState;
 
-  const factory AppState.notAuthorizedState() = _NotAuthorizedState;
+  const factory AppState.notAuthorizedState({
+    bool? button,
+  }) = _NotAuthorizedState;
 
   const factory AppState.inAppUserState({
     int? index,

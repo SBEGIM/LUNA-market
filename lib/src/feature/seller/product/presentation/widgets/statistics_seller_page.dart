@@ -64,9 +64,6 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
         ),
       ),
       body: Column(children: [
-        const SizedBox(
-          height: 10,
-        ),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Container(
@@ -77,10 +74,9 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
             child: Row(
               children: [
                 Container(
-                  height: 106,
-                  width: 106,
-                  padding: EdgeInsets.all(3),
-                  margin: EdgeInsets.all(8),
+                  height: 104,
+                  width: 104,
+                  margin: EdgeInsets.all(13),
                   child: widget.product.images != null &&
                           widget.product.images!.isNotEmpty
                       ? Image.network(
@@ -92,22 +88,22 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
                       : const ErrorImageWidget(),
                 ),
                 const SizedBox(
-                  width: 8,
+                  width: 11,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
+                  padding: const EdgeInsets.only(top: 8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         '${widget.product.catName}',
-                        style: AppTextStyles.categoryTextStyle
+                        style: AppTextStyles.size13Weight400
                             .copyWith(color: AppColors.kGray200),
                       ),
                       SizedBox(height: 4),
                       Text('${widget.product.name}',
                           overflow: TextOverflow.ellipsis,
-                          style: AppTextStyles.counterSellerProfileTextStyle
+                          style: AppTextStyles.size14Weight600
                               .copyWith(color: AppColors.kLightBlackColor)),
                       const SizedBox(
                         height: 5,
@@ -116,11 +112,11 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
                         children: [
                           Text(
                             'Артикул: ',
-                            style: AppTextStyles.categoryTextStyle
+                            style: AppTextStyles.size13Weight400
                                 .copyWith(color: AppColors.kGray200),
                           ),
                           Text('${widget.product.id}',
-                              style: AppTextStyles.categoryTextStyle),
+                              style: AppTextStyles.size13Weight500),
                         ],
                       ),
                       const SizedBox(
@@ -130,12 +126,12 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
                         children: [
                           Text(
                             'Дата добавления: ',
-                            style: AppTextStyles.categoryTextStyle
+                            style: AppTextStyles.size13Weight400
                                 .copyWith(color: AppColors.kGray200),
                           ),
                           Text(
                             '${widget.product.created_at}',
-                            style: AppTextStyles.categoryTextStyle,
+                            style: AppTextStyles.size13Weight500,
                           ),
                         ],
                       ),
@@ -166,19 +162,15 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
                     year = value;
                     setState(() {});
                   }),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '$year',
-                        style: const TextStyle(
-                          color: AppColors.kGray900,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Icon(Icons.arrow_drop_down)
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('$year', style: AppTextStyles.size14Weight500),
+                        Image.asset(Assets.icons.dropDownIcon.path, scale: 2.6),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -207,22 +199,16 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
                       });
                     });
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        months[_selectIndex],
-                        style: const TextStyle(
-                          color: AppColors.kGray900,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const Icon(
-                        Icons.arrow_drop_down,
-                        color: AppColors.kGray900,
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(months[_selectIndex],
+                            style: AppTextStyles.size14Weight500),
+                        Image.asset(Assets.icons.dropDownIcon.path, scale: 2.6),
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -250,7 +236,7 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
                         ),
                         StatisticWidgetContainer(
                           text: state.stats.count_favorite.toString(),
-                          subText: 'Добавлен в\nизбранное',
+                          subText: 'Добавлен в избранное',
                           url: Assets.images.statisticsProductsHeart.path,
                         ),
                         StatisticWidgetContainer(
@@ -491,19 +477,11 @@ class StatisticWidgetContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(10),
-      width: 500,
+      width: double.infinity,
       height: 92,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.mainPurpleColor.withOpacity(0.15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            // blurRadius: 1,
-            offset: const Offset(0, 1), // changes position of shadow
-          ),
-        ],
+        color: AppColors.mainBackgroundPurpleColor,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -522,18 +500,13 @@ class StatisticWidgetContainer extends StatelessWidget {
             children: [
               Text(
                 text,
-                style: const TextStyle(
-                    color: AppColors.kGray900,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700),
+                style: AppTextStyles.size18Weight600,
               ),
               Text(
                 subText,
                 maxLines: 1,
-                style: const TextStyle(
-                    color: AppColors.kGray300,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400),
+                style: AppTextStyles.size13Weight400
+                    .copyWith(color: AppColors.kGray300),
               ),
             ],
           ),

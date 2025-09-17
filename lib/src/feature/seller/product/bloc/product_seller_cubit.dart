@@ -170,7 +170,6 @@ class ProductSellerCubit extends Cubit<ProductAdminState> {
 
   Future<void> products(String? name) async {
     try {
-      print('emiit');
       page = 1;
       emit(LoadingState());
       final List<ProductSellerModel> data =
