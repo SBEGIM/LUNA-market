@@ -1,16 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 
 import '../../../../../core/constant/generated/assets.gen.dart';
 
 @RoutePage()
 class SuccessSellerRegisterPage extends StatefulWidget {
-  final bool? BackButton;
-  const SuccessSellerRegisterPage({this.BackButton, Key? key})
-      : super(key: key);
+  const SuccessSellerRegisterPage({Key? key}) : super(key: key);
 
   @override
   State<SuccessSellerRegisterPage> createState() =>
@@ -18,41 +18,25 @@ class SuccessSellerRegisterPage extends StatefulWidget {
 }
 
 class _SuccessSellerRegisterPageState extends State<SuccessSellerRegisterPage> {
-  int segmentValue = 0;
-
-  final List<bool> selectedBotton = [true, false];
-  int currentIndex = 0;
-  String title = 'Войти в кабинет продавца';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: InkWell(
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-          child: Icon(
-            Icons.arrow_back,
-            size: 25,
-          ),
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(Assets.icons.successRegisterSeller.path),
+            SizedBox(height: 16),
             Text(
               'Регистрация прошла успешно',
-              style: AppTextStyles.defaultButtonTextStyle,
+              style: AppTextStyles.size22Weight700,
             ),
+            SizedBox(height: 16),
             Text(
               'Ваша заявка находится на модерации. Обычно это занимает от 1 до 2 рабочих дней',
+              style: AppTextStyles.size16Weight400,
               textAlign: TextAlign.center,
             ),
           ],
@@ -60,16 +44,21 @@ class _SuccessSellerRegisterPageState extends State<SuccessSellerRegisterPage> {
       ),
       bottomSheet: InkWell(
         onTap: () {
-          context.router.push(AuthSellerRoute());
+          // context.router.push(AuthSellerRoute());
+
+          BlocProvider.of<AppBloc>(context).add(
+              const AppEvent.chageState(state: AppState.inAppAdminState()));
+          context.router
+              .popUntil((route) => route.settings.name == LauncherRoute.name);
         },
         child: Container(
           width: 358,
           height: 52,
-          margin: EdgeInsets.only(bottom: 25),
+          margin: EdgeInsets.only(bottom: 50),
           alignment: Alignment.center,
           decoration: BoxDecoration(
               color: AppColors.mainPurpleColor,
-              borderRadius: BorderRadius.circular(12)),
+              borderRadius: BorderRadius.circular(16)),
           child: Text(
             'Перейти на главную',
             style: AppTextStyles.defaultButtonTextStyle

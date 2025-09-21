@@ -24,7 +24,7 @@ void showRolePicker(BuildContext context, String type) {
           child: StatefulBuilder(
             builder: (dialogContext, setState) {
               return Container(
-                height: 494,
+                height: type != 'change_cabinet' ? 466 : 386,
                 width: double.infinity,
                 margin: const EdgeInsets.all(16),
                 // margin: EdgeInsets.symmetric(horizontal: 12),

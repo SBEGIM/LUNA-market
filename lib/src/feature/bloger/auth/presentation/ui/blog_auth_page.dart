@@ -55,10 +55,14 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
     return BlocConsumer<LoginBloggerCubit, LoginBloggerState>(
         listener: (context, state) {
       if (state is LoadedState) {
-        BlocProvider.of<AppBloc>(context)
-            .add(const AppEvent.chageState(state: AppState.inAppBlogerState()));
-        context.router
-            .popUntil((route) => route.settings.name == LauncherRoute.name);
+        final router = AutoRouter.of(context).root; // гарантированно корень
+
+        context.read<AppBloc>().add(
+              const AppEvent.chageState(
+                  state: AppState.inAppBlogerState(index: 0)),
+            );
+        router.replaceAll([const LauncherRoute()]);
+
         // Get.to(() => ());
 
         // Get.to(() => const BaseBlogger(
@@ -273,8 +277,8 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      // context.pushRoute(RegisterSellerRoute());
-                      Get.to(BlogRegisterPage());
+                      context.pushRoute(BlogRegisterRoute());
+                      // Get.to(BlogRegisterPage());
                     },
                     child: Text(
                       'Зарегистрироваться',

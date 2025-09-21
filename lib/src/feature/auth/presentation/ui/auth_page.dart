@@ -7,6 +7,7 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/auth/presentation/ui/register_page.dart';
 import 'package:haji_market/src/feature/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
@@ -39,7 +40,7 @@ class _AuthPageState extends State<AuthPage> {
   CountrySellerDto? countrySellerDto;
 
   TextEditingController phoneControllerAuth =
-      MaskedTextController(mask: '+7(000)-000-00-00');
+      MaskedTextController(mask: '(000)-000-00-00');
   TextEditingController passwordControllerAuth = TextEditingController();
 
   @override
@@ -53,11 +54,13 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginState>(listener: (context, state) {
       if (state is LoadedState) {
-        // BlocProvider.of<AppBloc>(context).add(const AppEvent.logining());
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => const Base()),
-        // );
+        final router = AutoRouter.of(context).root; // гарантированно корень
+
+        context.read<AppBloc>().add(
+              const AppEvent.chageState(
+                  state: AppState.inAppUserState(index: 0)),
+            );
+        router.replaceAll([const LauncherRoute()]);
       }
     }, builder: (context, state) {
       if (state is InitState) {
@@ -130,6 +133,8 @@ class _AuthPageState extends State<AuthPage> {
                       child: TextField(
                         controller: phoneControllerAuth,
                         keyboardType: TextInputType.phone,
+                        style: AppTextStyles.size16Weight400
+                            .copyWith(color: Color(0xFF636366)),
                         decoration: InputDecoration(
                           hintText: 'Введите номер телефона',
                           hintStyle: AppTextStyles.size16Weight400
@@ -213,14 +218,17 @@ class _AuthPageState extends State<AuthPage> {
                     backgroundColor: AppColors.mainPurpleColor,
                     text: 'Войти',
                     press: () {
-                      if (phoneControllerAuth.text.length >= 17 ||
+                      if (phoneControllerAuth.text.length >= 15 ||
                           passwordControllerAuth.text.isEmpty) {
                         final login = BlocProvider.of<LoginCubit>(context);
-                        login.login(phoneControllerAuth.text,
+                        login.login(context, phoneControllerAuth.text,
                             passwordControllerAuth.text);
                       } else {
-                        Get.snackbar('Ошибка запроса', 'Заполните все данныые',
-                            backgroundColor: Colors.blueAccent);
+                        AppSnackBar.show(
+                          context,
+                          'Заполните все данныые',
+                          type: AppSnackType.error,
+                        );
                       }
                     },
                     color: Colors.white,
@@ -404,8 +412,8 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      Get.to(RegisterPage());
-                      // context.router.push(RegisterRoute()); // тоже верно
+                      // Get.to(RegisterPage());
+                      context.router.push(RegisterRoute());
                     },
                     child: Text(
                       'Зарегистрироваться',

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/auth/bloc/register_state.dart';
 import '../data/DTO/register.dart';
 import '../data/repository/register_repo.dart';
@@ -12,7 +13,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   RegisterCubit({required this.registerRepository}) : super(InitState());
 
-  Future<void> register(RegisterDTO register) async {
+  Future<void> register(BuildContext context, RegisterDTO register) async {
     try {
       emit(LoadingState());
       final data = await registerRepository.register(register);
@@ -22,14 +23,22 @@ class RegisterCubit extends Cubit<RegisterState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-            backgroundColor: Colors.redAccent);
+
+        AppSnackBar.show(
+          context,
+          'Номер телефона занят',
+          type: AppSnackType.error,
+        );
       }
 
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+
+        AppSnackBar.show(
+          context,
+          'Ошибка сервера',
+          type: AppSnackType.error,
+        );
       }
     } catch (e) {
       log(e.toString());

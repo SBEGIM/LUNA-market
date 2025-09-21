@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +8,6 @@ import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/widgets/shimmer_box.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/ui/notification_blogger_page.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/widgets/show_blogget_cats_widget.dart';
-import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/src/feature/home/bloc/cats_cubit.dart' as catsCubit;
 import 'package:haji_market/src/feature/home/bloc/cats_state.dart' as catsState;
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
@@ -161,7 +158,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                   }
                   if (state is sellerStoriesState.LoadedState) {
                     return Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
+                      padding: const EdgeInsets.only(left: 16.0),
                       child: SizedBox(
                         height: 87,
                         child: ListView.builder(
@@ -174,7 +171,8 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                                     stories: state
                                         .storiesSeelerModel[index].stories)),
                                 child: Container(
-                                  margin: const EdgeInsets.only(left: 5),
+                                  margin:
+                                      EdgeInsets.only(left: index == 0 ? 0 : 5),
                                   padding: EdgeInsets.all(index == 0 ? 1 : 2),
                                   height: 86,
                                   width: 86,
@@ -236,7 +234,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                   height: 44,
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(
-                      top: 10, bottom: 12, left: 12, right: 12),
+                      top: 10, bottom: 12, left: 16, right: 16),
                   decoration: BoxDecoration(
                     color: AppColors.kGray1,
                     borderRadius: BorderRadius.circular(12),
@@ -357,7 +355,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
           const SizedBox(height: 10),
 
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
+            padding: EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -414,7 +412,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                 if (state is LoadedState) {
                   return ListView.builder(
                       scrollDirection: Axis.vertical,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: state.popularShops.length,
@@ -433,7 +431,7 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                               ),
                               // margin: EdgeInsets.only(right: 5, left: 5),
                               padding: const EdgeInsets.only(
-                                  right: 0, left: 8, top: 8, bottom: 8),
+                                  right: 0, left: 16, top: 8, bottom: 10),
                               margin: EdgeInsets.only(top: 10),
                               height: 130,
                               child: Row(
@@ -465,64 +463,72 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 10),
+                                  SizedBox(width: 16),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: 0),
                                       Text(state.popularShops[index].name ?? '',
                                           textAlign: TextAlign.center,
                                           style: AppTextStyles.size14Weight600),
-                                      SizedBox(height: 5),
+                                      SizedBox(height: 4),
                                       Text(
                                           state.popularShops[index].catName ??
                                               'Одежда',
                                           textAlign: TextAlign.center,
                                           style: AppTextStyles.size13Weight400
                                               .copyWith(
-                                                  color: AppColors.kGray300)),
-                                      SizedBox(height: 5),
-                                      Row(
-                                        children: [
-                                          RatingBar(
-                                            ignoreGestures: true,
-                                            initialRating: double.parse(state
-                                                .popularShops[index].rating
-                                                .toString()),
-                                            minRating: 0,
-                                            maxRating: 5,
-                                            itemCount: 5,
-                                            // unratedColor: const Color(0x30F11712),
-                                            itemSize: 14,
-                                            unratedColor:
-                                                const Color(0xFFFFC107),
-                                            // itemPadding:
-                                            // const EdgeInsets.symmetric(horizontal: 4.0),
-                                            ratingWidget: RatingWidget(
-                                              full: const Icon(
-                                                Icons.star,
-                                                color: Color(0xFFFFC107),
+                                                  color: Color(0xFF8E8E93))),
+                                      SizedBox(height: 4),
+                                      SizedBox(
+                                        height: 20,
+                                        child: Row(
+                                          children: [
+                                            RatingBar(
+                                              ignoreGestures: true,
+                                              initialRating: double.parse(state
+                                                  .popularShops[index].rating
+                                                  .toString()),
+                                              minRating: 0,
+                                              maxRating: 5,
+                                              itemCount: 5,
+                                              // unratedColor: const Color(0x30F11712),
+                                              itemSize: 14,
+                                              unratedColor:
+                                                  const Color(0xFFFFC107),
+                                              itemPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 2.0),
+                                              ratingWidget: RatingWidget(
+                                                full: Image.asset(
+                                                  Assets.icons.defaultStarIcon
+                                                      .path,
+                                                  width: 14,
+                                                  height: 13.5,
+                                                ),
+                                                half: const Icon(Icons.star,
+                                                    color: AppColors.kGray200),
+                                                empty: Image.asset(
+                                                  Assets.icons.defaultStarIcon
+                                                      .path,
+                                                  width: 14,
+                                                  height: 13.5,
+                                                  color: Color(0xffD1D1D6),
+                                                ),
                                               ),
-                                              half: const Icon(Icons.star,
-                                                  color: AppColors.kGray200),
-                                              empty: const Icon(
-                                                Icons.star,
-                                                color: AppColors.kGray200,
-                                              ),
+                                              onRatingUpdate: (double value) {},
                                             ),
-                                            onRatingUpdate: (double value) {},
-                                          ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            "${double.parse(state.popularShops[index].rating.toString())}",
-                                            style: const TextStyle(
-                                                color: AppColors.kGray300,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ],
+                                            SizedBox(width: 5),
+                                            Text(
+                                              "${double.parse(state.popularShops[index].rating.toString())}",
+                                              style: AppTextStyles
+                                                  .size14Weight400
+                                                  .copyWith(
+                                                      color: Color(0xff8E8E93)),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       SizedBox(height: 12),
                                       Container(
@@ -557,6 +563,8 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                           color: Colors.indigoAccent));
                 }
               }),
+
+          SizedBox(height: 120)
         ],
       ),
     );

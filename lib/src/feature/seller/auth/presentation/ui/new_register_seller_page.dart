@@ -2,11 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/register_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/register_seller_cubit.dart';
@@ -33,6 +35,13 @@ class RegisterSellerPage extends StatefulWidget {
 
 class _CoopRequestPageState extends State<RegisterSellerPage> {
   bool isChecked = false;
+
+  bool _passwordVisible = false;
+  bool _repeatPasswordVisible = false;
+
+  bool _visibleIconClear = false;
+  bool __visibleIconView = false;
+  bool isButtonEnabled = false;
   int typeOrganization = 1;
 
   CatsModel cats = CatsModel(id: 0, name: 'Выберите категорию');
@@ -65,6 +74,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
       MaskedTextController(mask: '(000)-000-00-00');
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController repeatPasswordController = TextEditingController();
 
   List<String> metas = [
     'Пользовательское соглашение',
@@ -116,6 +126,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.kGray,
       appBar: AppBar(
+        toolbarHeight: 22,
         leading: InkWell(
             onTap: () {
               if (filledCount != 1) {
@@ -151,28 +162,26 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
+            SizedBox(height: 6),
             Padding(
               padding: EdgeInsets.all(16),
               child: SizedBox(
-                width: 300,
+                width: 320,
                 child: Text(
                   'Регистрация аккаунта продавца',
                   maxLines: 2,
-                  style: AppTextStyles.defaultAppBarTextStyle,
+                  style: AppTextStyles.size29Weight700,
                 ),
               ),
             ),
+            SizedBox(height: 10),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                title,
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.kGray300),
-              ),
+              child: Text(title,
+                  style: AppTextStyles.size16Weight400
+                      .copyWith(color: Color(0xFF808080))),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
 
             // Прогресс-бар с пробелами
             Padding(
@@ -201,7 +210,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
               ),
             ),
 
-            SizedBox(height: 20),
+            SizedBox(height: 24),
             // EasyStepper(
             //   enableStepTapping: false,
             //   activeStep: filledSegments,
@@ -300,7 +309,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Column(children: [
                     Visibility(
                       visible: filledSegments == 1 ? true : false,
@@ -308,9 +317,6 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           children: [
-                            const SizedBox(
-                              height: 10,
-                            ),
                             // const Row(
                             //   children: [
                             //     Text(
@@ -444,7 +450,7 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
 
                             FieldsCoopRequest(
                               titleText: 'Выберите тип организаций ',
-                              hintText: 'Выберите из списка',
+                              hintText: typeOrganization == 1 ? 'ИП' : 'ООО',
                               star: false,
                               arrow: true,
                               // controller: catController,
@@ -464,7 +470,26 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                               hintText: 'Введите ИНН',
                               star: false,
                               arrow: false,
+                              number: true,
                               controller: iinController,
+                            ),
+                            FieldsCoopRequest(
+                              titleText: 'Основная категория товаров ',
+                              hintText: cats.name.toString(),
+                              star: false,
+                              arrow: true,
+                              // controller: catController,
+                              onPressed: () async {
+                                final data =
+                                    await Get.to(const CatsSellerPage());
+                                if (data != null) {
+                                  final CatsModel cat = data;
+
+                                  setState(() {});
+                                  catController.text = cat.id.toString();
+                                  cats = cat;
+                                }
+                              },
                             ),
                             FieldsCoopRequest(
                               titleText: 'Юридический адрес',
@@ -640,84 +665,92 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                               arrow: false,
                               controller: contactController,
                             ),
-
                             Text('Номер телефона',
                                 textAlign: TextAlign.start,
-                                style: AppTextStyles.categoryTextStyle.copyWith(
-                                  fontSize: 12,
-                                )),
-                            SizedBox(height: 6),
-                            Row(children: [
-                              InkWell(
-                                onTap: () {
-                                  showSellerLoginPhone(
-                                    context,
-                                    countryCall: (dto) {
-                                      countrySellerDto = dto;
-                                      setState(() {});
-                                    },
-                                  );
-                                },
-                                child: Shimmer(
+                                style: AppTextStyles.size13Weight500
+                                    .copyWith(color: Color(0xFF636366))),
+                            SizedBox(height: 8),
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    showSellerLoginPhone(
+                                      context,
+                                      countryCall: (dto) {
+                                        countrySellerDto = dto;
+                                        setState(() {});
+                                      },
+                                    );
+                                  },
+                                  child: Shimmer(
+                                    child: Container(
+                                      height: 52,
+                                      width: 83,
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 15),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.kGray2,
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            countrySellerDto!.flagPath,
+                                            width: 24,
+                                            height: 24,
+                                          ),
+                                          SizedBox(width: 8),
+                                          Text(
+                                            '${countrySellerDto!.code}',
+                                            style: AppTextStyles.size16Weight400
+                                                .copyWith(
+                                                    color: Color(0xFF636366)),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 4),
+                                // Поле ввода
+                                Flexible(
                                   child: Container(
                                     height: 52,
-                                    width: 83,
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 12),
+                                        horizontal: 16, vertical: 12),
                                     decoration: BoxDecoration(
-                                      color: AppColors.kWhite,
-                                      borderRadius: BorderRadius.circular(12),
+                                      color: AppColors.kGray2,
+                                      borderRadius: BorderRadius.circular(16),
                                     ),
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                          countrySellerDto!.flagPath,
-                                          width: 24,
-                                          height: 24,
-                                        ),
-                                        SizedBox(width: 10),
-                                        Text('${countrySellerDto!.code}',
-                                            style: TextStyle(fontSize: 16)),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 6),
-                              // Поле ввода
-                              Flexible(
-                                child: Container(
-                                  height: 52,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 12),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.kWhite,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: TextField(
-                                    controller: phoneController,
-                                    keyboardType: TextInputType.phone,
-                                    decoration: InputDecoration(
-                                      hintText: '(000)-000-00-00',
-                                      helperStyle: AppTextStyles
-                                          .categoryTextStyle
-                                          .copyWith(
-                                        fontSize: 12,
-                                        color: AppColors.reviewStar,
+                                    child: TextField(
+                                      controller: phoneController,
+                                      textInputAction: TextInputAction.send,
+                                      keyboardType: TextInputType.phone,
+                                      style: AppTextStyles.size16Weight400
+                                          .copyWith(color: Color(0xFF636366)),
+                                      decoration: InputDecoration(
+                                        hintText: 'Введите номер телефона',
+                                        hintStyle: AppTextStyles.size16Weight400
+                                            .copyWith(color: Color(0xFF8E8E93)),
+                                        border: InputBorder.none,
                                       ),
-                                      border: InputBorder.none,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly,
+                                      ],
+                                      onSubmitted: (_) {
+                                        FocusScope.of(context)
+                                            .unfocus(); // закрыть клавиатуру
+                                      },
                                     ),
                                   ),
                                 ),
-                              ),
-                            ]),
-                            // FieldsCoopRequest(
-                            //   titleText: 'Мобильный телефон ',
-                            //   hintText: 'Введите мобильный телефон ',
-                            //   star: false,
-                            //   arrow: false,
-                            //   controller: phoneController,
-                            // ),
+                              ],
+                            ),
+                            SizedBox(height: 12),
                             FieldsCoopRequest(
                               titleText: 'Email ',
                               hintText: 'Введите Email',
@@ -725,139 +758,238 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                               arrow: false,
                               controller: emailController,
                             ),
-                            FieldsCoopRequest(
-                              titleText: 'Пароль ',
-                              hintText: 'Введите пароль',
-                              star: false,
-                              arrow: false,
-                              controller: passwordController,
+                            Row(
+                              children: [
+                                Text('Пароль',
+                                    style: AppTextStyles.size13Weight500
+                                        .copyWith(color: Color(0xFF636366))),
+                                const Text('*',
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.red)),
+                              ],
                             ),
-                            FieldsCoopRequest(
-                              titleText: 'Основная категория товаров ',
-                              hintText: cats.name.toString(),
-                              star: false,
-                              arrow: true,
-                              // controller: catController,
-                              onPressed: () async {
-                                final data =
-                                    await Get.to(const CatsSellerPage());
-                                if (data != null) {
-                                  final CatsModel cat = data;
-
-                                  setState(() {});
-                                  catController.text = cat.id.toString();
-                                  cats = cat;
-                                }
-                              },
+                            SizedBox(height: 4),
+                            Container(
+                              height: 52,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      16), // Increased horizontal padding
+                              decoration: BoxDecoration(
+                                color: AppColors.kGray2,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              alignment: Alignment.center,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      controller: passwordController,
+                                      textAlign: TextAlign.start,
+                                      keyboardType: TextInputType.text,
+                                      obscureText: !_passwordVisible,
+                                      style: AppTextStyles.size16Weight400
+                                          .copyWith(color: Color(0xFF636366)),
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: 'Введите пароль',
+                                        hintStyle: AppTextStyles.size16Weight400
+                                            .copyWith(color: Color(0xFF8E8E93)),
+                                        contentPadding: EdgeInsets
+                                            .zero, // Better control over padding
+                                        isDense: true,
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _passwordVisible = !_passwordVisible;
+                                      });
+                                    },
+                                    child: Image.asset(
+                                      _passwordVisible
+                                          ? Assets
+                                              .icons.passwordViewHiddenIcon.path
+                                          : Assets.icons.passwordViewIcon.path,
+                                      scale: 1.9,
+                                      color: AppColors.kGray300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Row(
+                              children: [
+                                Text('Повторить  пароль',
+                                    style: AppTextStyles.size13Weight500
+                                        .copyWith(color: Color(0xFF636366))),
+                                const Text('*',
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.red)),
+                              ],
+                            ),
+                            SizedBox(height: 4),
+                            Container(
+                              height: 52,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      16), // Increased horizontal padding
+                              decoration: BoxDecoration(
+                                color: AppColors.kGray2,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              alignment: Alignment.center,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      controller: repeatPasswordController,
+                                      textAlign: TextAlign.start,
+                                      keyboardType: TextInputType.text,
+                                      obscureText: !_repeatPasswordVisible,
+                                      style: AppTextStyles.size16Weight400
+                                          .copyWith(color: Color(0xFF636366)),
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: 'Повторите пароль',
+                                        hintStyle: AppTextStyles.size16Weight400
+                                            .copyWith(color: Color(0xFF8E8E93)),
+                                        contentPadding: EdgeInsets
+                                            .zero, // Better control over padding
+                                        isDense: true,
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _repeatPasswordVisible =
+                                            !_repeatPasswordVisible;
+                                      });
+                                    },
+                                    child: Image.asset(
+                                      _repeatPasswordVisible
+                                          ? Assets
+                                              .icons.passwordViewHiddenIcon.path
+                                          : Assets.icons.passwordViewIcon.path,
+                                      scale: 1.9,
+                                      color: AppColors.kGray300,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             const SizedBox(
                               height: 30,
                             ),
-                            SizedBox(
-                                height: 160,
-                                child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        alignment: Alignment.topLeft,
-                                        child: Checkbox(
-                                          visualDensity: const VisualDensity(
-                                              horizontal: 0, vertical: 0),
-                                          checkColor: Colors.white,
-                                          // fillColor: MaterialStateProperty.resolveWith(Colors.),
-                                          value: isChecked,
-                                          onChanged: (bool? value) {
-                                            setState(() {
-                                              isChecked = value!;
-                                            });
-                                          },
-                                        ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          isChecked = !isChecked;
+                                        });
+                                      },
+                                      child: Image.asset(
+                                        isChecked
+                                            ? Assets.icons.defaultCheckIcon.path
+                                            : Assets
+                                                .icons.defaultUncheckIcon.path,
+                                        scale: 1.9,
+                                        color: isChecked
+                                            ? AppColors.arrowColor
+                                            : AppColors.kGray300,
                                       ),
-                                      BlocBuilder<metaCubit.MetaCubit,
-                                              metaState.MetaState>(
-                                          builder: (context, state) {
-                                        if (state is metaState.LoadedState) {
-                                          metasBody.addAll([
-                                            state.metas.terms_of_use!,
-                                            state.metas.privacy_policy!,
-                                            state.metas.contract_offer!,
-                                            state.metas.shipping_payment!,
-                                            state.metas.TTN!,
-                                          ]);
-                                          return Container(
-                                            alignment: Alignment.topRight,
-                                            child: Flexible(
-                                              child: RichText(
-                                                textAlign: TextAlign.left,
-                                                text: TextSpan(
-                                                  style: const TextStyle(
-                                                      fontSize: 16,
-                                                      color:
-                                                          AppColors.kGray300),
-                                                  children: <TextSpan>[
-                                                    const TextSpan(
-                                                      text:
-                                                          "Нажимая зарегистрироваться вы \nпринимаете",
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                    ),
-                                                    TextSpan(
-                                                      recognizer:
-                                                          TapGestureRecognizer()
-                                                            ..onTap = () =>
-                                                                Get.to(() =>
-                                                                    MetasPage(
-                                                                      title:
-                                                                          metas[
-                                                                              2],
-                                                                      body:
-                                                                          metasBody[
-                                                                              2],
-                                                                    )),
-                                                      text:
-                                                          ' политику конфиденциаль- \nности и',
-                                                      style: const TextStyle(
-                                                          color: AppColors
-                                                              .mainPurpleColor,
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                    ),
-                                                    TextSpan(
-                                                      recognizer:
-                                                          TapGestureRecognizer()
-                                                            ..onTap = () =>
-                                                                Get.to(() =>
-                                                                    MetasPage(
-                                                                      title:
-                                                                          metas[
-                                                                              0],
-                                                                      body:
-                                                                          metasBody[
-                                                                              0],
-                                                                    )),
-                                                      text:
-                                                          ' условия использования',
-                                                      style: const TextStyle(
-                                                          color: AppColors
-                                                              .mainPurpleColor,
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                    ),
-                                                  ],
-                                                ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    BlocBuilder<metaCubit.MetaCubit,
+                                            metaState.MetaState>(
+                                        builder: (context, state) {
+                                      if (state is metaState.LoadedState) {
+                                        metasBody.addAll([
+                                          state.metas.terms_of_use!,
+                                          state.metas.privacy_policy!,
+                                          state.metas.contract_offer!,
+                                          state.metas.shipping_payment!,
+                                          state.metas.TTN!,
+                                        ]);
+                                        return Container(
+                                          alignment: Alignment.topRight,
+                                          child: Flexible(
+                                            child: RichText(
+                                              textAlign: TextAlign.left,
+                                              text: TextSpan(
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: AppColors.kGray300),
+                                                children: <TextSpan>[
+                                                  const TextSpan(
+                                                    text:
+                                                        "Нажимая «Зарегистрироваться», вы \nпринимаете",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  TextSpan(
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () =>
+                                                              Get.to(
+                                                                  () =>
+                                                                      MetasPage(
+                                                                        title:
+                                                                            metas[2],
+                                                                        body: metasBody[
+                                                                            2],
+                                                                      )),
+                                                    text:
+                                                        ' политику конфиденциаль- \nности и',
+                                                    style: const TextStyle(
+                                                        color: AppColors
+                                                            .mainPurpleColor,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  TextSpan(
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () =>
+                                                              Get.to(
+                                                                  () =>
+                                                                      MetasPage(
+                                                                        title:
+                                                                            metas[0],
+                                                                        body: metasBody[
+                                                                            0],
+                                                                      )),
+                                                    text:
+                                                        ' условия использования',
+                                                    style: const TextStyle(
+                                                        color: AppColors
+                                                            .mainPurpleColor,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          );
-                                        } else {
-                                          return Center();
-                                        }
-                                      }),
-                                    ])),
+                                          ),
+                                        );
+                                      } else {
+                                        return Center();
+                                      }
+                                    }),
+                                  ]),
+                            ),
                           ]),
                     ),
                     SizedBox(height: 100)
@@ -873,7 +1005,6 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
             onTap: () async {
               if (filledSegments == 1) {
                 if (typeOrganization == 1) {
-                  print('tpye =1');
                   if (iinController.text.isEmpty ||
                           // organizationController.text.isEmpty ||
                           nameCompanyController.text.isEmpty ||
@@ -882,10 +1013,11 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                       //     taxAuthorityController.text.isEmpty ||
                       //    ogkvadController.text.isEmpty) {
                       ) {
-                    Get.snackbar('Ошибка', 'Заполните все данные ИП *',
-                        backgroundColor: Colors.blueAccent);
-
-                    print('erroe ip ');
+                    AppSnackBar.show(
+                      context,
+                      'Заполните все данные ИП *',
+                      type: AppSnackType.error,
+                    );
 
                     return;
                   }
@@ -894,22 +1026,21 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                     filledCount = 2;
                     title = 'Реквизиты банка';
                   });
-                  print('next step then ip ');
 
                   return;
                 } else if (typeOrganization == 2) {
-                  print('type == 2');
-                  if (iinController.text.isEmpty ||
-                      organizationController.text.isEmpty ||
-                      nameCompanyController.text.isEmpty ||
-                      legalAddressController.text.isEmpty ||
-                      registerDateController.text.isEmpty ||
-                      taxAuthorityController.text.isEmpty ||
-                      ogkvadController.text.isEmpty) {
-                    Get.snackbar('Ошибка', 'Заполните все данные ООО *',
-                        backgroundColor: Colors.blueAccent);
-
-                    print('need ip data');
+                  if (iinController.text.isNotEmpty ||
+                      organizationController.text.isNotEmpty ||
+                      nameCompanyController.text.isNotEmpty ||
+                      legalAddressController.text.isNotEmpty ||
+                      registerDateController.text.isNotEmpty ||
+                      taxAuthorityController.text.isNotEmpty ||
+                      ogkvadController.text.isNotEmpty) {
+                    AppSnackBar.show(
+                      context,
+                      'Заполните все данные ООО *',
+                      type: AppSnackType.error,
+                    );
 
                     return;
                   }
@@ -921,10 +1052,11 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                       founderController.text.isEmpty ||
                       ogvnController.text.isEmpty ||
                       kppController.text.isEmpty) {
-                    Get.snackbar('Ошибка', 'Заполните все данные ООО *',
-                        backgroundColor: Colors.blueAccent);
-
-                    print('need ooo data');
+                    AppSnackBar.show(
+                      context,
+                      'Заполните все данные ООО *',
+                      type: AppSnackType.error,
+                    );
 
                     return;
                   }
@@ -933,42 +1065,19 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                     filledCount = 2;
                     title = 'Реквизиты банка';
                   });
-                  print('succes next step ooo ');
 
                   return;
                 }
               }
 
-              //bankController
-              //organizationController
-              //if==2
-              //generalDirectorController
-              //if==2
-              //addressController
-              //nameCompanyController
-              //if==2
-              //nationalityController
-              //if==2
-              //birthdayController
-              //if==2
-              //founderController
-              //legalAddressController
-              //registerDateController
-              //taxAuthorityController
-              //ogkvadController
-              //if==2
-              //ogvnController
-              //if==2
-              //kppController
-              //iinController
-              //typeOrganization
-
               if (filledSegments == 2) {
                 if (bankController.text.isEmpty ||
                     checkController.text.isEmpty) {
-                  Get.snackbar('Ошибка', 'Заполните все данные о магазине *',
-                      backgroundColor: Colors.blueAccent);
-                  print('error shop data');
+                  AppSnackBar.show(
+                    context,
+                    'Заполните все данные о магазине *',
+                    type: AppSnackType.error,
+                  );
                   return;
                 }
                 setState(() {
@@ -976,7 +1085,6 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                   filledCount = 3;
                   title = 'Контактные данные';
                 });
-                print('succes next step user ');
 
                 return;
               }
@@ -986,12 +1094,12 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                     phoneController.text.isEmpty ||
                     emailController.text.isEmpty ||
                     passwordController.text.isEmpty ||
-                    catController.text.isEmpty ||
                     isChecked == false) {
-                  Get.snackbar('Ошибка', 'Заполните все контактные данные *',
-                      backgroundColor: Colors.blueAccent);
-
-                  print('user fail');
+                  AppSnackBar.show(
+                    context,
+                    'Заполните все контактные данные *',
+                    type: AppSnackType.error,
+                  );
                   return;
                 }
 
@@ -1031,13 +1139,20 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                 //   context,
                 //   MaterialPageRoute(builder: (context) => AuthAdminPage()),
                 // );
-                Get.snackbar('Успешно', 'Заявка отправлено',
-                    backgroundColor: Colors.blueAccent);
+
+                // AppSnackBar.show(
+                //   context,
+                //   'Заявка отправлено',
+                //   type: AppSnackType.error,
+                // );
 
                 return;
               } else {
-                Get.snackbar('Ошибка', 'Ой что-то пошло не так',
-                    backgroundColor: Colors.redAccent);
+                AppSnackBar.show(
+                  context,
+                  'Ой что-то пошло не так',
+                  type: AppSnackType.error,
+                );
               }
 
               // Navigator.pop(context);
@@ -1046,24 +1161,22 @@ class _CoopRequestPageState extends State<RegisterSellerPage> {
                 height: 80,
                 child: Column(
                   children: [
-                    const SizedBox(height: 12),
                     Container(
-                        height: 46,
+                        height: 52,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(16),
                           color: AppColors.mainPurpleColor,
                         ),
                         width: MediaQuery.of(context).size.width,
                         alignment: Alignment.center,
                         // padding: const EdgeInsets.only(left: 16, right: 16),
-                        child: const Text(
-                          'Далее',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
+                        child: Text(
+                          filledSegments != 3 ? 'Далее' : 'Зарегистрироваться',
+                          style: AppTextStyles.size18Weight600
+                              .copyWith(color: AppColors.kWhite),
                           textAlign: TextAlign.center,
                         )),
+                    const SizedBox(height: 12),
                   ],
                 ))),
       ),
@@ -1078,85 +1191,102 @@ class FieldsCoopRequest extends StatelessWidget {
   final String hintText;
   final bool star;
   final bool arrow;
-  final void Function()? onPressed;
+  final bool readOnly; // доп. флаг, если поле реально только для чтения
+  final bool? number;
+  final bool trueColor;
+  final VoidCallback? onPressed; // если задан — поле работает как кнопка
+  final String? icon;
+  final TextEditingController? controller;
 
-  TextEditingController? controller;
-  FieldsCoopRequest({
-    required this.hintText,
-    required this.titleText,
-    required this.star,
-    required this.arrow,
-    this.controller,
-    this.onPressed,
-    Key? key,
-  }) : super(key: key);
+  const FieldsCoopRequest(
+      {super.key,
+      required this.hintText,
+      required this.titleText,
+      required this.star,
+      required this.arrow,
+      this.controller,
+      this.onPressed,
+      this.readOnly = false,
+      this.number,
+      this.trueColor = false,
+      this.icon});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4.0, bottom: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    final bool tapMode = onPressed != null; // режим «нажатия», без клавиатуры
+
+    return Material(
+      // для правильного InkWell-эффекта
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onPressed, // тап по всей области
+        child: Padding(
+          padding: const EdgeInsets.only(top: 4.0, bottom: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                titleText,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: AppColors.kGray900),
+              // Заголовок + звёздочка
+              Row(
+                children: [
+                  Text(titleText,
+                      style: AppTextStyles.size13Weight500
+                          .copyWith(color: Color(0xFF636366))),
+                  if (!star)
+                    const Text('*',
+                        style: TextStyle(fontSize: 12, color: Colors.red)),
+                ],
               ),
-              star != true
-                  ? const Text(
-                      '*',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: Colors.red),
-                    )
-                  : Container()
+              const SizedBox(height: 4),
+
+              // Поле
+              Container(
+                height: 52,
+                decoration: BoxDecoration(
+                  color: AppColors.kGray2,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: TextField(
+                  controller: controller,
+                  textAlign: TextAlign.left,
+                  readOnly: tapMode || readOnly,
+                  showCursor: !(tapMode || readOnly),
+                  enableInteractiveSelection: !(tapMode || readOnly),
+                  onTap: tapMode ? onPressed : null,
+                  keyboardType: number == true
+                      ? TextInputType.number
+                      : TextInputType.text,
+                  style: AppTextStyles.size16Weight400
+                      .copyWith(color: Color(0xFF636366)),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: hintText,
+                    contentPadding: const EdgeInsets.all(
+                      16,
+                    ),
+                    hintStyle: AppTextStyles.size16Weight400
+                        .copyWith(color: Color(0xFF8E8E93)),
+                    suffixIcon: arrow
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                right:
+                                    (icon != null && icon!.isNotEmpty) ? 0 : 0),
+                            child: Image.asset(
+                                (icon != null && icon!.isNotEmpty)
+                                    ? icon!
+                                    : Assets.icons.defaultArrowForwardIcon.path,
+                                scale: 1.9,
+                                color: (icon != null && icon!.isNotEmpty)
+                                    ? AppColors.kGray300
+                                    : null),
+                          )
+                        : const SizedBox.shrink(),
+                  ),
+                ),
+              )
             ],
           ),
-          const SizedBox(
-            height: 4,
-          ),
-          Container(
-            height: 47,
-            padding: const EdgeInsets.only(left: 12),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
-            child: TextField(
-              keyboardType: TextInputType.text,
-              controller: controller,
-              textAlign: TextAlign.left,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: hintText,
-                hintStyle: const TextStyle(
-                    color: Color.fromRGBO(194, 197, 200, 1),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
-                enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                  // borderRadius: BorderRadius.circular(3),
-                ),
-                suffixIcon: IconButton(
-                  onPressed: onPressed,
-                  icon: arrow == true
-                      ? SvgPicture.asset('assets/icons/back_menu.svg',
-                          color: Colors.grey)
-                      : SvgPicture.asset(''),
-                ),
-                // suffixIcon: IconButton(
-                //     onPressed: () {},
-                //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',
-                //         color: Colors.grey)),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

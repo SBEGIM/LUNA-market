@@ -49,8 +49,7 @@ class LoginToApi {
       deviceType = 'android';
     }
 
-//Removes everything after first '.'
-    String result = s.substring(2);
+    String result = s.substring(1);
     final response = await http.post(
       Uri.parse('$baseUrl/user/login'),
       body: {

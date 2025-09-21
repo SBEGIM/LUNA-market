@@ -50,6 +50,7 @@ class _BaseState extends State<Base> with TickerProviderStateMixin {
           });
         }
         return Container(
+          height: 94,
           decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(

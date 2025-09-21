@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,8 @@ import 'package:haji_market/src/feature/drawer/presentation/ui/about_us_page.dar
 import 'package:haji_market/src/feature/drawer/presentation/ui/top_menu.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_cabinet_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_language_widget.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../chat/presentation/chat_page.dart';
 import '../../../my_order/presentation/ui/my_order_page.dart';
@@ -38,7 +42,53 @@ class _DrawerPageState extends State<DrawerPage> {
   bool isAuthUser = false;
 
   final _box = GetStorage();
+  XFile? _image;
+  final ImagePicker _picker = ImagePicker();
+  bool change = false;
   int index = 0;
+
+  Future<void> _getImage(context) async {
+    final image = change == true
+        ? await _picker.pickImage(source: ImageSource.camera)
+        : await _picker.pickImage(source: ImageSource.gallery);
+
+    print(' ${image!.path}');
+    // BlocProvider.of<>(context).edit(
+    //   '',
+    //   '',
+    //   image.path,
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   null,
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    // );
+
+    setState(() {
+      _image = image;
+    });
+  }
 
   @override
   void initState() {
@@ -54,8 +104,7 @@ class _DrawerPageState extends State<DrawerPage> {
   @override
   Widget build(BuildContext dialogContext) {
     return Scaffold(
-      backgroundColor:
-          isAuthUser ? AppColors.kWhite : AppColors.kBackgroundColor,
+      backgroundColor: AppColors.kBackgroundColor,
       appBar: null,
       body: ListView(
         padding: EdgeInsets.zero,
@@ -64,165 +113,399 @@ class _DrawerPageState extends State<DrawerPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                height: 462,
-                padding: const EdgeInsets.only(top: 40),
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomRight,
-                      end: Alignment.topRight,
-                      transform: GradientRotation(4.2373),
-                      colors: [
-                        Color(0xFFAD32F8),
-                        Color(0xFF3275F8),
-                      ],
-                    ),
-                    color: AppColors.mainPurpleColor,
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(24),
-                        bottomRight: Radius.circular(24))),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    SizedBox(height: 30),
-                    isAuthUser
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              buildProfileAvatar(_box),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+              isAuthUser
+                  ? Container(
+                      decoration: BoxDecoration(
+                          color: AppColors.kWhite,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20))),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 60),
+                          SizedBox(
+                            height: 100,
+                            width: 100,
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.defaultDialog(
+                                  title: "Изменить фото",
+                                  middleText: '',
+                                  textConfirm: 'Камера',
+                                  textCancel: 'Галерея',
+                                  titlePadding: const EdgeInsets.only(top: 40),
+                                  onConfirm: () {
+                                    change = true;
+                                    _getImage(context);
+                                  },
+                                  onCancel: () {
+                                    change = false;
+                                    _getImage(context);
+                                  },
+                                );
+                              },
+                              child: Stack(
                                 children: [
-                                  SizedBox(height: 20),
-                                  Text('${_box.read('name')}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 16,
-                                          color: Colors.white)),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    _box.read('city') ?? 'Алматы',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                      color: AppColors.kWhite,
+                                  CircleAvatar(
+                                    radius: 60,
+                                    backgroundColor: AppColors.kAlpha12,
+                                    child: CircleAvatar(
+                                      radius: 59.5,
+                                      backgroundColor: AppColors.kGray200,
+                                      backgroundImage: _image != null
+                                          ? FileImage(File(_image!.path))
+                                          : NetworkImage(
+                                              'https://lunamarket.ru/storage/${GetStorage().read('seller_image')}',
+                                            ) as ImageProvider,
                                     ),
                                   ),
-                                  SizedBox(height: 10)
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: Image.asset(
+                                      Assets.icons.sellerCameraIcon.path,
+                                      height: 40,
+                                      width: 40,
+                                    ),
+                                  ),
                                 ],
-                              )
+                              ),
+                            ),
+                          ),
+
+                          Text(
+                            '${GetStorage().read('name')}',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.kGray900,
+                                fontSize: 16),
+                          ),
+                          const SizedBox(height: 5),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                _box.read('city') ?? 'Алматы',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  color: AppColors.kGray300,
+                                ),
+                              ),
                             ],
-                          )
-                        : Container(
-                            margin:
-                                EdgeInsets.only(left: 16, right: 16, top: 8),
-                            height: 258,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: AppColors.kLightBlackColor
-                                    .withOpacity(0.15),
-                                borderRadius: BorderRadius.circular(16)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                buildProfileAvatar(_box),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
+                          ),
+
+                          // InkWell(
+                          //   onTap: () async {
+                          //     final data = await Get.to(ReqirectProfilePage());
+
+                          //     if (data != null) {
+                          //       setState(() {});
+                          //     }
+                          //   },
+                          //   child: const Text(
+                          //     'Редактирование',
+                          //     style: TextStyle(
+                          //         color: AppColors.kPrimaryColor,
+                          //         fontSize: 14,
+                          //         fontWeight: FontWeight.w400),
+                          //   ),
+                          // ),
+
+                          SizedBox(height: 12),
+                          InkWell(
+                            onTap: () {
+                              showRolePicker(context,
+                                  isAuthUser ? 'change_cabinet' : 'auth_user');
+                            },
+                            child: Container(
+                              height: 36,
+                              width: 190,
+                              decoration: BoxDecoration(
+                                color: AppColors.kWhite,
+                                border: Border.all(
+                                  color: AppColors.kGray200,
+                                  width: 0.2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(0x0A000000),
+                                    offset: Offset(0, 2),
+                                    blurRadius: 4,
+                                    spreadRadius: 0,
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 13),
+                                  Image.asset(
+                                    Assets.icons.backClientIcon.path,
+                                    height: 18,
+                                    width: 18,
+                                  ),
+                                  SizedBox(width: 9),
+                                  Text(
+                                    'Сменить кабинет',
+                                    style: AppTextStyles.size16Weight500,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 22)
+                        ],
+                      ),
+                    )
+                  : Container(
+                      height: 462,
+                      padding: const EdgeInsets.only(top: 40),
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomRight,
+                            end: Alignment.topRight,
+                            transform: GradientRotation(4.2373),
+                            colors: [
+                              Color(0xFFAD32F8),
+                              Color(0xFF3275F8),
+                            ],
+                          ),
+                          color: AppColors.mainPurpleColor,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(24),
+                              bottomRight: Radius.circular(24))),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          SizedBox(height: 30),
+                          isAuthUser
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    SizedBox(height: 20),
-                                    Text('Добро пожаловать!',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 22,
-                                            color: Colors.white)),
-                                    const SizedBox(height: 4),
-                                    SizedBox(
-                                      width: 320,
-                                      child: Text(
-                                        'Войдите или зарегистрируйтесь, чтобы открыть весь функционал',
-                                        textAlign: TextAlign.center,
-                                        style: AppTextStyles.categoryTextStyle
-                                            .copyWith(
-                                                fontWeight: FontWeight.w400,
+                                    buildProfileAvatar(_box),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(height: 20),
+                                        Text('${_box.read('name')}',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700,
                                                 fontSize: 16,
-                                                height: 22 / 16,
-                                                color: AppColors.kGray200),
-                                      ),
+                                                color: AppColors
+                                                    .kLightBlackColor)),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          _box.read('city') ?? 'Алматы',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            color: AppColors.kGray300,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        InkWell(
+                                          onTap: () {
+                                            showRolePicker(
+                                                context,
+                                                isAuthUser
+                                                    ? 'change_cabinet'
+                                                    : 'auth_user');
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
+                                            // );
+                                          },
+                                          child: Container(
+                                            height: 36,
+                                            width: 190,
+                                            decoration: BoxDecoration(
+                                              color: AppColors.kWhite,
+                                              border: Border.all(
+                                                color: AppColors.kGray200,
+                                                width: 0.2,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Color(0x0A000000),
+                                                  offset: Offset(0, 2),
+                                                  blurRadius: 4,
+                                                  spreadRadius: 0,
+                                                ),
+                                              ],
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                SizedBox(width: 13),
+                                                Image.asset(
+                                                  Assets.icons.backClientIcon
+                                                      .path,
+                                                  height: 18,
+                                                  width: 18,
+                                                ),
+                                                SizedBox(width: 9),
+                                                Text(
+                                                  'Сменить кабинет',
+                                                  style: AppTextStyles
+                                                      .size16Weight500,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 24)
+                                      ],
                                     )
                                   ],
                                 )
-                              ],
+                              : Container(
+                                  margin: EdgeInsets.only(
+                                      left: 16, right: 16, top: 8),
+                                  height: 258,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      color: AppColors.kLightBlackColor
+                                          .withOpacity(0.15),
+                                      borderRadius: BorderRadius.circular(16)),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      buildProfileAvatar(_box),
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(height: 20),
+                                          Text('Добро пожаловать!',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 22,
+                                                  color: Colors.white)),
+                                          const SizedBox(height: 4),
+                                          SizedBox(
+                                            width: 320,
+                                            child: Text(
+                                              'Войдите или зарегистрируйтесь, чтобы открыть весь функционал',
+                                              textAlign: TextAlign.center,
+                                              style: AppTextStyles
+                                                  .categoryTextStyle
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 16,
+                                                      height: 22 / 16,
+                                                      color:
+                                                          AppColors.kGray200),
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                          isAuthUser ? SizedBox.shrink() : SizedBox(height: 24),
+                          isAuthUser
+                              ? SizedBox.shrink()
+                              : Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0),
+                                  child: DefaultButton(
+                                      text: isAuthUser
+                                          ? 'Сменить кабинет'
+                                          : 'Начать',
+                                      press: () {
+                                        showRolePicker(
+                                            context,
+                                            isAuthUser
+                                                ? 'change_cabinet'
+                                                : 'auth_user');
+                                      },
+                                      color: AppColors.kLightBlackColor,
+                                      backgroundColor: AppColors.kWhite,
+                                      textStyle: AppTextStyles.aboutTextStyle
+                                          .copyWith(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600),
+                                      width: double.infinity),
+                                )
+                        ],
+                      ),
+                    ),
+
+              isAuthUser
+                  ? Container(
+                      height: 114,
+                      margin: EdgeInsets.symmetric(vertical: 12),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: AppColors.kWhite,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BonusUserPage()),
+                              );
+                            },
+                            child: Image.asset(
+                              Assets.icons.profileClientBonusIcon.path,
+                              height: 82,
+                              width: 114,
                             ),
                           ),
-                    isAuthUser
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              TopMenu(
-                                  text: 'Мои бонусы',
-                                  icon: 'assets/icons/ep_money.svg',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const BonusUserPage()),
-                                    );
-                                  }),
-                              TopMenu(
-                                  text: 'Мои заказы',
-                                  icon: 'assets/icons/my_user_orders.svg',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const MyOrderPage()),
-                                    );
-                                    // print('123231');
-                                  }),
-                              TopMenu(
-                                text: 'Мои чаты',
-                                icon: 'assets/icons/chat_2.svg',
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const ChatPage()),
-                                  );
-                                },
-                              ),
-                            ],
-                          )
-                        : SizedBox.shrink(),
-                    SizedBox(height: 24),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: DefaultButton(
-                          text: isAuthUser ? 'Другой кабинет' : 'Начать',
-                          press: () {
-                            showRolePicker(context,
-                                isAuthUser ? 'change_cabinet' : 'auth_user');
-                          },
-                          color: AppColors.kLightBlackColor,
-                          backgroundColor: AppColors.kWhite,
-                          textStyle: AppTextStyles.aboutTextStyle.copyWith(
-                              fontSize: 18, fontWeight: FontWeight.w600),
-                          width: double.infinity),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const MyOrderPage()),
+                              );
+                            },
+                            child: Image.asset(
+                              Assets.icons.profileClientOrderIcon.path,
+                              height: 82,
+                              width: 114,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const ChatPage()),
+                              );
+                            },
+                            child: Image.asset(
+                              Assets.icons.profileClientChatIcon.path,
+                              height: 82,
+                              width: 114,
+                            ),
+                          ),
+                        ],
+                      ),
                     )
-                  ],
-                ),
-              ),
+                  : SizedBox.shrink(),
 
               Container(
                 height: MediaQuery.of(context).size.height,
-                margin: EdgeInsets.only(top: 16),
+                margin: EdgeInsets.only(top: isAuthUser ? 0 : 16),
                 decoration: BoxDecoration(
                     color: AppColors.kWhite,
                     borderRadius: BorderRadius.only(
@@ -351,6 +634,16 @@ class _DrawerPageState extends State<DrawerPage> {
                       text: _box.read('language') ?? 'Рус',
                       iconPath: Assets.icons.sellerLanguageIcon.path,
                     ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 16.0, right: 16, top: 8),
+                      child: const Divider(
+                        thickness: 0.2,
+                        height: 0,
+                        color: AppColors.kGray200,
+                      ),
+                    ),
+
                     // InkWell(
                     //   onTap: () {
                     //     _box.read('seller_token') != null
@@ -530,6 +823,8 @@ class _DrawerPageState extends State<DrawerPage> {
                               final deviceToken = _box.read('device_token');
                               GetStorage().erase();
                               _box.write('device_token', deviceToken);
+                              _box.write('name', 'Не авторизированный');
+
                               // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
                               BlocProvider.of<AppBloc>(context)
                                   .add(const AppEvent.exiting());

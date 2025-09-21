@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/shop/bloc/blogger_tape_upload_cubit.dart';
 import 'package:haji_market/src/feature/bloger/shop/bloc/blogger_tape_upload_state.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,6 +34,10 @@ class _EditTapeVidoePageState extends State<EditTapeVidoePage> {
       });
   }
 
+  bool check = false;
+
+  XFile? _video;
+
   @override
   void dispose() {
     _controller?.dispose();
@@ -57,24 +63,21 @@ class _EditTapeVidoePageState extends State<EditTapeVidoePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.kWhite,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.kWhite,
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: AppColors.kLightBlackColor,
+          icon: Image.asset(
+            Assets.icons.defaultBackIcon.path,
+            scale: 1.9,
           ),
         ),
-        // iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-        title: const Text(
-          'Редактировать',
-          style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
-        ),
+        title: const Text('Добавить видеообзор',
+            style: AppTextStyles.size18Weight600),
         elevation: 0,
       ),
       body: Container(
@@ -83,23 +86,7 @@ class _EditTapeVidoePageState extends State<EditTapeVidoePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Прикрепите видеообзор товара',
-                style: AppTextStyles.statisticsTextStyle
-                    .copyWith(fontWeight: FontWeight.w600)),
-            const SizedBox(height: 12),
-            if (_image != null &&
-                _controller != null &&
-                _controller!.value.isInitialized)
-              Center(
-                child: SizedBox(
-                  height: 200,
-                  child: AspectRatio(
-                    aspectRatio: _controller!.value.aspectRatio,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: VideoPlayer(_controller!)),
-                  ),
-                ),
-              ),
+                style: AppTextStyles.size16Weight600),
             const SizedBox(height: 12),
             GestureDetector(
               onTap: () {
@@ -127,61 +114,84 @@ class _EditTapeVidoePageState extends State<EditTapeVidoePage> {
                 // }
               },
               child: Container(
-                  width: 120,
-                  height: 120,
-                  //  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: AppColors.kGray1,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(width: 1, color: AppColors.kGray300)),
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                    color: AppColors.kGray1,
+                    borderRadius: BorderRadius.circular(16)),
+                child: DottedBorder(
+                  dashPattern: [4, 4],
+                  strokeWidth: 1,
+                  color: Color(0xff8E8E93),
+                  radius: Radius.circular(16),
+                  borderType: BorderType.RRect,
                   child: Column(
-                    //crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(
-                        'assets/icons/video.svg',
-                        color: _image != null
-                            ? AppColors.mainPurpleColor
-                            : Colors.grey,
-                      ),
+                      if (_video != null &&
+                          _controller != null &&
+                          _controller!.value.isInitialized)
+                        Center(
+                          child: AspectRatio(
+                            aspectRatio: _controller!.value.aspectRatio,
+                            child: VideoPlayer(_controller!),
+                          ),
+                        )
+                      else
+                        Center(
+                          child: Image.asset(
+                            Assets.icons.uploadVideoIcon.path,
+                            // color: _image != null
+                            //     ? AppColors.mainPurpleColor
+                            //     : Colors.grey,
+                            height: 18,
+                            width: 30,
+                          ),
+                        ),
                     ],
-                  )),
+                  ),
+                ),
+              ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             Container(
               height: 200,
               width: 358,
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: AppColors.kGray1),
+                  borderRadius: BorderRadius.circular(16),
+                  color: Color(0xffF7F7F7)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Требования к видео',
-                      style: AppTextStyles.statisticsTextStyle
-                          .copyWith(fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 12),
+                      style: AppTextStyles.size16Weight600),
+                  const SizedBox(height: 16),
                   Row(
                     children: [
-                      Icon(
-                        Icons.check_circle,
+                      Image.asset(
+                        Assets.icons.defaultCheckIcon.path,
                         color: AppColors.mainPurpleColor,
+                        width: 20,
+                        height: 20,
                       ),
                       SizedBox(width: 10),
                       const Text(
                         'Разрешение — 1080×1350/566×1080',
-                        style: AppTextStyles.statisticsTextStyle,
+                        style: AppTextStyles.size14Weight400,
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      Icon(
-                        Icons.check_circle,
+                      Image.asset(
+                        Assets.icons.defaultCheckIcon.path,
                         color: AppColors.mainPurpleColor,
+                        width: 20,
+                        height: 20,
                       ),
                       SizedBox(width: 10),
                       const Text(
@@ -193,9 +203,11 @@ class _EditTapeVidoePageState extends State<EditTapeVidoePage> {
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      Icon(
-                        Icons.check_circle,
+                      Image.asset(
+                        Assets.icons.defaultCheckIcon.path,
                         color: AppColors.mainPurpleColor,
+                        width: 20,
+                        height: 20,
                       ),
                       SizedBox(width: 10),
                       const Text(
@@ -207,9 +219,11 @@ class _EditTapeVidoePageState extends State<EditTapeVidoePage> {
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      Icon(
-                        Icons.check_circle,
+                      Image.asset(
+                        Assets.icons.defaultCheckIcon.path,
                         color: AppColors.mainPurpleColor,
+                        width: 20,
+                        height: 20,
                       ),
                       SizedBox(width: 10),
                       const Text(
@@ -219,6 +233,63 @@ class _EditTapeVidoePageState extends State<EditTapeVidoePage> {
                     ],
                   ),
                 ],
+              ),
+            ),
+            Flexible(
+              child: ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: 170, minHeight: 170)),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 7.5, vertical: 16),
+              child: SizedBox(
+                height: 60,
+                child: Row(
+                  children: [
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      onTap: () {
+                        check = !check;
+                        setState(() {});
+                      },
+                      child: Image.asset(
+                        check
+                            ? Assets.icons.defaultCheckIcon.path
+                            : Assets.icons.defaultUncheckIcon.path,
+                        color: check ? AppColors.kLightBlackColor : null,
+                        width: 20,
+                        height: 20,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Flexible(
+                      child: SizedBox(
+                        width: 311,
+                        child: RichText(
+                          text: TextSpan(
+                            style: AppTextStyles.size14Weight400
+                                .copyWith(color: Color(0xFF8E8E93)),
+                            children: [
+                              TextSpan(text: 'Размещая рекламные материалы, '),
+                              TextSpan(
+                                  text: 'вы принимаете условия ',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              TextSpan(
+                                  text:
+                                      'Типового договора на оказание рекламных услуг.',
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      color: AppColors.mainPurpleColor)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ],
@@ -236,46 +307,45 @@ class _EditTapeVidoePageState extends State<EditTapeVidoePage> {
           }
         },
         builder: (context, state) {
-          return Container(
-            color: Colors.white,
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+          return ColoredBox(
+            color: AppColors.kWhite,
             child: InkWell(
                 onTap: () async {
-                  if (_image != null && state is! LoadingState) {
+                  if (_video != null &&
+                      state is! LoadingState &&
+                      check == true) {
                     button = true;
                     await BlocProvider.of<BloggerTapeUploadCubit>(context)
-                        .uploadVideo(widget.id.toString(), _image!.path);
+                        .uploadVideo(widget.id.toString(), _video!.path);
                   }
                 },
-                child: SizedBox(
-                    height: 80,
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 12),
-                        Container(
-                            height: 46,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: _image != null
-                                  ? AppColors.mainPurpleColor
-                                  : AppColors.mainPurpleColor.withOpacity(0.3),
-                            ),
-                            width: MediaQuery.of(context).size.width,
-                            alignment: Alignment.center,
-                            // padding: const EdgeInsets.only(left: 16, right: 16),
-                            child: state is LoadingState
-                                ? const CircularProgressIndicator()
-                                : Text(
-                                    'Сохранить',
-                                    style: TextStyle(
-                                        color: AppColors.kWhite,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16),
-                                    textAlign: TextAlign.center,
-                                  )),
-                      ],
-                    ))),
+                child: Container(
+                    height: 52,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    margin: EdgeInsets.only(
+                        bottom: 42, top: 16, left: 16, right: 16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: (_video != null && check == true)
+                          ? AppColors.mainPurpleColor
+                          : AppColors.mainPurpleColor.withOpacity(0.3),
+                    ),
+                    width: MediaQuery.of(context).size.width,
+                    alignment: Alignment.center,
+                    // padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: state is LoadingState
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: const CircularProgressIndicator(
+                              color: AppColors.kWhite,
+                            ))
+                        : Text(
+                            'Cохранить',
+                            style: AppTextStyles.size18Weight600
+                                .copyWith(color: AppColors.kWhite),
+                            textAlign: TextAlign.center,
+                          ))),
           );
         },
       ),

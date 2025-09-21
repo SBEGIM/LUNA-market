@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_model.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/ui/tape_statistics_page.dart';
@@ -25,7 +26,7 @@ void showBlogerTapeOptions(
 
   showMaterialModalBottomSheet(
     context: context,
-
+    backgroundColor: AppColors.kBackgroundColor,
     // isScrollControlled: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -44,16 +45,12 @@ void showBlogerTapeOptions(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Управление видео',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
-                      ),
+                      Text('Управление видео',
+                          style: AppTextStyles.size16Weight500),
                       InkWell(
                         onTap: () => Navigator.of(context).pop(),
-                        child: const Icon(Icons.close),
+                        child: Image.asset(Assets.icons.defaultCloseIcon.path,
+                            height: 24, width: 24),
                       ),
                     ],
                   ),
@@ -62,6 +59,7 @@ void showBlogerTapeOptions(
                 const SizedBox(height: 12),
                 GestureDetector(
                   onTap: () {
+                    Navigator.of(context).pop();
                     Get.to(EditTapeVidoePage(
                       id: id,
                     ));
@@ -84,16 +82,14 @@ void showBlogerTapeOptions(
                         SizedBox(
                           width: 10,
                         ),
-                        Icon(Icons.edit,
-                            color: AppColors.mainPurpleColor, size: 18),
+                        Image.asset(Assets.icons.editIcon.path,
+                            height: 18, width: 18),
                         SizedBox(
                           width: 10,
                         ),
                         Text(
                           'Редактировать',
-                          style: TextStyle(
-                              color: AppColors.kLightBlackColor,
-                              fontWeight: FontWeight.w600),
+                          style: AppTextStyles.size16Weight500,
                         ),
                       ],
                     ),
@@ -102,6 +98,8 @@ void showBlogerTapeOptions(
                 const SizedBox(height: 6),
                 GestureDetector(
                   onTap: () {
+                    Navigator.of(context).pop();
+
                     Get.to(TapeStatisticsPage(tape: tape));
                   },
                   child: Container(
@@ -122,16 +120,14 @@ void showBlogerTapeOptions(
                         SizedBox(
                           width: 10,
                         ),
-                        Icon(Icons.line_axis,
-                            color: AppColors.mainPurpleColor, size: 18),
+                        Image.asset(Assets.icons.statisticsIcon.path,
+                            height: 18, width: 18),
                         SizedBox(
                           width: 10,
                         ),
                         Text(
                           'Статистика',
-                          style: TextStyle(
-                              color: AppColors.kLightBlackColor,
-                              fontWeight: FontWeight.w600),
+                          style: AppTextStyles.size16Weight500,
                         ),
                       ],
                     ),
@@ -140,6 +136,8 @@ void showBlogerTapeOptions(
                 const SizedBox(height: 6),
                 GestureDetector(
                   onTap: () {
+                    Navigator.of(context).pop();
+
                     showCupertinoModalPopup<void>(
                       context: context,
                       builder: (context) => DeleteVideoDialog(
@@ -169,15 +167,15 @@ void showBlogerTapeOptions(
                         SizedBox(
                           width: 10,
                         ),
-                        Icon(Icons.delete_forever_outlined,
-                            color: Colors.red, size: 18),
+                        Image.asset(Assets.icons.trashIcon.path,
+                            height: 18, width: 18),
                         SizedBox(
                           width: 10,
                         ),
                         Text(
                           'Удалить',
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.w600),
+                          style: AppTextStyles.size16Weight500
+                              .copyWith(color: Color(0xFFFF3347)),
                         ),
                       ],
                     ),

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/shop/data/models/blogger_shop_products_model.dart';
-import 'package:haji_market/src/feature/bloger/shop/presentation/ui/upload_product_video.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:intl/intl.dart';
 
 class BloggerProductCardWidget extends StatefulWidget {
@@ -52,13 +49,9 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
           height: 150,
           margin: const EdgeInsets.only(left: 16, top: 7, bottom: 8, right: 16),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: const [
-                BoxShadow(
-                  offset: Offset(0, 2),
-                  color: AppColors.kGray1,
-                ),
-              ]),
+            borderRadius: BorderRadius.circular(16),
+            color: Color(0xFFF7F7F7),
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -71,7 +64,7 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                       width: 104,
                       decoration: BoxDecoration(
                         color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.05),
@@ -80,9 +73,8 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                           ),
                         ],
                       ),
-                      padding: const EdgeInsets.all(5),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(8),
                         child: Image.network(
                           widget.product.path != null
                               ? "https://lunamarket.ru/storage/${widget.product.path!.path}"
@@ -124,7 +116,7 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                             height: 22,
                             decoration: BoxDecoration(
                                 color: AppColors.kYellowDark,
-                                borderRadius: BorderRadius.circular(4)),
+                                borderRadius: BorderRadius.circular(24)),
                             child: Text('0·0·12',
                                 textAlign: TextAlign.center,
                                 style: AppTextStyles.statisticsTextStyle),
@@ -132,9 +124,6 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                           const SizedBox(
                             height: 4,
                           ),
-                          // widget.product.bonus != 0
-                          //     ?
-
                           Container(
                             width: 52,
                             height: 22,
@@ -149,7 +138,7 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                                   ],
                                   stops: [0.2685, 1.0],
                                 ),
-                                borderRadius: BorderRadius.circular(4)),
+                                borderRadius: BorderRadius.circular(24)),
                             child: Text(
                               '${widget.product.bonus ?? 0}% Б',
                               textAlign: TextAlign.center,
@@ -157,10 +146,6 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                                   .copyWith(color: AppColors.kWhite),
                             ),
                           ),
-                          // : const SizedBox(),
-                          // SizedBox(
-                          //   height: widget.product.bonus != 0 ? 22 : 0,
-                          // ),
                         ],
                       ),
                     ),
@@ -175,51 +160,65 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 8, bottom: 3),
+                          padding: const EdgeInsets.only(top: 8),
                           child: Text(
                             '${widget.product.catName}',
                             style: AppTextStyles.size13Weight400
-                                .copyWith(color: AppColors.kGray300),
+                                .copyWith(color: Color(0xff8E8E93)),
                           ),
                         ),
                         InkWell(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          focusColor: Colors.transparent,
                           onTap: () {
                             widget.onSelectionChanged(
                                 !widget.isSelected, widget.product.id!);
                           },
                           child: Container(
-                            margin: const EdgeInsets.only(top: 8.0, right: 8.0),
-                            child: Icon(
+                            margin:
+                                const EdgeInsets.only(top: 8.0, right: 10.0),
+                            child: Image.asset(
                               widget.index == widget.product.id
-                                  ? Icons.check_circle
-                                  : Icons.radio_button_unchecked,
+                                  ? Assets.icons.defaultCheckIcon.path
+                                  : Assets.icons.defaultUncheckIcon.path,
+                              scale: 1.9,
                               color: widget.index == widget.product.id
-                                  ? AppColors.mainPurpleColor
-                                  : AppColors.kGray300,
+                                  ? AppColors.kLightBlackColor
+                                  : null,
                             ),
                           ),
                         )
                       ],
                     ),
-                    Container(
-                      width: 280,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        widget.product.name.toString(),
-                        style: AppTextStyles.size14Weight600,
-                        textAlign: TextAlign.start,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
+                    SizedBox(height: 4),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        minHeight: 20, // минимум
+                        maxHeight: 40, // максимум
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        heightFactor: 1,
+                        child: Text(
+                          widget.product.name.toString(),
+                          style: AppTextStyles.size14Weight600,
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2, // не больше 2 строк
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 8,
+                    SizedBox(
+                      height: 11,
                     ),
                     compoundPrice != 0
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SizedBox(
+                                height: 22,
                                 child: Text(
                                   '${formatPrice(compoundPrice)} ₽ ',
                                   style: AppTextStyles.size16Weight600,
@@ -228,45 +227,32 @@ class _BloggerProductCardWidget extends State<BloggerProductCardWidget> {
                               Text(
                                 '${formatPrice(widget.product.price!)} ₽ ',
                                 style: AppTextStyles.size13Weight500.copyWith(
-                                  color: AppColors.kGray300,
+                                  color: Color(0xFF8E8E93),
                                   decoration: TextDecoration.lineThrough,
-                                  decorationColor: AppColors.kGray300,
+                                  decorationColor: Color(0xFF8E8E93),
                                 ),
                               ),
                             ],
                           )
                         : Text(
                             '${formatPrice(widget.product.price!)} ₽ ',
-                            style: const TextStyle(
-                              color: AppColors.kGray900,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                            ),
+                            style: AppTextStyles.size16Weight600,
                           ),
                     const SizedBox(
-                      height: 8,
+                      height: 11,
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 6),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 5),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              color:
-                                  AppColors.mainPurpleColor.withOpacity(0.20)),
-                          child: Text(
-                            'Кешбэк блогера: ${widget.product.bloggerPoint} %',
-                            style: AppTextStyles.size13Weight400
-                                .copyWith(color: AppColors.mainPurpleColor),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 8,
+                    Container(
+                      height: 26,
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(right: 13),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          color: AppColors.mainPurpleColor.withOpacity(0.20)),
+                      child: Text(
+                        'Рекламное вознаграждение: ${widget.product.bloggerPoint} %',
+                        style: AppTextStyles.size13Weight400
+                            .copyWith(color: AppColors.mainPurpleColor),
+                      ),
                     ),
                   ],
                 ),

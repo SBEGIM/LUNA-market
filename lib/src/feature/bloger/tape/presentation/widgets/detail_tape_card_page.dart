@@ -1,29 +1,17 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:haji_market/src/feature/app/bloc/navigation_cubit/navigation_cubit.dart';
-import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_state.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_model.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/show_blogget_tape_options_widget.dart';
-import 'package:haji_market/src/feature/chat/presentation/message.dart';
-import 'package:haji_market/src/feature/drawer/presentation/widgets/count_zero_dialog.dart';
-import 'package:haji_market/src/feature/drawer/presentation/widgets/pre_order_dialog.dart';
-import 'package:haji_market/src/feature/tape/data/repository/tape_repository.dart';
+import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
-import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
-import 'package:haji_market/src/feature/tape/data/models/tape_model.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-//import 'package:video_player/video_player.dart';
 
 @RoutePage()
 class DetailTapeBloggerCardPage extends StatefulWidget
@@ -76,6 +64,13 @@ class _DetailBloggerTapeCardPageState extends State<DetailTapeBloggerCardPage> {
     return pp.toInt();
   }
 
+  String formatPrice(int price) {
+    final format = NumberFormat('#,###', 'ru_RU');
+    return format.format(price).replaceAll(',', ' ');
+  }
+
+  int compoundPrice = 0;
+
   @override
   void initState() {
     print(widget.tapeId);
@@ -100,50 +95,51 @@ class _DetailBloggerTapeCardPageState extends State<DetailTapeBloggerCardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        //extendBody: true,
         extendBodyBehindAppBar: true,
         backgroundColor: Colors.black,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: InkWell(
-              onTap: () {
-                Get.back();
-              },
-              child: Icon(
-                Icons.arrow_back,
-                size: 25,
-                color: AppColors.kWhite,
-              )),
-          toolbarHeight: 26,
-          centerTitle: true,
-          title:
-              //  Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              // ClipRRect(
-              //   borderRadius: BorderRadius.circular(5),
-              //   child: Image.network(
-              //     'https://lunamarket.ru/storage/}',
-              //     height: 30.6,
-              //     width: 30.6,
-              //     errorBuilder: (context, error, stackTrace) =>
-              //         const ErrorImageWidget(
-              //       height: 30.6,
-              //       width: 30.6,
-              //     ),
-              //   ),
-              // ),
-              //  SizedBox(width: 10),
-              Text(
-            '${widget.shopName}',
-            style: const TextStyle(
-                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+          actionsPadding: EdgeInsets.only(right: 16),
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: InkWell(
+                onTap: () {
+                  Get.back();
+                },
+                child: Icon(
+                  Icons.arrow_back,
+                  size: 25,
+                  color: AppColors.kWhite,
+                )),
           ),
-          // ],
-          // ),
+          toolbarHeight: 32,
+          centerTitle: true,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 16, // половина от 32
+                backgroundImage: NetworkImage(
+                  widget.tape.shop?.image != null
+                      ? "https://lunamarket.ru/storage/${widget.tape.shop?.image}"
+                      : "https://lunamarket.ru/storage/banners/2.png",
+                ),
+                backgroundColor: Colors.grey[200], // запасной фон
+              ),
+              const SizedBox(width: 12),
+              Text('${widget.shopName}',
+                  style: AppTextStyles.size18Weight600
+                      .copyWith(color: AppColors.kWhite)),
+            ],
+          ),
           actions: [
             InkWell(
+              focusColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
               onTap: () {
                 showBlogerTapeOptions(context, widget.tapeId!, widget.tape);
               },
@@ -173,250 +169,160 @@ class _DetailBloggerTapeCardPageState extends State<DetailTapeBloggerCardPage> {
               }
 
               if (state is LoadedState) {
+                compoundPrice = (state.tapeModel[currentIndex].price!.toInt() *
+                        (((100 -
+                                state.tapeModel[currentIndex].compound!
+                                    .toInt())) /
+                            100))
+                    .toInt();
                 return Stack(
                   children: [
                     Videos(tape: state.tapeModel[widget.index!]),
                     Positioned(
                       bottom: 50,
-                      left: 8,
-                      right: 8,
-                      child: Row(
+                      left: 16,
+                      right: 17,
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Container(
-                            height: 164,
-                            width: 310,
+                            margin: EdgeInsets.only(
+                                top:
+                                    MediaQuery.of(context).size.height * 0.327),
+                            child: Column(
+                              children: [
+                                isLike(
+                                  tape: widget.tape,
+                                  index: currentIndex,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                inFavorites(
+                                  tape: widget.tape,
+                                  index: currentIndex,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () async {},
+                                  child: Column(children: [
+                                    Image.asset(
+                                      Assets.icons.sendIcon.path,
+                                      color: Colors.white,
+                                      scale: 1.9,
+                                    ),
+                                    Text(
+                                      ' ${state.tapeModel[currentIndex].statistics?.send ?? 0}',
+                                      style: AppTextStyles.size16Weight400
+                                          .copyWith(color: AppColors.kWhite),
+                                    ),
+                                  ]),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 14,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            height: 70,
                             decoration: BoxDecoration(
                                 color: AppColors.kWhite,
                                 borderRadius: BorderRadius.circular(12)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
+                            child: SizedBox(
+                              width: 358,
+                              child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    SizedBox(
-                                      height: 124,
-                                      child: Row(
+                                    Container(
+                                      height: 54,
+                                      width: 56,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          border: Border.all(
+                                              width: 0.33,
+                                              color: AppColors.kGray300)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(0.3),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          child: Image.network(
+                                            'https://lunamarket.ru/storage/${state.tapeModel[currentIndex].image}',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    Expanded(
+                                      child: Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              height: 104,
-                                              width: 104,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                border: Border.all(
-                                                  // Добавляем линию вокруг контейнера
-                                                  color: AppColors.kGray200,
-                                                  // Цвет линии (можно изменить на нужный)
-                                                  width: 1, // Толщина линии
-                                                ),
-                                              ),
-                                              child: Image.network(
-                                                'https://lunamarket.ru/storage/${state.tapeModel[widget.index!].image}',
-                                                fit: BoxFit.contain,
-                                                errorBuilder: (context, error,
-                                                        stackTrace) =>
-                                                    const ErrorImageWidget(
-                                                  height: 104,
-                                                  width: 104,
-                                                ),
-                                                // loadingBuilder: (context, child,
-                                                //     loadingProgress) {
-                                                //   if (loadingProgress == null)
-                                                //     return child;
-                                                //   return const Center(
-                                                //       child:
-                                                //           CircularProgressIndicator(
-                                                //               strokeWidth: 2));
-                                                // },
-                                              ),
-                                            ),
+                                          Text(
+                                            '${state.tapeModel[currentIndex].name}',
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            style:
+                                                AppTextStyles.size14Weight600,
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.only(top: 8),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: 180,
-                                                  child: Text(
-                                                    '${state.tapeModel[widget.index!].name}',
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                ),
-                                                SizedBox(height: 8),
-                                                Column(
+                                          state.tapeModel[currentIndex]
+                                                      .compound !=
+                                                  0
+                                              ? Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          '${(state.tapeModel[widget.index!].price!.toInt() - ((state.tapeModel[widget.index!].price! / 100) * state.tapeModel[widget.index!].compound!).toInt())} ₽ ',
-                                                          style: const TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 8,
-                                                        ),
-                                                        Text(
-                                                          '${state.tapeModel[widget.index!].price} ₽',
-                                                          style: const TextStyle(
-                                                              color: AppColors
-                                                                  .kGray300,
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .lineThrough,
-                                                              decorationColor:
-                                                                  AppColors
-                                                                      .kGray300),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(height: 8),
-                                                    Container(
-                                                      width: 100,
-                                                      alignment:
-                                                          Alignment.center,
-                                                      padding:
-                                                          EdgeInsets.all(4),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          color: AppColors
-                                                              .mainPurpleColor
-                                                              .withOpacity(
-                                                                  0.3)),
+                                                    SizedBox(
+                                                      // width: 75,
                                                       child: Text(
-                                                        '${(state.tapeModel[widget.index!].price!.toInt() - ((state.tapeModel[widget.index!].price! / 100) * state.tapeModel[widget.index!].compound!).toInt()) ~/ 3} ₽/ мес',
-                                                        style: const TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400),
+                                                        '${formatPrice(compoundPrice)} ₽ ',
+                                                        style: AppTextStyles
+                                                            .size16Weight600,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '${formatPrice(state.tapeModel[currentIndex].price!)} ₽ ',
+                                                      style: AppTextStyles
+                                                          .size14Weight500
+                                                          .copyWith(
+                                                        color:
+                                                            AppColors.kGray300,
                                                       ),
                                                     ),
                                                   ],
                                                 )
-                                              ],
-                                            ),
-                                          )
+                                              : Text(
+                                                  '${formatPrice(state.tapeModel[currentIndex].price!)} ₽ ',
+                                                  style: AppTextStyles
+                                                      .size16Weight600,
+                                                )
                                         ],
                                       ),
                                     ),
-                                  ],
-                                ),
-                                Center(
-                                  child: Container(
-                                    width: 290,
-                                    height: 32,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: AppColors.mainPurpleColor),
-                                    child: Text(
-                                      'Посмотреть товар',
-                                      style: AppTextStyles
-                                          .defaultButtonTextStyle
-                                          .copyWith(
-                                              color: AppColors.kButtonColor),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                )
-                              ],
+                                    SizedBox(width: 10),
+                                    inBaskets(
+                                      index: currentIndex,
+                                      count: widget.tape.basketCount ?? 0,
+                                    )
+                                  ]),
                             ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Icon(
-                                Icons.sell,
-                                color: AppColors.kWhite,
-                                size: 25,
-                              ),
-                              Text(
-                                '${state.tapeModel[currentIndex].basketCount}',
-                                style: AppTextStyles.catalogTextStyle
-                                    .copyWith(color: AppColors.kWhite),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Icon(
-                                Icons.bookmark,
-                                color: AppColors.kWhite,
-                                size: 25,
-                              ),
-                              Text(
-                                '${state.tapeModel[currentIndex].viewCount}',
-                                style: AppTextStyles.catalogTextStyle
-                                    .copyWith(color: AppColors.kWhite),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              InkWell(
-                                onTap: () async {
-                                  await Share.share(
-                                      "$kDeepLinkUrl/?index\u003d${widget.index}&shop_name\u003d${widget.shopName}");
-                                },
-                                child: Icon(
-                                  Icons.send,
-                                  color: AppColors.kWhite,
-                                  size: 25,
-                                ),
-                              ),
-                              Text(
-                                '${state.tapeModel[currentIndex].shareCount}',
-                                style: AppTextStyles.catalogTextStyle
-                                    .copyWith(color: AppColors.kWhite),
-                              ),
-                            ],
                           ),
                         ],
                       ),
-                    )
+                    ),
+                    const SizedBox(
+                      height: 14,
+                    ),
                   ],
                 );
               } else {
@@ -520,15 +426,143 @@ class _VideosState extends State<Videos> {
                             : _controller!.play();
                       },
                       child: Center(
-                          child: SvgPicture.asset(
-                        'assets/icons/play_tape.svg',
-                        color: AppColors.mainPurpleColor,
+                          child: Image.asset(
+                        Assets.icons.tapePlayIcon.path,
+                        height: 36,
+                        width: 36,
                       )),
                     )
-                  : Container(),
+                  : SizedBox.shrink(),
             ],
           )
         : const Center(
             child: CircularProgressIndicator(color: Colors.blueAccent));
+  }
+}
+
+class inBaskets extends StatefulWidget {
+  final int index;
+  final int count;
+  const inBaskets({
+    required this.index,
+    required this.count,
+    super.key,
+  });
+
+  @override
+  State<inBaskets> createState() => _inBasketsState();
+}
+
+class _inBasketsState extends State<inBaskets> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 46,
+      width: 46,
+      child: GestureDetector(
+        onTap: () {},
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Image.asset(
+              Assets.icons.tapeBasketIcon.path,
+              height: 36,
+              width: 36,
+            ),
+            Positioned(
+              top: -2,
+              right: -2,
+              child: Container(
+                height: 24,
+                width: 24,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.green, // фон бейджа
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: Colors.white, width: 2), // белая обводка
+                ),
+                child: Text(
+                  '${widget.count}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class isLike extends StatefulWidget {
+  final TapeBloggerModel tape;
+  final int index;
+  const isLike({
+    required this.tape,
+    required this.index,
+    super.key,
+  });
+
+  @override
+  State<isLike> createState() => _isLikeState();
+}
+
+class _isLikeState extends State<isLike> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {},
+      child: Column(children: [
+        Image.asset(
+          Assets.icons.likeFullIcon.path,
+          scale: 1.9,
+          colorBlendMode: BlendMode.colorDodge,
+        ),
+        Text(
+          '${widget.tape.statistics?.like ?? 0}',
+          style:
+              AppTextStyles.size16Weight400.copyWith(color: AppColors.kWhite),
+        ),
+      ]),
+    );
+  }
+}
+
+class inFavorites extends StatefulWidget {
+  final TapeBloggerModel tape;
+  final int index;
+  const inFavorites({
+    required this.tape,
+    required this.index,
+    super.key,
+  });
+
+  @override
+  State<inFavorites> createState() => _inFavoritesState();
+}
+
+class _inFavoritesState extends State<inFavorites> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {},
+      child: Column(children: [
+        Image.asset(
+          Assets.icons.favoriteFullIcon.path,
+          scale: 1.9,
+          colorBlendMode: BlendMode.colorDodge,
+        ),
+        Text(
+          '${widget.tape.statistics?.favorite ?? 0}',
+          style:
+              AppTextStyles.size16Weight400.copyWith(color: AppColors.kWhite),
+        ),
+      ]),
+    );
   }
 }

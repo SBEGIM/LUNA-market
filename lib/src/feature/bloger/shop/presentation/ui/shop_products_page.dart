@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/shop/bloc/blogger_shop_products_state.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/ui/upload_product_video.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -53,68 +54,23 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
     return Scaffold(
       backgroundColor: AppColors.kWhite,
       appBar: AppBar(
-        actions: [
-          // AnimSearchBar(
-          //   helpText: 'Поиск..',
-          //   onChanged: (String? value) {
-          //     BlocProvider.of<BloggerShopProductsCubit>(context)
-          //         .products(searchController.text, widget.id);
-          //   },
-          //   style: const TextStyle(
-          //       fontSize: 14,
-          //       fontWeight: FontWeight.w400,
-          //       color: Color.fromRGBO(153, 162, 173, 1)),
-          //   textController: searchController,
-          //   onSuffixTap: () {
-          //     searchController.clear();
-          //   },
-          //   onArrowTap: () {
-          //     visible = !visible;
-          //     // print(visible.toString());
-          //     setState(() {
-          //       visible;
-          //     });
-          //     searchController.clear();
-          //   },
-          //   width: MediaQuery.of(context).size.width,
-          // ),
-          // const SizedBox(
-          //   width: 10,
-          // ),
-          // GestureDetector(
-          //     onTap: () async {
-          //       await Share.share('$kDeepLinkUrl/?blogger/shop_${widget.id}');
-          //     },
-          //     child: SvgPicture.asset(
-          //       'assets/icons/share.svg',
-          //       height: 28,
-          //       width: 28,
-          //     )),
-          // const SizedBox(
-          //   width: 10,
-          // ),
-        ],
         backgroundColor: AppColors.kWhite,
         centerTitle: true,
         elevation: 0,
         leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.arrow_back,
-            size: 30,
-          ),
-        ),
-        // titleSpacing: 16,
-        // automaticallyImplyLeading: false,
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Image.asset(
+              Assets.icons.defaultBackIcon.path,
+              scale: 1.9,
+            )),
         title: Text(
           widget.title,
           style: AppTextStyles.defaultAppBarTextStyle,
         ),
       ),
       body: Column(
-        // shrinkWrap: true,
         children: [
           Container(
             height: 44,
@@ -122,7 +78,7 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
             margin:
                 const EdgeInsets.only(top: 10, bottom: 12, left: 12, right: 12),
             decoration: BoxDecoration(
-              color: AppColors.kGray1,
+              color: Color(0xFFEAECED),
               borderRadius: BorderRadius.circular(12),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -186,36 +142,39 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                     ),
                   );
                 }
-                if (state is LoadingState) {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent));
-                }
+
                 if (state is NoDataState) {
                   return Expanded(
-                    // width: MediaQuery.of(context).size.height,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Container(
+                    child: SmartRefresher(
+                      controller: refreshController,
+                      enablePullUp: true,
+                      onLoading: () {
+                        onLoading();
+                      },
+                      onRefresh: () {
+                        BlocProvider.of<BloggerShopProductsCubit>(context)
+                            .products(searchController.text, widget.id);
+                        refreshController.refreshCompleted();
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Container(
                             margin: const EdgeInsets.only(top: 220),
-                            child: Image.asset('assets/icons/no_data.png')),
-                        const Text(
-                          'Нет данных',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
-                          textAlign: TextAlign.center,
-                        ),
-                        const Text(
-                          'У этого магазина отсуствует товары',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff717171)),
-                          textAlign: TextAlign.center,
-                        )
-                      ],
+                            height: 72,
+                            width: 72,
+                            child: Image.asset(
+                                Assets.icons.defaultNoDataIcon.path),
+                          ),
+                          SizedBox(height: 12),
+                          const Text(
+                            'Нет товаров',
+                            style: AppTextStyles.size16Weight500,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }
@@ -321,32 +280,62 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
                   //     ),
                   //   );
                 } else {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent));
+                  return Expanded(
+                    child: SmartRefresher(
+                      controller: refreshController,
+                      enablePullUp: true,
+                      onLoading: () {
+                        onLoading();
+                      },
+                      onRefresh: () {
+                        BlocProvider.of<BloggerShopProductsCubit>(context)
+                            .products(searchController.text, widget.id);
+                        refreshController.refreshCompleted();
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 220),
+                            child: CircularProgressIndicator(
+                              color: AppColors.mainPurpleColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
                 }
-              })
+              }),
+          SizedBox(height: 120)
         ],
       ),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GestureDetector(
+      bottomSheet: Container(
+        padding: EdgeInsets.only(bottom: 42, left: 16, right: 16),
+        color: AppColors.kWhite,
+        child: InkWell(
           onTap: () async {
             if (selectedIndex != 0) {
               Get.to(() => UploadProductVideoPage(id: selectedIndex));
+
+              selectedIndex = 0;
+              setState(() {});
             } else {
-              Get.snackbar('Ошибка', 'Сначала выберите товар для обзора',
-                  backgroundColor: AppColors.kBlueColor);
+              AppSnackBar.show(
+                context,
+                'Сначала выберите товар для обзора',
+                type: AppSnackType.error,
+              );
             }
           },
           child: Container(
-            // width: 99,
             height: 52,
             decoration: BoxDecoration(
               color: selectedIndex != 0
                   ? AppColors.mainPurpleColor
                   : AppColors.mainPurpleColor.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(16),
             ),
             alignment: Alignment.center,
             child: Text(

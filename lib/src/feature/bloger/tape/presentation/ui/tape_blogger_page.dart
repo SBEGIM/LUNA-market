@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/detail_tape_card_page.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/tape_card_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -38,9 +39,10 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: AppColors.kWhite,
         appBar: AppBar(
           // iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.kWhite,
           elevation: 0,
 
           title: const Text(
@@ -56,13 +58,17 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
               margin: const EdgeInsets.symmetric(horizontal: 16),
               padding: EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: AppColors.kGray2,
-                borderRadius: BorderRadius.circular(8),
+                color: Color(0xffEAECED),
+                borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Icon(Icons.search, color: Colors.grey),
+                  Image.asset(
+                    Assets.icons.defaultSearchIcon.path,
+                    height: 20,
+                    width: 20,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: TextField(
@@ -71,11 +77,13 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
                       },
                       controller: searchController,
                       keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
+                      style: AppTextStyles.size16Weight400,
+                      decoration: InputDecoration(
                         isCollapsed: true,
                         border: InputBorder.none,
                         hintText: 'Поиск',
-                        hintStyle: TextStyle(color: Colors.grey),
+                        hintStyle: AppTextStyles.size16Weight400
+                            .copyWith(color: Color(0xFF8E8E93)),
                         contentPadding: EdgeInsets.zero,
                       ),
                     ),

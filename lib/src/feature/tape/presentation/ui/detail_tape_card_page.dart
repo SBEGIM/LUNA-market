@@ -1,10 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/count_zero_dialog.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
-import 'package:haji_market/src/feature/home/data/model/city_model.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_check_cubit.dart';
 import 'package:haji_market/src/feature/tape/data/repository/tape_repository.dart';
 import 'package:haji_market/src/feature/tape/presentation/widgets/show_report_widget.dart';
@@ -17,13 +15,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/tape/bloc/subs_cubit.dart';
 import 'package:haji_market/src/feature/tape/data/models/tape_model.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 //import 'package:video_player/video_player.dart';
-import '../../../chat/presentation/message.dart';
 import '../../../basket/bloc/basket_cubit.dart' as basCubit;
 import '../../../favorite/bloc/favorite_cubit.dart' as favCubit;
 import '../../../drawer/presentation/widgets/pre_order_dialog.dart';
@@ -1598,13 +1594,6 @@ class _VideosState extends State<Videos> {
                       )),
                     )
                   : SizedBox.shrink(),
-              // Container(
-              //   alignment: Alignment.bottomCenter,
-              //   margin: EdgeInsets.only(
-              //       bottom: MediaQuery.of(context).size.height * 0.10),
-              //   child:
-              //       VideoProgressIndicator(_controller!, allowScrubbing: true),
-              // ),
             ],
           )
         : const Center(

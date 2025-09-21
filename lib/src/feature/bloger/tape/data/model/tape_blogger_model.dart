@@ -17,7 +17,8 @@ class TapeBloggerModel {
       int? viewCount,
       int? basketCount,
       int? shareCount,
-      Shop? shop}) {
+      Shop? shop,
+      Statistics? statistics}) {
     _id = id;
     _tapeId = tapeId;
     _name = name;
@@ -36,6 +37,7 @@ class TapeBloggerModel {
     _basketCount = basketCount;
     _shareCount = shareCount;
     _shop = shop;
+    _statistics = statistics;
   }
 
   TapeBloggerModel.fromJson(dynamic json) {
@@ -57,6 +59,9 @@ class TapeBloggerModel {
     _basketCount = json['basket_count'];
     _shareCount = json['share_count'];
     _shop = json['shop'] != null ? Shop.fromJson(json['shop']) : null;
+    _statistics = json['statistics'] != null
+        ? Statistics.fromJson(json['statistics'])
+        : null;
   }
   int? _id;
   int? _tapeId;
@@ -76,6 +81,7 @@ class TapeBloggerModel {
   int? _basketCount;
   int? _shareCount;
   Shop? _shop;
+  Statistics? _statistics;
 
   int? get id => _id;
   int? get tapeId => _tapeId;
@@ -95,6 +101,7 @@ class TapeBloggerModel {
   int? get basketCount => _basketCount;
   int? get shareCount => _shareCount;
   Shop? get shop => _shop;
+  Statistics? get statistics => _statistics;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -117,6 +124,10 @@ class TapeBloggerModel {
     map['share_count'] = _shareCount;
     if (_shop != null) {
       map['shop'] = _shop?.toJson();
+    }
+
+    if (_statistics != null) {
+      map['statistics'] = _statistics?.toJson();
     }
     return map;
   }
@@ -217,6 +228,35 @@ class Shop {
     map['token'] = _token;
     map['created_at'] = _createdAt;
     map['updated_at'] = _updatedAt;
+    return map;
+  }
+}
+
+class Statistics {
+  Statistics({int? like, int? favorite, int? send}) {
+    _like = like;
+    _favorite = favorite;
+    _send = send;
+  }
+
+  Statistics.fromJson(dynamic json) {
+    _like = json['like'];
+    _favorite = json['favorite'];
+    _send = json['send'];
+  }
+  int? _like;
+  int? _favorite;
+  int? _send;
+
+  int? get like => _like;
+  int? get favorite => _favorite;
+  int? get send => _send;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['like'] = _like;
+    map['favorite'] = _favorite;
+    map['send'] = _send;
     return map;
   }
 }

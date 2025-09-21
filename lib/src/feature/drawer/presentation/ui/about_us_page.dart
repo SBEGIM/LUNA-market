@@ -39,6 +39,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.kBackgroundColor,
       // appBar: AppBar(
       //   backgroundColor: Colors.white,
       //   elevation: 0,
@@ -64,35 +65,54 @@ class _AboutUsPageState extends State<AboutUsPage> {
         children: [
           Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios,
-                    color: AppColors.kLightBlackColor,
-                  ),
-                ),
-              ),
               Image.asset(Assets.images.aboutImage.path),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0, top: 52),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Image.asset(
+                        Assets.icons.aboutBackIcon.path,
+                        width: 40,
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0, top: 52),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Image.asset(
+                        Assets.icons.abotShareIcon.path,
+                        width: 40,
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               Container(
                 margin: EdgeInsets.only(top: 250),
                 padding: const EdgeInsets.only(
                     left: 16, right: 16, bottom: 16, top: 10),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                  borderRadius: BorderRadius.all(Radius.circular(24)),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     Text(
-                      'О нас',
-                      style: AppTextStyles.defaultButtonTextStyle,
+                      'Luna market',
+                      style: AppTextStyles.size28Weight700,
                       textAlign: TextAlign.right,
                     ),
                     SizedBox(height: 12),
@@ -107,7 +127,8 @@ class _AboutUsPageState extends State<AboutUsPage> {
                         '• Раскрутка новых брендов\n\n'
                         'Уникальная программа для блогеров делает нас идеальной платформой '
                         'для эффективного взаимодействия между продавцами, покупателями и контент-мейкерами.',
-                        style: AppTextStyles.aboutTextStyle,
+                        style: AppTextStyles.size16Weight400
+                            .copyWith(color: Color(0xff333333)),
                       ),
                     ),
                   ],
@@ -115,17 +136,13 @@ class _AboutUsPageState extends State<AboutUsPage> {
               )
             ],
           ),
-          const SizedBox(
-            height: 10,
-          ),
-
           Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: EdgeInsets.only(top: 8),
               padding: const EdgeInsets.only(
-                  left: 16, right: 16, bottom: 16, top: 10),
+                  left: 16, right: 16, bottom: 16, top: 16),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+                borderRadius: BorderRadius.all(Radius.circular(24)),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +154,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                     style: AppTextStyles.defaultButtonTextStyle,
                     textAlign: TextAlign.right,
                   ),
-                  SizedBox(height: 16),
+                  SizedBox(height: 12),
                   buildContactItem(
                       onTap: () => launch(
                             "https://instagram.com/luna_market.ru?igshid=YmMyMTA2M2Y=",
@@ -165,12 +182,12 @@ class _AboutUsPageState extends State<AboutUsPage> {
               )),
 
           Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: EdgeInsets.only(top: 8),
               padding: const EdgeInsets.only(
-                  left: 16, right: 16, bottom: 16, top: 10),
+                  left: 16, right: 16, bottom: 16, top: 16),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+                borderRadius: BorderRadius.all(Radius.circular(24)),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -182,7 +199,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                     style: AppTextStyles.defaultButtonTextStyle,
                     textAlign: TextAlign.right,
                   ),
-                  SizedBox(height: 16),
+                  SizedBox(height: 12),
                   buildContactItem(
                       onTap: () => launch(
                             "http://Lunamarket@inbox.ru",
@@ -218,12 +235,12 @@ class _AboutUsPageState extends State<AboutUsPage> {
               )),
 
           Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: EdgeInsets.only(top: 8),
               padding: const EdgeInsets.only(
-                  left: 16, right: 16, bottom: 16, top: 10),
+                  left: 16, right: 16, bottom: 16, top: 16),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+                borderRadius: BorderRadius.all(Radius.circular(24)),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -266,7 +283,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                                     label: metas[index],
                                     iconPath: Assets.icons.metaIcon.path,
                                   ),
-                                  SizedBox(height: 10)
+                                  SizedBox(height: 16)
                                 ],
                               ),
                             );
@@ -405,43 +422,41 @@ Widget buildContactItem({
 }) {
   final bool isSvg = iconPath.toLowerCase().endsWith('.svg');
 
-  return Row(
-    children: [
-      GestureDetector(
-        onTap: onTap,
-        child: Container(
+  return InkWell(
+    onTap: onTap,
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
           width: 40,
           height: 40,
           decoration: BoxDecoration(
             color: AppColors.mainBackgroundPurpleColor,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
           ),
-          child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(10),
             child: isSvg
                 ? SvgPicture.asset(
                     iconPath,
-                    width: 24,
-                    height: 24,
                     fit: BoxFit.contain,
                   )
                 : Image.asset(
                     iconPath,
-                    width: 24,
-                    height: 24,
                     fit: BoxFit.contain,
                   ),
           ),
         ),
-      ),
-      const SizedBox(width: 10),
-      Expanded(
-        child: Text(
-          label,
-          style: AppTextStyles.defaultButtonTextStyle,
-          textAlign: TextAlign.left,
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            label,
+            style: AppTextStyles.defaultButtonTextStyle,
+            textAlign: TextAlign.left,
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }
 
@@ -459,34 +474,33 @@ class ContactItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: AppColors.mainBackgroundPurpleColor,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: GestureDetector(
-            onTap: () => launch(url, forceSafariVC: false),
-            child: Center(
+    return InkWell(
+      onTap: () => launch(url, forceSafariVC: false),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppColors.mainBackgroundPurpleColor,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(10),
               child: SvgPicture.asset(
                 iconPath,
-                width: 24,
-                height: 24,
                 fit: BoxFit.contain,
               ),
             ),
           ),
-        ),
-        const SizedBox(width: 10),
-        Text(
-          label,
-          style: AppTextStyles.defaultButtonTextStyle,
-          textAlign: TextAlign.right,
-        ),
-      ],
+          const SizedBox(width: 12),
+          Text(
+            label,
+            style: AppTextStyles.defaultButtonTextStyle,
+            textAlign: TextAlign.right,
+          ),
+        ],
+      ),
     );
   }
 }

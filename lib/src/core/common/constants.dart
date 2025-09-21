@@ -413,6 +413,13 @@ mixin AppTextStyles {
       letterSpacing: 0,
       fontWeight: FontWeight.w700,
       fontFamily: 'SFProDisplay');
+
+  static const size29Weight700 = TextStyle(
+      fontSize: 29,
+      color: Colors.black,
+      letterSpacing: 0,
+      fontWeight: FontWeight.w700,
+      fontFamily: 'SFProDisplay');
 }
 
 mixin AppDecorations {

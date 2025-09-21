@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/auth/bloc/login_state.dart';
 
 import '../data/repository/login_repository.dart';
@@ -12,7 +13,8 @@ class LoginCubit extends Cubit<LoginState> {
 
   LoginCubit({required this.loginRepository}) : super(InitState());
 
-  Future<void> login(String phone, String password) async {
+  Future<void> login(
+      BuildContext context, String phone, String password) async {
     try {
       emit(LoadingState());
       final data = await loginRepository.login(phone, password);
@@ -23,8 +25,11 @@ class LoginCubit extends Cubit<LoginState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Неверный телефон или пароль',
-            backgroundColor: Colors.redAccent);
+        AppSnackBar.show(
+          context,
+          'Неверный телефон или пароль',
+          type: AppSnackType.error,
+        );
       }
       if (data == 500) {
         emit(InitState());

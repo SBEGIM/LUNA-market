@@ -79,10 +79,13 @@ class LoginToApi {
       'email': register.email,
       'invoice': register.check,
       'social_network': register.social_network,
-      'type': register.type,
+      'type': register.type.toString(),
       'device_token': deviceToken.toString(),
       'device_type': deviceType
     });
+
+    print(response.statusCode);
+
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       _box.write('blogger_token', data['access_token'].toString());

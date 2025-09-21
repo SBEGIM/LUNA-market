@@ -88,7 +88,7 @@ class _RegisterSmsCheckModalBottom extends State<RegisterSmsCheckModalBottom> {
           // Get.to( () => ChangePasswordPage( textEditingController: widget.textEditingController));
           FocusScope.of(context).requestFocus(FocusNode());
           final register = BlocProvider.of<RegisterCubit>(context);
-          register.register(widget.registerDTO);
+          register.register(context, widget.registerDTO);
         }
       }, builder: (context, state) {
         if (state is LoadingState) {

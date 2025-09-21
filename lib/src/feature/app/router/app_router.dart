@@ -2,10 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:haji_market/src/feature/auth/presentation/ui/auth_page.dart';
 import 'package:haji_market/src/feature/auth/presentation/ui/register_page.dart';
+import 'package:haji_market/src/feature/auth/presentation/ui/success_register_page.dart';
 import 'package:haji_market/src/feature/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/login_forget_password_modal_bottom.dart';
 import 'package:haji_market/src/feature/bloger/auth/presentation/ui/login_forget_password_modal_bottom.dart';
 import 'package:haji_market/src/feature/bloger/chat/presentation/chat_blogger_page.dart';
+import 'package:haji_market/src/feature/bloger/coop_request/presentation/ui/coop_request_page.dart';
+import 'package:haji_market/src/feature/bloger/coop_request/presentation/ui/success_blogger_register_page.dart';
+import 'package:haji_market/src/feature/bloger/shop/presentation/ui/success_blogger_tape_upload_video_page.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_model.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/detail_tape_card_page.dart';
@@ -114,15 +118,21 @@ class AppRouter extends _$AppRouter {
           ],
         ),
         AutoRoute(page: RegisterRoute.page),
+        AutoRoute(page: BlogRegisterRoute.page),
+
         AutoRoute(page: ViewAuthRegisterRoute.page),
+        AutoRoute(page: SuccessBloggerRegisterRoute.page),
+        AutoRoute(page: SuccessRegisterRoute.page),
 
         AutoRoute(
           page: DetailTapeCardRoute.page,
         ),
         AutoRoute(
-            page: ProfileBloggerTapeRoute.page, type: RouteType.cupertino()),
+          page: ProfileBloggerTapeRoute.page,
+        ),
         AutoRoute(
-            page: ProfileSellerTapeRoute.page, type: RouteType.cupertino()),
+          page: ProfileSellerTapeRoute.page,
+        ),
 
         ///Basket Routes
         AutoRoute(page: PaymentWebviewRoute.page),

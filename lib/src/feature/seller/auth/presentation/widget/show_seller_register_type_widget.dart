@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 void showSellerRegisterType(BuildContext context, int? prevType,
@@ -8,6 +9,7 @@ void showSellerRegisterType(BuildContext context, int? prevType,
 
   showMaterialModalBottomSheet(
     context: context,
+    backgroundColor: AppColors.kWhite,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(20),
@@ -19,142 +21,185 @@ void showSellerRegisterType(BuildContext context, int? prevType,
         builder: (BuildContext context, StateSetter setState) {
           return SingleChildScrollView(
             controller: ModalScrollController.of(context),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Тип магазина',
-                        style: AppTextStyles.defaultButtonTextStyle,
+                        'Тип организации',
+                        style: AppTextStyles.size16Weight600,
                       ),
                       InkWell(
                           onTap: () {
                             Navigator.of(context).pop();
                           },
-                          child: Icon(Icons.close_rounded))
+                          child: Image.asset(
+                            Assets.icons.defaultCloseIcon.path,
+                            height: 24,
+                            width: 24,
+                          ))
                     ],
                   ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      alignment: Alignment.centerLeft,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
+                  SizedBox(height: 16),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                          color: AppColors.kGray1,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        height: 47,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'ИП',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.size16Weight600
+                                    .copyWith(color: Color(0xFF3A3A3C)),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  type = type == 1 ? 0 : 1;
+                                  setState(() {});
+                                },
+                                child: Image.asset(
+                                  type == 1
+                                      ? Assets.icons.defaultCheckIcon.path
+                                      : Assets.icons.defaultUncheckIcon.path,
+                                  color: type == 1
+                                      ? AppColors.kLightBlackColor
+                                      : AppColors.kGray300,
+                                  height: 20,
+                                  width: 20,
+                                ),
+                              ),
+                              // Theme(
+                              //   data: Theme.of(context).copyWith(
+                              //     checkboxTheme: CheckboxThemeData(
+                              //       shape: CircleBorder(),
+                              //       side: BorderSide(
+                              //         color: AppColors.kGray300,
+                              //         width: 1, // Толщина обводки чекбокса
+                              //       ),
+                              //       fillColor: MaterialStateProperty.all(
+                              //           type == 1
+                              //               ? AppColors.kLightBlackColor
+                              //               : AppColors.kWhite),
+                              //       checkColor: MaterialStateProperty.all(
+                              //           AppColors.kWhite), // Цвет галочки
+                              //     ),
+                              //   ),
+                              //   child: Checkbox(
+                              //     value: type == 1,
+                              //     onChanged: ((value) {
+                              //       type = 1;
+                              //       setState(() {});
+                              //     }),
+                              //   ),
+                              // )
+                            ]),
                       ),
-                      width: 350,
-                      height: 47,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'ИП',
-                              textAlign: TextAlign.center,
-                            ),
-                            Checkbox(
-                              shape: const CircleBorder(),
-                              value: type == 1,
-                              activeColor: AppColors.mainPurpleColor,
-                              onChanged: ((value) {
-                                type = 1;
-                                setState(() {});
-                              }),
-                            ),
-                          ]),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      alignment: Alignment.centerLeft,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
+                      const SizedBox(
+                        height: 12,
                       ),
-                      width: 350,
-                      height: 47,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'OОО',
-                              textAlign: TextAlign.center,
-                            ),
-                            Checkbox(
-                              value: type == 2,
-                              shape: const CircleBorder(),
-                              activeColor: AppColors.mainPurpleColor,
-                              onChanged: ((value) {
-                                type = 2;
-                                setState(() {});
-                              }),
-                            ),
-                          ]),
-                    ),
-                    // const SizedBox(
-                    //   width: 20,
-                    // ),
-                    // Container(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 8),
-                    //   alignment: Alignment.centerLeft,
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.white,
-                    //     borderRadius: BorderRadius.circular(8),
-                    //   ),
-                    //   width: 100,
-                    //   height: 47,
-                    //   child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //       children: [
-                    //         const Text(
-                    //           'ОГРН',
-                    //           textAlign: TextAlign.center,
-                    //         ),
-                    //         Checkbox(
-                    //           shape: const CircleBorder(),
-                    //           value: typeOrganization == 3,
-                    //           activeColor: AppColors.kPrimaryColor,
-                    //           onChanged: ((value) {
-                    //             typeOrganization = 3;
-                    //             setState(() {});
-                    //           }),
-                    //         ),
-                    //       ]),
-                    // ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(height: 30),
-                InkWell(
-                  onTap: () {
-                    typeCall.call(type);
-                    Navigator.of(context).pop();
-                  },
-                  child: Container(
-                    height: 52,
-                    width: 358,
-                    decoration: BoxDecoration(
-                        color: AppColors.mainPurpleColor,
-                        borderRadius: BorderRadius.circular(12)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Выбрать',
-                      style: AppTextStyles.defButtonTextStyle,
+                      Container(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                          color: AppColors.kGray1,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        height: 47,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'ООО',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.size16Weight600
+                                    .copyWith(color: Color(0xFF3A3A3C)),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  type = type == 2 ? 0 : 2;
+                                  setState(() {});
+                                },
+                                child: Image.asset(
+                                  type == 2
+                                      ? Assets.icons.defaultCheckIcon.path
+                                      : Assets.icons.defaultUncheckIcon.path,
+                                  color: type == 2
+                                      ? AppColors.kLightBlackColor
+                                      : AppColors.kGray300,
+                                  height: 20,
+                                  width: 20,
+                                ),
+                              ),
+                            ]),
+                      ),
+                      // const SizedBox(
+                      //   width: 20,
+                      // ),
+                      // Container(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 8),
+                      //   alignment: Alignment.centerLeft,
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.white,
+                      //     borderRadius: BorderRadius.circular(8),
+                      //   ),
+                      //   width: 100,
+                      //   height: 47,
+                      //   child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         const Text(
+                      //           'ОГРН',
+                      //           textAlign: TextAlign.center,
+                      //         ),
+                      //         Checkbox(
+                      //           shape: const CircleBorder(),
+                      //           value: typeOrganization == 3,
+                      //           activeColor: AppColors.kPrimaryColor,
+                      //           onChanged: ((value) {
+                      //             typeOrganization = 3;
+                      //             setState(() {});
+                      //           }),
+                      //         ),
+                      //       ]),
+                      // ),
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                  InkWell(
+                    onTap: () {
+                      typeCall.call(type);
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      height: 52,
+                      width: 358,
+                      decoration: BoxDecoration(
+                          color: AppColors.mainPurpleColor,
+                          borderRadius: BorderRadius.circular(12)),
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Выбрать',
+                        style: AppTextStyles.size18Weight600
+                            .copyWith(color: AppColors.kWhite),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 20),
-              ],
+                  SizedBox(height: 20),
+                ],
+              ),
             ),
           );
         },

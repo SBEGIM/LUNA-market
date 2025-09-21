@@ -49,79 +49,88 @@ class _BaseBloggerState extends State<BaseBlogger>
       //   AutoTabsRouter.of(context).setActiveIndex(2);
       // }),
       bottomNavigationBuilder: (_, tabsRouter) {
-        return BottomNavigationBar(
-          currentIndex: tabsRouter.activeIndex,
-          onTap: (int index) {
-            if (tabsRouter.activeIndex == index) {
-              tabsRouter.popTop();
-            } else {
-              tabsRouter.setActiveIndex(index);
-            }
-          },
-          selectedItemColor: AppColors.kLightBlackColor,
-          unselectedItemColor: AppColors.kunSelectColor,
-          selectedLabelStyle: AppTextStyles.navigationSelectLabelStyle,
-          unselectedLabelStyle: AppTextStyles.navigationUnSelectLabelStyle,
-          selectedFontSize: 12,
-          elevation: 4,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          backgroundColor:
-              tabsRouter.activeIndex == 1 ? Colors.white : Colors.white,
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                Assets.icons.sellerNavigationUnfullIcon.path,
-                scale: 1.9,
-                color: AppColors.kunSelectColor,
-              ),
-              label: 'Магазины',
-              activeIcon: Image.asset(
-                Assets.icons.sellerNavigationIcon.path,
-                scale: 1.9,
-                color: Colors.black,
-              ),
+        return Container(
+          height: 94,
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                  color: Color(0x100F0F0F), width: 1), // stroke сверху
             ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                Assets.icons.bottomListIcon.path,
-                scale: 1.9,
-                color: AppColors.kunSelectColor,
+          ),
+          child: BottomNavigationBar(
+            currentIndex: tabsRouter.activeIndex,
+            onTap: (int index) {
+              if (tabsRouter.activeIndex == index) {
+                tabsRouter.popTop();
+              } else {
+                tabsRouter.setActiveIndex(index);
+              }
+            },
+            selectedItemColor: AppColors.kLightBlackColor,
+            unselectedItemColor: AppColors.kunSelectColor,
+            selectedLabelStyle: AppTextStyles.navigationSelectLabelStyle,
+            unselectedLabelStyle: AppTextStyles.navigationUnSelectLabelStyle,
+            selectedFontSize: 19,
+            elevation: 4,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            backgroundColor:
+                tabsRouter.activeIndex == 1 ? Colors.white : Colors.white,
+            type: BottomNavigationBarType.fixed,
+            items: [
+              BottomNavigationBarItem(
+                icon: Image.asset(
+                  Assets.icons.sellerNavigationUnfullIcon.path,
+                  scale: 1.9,
+                  color: AppColors.kunSelectColor,
+                ),
+                label: 'Магазины',
+                activeIcon: Image.asset(
+                  Assets.icons.sellerNavigationIcon.path,
+                  scale: 1.9,
+                  color: Colors.black,
+                ),
               ),
-              label: 'Мои обзоры',
-              activeIcon: Image.asset(
-                Assets.icons.bottomListFullIcon.path,
-                scale: 1.9,
-                color: Colors.black,
+              BottomNavigationBarItem(
+                icon: Image.asset(
+                  Assets.icons.bottomListIcon.path,
+                  scale: 1.9,
+                  color: AppColors.kunSelectColor,
+                ),
+                label: 'Мои обзоры',
+                activeIcon: Image.asset(
+                  Assets.icons.bottomListFullIcon.path,
+                  scale: 1.9,
+                  color: Colors.black,
+                ),
               ),
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                Assets.icons.sellerNavigationChatIcon.path,
-                scale: 1.9,
-                color: AppColors.kunSelectColor,
+              BottomNavigationBarItem(
+                icon: Image.asset(
+                  Assets.icons.sellerNavigationChatIcon.path,
+                  scale: 1.9,
+                  color: AppColors.kunSelectColor,
+                ),
+                label: 'Чат',
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/chat_2.svg',
+                  color: Colors.black,
+                ),
               ),
-              label: 'Чат',
-              activeIcon: SvgPicture.asset(
-                'assets/icons/chat_2.svg',
-                color: Colors.black,
+              BottomNavigationBarItem(
+                icon: Image.asset(
+                  Assets.icons.accountBottomIcon.path,
+                  scale: 1.9,
+                  color: AppColors.kunSelectColor,
+                ),
+                label: 'Профиль',
+                activeIcon: Image.asset(
+                  Assets.icons.accountBottomFullIcon.path,
+                  scale: 1.9,
+                  color: Colors.black,
+                ),
               ),
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                Assets.icons.accountBottomIcon.path,
-                scale: 1.9,
-                color: AppColors.kunSelectColor,
-              ),
-              label: 'Профиль',
-              activeIcon: Image.asset(
-                Assets.icons.accountBottomFullIcon.path,
-                scale: 1.9,
-                color: Colors.black,
-              ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

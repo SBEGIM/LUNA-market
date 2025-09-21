@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_state.dart';
@@ -44,6 +45,16 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
   void dispose() {
     _controller?.dispose();
     super.dispose();
+  }
+
+  String formatViews(int views) {
+    if (views >= 1000000) {
+      return '${(views / 1000000).toStringAsFixed(1)} млн';
+    } else if (views >= 1000) {
+      return '${(views / 1000).toStringAsFixed(1)} тыс';
+    } else {
+      return '$views';
+    }
   }
 
   @override
@@ -114,37 +125,21 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
                 ),
               )),
 
-          Positioned(
-              bottom: 4,
-              left: 4,
-              child: Material(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.transparent,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.remove_red_eye,
-                      color: widget.tape.isDelete != true
-                          ? AppColors.kWhite
-                          : AppColors.kWhite.withOpacity(0.5),
-                    ),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Padding(
-                        padding: EdgeInsets.all(6.0),
-                        child: Text(
-                          '${widget.tape.viewCount}',
-                          style: AppTextStyles.aboutTextStyle.copyWith(
-                            color: widget.tape.isDelete != true
-                                ? AppColors.kWhite
-                                : AppColors.kWhite.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, bottom: 8),
+            child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Row(children: [
+                  Image.asset(Assets.icons.viewTapeIcon.path, scale: 1.9),
+                  SizedBox(width: 8),
+                  Text(
+                    '${formatViews(widget.tape.viewCount ?? 0)}',
+                    style: AppTextStyles.size14Weight600
+                        .copyWith(color: AppColors.kWhite),
+                  )
+                ])),
+          ),
+
           // BlocListener<UploadVideoBLoggerCubit, UploadVideoBloggerCubitState>(
           //   listener: (context, state) {
           //     if (state is LoadedOrderState) {

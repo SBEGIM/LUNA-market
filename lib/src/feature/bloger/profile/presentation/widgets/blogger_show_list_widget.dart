@@ -95,6 +95,8 @@ void showBloggerSettingOptions(
                         SizedBox(height: 17),
                         buildSettingItem(
                           onTap: () {
+                            Navigator.of(context).pop();
+
                             GetStorage().remove('blogger_token');
                             BlocProvider.of<AppBloc>(context).add(
                                 const AppEvent.chageState(
