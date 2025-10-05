@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 
 mixin AppColors {
   static const Color kBackgroundColor = Color(0xFFF6F6F6);
+
+  static const Color kBackgroundModuleColor = Color(0xFFF7F7F7);
+
   static const Color kButtonColor = Color(0xffEAECED);
   static const Color kunSelectColor = Color(0xffAEAEB2);
 
   static const Color mainPurpleColor = Color(0xff6F32F8);
   static const Color purpleBorder = Color(0x4A6F32F8);
+
+  static const Color mainRedColor = Color(0xffFF3347);
 
   static const Color mainPurpleGradient = Color(0xffCEE31C);
 
@@ -297,6 +302,13 @@ mixin AppTextStyles {
     fontWeight: FontWeight.w500,
     fontFamily: 'SFProDisplay',
   );
+  static const size13Weight600 = TextStyle(
+    fontSize: 13,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w600,
+    fontFamily: 'SFProDisplay',
+  );
 
   static const size14Weight400 = TextStyle(
     fontSize: 14,
@@ -348,7 +360,7 @@ mixin AppTextStyles {
   static const size16Weight500 = TextStyle(
     fontSize: 16,
     letterSpacing: 0,
-    color: Color(0xFF0F0F0F),
+    color: Color(0xFF000000),
     fontWeight: FontWeight.w500,
     fontFamily: 'SFProDisplay',
   );
@@ -358,6 +370,14 @@ mixin AppTextStyles {
     letterSpacing: 0,
     color: Color(0xFF0F0F0F),
     fontWeight: FontWeight.w600,
+    fontFamily: 'SFProDisplay',
+  );
+
+  static const size17Weight500 = TextStyle(
+    fontSize: 17,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w500,
     fontFamily: 'SFProDisplay',
   );
 

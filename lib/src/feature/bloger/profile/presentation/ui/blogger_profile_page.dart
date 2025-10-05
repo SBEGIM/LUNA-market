@@ -11,7 +11,10 @@ import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/ui/blogger_visit_card_page.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/blogger_show_list_widget.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/edit_profile_page.dart';
+import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/show_module_profile_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/ui/about_us_page.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/client_show_image_list_widget.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -60,7 +63,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.kGray1,
+      backgroundColor: AppColors.kBackgroundModuleColor,
       appBar: null,
       body: SingleChildScrollView(
         child: Column(
@@ -76,23 +79,45 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                     SizedBox(height: 80),
                     GestureDetector(
                       onTap: () {
-                        if (_image == null) {
-                          Get.defaultDialog(
-                            title: "Изменить фото",
-                            middleText: '',
-                            textConfirm: 'Камера',
-                            textCancel: 'Галерея',
-                            titlePadding: const EdgeInsets.only(top: 40),
-                            onConfirm: () {
+                        showClientImageOptions(
+                            context, false, 'Изменить фото профиля',
+                            (value) async {
+                          if (value == 'image') {
+                            final ok = await showAccountAlert(context,
+                                title: 'Изменить фото',
+                                message: 'Изменить фото',
+                                mode: AccountAlertMode.confirm,
+                                cancelText: 'Галерея',
+                                primaryText: 'Камера',
+                                primaryColor: Colors.red);
+
+                            if (ok == true) {
                               change = true;
                               _getImage();
-                            },
-                            onCancel: () {
+                            } else {
                               change = false;
                               _getImage();
-                            },
-                          );
-                        }
+                            }
+                            // Get.defaultDialog(
+                            //   title: "Изменить фото",
+                            //   middleText: '',
+                            //   textConfirm: 'Камера',
+                            //   textCancel: 'Галерея',
+                            //   titlePadding:
+                            //       const EdgeInsets.only(top: 40),
+                            //   onConfirm: () {
+                            //     change = true;
+                            //     _getImage(context);
+                            //   },
+                            //   onCancel: () {
+                            //     change = false;
+                            //     _getImage(context);
+                            //   },
+                            // );
+                          } else {
+                            Navigator.of(context).pop();
+                          }
+                        });
                       },
                       child: Stack(
                         alignment: Alignment.center,
@@ -360,8 +385,35 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                     iconPath: Assets.icons.about.path,
                   ),
                   buildProfileItem(
-                    onTap: () => launch("https://t.me/LUNAmarketAdmin",
-                        forceSafariVC: false),
+                    onTap: () {
+                      // launch("https://t.me/LUNAmarketAdmin",
+                      //                       forceSafariVC: false);
+
+                      final List<String> options = [
+                        'Whats App',
+                        'Telegram',
+                        'Email'
+                      ];
+                      showModuleProfile(context, 'Техподдержка', options,
+                          (value) {
+                        switch (value) {
+                          case 'Whats App':
+                            launch("https://t.me/LUNAmarketAdmin",
+                                forceSafariVC: false);
+                            // do something
+                            break;
+                          case 'Telegram':
+                            launch("https://t.me/LUNAmarketAdmin",
+                                forceSafariVC: false);
+                            // do something else
+                            break;
+                          case 'Email':
+                            launch("https://t.me/LUNAmarketAdmin",
+                                forceSafariVC: false);
+                            break;
+                        }
+                      });
+                    },
                     title: 'Техподдержка',
                     iconPath: Assets.icons.supportCenter.path,
                   ),
@@ -369,7 +421,7 @@ class _ProfileBloggerPageState extends State<ProfileBloggerPage> {
                     onTap: () =>
                         showBloggerSettingOptions(context, 'Настройка', () {}),
                     title: 'Настройка',
-                    count: 3,
+                    count: 4,
                     iconPath: Assets.icons.settingIcon.path,
                   ),
                   SizedBox(

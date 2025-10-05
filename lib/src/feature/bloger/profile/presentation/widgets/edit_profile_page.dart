@@ -27,7 +27,18 @@ class _EditProfileBloggerPageState extends State<EditProfileBloggerPage> {
         centerTitle: true,
         title: const Text(
           'Мои данные',
-          style: AppTextStyles.appBarTextStyle,
+          style: AppTextStyles.size18Weight600,
+        ),
+        leading: InkWell(
+          onTap: () {
+            Get.back(result: 'ok');
+          },
+          child: Image.asset(
+            Assets.icons.defaultBackIcon.path,
+            height: 24,
+            width: 24,
+            scale: 1.9,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -35,10 +46,10 @@ class _EditProfileBloggerPageState extends State<EditProfileBloggerPage> {
           children: [
             buildProfileItem(
                 iconPath: Assets.icons.jurIcon.path,
-                title: 'Оснавная информация',
+                title: 'Основная информация',
                 onTap: () {
                   Get.to(ReqirectProfilePage(
-                    title: 'Оснавная информация',
+                    title: 'Основная информация',
                   ));
                 }),
             buildProfileItem(
@@ -50,11 +61,27 @@ class _EditProfileBloggerPageState extends State<EditProfileBloggerPage> {
                   ));
                 }),
             buildProfileItem(
+                iconPath: Assets.icons.jurIcon.path,
+                title: 'Юридический статус',
+                onTap: () {
+                  Get.to(ReqirectProfilePage(
+                    title: 'Юридический статус',
+                  ));
+                }),
+            buildProfileItem(
                 iconPath: Assets.icons.phoneIcon.path,
                 title: 'Контактные данные',
                 onTap: () {
                   Get.to(ReqirectProfilePage(
                     title: 'Контактные данные',
+                  ));
+                }),
+            buildProfileItem(
+                iconPath: Assets.icons.propsIcon.path,
+                title: 'Реквизиты банка',
+                onTap: () {
+                  Get.to(ReqirectProfilePage(
+                    title: 'Реквизиты банка',
                   ));
                 }),
           ],
@@ -75,7 +102,7 @@ Widget buildProfileItem({
   return InkWell(
     onTap: onTap,
     child: Padding(
-      padding: const EdgeInsets.only(top: 8.0, right: 15, left: 15),
+      padding: const EdgeInsets.only(top: 16.0, right: 16, left: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -86,43 +113,26 @@ Widget buildProfileItem({
                 width: 40,
                 decoration: BoxDecoration(
                   color: AppColors.mainIconPurpleColor,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 alignment: Alignment.center,
                 child: Image.asset(
                   iconPath,
-                  height: 20,
-                  width: 20,
+                  height: 18,
+                  width: 18,
                   fit: BoxFit.contain,
                 ),
               ),
               const SizedBox(width: 12),
-              Text(
-                title,
-                style: const TextStyle(
-                  color: AppColors.kGray900,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+              Text(title, style: AppTextStyles.size16Weight600),
             ],
           ),
-          switchWidget == true
-              ? Transform.scale(
-                  scale: 0.9,
-                  child: Switch(
-                    value: switchValue ?? false,
-                    onChanged: onSwitchChanged,
-                    inactiveThumbColor: Colors.white,
-                    activeTrackColor: AppColors.mainPurpleColor,
-                    trackOutlineWidth: MaterialStateProperty.all(0.01),
-                  ),
-                )
-              : const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: AppColors.arrowColor,
-                )
+          Image.asset(
+            Assets.icons.defaultArrowForwardIcon.path,
+            height: 24,
+            width: 24,
+            scale: 1.9,
+          )
         ],
       ),
     ),

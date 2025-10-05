@@ -9,10 +9,13 @@ import 'package:haji_market/src/feature/bloger/auth/presentation/ui/login_forget
 import 'package:haji_market/src/feature/bloger/chat/presentation/chat_blogger_page.dart';
 import 'package:haji_market/src/feature/bloger/coop_request/presentation/ui/coop_request_page.dart';
 import 'package:haji_market/src/feature/bloger/coop_request/presentation/ui/success_blogger_register_page.dart';
+import 'package:haji_market/src/feature/bloger/shop/presentation/ui/shop_products_page.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/ui/success_blogger_tape_upload_video_page.dart';
+import 'package:haji_market/src/feature/bloger/shop/presentation/ui/upload_product_video.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/tape_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_model.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/detail_tape_card_page.dart';
+import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/edit_tape_vidoe.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/tape_card_widget.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/change_password_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/forgot_password_seller_page.dart';
@@ -33,6 +36,7 @@ import 'package:haji_market/src/feature/seller/product/presentation/ui/edit_prod
 import 'package:haji_market/src/feature/seller/product/presentation/ui/map_seller_picker.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/ui/product_promotion_page.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/ui/products_seller_page.dart';
+import 'package:haji_market/src/feature/seller/product/presentation/ui/success_seller_product_store_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/ui/admin_profile_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/ui/tape_seller_page.dart';
 import 'package:haji_market/src/feature/seller/tape_admin/presentation/ui/tape_admin_page.dart';
@@ -182,6 +186,14 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: EditProductSellerRoute.page),
         AutoRoute(page: CreateProductSellerRoute.page),
         AutoRoute(page: ProductPromotionRoute.page),
+        AutoRoute(page: SuccessSellerProductStoreRoute.page),
+
+        //Blogger pages
+        AutoRoute(page: DetailTapeBloggerCardRoute.page),
+        AutoRoute(page: EditTapeVideoRoute.page),
+        AutoRoute(page: ShopProductsBloggerRoute.page),
+        AutoRoute(page: UploadProductVideoRoute.page),
+        AutoRoute(page: SuccessBloggerTapeUploadVideoRoute.page),
       ];
 }
 

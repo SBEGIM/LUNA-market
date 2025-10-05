@@ -565,6 +565,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                   },
                 ),
               ),
+
               const SizedBox(height: 8),
               if (filledCount == 1)
                 FieldsProductRequest(
@@ -585,8 +586,8 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                           await BlocProvider.of<CatsCubit>(context).catsList();
                     }
 
-                    showSellerCatsOptions(context, 'Категория и тип', _cats,
-                        (value) {
+                    showSellerCatsOptions(
+                        context, 'Категория и тип', _cats, true, (value) {
                       // BlocProvider.of<CatsCubit>(context).searchCats(value);
 
                       setState(() {
@@ -606,8 +607,8 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                       _subCats = await BlocProvider.of<SubCatsCubit>(context)
                           .subCatsList();
                     }
-                    showSellerCatsOptions(context, 'Подкатегория', _subCats,
-                        (value) {
+                    showSellerCatsOptions(
+                        context, 'Подкатегория', _subCats, false, (value) {
                       setState(() {
                         subCats = value;
                       });
@@ -638,6 +639,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                       context,
                       'Бренд',
                       _brands,
+                      false,
                       (value) {
                         setState(() {
                           brands = value;
@@ -880,6 +882,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                       context,
                       'Выбор НДС',
                       _nds,
+                      false,
                       (value) {
                         final CatsModel _data = value;
 
@@ -2040,8 +2043,8 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                   arrow: true,
                   hintColor: false,
                   onPressed: () {
-                    showSellerCatsOptions(context, 'Выбор локации', _locations,
-                        (value) {
+                    showSellerCatsOptions(
+                        context, 'Выбор локации', _locations, false, (value) {
                       final CatsModel data = value;
 
                       if (data.name == 'Регион') {
@@ -2073,8 +2076,8 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                   onPressed: () {
                     if (_locationSelect == 'Регион' ||
                         _locationSelect == 'Город/населенный пункт') {
-                      showSellerCatsOptions(context, _locationSelect, _regions,
-                          (value) {
+                      showSellerCatsOptions(
+                          context, _locationSelect, _regions, false, (value) {
                         setState(() {
                           cats = value;
 

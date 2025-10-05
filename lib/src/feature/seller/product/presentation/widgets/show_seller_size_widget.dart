@@ -124,8 +124,8 @@ void showSellerSizeOptions(BuildContext context, String title,
                     arrow: true,
                     hintColor: true,
                     onPressed: () {
-                      showSellerCatsOptions(context, 'Размеры', mockSizes!,
-                          (value) {
+                      showSellerCatsOptions(
+                          context, 'Размеры', mockSizes!, false, (value) {
                         final CatsModel catsModel = value;
 
                         print(catsModel.name);

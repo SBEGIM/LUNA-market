@@ -10,15 +10,16 @@ class LastArticulSellerCubit extends Cubit<LastArticulSellerState> {
 
   LastArticulSellerCubit({required this.repository}) : super(InitState());
 
-  Future<void> getLastArticul() async {
+  Future<int> getLastArticul() async {
     try {
       emit(LoadingState());
       final int data = await repository.getLastArticul();
       emit(LoadedState(data));
+      return data;
     } catch (e) {
-      log(e.toString());
-      Get.snackbar('$e', '', backgroundColor: Colors.redAccent);
+      // ...
       emit(ErrorState(message: 'Ошибка сервера'));
+      return 0;
     }
   }
 }

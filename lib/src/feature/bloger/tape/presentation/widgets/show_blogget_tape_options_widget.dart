@@ -1,14 +1,19 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_model.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/ui/tape_statistics_page.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/delete_video_dialog.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/edit_tape_vidoe.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 void showBlogerTapeOptions(
@@ -18,6 +23,7 @@ void showBlogerTapeOptions(
     "Статистика",
     "Удалить",
   ];
+  final rootContext = context;
 
   List<String> filteredCategories = [...categories];
 
@@ -25,30 +31,30 @@ void showBlogerTapeOptions(
   TextEditingController searchController = TextEditingController();
 
   showMaterialModalBottomSheet(
-    context: context,
+    context: rootContext,
     backgroundColor: AppColors.kBackgroundColor,
     // isScrollControlled: true,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
-    builder: (context) {
+    builder: (sheetContext) {
       return StatefulBuilder(
-        builder: (context, setState) {
+        builder: (ctx, setState) {
           return ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 500),
+            constraints: const BoxConstraints(maxHeight: 500, minHeight: 278),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 // Заголовок и крестик
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Управление видео',
                           style: AppTextStyles.size16Weight500),
                       InkWell(
-                        onTap: () => Navigator.of(context).pop(),
+                        onTap: () => Navigator.of(sheetContext).pop(),
                         child: Image.asset(Assets.icons.defaultCloseIcon.path,
                             height: 24, width: 24),
                       ),
@@ -59,19 +65,16 @@ void showBlogerTapeOptions(
                 const SizedBox(height: 12),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pop();
-                    Get.to(EditTapeVidoePage(
-                      id: id,
-                    ));
+                    rootContext.router.push(EditTapeVideoRoute(id: id));
                   },
                   child: Container(
                     height: 52,
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     margin:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: AppColors.kGray,
                           width: 1.5,
@@ -79,13 +82,10 @@ void showBlogerTapeOptions(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: 10,
-                        ),
                         Image.asset(Assets.icons.editIcon.path,
                             height: 18, width: 18),
                         SizedBox(
-                          width: 10,
+                          width: 12,
                         ),
                         Text(
                           'Редактировать',
@@ -95,21 +95,21 @@ void showBlogerTapeOptions(
                     ),
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 8),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(sheetContext).pop();
 
                     Get.to(TapeStatisticsPage(tape: tape));
                   },
                   child: Container(
                     height: 52,
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     margin:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: AppColors.kGray,
                           width: 1.5,
@@ -117,13 +117,10 @@ void showBlogerTapeOptions(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: 10,
-                        ),
                         Image.asset(Assets.icons.statisticsIcon.path,
                             height: 18, width: 18),
                         SizedBox(
-                          width: 10,
+                          width: 12,
                         ),
                         Text(
                           'Статистика',
@@ -133,30 +130,52 @@ void showBlogerTapeOptions(
                     ),
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 8),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pop();
+                    // 1) Закрыли bottom sheet
+                    Navigator.of(sheetContext).pop();
 
-                    showCupertinoModalPopup<void>(
-                      context: context,
-                      builder: (context) => DeleteVideoDialog(
-                        onYesTap: () {
-                          BlocProvider.of<UploadVideoBLoggerCubit>(context)
-                              .delete(tapeId: id);
-                          Navigator.pop(context);
-                        },
-                      ),
-                    );
+                    // 2) Показали подтверждение через ЖИВОЙ контекст (rootContext), не через sheetContext
+                    Future.microtask(() async {
+                      final ok = await showAccountAlert(context,
+                          title: 'Удаление видео обзора',
+                          message:
+                              'Вы уверены, что хотите удалить видео обзор?',
+                          mode: AccountAlertMode.confirm,
+                          cancelText: 'Отмена',
+                          primaryText: 'Да',
+                          primaryColor: Colors.red);
+
+                      if (ok == true) {
+                        await rootContext
+                            .read<UploadVideoBLoggerCubit>()
+                            .delete(tapeId: id);
+
+                        final router = AutoRouter.of(context).root;
+
+                        context.read<AppBloc>().add(
+                              const AppEvent.chageState(
+                                  state: AppState.inAppBlogerState(index: 1)),
+                            );
+                        router.replaceAll([const LauncherRoute()]);
+                        AppSnackBar.show(
+                          context,
+                          'Удаление видео обзора успешно',
+                          type: AppSnackType.success,
+                        );
+                      }
+                      if (ok == false) {}
+                    });
                   },
                   child: Container(
                     height: 52,
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     margin:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: AppColors.kGray,
                           width: 1.5,
@@ -164,13 +183,10 @@ void showBlogerTapeOptions(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: 10,
-                        ),
                         Image.asset(Assets.icons.trashIcon.path,
                             height: 18, width: 18),
                         SizedBox(
-                          width: 10,
+                          width: 12,
                         ),
                         Text(
                           'Удалить',

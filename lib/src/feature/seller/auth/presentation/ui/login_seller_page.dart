@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/presentation/widgets/shimmer/shimmer.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/login_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/login_seller_state.dart';
 import 'package:haji_market/src/core/common/constants.dart';
@@ -35,13 +36,57 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
 
   CountrySellerDto? countrySellerDto;
 
+  Map<String, String?> fieldErrors = {
+    'phone': null,
+    'password': null,
+  };
+
   @override
   void initState() {
     BlocProvider.of<LoginSellerCubit>(context).emit(InitState());
 
     countrySellerDto = CountrySellerDto(
         code: '+7', flagPath: Assets.icons.ruFlagIcon.path, name: 'Россия');
+
+    for (final c in [
+      phoneControllerAuth,
+      passwordController,
+    ]) {
+      c.addListener(() => setState(() {}));
+    }
     super.initState();
+  }
+
+  String? _validateError() {
+    final rawDigits =
+        phoneControllerAuth.text.replaceAll(RegExp(r'[^0-9]'), '');
+    if (rawDigits.length != 10) return 'Введите корректный номер телефона';
+
+    final pass = passwordController.text;
+    if (pass.isEmpty) return 'Введите пароль';
+
+    return null;
+  }
+
+  void _validateFields() {
+    final phone = phoneControllerAuth.text.replaceAll(RegExp(r'[^0-9]'), '');
+    final pass = passwordController.text;
+
+    setState(() {
+      fieldErrors['phone'] =
+          phone.length != 10 ? 'Введите корректный номер телефона' : null;
+
+      fieldErrors['password'] = pass.isEmpty ? 'Введите пароль' : null;
+    });
+  }
+
+  bool _ensureValid() {
+    final msg = _validateError();
+    if (msg != null) {
+      AppSnackBar.show(context, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
   }
 
   @override
@@ -78,10 +123,15 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
                     .copyWith(fontSize: 28, fontWeight: FontWeight.w700),
               ),
               SizedBox(height: 24),
-              Text('Номер телефона',
+              Text(
+                  fieldErrors['phone'] == null
+                      ? 'Номер телефона'
+                      : fieldErrors['phone']!,
                   textAlign: TextAlign.start,
-                  style: AppTextStyles.size13Weight500
-                      .copyWith(color: Color(0xFF636366))),
+                  style: AppTextStyles.size13Weight500.copyWith(
+                      color: fieldErrors['phone'] == null
+                          ? Color(0xFF636366)
+                          : AppColors.mainRedColor)),
               SizedBox(height: 8),
               Row(
                 children: [
@@ -102,6 +152,10 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         decoration: BoxDecoration(
                           color: AppColors.kGray2,
+                          border: fieldErrors['phone'] != null
+                              ? Border.all(
+                                  color: AppColors.mainRedColor, width: 1.0)
+                              : null,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
@@ -130,6 +184,10 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
                       decoration: BoxDecoration(
                         color: AppColors.kGray2,
                         borderRadius: BorderRadius.circular(16),
+                        border: fieldErrors['phone'] != null
+                            ? Border.all(
+                                color: AppColors.mainRedColor, width: 1.0)
+                            : null,
                       ),
                       alignment: Alignment.center,
                       child: TextField(
@@ -147,10 +205,15 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
                 ],
               ),
               SizedBox(height: 12),
-              Text('Пароль',
+              Text(
+                  fieldErrors['password'] == null
+                      ? 'Пароль'
+                      : fieldErrors['password']!,
                   textAlign: TextAlign.start,
-                  style: AppTextStyles.size13Weight500
-                      .copyWith(color: Color(0xFF636366))),
+                  style: AppTextStyles.size13Weight500.copyWith(
+                      color: fieldErrors['password'] == null
+                          ? Color(0xFF636366)
+                          : AppColors.mainRedColor)),
               SizedBox(height: 8),
               Container(
                 height: 52,
@@ -159,6 +222,9 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
                 decoration: BoxDecoration(
                   color: AppColors.kGray2,
                   borderRadius: BorderRadius.circular(16),
+                  border: fieldErrors['password'] != null
+                      ? Border.all(color: AppColors.mainRedColor, width: 1.0)
+                      : null,
                 ),
                 alignment: Alignment.center,
                 child: Row(
@@ -218,10 +284,13 @@ class _LoginSellerPageState extends State<LoginSellerPage> {
                     backgroundColor: AppColors.mainPurpleColor,
                     text: 'Войти',
                     press: () {
+                      _validateFields();
+
+                      if (!_ensureValid()) return;
                       final login = BlocProvider.of<LoginSellerCubit>(context);
 
-                      login.login(
-                          phoneControllerAuth.text, passwordController.text);
+                      login.login(context, phoneControllerAuth.text,
+                          passwordController.text);
                     },
                     color: Colors.white,
                     width: double.infinity),

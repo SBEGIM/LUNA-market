@@ -48,18 +48,6 @@ class _BloggerVisitCardPageState extends State<BloggerVisitCardPage> {
                       )),
                 )),
             Stack(alignment: Alignment.center, children: [
-              Positioned(
-                top: 0,
-                child: CircleAvatar(
-                  radius: 50,
-                  child: CircleAvatar(
-                    radius: 49,
-                    backgroundImage: NetworkImage(
-                      'https://lunamarket.ru/storage/${GetStorage().read('blogger_avatar')}',
-                    ),
-                  ),
-                ),
-              ),
               Container(
                 alignment: Alignment.center,
                 padding:
@@ -69,7 +57,7 @@ class _BloggerVisitCardPageState extends State<BloggerVisitCardPage> {
                   height: 465,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withOpacity(0.25),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Column(
@@ -117,6 +105,15 @@ class _BloggerVisitCardPageState extends State<BloggerVisitCardPage> {
                   ),
                 ),
               ),
+              Positioned(
+                top: 0,
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(
+                    'https://lunamarket.ru/storage/${GetStorage().read('blogger_avatar')}',
+                  ),
+                ),
+              ),
             ]),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -137,7 +134,7 @@ class _BloggerVisitCardPageState extends State<BloggerVisitCardPage> {
                       width: 176,
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withOpacity(0.25),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Column(
@@ -166,7 +163,7 @@ class _BloggerVisitCardPageState extends State<BloggerVisitCardPage> {
                       width: 176,
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withOpacity(0.25),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Column(

@@ -1,11 +1,15 @@
 import 'dart:io';
 import 'package:auto_route/auto_route.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widget/app_switch.dart';
+import 'package:haji_market/src/feature/app/widget/show_upload_media_pricker_widget.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/src/feature/drawer/bloc/brand_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart';
@@ -30,7 +34,6 @@ import 'package:haji_market/src/feature/seller/product/presentation/widgets/show
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_characteristics_widget.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_optom_widget.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_size_counts_widget.dart';
-import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_seller_size_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../home/data/model/cat_model.dart';
@@ -44,7 +47,7 @@ import '../../bloc/product_seller_state.dart';
 @RoutePage()
 class CreateProductSellerPage extends StatefulWidget
     implements AutoRouteWrapper {
-  final CatsModel cat;
+  final CatsModel? cat;
   final CatsModel? subCat;
   const CreateProductSellerPage(
       {required this.cat, required this.subCat, super.key});
@@ -332,48 +335,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
     setState(() {});
   }
 
-  @override
-  void initState() {
-    cats = widget.cat;
-    subCats = widget.subCat;
-    brands = CatsModel(id: 0, name: 'Выберите из списка');
-    colors = CatsModel(id: 0, name: 'Выберите цвет');
-
-    if (BlocProvider.of<metaCubit.MetaCubit>(context).state
-        is! metaState.LoadedState) {
-      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
-    }
-
-    if (BlocProvider.of<BrandCubit>(context).state is! metaState.LoadedState) {
-      BlocProvider.of<BrandCubit>(context).brands();
-    }
-
-    BlocProvider.of<lastArticul.LastArticulSellerCubit>(context)
-        .getLastArticul();
-
-    if (BlocProvider.of<CatsCubit>(context).state is! LoadedState) {
-      BlocProvider.of<CatsCubit>(context).cats();
-    }
-
-    if (BlocProvider.of<SubCatsCubit>(context).state is! LoadedState) {
-      BlocProvider.of<SubCatsCubit>(context).subCats(cats?.id ?? 26);
-    }
-
-    if (BlocProvider.of<CountryCubit>(context).state is! LoadedState) {
-      BlocProvider.of<CountryCubit>(context).country();
-    }
-
-    if (BlocProvider.of<CityCubit>(context).state is! LoadedState) {
-      BlocProvider.of<CityCubit>(context).citiesCdek('RU' ?? 'KZ');
-    }
-
-    _sizeArray();
-    _colorArray();
-    _charactisticsArray();
-
-    super.initState();
-  }
-
   List<String> metas = [
     'Пользовательское соглашение',
     'Оферта для продавцов',
@@ -398,28 +359,296 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
   String title = "Основная информация";
 
   void increaseProgress() {
-    if (filledSegments < totalSegments) {
-      setState(() {
-        filledSegments++;
-      });
+    filledCount = (filledCount < 7) ? filledCount + 1 : 0;
+
+    if (filledCount == 1) {
+      title = 'Основная информация';
     }
+    if (filledCount == 2) {
+      title = 'Способ реализации';
+    }
+    if (filledCount == 3) {
+      title = 'Описание';
+    }
+    if (filledCount == 4) {
+      title = 'Фото и видео';
+    }
+    if (filledCount == 5) {
+      title = 'Условия продажи';
+    }
+    if (filledCount == 6) {
+      title = 'Локация';
+    }
+    setState(() {});
   }
 
   // Функция для уменьшения прогресса
   void decreaseProgress() {
-    if (filledSegments > 0) {
-      setState(() {
-        filledSegments--;
-      });
+    filledCount = filledCount > 0 ? filledCount - 1 : 0;
+
+    if (filledCount > 0) {
+      if (filledCount == 1) {
+        title = 'Основная информация';
+      }
+      if (filledCount == 2) {
+        title = 'Способ реализации';
+      }
+      if (filledCount == 3) {
+        title = 'Описание';
+      }
+      if (filledCount == 4) {
+        title = 'Фото и видео';
+      }
+      if (filledCount == 5) {
+        title = 'Условия продажи';
+      }
+      if (filledCount == 6) {
+        title = 'Локация';
+      }
+      setState(() {});
+    } else {
+      Navigator.pop(context);
     }
+  }
+
+  Future<void> _removeVideo() async {
+    await _disposeController();
+    setState(() => _video = null);
+  }
+
+  void articul() async {
+    await BlocProvider.of<lastArticul.LastArticulSellerCubit>(context)
+        .getLastArticul()
+        .then((last) {
+      articulController.text = last.toString();
+    });
+  }
+
+  @override
+  void initState() {
+    // cats = widget.cat;
+    // subCats = widget.subCat;
+    // brands = CatsModel(id: 0, name: 'Выберите из списка');
+    // colors = CatsModel(id: 0, name: 'Выберите цвет');
+    articul();
+    if (BlocProvider.of<metaCubit.MetaCubit>(context).state
+        is! metaState.LoadedState) {
+      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+    }
+
+    if (BlocProvider.of<BrandCubit>(context).state is! metaState.LoadedState) {
+      BlocProvider.of<BrandCubit>(context).brands();
+    }
+
+    if (BlocProvider.of<CatsCubit>(context).state is! LoadedState) {
+      BlocProvider.of<CatsCubit>(context).cats();
+    }
+
+    if (BlocProvider.of<SubCatsCubit>(context).state is! LoadedState) {
+      BlocProvider.of<SubCatsCubit>(context).subCats(cats?.id ?? 26);
+    }
+
+    if (BlocProvider.of<CountryCubit>(context).state is! LoadedState) {
+      BlocProvider.of<CountryCubit>(context).country();
+    }
+
+    if (BlocProvider.of<CityCubit>(context).state is! LoadedState) {
+      BlocProvider.of<CityCubit>(context).citiesCdek('RU' ?? 'KZ');
+    }
+
+    _sizeArray();
+    _colorArray();
+    _charactisticsArray();
+
+    for (final c in [
+      nameController,
+      articulController,
+      descriptionController,
+      priceController,
+      compoundController,
+      ndsController,
+      pointsController,
+      pointsBloggerController,
+      countController
+    ]) {
+      c.addListener(() => setState(() {}));
+    }
+
+    super.initState();
+  }
+
+// --- helpers ---
+  double? _toDouble(String s) => double.tryParse(s.replaceAll(',', '.'));
+  int? _toInt(String s) => int.tryParse(s);
+
+// SKU (артикул)
+  String? _validateSKU(String v) {
+    if (v.isEmpty) return 'Укажите артикул';
+    final ok = RegExp(r'^[A-Za-z0-9\-_]+$').hasMatch(v);
+    return ok ? null : 'Допустимы буквы/цифры, «-» и «_»';
+  }
+
+// Цена > 0
+  String? _validatePrice(String v) {
+    if (v.isEmpty) return 'Укажите цену';
+    final d = _toDouble(v);
+    if (d == null) return 'Некорректная цена';
+    if (d <= 0) return 'Цена должна быть больше 0';
+    return null;
+  }
+
+// НДС 0..100
+  String? _validatePercent(String v) {
+    if (v.trim().isEmpty) return 'Укажите НДС';
+
+    if (v == 'Не облагается') {
+      return null;
+    }
+    // извлечь число вида 10, 10.5, 10,5 + допускаем пробелы и %
+    final match = RegExp(r'^\s*([+-]?\d+(?:[.,]\d+)?)\s*%?\s*$').firstMatch(v);
+    if (match == null) return 'Некорректный НДС';
+
+    final numStr = match.group(1)!.replaceAll(',', '.'); // 10,5 -> 10.5
+    final d = double.tryParse(numStr);
+    if (d == null) return 'Некорректный НДС';
+    if (d < 0 || d > 100) return 'НДС должен быть в диапазоне 0–100';
+
+    return null;
+  }
+
+// Целое ≥ 0
+  String? _validateIntNonNeg(String v, {required String fieldName}) {
+    if (v.isEmpty) return 'Укажите $fieldName';
+    final i = _toInt(v);
+    if (i == null) return 'Только целое число';
+    if (i < 0) return '$fieldName не может быть отрицательным';
+    return null;
+  }
+
+// Количество ≥ 1
+  String? _validateCount(String v) {
+    if (v.isEmpty) return 'Укажите количество';
+    final i = _toInt(v);
+    if (i == null) return 'Только целое число';
+    if (i < 1) return 'Количество должно быть не меньше 1';
+    return null;
+  }
+
+// --- твоя карта ошибок (оставляю те же ключи) ---
+  Map<String, String?> fieldStep1Errors = {
+    'name': null,
+    'articul': null,
+    'description': null,
+    'price': null,
+    'compound': null,
+    'nds': null,
+    'point': null,
+    'pointBlogger': null,
+    'count': null,
+  };
+
+// Валидируем и обновляем карту ошибок
+  void _validateStep1Fields() {
+    setState(() {
+      fieldStep1Errors['name'] =
+          nameController.text.trim().isEmpty ? 'Введите название товара' : null;
+
+      fieldStep1Errors['articul'] = _validateSKU(articulController.text.trim());
+
+      final desc = descriptionController.text.trim();
+      fieldStep1Errors['description'] = desc.isEmpty
+          ? 'Введите описание'
+          : (desc.length < 10 ? 'Минимум 10 символов' : null);
+
+      fieldStep1Errors['price'] = _validatePrice(priceController.text.trim());
+
+      fieldStep1Errors['compound'] =
+          _validatePrice(compoundController.text.trim());
+      ;
+
+      fieldStep1Errors['nds'] = _validatePercent(ndsController.text.trim());
+
+      fieldStep1Errors['point'] =
+          _validateIntNonNeg(pointsController.text.trim(), fieldName: 'бонусы');
+
+      fieldStep1Errors['pointBlogger'] = _validateIntNonNeg(
+          pointsBloggerController.text.trim(),
+          fieldName: 'бонусы блогера');
+
+      fieldStep1Errors['count'] = _validateCount(countController.text.trim());
+    });
+  }
+
+// true — если ошибок нет
+  bool get isStep1Valid => fieldStep1Errors.values.every((e) => e == null);
+
+// Вызови при сабмите
+  bool validateStep1AndSubmit() {
+    _validateStep1Fields();
+    return isStep1Valid;
+  }
+
+// Порядок важности/фокуса при показе первой ошибки
+  final _step1Order = const [
+    'name',
+    'articul',
+    'description',
+    'price',
+    'compound',
+    'nds',
+    'point',
+    'pointBlogger',
+    'count',
+  ];
+
+  /// Возвращает текст первой найденной ошибки или null
+  String? _validateStep1Error() {
+    // Актуализируем карту ошибок
+    _validateStep1Fields();
+
+    for (final key in _step1Order) {
+      final msg = fieldStep1Errors[key];
+      if (msg != null) return msg;
+    }
+    return null;
+  }
+
+  /// Показывает первую ошибку и возвращает false, если есть ошибки.
+  /// true — если все поля валидны.
+  bool _ensureStep1Valid() {
+    final msg = _validateStep1Error();
+    if (msg != null) {
+      // Берём живой root-контекст, чтобы не ловить "deactivated widget's ancestor"
+      final rootCtx =
+          context.router.root.navigatorKey.currentContext ?? context;
+      AppSnackBar.show(rootCtx, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  void dispose() {
+    _disposeController();
+    super.dispose();
+  }
+
+  Future<void> _disposeController() async {
+    try {
+      await _controller?.pause();
+      await _controller?.dispose();
+    } catch (_) {}
+    _controller = null;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kWhite,
+      extendBody: true,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        surfaceTintColor: AppColors.kWhite,
+        backgroundColor: AppColors.kWhite,
         elevation: 0,
         centerTitle: true,
         title: const Text(
@@ -428,20 +657,59 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
         ),
         leading: InkWell(
             onTap: () {
-              Navigator.pop(context);
+              decreaseProgress();
             },
             child: Icon(Icons.arrow_back)),
+        bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(36),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Text(
+                    title,
+                    style: AppTextStyles.size16Weight400
+                        .copyWith(color: Color(0xff808080)),
+                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    height: segmentHeight,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: totalSegments,
+                      separatorBuilder: (_, __) =>
+                          SizedBox(width: segmentSpacing),
+                      itemBuilder: (context, index) {
+                        bool isFilled = index < filledCount;
+                        return Container(
+                          width: (MediaQuery.of(context).size.width -
+                                  (totalSegments - 1) * segmentSpacing -
+                                  32) /
+                              totalSegments,
+                          decoration: BoxDecoration(
+                            color: isFilled ? filledColor : emptyColor,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            )),
       ),
       body: BlocConsumer<ProductSellerCubit, ProductAdminState>(
           listener: (context, state) {
-        if (state is ChangeState && isChangeState) {
-          int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 2);
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => const BaseAdmin()),
-          // );
-          isChangeState = false;
+        if (state is StoreState) {
+          context.router.push(SuccessSellerProductStoreRoute());
+          // int count = 0;
+          // Navigator.of(context).popUntil((_) => count++ >= 2);
+          // isChangeState = false;
         }
       }, builder: (context, state) {
         if (state is LoadedState) {
@@ -450,120 +718,21 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-
-                    // Прогресс-бар с пробелами
-                    SizedBox(
-                      height: segmentHeight,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: totalSegments,
-                        separatorBuilder: (_, __) =>
-                            SizedBox(width: segmentSpacing),
-                        itemBuilder: (context, index) {
-                          bool isFilled = index < filledCount;
-                          return Container(
-                            width: (MediaQuery.of(context).size.width -
-                                    (totalSegments - 1) * segmentSpacing -
-                                    32) /
-                                totalSegments,
-                            decoration: BoxDecoration(
-                              color: isFilled ? filledColor : emptyColor,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-
-                    const SizedBox(height: 8),
-                    // Text(
-                    //   '$filledCount из $totalSegments разделов заполнено',
-                    //   style: TextStyle(
-                    //     fontSize: 12,
-                    //     color: Colors.grey[600],
-                    //   ),
-                    // ),
-                    // Управляющие кнопки (для демо)
-                    // Row(
-                    //   children: [
-                    //     IconButton(
-                    //         icon: Icon(Icons.remove),
-                    //         onPressed: () {
-                    //           filledCount =
-                    //               filledCount > 0 ? filledCount - 1 : 0;
-
-                    //           if (filledCount == 1) {
-                    //             title = 'Основная информация';
-                    //           }
-                    //           if (filledCount == 2) {
-                    //             title = 'Способ реализации';
-                    //           }
-                    //           if (filledCount == 3) {
-                    //             title = 'Описание';
-                    //           }
-                    //           if (filledCount == 4) {
-                    //             title = 'Фото и видео';
-                    //           }
-                    //           if (filledCount == 5) {
-                    //             title = 'Условия продажи';
-                    //           }
-                    //           setState(() {});
-                    //         }),
-                    //     IconButton(
-                    //         icon: Icon(Icons.add),
-                    //         onPressed: () {
-                    //           filledCount = filledCount < totalSegments
-                    //               ? filledCount + 1
-                    //               : totalSegments;
-
-                    //           if (filledCount == 1) {
-                    //             title = 'Основная информация';
-                    //           }
-                    //           if (filledCount == 2) {
-                    //             title = 'Способ реализации';
-                    //           }
-                    //           if (filledCount == 3) {
-                    //             title = 'Описание';
-                    //           }
-                    //           if (filledCount == 4) {
-                    //             title = 'Фото и видео';
-                    //           }
-                    //           if (filledCount == 5) {
-                    //             title = 'Условия продажи';
-                    //           }
-                    //           setState(() {});
-                    //         }),
-                    //   ],
-                    // ),
-                  ],
-                ),
+                SizedBox(height: 8),
                 if (filledCount == 1)
                   FieldsProductRequest(
                     titleText: 'Категория и тип',
-                    hintText: cats!.name ?? 'Выберите категорию',
+                    hintText: cats?.name ?? 'Выберите категорию',
+                    hintColor: cats == null ? false : true,
                     star: true,
                     arrow: true,
-                    hintColor: true,
                     onPressed: () async {
                       if (_cats.isEmpty) {
                         _cats = await BlocProvider.of<CatsCubit>(context)
                             .catsList();
                       }
-
-                      showSellerCatsOptions(context, 'Категория и тип', _cats,
-                          (value) {
+                      showSellerCatsOptions(
+                          context, 'Категория и тип', _cats, true, (value) {
                         // BlocProvider.of<CatsCubit>(context).searchCats(value);
 
                         setState(() {
@@ -582,8 +751,8 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                 if (filledCount == 1)
                   FieldsProductRequest(
                     titleText: 'Подкатегория',
-                    hintText: subCats?.name ?? '',
-                    hintColor: true,
+                    hintText: subCats?.name ?? 'Выберите подкатегорию',
+                    hintColor: subCats == null ? false : true,
                     star: true,
                     arrow: true,
                     onPressed: () async {
@@ -591,8 +760,8 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                         _subCats = await BlocProvider.of<SubCatsCubit>(context)
                             .subCatsList();
                       }
-                      showSellerCatsOptions(context, 'Подкатегория', _subCats,
-                          (value) {
+                      showSellerCatsOptions(
+                          context, 'Подкатегория', _subCats, true, (value) {
                         setState(() {
                           subCats = value;
                         });
@@ -608,8 +777,8 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                 if (filledCount == 1)
                   FieldsProductRequest(
                     titleText: 'Бренд',
-                    hintText: brands!.name.toString(),
-                    hintColor: true,
+                    hintText: brands?.name ?? 'Выберите бренд',
+                    hintColor: brands == null ? false : true,
                     star: true,
                     arrow: true,
                     onPressed: () async {
@@ -621,6 +790,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                         context,
                         'Бренд',
                         _brands,
+                        true,
                         (value) {
                           setState(() {
                             brands = value;
@@ -650,6 +820,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     star: false,
                     arrow: false,
                     controller: nameController,
+                    errorText: fieldStep1Errors['name'],
                   ),
                 if (filledCount == 1)
                   BlocListener<lastArticul.LastArticulSellerCubit,
@@ -671,110 +842,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                       readOnly: true,
                     ),
                   ),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 4.0, bottom: 10),
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       const Row(
-                //         children: [
-                //           Text(
-                //             'Валюта',
-                //             style: TextStyle(
-                //                 fontWeight: FontWeight.w400,
-                //                 fontSize: 12,
-                //                 color: AppColors.kGray900),
-                //           ),
-                //           Text(
-                //             '*',
-                //             style: TextStyle(
-                //                 fontWeight: FontWeight.w400,
-                //                 fontSize: 12,
-                //                 color: Colors.red),
-                //           )
-                //         ],
-                //       ),
-                //       const SizedBox(
-                //         height: 4,
-                //       ),
-                //       Container(
-                //         decoration: BoxDecoration(
-                //             color: Colors.white,
-                //             borderRadius: BorderRadius.circular(10)),
-                //         child: Padding(
-                //           padding: const EdgeInsets.only(left: 14.0),
-                //           child: TextField(
-                //             // controller: ,
-                //             keyboardType: TextInputType.text,
-                //             decoration: InputDecoration(
-                //                 border: InputBorder.none,
-                //                 hintText: currencyName,
-                //                 hintStyle: const TextStyle(
-                //                     color: Color.fromRGBO(194, 197, 200, 1),
-                //                     fontSize: 16,
-                //                     fontWeight: FontWeight.w400),
-                //                 enabledBorder: const UnderlineInputBorder(
-                //                   borderSide: BorderSide(color: Colors.white),
-                //                   // borderRadius: BorderRadius.circular(3),
-                //                 ),
-                //                 // suffixIcon: IconButton(
-                //                 //   onPressed: widget.onPressed,
-                //                 //   icon: widget.arrow == true
-                //                 //       ? SvgPicture.asset('assets/icons/back_menu.svg',
-                //                 //           color: Colors.grey)
-                //                 //       : SvgPicture.asset(''),
-                //                 // ),
-                //                 suffixIcon: PopupMenuButton(
-                //                   onSelected: (value) {
-                //                     currencyName = value;
-
-                //                     setState(() {});
-
-                //                     // mockSizeAdds!.forEach((element) {
-                //                     //   return print(element.name);
-                //                     // });
-                //                   },
-                //                   shape: const RoundedRectangleBorder(
-                //                     borderRadius: BorderRadius.all(
-                //                       Radius.circular(15.0),
-                //                     ),
-                //                   ),
-                //                   icon: SvgPicture.asset(
-                //                       'assets/icons/dropdown.svg'),
-                //                   position: PopupMenuPosition.under,
-                //                   offset: const Offset(0, 0),
-                //                   itemBuilder: (
-                //                     BuildContext bc,
-                //                   ) {
-                //                     return const [
-                //                       PopupMenuItem(
-                //                         value: 'KZT',
-                //                         child: Text(
-                //                           'KZT',
-                //                           style: TextStyle(
-                //                             color: Colors.black,
-                //                           ),
-                //                         ),
-                //                       ),
-                //                       PopupMenuItem(
-                //                         value: 'RUB',
-                //                         child: Text(
-                //                           'RUB',
-                //                           style: TextStyle(
-                //                             color: Colors.black,
-                //                           ),
-                //                         ),
-                //                       ),
-                //                     ];
-                //                   },
-                //                 )),
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-
                 if (filledCount == 1)
                   FieldsProductRequest(
                     titleText: 'Описание товара',
@@ -783,187 +850,162 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     arrow: false,
                     controller: descriptionController,
                     maxLines: 4,
+                    errorText: fieldStep1Errors['description'],
                   ),
                 if (filledCount == 1)
-                  SizedBox(
-                    width: double.infinity,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: FieldsProductRequest(
-                              titleText: 'Цена товара ',
-                              hintText: 'Введите цену  ',
-                              star: false,
-                              arrow: false,
-                              controller: priceController,
-                              textInputNumber: true),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: FieldsProductRequest(
+                          titleText: 'Цена товара ',
+                          hintText: 'Введите цену',
+                          star: false,
+                          arrow: false,
+                          controller: priceController,
+                          textInputNumber: true,
+                          errorText: fieldStep1Errors['price'],
                         ),
-                        SizedBox(width: 6),
-                        Container(
-                          width: 96,
-                          height: 42,
-                          padding: EdgeInsets.all(6),
-                          margin: EdgeInsets.only(top: 12),
+                      ),
+                      const SizedBox(width: 4),
+                      Container(
+                        width: 96,
+                        height: 52,
+                        margin: EdgeInsets.only(top: 14),
+                        child: Container(
+                          alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              color: AppColors.kBackgroundColor,
-                              borderRadius: BorderRadius.circular(8)),
+                            color: const Color(0xffEAECED),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(currencyName),
-                              PopupMenuButton(
-                                onSelected: (value) {
-                                  currencyName = value;
-
-                                  setState(() {});
-
-                                  // mockSizeAdds!.forEach((element) {
-                                  //   return print(element.name);
-                                  // });
-                                },
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                ),
-                                icon: SvgPicture.asset(
-                                    'assets/icons/dropdown.svg'),
-                                position: PopupMenuPosition.under,
-                                offset: const Offset(0, 0),
-                                itemBuilder: (
-                                  BuildContext bc,
-                                ) {
-                                  return const [
-                                    PopupMenuItem(
-                                      value: '₽',
-                                      child: Text(
-                                        'Российский рубль (RUB)',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                    PopupMenuItem(
-                                      value: '₸',
-                                      child: Text(
-                                        'Казахстанский тенге (KZT)',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                    PopupMenuItem(
-                                      value: '₽',
-                                      child: Text(
-                                        'Белорусский рубль (BYN)',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                  ];
-                                },
-                              ),
+                              SizedBox(width: 5),
+                              InkWell(
+                                  onTap: () {
+                                    final List<CatsModel> _currency = [
+                                      CatsModel(
+                                          id: 0,
+                                          name: 'Российский рубль (RUB)'),
+                                      CatsModel(
+                                          id: 1,
+                                          name: 'Казахстанский тенге (KZT)'),
+                                      CatsModel(
+                                          id: 2,
+                                          name: 'Белорусский рубль (BYN)'),
+                                    ];
+                                    showSellerCatsOptions(
+                                      context,
+                                      'Валюта',
+                                      _currency,
+                                      false,
+                                      (value) {
+                                        final CatsModel _data = value;
+                                        if (_data.id! == 0) {
+                                          currencyName = '₽';
+                                        } else if (_data.id == 1) {
+                                          currencyName = '₸';
+                                        } else if (_data.id == 2) {
+                                          currencyName = 'BYN';
+                                        }
+                                        setState(() {});
+                                      },
+                                    );
+                                  },
+                                  child: SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: Image.asset(
+                                        Assets.icons.dropDownIcon.path,
+                                        scale: 2.1),
+                                  )),
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+
                 if (filledCount == 1)
-                  SizedBox(
-                    width: double.infinity,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: FieldsProductRequest(
-                              titleText: 'Скидка ,% ',
-                              hintText: 'Введите размер скидки',
-                              star: true,
-                              arrow: false,
-                              controller: compoundController,
-                              textInputNumber: true),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: FieldsProductRequest(
+                          titleText: 'Скидка ,% ',
+                          hintText: 'Введите размер скидки',
+                          star: true,
+                          arrow: false,
+                          controller: compoundController,
+                          textInputNumber: true,
+                          errorText: fieldStep1Errors['compound'],
                         ),
-                        SizedBox(width: 6),
-                        Container(
-                          width: 96,
-                          height: 42,
-                          padding: EdgeInsets.all(6),
-                          margin: EdgeInsets.only(top: 12),
-                          decoration: BoxDecoration(
-                              color: AppColors.kBackgroundColor,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(compoundValue),
-                              PopupMenuButton(
-                                onSelected: (value) {
-                                  compoundValue = value;
-
-                                  setState(() {});
-
-                                  // mockSizeAdds!.forEach((element) {
-                                  //   return print(element.name);
-                                  // });
-                                },
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                ),
-                                icon: SvgPicture.asset(
-                                    'assets/icons/dropdown.svg'),
-                                position: PopupMenuPosition.under,
-                                offset: const Offset(0, 0),
-                                itemBuilder: (
-                                  BuildContext bc,
-                                ) {
-                                  return const [
-                                    PopupMenuItem(
-                                      value: '₽',
-                                      child: Text(
-                                        'Рубль, ₽',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                    PopupMenuItem(
-                                      value: ' % ',
-                                      child: Text(
-                                        'Процент, % ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
+                      ),
+                      SizedBox(width: 4),
+                      Container(
+                        width: 96,
+                        height: 52,
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: 14),
+                        decoration: BoxDecoration(
+                            color: Color(0xffEAECED),
+                            borderRadius: BorderRadius.circular(16)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(compoundValue),
+                            SizedBox(width: 5),
+                            InkWell(
+                                onTap: () {
+                                  final List<CatsModel> _nds = [
+                                    CatsModel(id: 0, name: 'Рубль, ₽'),
+                                    CatsModel(id: 1, name: 'Процент, %'),
                                   ];
+
+                                  showSellerCatsOptions(
+                                    context,
+                                    'Скидка',
+                                    _nds,
+                                    false,
+                                    (value) {
+                                      final CatsModel _data = value;
+                                      if (_data.name! == 'Рубль, ₽') {
+                                        compoundValue = '₽';
+                                      } else {
+                                        compoundValue = '%';
+                                      }
+                                      setState(() {});
+                                    },
+                                  );
                                 },
-                              ),
-                            ],
-                          ),
+                                child: SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: Image.asset(
+                                      Assets.icons.dropDownIcon.path,
+                                      scale: 2.1),
+                                )),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
 
                 if (filledCount == 1)
                   FieldsProductRequest(
                     titleText: 'НДС (налог на добавленную стоимость)',
-                    hintText: 'Введите НДС',
+                    hintText: 'Выберите НДС',
                     star: true,
                     arrow: true,
+                    readOnly: true,
                     controller: ndsController,
                     textInputNumber: true,
+                    errorText: fieldStep1Errors['nds'],
                     onPressed: () async {
-                      if (_brands.isEmpty) {
-                        _brands = await BlocProvider.of<BrandCubit>(context)
-                            .brandsList();
-                      }
-
                       final List<CatsModel> _nds = [
                         CatsModel(id: 0, name: '5 %'),
                         CatsModel(id: 1, name: '7 %'),
@@ -976,12 +1018,15 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                         context,
                         'Выбор НДС',
                         _nds,
+                        false,
                         (value) {
                           final CatsModel _data = value;
 
                           setState(() {
                             ndsController.text = _data.name!;
                           });
+
+                          print(_data.name!);
 
                           // print(value);
                           // BlocProvider.of<BrandCubit>(context)
@@ -1001,16 +1046,19 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     arrow: false,
                     controller: pointsController,
                     textInputNumber: true,
+                    errorText: fieldStep1Errors['point'],
                   ),
 
                 if (filledCount == 1)
                   FieldsProductRequest(
-                      titleText: 'Вознаграждение блогеру ,% ',
-                      hintText: 'Введите вознаграждение ',
-                      star: true,
-                      arrow: false,
-                      controller: pointsBloggerController,
-                      textInputNumber: true),
+                    titleText: 'Вознаграждение блогеру ,% ',
+                    hintText: 'Введите вознаграждение ',
+                    star: true,
+                    arrow: false,
+                    controller: pointsBloggerController,
+                    textInputNumber: true,
+                    errorText: fieldStep1Errors['pointBlogger'],
+                  ),
                 if (filledCount == 1)
                   BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
                       builder: (context, state) {
@@ -1064,15 +1112,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     }
                   }),
 
-                // if (filledCount == 2)
-                //   const Text(
-                //     'Общие характеристики',
-                //     style: TextStyle(
-                //         color: AppColors.kGray900,
-                //         fontSize: 16,
-                //         fontWeight: FontWeight.w700),
-                //   ),
-
                 if (filledCount == 1)
                   FieldsProductRequest(
                     titleText: 'Количество в наличии ',
@@ -1081,15 +1120,15 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     arrow: false,
                     controller: countController,
                     textInputNumber: true,
+                    errorText: fieldStep1Errors['count'],
                   ),
                 if (filledCount == 1)
                   Container(
-                    height: 82,
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 15),
                     decoration: BoxDecoration(
-                        color: AppColors.kGray2,
-                        borderRadius: BorderRadius.circular(8)),
+                        color: Color(0xffEAECED),
+                        borderRadius: BorderRadius.circular(16)),
                     alignment: Alignment.center,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1102,60 +1141,40 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                             children: [
                               const Text(
                                 'Разрешить предзаказ',
-                                style: TextStyle(
-                                    color: AppColors.kLightBlackColor,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
+                                style: AppTextStyles.size16Weight600,
                               ),
-                              const Text(
+                              Text(
                                 'Если товара нет в наличии — можно ли оформить заказ?',
-                                style: TextStyle(
-                                    color: AppColors.kLightBlackColor,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w300),
+                                style: AppTextStyles.size14Weight400
+                                    .copyWith(color: Color(0xff808080)),
                                 maxLines: 2,
                               ),
                             ],
                           ),
                         ),
-                        Theme(
-                          data: Theme.of(context).copyWith(
-                            switchTheme: SwitchThemeData(
-                              trackOutlineWidth: MaterialStateProperty.all(
-                                  0), // Полностью убираем границу
-                            ),
-                          ),
-                          child: Switch(
-                            onChanged: toggleSwitchBs,
+                        AppSwitch(
                             value: isSwitchedBs,
-                            activeColor: AppColors.kWhite,
-                            activeTrackColor: AppColors.mainPurpleColor,
-                            inactiveThumbColor: AppColors.kGray300,
-                            inactiveTrackColor: AppColors.kGray2,
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                          ),
-                        )
+                            onChanged: (v) => toggleSwitchBs(v)
+                            //  setState(() => isSwitchedBs = v)
+                            ),
                       ],
                     ),
                   ),
 
                 if (filledCount == 1) SizedBox(height: 100),
-                SizedBox(height: 20),
                 if (filledCount == 2)
                   SizedBox(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 10),
                         Container(
                           height: 82,
                           width: double.infinity,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
+                              horizontal: 16, vertical: 15),
                           decoration: BoxDecoration(
                               color: AppColors.kGray2,
-                              borderRadius: BorderRadius.circular(8)),
+                              borderRadius: BorderRadius.circular(16)),
                           alignment: Alignment.center,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1166,43 +1185,22 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
+                                    Text(
                                       'Включить продажу оптом',
-                                      style: TextStyle(
-                                          color: AppColors.kLightBlackColor,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600),
+                                      style: AppTextStyles.size16Weight600,
                                     ),
-                                    const Text(
+                                    Text(
                                       'Доступно только для партнёров платформы',
-                                      style: TextStyle(
-                                          color: AppColors.kLightBlackColor,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w300),
+                                      style: AppTextStyles.size14Weight400
+                                          .copyWith(color: Color(0xff808080)),
                                       maxLines: 2,
                                     ),
                                   ],
                                 ),
                               ),
-                              Theme(
-                                data: Theme.of(context).copyWith(
-                                  switchTheme: SwitchThemeData(
-                                    trackOutlineWidth:
-                                        MaterialStateProperty.all(
-                                            0), // Полностью убираем границу
-                                  ),
-                                ),
-                                child: Switch(
-                                  onChanged: toggleSwitchOptom,
+                              AppSwitch(
                                   value: isSwitchedOptom,
-                                  activeColor: AppColors.kWhite,
-                                  activeTrackColor: AppColors.mainPurpleColor,
-                                  inactiveThumbColor: AppColors.kGray300,
-                                  inactiveTrackColor: AppColors.kGray2,
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
-                              )
+                                  onChanged: (v) => toggleSwitchOptom(v)),
                             ],
                           ),
                         ),
@@ -1332,7 +1330,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                       ],
                     ),
                   ),
-                if (filledCount == 2) SizedBox(height: 5),
+                if (filledCount == 2) SizedBox(height: 12),
                 if (filledCount == 2)
                   SizedBox(
                     height: optomCount.length * 115,
@@ -1495,16 +1493,14 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                           color: GetStorage().read('seller_partner') == '1'
                               ? AppColors.mainBackgroundPurpleColor
                               : Colors.grey,
-                          borderRadius: BorderRadius.circular(8)),
+                          borderRadius: BorderRadius.circular(16)),
                       alignment: Alignment.center,
                       width: double.infinity,
-                      height: 38,
-                      child: const Text(
-                        '+ Добавить оптом',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.mainPurpleColor),
+                      height: 40,
+                      child: Text(
+                        '+ Добавить',
+                        style: AppTextStyles.size16Weight600
+                            .copyWith(color: AppColors.mainPurpleColor),
                       ),
                     ),
                   ),
@@ -2460,273 +2456,172 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                 //  height: 10,
                 //  ),
                 if (filledCount == 4)
-                  const Text(
-                    'Прикрепите фото',
-                    style: TextStyle(
-                        color: AppColors.kGray900,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700),
-                  ),
-                if (filledCount == 4)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (filledCount == 4)
-                          const Text(
-                            'Формат - jpg, png',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12,
-                                color: AppColors.kGray900),
-                          ),
-                        if (filledCount == 4)
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        if (filledCount == 4)
-                          Row(
-                            children: [
-                              GestureDetector(
-                                  onTap: () {
-                                    Get.defaultDialog(
-                                        title: "Изменить фото",
-                                        middleText: '',
-                                        textConfirm: 'Камера',
-                                        textCancel: 'Фото',
-                                        titlePadding:
-                                            const EdgeInsets.only(top: 40),
-                                        onConfirm: () {
-                                          change = true;
-                                          setState(() {
-                                            change;
-                                          });
-                                          _getImage();
-                                        },
-                                        onCancel: () {
-                                          change = false;
-                                          setState(() {
-                                            change;
-                                          });
-                                          _getImage();
-                                        });
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Прикрепите фото',
+                        style: AppTextStyles.size16Weight600,
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Row(
+                        children: [
+                          GestureDetector(
+                              onTap: () {
+                                final List<Map<String, String>> options = [
+                                  {
+                                    'title': 'Выбрать из галереи',
+                                    'iconPath': Assets.icons.galleryIcon.path,
                                   },
-                                  child: Container(
-                                    height: 92,
-                                    width: 92,
-                                    decoration: BoxDecoration(
-                                        color: AppColors.kGray2,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.camera_alt,
-                                          color: change == false
-                                              ? AppColors.mainPurpleColor
-                                              : AppColors.kGray300,
-                                        ),
-                                      ],
-                                    ),
-                                  )),
-                              SizedBox(width: 8),
-                              _image.isNotEmpty
-                                  ? SizedBox(
-                                      width: 240,
-                                      height: 92,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: _image.length,
-                                        itemExtent:
-                                            100, // Fixed width for each item
-                                        physics:
-                                            const ClampingScrollPhysics(), // Better control than Bouncing
-                                        padding: EdgeInsets.zero,
-                                        shrinkWrap:
-                                            false, // Important for scrolling
-                                        primary:
-                                            false, // Приятная физика прокрутки
-                                        itemBuilder: (context, index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                              right: 8,
-                                            ), // Отступ между изображениями
-                                            child: Stack(
-                                              clipBehavior: Clip
-                                                  .none, // Позволяет иконке выходить за границы
-                                              children: [
-                                                // Контейнер с изображением
-                                                Container(
-                                                  height: 92,
-                                                  width: 92,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
+                                  {
+                                    'title': 'Открыть камеру',
+                                    'iconPath': Assets.icons.cameraIcon.path,
+                                  },
+                                ];
+                                showUploadMediaPicker(
+                                    context, 'Загрузить видео', options,
+                                    (value) {
+                                  context.router.pop();
+                                  switch (value) {
+                                    case 'Выбрать из галереи':
+                                      change = false;
+                                      setState(() {
+                                        change;
+                                      });
+                                      _getImage();
+                                      break;
+                                    case 'Открыть камеру':
+                                      change = true;
+                                      setState(() {
+                                        change;
+                                      });
+                                      _getImage();
+                                      break;
+                                  }
+                                });
+                              },
+                              child: DottedBorder(
+                                dashPattern: [4, 4],
+                                strokeWidth: 1,
+                                color: Color(0xff8E8E93),
+                                radius: Radius.circular(16),
+                                borderType: BorderType.RRect,
+                                child: Container(
+                                  height: 120,
+                                  width: 120,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: Color(0xffEAECED),
+                                      borderRadius: BorderRadius.circular(16)),
+                                  child: Image.asset(
+                                    Assets.icons.cameraAddIcon.path,
+                                    color: AppColors.mainPurpleColor,
+                                    height: 32,
+                                    width: 32,
+                                  ),
+                                ),
+                              )),
+                          SizedBox(width: 8),
+                          _image.isNotEmpty
+                              ? SizedBox(
+                                  width: 235,
+                                  height: 120,
+                                  child: ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: EdgeInsets.zero,
+                                    physics: const ClampingScrollPhysics(),
+                                    itemCount: _image.length,
+                                    separatorBuilder: (_, __) =>
+                                        const SizedBox(width: 8),
+                                    itemBuilder: (context, index) {
+                                      return SizedBox(
+                                        width: 120,
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                  border: Border.all(
+                                                    width: 1,
+                                                    color: Color(0xff8E8E93),
+                                                  )),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                child: Image.file(
+                                                  File(_image[index]!.path),
+                                                  width: 120,
+                                                  height: 120,
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (context, error,
+                                                          stackTrace) =>
+                                                      Container(
                                                     color: Colors.grey[200],
-                                                  ),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    child: Image.file(
-                                                      File(_image[index]!.path),
-                                                      fit: BoxFit.cover,
-                                                      errorBuilder: (context,
-                                                              error,
-                                                              stackTrace) =>
-                                                          Container(
-                                                        color: Colors.grey[200],
-                                                        child: const Icon(
-                                                            Icons.broken_image,
-                                                            color: Colors.grey),
-                                                      ),
-                                                    ),
+                                                    child: const Icon(
+                                                        Icons.broken_image,
+                                                        color: Colors.grey),
                                                   ),
                                                 ),
-
-                                                // Кнопка удаления
-                                                Positioned(
-                                                  top: 35,
-                                                  right: 35,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      _image.removeAt(index);
-                                                      setState(() {
-                                                        _image;
-                                                      });
-                                                    },
-                                                    child: Container(
-                                                      width: 24,
-                                                      height: 24,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.grey,
-                                                        shape: BoxShape.circle,
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors.black
-                                                                .withOpacity(
-                                                                    0.2),
-                                                            blurRadius: 4,
-                                                            offset:
-                                                                const Offset(
-                                                                    0, 2),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      child: const Icon(
-                                                        Icons.close,
-                                                        color: Colors.white,
-                                                        size: 16,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                              ),
                                             ),
-                                          );
-                                        },
-                                      ),
-                                    )
-                                  : SizedBox()
-                              // ? SizedBox(
-                              //     height: 100,
-                              //     width: 1000,
-                              //     child: ListView.builder(
-                              //       shrinkWrap: true,
-                              //       scrollDirection: Axis.horizontal,
-                              //       itemCount: _image.length,
-                              //       itemBuilder: (context, index) {
-                              //         return Stack(children: [
-                              //           Container(
-                              //             height: 92,
-                              //             width: 92,
-                              //             child: Image.file(
-                              //               File(_image[index]!.path),
-                              //             ),
-                              //           ),
-                              //           Positioned(
-                              //             top: 35,
-                              //             right: 35,
-                              //             child: GestureDetector(
-                              //               onTap: () {
-                              //                 _image.removeAt(index);
-                              //                 setState(() {
-                              //                   _image;
-                              //                 });
-                              //               },
-                              //               child: const Icon(
-                              //                 Icons.delete_outline_outlined,
-                              //                 color: Colors.grey,
-                              //               ),
-                              //             ),
-                              //           ),
-                              //         ]);
-                              //       },
-                              //     ),
-                              //   )
-                              // : Container(),
-                            ],
-                          ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        if (filledCount == 4)
-                          const Text(
-                            'Минимальный/максимальный размер одной из сторон: от 500 до 2000 пикселей;- Основная фотография должна быть студийного качества на белом фоне без водяных знаков;- Минимальное/максимальное количество фотографий в карточке: от 3 до 5',
-                            style: TextStyle(
-                                color: AppColors.kGray300,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400),
-                          )
-                      ],
-                    ),
+                                            Center(
+                                              child: GestureDetector(
+                                                onTap: () => setState(() =>
+                                                    _image.removeAt(index)),
+                                                child: Container(
+                                                  width: 28,
+                                                  height: 28,
+                                                  alignment: Alignment.center,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: Colors.white,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Image.asset(
+                                                    Assets.icons.trashGreyIcon
+                                                        .path,
+                                                    width: 16,
+                                                    height: 16,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                )
+                              : SizedBox.shrink()
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        'Загрузите до 30 фото (800×800 px, белый фон)',
+                        style: AppTextStyles.size13Weight500
+                            .copyWith(color: Color(0xff636366)),
+                      )
+                    ],
                   ),
-                if (filledCount == 4)
-                  const SizedBox(
-                    height: 10,
-                  ),
-                if (filledCount == 4)
-                  const Text(
-                    'Прикрепите видео',
-                    style: TextStyle(
-                        color: AppColors.kGray900,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700),
-                  ),
+
                 if (filledCount == 4)
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0, bottom: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Формат - mp4, mov',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                              color: AppColors.kGray900),
+                        const SizedBox(
+                          height: 24,
                         ),
-                        // if (_video != null &&
-                        //     _controller != null &&
-                        //     _controller!.value.isInitialized)
-                        //   Padding(
-                        //     padding: const EdgeInsets.only(top: 10),
-                        //     child: Center(
-                        //       child: SizedBox(
-                        //         height: 200,
-                        //         child: AspectRatio(
-                        //           aspectRatio: _controller!.value.aspectRatio,
-                        //           child: ClipRRect(
-                        //               borderRadius: BorderRadius.circular(12),
-                        //               child: VideoPlayer(_controller!)),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
+                        const Text(
+                          'Прикрепите видео',
+                          style: AppTextStyles.size16Weight600,
+                        ),
                         const SizedBox(
                           height: 10,
                         ),
@@ -2734,102 +2629,113 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                Get.defaultDialog(
-                                    title: "Изменить видео",
-                                    middleText: '',
-                                    textConfirm: 'Камера',
-                                    textCancel: 'Видео',
-                                    titlePadding:
-                                        const EdgeInsets.only(top: 40),
-                                    onConfirm: () {
-                                      change = true;
-                                      setState(() {
-                                        change;
-                                      });
-                                      _getVideo();
-                                    },
-                                    onCancel: () {
+                                if (_video != null) {
+                                  _removeVideo();
+                                  return;
+                                }
+                                final List<Map<String, String>> options = [
+                                  {
+                                    'title': 'Выбрать из галереи',
+                                    'iconPath': Assets.icons.galleryIcon.path,
+                                  },
+                                  {
+                                    'title': 'Открыть камеру',
+                                    'iconPath': Assets.icons.cameraIcon.path,
+                                  },
+                                ];
+                                showUploadMediaPicker(
+                                    context, 'Загрузить видео', options,
+                                    (value) {
+                                  context.router.pop();
+                                  switch (value) {
+                                    case 'Выбрать из галереи':
                                       change = false;
                                       setState(() {
                                         change;
                                       });
                                       _getVideo();
-                                    });
+                                      break;
+                                    case 'Открыть камеру':
+                                      change = true;
+                                      setState(() {
+                                        change;
+                                      });
+                                      _getVideo();
+                                      break;
+                                  }
+                                });
                               },
-                              child: Container(
-                                height: 92,
-                                width: 92,
-                                decoration: BoxDecoration(
-                                    color: AppColors.kGray2,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(
-                                        Assets.icons.videoSellerIcon.path,
-                                        color: AppColors.mainPurpleColor),
-                                  ],
+                              child: DottedBorder(
+                                dashPattern: [4, 4],
+                                strokeWidth: 1,
+                                color: Color(0xff8E8E93),
+                                radius: Radius.circular(16),
+                                borderType: BorderType.RRect,
+                                child: Container(
+                                  height: 120,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                      color: Color(0xffEAECED),
+                                      borderRadius: BorderRadius.circular(16)),
+                                  child: (_video != null &&
+                                          _controller != null &&
+                                          _controller!.value.isInitialized)
+                                      ? Stack(
+                                          children: [
+                                            Center(
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                child: AspectRatio(
+                                                  aspectRatio: _controller!
+                                                      .value.aspectRatio,
+                                                  child:
+                                                      VideoPlayer(_controller!),
+                                                ),
+                                              ),
+                                            ),
+                                            Center(
+                                              child: Container(
+                                                width: 28,
+                                                height: 28,
+                                                alignment: Alignment.center,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Image.asset(
+                                                  Assets
+                                                      .icons.trashGreyIcon.path,
+                                                  width: 16,
+                                                  height: 16,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : Center(
+                                          child: Image.asset(
+                                            Assets.icons.uploadVideoIcon.path,
+                                            color: AppColors.mainPurpleColor,
+                                            scale: 2.1,
+                                          ),
+                                        ),
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10),
-                            if (_video != null &&
-                                _controller != null &&
-                                _controller!.value.isInitialized)
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 8,
-                                ), // Отступ между изображениями
-                                child: Container(
-                                  height: 92,
-                                  width: 92,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Colors.grey[200],
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: AspectRatio(
-                                      aspectRatio:
-                                          _controller!.value.aspectRatio,
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          child: VideoPlayer(_controller!)),
-                                    ),
-                                  ),
-                                ),
-                              )
                           ],
                         ),
                         const SizedBox(
                           height: 8,
                         ),
-                        const Text(
-                          'Разрешение — 1080×1350 px — для горизонтального; 566×1080 px — для вертикального; Расширение — mov, mp4; jpg, png; Размер — 4 ГБ — для видео, 30 МБ — для фото; Длительность — от 3 до 60 секунд.',
-                          style: TextStyle(
-                              color: AppColors.kGray300,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
+                        Text(
+                          'Формат Reels (1080×1920 px, до 30 сек)',
+                          style: AppTextStyles.size13Weight500
+                              .copyWith(color: Color(0xFF636366)),
                         ),
                       ],
                     ),
                   ),
-                if (filledCount == 4)
-                  const SizedBox(
-                    height: 20,
-                  ),
-                // const FieldsProductRequest(
-                //   titleText: 'Магазин ',
-                //   hintText: 'Магазин',
-                //   star: false,
-                //   arrow: false,
-                // ),
-                if (filledCount == 4)
-                  const SizedBox(
-                    height: 80,
-                  ),
-
                 if (filledCount == 5)
                   Container(
                     width: 166,
@@ -2839,8 +2745,8 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: AppColors.kGray2,
-                      borderRadius: BorderRadius.circular(8),
+                      color: Color(0xffF7F7F7),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -2851,46 +2757,35 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                           style: AppTextStyles.counterSellerProfileTextStyle,
                           textAlign: TextAlign.start,
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 16),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Круглый чекбокс с анимацией
                             SizedBox(
                               width: 24,
                               height: 24,
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(12),
-                                  onTap: () => toggleCheckboxFBS(!isCheckedFBS),
-                                  child: AnimatedContainer(
-                                    duration: const Duration(milliseconds: 200),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: !isCheckedFBS
-                                          ? AppColors.mainPurpleColor
-                                          : Colors.transparent,
-                                      border: Border.all(
-                                        color: !isCheckedFBS
-                                            ? AppColors.mainPurpleColor
-                                            : Colors.grey,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    child: !isCheckedFBS
-                                        ? const Icon(
-                                            Icons.check,
-                                            size: 16,
-                                            color: Colors.white,
-                                          )
-                                        : null,
+                              child: InkWell(
+                                onTap: () => toggleCheckboxFBS(!isCheckedFBS),
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 180),
+                                  curve: Curves.easeOut,
+                                  constraints: const BoxConstraints.tightFor(
+                                      width: 24, height: 24),
+                                  child: Image.asset(
+                                    !isCheckedFBS
+                                        ? Assets.icons.defaultCheckIcon.path
+                                        : Assets.icons.defaultUncheckIcon.path,
+                                    color: !isCheckedFBS
+                                        ? AppColors.mainPurpleColor
+                                        : Color(0xffD1D1D6),
+                                    scale: 1.5,
+                                    height: 32,
+                                    width: 32,
                                   ),
                                 ),
                               ),
                             ),
                             const SizedBox(width: 8),
-                            // Текст с переносами
                             Expanded(
                               child: RichText(
                                 text: TextSpan(
@@ -2904,8 +2799,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                                     TextSpan(
                                       text: 'FBS (realFBS)',
                                       style: TextStyle(
-                                          fontWeight:
-                                              FontWeight.w600), // жирный
+                                          fontWeight: FontWeight.w600),
                                     ),
                                     TextSpan(
                                       text:
@@ -2925,41 +2819,31 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Круглый чекбокс с анимацией
                             SizedBox(
                               width: 24,
                               height: 24,
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(12),
-                                  onTap: () => toggleCheckboxFBS(!isCheckedFBS),
-                                  child: AnimatedContainer(
-                                    duration: const Duration(milliseconds: 200),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: isCheckedFBS
-                                          ? AppColors.mainPurpleColor
-                                          : Colors.transparent,
-                                      border: Border.all(
-                                        color: isCheckedFBS
-                                            ? AppColors.mainPurpleColor
-                                            : Colors.grey,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    child: isCheckedFBS
-                                        ? const Icon(
-                                            Icons.check,
-                                            size: 16,
-                                            color: Colors.white,
-                                          )
-                                        : null,
+                              child: InkWell(
+                                onTap: () => toggleCheckboxFBS(!isCheckedFBS),
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 180),
+                                  curve: Curves.easeOut,
+                                  constraints: const BoxConstraints.tightFor(
+                                      width: 24, height: 24),
+                                  child: Image.asset(
+                                    isCheckedFBS
+                                        ? Assets.icons.defaultCheckIcon.path
+                                        : Assets.icons.defaultUncheckIcon.path,
+                                    color: isCheckedFBS
+                                        ? AppColors.mainPurpleColor
+                                        : Color(0xffD1D1D6),
+                                    scale: 1.5,
+                                    height: 32,
+                                    width: 32,
                                   ),
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            SizedBox(width: 8),
                             Expanded(
                               child: RichText(
                                 text: TextSpan(
@@ -3033,12 +2917,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                   ),
                 if (filledCount == 5) const SizedBox(height: 60),
 
-                // if (filledCount == 6)
-                //   Text(
-                //     'География продаж:',
-                //     style: AppTextStyles.defaultButtonTextStyle
-                //         .copyWith(fontSize: 16, fontWeight: FontWeight.w600),
-                //   ),
                 if (filledCount == 6) SizedBox(height: 10),
                 if (filledCount == 6)
                   FieldsProductRequest(
@@ -3049,7 +2927,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     hintColor: false,
                     onPressed: () {
                       showSellerCatsOptions(
-                          context, 'Выбор локации', _locations, (value) {
+                          context, 'Выбор локации', _locations, false, (value) {
                         final CatsModel data = value;
 
                         if (data.name == 'Регион') {
@@ -3082,7 +2960,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                       if (_locationSelect == 'Регион' ||
                           _locationSelect == 'Город/населенный пункт') {
                         showSellerCatsOptions(
-                            context, _locationSelect, _regions, (value) {
+                            context, _locationSelect, _regions, false, (value) {
                           setState(() {
                             cats = value;
 
@@ -3107,108 +2985,92 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
               child: CircularProgressIndicator(color: Colors.indigoAccent));
         }
       }),
-      bottomSheet: Container(
-        color: Colors.white,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
-        child: InkWell(
-          onTap: () async {
-            filledCount = filledCount > 0 ? filledCount + 1 : 0;
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+          child: SizedBox(
+            height: 52,
+            child: InkWell(
+              onTap: () async {
+                if (!_ensureStep1Valid()) return;
 
-            if (filledCount == 1) {
-              title = 'Основная информация';
-            }
-            if (filledCount == 2) {
-              title = 'Способ реализации';
-            }
-            if (filledCount == 3) {
-              title = 'Описание';
-            }
-            if (filledCount == 4) {
-              title = 'Фото и видео';
-            }
-            if (filledCount == 5) {
-              title = 'Условия продажи';
-            }
-            if (filledCount == 6) {
-              title = 'Локация';
-            }
-            setState(() {});
+                increaseProgress();
+                if (filledCount == 7) {
+                  List<int> subIds = [];
+                  if (subCharacteristicsValue?.isNotEmpty ?? false) {
+                    for (var e in subCharacteristicsValue!) {
+                      subIds.add(e.id!.toInt());
+                    }
+                  }
+                  isChangeState = true;
+                  if (_image.isNotEmpty &&
+                      nameController.text.isNotEmpty &&
+                      priceController.text.isNotEmpty &&
+                      countController.text.isNotEmpty &&
+                      // brands?.id != 0 &&
+                      colors?.id != 0) {
+                    if (fulfillment == 'realFbs') {
+                      if (widthController.text.isEmpty ||
+                          heightController.text.isEmpty ||
+                          deepController.text.isEmpty ||
+                          massaController.text.isEmpty) {
+                        filledCount--;
+                        setState(() {});
+                        Get.snackbar(
+                            "Ошибка Доставка", "Заполните данные для доставки",
+                            backgroundColor: Colors.orangeAccent);
+                        return;
+                      }
+                    }
 
-            if (filledCount == 7) {
-              List<int> subIds = [];
-
-              if (subCharacteristicsValue?.isNotEmpty ?? false) {
-                for (var e in subCharacteristicsValue!) {
-                  subIds.add(e.id!.toInt());
-                }
-              }
-
-              isChangeState = true;
-              if (_image.isNotEmpty &&
-                  nameController.text.isNotEmpty &&
-                  priceController.text.isNotEmpty &&
-                  countController.text.isNotEmpty &&
-                  // brands?.id != 0 &&
-                  colors?.id != 0) {
-                if (fulfillment == 'fbs') {
-                  if (widthController.text.isEmpty ||
-                      heightController.text.isEmpty ||
-                      deepController.text.isEmpty ||
-                      massaController.text.isEmpty) {
-                    Get.snackbar(
-                        "Ошибка Доставка", "Заполните данные для доставки",
+                    await BlocProvider.of<ProductSellerCubit>(context).store(
+                        priceController.text,
+                        countController.text,
+                        compoundController.text,
+                        cats?.id.toString() ?? '',
+                        subCats?.id == null ? null : subCats?.id.toString(),
+                        brands?.id == null ? null : brands?.id.toString(),
+                        colors?.id.toString() ?? '',
+                        descriptionController.text,
+                        nameController.text,
+                        heightController.text,
+                        widthController.text,
+                        massaController.text,
+                        pointsController.text,
+                        pointsBloggerController.text,
+                        articulController.text,
+                        currencyName,
+                        isSwitchedBs,
+                        deepController.text,
+                        _image,
+                        optomCount,
+                        sizeCount,
+                        fulfillment,
+                        subIds,
+                        _video != null ? _video!.path : null);
+                  } else {
+                    filledCount--;
+                    setState(() {});
+                    Get.snackbar("Ошибка", "Заполните данные",
                         backgroundColor: Colors.orangeAccent);
-                    return;
                   }
                 }
-
-                await BlocProvider.of<ProductSellerCubit>(context).store(
-                    priceController.text,
-                    countController.text,
-                    compoundController.text,
-                    cats!.id.toString(),
-                    subCats?.id == null ? null : subCats?.id.toString(),
-                    brands?.id == null ? null : brands?.id.toString(),
-                    colors!.id.toString(),
-                    descriptionController.text,
-                    nameController.text,
-                    heightController.text,
-                    widthController.text,
-                    massaController.text,
-                    pointsController.text,
-                    pointsBloggerController.text,
-                    articulController.text,
-                    currencyName,
-                    isSwitchedBs,
-                    deepController.text,
-                    _image,
-                    optomCount,
-                    sizeCount,
-                    fulfillment,
-                    subIds,
-                    _video != null ? _video!.path : null);
-              } else {
-                Get.snackbar("Ошибка", "Заполните данные",
-                    backgroundColor: Colors.orangeAccent);
-              }
-            }
-          },
-          child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.mainPurpleColor,
-              ),
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(16),
-              child: const Text(
-                'Далее',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
-                textAlign: TextAlign.center,
-              )),
+              },
+              child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: AppColors.mainPurpleColor,
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Далее',
+                    style: AppTextStyles.size18Weight600
+                        .copyWith(color: AppColors.kWhite),
+                    textAlign: TextAlign.center,
+                  )),
+            ),
+          ),
         ),
       ),
     );
@@ -3226,7 +3088,8 @@ class FieldsProductRequest extends StatefulWidget {
   final bool? textInputNumber;
   final bool readOnly;
   final void Function()? onPressed;
-  final int? maxLines; // добавили
+  final int? maxLines;
+  final String? errorText;
 
   const FieldsProductRequest({
     required this.hintText,
@@ -3240,7 +3103,8 @@ class FieldsProductRequest extends StatefulWidget {
     Key? key,
     this.onPressed,
     this.readOnly = false,
-    this.maxLines, // добавили
+    this.maxLines,
+    this.errorText,
   }) : super(key: key);
 
   @override
@@ -3248,46 +3112,62 @@ class FieldsProductRequest extends StatefulWidget {
 }
 
 class _FieldsProductRequestState extends State<FieldsProductRequest> {
+  void _handleTap() {
+    if (widget.onPressed != null) widget.onPressed!();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4.0, bottom: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                widget.titleText,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: AppColors.kGray900),
-              ),
-              widget.star == true
-                  ? const Text(
-                      '*',
-                      style: TextStyle(
+    final bool isReadOnlyEffective =
+        (widget.hintColor == false || widget.hintColor == null)
+            ? widget.readOnly
+            : true;
+
+    final hasError = widget.errorText != null;
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: widget.onPressed, // клик по всей области (заголовок + поле)
+      child: Padding(
+        padding: const EdgeInsets.only(top: 0.0, bottom: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(hasError ? widget.errorText! : widget.titleText,
+                    style: AppTextStyles.size13Weight500.copyWith(
+                        color: hasError
+                            ? AppColors.mainRedColor
+                            : Color(0xFF636366))),
+                widget.star
+                    ? const Text(
+                        ' *',
+                        style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 12,
-                          color: Colors.red),
-                    )
-                  : Container()
-            ],
-          ),
-          const SizedBox(height: 4),
-          Container(
-            decoration: BoxDecoration(
-                color: AppColors.kGray2,
-                borderRadius: BorderRadius.circular(10)),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 14.0),
+                          color: AppColors.mainRedColor,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+              ],
+            ),
+            const SizedBox(height: 8),
+            // Если хотите рипл по всему полю — можно обернуть в Material+InkWell (см. ниже)
+            Container(
+              height:
+                  (widget.maxLines == null || widget.maxLines == 1) ? 52 : null,
+              decoration: BoxDecoration(
+                color: hasError ? AppColors.kWhite : const Color(0xFFEAECED),
+                borderRadius: BorderRadius.circular(16),
+                border: hasError
+                    ? Border.all(color: AppColors.mainRedColor, width: 1.0)
+                    : null,
+              ),
               child: TextField(
                 controller: widget.controller,
-                readOnly:
-                    (widget.hintColor == false || widget.hintColor == null)
-                        ? widget.readOnly
-                        : true,
+                readOnly: isReadOnlyEffective,
+                onTap: isReadOnlyEffective ? _handleTap : null,
                 keyboardType: (widget.maxLines != null && widget.maxLines! > 1)
                     ? TextInputType.multiline
                     : ((widget.textInputNumber == false ||
@@ -3295,32 +3175,41 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
                         ? TextInputType.text
                         : const TextInputType.numberWithOptions(
                             signed: true, decimal: true)),
-                maxLines: widget.maxLines ?? 1, // вот оно
+                style: AppTextStyles.size16Weight400,
+                maxLines: widget.maxLines ?? 1,
                 decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 14,
+                  ),
                   border: InputBorder.none,
                   hintText: widget.hintText,
-                  hintStyle: TextStyle(
-                      color:
-                          (widget.hintColor == null || widget.hintColor != true)
-                              ? const Color.fromRGBO(194, 197, 200, 1)
-                              : Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
-                  enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                  hintStyle: AppTextStyles.size16Weight400.copyWith(
+                    color: hasError
+                        ? AppColors.mainRedColor
+                        : (widget.hintColor == null || widget.hintColor != true)
+                            ? const Color(0xFF8E8E93)
+                            : const Color(0xFF0F0F0F),
                   ),
-                  suffixIcon: widget.arrow == true
-                      ? IconButton(
-                          onPressed: widget.onPressed,
-                          icon: SvgPicture.asset('assets/icons/back_menu.svg',
-                              color: Colors.grey),
+                  suffixIconConstraints: const BoxConstraints(
+                    minWidth: 24,
+                    minHeight: 24,
+                  ),
+                  suffixIcon: widget.arrow
+                      ? InkWell(
+                          onTap: _handleTap,
+                          child: Image.asset(
+                            Assets.icons.dropDownIcon.path,
+                            scale: 2.1,
+                          ),
                         )
-                      : const SizedBox(),
+                      : const SizedBox.shrink(),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

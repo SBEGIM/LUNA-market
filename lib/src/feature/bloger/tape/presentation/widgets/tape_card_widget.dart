@@ -60,7 +60,7 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(8),
       child: Stack(
         children: [
           Positioned.fill(
@@ -74,7 +74,7 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
                     child: AspectRatio(
                       aspectRatio: _controller!.value.aspectRatio,
                       child: Opacity(
-                          opacity: widget.tape.isDelete == true ? 0.6 : 1,
+                          opacity: widget.tape.isDelete == true ? 0.4 : 1,
                           child: VideoPlayer(_controller!)),
                     ),
                   )),
@@ -86,13 +86,11 @@ class _BloggerTapeCardPageState extends State<BloggerTapeCardPage> {
                     'Товар \nнедоступен',
                     maxLines: 2,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.kWhite),
+                    style: AppTextStyles.size14Weight600
+                        .copyWith(color: AppColors.kWhite),
                   ),
                 )
-              : const SizedBox(),
+              : const SizedBox.shrink(),
           // Padding(
           //   padding: const EdgeInsets.only(right: 8.0, top: 8),
           //   child: Align(

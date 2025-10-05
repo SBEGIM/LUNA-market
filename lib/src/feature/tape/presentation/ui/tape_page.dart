@@ -246,7 +246,6 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
                     onLoading: _loadMore,
                     child: GridView.builder(
                       cacheExtent: 10000,
-                      padding: const EdgeInsets.all(0.5),
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 150,

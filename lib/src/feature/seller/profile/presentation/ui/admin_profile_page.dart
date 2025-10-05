@@ -8,7 +8,9 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
+import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/show_module_profile_widget.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/client_show_image_list_widget.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_edit_admin_cubit.dart'
     as editCubit;
 import 'package:haji_market/src/feature/seller/profile/presentation/ui/seller_show_list_widget.dart';
@@ -21,7 +23,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../drawer/presentation/ui/about_us_page.dart';
 import '../../data/bloc/profile_statics_admin_cubit.dart';
-import '../../data/bloc/profile_statics_admin_state.dart';
 
 @RoutePage()
 class ProfileAdminPage extends StatefulWidget {
@@ -140,21 +141,45 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       width: 100,
                       child: GestureDetector(
                         onTap: () {
-                          Get.defaultDialog(
-                            title: "Изменить фото",
-                            middleText: '',
-                            textConfirm: 'Камера',
-                            textCancel: 'Галерея',
-                            titlePadding: const EdgeInsets.only(top: 40),
-                            onConfirm: () {
-                              change = true;
-                              _getImage(context);
-                            },
-                            onCancel: () {
-                              change = false;
-                              _getImage(context);
-                            },
-                          );
+                          showClientImageOptions(
+                              context, false, 'Изменить фото профиля',
+                              (value) async {
+                            if (value == 'image') {
+                              final ok = await showAccountAlert(context,
+                                  title: 'Изменить фото',
+                                  message: 'Изменить фото',
+                                  mode: AccountAlertMode.confirm,
+                                  cancelText: 'Галерея',
+                                  primaryText: 'Камера',
+                                  primaryColor: Colors.red);
+
+                              if (ok == true) {
+                                change = true;
+                                _getImage(context);
+                              } else {
+                                change = false;
+                                _getImage(context);
+                              }
+                              // Get.defaultDialog(
+                              //   title: "Изменить фото",
+                              //   middleText: '',
+                              //   textConfirm: 'Камера',
+                              //   textCancel: 'Галерея',
+                              //   titlePadding:
+                              //       const EdgeInsets.only(top: 40),
+                              //   onConfirm: () {
+                              //     change = true;
+                              //     _getImage(context);
+                              //   },
+                              //   onCancel: () {
+                              //     change = false;
+                              //     _getImage(context);
+                              //   },
+                              // );
+                            } else {
+                              Navigator.of(context).pop();
+                            }
+                          });
                         },
                         child: Stack(
                           children: [
@@ -383,8 +408,32 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       iconPath: Assets.icons.about.path,
                     ),
                     buildProfileItem(
-                      onTap: () => launch("https://t.me/LUNAmarketAdmin",
-                          forceSafariVC: false),
+                      onTap: () {
+                        final List<String> options = [
+                          'Whats App',
+                          'Telegram',
+                          'Email'
+                        ];
+                        showModuleProfile(context, 'Техподдержка', options,
+                            (value) {
+                          switch (value) {
+                            case 'Whats App':
+                              launch("https://t.me/LUNAmarketAdmin",
+                                  forceSafariVC: false);
+                              // do something
+                              break;
+                            case 'Telegram':
+                              launch("https://t.me/LUNAmarketAdmin",
+                                  forceSafariVC: false);
+                              // do something else
+                              break;
+                            case 'Email':
+                              launch("http://Lunamarket@inbox.ru",
+                                  forceSafariVC: false);
+                              break;
+                          }
+                        });
+                      },
                       title: 'Техподдержка',
                       iconPath: Assets.icons.supportCenter.path,
                     ),
@@ -413,15 +462,15 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                     //   title: 'Вернутся в маркет',
                     //   iconPath: Assets.icons.sellerBack.path,
                     // ),
-                    SizedBox(height: 10),
 
                     buildProfileItem(
                       onTap: () =>
                           showSellerSettingOptions(context, 'Настройка', () {}),
                       title: 'Настройка',
-                      count: 3,
+                      count: 4,
                       iconPath: Assets.icons.settingIcon.path,
                     ),
+                    SizedBox(height: 40)
                     // DefaultButton(
                     //     text: 'Выйти из аккаунта ',
                     //     textStyle: AppTextStyles.defaultButtonTextStyle,
@@ -438,9 +487,6 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                     //     color: Colors.black,
                     //     backgroundColor: AppColors.kButtonColor,
                     //     width: 358),
-                    SizedBox(
-                      height: 20,
-                    )
                   ],
                 ),
               ),
@@ -531,7 +577,7 @@ Widget buildProfileItem({
   return InkWell(
     onTap: onTap,
     child: Padding(
-      padding: const EdgeInsets.only(top: 8.0, right: 15, left: 15),
+      padding: const EdgeInsets.only(top: 16.0, right: 16, left: 18),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -543,14 +589,9 @@ Widget buildProfileItem({
                 width: 40,
               ),
               const SizedBox(width: 12),
-              Text(
-                title,
-                style: const TextStyle(
-                  color: AppColors.kGray900,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+              Text(title,
+                  style: AppTextStyles.size16Weight600
+                      .copyWith(color: Color(0xFF3A3A3C))),
             ],
           ),
           switchWidget == true
@@ -565,22 +606,25 @@ Widget buildProfileItem({
                   ),
                 )
               : (count == null
-                  ? const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 14,
-                      color: AppColors.arrowColor,
+                  ? SizedBox(
+                      width: 8,
+                      height: 14,
+                      child: Image.asset(
+                          Assets.icons.defaultArrowForwardIcon.path),
                     )
                   : Row(
                       children: [
                         Text(
                           '$count',
-                          style: AppTextStyles.size16Weight400,
+                          style: AppTextStyles.size16Weight400
+                              .copyWith(color: Color(0xFF3A3A3C)),
                         ),
-                        SizedBox(width: 6),
-                        const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
-                          color: AppColors.arrowColor,
+                        SizedBox(width: 16),
+                        SizedBox(
+                          width: 8,
+                          height: 14,
+                          child: Image.asset(
+                              Assets.icons.defaultArrowForwardIcon.path),
                         )
                       ],
                     ))

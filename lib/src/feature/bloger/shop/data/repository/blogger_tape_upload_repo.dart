@@ -16,6 +16,7 @@ class UploadApi {
   Future<void> uploadVideo(String product_id, video) async {
     String token = _box.read('blogger_token');
 
+    print('bloc $product_id');
     final body = {"product_id": product_id, "access_token": token};
     final header = {"Authorization": "Bearer $token"};
 

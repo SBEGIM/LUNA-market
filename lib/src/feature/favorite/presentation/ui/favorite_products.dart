@@ -60,7 +60,7 @@ class _FavoriteProductsCardWidgetState
           width: 358,
           padding: const EdgeInsets.only(left: 4, top: 4, bottom: 4),
           decoration: BoxDecoration(
-            color: AppColors.kBackgroundColor,
+            color: Color(0xffF7F7F7),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
@@ -434,7 +434,7 @@ class _FavoriteProductsCardWidgetState
                               height: 25,
                               decoration: BoxDecoration(
                                 color: count < 1
-                                    ? AppColors.kGray300
+                                    ? Color(0xFFD1D1D6)
                                     : AppColors.mainPurpleColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),

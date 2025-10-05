@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/detail_tape_card_page.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/tape_card_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -12,7 +12,6 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../bloc/tape_blogger_cubit.dart';
 import '../../bloc/tape_blogger_state.dart';
 
-// import '../widgets/grid_tape_list.dart';
 @RoutePage()
 class TapeBloggerPage extends StatefulWidget {
   const TapeBloggerPage({super.key});
@@ -39,284 +38,175 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.kWhite,
+      appBar: AppBar(
         backgroundColor: AppColors.kWhite,
-        appBar: AppBar(
-          // iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: AppColors.kWhite,
-          elevation: 0,
-
-          title: const Text(
-            "Мои обзоры",
-            style: AppTextStyles.defaultAppBarTextStyle,
-          ),
-        ),
-        body: ListView(
-          children: [
-            Container(
-              height: 44,
-              alignment: Alignment.center,
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Color(0xffEAECED),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    Assets.icons.defaultSearchIcon.path,
-                    height: 20,
-                    width: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      onChanged: (value) {
-                        // BlocProvider.of<TapeBloggerCubit>(context).searchShops(value);
-                      },
-                      controller: searchController,
-                      keyboardType: TextInputType.text,
-                      style: AppTextStyles.size16Weight400,
-                      decoration: InputDecoration(
-                        isCollapsed: true,
-                        border: InputBorder.none,
-                        hintText: 'Поиск',
-                        hintStyle: AppTextStyles.size16Weight400
-                            .copyWith(color: Color(0xFF8E8E93)),
-                        contentPadding: EdgeInsets.zero,
+        elevation: 0,
+        title: const Text("Мои обзоры",
+            style: AppTextStyles.defaultAppBarTextStyle),
+      ),
+      body: SmartRefresher(
+        controller: refreshController,
+        enablePullDown: true,
+        onRefresh: () {
+          context.read<TapeBloggerCubit>().tapes(false, false, '');
+          refreshController.refreshCompleted();
+        },
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics()),
+          slivers: [
+            // Поисковая строка
+            SliverToBoxAdapter(
+              child: Container(
+                height: 44,
+                alignment: Alignment.center,
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: const Color(0xffEAECED),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(Assets.icons.defaultSearchIcon.path,
+                        height: 20, width: 20),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: TextField(
+                        controller: searchController,
+                        keyboardType: TextInputType.text,
+                        style: AppTextStyles.size16Weight400,
+                        decoration: InputDecoration(
+                          isCollapsed: true,
+                          border: InputBorder.none,
+                          hintText: 'Поиск',
+                          hintStyle: AppTextStyles.size16Weight400
+                              .copyWith(color: const Color(0xFF8E8E93)),
+                          contentPadding: EdgeInsets.zero,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 20),
-            SizedBox(
-              height: 1000,
-              child: BlocConsumer<TapeBloggerCubit, TapeBloggerState>(
-                  listener: (context, state) {},
-                  builder: (context, state) {
-                    if (state is ErrorState) {
-                      return Center(
-                        child: Text(
-                          state.message,
-                          style: const TextStyle(
-                              fontSize: 20.0, color: Colors.grey),
-                        ),
-                      );
-                    }
-                    if (state is LoadingState) {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                              color: Colors.indigoAccent));
-                    }
-                    if (state is NoDataState) {
-                      return SizedBox(
-                        width: MediaQuery.of(context).size.height,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Container(
-                                margin: const EdgeInsets.only(top: 146),
-                                child: Image.asset('assets/icons/no_data.png')),
-                            const Text(
-                              'В ленте нет данных',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w600),
-                              textAlign: TextAlign.center,
+            const SliverToBoxAdapter(child: SizedBox(height: 20)),
+
+            // Контент состояний
+            BlocConsumer<TapeBloggerCubit, TapeBloggerState>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                if (state is LoadingState) {
+                  return const SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Center(
+                        child: CircularProgressIndicator(
+                            color: Colors.indigoAccent)),
+                  );
+                }
+
+                if (state is ErrorState) {
+                  return const SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Center(
+                        child: Text('Ошибка загрузки',
+                            style: TextStyle(fontSize: 18))),
+                  );
+                }
+
+                if (state is NoDataState) {
+                  return SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        SizedBox(height: 16),
+                        Text('В ленте нет данных',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w600),
+                            textAlign: TextAlign.center),
+                        SizedBox(height: 8),
+                        Text('По вашему запросу ничего не найдено',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff717171)),
+                            textAlign: TextAlign.center),
+                      ],
+                    ),
+                  );
+                }
+
+                if (state is LoadedState) {
+                  return SliverPadding(
+                    padding: EdgeInsets.only(
+                      left: 0,
+                      right: 0,
+                      bottom: 16 +
+                          MediaQuery.of(context)
+                              .padding
+                              .bottom, // чтобы последняя карточка была видна
+                    ),
+                    sliver: SliverGrid(
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 150,
+                        childAspectRatio: 1 / 2,
+                        mainAxisSpacing: 1,
+                        crossAxisSpacing: 1,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final item = state.tapeModel[index];
+                          return Shimmer(
+                            duration: const Duration(seconds: 3),
+                            interval: const Duration(microseconds: 1),
+                            color: Colors.white,
+                            colorOpacity: 0,
+                            enabled: true,
+                            direction: const ShimmerDirection.fromLTRB(),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.black.withOpacity(1.0),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  context.router.push(
+                                      DetailTapeBloggerCardRoute(
+                                          index: index,
+                                          tapeId: item.tapeId,
+                                          tape: item,
+                                          tapeBloc:
+                                              context.read<TapeBloggerCubit>(),
+                                          shopName: item.shop!.name));
+                                },
+                                child: BloggerTapeCardPage(
+                                    tape: item, index: index),
+                              ),
                             ),
-                            const Text(
-                              'По вашему запросу ничего не найдено',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff717171)),
-                              textAlign: TextAlign.center,
-                            )
-                          ],
-                        ),
-                      );
-                    }
-
-                    if (state is LoadedState) {
-                      return SmartRefresher(
-                        controller: refreshController,
-                        onRefresh: () {
-                          BlocProvider.of<TapeBloggerCubit>(context)
-                              .tapes(false, false, '');
-                          refreshController.refreshCompleted();
+                          );
                         },
-                        child: GridView.builder(
-                          cacheExtent: 10000,
-                          padding: const EdgeInsets.all(0),
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 150,
-                            childAspectRatio: 1 / 2,
-                            mainAxisSpacing: 2,
-                            crossAxisSpacing: 3,
-                          ),
-                          itemCount: state.tapeModel.length,
-                          // children: const [],
-                          itemBuilder: (context, index) {
-                            return Shimmer(
-                              duration:
-                                  const Duration(seconds: 3), //Default value
-                              interval: const Duration(
-                                  microseconds:
-                                      1), //Default value: Duration(seconds: 0)
-                              color: Colors.white, //Default value
-                              colorOpacity: 0, //Default value
-                              enabled: true, //Default value
-                              direction: const ShimmerDirection
-                                  .fromLTRB(), //Default Value
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Colors.black.withOpacity(1.0),
-                                  ),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Get.to(DetailTapeBloggerCardPage(
-                                        index: index,
-                                        tapeId: state.tapeModel[index].tapeId,
-                                        tape: state.tapeModel[index],
-                                        tapeBloc:
-                                            BlocProvider.of<TapeBloggerCubit>(
-                                                context),
-                                        shopName:
-                                            state.tapeModel[index].shop!.name,
-                                      ));
-                                    },
-                                    child: BloggerTapeCardPage(
-                                      tape: state.tapeModel[index],
-                                      index: index,
-                                    ),
-                                  )),
-                            );
-                          },
-                        ),
-                      );
+                        childCount: state.tapeModel.length,
+                      ),
+                    ),
+                  );
+                }
 
-                      // return GridView.builder(
-                      //   padding: const EdgeInsets.all(1),
-                      //   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      //     maxCrossAxisExtent: 150,
-                      //     childAspectRatio: 1 / 2,
-                      //     mainAxisSpacing: 3,
-                      //     crossAxisSpacing: 3,
-                      //   ),
-                      //   itemCount: state.tapeModel.length,
-                      //   // children: const [],
-                      //   itemBuilder: (context, index) {
-                      //     return Stack(
-                      //       children: [
-                      //         Image.asset('assets/images/tape.png'),
-                      //         Image.network(
-                      //           "https://lunamarket.ru/storage/${state.tapeModel[index].image}",
-                      //         ),
-                      //         Align(
-                      //           alignment: Alignment.bottomCenter,
-                      //           child: Container(
-                      //             width: MediaQuery.of(context).size.width,
-                      //             color: Colors.transparent.withOpacity(0.4),
-                      //             child: Text(
-                      //               '${state.tapeModel[index].name}',
-                      //               textAlign: TextAlign.center,
-                      //               style: const TextStyle(
-                      //                   color: Colors.white,
-                      //                   fontSize: 12,
-                      //                   fontWeight: FontWeight.w600),
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         Padding(
-                      //           padding: const EdgeInsets.only(right: 5.0, top: 5),
-                      //           child: Align(
-                      //               alignment: Alignment.topRight,
-                      //               child: Container(
-                      //                   decoration: BoxDecoration(
-                      //                       color: Colors.white,
-                      //                       borderRadius: BorderRadius.circular(10)),
-                      //                   padding: const EdgeInsets.all(3),
-                      //                   child: InkWell(
-                      //                     onTap: () {
-                      //                       showAlertTapeWidget(context);
-                      //                       // showAlertStaticticsWidget(context);
-                      //                     },
-                      //                     child: const Icon(
-                      //                       Icons.more_vert_outlined,
-                      //                       color: AppColors.kPrimaryColor,
-                      //                     ),
-                      //                   ))),
-                      //         ),
-                      //       ],
-                      //     );
-                      //   },
-                      // );
-                    } else {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                              color: Colors.indigoAccent));
-                    }
-                  }),
+                // fallback
+                return const SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Center(
+                      child: CircularProgressIndicator(
+                          color: Colors.indigoAccent)),
+                );
+              },
             ),
           ],
-        ));
-
-    //  GridView(
-    //   padding: const EdgeInsets.all(1),
-    //   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-    //     maxCrossAxisExtent: 150,
-    //     childAspectRatio: 1 / 2,
-    //     mainAxisSpacing: 3,
-    //     crossAxisSpacing: 3,
-    //   ),
-    //   children: [
-    //     Stack(
-    //       children: [
-    //         Image.asset('assets/images/tape.png'),
-    //         Align(
-    //           alignment: Alignment.bottomCenter,
-    //           child: Container(
-    //             width: MediaQuery.of(context).size.width,
-    //             color: Colors.transparent.withOpacity(0.4),
-    //             child: const Text(
-    //               'ZARA',
-    //               textAlign: TextAlign.center,
-    //               style: TextStyle(
-    //                   color: Colors.white,
-    //                   fontSize: 12,
-    //                   fontWeight: FontWeight.w600),
-    //             ),
-    //           ),
-    //         ),
-    //         Padding(
-    //           padding: const EdgeInsets.only(right: 5.0, top: 5),
-    //           child: Align(
-    //               alignment: Alignment.topRight,
-    //               child: Container(
-    //                   decoration: BoxDecoration(
-    //                       color: Colors.white,
-    //                       borderRadius: BorderRadius.circular(10)),
-    //                   padding: const EdgeInsets.all(3),
-    //                   child: InkWell(
-    //                     onTap: () {
-    //                       showAlertTapeWidget(context);
-    //                       // showAlertStaticticsWidget(context);
-    //                     },
-    //                     child: const Icon(
-    //                       Icons.more_vert_outlined,
-    //                       color: AppColors.kPrimaryColor,
-    //                     ),
-    //                   ))),
-    //         ),
-    //       ],
-    //     ),
-    //   ],
-    // ),
-    //);
+        ),
+      ),
+    );
   }
 }

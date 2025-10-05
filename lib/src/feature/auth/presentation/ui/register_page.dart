@@ -67,6 +67,16 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() {});
   }
 
+  Map<String, String?> fieldErrors = {
+    'lastName': null,
+    'middleName': null,
+    'firstName': null,
+    'phone': null,
+    'email': null,
+    'password': null,
+    'repeatPassword': null,
+  };
+
   @override
   void initState() {
     countrySellerDto = CountrySellerDto(
@@ -74,6 +84,18 @@ class _RegisterPageState extends State<RegisterPage> {
     if (BlocProvider.of<metaCubit.MetaCubit>(context).state
         is! metaState.LoadedState) {
       BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+    }
+
+    for (final c in [
+      userFirstNameController,
+      userLastNameController,
+      middleNameController,
+      phoneControllerRegister,
+      emailController,
+      passwordController,
+      repeatPasswordController,
+    ]) {
+      c.addListener(() => setState(() {}));
     }
     super.initState();
   }
@@ -114,6 +136,110 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   List<String> metasBody = [];
+
+  String? _validateStep1Error() {
+    final first = userFirstNameController.text.trim();
+    final last = userLastNameController.text.trim();
+    final middle = middleNameController.text.trim();
+
+    if (last.isEmpty && first.isEmpty && middle.isEmpty)
+      return 'Заполните фамилию и имя';
+    if (last.isEmpty) return 'Заполните фамилию';
+    if (first.isEmpty) return 'Заполните имя';
+    if (middle.isEmpty) return 'Заполните отчество';
+
+    return null;
+  }
+
+  void _validateStep1Fields() {
+    setState(() {
+      fieldErrors['lastName'] =
+          userLastNameController.text.trim().isEmpty ? 'Введите фамилию' : null;
+      fieldErrors['middleName'] =
+          middleNameController.text.trim().isEmpty ? 'Введите отчество' : null;
+      fieldErrors['firstName'] =
+          userFirstNameController.text.trim().isEmpty ? 'Введите имя' : null;
+    });
+  }
+
+  String? _validateStep2Error() {
+    final rawDigits =
+        phoneControllerRegister.text.replaceAll(RegExp(r'[^0-9]'), '');
+    if (rawDigits.length != 10) return 'Введите корректный номер телефона';
+
+    final email = emailController.text.trim();
+    if (email.isEmpty) return 'Введите Email';
+    final emailOk = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(email);
+    if (!emailOk) return 'Некорректный Email';
+
+    final pass = passwordController.text;
+    final rep = repeatPasswordController.text;
+    if (pass.isEmpty) return 'Введите пароль';
+    if (pass.length < 6) return 'Пароль должен быть не короче 6 символов';
+    if (rep.isEmpty) return 'Повторите пароль';
+    if (pass != rep) return 'Пароли не совпадают';
+
+    if (!isChecked) return 'Подтвердите соглашение';
+    return null;
+  }
+
+  void _validateStep2Fields() {
+    final phone =
+        phoneControllerRegister.text.replaceAll(RegExp(r'[^0-9]'), '');
+    final email = emailController.text.trim();
+    final pass = passwordController.text;
+    final rep = repeatPasswordController.text;
+
+    setState(() {
+      fieldErrors['phone'] =
+          phone.length != 10 ? 'Введите корректный номер телефона' : null;
+      fieldErrors['email'] = email.isEmpty
+          ? 'Введите Email'
+          : (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(email)
+              ? 'Некорректный Email'
+              : null);
+      fieldErrors['password'] =
+          pass.length < 6 ? 'Пароль слишком короткий' : null;
+      fieldErrors['repeatPassword'] =
+          rep != pass ? 'Пароли не совпадают' : null;
+    });
+  }
+
+  bool _ensureStep1Valid() {
+    final msg = _validateStep1Error();
+    if (msg != null) {
+      AppSnackBar.show(context, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
+  }
+
+  bool _ensureStep2Valid() {
+    final msg = _validateStep2Error();
+    if (msg != null) {
+      AppSnackBar.show(context, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
+  }
+
+  bool get _canProceed {
+    if (filledSegments == 1) return _validateStep1Error() == null;
+    return _validateStep2Error() == null;
+  }
+
+  @override
+  void dispose() {
+    userFirstNameController.dispose();
+    userLastNameController.dispose();
+    middleNameController.dispose();
+    nameControllerRegister.dispose();
+    phoneControllerRegister.dispose();
+    passwordController.dispose();
+    repeatPasswordController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -221,6 +347,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         star: false,
                         arrow: false,
                         controller: userLastNameController,
+                        errorText: fieldErrors['lastName'],
                       ),
                       FieldsCoopRequest(
                         titleText: 'Имя',
@@ -228,6 +355,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         star: false,
                         arrow: false,
                         controller: userFirstNameController,
+                        errorText: fieldErrors['firstName'],
                       ),
                       FieldsCoopRequest(
                         titleText: 'Отчество',
@@ -235,6 +363,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         star: false,
                         arrow: false,
                         controller: middleNameController,
+                        errorText: fieldErrors['middleName'],
                       ),
                     ],
                   )),
@@ -300,6 +429,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               decoration: BoxDecoration(
                                 color: AppColors.kGray2,
                                 borderRadius: BorderRadius.circular(16),
+                                border: fieldErrors['phone'] != null
+                                    ? Border.all(color: Colors.red, width: 1.0)
+                                    : null,
                               ),
                               child: TextField(
                                 controller: phoneControllerRegister,
@@ -325,6 +457,15 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ],
                       ),
+                      if (fieldErrors['phone'] != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0, left: 4),
+                          child: Text(
+                            fieldErrors['phone']!,
+                            style: const TextStyle(
+                                color: Colors.red, fontSize: 12),
+                          ),
+                        ),
                       SizedBox(height: 12),
                       // FieldsCoopRequest(
                       //   titleText: 'Мобильный телефон ',
@@ -340,6 +481,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         star: false,
                         arrow: false,
                         controller: emailController,
+                        errorText: fieldErrors['email'],
                       ),
 
                       Row(
@@ -360,6 +502,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         decoration: BoxDecoration(
                           color: AppColors.kGray2,
                           borderRadius: BorderRadius.circular(16),
+                          border: fieldErrors['password'] != null
+                              ? Border.all(color: Colors.red, width: 1.0)
+                              : null,
                         ),
                         alignment: Alignment.center,
                         child: Row(
@@ -400,6 +545,15 @@ class _RegisterPageState extends State<RegisterPage> {
                           ],
                         ),
                       ),
+                      if (fieldErrors['password'] != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0, left: 4),
+                          child: Text(
+                            fieldErrors['password']!,
+                            style: const TextStyle(
+                                color: Colors.red, fontSize: 12),
+                          ),
+                        ),
                       SizedBox(height: 12),
                       Row(
                         children: [
@@ -419,6 +573,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         decoration: BoxDecoration(
                           color: AppColors.kGray2,
                           borderRadius: BorderRadius.circular(16),
+                          border: fieldErrors['repeatPassword'] != null
+                              ? Border.all(color: Colors.red, width: 1.0)
+                              : null,
                         ),
                         alignment: Alignment.center,
                         child: Row(
@@ -460,6 +617,15 @@ class _RegisterPageState extends State<RegisterPage> {
                           ],
                         ),
                       ),
+                      if (fieldErrors['repeatPassword'] != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0, left: 4),
+                          child: Text(
+                            fieldErrors['repeatPassword']!,
+                            style: const TextStyle(
+                                color: Colors.red, fontSize: 12),
+                          ),
+                        ),
                     ],
                   )),
               Visibility(
@@ -584,16 +750,14 @@ class _RegisterPageState extends State<RegisterPage> {
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         child: DefaultButton(
-            backgroundColor:
-                // (nameControllerRegister.text.isNotEmpty &&
-                //         phoneControllerRegister.text.length >= 17 &&
-                //         passwordControllerRegister.text.isNotEmpty)
-                //     ? AppColors.mainPurpleColor
-                //     : const Color(0xFFD6D8DB),
-
-                AppColors.mainPurpleColor,
+            backgroundColor: _canProceed
+                ? AppColors.mainPurpleColor
+                : const Color(0xFFD6D8DB),
             text: filledCount == 1 ? 'Далее' : 'Зарегистрироваться',
             press: () {
+              _validateStep1Fields();
+
+              if (!_ensureStep1Valid()) return;
               nameControllerRegister.text = '${userFirstNameController.text} '
                   '${userLastNameController.text} '
                   '${middleNameController.text}';
@@ -607,14 +771,16 @@ class _RegisterPageState extends State<RegisterPage> {
                   });
                   return;
                 }
-              } else {
-                final RegisterDTO registerDTO = RegisterDTO(
-                    name: nameControllerRegister.text,
-                    phone: phoneControllerRegister.text,
-                    password: passwordController.text);
-                final register = BlocProvider.of<RegisterCubit>(context);
-                register.register(context, registerDTO);
               }
+              _validateStep2Fields();
+              if (!_ensureStep2Valid()) return;
+
+              final RegisterDTO registerDTO = RegisterDTO(
+                  name: nameControllerRegister.text,
+                  phone: phoneControllerRegister.text,
+                  password: passwordController.text);
+              final register = BlocProvider.of<RegisterCubit>(context);
+              register.register(context, registerDTO);
             },
             color: Colors.white,
             width: double.infinity),
@@ -634,23 +800,27 @@ class FieldsCoopRequest extends StatelessWidget {
   final VoidCallback? onPressed;
   final String? icon;
   final TextEditingController? controller;
+  final String? errorText; // 🆕 добавили
 
-  const FieldsCoopRequest(
-      {super.key,
-      required this.hintText,
-      required this.titleText,
-      required this.star,
-      required this.arrow,
-      this.controller,
-      this.onPressed,
-      this.readOnly = false,
-      this.number,
-      this.trueColor = false,
-      this.icon});
+  const FieldsCoopRequest({
+    super.key,
+    required this.hintText,
+    required this.titleText,
+    required this.star,
+    required this.arrow,
+    this.controller,
+    this.onPressed,
+    this.readOnly = false,
+    this.number,
+    this.trueColor = false,
+    this.icon,
+    this.errorText,
+  });
 
   @override
   Widget build(BuildContext context) {
     final bool tapMode = onPressed != null;
+    final hasError = errorText != null;
 
     return Material(
       color: Colors.transparent,
@@ -664,9 +834,11 @@ class FieldsCoopRequest extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(titleText,
-                      style: AppTextStyles.size13Weight500
-                          .copyWith(color: Color(0xFF636366))),
+                  Text(hasError ? errorText! : titleText,
+                      style: AppTextStyles.size13Weight500.copyWith(
+                          color: hasError
+                              ? AppColors.mainRedColor
+                              : Color(0xFF636366))),
                   if (!star)
                     const Text('*',
                         style: TextStyle(fontSize: 12, color: Colors.red)),
@@ -678,6 +850,9 @@ class FieldsCoopRequest extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.kGray2,
                   borderRadius: BorderRadius.circular(16),
+                  border: hasError
+                      ? Border.all(color: AppColors.mainRedColor, width: 1.0)
+                      : null,
                 ),
                 child: TextField(
                   controller: controller,
@@ -694,8 +869,9 @@ class FieldsCoopRequest extends StatelessWidget {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: hintText,
-                    contentPadding: const EdgeInsets.all(
-                      16,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
                     ),
                     hintStyle: AppTextStyles.size16Weight400
                         .copyWith(color: Color(0xFF8E8E93)),
@@ -716,7 +892,7 @@ class FieldsCoopRequest extends StatelessWidget {
                         : const SizedBox.shrink(),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

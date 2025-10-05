@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/edit_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/edit_blogger_statet.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
+import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_login_phone_widget.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 // import '../../auth/bloc/edit_blogger_cubit.dart';
 // import '../../auth/bloc/edit_blogger_statet.dart';
 
@@ -23,7 +28,8 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   final maskFormatter = MaskTextInputFormatter(mask: '+#(###)-###-##-##');
   final nameController = TextEditingController();
   final nickNameController = TextEditingController();
-  final phoneController = TextEditingController();
+  TextEditingController phoneController =
+      MaskedTextController(mask: '(000)-000-00-00');
   final passwordController = TextEditingController();
   final iinController = TextEditingController();
   final socialNetworkController = TextEditingController();
@@ -33,10 +39,15 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
 
   final _box = GetStorage();
   bool change = false;
-  XFile? _image;
-  final ImagePicker _picker = ImagePicker();
   bool _obscureText = true;
   bool _obscureTextRepeat = true;
+
+  CountrySellerDto? countrySellerDto;
+
+  Map<String, String?> fieldErrors = {
+    'phone': null,
+    'password': null,
+  };
 
   @override
   void initState() {
@@ -45,8 +56,10 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
   }
 
   void _initializeControllers() {
+    countrySellerDto = CountrySellerDto(
+        code: '+7', flagPath: Assets.icons.ruFlagIcon.path, name: 'Россия');
     nameController.text = _box.read('blogger_name') ?? '';
-    phoneController.text = _box.read('blogger_phone') ?? '';
+    phoneController.text = _box.read('blogger_phone') ?? '(000)-000-00-00';
     nickNameController.text = _box.read('blogger_nick_name') ?? '';
     iinController.text = _box.read('blogger_iin') != 'null'
         ? (_box.read('blogger_iin') ?? '')
@@ -58,14 +71,35 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
         : '';
   }
 
-  Future<void> _getImage() async {
-    final image = change == true
-        ? await _picker.pickImage(source: ImageSource.camera)
-        : await _picker.pickImage(source: ImageSource.gallery);
+  String? _validateError() {
+    final rawDigits = phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
+    if (rawDigits.length != 10) return 'Введите корректный номер телефона';
+
+    final pass = passwordController.text;
+    if (pass.isEmpty) return 'Введите пароль';
+
+    return null;
+  }
+
+  void _validateFields() {
+    final phone = phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
+    final pass = passwordController.text;
 
     setState(() {
-      _image = image;
+      fieldErrors['phone'] =
+          phone.length != 10 ? 'Введите корректный номер телефона' : null;
+
+      fieldErrors['password'] = pass.isEmpty ? 'Введите пароль' : null;
     });
+  }
+
+  bool _ensureValid() {
+    final msg = _validateError();
+    if (msg != null) {
+      AppSnackBar.show(context, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
   }
 
   @override
@@ -93,8 +127,6 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  // _buildProfileHeader(),
-
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 16),
@@ -102,20 +134,19 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Visibility(
-                            visible: widget.title == 'Оснавная информация',
+                            visible: widget.title == 'Основная информация',
                             child: Column(children: [
                               _buildFormField(
                                 controller: nameController,
-                                label: 'Имя и фамилия',
+                                label: 'Фамилия',
                               ),
                               _buildFormField(
-                                controller: iinController,
-                                label: 'ИИН',
-                                keyboardType: TextInputType.number,
+                                controller: nameController,
+                                label: 'Имя',
                               ),
                               _buildFormField(
-                                controller: checkController,
-                                label: 'Счёт',
+                                controller: nameController,
+                                label: 'Отчество',
                               ),
                             ])),
                         Visibility(
@@ -128,7 +159,45 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                               ),
                               _buildFormField(
                                 controller: socialNetworkController,
-                                label: 'Ссылка на соц сеть',
+                                label: 'Ссылка на социальную сеть',
+                              ),
+                            ],
+                          ),
+                        ),
+                        Visibility(
+                          visible: widget.title == 'Юридический статус',
+                          child: Column(
+                            children: [
+                              _buildFormField(
+                                controller: iinController,
+                                label: 'Выберите статус',
+                                keyboardType: TextInputType.number,
+                              ),
+                              _buildFormField(
+                                controller: iinController,
+                                label: 'ИИН',
+                                keyboardType: TextInputType.number,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Visibility(
+                          visible: widget.title == 'Реквизиты банка',
+                          child: Column(
+                            children: [
+                              _buildFormField(
+                                controller: iinController,
+                                label: 'Название банка',
+                                keyboardType: TextInputType.number,
+                              ),
+                              _buildFormField(
+                                controller: iinController,
+                                label: 'БИК банка',
+                                keyboardType: TextInputType.number,
+                              ),
+                              _buildFormField(
+                                controller: checkController,
+                                label: 'Счёт',
                               ),
                             ],
                           ),
@@ -137,37 +206,114 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                           visible: widget.title == 'Контактные данные',
                           child: Column(
                             children: [
-                              _buildFormField(
-                                controller: phoneController,
-                                label: 'Телефон',
-                                keyboardType: TextInputType.phone,
-                                inputFormatters: [maskFormatter],
+                              SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      showSellerLoginPhone(
+                                        context,
+                                        countryCall: (dto) {
+                                          countrySellerDto = dto;
+                                          setState(() {});
+                                        },
+                                      );
+                                    },
+                                    child: Shimmer(
+                                      child: Container(
+                                        height: 52,
+                                        width: 83,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 15),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.kGray2,
+                                          border: fieldErrors['phone'] != null
+                                              ? Border.all(
+                                                  color: AppColors.mainRedColor,
+                                                  width: 1.0)
+                                              : null,
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              countrySellerDto!.flagPath,
+                                              width: 24,
+                                              height: 24,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text('${countrySellerDto!.code}',
+                                                style: AppTextStyles
+                                                    .size16Weight400),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 6),
+                                  // Поле ввода
+                                  Flexible(
+                                    child: Container(
+                                      height: 52,
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 16),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.kGray2,
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: fieldErrors['phone'] != null
+                                            ? Border.all(
+                                                color: AppColors.mainRedColor,
+                                                width: 1.0)
+                                            : null,
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: TextField(
+                                        controller: phoneController,
+                                        keyboardType: TextInputType.phone,
+                                        decoration: InputDecoration(
+                                          hintText: 'Введите номер телефона',
+                                          hintStyle: AppTextStyles
+                                              .size16Weight400
+                                              .copyWith(
+                                                  color: Color(0xFF8E8E93)),
+                                          border: InputBorder.none,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
+                              SizedBox(height: 16),
                               _buildFormField(
                                 controller: emailController,
                                 label: 'Email',
                                 keyboardType: TextInputType.emailAddress,
                               ),
-                              _buildPasswordField(
-                                controller: passwordController,
-                                label: 'Пароль',
-                                obscureText: _obscureText,
-                                onToggle: () {
-                                  setState(() {
-                                    _obscureText = !_obscureText;
-                                  });
-                                },
-                              ),
-                              _buildPasswordField(
-                                controller: reapatPasswordController,
-                                label: 'Подтвердите пароль',
-                                obscureText: _obscureTextRepeat,
-                                onToggle: () {
-                                  setState(() {
-                                    _obscureTextRepeat = !_obscureTextRepeat;
-                                  });
-                                },
-                              ),
+                              // _buildPasswordField(
+                              //   controller: passwordController,
+                              //   label: 'Пароль',
+                              //   obscureText: _obscureText,
+                              //   onToggle: () {
+                              //     setState(() {
+                              //       _obscureText = !_obscureText;
+                              //     });
+                              //   },
+                              // ),
+                              // _buildPasswordField(
+                              //   controller: reapatPasswordController,
+                              //   label: 'Подтвердите пароль',
+                              //   obscureText: _obscureTextRepeat,
+                              //   onToggle: () {
+                              //     setState(() {
+                              //       _obscureTextRepeat = !_obscureTextRepeat;
+                              //     });
+                              //   },
+                              // ),
                             ],
                           ),
                         ),
@@ -186,90 +332,6 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
     );
   }
 
-  Widget _buildProfileHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              if (_image == null) {
-                Get.defaultDialog(
-                  title: "Изменить фото",
-                  middleText: '',
-                  textConfirm: 'Камера',
-                  textCancel: 'Галерея',
-                  titlePadding: const EdgeInsets.only(top: 40),
-                  onConfirm: () {
-                    change = true;
-                    _getImage();
-                  },
-                  onCancel: () {
-                    change = false;
-                    _getImage();
-                  },
-                );
-              }
-            },
-            child: Stack(
-              children: [
-                CircleAvatar(
-                  radius: 40,
-                  backgroundColor: AppColors.kGray200,
-                  backgroundImage: _box.read('blogger_avatar') != null
-                      ? NetworkImage(
-                          "https://lunamarket.ru/storage/${_box.read('blogger_avatar')}")
-                      : const AssetImage('assets/icons/profile2.png')
-                          as ImageProvider,
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: AppColors.kPrimaryColor,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
-                    ),
-                    child: const Icon(Icons.camera_alt,
-                        size: 16, color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  nickNameController.text.isNotEmpty
-                      ? nickNameController.text
-                      : 'Никнейм не найден',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.kGray900,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  emailController.text.isNotEmpty ? emailController.text : '',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: AppColors.kGray500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildFormField({
     required TextEditingController controller,
     required String label,
@@ -281,27 +343,31 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
-          ),
+          Text(label,
+              style: AppTextStyles.size13Weight500
+                  .copyWith(color: Color(0xFF636366))),
           const SizedBox(height: 8),
           Container(
+            height: 52,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             decoration: BoxDecoration(
-              color: Colors.grey.shade200,
+              color: Color(0xffEAECED),
               borderRadius: BorderRadius.circular(16),
             ),
             child: TextField(
-              controller: controller,
-              keyboardType: keyboardType,
-              inputFormatters: inputFormatters,
-              decoration: const InputDecoration.collapsed(hintText: ''),
-              style: const TextStyle(fontSize: 16),
-            ),
+                controller: controller,
+                keyboardType: keyboardType,
+                inputFormatters: inputFormatters,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Введите $label',
+                  hintStyle: AppTextStyles.size16Weight400
+                      .copyWith(color: Color(0xFF8E8E93)),
+                  contentPadding:
+                      EdgeInsets.zero, // Better control over padding
+                  isDense: true,
+                ),
+                style: AppTextStyles.size16Weight400),
           ),
         ],
       ),
@@ -363,16 +429,17 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
 
   Widget _buildSaveButton(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 40),
       width: double.infinity,
+      color: AppColors.kWhite,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.mainPurpleColor,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(16),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 14),
         ),
         onPressed: () async {
           if (nameController.text.isNotEmpty ||
@@ -386,7 +453,7 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
                 passwordController.text,
                 iinController.text,
                 checkController.text,
-                _image?.path,
+                '',
                 '',
                 emailController.text,
                 socialNetworkController.text,
@@ -394,13 +461,10 @@ class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
             }
           }
         },
-        child: const Text(
+        child: Text(
           'Сохранить',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
+          style:
+              AppTextStyles.size18Weight600.copyWith(color: AppColors.kWhite),
         ),
       ),
     );

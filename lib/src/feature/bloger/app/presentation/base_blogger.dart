@@ -10,7 +10,9 @@ import '../../../../core/constant/generated/assets.gen.dart';
 const _tag = 'BaseBloggerNew';
 
 class BaseBlogger extends StatefulWidget {
-  const BaseBlogger({super.key});
+  final int? index;
+
+  const BaseBlogger({super.key, this.index});
 
   @override
   _BaseBloggerState createState() => _BaseBloggerState();
@@ -20,6 +22,7 @@ class _BaseBloggerState extends State<BaseBlogger>
     with TickerProviderStateMixin {
   TabController? tabController;
   int? previousIndex;
+  bool _appliedInitialIndex = false;
 
   @override
   void initState() {
@@ -42,6 +45,8 @@ class _BaseBloggerState extends State<BaseBlogger>
       ],
       backgroundColor: tabController?.index != 1 ? Colors.white : null,
       extendBody: true,
+      homeIndex: widget.index ?? 0,
+
       transitionBuilder: (context, child, animation) {
         return child;
       },
@@ -49,6 +54,15 @@ class _BaseBloggerState extends State<BaseBlogger>
       //   AutoTabsRouter.of(context).setActiveIndex(2);
       // }),
       bottomNavigationBuilder: (_, tabsRouter) {
+        if (!_appliedInitialIndex) {
+          _appliedInitialIndex = true;
+          final idx = widget.index ?? 0;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (idx >= 0 && idx < tabsRouter.pageCount) {
+              tabsRouter.setActiveIndex(idx);
+            }
+          });
+        }
         return Container(
           height: 94,
           decoration: const BoxDecoration(

@@ -105,7 +105,8 @@ class _DetailBloggerTapeCardPageState extends State<DetailTapeBloggerCardPage> {
             padding: const EdgeInsets.only(left: 16.0),
             child: InkWell(
                 onTap: () {
-                  Get.back();
+                  // Get.back();
+                  context.router.pop();
                 },
                 child: Icon(
                   Icons.arrow_back,

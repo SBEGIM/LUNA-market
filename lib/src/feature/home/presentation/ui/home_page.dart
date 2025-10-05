@@ -188,21 +188,23 @@ class _HomePageState extends State<HomePage> {
                                     state.storiesSeelerModel[index].stories)),
                             child: Container(
                               margin: const EdgeInsets.only(left: 5),
-                              padding: const EdgeInsets.all(2),
-                              height: 90,
-                              width: 90,
+                              padding: const EdgeInsets.all(
+                                2,
+                              ),
+                              height: 86,
+                              width: 86,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: index == 0
                                       ? AppColors.mainPurpleColor
-                                      : AppColors.kGray200,
-                                  width: 2,
+                                      : Color(0xffAEAEB2),
+                                  width: index == 0 ? 2 : 1,
                                 ),
-                                borderRadius: BorderRadius.circular(14),
+                                borderRadius: BorderRadius.circular(16),
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(
-                                    12), // 14 - (4 padding + 2 border) = 8, but 10 looks better
+                                    14), // 14 - (4 padding + 2 border) = 8, but 10 looks better
                                 child: Image.network(
                                   "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
                                   fit: BoxFit.cover,

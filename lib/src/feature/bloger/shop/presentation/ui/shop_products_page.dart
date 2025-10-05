@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/shop/bloc/blogger_shop_products_state.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/ui/upload_product_video.dart';
@@ -11,6 +13,7 @@ import '../../../../../core/common/constants.dart';
 import '../../bloc/blogger_shop_products_cubit.dart';
 import 'blogger_products_card_widget.dart';
 
+@RoutePage()
 class ShopProductsBloggerPage extends StatefulWidget {
   String title;
   int id;
@@ -317,9 +320,11 @@ class _ShopProductsBloggerPageState extends State<ShopProductsBloggerPage> {
         child: InkWell(
           onTap: () async {
             if (selectedIndex != 0) {
-              Get.to(() => UploadProductVideoPage(id: selectedIndex));
+              context.pushRoute(UploadProductVideoRoute(id: selectedIndex));
+              // Get.to(() => UploadProductVideoPage(id: selectedIndex));
 
-              selectedIndex = 0;
+              print('select id $selectedIndex');
+              // selectedIndex = 0;
               setState(() {});
             } else {
               AppSnackBar.show(

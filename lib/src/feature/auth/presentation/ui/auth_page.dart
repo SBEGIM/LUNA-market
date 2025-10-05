@@ -43,11 +43,55 @@ class _AuthPageState extends State<AuthPage> {
       MaskedTextController(mask: '(000)-000-00-00');
   TextEditingController passwordControllerAuth = TextEditingController();
 
+  Map<String, String?> fieldErrors = {
+    'phone': null,
+    'password': null,
+  };
+
   @override
   void initState() {
     countrySellerDto = CountrySellerDto(
         code: '+7', flagPath: Assets.icons.ruFlagIcon.path, name: 'Россия');
+
+    for (final c in [
+      phoneControllerAuth,
+      passwordControllerAuth,
+    ]) {
+      c.addListener(() => setState(() {}));
+    }
     super.initState();
+  }
+
+  String? _validateError() {
+    final rawDigits =
+        phoneControllerAuth.text.replaceAll(RegExp(r'[^0-9]'), '');
+    if (rawDigits.length != 10) return 'Введите корректный номер телефона';
+
+    final pass = passwordControllerAuth.text;
+    if (pass.isEmpty) return 'Введите пароль';
+
+    return null;
+  }
+
+  void _validateFields() {
+    final phone = phoneControllerAuth.text.replaceAll(RegExp(r'[^0-9]'), '');
+    final pass = passwordControllerAuth.text;
+
+    setState(() {
+      fieldErrors['phone'] =
+          phone.length != 10 ? 'Введите корректный номер телефона' : null;
+
+      fieldErrors['password'] = pass.isEmpty ? 'Введите пароль' : null;
+    });
+  }
+
+  bool _ensureValid() {
+    final msg = _validateError();
+    if (msg != null) {
+      AppSnackBar.show(context, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
   }
 
   @override
@@ -129,6 +173,9 @@ class _AuthPageState extends State<AuthPage> {
                       decoration: BoxDecoration(
                         color: AppColors.kGray2,
                         borderRadius: BorderRadius.circular(16),
+                        border: fieldErrors['phone'] != null
+                            ? Border.all(color: Colors.red, width: 1.0)
+                            : null,
                       ),
                       child: TextField(
                         controller: phoneControllerAuth,
@@ -146,6 +193,14 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                 ],
               ),
+              if (fieldErrors['phone'] != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0, left: 4),
+                  child: Text(
+                    fieldErrors['phone']!,
+                    style: const TextStyle(color: Colors.red, fontSize: 12),
+                  ),
+                ),
               SizedBox(height: 12),
               Text('Пароль',
                   textAlign: TextAlign.start,
@@ -159,6 +214,9 @@ class _AuthPageState extends State<AuthPage> {
                 decoration: BoxDecoration(
                   color: AppColors.kGray2,
                   borderRadius: BorderRadius.circular(16),
+                  border: fieldErrors['password'] != null
+                      ? Border.all(color: Colors.red, width: 1.0)
+                      : null,
                 ),
                 alignment: Alignment.center,
                 child: Row(
@@ -207,6 +265,14 @@ class _AuthPageState extends State<AuthPage> {
                   ],
                 ),
               ),
+              if (fieldErrors['password'] != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0, left: 4),
+                  child: Text(
+                    fieldErrors['password']!,
+                    style: const TextStyle(color: Colors.red, fontSize: 12),
+                  ),
+                ),
               const SizedBox(
                 height: 36,
               ),
@@ -218,6 +284,9 @@ class _AuthPageState extends State<AuthPage> {
                     backgroundColor: AppColors.mainPurpleColor,
                     text: 'Войти',
                     press: () {
+                      _validateFields();
+
+                      if (!_ensureValid()) return;
                       if (phoneControllerAuth.text.length >= 15 ||
                           passwordControllerAuth.text.isEmpty) {
                         final login = BlocProvider.of<LoginCubit>(context);

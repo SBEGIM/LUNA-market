@@ -8,6 +8,8 @@ class LoadingState extends ProductAdminState {}
 
 class ChangeState extends ProductAdminState {}
 
+class StoreState extends ProductAdminState {}
+
 class LoadedState extends ProductAdminState {
   List<ProductSellerModel> productModel;
   LoadedState(this.productModel);

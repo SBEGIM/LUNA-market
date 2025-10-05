@@ -20,11 +20,15 @@ class _StoryScreenState extends State<StoryScreen> {
   int _currentIndex = 0;
   double _progress = 0.0;
   Timer? _timer;
+  bool _isPaused = false;
+
+  static const _storyDuration = Duration(seconds: 3);
+  static const _tick = Duration(milliseconds: 50);
 
   @override
   void initState() {
     super.initState();
-    _startTimer();
+    _startTimer(resetProgress: true);
   }
 
   @override
@@ -34,15 +38,21 @@ class _StoryScreenState extends State<StoryScreen> {
     super.dispose();
   }
 
-  void _startTimer() {
+  // ===== Таймер прогресса =====
+  void _startTimer({bool resetProgress = false}) {
     _timer?.cancel();
-    _progress = 0.0;
-    const storyDuration = Duration(seconds: 5);
-    const tick = Duration(milliseconds: 50);
+    if (resetProgress) _progress = 0.0;
 
-    _timer = Timer.periodic(tick, (timer) {
+    // Если уже на 100% (например, при быстром тапе) — сразу вперед
+    if (_progress >= 1.0) {
+      _nextStory();
+      return;
+    }
+
+    _isPaused = false;
+    _timer = Timer.periodic(_tick, (timer) {
       setState(() {
-        _progress += tick.inMilliseconds / storyDuration.inMilliseconds;
+        _progress += _tick.inMilliseconds / _storyDuration.inMilliseconds;
         if (_progress >= 1.0) {
           _progress = 1.0;
           _nextStory();
@@ -51,22 +61,44 @@ class _StoryScreenState extends State<StoryScreen> {
     });
   }
 
+  void _pauseTimer() {
+    _timer?.cancel();
+    _isPaused = true;
+  }
+
+  void _resumeTimer() {
+    if (_isPaused) {
+      _startTimer(resetProgress: false);
+    }
+  }
+
+  // ===== Навигация между сторис =====
   void _nextStory() {
     if (_currentIndex < widget.stories.length - 1) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
+        curve: Curves.linear,
       );
     } else {
       Get.back();
     }
   }
 
+  void _prevStory() {
+    if (_currentIndex > 0) {
+      _pageController.previousPage(
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      // в начале — просто держим на первой или закрываем, если хотите
+      // Get.back();
+    }
+  }
+
   void _onPageChanged(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-    _startTimer();
+    setState(() => _currentIndex = index);
+    _startTimer(resetProgress: true);
   }
 
   Widget _buildShimmerPlaceholder() {
@@ -83,10 +115,12 @@ class _StoryScreenState extends State<StoryScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
+          // Контент сторис
           PageView.builder(
             controller: _pageController,
             itemCount: widget.stories.length,
             onPageChanged: _onPageChanged,
+            physics: const ClampingScrollPhysics(),
             itemBuilder: (context, index) {
               final story = widget.stories[index];
               return Container(
@@ -97,7 +131,7 @@ class _StoryScreenState extends State<StoryScreen> {
                     transform: GradientRotation(4.2373),
                     colors: [
                       Color(0xFFFB62E2),
-                      Color(0xD6FF7171), // с прозрачностью 0.84
+                      Color(0xD6FF7171),
                       Color(0x00FFF500),
                     ],
                   ),
@@ -122,14 +156,46 @@ class _StoryScreenState extends State<StoryScreen> {
             },
           ),
 
+          // ===== Невидимые области жестов поверх контента =====
+          // (ниже прогресс-бара и кнопки закрытия, чтобы те работали)
+          // Левая половина — предыдущая сторис; правая — следующая
+          Positioned.fill(
+            child: Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: _prevStory,
+                    onLongPressStart: (_) => _pauseTimer(),
+                    onLongPressEnd: (_) => _resumeTimer(),
+                  ),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      // мгновенно добиваем прогресс до конца, чтобы логика была единая
+                      setState(() => _progress = 1.0);
+                      _nextStory();
+                    },
+                    onLongPressStart: (_) => _pauseTimer(),
+                    onLongPressEnd: (_) => _resumeTimer(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
           // Кнопка закрытия
           Positioned(
-            top: 48,
-            right: 24,
+            top: 80,
+            right: 16,
             child: IconButton(
               icon: Image.asset(
                 Assets.icons.defaultCloseIcon.path,
-                scale: 1.6,
+                scale: 1.9,
+                width: 24,
+                height: 24,
               ),
               onPressed: () => Navigator.pop(context),
             ),
@@ -137,31 +203,37 @@ class _StoryScreenState extends State<StoryScreen> {
 
           // Прогресс-бар
           Positioned(
-            top: 32,
-            left: 24,
-            right: 24,
-            child: Row(
-              children: List.generate(widget.stories.length, (index) {
-                double value;
-                if (index < _currentIndex) {
-                  value = 1.0; // Пройдено
-                } else if (index == _currentIndex) {
-                  value = _progress; // Текущий прогресс
-                } else {
-                  value = 0.0; // Ещё не начат
-                }
-                return Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 2),
-                    child: LinearProgressIndicator(
-                      value: value,
-                      backgroundColor: Colors.white.withOpacity(0.3),
-                      valueColor:
-                          const AlwaysStoppedAnimation<Color>(Colors.white),
+            top: 64,
+            left: 16,
+            right: 46,
+            child: IgnorePointer(
+              // чтобы тапы по прогрессу не мешали
+              ignoring: true,
+              child: Row(
+                children: List.generate(widget.stories.length, (index) {
+                  double value;
+                  if (index < _currentIndex) {
+                    value = 1.0;
+                  } else if (index == _currentIndex) {
+                    value = _progress;
+                  } else {
+                    value = 0.0;
+                  }
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: LinearProgressIndicator(
+                        value: value,
+                        backgroundColor: const Color(0xffC4C4C480),
+                        borderRadius: BorderRadius.circular(50),
+                        minHeight: 2,
+                        valueColor:
+                            const AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+              ),
             ),
           ),
         ],

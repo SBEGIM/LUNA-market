@@ -24,36 +24,42 @@ class _ViewAuthRegisterPageState extends State<ViewAuthRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        toolbarHeight: 18,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
-        leading: widget.backButton == true
-            ? InkWell(
-                highlightColor: Colors.white,
-                onTap: () {
-                  final router =
-                      AutoRouter.of(context).root; // гарантированно корень
-                  // if (router.canPop()) {
-                  //   router.pop();
-                  // } else {
-                  // на крайний случай — вернуться в лаунчер
-                  context.read<AppBloc>().add(
-                        const AppEvent.chageState(
-                            // или changeTab(index: 4)
-                            state: AppState.inAppUserState(index: 4)),
-                      );
-                  router.replaceAll([const LauncherRoute()]);
-                  // }
-                },
-                child: Image.asset(
-                  Assets.icons.defaultBackIcon.path,
-                  scale: 1.9,
-                ))
-            : SizedBox.shrink(),
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          toolbarHeight: 18,
+          backgroundColor: Colors.white,
+          leading: widget.backButton == true
+              ? InkWell(
+                  highlightColor: Colors.white,
+                  onTap: () {
+                    final router =
+                        AutoRouter.of(context).root; // гарантированно корень
+                    // if (router.canPop()) {
+                    //   router.pop();
+                    // } else {
+                    // на крайний случай — вернуться в лаунчер
+                    context.read<AppBloc>().add(
+                          const AppEvent.chageState(
+                              // или changeTab(index: 4)
+                              state: AppState.inAppUserState(index: 4)),
+                        );
+                    router.replaceAll([const LauncherRoute()]);
+                    // }
+                  },
+                  child: Image.asset(
+                    Assets.icons.defaultBackIcon.path,
+                    scale: 1.9,
+                  ))
+              : SizedBox.shrink(),
+        ),
+        body: AuthPage(),
       ),
-      body: AuthPage(),
     );
   }
 }

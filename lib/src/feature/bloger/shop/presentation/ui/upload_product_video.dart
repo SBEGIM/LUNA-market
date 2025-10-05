@@ -1,16 +1,21 @@
 import 'dart:io';
+import 'package:auto_route/auto_route.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widget/show_upload_media_pricker_widget.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../../core/common/constants.dart';
 import '../../bloc/blogger_tape_upload_cubit.dart';
 import '../../bloc/blogger_tape_upload_state.dart';
 
+@RoutePage()
 class UploadProductVideoPage extends StatefulWidget {
   int id;
 
@@ -36,6 +41,13 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
   }
 
   @override
+  void initState() {
+    print('init ${widget.id}');
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _controller?.dispose();
     super.dispose();
@@ -55,6 +67,19 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
     // final edit = BlocProvider.of<LoginCubit>(context);
     // await edit.edit(_box.read('name') ?? '', _box.read('phone') ?? '',
     //     _image != null ? _image!.path : "");
+  }
+
+  Future<void> _removeVideo() async {
+    await _disposeController();
+    setState(() => _video = null);
+  }
+
+  Future<void> _disposeController() async {
+    try {
+      await _controller?.pause();
+      await _controller?.dispose();
+    } catch (_) {}
+    _controller = null;
   }
 
   @override
@@ -86,28 +111,63 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                 style: AppTextStyles.size16Weight600),
             const SizedBox(height: 12),
             GestureDetector(
-              onTap: () {
-                // if (_image == null) {
-                Get.defaultDialog(
-                    title: "Загрузить видео",
-                    middleText: '',
-                    textConfirm: 'Камера',
-                    textCancel: 'Фото',
-                    titlePadding: const EdgeInsets.only(top: 40),
-                    onConfirm: () {
-                      change = true;
-                      setState(() {
-                        change;
-                      });
-                      _getVideo();
-                    },
-                    onCancel: () {
+              onTap: () async {
+                if (_video != null) {
+                  _removeVideo();
+                  return;
+                }
+                final List<Map<String, String>> options = [
+                  {
+                    'title': 'Выбрать из галереи',
+                    'iconPath': Assets.icons.galleryIcon.path,
+                  },
+                  {
+                    'title': 'Открыть камеру',
+                    'iconPath': Assets.icons.cameraIcon.path,
+                  },
+                ];
+                showUploadMediaPicker(context, 'Загрузить видео', options,
+                    (value) {
+                  context.router.pop();
+                  switch (value) {
+                    case 'Выбрать из галереи':
                       change = false;
                       setState(() {
                         change;
                       });
                       _getVideo();
-                    });
+                      break;
+                    case 'Открыть камеру':
+                      change = true;
+                      setState(() {
+                        change;
+                      });
+                      _getVideo();
+                      break;
+                  }
+                });
+
+                // final ok = await showAccountAlert(context,
+                //     title: 'Загрузить видео',
+                //     message: 'Выбрать из галереи или откройте камеру',
+                //     mode: AccountAlertMode.confirm,
+                //     cancelText: 'Галерея',
+                //     primaryText: 'Камера',
+                //     primaryColor: Color(0xff636366));
+
+                // if (ok == true) {
+                //   change = true;
+                //   setState(() {
+                //     change;
+                //   });
+                //   _getVideo();
+                // }
+                // if (ok == false) {
+                //   change = false;
+                //   setState(() {
+                //     change;
+                //   });
+                //   _getVideo();
                 // }
               },
               child: Container(
@@ -122,21 +182,39 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                   color: Color(0xff8E8E93),
                   radius: Radius.circular(16),
                   borderType: BorderType.RRect,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      if (_video != null &&
+                  child: (_video != null &&
                           _controller != null &&
                           _controller!.value.isInitialized)
-                        Center(
-                          child: AspectRatio(
-                            aspectRatio: _controller!.value.aspectRatio,
-                            child: VideoPlayer(_controller!),
-                          ),
+                      ? Stack(
+                          children: [
+                            Center(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: AspectRatio(
+                                  aspectRatio: _controller!.value.aspectRatio,
+                                  child: VideoPlayer(_controller!),
+                                ),
+                              ),
+                            ),
+                            Center(
+                              child: Container(
+                                width: 28,
+                                height: 28,
+                                alignment: Alignment.center,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Image.asset(
+                                  Assets.icons.trashGreyIcon.path,
+                                  width: 16,
+                                  height: 16,
+                                ),
+                              ),
+                            ),
+                          ],
                         )
-                      else
-                        Center(
+                      : Center(
                           child: Image.asset(
                             Assets.icons.uploadVideoIcon.path,
                             // color: _image != null
@@ -146,8 +224,6 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                             width: 30,
                           ),
                         ),
-                    ],
-                  ),
                 ),
               ),
             ),
@@ -295,7 +371,9 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
       bottomSheet: BlocConsumer<BloggerTapeUploadCubit, BloggerTapeUploadState>(
         listener: (context, state) {
           if (state is LoadedState) {
-            Navigator.pop(context);
+            context.router.push(SuccessBloggerTapeUploadVideoRoute());
+
+            // Navigator.pop(context);
 
             // Navigator.push(
             //   context,
@@ -312,6 +390,7 @@ class _UploadProductVideoPageState extends State<UploadProductVideoPage> {
                       state is! LoadingState &&
                       check == true) {
                     button = true;
+
                     await BlocProvider.of<BloggerTapeUploadCubit>(context)
                         .uploadVideo(widget.id.toString(), _video!.path);
                   }

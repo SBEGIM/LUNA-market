@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/product_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/product/data/models/product_seller_model.dart';
 import 'package:haji_market/src/feature/seller/product/presentation/widgets/show_alert_add_seller_widget.dart';
@@ -107,21 +109,46 @@ void showProductOptions(
                 },
               ),
               _buildOptionTile(
-                context: sheetCtx,
-                icon: Assets.icons.trashIcon.path,
-                color: Colors.red,
-                title: 'Удалить',
-                onTap: () async {
-                  Navigator.of(sheetCtx).pop();
-                  await cubit.delete(product.id.toString());
-                  parentCtx.router.pop();
-                  Future.microtask(() {
-                    cubit
-                      ..resetState()
-                      ..products('');
-                  });
-                },
-              ),
+                  context: sheetCtx,
+                  icon: Assets.icons.trashIcon.path,
+                  color: Colors.red,
+                  title: 'Удалить',
+                  onTap: () async {
+                    Navigator.of(sheetCtx).pop();
+
+                    final ok = await showAccountAlert(
+                      parentCtx,
+                      title: 'Удаление товара',
+                      message: 'Вы уверены, что хотите удалить этот товар?',
+                      mode: AccountAlertMode.confirm,
+                      cancelText: 'Нет',
+                      primaryText: 'Да',
+                      primaryColor: Colors.red,
+                    );
+
+                    if (ok == true) {
+                      final rootCtx =
+                          parentCtx.router.root.navigatorKey.currentContext;
+
+                      if (rootCtx != null) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          AppSnackBar.show(
+                            rootCtx,
+                            'Товар успешно удален',
+                            type: AppSnackType.success,
+                          );
+                        });
+                      }
+                      await cubit.delete(product.id.toString());
+                      cubit
+                        ..resetState()
+                        ..products('');
+
+                      // if (parentCtx.mounted) {
+                      //   parentCtx.router.pop();
+                      // }
+                    }
+                  }),
               const SizedBox(height: 30),
             ],
           ),

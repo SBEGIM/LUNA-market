@@ -23,9 +23,9 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.kBackgroundColor,
+        backgroundColor: Color(0xffF7F7F7),
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.kWhite,
           elevation: 0,
           automaticallyImplyLeading: false,
           centerTitle: true,
@@ -38,72 +38,46 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
             child: Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.all(16),
                   height: 44,
+                  margin: const EdgeInsets.only(top: 24, left: 16, right: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: AppColors.kBackgroundColor,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
+                    color: const Color(0xffEAECED),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextField(
                     controller: _searchController,
+                    keyboardType: TextInputType.text,
+                    textAlign: TextAlign.start,
+                    textAlignVertical: TextAlignVertical.center,
+                    onChanged: (value) {},
                     decoration: InputDecoration(
+                      isDense: true,
                       border: InputBorder.none,
+                      hintText: 'Поиск',
+                      hintStyle: AppTextStyles.size16Weight400
+                          .copyWith(color: const Color(0xff8E8E93)),
+                      contentPadding: EdgeInsets.zero,
                       prefixIcon: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8), // регулируем вручную
+                        padding: const EdgeInsets.only(right: 5),
                         child: Image.asset(
                           Assets.icons.defaultSearchIcon.path,
-                          scale: 1.9,
+                          width: 18,
+                          height: 18,
                         ),
                       ),
                       prefixIconConstraints: const BoxConstraints(
-                        minWidth: 24,
-                        minHeight: 24,
+                        minWidth: 18 + 5,
+                        minHeight: 18,
                       ),
-                      hintText: 'Поиск',
-                      hintStyle: AppTextStyles.size16Weight400
-                          .copyWith(color: AppColors.kGray300),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 11, horizontal: 0),
-                      suffixIcon: _searchController.text.isNotEmpty
-                          ? IconButton(
-                              icon: Icon(
-                                Icons.close,
-                                color: Colors.grey[600],
-                                size: 20,
-                              ),
-                              onPressed: () {
-                                _searchController.clear();
-                                // Add any search clearing logic here
-                                setState(() {});
-                              },
-                            )
-                          : null,
                     ),
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black87,
-                    ),
-                    onChanged: (value) {
-                      // Add your search logic here
-                      setState(() {});
-                    },
-                    onSubmitted: (value) {
-                      // Add your search submission logic here
-                    },
                   ),
                 ),
                 Container(
                   height: 72,
                   decoration: BoxDecoration(
-                    color: AppColors.kBackgroundColor,
+                    color: Color(0xffF7F7F7),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.05),
@@ -180,13 +154,11 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
           ),
         ),
         body: Container(
-          color: AppColors.kBackgroundColor,
+          color: Color(0xffF7F7F7),
           child: IndexedStack(
             index: segmentValue,
             children: [
               AllOrdersSellerPage(fulfillment: 'fbs'),
-
-              //  AllMyOrdersRealFBSPage(fulfillment: 'realFBS'),
               const DoneMyOrdersPage(),
             ],
           ),

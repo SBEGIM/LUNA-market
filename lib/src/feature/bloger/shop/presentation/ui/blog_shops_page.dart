@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/shimmer_box.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/ui/notification_blogger_page.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/widgets/show_blogget_cats_widget.dart';
@@ -173,14 +174,14 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                                 child: Container(
                                   margin:
                                       EdgeInsets.only(left: index == 0 ? 0 : 5),
-                                  padding: EdgeInsets.all(index == 0 ? 1 : 2),
+                                  padding: const EdgeInsets.all(2),
                                   height: 86,
                                   width: 86,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: index == 0
                                           ? AppColors.mainPurpleColor
-                                          : AppColors.kGray300,
+                                          : Color(0xffAEAEB2),
                                       width: index == 0 ? 2 : 1,
                                     ),
                                     borderRadius: BorderRadius.circular(16),
@@ -419,10 +420,11 @@ class _BlogShopsPageState extends State<BlogShopsPage> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                             onTap: () {
-                              Get.to(() => ShopProductsBloggerPage(
-                                    title: state.popularShops[index].name ?? '',
-                                    id: state.popularShops[index].id!,
-                                  ));
+                              context.router.push(ShopProductsBloggerRoute(
+                                title: state.popularShops[index].name ?? '',
+                                id: state.popularShops[index].id!,
+                              ));
+                              // Get.to(() => );
                             },
                             child: Container(
                               decoration: BoxDecoration(

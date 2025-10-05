@@ -60,6 +60,7 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
         return Container(
           height: 94,
           decoration: const BoxDecoration(
+            color: AppColors.kWhite,
             border: Border(
               top: BorderSide(
                   color: Color(0x100F0F0F), width: 1), // stroke сверху
@@ -106,6 +107,7 @@ class _BaseShopState extends State<BaseShop> with TickerProviderStateMixin {
             },
             selectedItemColor: AppColors.kLightBlackColor,
             unselectedItemColor: AppColors.kunSelectColor,
+            backgroundColor: AppColors.kWhite,
             selectedFontSize: 12,
             elevation: 4,
             showSelectedLabels: true,

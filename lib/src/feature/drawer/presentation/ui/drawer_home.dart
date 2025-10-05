@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,15 +8,15 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
-import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/auth/bloc/login_cubit.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
+import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/show_module_profile_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/ui/about_us_page.dart';
-import 'package:haji_market/src/feature/drawer/presentation/ui/top_menu.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/client_show_image_list_widget.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/client_show_list_widget.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_cabinet_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_language_widget.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../chat/presentation/chat_page.dart';
 import '../../../my_order/presentation/ui/my_order_page.dart';
@@ -130,21 +128,45 @@ class _DrawerPageState extends State<DrawerPage> {
                             width: 100,
                             child: GestureDetector(
                               onTap: () {
-                                Get.defaultDialog(
-                                  title: "Изменить фото",
-                                  middleText: '',
-                                  textConfirm: 'Камера',
-                                  textCancel: 'Галерея',
-                                  titlePadding: const EdgeInsets.only(top: 40),
-                                  onConfirm: () {
-                                    change = true;
-                                    _getImage(context);
-                                  },
-                                  onCancel: () {
-                                    change = false;
-                                    _getImage(context);
-                                  },
-                                );
+                                showClientImageOptions(
+                                    context, false, 'Изменить фото профиля',
+                                    (value) async {
+                                  if (value == 'image') {
+                                    final ok = await showAccountAlert(context,
+                                        title: 'Изменить фото',
+                                        message: 'Изменить фото',
+                                        mode: AccountAlertMode.confirm,
+                                        cancelText: 'Галерея',
+                                        primaryText: 'Камера',
+                                        primaryColor: Colors.red);
+
+                                    if (ok == true) {
+                                      change = true;
+                                      _getImage(context);
+                                    } else {
+                                      change = false;
+                                      _getImage(context);
+                                    }
+                                    // Get.defaultDialog(
+                                    //   title: "Изменить фото",
+                                    //   middleText: '',
+                                    //   textConfirm: 'Камера',
+                                    //   textCancel: 'Галерея',
+                                    //   titlePadding:
+                                    //       const EdgeInsets.only(top: 40),
+                                    //   onConfirm: () {
+                                    //     change = true;
+                                    //     _getImage(context);
+                                    //   },
+                                    //   onCancel: () {
+                                    //     change = false;
+                                    //     _getImage(context);
+                                    //   },
+                                    // );
+                                  } else {
+                                    Navigator.of(context).pop();
+                                  }
+                                });
                               },
                               child: Stack(
                                 children: [
@@ -157,7 +179,7 @@ class _DrawerPageState extends State<DrawerPage> {
                                       backgroundImage: _image != null
                                           ? FileImage(File(_image!.path))
                                           : NetworkImage(
-                                              'https://lunamarket.ru/storage/${GetStorage().read('seller_image')}',
+                                              'https://lunamarket.ru/storage/${GetStorage().read('avatar')}',
                                             ) as ImageProvider,
                                     ),
                                   ),
@@ -174,25 +196,19 @@ class _DrawerPageState extends State<DrawerPage> {
                               ),
                             ),
                           ),
-
+                          SizedBox(height: 16),
                           Text(
                             '${GetStorage().read('name')}',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.kGray900,
-                                fontSize: 16),
+                            style: AppTextStyles.size18Weight600,
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 4),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
                                 _box.read('city') ?? 'Алматы',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                  color: AppColors.kGray300,
-                                ),
+                                style: AppTextStyles.size14Weight500
+                                    .copyWith(color: Color(0xff959595)),
                               ),
                             ],
                           ),
@@ -214,7 +230,7 @@ class _DrawerPageState extends State<DrawerPage> {
                           //   ),
                           // ),
 
-                          SizedBox(height: 12),
+                          SizedBox(height: 16),
                           InkWell(
                             onTap: () {
                               showRolePicker(context,
@@ -222,12 +238,12 @@ class _DrawerPageState extends State<DrawerPage> {
                             },
                             child: Container(
                               height: 36,
-                              width: 190,
+                              width: 177,
                               decoration: BoxDecoration(
                                 color: AppColors.kWhite,
                                 border: Border.all(
-                                  color: AppColors.kGray200,
-                                  width: 0.2,
+                                  color: Color(0xffEDEDED),
+                                  width: 0.5,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
                                 boxShadow: [
@@ -248,10 +264,8 @@ class _DrawerPageState extends State<DrawerPage> {
                                     width: 18,
                                   ),
                                   SizedBox(width: 9),
-                                  Text(
-                                    'Сменить кабинет',
-                                    style: AppTextStyles.size16Weight500,
-                                  )
+                                  Text('Сменить кабинет',
+                                      style: AppTextStyles.size16Weight500)
                                 ],
                               ),
                             ),
@@ -513,7 +527,6 @@ class _DrawerPageState extends State<DrawerPage> {
                         topRight: Radius.circular(20))),
                 child: Column(
                   children: [
-                    SizedBox(height: 15),
                     isAuthUser
                         ? buildProfileItem(
                             onTap: () async {
@@ -547,17 +560,17 @@ class _DrawerPageState extends State<DrawerPage> {
                           )
                         : SizedBox.shrink(),
 
-                    isAuthUser
-                        ? Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16.0, right: 16, top: 8),
-                            child: const Divider(
-                              thickness: 0.3,
-                              height: 0,
-                              color: AppColors.kGray200,
-                            ),
-                          )
-                        : SizedBox.shrink(),
+                    buildProfileItem(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AboutUsPage()),
+                        );
+                      },
+                      title: 'Cохраненные адреса',
+                      iconPath: Assets.icons.locationProfileIcon.path,
+                    ),
 
                     buildProfileItem(
                       onTap: () {
@@ -567,83 +580,96 @@ class _DrawerPageState extends State<DrawerPage> {
                               builder: (context) => const AboutUsPage()),
                         );
                       },
-                      title: 'О нас',
+                      title: 'LUNA market',
                       iconPath: Assets.icons.about.path,
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16.0, right: 16, top: 8),
-                      child: const Divider(
-                        thickness: 0.2,
-                        height: 0,
-                        color: AppColors.kGray200,
-                      ),
                     ),
 
                     buildProfileItem(
-                      onTap: () => launch("https://t.me/LUNAmarketAdmin",
-                          forceSafariVC: false),
+                      onTap: () async {
+                        final List<String> options = [
+                          'Whats App',
+                          'Telegram',
+                          'Email'
+                        ];
+                        showModuleProfile(context, 'Техподдержка', options,
+                            (value) {
+                          switch (value) {
+                            case 'Whats App':
+                              launch("https://t.me/LUNAmarketAdmin",
+                                  forceSafariVC: false);
+                              // do something
+                              break;
+                            case 'Telegram':
+                              launch("https://t.me/LUNAmarketAdmin",
+                                  forceSafariVC: false);
+                              // do something else
+                              break;
+                            case 'Email':
+                              launch("https://t.me/LUNAmarketAdmin",
+                                  forceSafariVC: false);
+                              break;
+                          }
+                        });
+                      },
                       title: 'Техподдержка',
                       iconPath: Assets.icons.supportCenter.path,
                     ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16.0, right: 16, top: 8),
-                      child: const Divider(
-                        thickness: 0.2,
-                        height: 0,
-                        color: AppColors.kGray200,
-                      ),
-                    ),
-                    buildProfileItem(
-                      onTap: () {},
-                      switchWidget: true,
-                      switchValue: switchValue,
-                      onSwitchChanged: (value) {
-                        switchValue = value;
-                        print(value);
-                        setState(() {});
-                      },
-                      title: 'Уведомления',
-                      iconPath: Assets.icons.sellerNotification.path,
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16.0, right: 16, top: 8),
-                      child: const Divider(
-                        thickness: 0.2,
-                        height: 0,
-                        color: AppColors.kGray200,
-                      ),
-                    ),
+
+                    // buildProfileItem(
+                    //   onTap: () {},
+                    //   switchWidget: true,
+                    //   switchValue: switchValue,
+                    //   onSwitchChanged: (value) {
+                    //     switchValue = value;
+                    //     print(value);
+                    //     setState(() {});
+                    //   },
+                    //   title: 'Уведомления',
+                    //   iconPath: Assets.icons.sellerNotification.path,
+                    // ),
+                    // Padding(
+                    //   padding:
+                    //       const EdgeInsets.only(left: 16.0, right: 16, top: 8),
+                    //   child: const Divider(
+                    //     thickness: 0.2,
+                    //     height: 0,
+                    //     color: AppColors.kGray200,
+                    //   ),
+                    // ),
+
+                    // buildProfileItem(
+                    //   onTap: () {
+                    //     final List<String> languages = [
+                    //       'Русский',
+                    //       'Қазақша',
+                    //       'Английский',
+                    //     ];
+
+                    //     showLanguageOptions(context, 'Язык', languages,
+                    //         (value) {
+                    //       setState(() {});
+                    //     });
+                    //   },
+                    //   title: 'Язык',
+                    //   iconPath: Assets.icons.sellerLanguageIcon.path,
+                    // ),
+                    // Padding(
+                    //   padding:
+                    //       const EdgeInsets.only(left: 16.0, right: 16, top: 8),
+                    //   child: const Divider(
+                    //     thickness: 0.2,
+                    //     height: 0,
+                    //     color: AppColors.kGray200,
+                    //   ),
+                    // ),
 
                     buildProfileItem(
-                      onTap: () {
-                        final List<String> languages = [
-                          'Русский',
-                          'Қазақша',
-                          'Английский',
-                        ];
-
-                        showLanguageOptions(context, 'Язык', languages,
-                            (value) {
-                          setState(() {});
-                        });
-                      },
-                      title: 'Язык',
-                      text: _box.read('language') ?? 'Рус',
-                      iconPath: Assets.icons.sellerLanguageIcon.path,
+                      onTap: () => showClientSettingOptions(
+                          context, isAuthUser, 'Настройка', () {}),
+                      title: 'Настройка',
+                      count: 4,
+                      iconPath: Assets.icons.settingIcon.path,
                     ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16.0, right: 16, top: 8),
-                      child: const Divider(
-                        thickness: 0.2,
-                        height: 0,
-                        color: AppColors.kGray200,
-                      ),
-                    ),
-
                     // InkWell(
                     //   onTap: () {
                     //     _box.read('seller_token') != null
@@ -817,23 +843,6 @@ class _DrawerPageState extends State<DrawerPage> {
                     //   color: AppColors.kGray200,
                     //   height: 0,
                     // ),
-                    isAuthUser
-                        ? buildProfileItem(
-                            onTap: () {
-                              final deviceToken = _box.read('device_token');
-                              GetStorage().erase();
-                              _box.write('device_token', deviceToken);
-                              _box.write('name', 'Не авторизированный');
-
-                              // Get.offAll(() => const ViewAuthRegisterPage(BackButton: true));
-                              BlocProvider.of<AppBloc>(context)
-                                  .add(const AppEvent.exiting());
-                            },
-                            title: 'Выйти',
-                            text: null,
-                            iconPath: Assets.icons.sellerBack.path,
-                          )
-                        : SizedBox.shrink(),
 
                     // GestureDetector(
                     //   onTap: () {
@@ -1153,17 +1162,17 @@ class DrawerListTile extends StatelessWidget {
 
 Widget buildProfileItem({
   required String title,
-  String? text,
   required String iconPath,
   required VoidCallback onTap,
   bool? switchWidget,
+  int? count,
   ValueChanged<bool>? onSwitchChanged,
   bool? switchValue,
 }) {
   return InkWell(
     onTap: onTap,
     child: Padding(
-      padding: const EdgeInsets.only(top: 8.0, right: 18, left: 16),
+      padding: const EdgeInsets.only(top: 16.0, right: 16, left: 18),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -1175,14 +1184,9 @@ Widget buildProfileItem({
                 width: 40,
               ),
               const SizedBox(width: 12),
-              Text(
-                title,
-                style: const TextStyle(
-                    color: AppColors.kGray900,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0),
-              ),
+              Text(title,
+                  style: AppTextStyles.size16Weight600
+                      .copyWith(color: Color(0xFF3A3A3C))),
             ],
           ),
           switchWidget == true
@@ -1196,18 +1200,29 @@ Widget buildProfileItem({
                     trackOutlineWidth: MaterialStateProperty.all(0.01),
                   ),
                 )
-              : Row(
-                  children: [
-                    if (text != null)
-                      Text(
-                        text,
-                        style: AppTextStyles.size14Weight400,
-                      ),
-                    if (text != null) SizedBox(width: 14),
-                    Image.asset(Assets.icons.defaultArrowForwardIcon.path,
-                        scale: 1.9),
-                  ],
-                )
+              : (count == null
+                  ? SizedBox(
+                      width: 8,
+                      height: 14,
+                      child: Image.asset(
+                          Assets.icons.defaultArrowForwardIcon.path),
+                    )
+                  : Row(
+                      children: [
+                        Text(
+                          '$count',
+                          style: AppTextStyles.size16Weight400
+                              .copyWith(color: Color(0xFF3A3A3C)),
+                        ),
+                        SizedBox(width: 16),
+                        SizedBox(
+                          width: 8,
+                          height: 14,
+                          child: Image.asset(
+                              Assets.icons.defaultArrowForwardIcon.path),
+                        )
+                      ],
+                    ))
         ],
       ),
     ),

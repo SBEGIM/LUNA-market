@@ -24,19 +24,25 @@ class _BlogAuthRegisterPageState extends State<BlogAuthRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: AppColors.kWhite,
-      appBar: AppBar(
-        toolbarHeight: 18,
-        backgroundColor: Colors.white,
-        leading: InkWell(
-            onTap: () {
-              context.router.pop();
-            },
-            child: Image.asset(Assets.icons.defaultBackIcon.path, scale: 1.9)),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: AppColors.kWhite,
+        appBar: AppBar(
+          toolbarHeight: 18,
+          backgroundColor: Colors.white,
+          leading: InkWell(
+              onTap: () {
+                context.router.pop();
+              },
+              child:
+                  Image.asset(Assets.icons.defaultBackIcon.path, scale: 1.9)),
+        ),
+        body: BlogAuthPage(),
       ),
-      body: BlogAuthPage(),
     );
   }
 }
