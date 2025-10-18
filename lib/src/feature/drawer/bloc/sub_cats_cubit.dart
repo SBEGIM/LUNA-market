@@ -23,7 +23,7 @@ class SubCatsCubit extends Cubit<SubCatsState> {
       if (isAddAllProducts == false) {
       } else {
         _subCats.insert(
-            0, CatsModel(id: 1, name: "Все товары", icon: 'cats/book.png'));
+            0, CatsModel(id: 1, name: "Все товары", icon: 'cats/all_cats.png'));
       }
 
       emit(LoadedState(data));

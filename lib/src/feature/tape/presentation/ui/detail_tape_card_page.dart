@@ -472,7 +472,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                                 index: index,
                                               ),
 
-                                              const SizedBox(width: 4),
+                                              const SizedBox(width: 8),
 
                                               InkWell(
                                                 onTap: () =>
@@ -572,7 +572,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         stop = true;
                                       },
                                       child: SizedBox(
-                                        height: 50,
+                                        height: 52,
                                         child: Stack(
                                           children: [
                                             ClipRRect(
@@ -590,7 +590,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                               ),
                                             ),
                                             Positioned(
-                                              bottom: 0,
+                                              bottom: 3,
                                               right: 0,
                                               left: 0,
                                               child: Container(
@@ -630,7 +630,7 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 16),
+                                    SizedBox(height: 17.5),
                                     isLike(
                                       tape: state.tapeModel[index],
                                       index: index,

@@ -43,7 +43,9 @@ class RegisterToApi {
       'Authorization': 'Bearer $token',
     };
     final body = {
-      'name': register.name,
+      'first_name': register.firstName,
+      'last_name': register.lastName,
+      'sur_name': register.surName,
       'password': register.password,
       'phone': result.replaceAll(RegExp('[^0-9]'), ''),
       'device_token': deviceToken.toString(),

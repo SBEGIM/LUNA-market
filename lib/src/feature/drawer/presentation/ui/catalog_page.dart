@@ -3,7 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
+import '../../../drawer/bloc/brand_cubit.dart' as brandCubit;
+import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart'
+    as brandState;
+
+import '../../../drawer/bloc/brand_cubit.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../../home/bloc/cats_cubit.dart';
 import '../../../home/bloc/cats_state.dart';
 
@@ -17,64 +25,95 @@ class CatalogPage extends StatefulWidget {
 
 class _CatalogPageState extends State<CatalogPage> {
   TextEditingController searchController = TextEditingController();
+  List<CatsModel> brands = [];
+  CatsModel? brand;
+
+  @override
+  void initState() {
+    brandCubit.BrandCubit brandInitCubit =
+        BlocProvider.of<brandCubit.BrandCubit>(context);
+
+    if (brandInitCubit.state is! brandState.LoadedState) {
+      BlocProvider.of<brandCubit.BrandCubit>(context).brands();
+    }
+
+    brandList();
+
+    super.initState();
+  }
+
+  brandList() async {
+    // widget.catChapters?.forEach((cat) {
+    //   print(cat.name ?? '');
+    // });
+
+    final List<CatsModel> data =
+        await BlocProvider.of<brandCubit.BrandCubit>(context).brandsList();
+    brands.addAll(data);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
-        //iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            context.router.pop();
-          },
-          icon: SvgPicture.asset('assets/icons/back_header.svg'),
-        ),
-        actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 22.0),
-              child: SvgPicture.asset('assets/icons/share.svg'))
-        ],
-        titleSpacing: 0,
-        // leadingWidth: 1,
-        title: Container(
-          height: 34,
-          width: 279,
-          decoration: BoxDecoration(
-              color: const Color(0xFFF8F8F8),
-              borderRadius: BorderRadius.circular(10)),
-          child: TextField(
-              controller: searchController,
-              onChanged: (value) {
-                if (value.isEmpty) {
-                  BlocProvider.of<CatsCubit>(context).saveCats();
-                } else {
-                  BlocProvider.of<CatsCubit>(context).searchCats(value);
-                }
-
-                // if (searchController.text.isEmpty)
-                //   BlocProvider.of<CityCubit>(context)
-                //       .cities(value);
+          //iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          leading: InkWell(
+              onTap: () {
+                context.router.pop();
               },
-              decoration: const InputDecoration(
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: AppColors.kGray300,
-                ),
-                hintText: 'Поиск',
-                hintStyle: TextStyle(
-                  color: AppColors.kGray300,
-                  fontSize: 16,
-                ),
-                border: InputBorder.none,
-              ),
-              style: const TextStyle(
-                color: Colors.black,
+              child: Image.asset(
+                Assets.icons.defaultBackIcon.path,
+                scale: 2.1,
               )),
-        ),
-      ),
+          titleSpacing: 0,
+          // leadingWiadth: 1,
+          title: Text(
+            'Все категории',
+            style: AppTextStyles.size18Weight600,
+          )
+
+          // Container(
+          //   height: 34,
+          //   width: 279,
+          //   decoration: BoxDecoration(
+          //       color: const Color(0xFFF8F8F8),
+          //       borderRadius: BorderRadius.circular(10)),
+          //   child: TextField(
+          //       controller: searchController,
+          //       onChanged: (value) {
+          //         if (value.isEmpty) {
+          //           BlocProvider.of<CatsCubit>(context).saveCats();
+          //         } else {
+          //           BlocProvider.of<CatsCubit>(context).searchCats(value);
+          //         }
+
+          //         // if (searchController.text.isEmpty)
+          //         //   BlocProvider.of<CityCubit>(context)
+          //         //       .cities(value);
+          //       },
+          //       decoration: const InputDecoration(
+          //         prefixIcon: Icon(
+          //           Icons.search,
+          //           color: AppColors.kGray300,
+          //         ),
+          //         hintText: 'Поиск',
+          //         hintStyle: TextStyle(
+          //           color: AppColors.kGray300,
+          //           fontSize: 16,
+          //         ),
+          //         border: InputBorder.none,
+          //       ),
+          //       style: const TextStyle(
+          //         color: Colors.black,
+          //       )),
+          // ),
+
+          ),
       body: BlocConsumer<CatsCubit, CatsState>(
           listener: (context, state) {},
           builder: (context, state) {
@@ -95,22 +134,96 @@ class _CatalogPageState extends State<CatalogPage> {
               return ListView(
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(top: 12, left: 15, right: 15),
+                    height: 80,
+                    // alignment: Alignment.center,
+                    color: AppColors.kWhite,
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      height: 64,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: brands.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              if (brands[index] == brand) {
+                                brand = null;
+                                BlocProvider.of<CatsCubit>(context).cats();
+                              } else {
+                                brand = brands[index];
+                                BlocProvider.of<CatsCubit>(context)
+                                    .searchCats(brand!.name.toString());
+                              }
+                              setState(() {});
+                            },
+                            child: Container(
+                              width: 64,
+                              height: 64,
+                              padding: EdgeInsets.all(2),
+                              margin: EdgeInsets.only(
+                                  right: 4, left: index == 0 ? 16 : 0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                gradient: brand?.id == brands[index].id
+                                    ? const LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          Color(0xFF7D2DFF),
+                                          Color(0xFF41DDFF)
+                                        ],
+                                      )
+                                    : null,
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: const Color(0xFFF5F4FF),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Image(
+                                    image: brands[index].icon != null
+                                        ? NetworkImage(
+                                            "https://lunamarket.ru/storage/${brands[index].icon}")
+                                        : const AssetImage(
+                                                'assets/icons/profile2.png')
+                                            as ImageProvider,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    margin: EdgeInsets.only(top: 12, bottom: 12),
+                    padding: const EdgeInsets.only(
+                        top: 16, left: 16, right: 16, bottom: 16),
                     child: GridView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3,
-                                childAspectRatio: 0.65,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10),
+                                childAspectRatio: 114 / 120,
+                                crossAxisSpacing: 8,
+                                mainAxisSpacing: 8),
                         itemCount: state.cats.length,
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
                               context.router.push(
-                                  UnderCatalogRoute(cats: state.cats[index]));
+                                  SubCatalogRoute(cats: state.cats[index]));
+                              // context.router.push(
+                              //     UnderCatalogRoute(cats: state.cats[index]));
                               // Navigator.push(
                               //   context,
                               //   MaterialPageRoute(
@@ -187,121 +300,96 @@ class CatalogListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Color.fromARGB(15, 227, 9, 9),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 12, left: 10),
-                alignment: Alignment.center,
-                height: 90,
-                width: 90,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2),
-                    image: DecorationImage(
-                        image: NetworkImage(
-                          "${url}",
-                        ),
-                        fit: BoxFit.contain),
-                    color: const Color(0xFFF0F5F5)),
-                // child: Image.network(
-                //   "http://80.87.202.73:8001/storage/${state.popularShops[index].image!}",
-                //   width: 70,
-                // ),
-              ),
-              // Container(
-              //   height: 154,
-              //   width: 108,
-              //   decoration: BoxDecoration(
-              //       borderRadius: BorderRadius.circular(8),
-              //       image: DecorationImage(
-              //         image: NetworkImage(
-              //             "http://80.87.202.73:8001/storage/${layout!.image!}"),
-              //         fit: BoxFit.cover,
-              //       )),
+    const double imageSize = 80;
+    final String imageUrl = url;
 
-              //   // child: CircleAvatar(),
-              // ),
-              if (credit == 1)
-                Container(
-                  width: 46,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    color: const Color.fromRGBO(31, 196, 207, 1),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  margin: const EdgeInsets.only(top: 80, left: 4),
-                  alignment: Alignment.center,
-                  child: const Text(
-                    "0·0·12",
-                    style: AppTextStyles.bannerTextStyle,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              // Container(
-              //   width: 46,
-              //   height: 22,
-              //   decoration: BoxDecoration(
-              //     color: Colors.black,
-              //     borderRadius: BorderRadius.circular(6),
-              //   ),
-              //   margin: const EdgeInsets.only(top: 105, left: 4),
-              //   alignment: Alignment.center,
-              //   child: Text(
-              //     "${layout!.bonus.toString()}% Б",
-              //     style: AppTextStyles.bannerTextStyle,
-              //     textAlign: TextAlign.center,
-              //   ),
-              // ),
-              Container(
-                margin: const EdgeInsets.only(top: 130, left: 4),
-                alignment: Alignment.center,
-                child: Text(
-                  title,
-                  style: AppTextStyles.categoryTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
+    final Future<void> precache =
+        precacheImage(NetworkImage(imageUrl), context);
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.mainBackgroundPurpleColor,
+            borderRadius: BorderRadius.circular(16),
           ),
+          constraints: const BoxConstraints(minHeight: 120),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Stack(
+              children: [
+                // Заголовок
+                Positioned(
+                  top: 8,
+                  left: 8,
+                  right:
+                      8, // если нужно не перекрывать картинку: right: imageSize + 16,
+                  child: Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.size13Weight500,
+                  ),
+                ),
 
-          // Center(
-          //   child: Image.asset(
-          //
-          //   ),
-          // ),
-          // const SizedBox(
-          //   height: 8,
-          // ),
-          // Flexible(
-          //     child:
-        ],
+                // Картинка
+                Positioned(
+                  right: 8,
+                  bottom: 4,
+                  child: SizedBox(
+                    height: imageSize,
+                    width: imageSize,
+                    child: Image.network(
+                      imageUrl,
+                      fit: BoxFit.contain,
+                      // Можно оставить свой локальный спиннер ИЛИ ничего — у нас есть фулл-оверлей сверху
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return child;
+                      },
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: Colors.grey[100],
+                        child:
+                            const Icon(Icons.broken_image, color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ),
+
+                // ФУЛЛ-ШАР ШИММЕР: поверх всей карточки, пока картинка не готова
+                Positioned.fill(
+                  child: FutureBuilder<void>(
+                    future: precache,
+                    builder: (context, snapshot) {
+                      final bool loading =
+                          snapshot.connectionState != ConnectionState.done;
+                      // если была ошибка загрузки — убираем оверлей, пусть покажется errorBuilder
+                      final bool show = loading && !snapshot.hasError;
+
+                      return IgnorePointer(
+                        ignoring: true, // тапы проходят сквозь оверлей
+                        child: AnimatedOpacity(
+                          opacity: show ? 1.0 : 0.0,
+                          duration: const Duration(milliseconds: 220),
+                          curve: Curves.easeOut,
+                          child: Shimmer(
+                            // shimmer_animation: Shimmer(child: ...)
+                            child: Container(
+                              // лёгкая подложка, чтобы блик был заметен
+                              color: Colors.white.withOpacity(0.06),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
-
-    // ListTile(
-    //   horizontalTitleGap: 0,
-    //   leading: Container(
-    //     height: 20.05,
-    //     width: 20.05,
-    //     decoration: BoxDecoration(
-    //         image: DecorationImage(
-    //       image: NetworkImage("${url}"),
-    //       fit: BoxFit.cover,
-    //     )),
-    //   ),
-    //   title: Text(
-    //     title,
-    //     style: AppTextStyles.catalogTextStyle,
-    //   ),
-    //   trailing:
-    //       SvgPicture.asset('assets/icons/back_menu.svg', height: 12, width: 16),
-    // );
   }
 }

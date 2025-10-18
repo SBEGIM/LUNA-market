@@ -4,7 +4,9 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
+import 'package:haji_market/src/feature/auth/bloc/login_cubit.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
+import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
 import '../../../core/constant/generated/assets.gen.dart';
 
 class GuestUserPage extends StatefulWidget {
@@ -68,22 +70,15 @@ class _GuestUserPageState extends State<GuestUserPage> {
             DefaultButton(
                 text: 'Продолжить',
                 press: () {
-                  // Get.back();
-                  // Get.off();
-                  // BlocProvider.of<AppBloc>(context)
-                  //     .add(const AppEvent.chageState(true));
+                  GetStorage().write('active', 0);
 
-                  GetStorage().write('user_guest', true);
+                  GetStorage().write('user_guest', false);
+
                   Navigator.pop(context);
 
                   context
                       .read<AppBloc>()
                       .add(const AppEvent.switchState(key: false));
-
-                  // _CheckAuth event,
-                  // Emitter<AppState> emit,
-                  //   emit(const AppState.inAppUserState());
-                  //   emit(const AppState.notAuthorizedState());
                 },
                 color: AppColors.kWhite,
                 backgroundColor: AppColors.mainPurpleColor,
@@ -96,11 +91,14 @@ class _GuestUserPageState extends State<GuestUserPage> {
             const SizedBox(height: 16),
             Center(
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   GetStorage().write('user_guest', true);
 
-                  Navigator.pop(context);
+                  final login = BlocProvider.of<LoginCubit>(context);
+                  login.lateAuth();
 
+                  context.read<TapeCubit>().tapes(false, false, '', 0);
+                  Navigator.pop(context);
                   context
                       .read<AppBloc>()
                       .add(const AppEvent.switchState(key: true));

@@ -1,9 +1,18 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
+import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/pre_order_dialog.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/show_basket_bottom_sheet_widget.dart';
+import 'package:haji_market/src/feature/product/cubit/product_cubit.dart'
+    as productCubit;
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:intl/intl.dart';
 
@@ -29,11 +38,13 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
 
   double? procentPrice;
   int compoundPrice = 0;
+  int basketCount = 0;
 
   bool inFavorite = false;
 
   @override
   void initState() {
+    basketCount = widget.product.basketCount ?? 0;
     compoundPrice = (widget.product.price!.toInt() *
             (((100 - widget.product.compound!.toInt())) / 100))
         .toInt();
@@ -348,7 +359,6 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
 
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 4),
-                  //width: ,
                   height: 21,
                   decoration: BoxDecoration(
                     color: AppColors.kYellowDark,
@@ -365,17 +375,108 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                   ),
                 ),
                 SizedBox(height: 12),
-                Container(
-                  height: 32,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: AppColors.mainPurpleColor,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Text(
-                    'Купить',
-                    style: AppTextStyles.categoryTextStyle
-                        .copyWith(color: AppColors.kWhite),
+                InkWell(
+                  onTap: () {
+                    if (basketCount != 0) {
+                      AppSnackBar.show(
+                        context,
+                        'Товар уже в корзине',
+                        type: AppSnackType.error,
+                      );
+
+                      return;
+                    }
+
+                    showBasketBottomSheetOptions(
+                      context,
+                      '${widget.product.shop?.name}',
+                      0,
+                      widget.product,
+                      (int callBackCount, int callBackPrice,
+                          bool callBackOptom) {
+                        if (widget.product.product_count == 0 &&
+                            widget.product.pre_order == 1) {
+                          if (widget.product.inBasket == false) {
+                            showCupertinoModalPopup<void>(
+                              context: context,
+                              builder: (context) => PreOrderDialog(
+                                onYesTap: () {
+                                  Navigator.pop(context);
+                                  if (widget.product.inBasket == false) {
+                                    BlocProvider.of<BasketCubit>(context)
+                                        .basketAdd(
+                                            widget.product.id.toString(),
+                                            callBackCount,
+                                            callBackPrice,
+                                            '',
+                                            '',
+                                            isOptom: callBackOptom);
+                                    setState(() {
+                                      // isvisible = true;
+                                    });
+                                    BlocProvider.of<productCubit.ProductCubit>(
+                                            context)
+                                        .products();
+                                  } else {
+                                    context.router.replaceAll([
+                                      const LauncherRoute(
+                                          children: [BasketRoute()]),
+                                    ]);
+                                  }
+                                },
+                              ),
+                            );
+                          } else {
+                            context.router.pushAndPopUntil(
+                              const LauncherRoute(children: [BasketRoute()]),
+                              predicate: (route) => false,
+                            );
+                          }
+
+                          return;
+                        }
+
+                        // if (widget.product.inBasket == false) {
+                        BlocProvider.of<BasketCubit>(context).basketAdd(
+                            widget.product.id.toString(),
+                            callBackCount,
+                            callBackPrice,
+                            '',
+                            '',
+                            isOptom: callBackOptom);
+
+                        BlocProvider.of<productCubit.ProductCubit>(context)
+                            .updateProductByIndex(
+                          index: widget.product.id!,
+                          updatedProduct: widget.product.copyWith(
+                            basketCount: widget.product.basketCount! + 1,
+                          ),
+                        );
+                        setState(() {
+                          basketCount += callBackCount;
+                          // if (count == 0) {
+                          //   isvisible = false;
+                          // } else {
+                          //   isvisible = true;
+                          // }
+                        });
+                      },
+                    );
+                  },
+                  child: Container(
+                    height: 32,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: basketCount != 0
+                            ? AppColors.buttonBackgroundPurpleColor
+                            : AppColors.mainPurpleColor,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Text(
+                      'Купить',
+                      style: AppTextStyles.size13Weight500
+                          .copyWith(color: AppColors.kWhite),
+                    ),
                   ),
                 )
 

@@ -554,7 +554,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 4.0),
                                 child: Container(
-                                  width: 54,
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
                                   decoration: BoxDecoration(
                                     color: selectedIndex4 == index
                                         ? Colors.black
@@ -1955,8 +1955,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 36),
         child: InkWell(
           onTap: () {
-            // Navigator.pop(context);
-
             showBasketBottomSheetOptions(
                 context, '${widget.product.shop?.name}', optom, widget.product,
                 (int callBackCount, int callBackPrice, bool callBackOptom) {
@@ -2020,11 +2018,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             });
           },
           child: Container(
-              height: 46,
+              height: 52,
               width: double.infinity,
-              // width: MediaQuery.of(context).size.width * 0.490,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(16),
                 color: AppColors.mainPurpleColor,
               ),
               alignment: Alignment.center,
@@ -2033,16 +2030,16 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       'В корзину',
                       style: TextStyle(
                           color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18),
                       textAlign: TextAlign.center,
                     )
                   : const Text(
                       'Товар в корзине',
                       style: TextStyle(
                           color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18),
                       textAlign: TextAlign.center,
                     )),
         ),

@@ -7,7 +7,7 @@ import 'package:haji_market/src/feature/auth/presentation/ui/view_auth_register_
 import 'package:haji_market/src/feature/auth/presentation/widgets/login_forget_password_modal_bottom.dart';
 import 'package:haji_market/src/feature/bloger/auth/presentation/ui/login_forget_password_modal_bottom.dart';
 import 'package:haji_market/src/feature/bloger/chat/presentation/chat_blogger_page.dart';
-import 'package:haji_market/src/feature/bloger/coop_request/presentation/ui/coop_request_page.dart';
+import 'package:haji_market/src/feature/bloger/coop_request/presentation/ui/blogger_register_page.dart';
 import 'package:haji_market/src/feature/bloger/coop_request/presentation/ui/success_blogger_register_page.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/ui/shop_products_page.dart';
 import 'package:haji_market/src/feature/bloger/shop/presentation/ui/success_blogger_tape_upload_video_page.dart';

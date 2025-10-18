@@ -90,12 +90,10 @@ class _DrawerPageState extends State<DrawerPage> {
 
   @override
   void initState() {
-    isAuthUser = _box.read('name') != 'Не авторизированный' ? true : false;
+    isAuthUser = _box.read('active') == '1' ? true : false;
     _box.read('avatar');
     _box.read('name');
-
     isSwitchedPush = _box.read('push') == '1';
-
     super.initState();
   }
 
@@ -198,7 +196,7 @@ class _DrawerPageState extends State<DrawerPage> {
                           ),
                           SizedBox(height: 16),
                           Text(
-                            '${GetStorage().read('name')}',
+                            '${GetStorage().read('first_name') ?? ''} ${GetStorage().read('last_name') ?? ''}',
                             style: AppTextStyles.size18Weight600,
                           ),
                           const SizedBox(height: 4),
@@ -536,17 +534,12 @@ class _DrawerPageState extends State<DrawerPage> {
                                     .add(const AppEvent.exiting());
                               } else {
                                 final data = await Get.to(EditProfilePage(
-                                  name: _box.read('name'),
+                                  firstName: _box.read('first_name'),
+                                  lastName: _box.read('last_name'),
+                                  surName: _box.read('sur_name'),
                                   phone: _box.read('phone') ?? '',
                                   gender: _box.read('gender') ?? '',
                                   birthday: _box.read('birthday') ?? '',
-                                  country: _box.read('country') ?? '',
-                                  city: _box.read('city') ?? '',
-                                  street: _box.read('street') ?? '',
-                                  home: _box.read('home') ?? '',
-                                  porch: _box.read('porch') ?? '',
-                                  floor: _box.read('floor') ?? '',
-                                  room: _box.read('room') ?? '',
                                   email: _box.read('email') ?? '',
                                 ));
 

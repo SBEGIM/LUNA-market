@@ -16,7 +16,7 @@ class ShimmerBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: AppColors.kNeutral.withOpacity(0.5),
+      baseColor: Color(0xffF7F7F7),
       highlightColor: Colors.white,
       child: SizedBox(
         width: width,

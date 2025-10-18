@@ -113,6 +113,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kGray1,
+      appBar: AppBar(
+        backgroundColor: AppColors.kWhite,
+        surfaceTintColor: AppColors.kWhite,
+        toolbarHeight: 15,
+      ),
       body: SmartRefresher(
         controller: refreshController,
         onRefresh: () {
@@ -128,172 +133,171 @@ class _HomePageState extends State<HomePage> {
           refreshController.refreshCompleted();
         },
         child: ListView(
+          padding: EdgeInsets.zero,
           cacheExtent: 5000,
           shrinkWrap: true,
           children: [
-            SizedBox(
-              height: 50,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+            Container(
+              decoration: BoxDecoration(
+                  color: AppColors.kWhite,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16))),
+              child: Column(
                 children: [
-                  Image.asset(
-                    Assets.icons.location.path,
-                    height: 23,
-                    width: 22,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          Assets.icons.location.path,
+                          height: 20,
+                          width: 20,
+                        ),
+                        SizedBox(
+                          width: 4.0,
+                        ),
+                        Text(
+                          'Алматы',
+                          style: AppTextStyles.size16Weight500.copyWith(
+                            color: AppColors.mainPurpleColor,
+                          ),
+                        ),
+                        Spacer(),
+                        Image.asset(
+                          Assets.icons.defaultNotificationIcon.path,
+                          height: 26,
+                          width: 26,
+                        )
+                      ],
+                    ),
                   ),
+                  SizedBox(height: 15),
+                  BlocBuilder<StoriesSellerCubit, StoriesSellerState>(
+                      builder: (context, state) {
+                    if (state is ErrorState) {
+                      return Center(
+                        child: Text(
+                          state.message,
+                          style: const TextStyle(
+                              fontSize: 20.0, color: Colors.grey),
+                        ),
+                      );
+                    }
+                    if (state is LoadedState) {
+                      return SizedBox(
+                        height: 102,
+                        child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: state.storiesSeelerModel.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                  top: 8,
+                                  bottom: 8,
+                                  left: index == 0 ? 16 : 5,
+                                ),
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(2),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: index == 0
+                                            ? AppColors.mainPurpleColor
+                                            : const Color(0xffAEAEB2),
+                                        width: index == 0 ? 2 : 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: ClipRRect(
+                                      // чтобы визуально совпадали скругления: 16 - border - padding ≈ 13
+                                      borderRadius: BorderRadius.circular(13),
+                                      child: Image.network(
+                                        "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                      );
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 5),
+                        child: SizedBox(
+                          height: 80,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                    margin: const EdgeInsets.only(left: 5),
+                                    height: 80,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                    ),
+                                    child: ShimmerBox(
+                                      color: Color(0xffF7F7F7),
+                                    ));
+                              }),
+                        ),
+                      );
+                    }
+                  }),
                   SizedBox(
-                    width: 2.0,
+                    height: 10,
                   ),
-                  Text(
-                    'Алматы',
-                    style: AppTextStyles.titleTextStyle.copyWith(
-                        color: AppColors.mainPurpleColor,
-                        fontWeight: FontWeight.w500),
+                  const BannerPage(),
+                  Container(
+                    height: 44,
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                        color: AppColors.kWhite,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Container(
+                      height: 44,
+                      decoration: BoxDecoration(
+                          color: Color(0xffF7F7F7),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 12,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              context.router.push(const SearchProductRoute());
+                            },
+                            child: Image.asset(
+                              Assets.icons.defaultSearchIcon.path,
+                              height: 18,
+                              width: 18,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Text(
+                            'Искать',
+                            style: AppTextStyles.size16Weight600
+                                .copyWith(color: Color(0xff8E8E93)),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                  Spacer(),
-                  Image.asset(
-                    Assets.icons.defaultNotificationIcon.path,
-                    height: 22,
-                    width: 22,
-                  )
+                  SizedBox(height: 16),
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            BlocBuilder<StoriesSellerCubit, StoriesSellerState>(
-                builder: (context, state) {
-              if (state is ErrorState) {
-                return Center(
-                  child: Text(
-                    state.message,
-                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-                  ),
-                );
-              }
-              if (state is LoadedState) {
-                return Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: SizedBox(
-                    height: 90,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: state.storiesSeelerModel.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () => Get.to(StoryScreen(
-                                stories:
-                                    state.storiesSeelerModel[index].stories)),
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 5),
-                              padding: const EdgeInsets.all(
-                                2,
-                              ),
-                              height: 86,
-                              width: 86,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: index == 0
-                                      ? AppColors.mainPurpleColor
-                                      : Color(0xffAEAEB2),
-                                  width: index == 0 ? 2 : 1,
-                                ),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                    14), // 14 - (4 padding + 2 border) = 8, but 10 looks better
-                                child: Image.network(
-                                  "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
-                  ),
-                );
-              } else {
-                return Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: SizedBox(
-                    height: 80,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.only(left: 5),
-                            padding: const EdgeInsets.all(1),
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: index == 0
-                                    ? AppColors.mainPurpleColor
-                                    : Colors.white,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                    10), // 14 - (4 padding + 2 border) = 8, but 10 looks better
-                                child: ShimmerBox()),
-                          );
-                        }),
-                  ),
-                );
-              }
-            }),
-            SizedBox(
-              height: 16,
-            ),
-            const BannerPage(),
-            // const SizedBox(
-            //   height: 16,
-            // ),
-            Container(
-              height: 74,
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                  color: AppColors.kWhite,
-                  borderRadius: BorderRadius.circular(12)),
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 16),
-                decoration: BoxDecoration(
-                    color: AppColors.kGray2,
-                    borderRadius: BorderRadius.circular(12)),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 12,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        context.router.push(const SearchProductRoute());
-                      },
-                      child: Image.asset(
-                        Assets.icons.defaultSearchIcon.path,
-                        height: 20,
-                        width: 20,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Text(
-                      'Искать',
-                      style: AppTextStyles.titleTextStyle
-                          .copyWith(color: AppColors.kGray300),
-                    )
-                  ],
-                ),
-              ),
-            ),
+
             const SizedBox(
               height: 16,
             ),
@@ -318,7 +322,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          'Недавно смотрели',
+                          'Рекомендуем',
                           style: TextStyle(
                               color: AppColors.kGray900,
                               fontSize: 16,

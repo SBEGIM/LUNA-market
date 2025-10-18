@@ -51,11 +51,17 @@ class _SuccessBloggerRegisterPageState
         padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
         child: InkWell(
             onTap: () {
-              BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(
-                  state: AppState.inAppBlogerState()));
-              context.router.popUntil(
-                  (route) => route.settings.name == LauncherRoute.name);
-              // Navigator.pop(context);
+              final router =
+                  AutoRouter.of(context).root; // гарантированно корень
+
+              // router.replaceAll([const LauncherRoute()]);
+
+              context.read<AppBloc>().add(
+                    const AppEvent.chageState(
+                        state: AppState.inAppBlogerState(index: 1)),
+                  );
+
+              router.replaceAll([const LauncherRoute()]);
             },
             child: SizedBox(
                 height: 100,

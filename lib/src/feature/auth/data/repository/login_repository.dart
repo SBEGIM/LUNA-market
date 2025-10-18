@@ -17,7 +17,9 @@ class LoginRepository {
   Future<dynamic> lateAuth() => _loginToApi.lateAuth();
   Future<dynamic> editPush(int pushStatus) => _loginToApi.editPush(pushStatus);
   Future<dynamic> edit(
-          String name,
+          String firstname,
+          String lastName,
+          String surName,
           String phone,
           String Avatar,
           String gender,
@@ -30,8 +32,8 @@ class LoginRepository {
           String floor,
           String room,
           String email) =>
-      _loginToApi.edit(name, phone, Avatar, gender, birthday, country, city,
-          street, home, porch, floor, room, email);
+      _loginToApi.edit(firstname, lastName, surName, phone, Avatar, gender,
+          birthday, country, city, street, home, porch, floor, room, email);
 }
 
 class LoginToApi {
@@ -65,7 +67,9 @@ class LoginToApi {
       _box.write('token', data['access_token'].toString());
       _box.write('push', data['push'].toString());
       _box.write('user_id', data['id'].toString());
-      _box.write('name', data['name'].toString());
+      _box.write('first_name', data['first_name'].toString());
+      _box.write('last_name', data['last_name'].toString());
+      _box.write('sur_name', data['sur_name'].toString());
       _box.write('phone', data['phone'].toString());
       _box.write('gender', data['gender'].toString());
       _box.write('avatar', data['avatar'].toString());
@@ -78,8 +82,7 @@ class LoginToApi {
       _box.write('floor', data['floor'].toString());
       _box.write('room', data['room'].toString());
       _box.write('email', data['email'].toString());
-
-      // _box.write('card', data['user']['card'].toString());
+      _box.write('active', data['active'].toString());
     }
     return response.statusCode;
   }
@@ -94,7 +97,9 @@ class LoginToApi {
       final data = jsonDecode(response.body);
       _box.write('token', data['access_token'].toString());
       _box.write('user_id', data['user']['id'].toString());
-      _box.write('name', 'Не авторизированный');
+      _box.write('first_name', 'Не авторизированный');
+      _box.write('active', 0);
+
       // _box.write('card', data['user']['card'].toString());
     }
 
@@ -133,7 +138,9 @@ class LoginToApi {
   }
 
   Future<dynamic> edit(
-    String name,
+    String firstname,
+    String lastName,
+    String surName,
     String phone,
     String avatar,
     String gender,
@@ -164,7 +171,9 @@ class LoginToApi {
       'Authorization': 'Bearer $token',
     };
     final body = {
-      'name': name,
+      'first_name': firstname,
+      'last_name': lastName,
+      'sur_name': surName,
       'phone': replace,
       'gender': gender,
       'birthday': birthday,
@@ -200,7 +209,9 @@ class LoginToApi {
     if (response.statusCode == 200) {
       _box.write('token', jsonResponse['access_token'].toString());
       _box.write('user_id', jsonResponse['id'].toString());
-      _box.write('name', jsonResponse['name'].toString());
+      _box.write('first_name', jsonResponse['first_name'].toString());
+      _box.write('last_name', jsonResponse['last_name'].toString());
+      _box.write('sur_name', jsonResponse['sur_name'].toString());
       _box.write('gender', jsonResponse['gender'].toString());
       _box.write('avatar', jsonResponse['avatar'].toString());
       _box.write('birthday', jsonResponse['birthday'].toString());
@@ -213,6 +224,7 @@ class LoginToApi {
       _box.write('room', jsonResponse['room'].toString());
       _box.write('email', jsonResponse['email'].toString());
       _box.write('phone', jsonResponse['phone'].toString());
+      _box.write('auth', jsonResponse['auth'].toString());
 
       return true;
     } else {

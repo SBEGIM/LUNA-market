@@ -36,8 +36,12 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _visibleIconClear = false;
   bool __visibleIconView = false;
   bool isButtonEnabled = false;
-  RegisterDTO register =
-      const RegisterDTO(name: 'null', phone: 'null', password: 'null');
+  RegisterDTO register = const RegisterDTO(
+      surName: 'null',
+      firstName: 'null',
+      lastName: 'null',
+      phone: 'null',
+      password: 'null');
   final maskFormatter = MaskTextInputFormatter(mask: '+#(###)-###-##-##');
 
   TextEditingController userFirstNameController = TextEditingController();
@@ -752,7 +756,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: DefaultButton(
             backgroundColor: _canProceed
                 ? AppColors.mainPurpleColor
-                : const Color(0xFFD6D8DB),
+                : const Color(0xFFC5ADFC),
             text: filledCount == 1 ? 'Далее' : 'Зарегистрироваться',
             press: () {
               _validateStep1Fields();
@@ -776,7 +780,9 @@ class _RegisterPageState extends State<RegisterPage> {
               if (!_ensureStep2Valid()) return;
 
               final RegisterDTO registerDTO = RegisterDTO(
-                  name: nameControllerRegister.text,
+                  firstName: userFirstNameController.text,
+                  lastName: userLastNameController.text,
+                  surName: middleNameController.text,
                   phone: phoneControllerRegister.text,
                   password: passwordController.text);
               final register = BlocProvider.of<RegisterCubit>(context);

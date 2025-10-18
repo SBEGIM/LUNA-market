@@ -34,10 +34,6 @@ class _BannerPageState extends State<BannerPage> {
         );
       }
       if (state is LoadedState) {
-        //  return Container(
-        //    height: 100,
-        // width: 100,
-        // child: Row(children:  <Widget>[
         return Column(
           children: [
             Container(
@@ -74,8 +70,9 @@ class _BannerPageState extends State<BannerPage> {
                 ),
               ),
             ),
+            SizedBox(height: 16),
             Container(
-              height: 30,
+              height: 8,
               decoration: BoxDecoration(
                   color: AppColors.kWhite,
                   borderRadius: BorderRadius.circular(16)),
@@ -107,18 +104,16 @@ class _BannerPageState extends State<BannerPage> {
                 ),
               )),
             ),
+            SizedBox(height: 16),
           ],
         );
       } else {
-        return Container(
-          color: Colors.white,
-          height: 120,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ShimmerBox(
-              width: double.infinity,
-              radius: 8,
-            ),
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ShimmerBox(
+            height: 120,
+            width: double.infinity,
+            radius: 16,
           ),
         );
 
@@ -234,8 +229,8 @@ class BannerImage extends StatelessWidget {
                 // ),
 
                 Positioned(
-                  right: 15,
-                  bottom: 10,
+                  right: 12,
+                  bottom: 12,
                   child: GestureDetector(
                     onTap: () async {
                       await showModalBottomSheet(
@@ -256,20 +251,17 @@ class BannerImage extends StatelessWidget {
                       );
                     },
                     child: Container(
+                      height: 26,
+                      width: 85,
+                      alignment: Alignment.center,
                       decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(6)),
-                      child: const Padding(
-                        padding: EdgeInsets.only(
-                            left: 4.0, right: 4, top: 4, bottom: 4),
-                        child: Text(
-                          'РЕКЛАМА',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
-                        ),
+                          color: Colors.black.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Text(
+                        'РЕКЛАМА',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.size13Weight600
+                            .copyWith(color: AppColors.kWhite),
                       ),
                     ),
                   ),

@@ -19,30 +19,24 @@ class _SuccessRegisterPageState extends State<SuccessRegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kWhite,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            Assets.icons.awaitModerationIcon.path,
-            height: 90,
-            width: 90,
-          ),
-          SizedBox(height: 16),
-          Text(
-            'Регистрация прошла успешно',
-            style: AppTextStyles.size22Weight700
-                .copyWith(color: Color(0xff0B0B0B)),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 16),
-          Text(
-            'Ваша заявка находится на модерации. Обычно это занимает от 1 до 2 рабочих дней',
-            style: AppTextStyles.size16Weight400
-                .copyWith(color: Color(0xff0B0B0B)),
-            textAlign: TextAlign.center,
-          ),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              Assets.icons.awaitModerationIcon.path,
+              height: 90,
+              width: 90,
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Регистрация прошла успешно',
+              style: AppTextStyles.size22Weight700
+                  .copyWith(color: Color(0xff0B0B0B)),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
       bottomSheet: Container(
         color: Colors.white,

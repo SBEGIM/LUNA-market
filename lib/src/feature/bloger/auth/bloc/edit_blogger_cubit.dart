@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
+import 'package:haji_market/src/feature/bloger/auth/data/DTO/blogger_dto.dart';
 import '../data/repository/edit_blogger_repo.dart';
 import 'edit_blogger_statet.dart';
 
@@ -10,21 +12,10 @@ class EditBloggerCubit extends Cubit<EditBloggerState> {
 
   EditBloggerCubit({required this.editBloggerRepository}) : super(InitState());
 
-  Future<void> edit(
-      String? name,
-      String? nick,
-      String phone,
-      String? password,
-      String? check,
-      String? iin,
-      avatar,
-      String? card,
-      String? email,
-      String? socialNetwork) async {
+  Future<void> edit(BuildContext context, BloggerDTO dto) async {
     try {
       emit(LoadingState());
-      final data = await editBloggerRepository.edit(name, nick, phone, password,
-          iin, check, avatar, card, email, socialNetwork);
+      final data = await editBloggerRepository.edit(dto);
 
       if (data == 200) {
         emit(LoadedState());
@@ -32,13 +23,21 @@ class EditBloggerCubit extends Cubit<EditBloggerState> {
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Телефон или никнейм занято',
-            backgroundColor: Colors.redAccent);
+
+        AppSnackBar.show(
+          context,
+          'Телефон или никнейм занято',
+          type: AppSnackType.error,
+        );
       }
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+
+        AppSnackBar.show(
+          context,
+          'Ошибка сервера',
+          type: AppSnackType.error,
+        );
       }
     } catch (e) {
       log(e.toString());

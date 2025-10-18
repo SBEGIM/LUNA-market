@@ -81,8 +81,8 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
       // resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
-        // iconTheme: const IconThemeData(color: Colors.red),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.kWhite,
+        surfaceTintColor: AppColors.kWhite,
         elevation: 0,
         leading: IconButton(
           onPressed: () {
@@ -293,84 +293,87 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       // crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
-                          width: 128,
-                          height: 72,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                state.loadedProfile.videoReview.toString(),
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              const Text(
-                                'Видео обзоров',
-                                style: TextStyle(
-                                    color: AppColors.kGray300,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
+                        Expanded(
+                          child: Container(
+                            height: 72,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  state.loadedProfile.videoReview.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                const Text(
+                                  'Видео обзоров',
+                                  style: TextStyle(
+                                      color: AppColors.kGray300,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        const Spacer(),
-                        Container(
-                          width: 128,
-                          height: 72,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                ' ${state.loadedProfile.subscribers}',
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              const Text(
-                                'Подписчики',
-                                style: TextStyle(
-                                    color: AppColors.kGray300,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Container(
+                            height: 72,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  ' ${state.loadedProfile.subscribers}',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                const Text(
+                                  'Подписчики',
+                                  style: TextStyle(
+                                      color: AppColors.kGray300,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        const Spacer(),
-                        Container(
-                          width: 128,
-                          height: 72,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                ' ${state.loadedProfile.sales}',
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              const Text(
-                                'Продаж',
-                                style: TextStyle(
-                                    color: AppColors.kGray300,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Container(
+                            height: 72,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  ' ${state.loadedProfile.sales}',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                const Text(
+                                  'Продаж',
+                                  style: TextStyle(
+                                      color: AppColors.kGray300,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ]);

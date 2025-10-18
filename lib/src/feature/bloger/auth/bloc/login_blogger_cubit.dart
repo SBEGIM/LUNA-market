@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/login_blogger_state.dart';
-import '../data/DTO/register_blogger_dto.dart';
+import '../data/DTO/blogger_dto.dart';
 import '../data/repository/login_blogger_repo.dart';
 
 class LoginBloggerCubit extends Cubit<LoginBloggerState> {
@@ -35,7 +35,7 @@ class LoginBloggerCubit extends Cubit<LoginBloggerState> {
         emit(InitState());
 
         AppSnackBar.show(
-          Get.context!,
+          context,
           'Ошибка сервера',
           type: AppSnackType.error,
         );
@@ -49,24 +49,33 @@ class LoginBloggerCubit extends Cubit<LoginBloggerState> {
     }
   }
 
-  Future<int?> register(RegisterBloggerDTO register) async {
+  Future<int?> register(BuildContext context, BloggerDTO register) async {
     try {
       emit(LoadingState());
       final data = await loginBloggerRepository.register(register);
 
       if (data == 200) {
-        emit(LoadedState());
+        // emit(LoadedState());
         emit(InitState());
+        return 200;
       }
       if (data == 400) {
         emit(InitState());
-        Get.snackbar('Ошибка запроса!', 'Телефон или никнейм занято',
-            backgroundColor: Colors.redAccent);
+        AppSnackBar.show(
+          context,
+          'Телефон или Никнейм занято',
+          type: AppSnackType.error,
+        );
+        return 400;
       }
       if (data == 500) {
         emit(InitState());
-        Get.snackbar('500', 'Ошибка сервера',
-            backgroundColor: Colors.redAccent);
+        AppSnackBar.show(
+          context,
+          'Ошибка сервера',
+          type: AppSnackType.error,
+        );
+        return 500;
       }
 
       return data;

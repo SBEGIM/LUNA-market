@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_month_statics_admin_cubit.dart';
 import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_month_statics_admin_state.dart';
 import '../../../../../core/common/constants.dart';
@@ -67,7 +68,7 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
         Stack(
           children: [
             Container(
-                height: 220,
+                height: 240,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -81,131 +82,142 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
+                  padding: const EdgeInsets.only(top: 60.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          SizedBox(width: 5),
-                          InkWell(
-                            onTap: () => Navigator.pop(context),
-                            child: Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                            ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: SizedBox(
+                          height: 24,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: InkWell(
+                                  onTap: () => Navigator.pop(context),
+                                  child: Image.asset(
+                                    Assets.icons.defaultBackIcon.path,
+                                    height: 24,
+                                    width: 24,
+                                    scale: 1.9,
+                                    color: AppColors.kWhite,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                'Аналитика продаж',
+                                style: AppTextStyles.size18Weight600
+                                    .copyWith(color: AppColors.kWhite),
+                              ),
+                            ],
                           ),
-                          SizedBox(width: 105),
-                          Text(
-                            'Мой заработок',
-                            style:
-                                AppTextStyles.defaultButtonTextStyle.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )
-                        ],
+                        ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 0.0, top: 28),
+                        padding: const EdgeInsets.only(top: 28),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Container(
-                              height: 80,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(16)),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 12.5),
-                                  Image.asset(
-                                    Assets.icons.moneyIcon.path,
-                                    height: 16.5,
-                                    width: 22.5,
-                                  ),
-                                  SizedBox(height: 6.5),
-                                  Text(
-                                    '$_summConfirm ₽',
-                                    style: AppTextStyles.appBarTextStylea
-                                        .copyWith(
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                            fontFamily: 'SFProDisplay'),
-                                  ),
-                                  SizedBox(height: 3),
-                                  Text(
-                                    'Мой заработок',
-                                    style: AppTextStyles.bannerTextStyle,
-                                  )
-                                ],
+                            Expanded(
+                              child: Container(
+                                height: 80,
+                                decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(16)),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 12.5),
+                                    Image.asset(
+                                      Assets.icons.moneyIcon.path,
+                                      height: 16.5,
+                                      width: 22.5,
+                                    ),
+                                    SizedBox(height: 6.5),
+                                    Text(
+                                      '$_summConfirm ₽',
+                                      style: AppTextStyles.appBarTextStylea
+                                          .copyWith(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontFamily: 'SFProDisplay'),
+                                    ),
+                                    SizedBox(height: 3),
+                                    Text(
+                                      'Мой заработок',
+                                      style: AppTextStyles.bannerTextStyle,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                            SizedBox(width: 3),
-                            Container(
-                              height: 80,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(16)),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 12.5),
-                                  Image.asset(
-                                    Assets.icons.lock.path,
-                                    height: 16.5,
-                                    width: 22.5,
-                                  ),
-                                  SizedBox(height: 6.5),
-                                  Text(
-                                    '$_summFreeze ₽',
-                                    style: AppTextStyles.appBarTextStylea
-                                        .copyWith(
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                            fontFamily: 'SFProDisplay'),
-                                  ),
-                                  SizedBox(height: 3),
-                                  Text(
-                                    'В заморозке',
-                                    style: AppTextStyles.bannerTextStyle,
-                                  )
-                                ],
+                            SizedBox(width: 4),
+                            Expanded(
+                              child: Container(
+                                height: 80,
+                                decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(16)),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 12.5),
+                                    Image.asset(
+                                      Assets.icons.lock.path,
+                                      height: 16.5,
+                                      width: 22.5,
+                                    ),
+                                    SizedBox(height: 6.5),
+                                    Text(
+                                      '$_summFreeze ₽',
+                                      style: AppTextStyles.appBarTextStylea
+                                          .copyWith(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontFamily: 'SFProDisplay'),
+                                    ),
+                                    SizedBox(height: 3),
+                                    Text(
+                                      'В заморозке',
+                                      style: AppTextStyles.bannerTextStyle,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                            SizedBox(width: 3),
-                            Container(
-                              height: 80,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(16)),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 12.5),
-                                  Image.asset(
-                                    Assets.icons.sumMoney.path,
-                                    height: 16.5,
-                                    width: 22.5,
-                                  ),
-                                  SizedBox(height: 6.5),
-                                  Text(
-                                    '$_total ₽',
-                                    style: AppTextStyles.appBarTextStylea
-                                        .copyWith(
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                            fontFamily: 'SFProDisplay'),
-                                  ),
-                                  SizedBox(height: 3),
-                                  Text(
-                                    'Заработок за год',
-                                    style: AppTextStyles.bannerTextStyle,
-                                  )
-                                ],
+                            SizedBox(width: 4),
+                            Expanded(
+                              child: Container(
+                                height: 80,
+                                decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(16)),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 12.5),
+                                    Image.asset(
+                                      Assets.icons.sumMoney.path,
+                                      height: 16.5,
+                                      width: 22.5,
+                                    ),
+                                    SizedBox(height: 6.5),
+                                    Text(
+                                      '$_total ₽',
+                                      style: AppTextStyles.appBarTextStylea
+                                          .copyWith(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontFamily: 'SFProDisplay'),
+                                    ),
+                                    SizedBox(height: 3),
+                                    Text(
+                                      'Заработок за год',
+                                      style: AppTextStyles.bannerTextStyle,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -216,11 +228,10 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                 )),
             Container(
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(12)),
+                  color: Colors.white, borderRadius: BorderRadius.circular(16)),
               // color: Colors.white,
               margin: const EdgeInsets.only(top: 210),
               padding: const EdgeInsets.all(16),
-
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,9 +240,9 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        width: 160,
+                        width: 175,
                         height: 36,
-                        padding: EdgeInsets.all(6),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
                             color: AppColors.kBackgroundColor,
                             borderRadius: BorderRadius.circular(12)),
@@ -246,21 +257,19 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                '$selectedYear',
-                                style: const TextStyle(
-                                  color: AppColors.kGray900,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              Icon(Icons.arrow_drop_down)
+                              Text('$selectedYear',
+                                  style: AppTextStyles.size14Weight500),
+                              Image.asset(
+                                Assets.icons.dropDownIcon.path,
+                                width: 12,
+                                height: 6,
+                              )
                             ],
                           ),
                         ),
                       ),
                       Container(
-                        width: 160,
+                        width: 175,
                         height: 36,
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
@@ -289,18 +298,13 @@ class _StatisticsAdminShowPageState extends State<StatisticsAdminShowPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                months[_selectIndex],
-                                style: const TextStyle(
-                                  color: AppColors.kGray900,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              const Icon(
-                                Icons.arrow_drop_down,
-                                color: AppColors.kGray900,
-                              ),
+                              Text(months[_selectIndex],
+                                  style: AppTextStyles.size14Weight500),
+                              Image.asset(
+                                Assets.icons.dropDownIcon.path,
+                                width: 12,
+                                height: 6,
+                              )
                             ],
                           ),
                         ),
@@ -604,9 +608,12 @@ void _showMonthPickerBottomSheet(
     'Декабрь'
   ];
 
+  // Текущий месяц (индекс с 0)
+  final int currentMonthIndex = DateTime.now().month - 1;
+
   final FixedExtentScrollController scrollController =
       FixedExtentScrollController(
-    initialItem: initialSelectedMonth,
+    initialItem: initialSelectedMonth ?? currentMonthIndex,
   );
 
   showModalBottomSheet(
@@ -614,70 +621,97 @@ void _showMonthPickerBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
-    backgroundColor: Colors.white,
+    backgroundColor: Color(0xffF7F7F7),
     builder: (context) {
       int selectedMonth = initialSelectedMonth;
 
       return StatefulBuilder(
         builder: (context, setModalState) {
           return SizedBox(
-            height: 300,
+            height: 402,
             child: Column(
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Выберите месяц',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.kGray900,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Выберите месяц',
+                        style: AppTextStyles.size16Weight500,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Image.asset(
+                          Assets.icons.defaultCloseIcon.path,
+                          scale: 1.9,
+                          width: 24,
+                          height: 24,
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 Expanded(
-                  child: ListWheelScrollView.useDelegate(
-                    controller: scrollController,
-                    itemExtent: 50,
-                    physics: const FixedExtentScrollPhysics(),
-                    onSelectedItemChanged: (index) {
-                      setModalState(() {
-                        selectedMonth = index;
-                      });
-                      onMonthSelected(index);
-                    },
-                    childDelegate: ListWheelChildBuilderDelegate(
-                      builder: (context, index) {
-                        if (index < 0 || index >= months.length) return null;
-                        final isSelected = index == selectedMonth;
-                        return Center(
-                          child: Container(
+                  child: Container(
+                    width: 326,
+                    height: 212,
+                    decoration: BoxDecoration(
+                        color: AppColors.kWhite,
+                        borderRadius: BorderRadius.circular(16)),
+                    child: ListWheelScrollView.useDelegate(
+                      controller: scrollController,
+                      itemExtent: 50,
+                      physics: const FixedExtentScrollPhysics(),
+                      onSelectedItemChanged: (index) {
+                        setModalState(() {
+                          selectedMonth = index;
+                        });
+                      },
+                      childDelegate: ListWheelChildBuilderDelegate(
+                        builder: (context, index) {
+                          if (index < 0 || index >= months.length) return null;
+                          final month = months[index];
+                          final isSelected = index == selectedMonth;
+
+                          return Container(
+                            height: 36,
+                            width: double.infinity,
+                            alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? AppColors.kGray2
+                                  ? Color(0xffEAECED)
                                   : Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 24),
-                            child: Text(
-                              months[index],
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: isSelected
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                                color: isSelected
-                                    ? AppColors.mainBackgroundPurpleColor
-                                    : AppColors.kGray900,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
+                            child: Text('$month',
+                                style: AppTextStyles.size20Weight500.copyWith(
+                                  color: isSelected
+                                      ? AppColors.kGray900
+                                      : Color(0xff8E8E93),
+                                )),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16.0, right: 16, top: 16, bottom: 50),
+                  child: DefaultButton(
+                      text: 'Выбрать',
+                      press: () {
+                        onMonthSelected(selectedMonth);
+
+                        Navigator.of(context).pop();
+                      },
+                      color: AppColors.kWhite,
+                      backgroundColor: AppColors.mainPurpleColor,
+                      width: double.infinity),
+                )
               ],
             ),
           );
@@ -692,11 +726,14 @@ void _showYearPickerBottomSheet(
   int initialSelectedYear,
   void Function(int) onYearSelected,
 ) {
-  final List<int> years =
-      List.generate(50, (index) => DateTime.now().year - index);
+  const int baseYear = 2025;
+  final List<int> years = List.generate(21, (index) => (baseYear + 5) - index);
+
+  final int initialIndex = years.indexOf(initialSelectedYear);
   final FixedExtentScrollController scrollController =
       FixedExtentScrollController(
-    initialItem: years.indexOf(initialSelectedYear),
+    initialItem:
+        initialIndex == -1 ? 0 : initialIndex, // фолбэк, если года нет в списке
   );
 
   showModalBottomSheet(
@@ -704,7 +741,7 @@ void _showYearPickerBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
-    backgroundColor: Colors.white,
+    backgroundColor: Color(0xffF7F7F7),
     builder: (context) {
       int selectedYear =
           initialSelectedYear; // Локальный selectedYear для обновления в билдере
@@ -712,65 +749,92 @@ void _showYearPickerBottomSheet(
       return StatefulBuilder(
         builder: (context, setModalState) {
           return SizedBox(
-            height: 300,
+            height: 402,
             child: Column(
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Выберите год',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.kGray900,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Выберите год',
+                        style: AppTextStyles.size16Weight500,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Image.asset(
+                          Assets.icons.defaultCloseIcon.path,
+                          scale: 1.9,
+                          width: 24,
+                          height: 24,
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 Expanded(
-                  child: ListWheelScrollView.useDelegate(
-                    controller: scrollController,
-                    itemExtent: 50,
-                    physics: const FixedExtentScrollPhysics(),
-                    onSelectedItemChanged: (index) {
-                      setModalState(() {
-                        selectedYear = years[index];
-                      });
-                      onYearSelected(years[index]);
-                    },
-                    childDelegate: ListWheelChildBuilderDelegate(
-                      builder: (context, index) {
-                        if (index < 0 || index >= years.length) return null;
-                        final year = years[index];
-                        final isSelected = year == selectedYear;
+                  child: Container(
+                    width: 326,
+                    height: 212,
+                    decoration: BoxDecoration(
+                        color: AppColors.kWhite,
+                        borderRadius: BorderRadius.circular(16)),
+                    child: ListWheelScrollView.useDelegate(
+                      controller: scrollController,
+                      itemExtent: 50,
+                      physics: const FixedExtentScrollPhysics(),
+                      onSelectedItemChanged: (index) {
+                        setModalState(() {
+                          selectedYear = years[index];
+                        });
+                      },
+                      childDelegate: ListWheelChildBuilderDelegate(
+                        builder: (context, index) {
+                          if (index < 0 || index >= years.length) return null;
+                          final year = years[index];
+                          final isSelected = year == selectedYear;
 
-                        return Center(
-                          child: Container(
+                          return Container(
+                            height: 36,
+                            width: double.infinity,
+                            alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? AppColors.kGray2
+                                  ? Color(0xffEAECED)
                                   : Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 24),
-                            child: Text(
-                              '$year',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: isSelected
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                                color: isSelected
-                                    ? AppColors.kGray900
-                                    : AppColors.kGray700,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
+                            child: Text('$year',
+                                style: AppTextStyles.size20Weight500.copyWith(
+                                  color: isSelected
+                                      ? AppColors.kGray900
+                                      : Color(0xff8E8E93),
+                                )),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16.0, right: 16, top: 16, bottom: 50),
+                  child: DefaultButton(
+                      text: 'Выбрать',
+                      press: () {
+                        onYearSelected(selectedYear);
+
+                        Navigator.of(context).pop();
+                      },
+                      color: AppColors.kWhite,
+                      backgroundColor: AppColors.mainPurpleColor,
+                      width: double.infinity),
+                )
               ],
             ),
           );

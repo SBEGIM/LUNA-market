@@ -16,6 +16,8 @@ class ProductWidget extends StatefulWidget {
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
+  final _box = GetStorage();
+
   @override
   void initState() {
     BlocProvider.of<ProductCubit>(context).products();
@@ -47,25 +49,27 @@ class _ProductWidgetState extends State<ProductWidget> {
         return SliverPadding(
           padding: const EdgeInsets.all(16),
           sliver: NotificationListener<UserScrollNotification>(
-            onNotification: (notification) {
-              if (notification.metrics.pixels ==
-                  notification.metrics.minScrollExtent) {
-                Future.delayed(const Duration(milliseconds: 100), () {})
-                    .then((s) {
-                  GetStorage().write('scrollView', false);
-                });
-              } else if (notification.direction == ScrollDirection.reverse) {
-                Future.delayed(const Duration(milliseconds: 200), () {})
-                    .then((s) {
-                  GetStorage().write('scrollView', true);
-                });
+            onNotification: (n) {
+              // В самом верху — показываем товары
+              if (n.metrics.pixels <= n.metrics.minScrollExtent + 0.5) {
+                _box.write('scrollView', false);
+                return false;
               }
-              return true;
+
+              // Тянем вверх (контент едет ВВЕРХ) — прячем товары
+              if (n.direction == ScrollDirection.reverse) {
+                _box.write('scrollView', true);
+              }
+              // Тянем вниз (контент едет ВНИЗ) — показываем товары
+              else if (n.direction == ScrollDirection.forward) {
+                _box.write('scrollView', false);
+              }
+              return false;
             },
             child: SliverGrid(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 173 / 300,
+                childAspectRatio: 173 / 315,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
               ),

@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/src/feature/product/presentation/widgets/chip_date_widget.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/statistic_product_seller_state.dart';
 import '../../../../../core/common/constants.dart';
@@ -98,7 +100,7 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
                       Text(
                         '${widget.product.catName}',
                         style: AppTextStyles.size13Weight400
-                            .copyWith(color: AppColors.kGray200),
+                            .copyWith(color: Color(0xff8E8E93)),
                       ),
                       SizedBox(height: 4),
                       Text('${widget.product.name}',
@@ -113,7 +115,7 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
                           Text(
                             'Артикул: ',
                             style: AppTextStyles.size13Weight400
-                                .copyWith(color: AppColors.kGray200),
+                                .copyWith(color: Color(0xff8E8E93)),
                           ),
                           Text('${widget.product.id}',
                               style: AppTextStyles.size13Weight500),
@@ -127,7 +129,7 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
                           Text(
                             'Дата добавления: ',
                             style: AppTextStyles.size13Weight400
-                                .copyWith(color: AppColors.kGray200),
+                                .copyWith(color: Color(0xff8E8E93)),
                           ),
                           Text(
                             '${widget.product.created_at}',
@@ -144,24 +146,31 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
         ),
         Container(
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(12)),
+              color: Colors.white, borderRadius: BorderRadius.circular(22)),
           padding: const EdgeInsets.all(16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 160,
-                height: 36,
-                padding: EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                    color: AppColors.kBackgroundColor,
-                    borderRadius: BorderRadius.circular(12)),
-                child: GestureDetector(
-                  onTap: () =>
-                      _showYearPickerBottomSheet(context, year, (value) {
-                    year = value;
-                    setState(() {});
-                  }),
+              GestureDetector(
+                onTap: () => _showYearPickerBottomSheet(context, year, (value) {
+                  BlocProvider.of<StatisticsProductSellerCubit>(context)
+                      .statistics(widget.product.id, value, _selectIndex + 1);
+
+                  _summBonus = 0;
+                  year = value;
+
+                  setState(() {
+                    year;
+                    _summBonus;
+                  });
+                }),
+                child: Container(
+                  width: 160,
+                  height: 36,
+                  padding: EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                      color: Color(0xffF7F7F7),
+                      borderRadius: BorderRadius.circular(12)),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Row(
@@ -174,31 +183,29 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
                   ),
                 ),
               ),
-              Container(
-                width: 160,
-                height: 36,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  color: AppColors.kBackgroundColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(12),
-                  onTap: () {
-                    _showMonthPickerBottomSheet(context, _selectIndex,
-                        (int selectedIndex) {
-                      _selectIndex = selectedIndex;
-                      BlocProvider.of<StatisticsProductSellerCubit>(context)
-                          .statistics(
-                              widget.product.id, year, selectedIndex + 1);
+              GestureDetector(
+                onTap: () {
+                  _showMonthPickerBottomSheet(context, _selectIndex,
+                      (int selectedIndex) {
+                    _selectIndex = selectedIndex;
+                    BlocProvider.of<StatisticsProductSellerCubit>(context)
+                        .statistics(widget.product.id, year, selectedIndex + 1);
 
-                      _summBonus = 0;
-                      setState(() {
-                        _selectIndex;
-                        _summBonus;
-                      });
+                    _summBonus = 0;
+                    setState(() {
+                      _selectIndex;
+                      _summBonus;
                     });
-                  },
+                  });
+                },
+                child: Container(
+                  width: 160,
+                  height: 36,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: Color(0xffF7F7F7),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
@@ -217,7 +224,6 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
         ),
         Container(
           color: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -270,24 +276,12 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
     int initialSelectedMonth,
     Function(int) onMonthSelected,
   ) {
-    final List<String> months = [
-      'Январь',
-      'Февраль',
-      'Март',
-      'Апрель',
-      'Май',
-      'Июнь',
-      'Июль',
-      'Август',
-      'Сентябрь',
-      'Октябрь',
-      'Ноябрь',
-      'Декабрь'
-    ];
+    // Текущий месяц (индекс с 0)
+    final int currentMonthIndex = DateTime.now().month - 1;
 
     final FixedExtentScrollController scrollController =
         FixedExtentScrollController(
-      initialItem: initialSelectedMonth,
+      initialItem: initialSelectedMonth ?? currentMonthIndex,
     );
 
     showModalBottomSheet(
@@ -295,70 +289,98 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffF7F7F7),
       builder: (context) {
         int selectedMonth = initialSelectedMonth;
 
         return StatefulBuilder(
           builder: (context, setModalState) {
             return SizedBox(
-              height: 300,
+              height: 402,
               child: Column(
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      'Выберите месяц',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.kGray900,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Выберите месяц',
+                          style: AppTextStyles.size16Weight500,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Image.asset(
+                            Assets.icons.defaultCloseIcon.path,
+                            scale: 1.9,
+                            width: 24,
+                            height: 24,
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   Expanded(
-                    child: ListWheelScrollView.useDelegate(
-                      controller: scrollController,
-                      itemExtent: 50,
-                      physics: const FixedExtentScrollPhysics(),
-                      onSelectedItemChanged: (index) {
-                        setModalState(() {
-                          selectedMonth = index;
-                        });
-                        onMonthSelected(index);
-                      },
-                      childDelegate: ListWheelChildBuilderDelegate(
-                        builder: (context, index) {
-                          if (index < 0 || index >= months.length) return null;
-                          final isSelected = index == selectedMonth;
-                          return Center(
-                            child: Container(
+                    child: Container(
+                      width: 326,
+                      height: 212,
+                      decoration: BoxDecoration(
+                          color: AppColors.kWhite,
+                          borderRadius: BorderRadius.circular(16)),
+                      child: ListWheelScrollView.useDelegate(
+                        controller: scrollController,
+                        itemExtent: 50,
+                        physics: const FixedExtentScrollPhysics(),
+                        onSelectedItemChanged: (index) {
+                          setModalState(() {
+                            selectedMonth = index;
+                          });
+                        },
+                        childDelegate: ListWheelChildBuilderDelegate(
+                          builder: (context, index) {
+                            if (index < 0 || index >= months.length)
+                              return null;
+                            final month = months[index];
+                            final isSelected = index == selectedMonth;
+
+                            return Container(
+                              height: 36,
+                              width: double.infinity,
+                              alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? AppColors.kGray2
+                                    ? Color(0xffEAECED)
                                     : Colors.transparent,
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 24),
-                              child: Text(
-                                months[index],
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: isSelected
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                  color: isSelected
-                                      ? AppColors.mainBackgroundPurpleColor
-                                      : AppColors.kGray900,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
+                              child: Text('$month',
+                                  style: AppTextStyles.size20Weight500.copyWith(
+                                    color: isSelected
+                                        ? AppColors.kGray900
+                                        : Color(0xff8E8E93),
+                                  )),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16, top: 16, bottom: 50),
+                    child: DefaultButton(
+                        text: 'Выбрать',
+                        press: () {
+                          onMonthSelected(selectedMonth);
+
+                          Navigator.of(context).pop();
+                        },
+                        color: AppColors.kWhite,
+                        backgroundColor: AppColors.mainPurpleColor,
+                        width: double.infinity),
+                  )
                 ],
               ),
             );
@@ -373,11 +395,16 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
     int initialSelectedYear,
     void Function(int) onYearSelected,
   ) {
+    const int baseYear = 2025;
     final List<int> years =
-        List.generate(50, (index) => DateTime.now().year - index);
+        List.generate(21, (index) => (baseYear + 5) - index);
+
+    final int initialIndex = years.indexOf(initialSelectedYear);
     final FixedExtentScrollController scrollController =
         FixedExtentScrollController(
-      initialItem: years.indexOf(initialSelectedYear),
+      initialItem: initialIndex == -1
+          ? 0
+          : initialIndex, // фолбэк, если года нет в списке
     );
 
     showModalBottomSheet(
@@ -385,7 +412,7 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffF7F7F7),
       builder: (context) {
         int selectedYear =
             initialSelectedYear; // Локальный selectedYear для обновления в билдере
@@ -393,65 +420,92 @@ class _StatisticsSellerPageState extends State<StatisticsSellerPage> {
         return StatefulBuilder(
           builder: (context, setModalState) {
             return SizedBox(
-              height: 300,
+              height: 402,
               child: Column(
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      'Выберите год',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.kGray900,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Выберите год',
+                          style: AppTextStyles.size16Weight500,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Image.asset(
+                            Assets.icons.defaultCloseIcon.path,
+                            scale: 1.9,
+                            width: 24,
+                            height: 24,
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   Expanded(
-                    child: ListWheelScrollView.useDelegate(
-                      controller: scrollController,
-                      itemExtent: 50,
-                      physics: const FixedExtentScrollPhysics(),
-                      onSelectedItemChanged: (index) {
-                        setModalState(() {
-                          selectedYear = years[index];
-                        });
-                        onYearSelected(years[index]);
-                      },
-                      childDelegate: ListWheelChildBuilderDelegate(
-                        builder: (context, index) {
-                          if (index < 0 || index >= years.length) return null;
-                          final year = years[index];
-                          final isSelected = year == selectedYear;
+                    child: Container(
+                      width: 326,
+                      height: 212,
+                      decoration: BoxDecoration(
+                          color: AppColors.kWhite,
+                          borderRadius: BorderRadius.circular(16)),
+                      child: ListWheelScrollView.useDelegate(
+                        controller: scrollController,
+                        itemExtent: 50,
+                        physics: const FixedExtentScrollPhysics(),
+                        onSelectedItemChanged: (index) {
+                          setModalState(() {
+                            selectedYear = years[index];
+                          });
+                        },
+                        childDelegate: ListWheelChildBuilderDelegate(
+                          builder: (context, index) {
+                            if (index < 0 || index >= years.length) return null;
+                            final year = years[index];
+                            final isSelected = year == selectedYear;
 
-                          return Center(
-                            child: Container(
+                            return Container(
+                              height: 36,
+                              width: double.infinity,
+                              alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? AppColors.kGray2
+                                    ? Color(0xffEAECED)
                                     : Colors.transparent,
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(8),
                               ),
                               padding: const EdgeInsets.symmetric(
                                   vertical: 8, horizontal: 24),
-                              child: Text(
-                                '$year',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: isSelected
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                  color: isSelected
-                                      ? AppColors.kGray900
-                                      : AppColors.kGray700,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
+                              child: Text('$year',
+                                  style: AppTextStyles.size20Weight500.copyWith(
+                                    color: isSelected
+                                        ? AppColors.kGray900
+                                        : Color(0xff8E8E93),
+                                  )),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16, top: 16, bottom: 50),
+                    child: DefaultButton(
+                        text: 'Выбрать',
+                        press: () {
+                          onYearSelected(year);
+
+                          Navigator.of(context).pop();
+                        },
+                        color: AppColors.kWhite,
+                        backgroundColor: AppColors.mainPurpleColor,
+                        width: double.infinity),
+                  )
                 ],
               ),
             );
@@ -476,12 +530,12 @@ class StatisticWidgetContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.only(bottom: 12, left: 16, right: 16),
       width: double.infinity,
       height: 92,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: AppColors.mainBackgroundPurpleColor,
+        borderRadius: BorderRadius.circular(16),
+        color: AppColors.mainPurpleColor.withOpacity(0.1),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -12,9 +12,11 @@ import 'package:haji_market/src/feature/tape/data/models/tape_model.dart';
 class TapeCardWidget extends StatefulWidget {
   final TapeModel tape;
   final int index;
+  final String? bloggerName;
   const TapeCardWidget({
     required this.tape,
     required this.index,
+    this.bloggerName,
     Key? key,
   }) : super(key: key);
 
@@ -89,17 +91,18 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
               // );
             },
             child: Padding(
-              padding: const EdgeInsets.only(left: 8.0, top: 8),
+              padding: const EdgeInsets.only(left: 12.0, top: 8, right: 24),
               child: Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    '${widget.tape.shop?.name}',
+                    '${widget.bloggerName ?? widget.tape.shop?.name}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.size14Weight500
                         .copyWith(color: AppColors.kWhite),
                   )),
             ),
           ),
-
           InkWell(
             onTap: () {
               context.router.push(DetailTapeCardRoute(

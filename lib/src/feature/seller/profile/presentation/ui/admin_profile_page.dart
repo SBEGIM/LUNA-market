@@ -16,6 +16,7 @@ import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_edit_ad
 import 'package:haji_market/src/feature/seller/profile/presentation/ui/seller_show_list_widget.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/edit_profile_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/seller_service_page.dart';
+import 'package:haji_market/src/feature/seller/profile/presentation/widgets/seller_visit_card_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/statistics_admin_show_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
@@ -384,6 +385,17 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       },
                       title: 'Аналитика продаж',
                       iconPath: Assets.icons.sellerTransaction.path,
+                    ),
+                    buildProfileItem(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SellerVisitCardPage()),
+                        );
+                      },
+                      title: 'Визитная карточка',
+                      iconPath: Assets.icons.visitCardIcon.path,
                     ),
                     buildProfileItem(
                       onTap: () {

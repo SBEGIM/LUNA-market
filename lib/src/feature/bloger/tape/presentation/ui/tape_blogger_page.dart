@@ -56,7 +56,6 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
           physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics()),
           slivers: [
-            // Поисковая строка
             SliverToBoxAdapter(
               child: Container(
                 height: 44,
@@ -121,18 +120,20 @@ class _TapeBloggerPageState extends State<TapeBloggerPage> {
                     hasScrollBody: false,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
+                        Image.asset(
+                          Assets.icons.defaultNoDataIcon.path,
+                          height: 72,
+                          width: 72,
+                        ),
                         SizedBox(height: 16),
-                        Text('В ленте нет данных',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w600),
+                        Text('Пока здесь пусто',
+                            style: AppTextStyles.size16Weight500,
                             textAlign: TextAlign.center),
                         SizedBox(height: 8),
-                        Text('По вашему запросу ничего не найдено',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff717171)),
+                        Text('Видеообзоры на ваши продукты появятся здесь',
+                            style: AppTextStyles.size14Weight400
+                                .copyWith(color: Color(0xff8E8E93)),
                             textAlign: TextAlign.center),
                       ],
                     ),

@@ -10,6 +10,7 @@ import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/login_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/login_blogger_state.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/feature/bloger/auth/data/DTO/blogger_dto.dart';
 import 'package:haji_market/src/feature/bloger/coop_request/presentation/widget/show_blogger_register_type_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart' as metaCubit;
@@ -17,7 +18,6 @@ import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_login_phone_widget.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
-import '../../../auth/data/DTO/register_blogger_dto.dart';
 
 @RoutePage()
 class BlogRegisterPage extends StatefulWidget {
@@ -39,7 +39,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
 
   TextEditingController userFirstNameController = TextEditingController();
   TextEditingController userLastNameController = TextEditingController();
-  TextEditingController middleNameController = TextEditingController();
+  TextEditingController userSurNameController = TextEditingController();
 
   TextEditingController nameController = TextEditingController();
   TextEditingController iinController = TextEditingController();
@@ -88,6 +88,266 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
   String title = "Основная информация";
 
   List<String> metasBody = [];
+
+  Map<String, String?> fieldStep1Errors = {
+    'firstName': null,
+    'lastName': null,
+    'surName': null,
+  };
+
+  Map<String, String?> fieldStep2Errors = {
+    'nick': null,
+    'link': null,
+  };
+
+  Map<String, String?> fieldStep3Errors = {
+    'type': null,
+    'iin': null,
+  };
+
+  Map<String, String?> fieldStep4Errors = {
+    'check': null,
+  };
+
+  Map<String, String?> fieldStep5Errors = {
+    'phone': null,
+    'email': null,
+    'password': null,
+    'repPassword': null,
+  };
+
+  void _validateStep1Fields() {
+    setState(() {
+      fieldStep1Errors['firstName'] =
+          userFirstNameController.text.trim().isEmpty ? 'Введите имя' : null;
+      fieldStep1Errors['lastName'] =
+          userLastNameController.text.trim().isEmpty ? 'Введите фамилию' : null;
+      fieldStep1Errors['surName'] =
+          userSurNameController.text.trim().isEmpty ? 'Введите отчество' : null;
+    });
+  }
+
+  void _validateStep2Fields() {
+    setState(() {
+      fieldStep2Errors['nick'] =
+          nameController.text.trim().isEmpty ? 'Введите никнейм' : null;
+      fieldStep2Errors['link'] = socialNetworkController.text.trim().isEmpty
+          ? 'Введите ссылку на соцальную сеть'
+          : null;
+    });
+  }
+
+  void _validateStep3Fields() {
+    setState(() {
+      fieldStep3Errors['type'] =
+          type == 0 ? 'Введите юридический статус' : null;
+      fieldStep3Errors['iin'] =
+          iinController.text.trim().isEmpty ? 'Введите иин' : null;
+    });
+  }
+
+  void _validateStep4Fields() {
+    setState(() {
+      fieldStep4Errors['check'] =
+          checkController.text.trim().isEmpty ? 'Введите счет' : null;
+    });
+  }
+
+  void _validateStep5Fields() {
+    final rawDigits = phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
+
+    final email = emailController.text.trim();
+    if (email.isEmpty) 'Введите Email';
+    final emailOk = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(email);
+    if (!emailOk) 'Некорректный Email';
+
+    final pass = passwordController.text;
+    final rep = repeatPasswordController.text;
+    if (pass.isEmpty) 'Введите пароль';
+    if (pass.length < 6) 'Пароль должен быть не короче 6 символов';
+    if (rep.isEmpty) 'Повторите пароль';
+    if (pass != rep) 'Пароли не совпадают';
+
+    if (!isChecked) 'Подтвердите соглашение';
+
+    setState(() {
+      fieldStep5Errors['phone'] =
+          rawDigits.length != 10 ? 'Введите корректный номер телефона' : null;
+      fieldStep5Errors['email'] = email.isEmpty
+          ? 'Введите Email'
+          : (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(email)
+              ? 'Некорректный Email'
+              : null);
+      fieldStep5Errors['password'] =
+          pass.length < 6 ? 'Пароль слишком короткий' : null;
+      fieldStep5Errors['repPassword'] =
+          rep != pass ? 'Пароли не совпадают' : null;
+    });
+    return null;
+  }
+
+  bool get isStep1Valid => fieldStep1Errors.values.every((e) => e == null);
+  bool get isStep2Valid => fieldStep2Errors.values.every((e) => e == null);
+  bool get isStep3Valid => fieldStep3Errors.values.every((e) => e == null);
+  bool get isStep4Valid => fieldStep4Errors.values.every((e) => e == null);
+  bool get isStep5Valid => fieldStep5Errors.values.every((e) => e == null);
+
+  bool validateStep1AndSubmit() {
+    _validateStep1Fields();
+    return isStep1Valid;
+  }
+
+  bool validateStep2AndSubmit() {
+    _validateStep2Fields();
+    return isStep2Valid;
+  }
+
+  bool validateStep3AndSubmit() {
+    _validateStep3Fields();
+    return isStep3Valid;
+  }
+
+  bool validateStep4AndSubmit() {
+    _validateStep4Fields();
+    return isStep4Valid;
+  }
+
+  bool validateStep5AndSubmit() {
+    _validateStep5Fields();
+    return isStep5Valid;
+  }
+
+  final _step1Order = const [
+    'lastName',
+    'firstName',
+    'lastName',
+  ];
+
+  final _step2Order = const [
+    'nick',
+    'link',
+  ];
+
+  final _step3Order = const [
+    'nick',
+    'link',
+  ];
+
+  final _step4Order = const [
+    'check',
+  ];
+
+  final _step5Order = const [
+    'phone',
+    'email',
+    'password',
+    'repPassword',
+  ];
+
+  String? _validateStep1Error() {
+    _validateStep1Fields();
+    for (final key in _step1Order) {
+      final msg = fieldStep1Errors[key];
+      if (msg != null) return msg;
+    }
+    return null;
+  }
+
+  String? _validateStep2Error() {
+    _validateStep2Fields();
+    for (final key in _step2Order) {
+      final msg = fieldStep2Errors[key];
+      if (msg != null) return msg;
+    }
+    return null;
+  }
+
+  String? _validateStep3Error() {
+    _validateStep3Fields();
+    for (final key in _step3Order) {
+      final msg = fieldStep3Errors[key];
+      if (msg != null) return msg;
+    }
+    return null;
+  }
+
+  String? _validateStep4Error() {
+    _validateStep4Fields();
+    for (final key in _step4Order) {
+      final msg = fieldStep4Errors[key];
+      if (msg != null) return msg;
+    }
+    return null;
+  }
+
+  String? _validateStep5Error() {
+    _validateStep5Fields();
+    for (final key in _step5Order) {
+      final msg = fieldStep5Errors[key];
+      if (msg != null) return msg;
+    }
+    return null;
+  }
+
+  bool _ensureStep1Valid() {
+    final msg = _validateStep1Error();
+    if (msg != null) {
+      // Берём живой root-контекст, чтобы не ловить "deactivated widget's ancestor"
+      final rootCtx =
+          context.router.root.navigatorKey.currentContext ?? context;
+      AppSnackBar.show(rootCtx, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
+  }
+
+  bool _ensureStep2Valid() {
+    final msg = _validateStep2Error();
+    if (msg != null) {
+      // Берём живой root-контекст, чтобы не ловить "deactivated widget's ancestor"
+      final rootCtx =
+          context.router.root.navigatorKey.currentContext ?? context;
+      AppSnackBar.show(rootCtx, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
+  }
+
+  bool _ensureStep3Valid() {
+    final msg = _validateStep3Error();
+    if (msg != null) {
+      // Берём живой root-контекст, чтобы не ловить "deactivated widget's ancestor"
+      final rootCtx =
+          context.router.root.navigatorKey.currentContext ?? context;
+      AppSnackBar.show(rootCtx, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
+  }
+
+  bool _ensureStep4Valid() {
+    final msg = _validateStep4Error();
+    if (msg != null) {
+      // Берём живой root-контекст, чтобы не ловить "deactivated widget's ancestor"
+      final rootCtx =
+          context.router.root.navigatorKey.currentContext ?? context;
+      AppSnackBar.show(rootCtx, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
+  }
+
+  bool _ensureStep5Valid() {
+    final msg = _validateStep5Error();
+    if (msg != null) {
+      // Берём живой root-контекст, чтобы не ловить "deactivated widget's ancestor"
+      final rootCtx =
+          context.router.root.navigatorKey.currentContext ?? context;
+      AppSnackBar.show(rootCtx, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -210,6 +470,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                         star: false,
                         arrow: false,
                         controller: userLastNameController,
+                        errorText: fieldStep1Errors['lastName'],
                       ),
                       FieldsCoopRequest(
                         titleText: 'Имя',
@@ -217,13 +478,15 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                         star: false,
                         arrow: false,
                         controller: userFirstNameController,
+                        errorText: fieldStep1Errors['firstName'],
                       ),
                       FieldsCoopRequest(
                         titleText: 'Отчество',
                         hintText: 'Введите ваше отчество',
                         star: false,
                         arrow: false,
-                        controller: middleNameController,
+                        controller: userSurNameController,
+                        errorText: fieldStep1Errors['surName'],
                       ),
                     ],
                   )),
@@ -238,6 +501,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                         star: false,
                         arrow: false,
                         controller: nameController,
+                        errorText: fieldStep2Errors['nick'],
                       ),
                       FieldsCoopRequest(
                         titleText: 'Ссылка на соцальную сеть',
@@ -245,6 +509,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                         star: false,
                         arrow: false,
                         controller: socialNetworkController,
+                        errorText: fieldStep2Errors['link'],
                       ),
                     ],
                   )),
@@ -262,6 +527,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                         arrow: true,
                         readOnly: true,
                         trueColor: type != 0 ? true : false,
+                        errorText: fieldStep3Errors['type'],
                         onPressed: () async {
                           print('ok');
                           showBloggerRegisterType(
@@ -281,6 +547,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                         arrow: false,
                         number: true,
                         controller: iinController,
+                        errorText: fieldStep3Errors['iin'],
                       ),
                     ],
                   )),
@@ -291,6 +558,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                       star: false,
                       arrow: false,
                       controller: checkController,
+                      errorText: fieldStep4Errors['check'],
                     )
                   : SizedBox.shrink(),
 
@@ -300,10 +568,26 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Номер телефона',
-                          textAlign: TextAlign.start,
-                          style: AppTextStyles.size13Weight500
-                              .copyWith(color: Color(0xFF636366))),
+                      Row(
+                        children: [
+                          Text(
+                              fieldStep5Errors['phone'] == null
+                                  ? 'Номер телефона'
+                                  : fieldStep5Errors['phone']!,
+                              textAlign: TextAlign.start,
+                              style: AppTextStyles.size13Weight500.copyWith(
+                                  color: fieldStep5Errors['phone'] == null
+                                      ? Color(0xFF636366)
+                                      : AppColors.mainRedColor)),
+                          Text(' *',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: fieldStep5Errors['phone'] == null
+                                      ? Color(0xFF636366)
+                                      : AppColors.mainRedColor)),
+                        ],
+                      ),
+
                       SizedBox(height: 8),
                       Row(
                         children: [
@@ -355,6 +639,11 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                                   horizontal: 16, vertical: 12),
                               decoration: BoxDecoration(
                                 color: AppColors.kGray2,
+                                border: fieldStep5Errors['phone'] != null
+                                    ? Border.all(
+                                        color: AppColors.mainRedColor,
+                                        width: 1.0)
+                                    : null,
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: TextField(
@@ -396,13 +685,19 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                         star: false,
                         arrow: false,
                         controller: emailController,
+                        errorText: fieldStep5Errors['email'],
                       ),
 
                       Row(
                         children: [
-                          Text('Пароль',
-                              style: AppTextStyles.size13Weight500
-                                  .copyWith(color: Color(0xFF636366))),
+                          Text(
+                              fieldStep5Errors['password'] == null
+                                  ? 'Пароль'
+                                  : fieldStep5Errors['password']!,
+                              style: AppTextStyles.size13Weight500.copyWith(
+                                  color: fieldStep5Errors['password'] == null
+                                      ? Color(0xFF636366)
+                                      : AppColors.mainRedColor)),
                           const Text('*',
                               style:
                                   TextStyle(fontSize: 12, color: Colors.red)),
@@ -415,6 +710,10 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                             horizontal: 16), // Increased horizontal padding
                         decoration: BoxDecoration(
                           color: AppColors.kGray2,
+                          border: fieldStep5Errors['password'] != null
+                              ? Border.all(
+                                  color: AppColors.mainRedColor, width: 1.0)
+                              : null,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         alignment: Alignment.center,
@@ -459,9 +758,14 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                       SizedBox(height: 12),
                       Row(
                         children: [
-                          Text('Повторить  пароль',
-                              style: AppTextStyles.size13Weight500
-                                  .copyWith(color: Color(0xFF636366))),
+                          Text(
+                              fieldStep5Errors['repPassword'] == null
+                                  ? 'Повторите пароль'
+                                  : fieldStep5Errors['repPassword']!,
+                              style: AppTextStyles.size13Weight500.copyWith(
+                                  color: fieldStep5Errors['repPassword'] == null
+                                      ? Color(0xFF636366)
+                                      : AppColors.mainRedColor)),
                           const Text('*',
                               style:
                                   TextStyle(fontSize: 12, color: Colors.red)),
@@ -474,6 +778,10 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                             horizontal: 16), // Increased horizontal padding
                         decoration: BoxDecoration(
                           color: AppColors.kGray2,
+                          border: fieldStep5Errors['repPassword'] != null
+                              ? Border.all(
+                                  color: AppColors.mainRedColor, width: 1.0)
+                              : null,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         alignment: Alignment.center,
@@ -516,7 +824,6 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                           ],
                         ),
                       ),
-
                       SizedBox(height: 40),
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0),
@@ -633,10 +940,14 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
             onTap: () async {
               userNameController.text = '${userFirstNameController.text} '
                   '${userLastNameController.text} '
-                  '${middleNameController.text}';
+                  '${userSurNameController.text}';
 
               if (filledSegments == 1) {
-                if (userNameController.text.isNotEmpty) {
+                if (!_ensureStep1Valid() && filledCount == 1) return;
+
+                if (userFirstNameController.text.isNotEmpty &&
+                    userLastNameController.text.isNotEmpty &&
+                    userSurNameController.text.isNotEmpty) {
                   setState(() {
                     filledSegments = 2;
                     filledCount = 2;
@@ -646,13 +957,15 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
                 } else {
                   AppSnackBar.show(
                     context,
-                    'Заполните ссновную информацию *',
+                    'Заполните основную информацию *',
                     type: AppSnackType.error,
                   );
                 }
               }
 
               if (filledSegments == 2) {
+                if (!_ensureStep2Valid() && filledCount == 2) return;
+
                 if (nameController.text.isNotEmpty &&
                     socialNetworkController.text.isNotEmpty) {
                   setState(() {
@@ -671,6 +984,7 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
               }
 
               if (filledSegments == 3) {
+                if (!_ensureStep3Valid() && filledCount == 3) return;
                 if (type != 0 && iinController.text.isNotEmpty) {
                   setState(() {
                     filledSegments = 4;
@@ -688,6 +1002,8 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
               }
 
               if (filledSegments == 4) {
+                if (!_ensureStep4Valid() && filledCount == 4) return;
+
                 if (checkController.text.isNotEmpty) {
                   setState(() {
                     filledSegments = 5;
@@ -705,27 +1021,38 @@ class _BlogRegisterPageState extends State<BlogRegisterPage> {
               }
 
               if (filledSegments == 5) {
+                if (!_ensureStep5Valid() && filledCount == 5) return;
+
                 if (phoneController.text.isNotEmpty &&
                     emailController.text.isNotEmpty &&
                     passwordController.text.isNotEmpty &&
                     isChecked == true &&
                     passwordController.text == repeatPasswordController.text) {
-                  final data = RegisterBloggerDTO(
+                  final data = BloggerDTO(
+                      firstName: userFirstNameController.text,
+                      lastName: userLastNameController.text,
+                      surName: userSurNameController.text,
                       iin: iinController.text,
-                      name: userNameController.text,
-                      social_network: socialNetworkController.text,
+                      socialNetwork: socialNetworkController.text,
                       phone: phoneController.text,
                       email: emailController.text,
-                      nick_name: nameController.text,
+                      nick: nameController.text,
                       password: passwordController.text,
                       check: checkController.text,
-                      type: type);
+                      legalStatus: type == 0
+                          ? 'individual-entrepreneur'
+                          : 'self-employed');
 
                   final register = BlocProvider.of<LoginBloggerCubit>(context);
 
-                  final statuCode = await register.register(data);
+                  final int? statusCode =
+                      await register.register(context, data);
 
-                  context.router.push(SuccessBloggerRegisterRoute());
+                  print('status code ${statusCode}');
+
+                  if (statusCode == 200) {
+                    context.router.push(SuccessBloggerRegisterRoute());
+                  }
                 } else {
                   AppSnackBar.show(
                     context,
@@ -777,23 +1104,28 @@ class FieldsCoopRequest extends StatelessWidget {
   final VoidCallback? onPressed; // если задан — поле работает как кнопка
   final String? icon;
   final TextEditingController? controller;
+  final String? errorText;
 
-  const FieldsCoopRequest(
-      {super.key,
-      required this.hintText,
-      required this.titleText,
-      required this.star,
-      required this.arrow,
-      this.controller,
-      this.onPressed,
-      this.readOnly = false,
-      this.number,
-      this.trueColor = false,
-      this.icon});
+  const FieldsCoopRequest({
+    super.key,
+    required this.hintText,
+    required this.titleText,
+    required this.star,
+    required this.arrow,
+    this.controller,
+    this.onPressed,
+    this.readOnly = false,
+    this.number,
+    this.trueColor = false,
+    this.icon,
+    this.errorText,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final bool tapMode = onPressed != null; // режим «нажатия», без клавиатуры
+    final bool tapMode = onPressed != null;
+
+    final hasError = errorText != null;
 
     return Material(
       // для правильного InkWell-эффекта
@@ -809,11 +1141,13 @@ class FieldsCoopRequest extends StatelessWidget {
               // Заголовок + звёздочка
               Row(
                 children: [
-                  Text(titleText,
-                      style: AppTextStyles.size13Weight500
-                          .copyWith(color: Color(0xFF636366))),
+                  Text(hasError ? errorText! : titleText,
+                      style: AppTextStyles.size13Weight500.copyWith(
+                          color: hasError
+                              ? AppColors.mainRedColor
+                              : Color(0xFF636366))),
                   if (!star)
-                    const Text('*',
+                    const Text(' *',
                         style: TextStyle(fontSize: 12, color: Colors.red)),
                 ],
               ),
@@ -824,6 +1158,9 @@ class FieldsCoopRequest extends StatelessWidget {
                 height: 52,
                 decoration: BoxDecoration(
                   color: AppColors.kGray2,
+                  border: hasError
+                      ? Border.all(color: AppColors.mainRedColor, width: 1.0)
+                      : null,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: TextField(

@@ -10,7 +10,7 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:haji_market/src/feature/bloger/coop_request/presentation/ui/coop_request_page.dart';
+import 'package:haji_market/src/feature/bloger/coop_request/presentation/ui/blogger_register_page.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../../../../core/constant/generated/assets.gen.dart';
@@ -101,7 +101,6 @@ class _BlogAuthPageState extends State<BlogAuthPage> {
         listener: (context, state) {
       if (state is LoadedState) {
         final router = AutoRouter.of(context).root; // гарантированно корень
-
         context.read<AppBloc>().add(
               const AppEvent.chageState(
                   state: AppState.inAppBlogerState(index: 0)),

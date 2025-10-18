@@ -20,6 +20,9 @@ mixin AppColors {
   static const Color mainBackgroundPurpleColor = Color(
     0x1A6F32F8,
   );
+  static const Color buttonBackgroundPurpleColor = Color(
+    0xFFC5ADFC,
+  );
 
   static const Color kPrimaryColor = Color(0xFF1DC4CF);
   static const Color kBlueColor = Color.fromRGBO(129, 222, 232, 1);
@@ -373,6 +376,14 @@ mixin AppTextStyles {
     fontFamily: 'SFProDisplay',
   );
 
+  static const size16Weight700 = TextStyle(
+    fontSize: 16,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w700,
+    fontFamily: 'SFProDisplay',
+  );
+
   static const size17Weight500 = TextStyle(
     fontSize: 17,
     letterSpacing: 0,
@@ -412,6 +423,13 @@ mixin AppTextStyles {
     fontWeight: FontWeight.w700,
     fontFamily: 'SFProDisplay',
   );
+
+  static const size20Weight500 = TextStyle(
+      fontSize: 20,
+      color: Colors.black,
+      letterSpacing: 0,
+      fontWeight: FontWeight.w500,
+      fontFamily: 'SFProDisplay');
 
   static const size22Weight600 = TextStyle(
       fontSize: 22,

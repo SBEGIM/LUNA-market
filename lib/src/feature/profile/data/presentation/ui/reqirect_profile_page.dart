@@ -10,48 +10,38 @@ import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/edit_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/auth/bloc/edit_blogger_statet.dart';
 import 'package:haji_market/src/feature/bloger/auth/data/DTO/blogger_dto.dart';
-import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/show_blogger__type_widget.dart';
-import 'package:haji_market/src/feature/profile/data/presentation/widgets/show_blogger_register_type_widget.dart';
 import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_login_phone_widget.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 // import '../../auth/bloc/edit_blogger_cubit.dart';
 // import '../../auth/bloc/edit_blogger_statet.dart';
 
-class ReqirectBloggerProfilePage extends StatefulWidget {
+class ReqirectProfilePage extends StatefulWidget {
   final String title;
-  ReqirectBloggerProfilePage({required this.title, Key? key}) : super(key: key);
+  ReqirectProfilePage({required this.title, Key? key}) : super(key: key);
 
   @override
-  State<ReqirectBloggerProfilePage> createState() =>
-      _ReqirectProfilePageState();
+  State<ReqirectProfilePage> createState() => _ReqirectProfilePageState();
 }
 
-class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
-  final surNameController = TextEditingController();
-
+class _ReqirectProfilePageState extends State<ReqirectProfilePage> {
+  final maskFormatter = MaskTextInputFormatter(mask: '+#(###)-###-##-##');
+  final nameController = TextEditingController();
   final nickNameController = TextEditingController();
   TextEditingController phoneController =
       MaskedTextController(mask: '(000)-000-00-00');
   final passwordController = TextEditingController();
   final iinController = TextEditingController();
-  final legalStatusController = TextEditingController();
-
   final socialNetworkController = TextEditingController();
   final emailController = TextEditingController();
   final reapatPasswordController = TextEditingController();
-  final bankNameController = TextEditingController();
-  final bankBikController = TextEditingController();
-
   final checkController = TextEditingController();
 
   final _box = GetStorage();
   bool change = false;
   bool _obscureText = true;
   bool _obscureTextRepeat = true;
-  String legalStatus = '';
 
   CountrySellerDto? countrySellerDto;
 
@@ -69,11 +59,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
   void _initializeControllers() {
     countrySellerDto = CountrySellerDto(
         code: '+7', flagPath: Assets.icons.ruFlagIcon.path, name: 'Россия');
-
-    firstNameController.text = _box.read('blogger_first_name') ?? '';
-    lastNameController.text = _box.read('blogger_last_name') ?? '';
-    surNameController.text = _box.read('blogger_sur_name') ?? '';
-
+    nameController.text = _box.read('blogger_name') ?? '';
     phoneController.text = _box.read('blogger_phone') ?? '(000)-000-00-00';
     nickNameController.text = _box.read('blogger_nick_name') ?? '';
     iinController.text = _box.read('blogger_iin') != 'null'
@@ -81,18 +67,9 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
         : '';
     socialNetworkController.text = _box.read('blogger_social_network') ?? '';
     emailController.text = _box.read('blogger_email') ?? '';
-    bankNameController.text = _box.read('blogger_bank_name') ?? '';
-    bankBikController.text = _box.read('blogger_bank_bik') ?? '';
     checkController.text = _box.read('blogger_invoice') != 'null'
         ? (_box.read('blogger_invoice') ?? '')
         : '';
-
-    legalStatus = _box.read('blogger_legal_status');
-
-    if (legalStatus != '') {
-      legalStatusController.text =
-          legalStatus != 'individual-entrepreneur' ? 'Самозанятый' : 'ИП';
-    }
   }
 
   String? _validateError() {
@@ -161,15 +138,15 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                             visible: widget.title == 'Основная информация',
                             child: Column(children: [
                               _buildFormField(
-                                controller: lastNameController,
+                                controller: nameController,
                                 label: 'Фамилия',
                               ),
                               _buildFormField(
-                                controller: firstNameController,
+                                controller: nameController,
                                 label: 'Имя',
                               ),
                               _buildFormField(
-                                controller: surNameController,
+                                controller: nameController,
                                 label: 'Отчество',
                               ),
                             ])),
@@ -192,33 +169,11 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                           visible: widget.title == 'Юридический статус',
                           child: Column(
                             children: [
-                              _buildStatusField(
-                                  controller: legalStatusController,
-                                  label: 'Выберите статус',
-                                  readOnly: true,
-                                  onTap: () {
-                                    showBloggerLegalStatusType(
-                                      context,
-                                      legalStatus == 'individual-entrepreneur'
-                                          ? false
-                                          : true,
-                                      typeCall: (value) {
-                                        if (value == true) {
-                                          legalStatus = 'self-employed';
-
-                                          legalStatusController.text =
-                                              'Самозанятый';
-                                        } else {
-                                          legalStatus =
-                                              'individual-entrepreneur';
-                                          legalStatusController.text = 'ИП';
-                                        }
-
-                                        setState(() {});
-                                      },
-                                    );
-                                  },
-                                  showArrow: true),
+                              _buildFormField(
+                                controller: iinController,
+                                label: 'Выберите статус',
+                                keyboardType: TextInputType.number,
+                              ),
                               _buildFormField(
                                 controller: iinController,
                                 label: 'ИИН',
@@ -232,12 +187,12 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                           child: Column(
                             children: [
                               _buildFormField(
-                                controller: bankNameController,
+                                controller: iinController,
                                 label: 'Название банка',
                                 keyboardType: TextInputType.number,
                               ),
                               _buildFormField(
-                                controller: bankBikController,
+                                controller: iinController,
                                 label: 'БИК банка',
                                 keyboardType: TextInputType.number,
                               ),
@@ -251,13 +206,8 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                         Visibility(
                           visible: widget.title == 'Контактные данные',
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Номер телефона',
-                                  style: AppTextStyles.size13Weight500
-                                      .copyWith(color: Color(0xff636366))),
-                              const SizedBox(height: 8),
+                              SizedBox(height: 8),
                               Row(
                                 children: [
                                   InkWell(
@@ -277,7 +227,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 15),
                                         decoration: BoxDecoration(
-                                          color: Color(0xffEAECED),
+                                          color: AppColors.kGray2,
                                           border: fieldErrors['phone'] != null
                                               ? Border.all(
                                                   color: AppColors.mainRedColor,
@@ -314,7 +264,7 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 16),
                                       decoration: BoxDecoration(
-                                        color: Color(0xffEAECED),
+                                        color: AppColors.kGray2,
                                         borderRadius: BorderRadius.circular(16),
                                         border: fieldErrors['phone'] != null
                                             ? Border.all(
@@ -425,64 +375,6 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
     );
   }
 
-  Widget _buildStatusField({
-    required TextEditingController controller,
-    required String label,
-    TextInputType? keyboardType,
-    List<TextInputFormatter>? inputFormatters,
-    bool readOnly = false,
-    VoidCallback? onTap,
-    bool showArrow = false,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label,
-              style: AppTextStyles.size13Weight500
-                  .copyWith(color: Color(0xff636366))),
-          const SizedBox(height: 8),
-          GestureDetector(
-            onTap: readOnly ? onTap : null,
-            child: Container(
-              height: 52,
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Color(0xffEAECED),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: AbsorbPointer(
-                      absorbing: readOnly,
-                      child: TextField(
-                        controller: controller,
-                        keyboardType: keyboardType,
-                        inputFormatters: inputFormatters,
-                        readOnly: readOnly,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Введите $label',
-                            hintStyle: AppTextStyles.size16Weight400
-                                .copyWith(color: Color(0xff8E8E93))),
-                        style: AppTextStyles.size16Weight400,
-                      ),
-                    ),
-                  ),
-                  if (showArrow)
-                    const Icon(Icons.arrow_forward_ios,
-                        size: 16, color: Colors.grey),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildPasswordField({
     required TextEditingController controller,
     required String label,
@@ -551,27 +443,33 @@ class _ReqirectProfilePageState extends State<ReqirectBloggerProfilePage> {
           padding: const EdgeInsets.symmetric(vertical: 14),
         ),
         onPressed: () async {
-          // if (nameController.text.isNotEmpty ||
-          //     nickNameController.text.isNotEmpty) {
-          //   if (passwordController.text == reapatPasswordController.text) {
-          final edit = BlocProvider.of<EditBloggerCubit>(context);
+          if (nameController.text.isNotEmpty ||
+              nickNameController.text.isNotEmpty) {
+            if (passwordController.text == reapatPasswordController.text) {
+              //   final edit = BlocProvider.of<EditBloggerCubit>(context);
 
-          final BloggerDTO dto = BloggerDTO(
-            firstName: firstNameController.text,
-            lastName: lastNameController.text,
-            surName: surNameController.text,
-            nick: nickNameController.text,
-            phone: phoneController.text,
-            password: passwordController.text,
-            legalStatus: legalStatus,
-            iin: iinController.text,
-            bankName: bankNameController.text,
-            bankBik: bankBikController.text,
-            check: checkController.text,
-            email: emailController.text,
-            socialNetwork: socialNetworkController.text,
-          );
-          await edit.edit(context, dto);
+              //   final BloggerDTO data = BloggerDTO(
+
+              //     firstName: first
+              //   );
+              //   await edit.edit(
+              //     nameController.text,
+              //     '',
+              //     '',
+              //     nickNameController.text,
+              //     phoneController.text,
+              //     passwordController.text,
+              //     '',
+              //     iinController.text,
+              //     checkController.text,
+              //     '',
+              //     '',
+              //     emailController.text,
+              //     socialNetworkController.text,
+              //   );
+              // }
+            }
+          }
         },
         child: Text(
           'Сохранить',

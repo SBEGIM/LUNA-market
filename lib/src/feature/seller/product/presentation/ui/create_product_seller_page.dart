@@ -80,6 +80,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
   TextEditingController countController = TextEditingController();
   TextEditingController heightController = TextEditingController();
   TextEditingController widthController = TextEditingController();
+  TextEditingController deepController = TextEditingController();
   TextEditingController massaController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController colorCountController = TextEditingController();
@@ -92,7 +93,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
   TextEditingController ndsController = TextEditingController();
   TextEditingController pointsBloggerController = TextEditingController();
   TextEditingController feeController = TextEditingController();
-  TextEditingController deepController = TextEditingController();
 
   final List<XFile?> _image = [];
   XFile? _video;
@@ -536,6 +536,9 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
 
 // --- твоя карта ошибок (оставляю те же ключи) ---
   Map<String, String?> fieldStep1Errors = {
+    'cat': null,
+    'sub_cat': null,
+    'brand': null,
     'name': null,
     'articul': null,
     'description': null,
@@ -547,9 +550,26 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
     'count': null,
   };
 
+  Map<String, String?> fieldStep4Errors = {
+    'image': null,
+  };
+
+  Map<String, String?> fieldStep5Errors = {
+    'width': null,
+    'height': null,
+    'deep': null,
+    'massa': null
+  };
+
 // Валидируем и обновляем карту ошибок
   void _validateStep1Fields() {
     setState(() {
+      fieldStep1Errors['cat'] =
+          cats?.name == null ? 'Выберите категорию' : null;
+      fieldStep1Errors['sub_cat'] =
+          subCats?.name == null ? 'Выберите подкатегорию' : null;
+      fieldStep1Errors['brand'] =
+          brands?.name == null ? 'Выберите бренд' : null;
       fieldStep1Errors['name'] =
           nameController.text.trim().isEmpty ? 'Введите название товара' : null;
 
@@ -579,8 +599,36 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
     });
   }
 
+  // Валидируем и обновляем карту ошибок
+  void _validateStep4Fields() {
+    setState(() {
+      fieldStep4Errors['image'] =
+          _image.isEmpty ? 'Прикрепите фото товара' : null;
+    });
+  }
+
+  void _validateStep5Fields() {
+    setState(() {
+      fieldStep5Errors['width'] = _validateIntNonNeg(
+          widthController.text.trim(),
+          fieldName: 'ширину в мм');
+      fieldStep5Errors['height'] = _validateIntNonNeg(
+          heightController.text.trim(),
+          fieldName: 'высоту в мм');
+      fieldStep5Errors['deep'] = _validateIntNonNeg(deepController.text.trim(),
+          fieldName: 'глубину в мм');
+      fieldStep5Errors['massa'] = _validateIntNonNeg(
+          massaController.text.trim(),
+          fieldName: 'вес в гр');
+    });
+  }
+
 // true — если ошибок нет
   bool get isStep1Valid => fieldStep1Errors.values.every((e) => e == null);
+
+  bool get isStep4Valid => fieldStep4Errors.values.every((e) => e == null);
+
+  bool get isStep5Valid => fieldStep5Errors.values.every((e) => e == null);
 
 // Вызови при сабмите
   bool validateStep1AndSubmit() {
@@ -588,8 +636,21 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
     return isStep1Valid;
   }
 
+  bool validateStep4AndSubmit() {
+    _validateStep4Fields();
+    return isStep4Valid;
+  }
+
+  bool validateStep5AndSubmit() {
+    _validateStep5Fields();
+    return isStep5Valid;
+  }
+
 // Порядок важности/фокуса при показе первой ошибки
   final _step1Order = const [
+    'cat',
+    'sub_cat',
+    'brand',
     'name',
     'articul',
     'description',
@@ -599,6 +660,17 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
     'point',
     'pointBlogger',
     'count',
+  ];
+
+  final _step4Order = const [
+    'image',
+  ];
+
+  final _step5Order = const [
+    'width',
+    'height',
+    'deep',
+    'massa',
   ];
 
   /// Возвращает текст первой найденной ошибки или null
@@ -613,12 +685,52 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
     return null;
   }
 
+  String? _validateStep4Error() {
+    _validateStep4Fields();
+    for (final key in _step4Order) {
+      final msg = fieldStep4Errors[key];
+      if (msg != null) return msg;
+    }
+    return null;
+  }
+
+  String? _validateStep5Error() {
+    _validateStep5Fields();
+    for (final key in _step5Order) {
+      final msg = fieldStep5Errors[key];
+      if (msg != null) return msg;
+    }
+    return null;
+  }
+
   /// Показывает первую ошибку и возвращает false, если есть ошибки.
   /// true — если все поля валидны.
   bool _ensureStep1Valid() {
     final msg = _validateStep1Error();
     if (msg != null) {
       // Берём живой root-контекст, чтобы не ловить "deactivated widget's ancestor"
+      final rootCtx =
+          context.router.root.navigatorKey.currentContext ?? context;
+      AppSnackBar.show(rootCtx, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
+  }
+
+  bool _ensureStep4Valid() {
+    final msg = _validateStep4Error();
+    if (msg != null) {
+      final rootCtx =
+          context.router.root.navigatorKey.currentContext ?? context;
+      AppSnackBar.show(rootCtx, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
+  }
+
+  bool _ensureStep5Valid() {
+    final msg = _validateStep5Error();
+    if (msg != null) {
       final rootCtx =
           context.router.root.navigatorKey.currentContext ?? context;
       AppSnackBar.show(rootCtx, msg, type: AppSnackType.error);
@@ -726,6 +838,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     hintColor: cats == null ? false : true,
                     star: true,
                     arrow: true,
+                    errorText: fieldStep1Errors['cat'],
                     onPressed: () async {
                       if (_cats.isEmpty) {
                         _cats = await BlocProvider.of<CatsCubit>(context)
@@ -755,6 +868,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     hintColor: subCats == null ? false : true,
                     star: true,
                     arrow: true,
+                    errorText: fieldStep1Errors['sub_cat'],
                     onPressed: () async {
                       if (_subCats.isEmpty) {
                         _subCats = await BlocProvider.of<SubCatsCubit>(context)
@@ -781,6 +895,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     hintColor: brands == null ? false : true,
                     star: true,
                     arrow: true,
+                    errorText: fieldStep1Errors['brand'],
                     onPressed: () async {
                       if (_brands.isEmpty) {
                         _brands = await BlocProvider.of<BrandCubit>(context)
@@ -2886,6 +3001,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     star: true,
                     arrow: false,
                     controller: widthController,
+                    errorText: fieldStep5Errors['width'],
                     textInputNumber: true,
                   ),
                 if (filledCount == 5 && isCheckedFBS)
@@ -2895,6 +3011,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     star: true,
                     arrow: false,
                     controller: heightController,
+                    errorText: fieldStep5Errors['height'],
                     textInputNumber: true,
                   ),
                 if (filledCount == 5 && isCheckedFBS)
@@ -2904,6 +3021,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     star: true,
                     arrow: false,
                     controller: deepController,
+                    errorText: fieldStep5Errors['deep'],
                     textInputNumber: true,
                   ),
                 if (filledCount == 5 && isCheckedFBS)
@@ -2913,6 +3031,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     star: true,
                     arrow: false,
                     controller: massaController,
+                    errorText: fieldStep5Errors['massa'],
                     textInputNumber: true,
                   ),
                 if (filledCount == 5) const SizedBox(height: 60),
@@ -2925,6 +3044,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     star: false,
                     arrow: true,
                     hintColor: false,
+                    readOnly: true,
                     onPressed: () {
                       showSellerCatsOptions(
                           context, 'Выбор локации', _locations, false, (value) {
@@ -2943,7 +3063,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                         });
                       });
                     },
-                    controller: massaController,
                     textInputNumber: false,
                   ),
                 if (filledCount == 6 &&
@@ -2956,6 +3075,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                     star: false,
                     arrow: true,
                     hintColor: false,
+                    readOnly: true,
                     onPressed: () {
                       if (_locationSelect == 'Регион' ||
                           _locationSelect == 'Город/населенный пункт') {
@@ -2974,7 +3094,6 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                         ));
                       }
                     },
-                    controller: massaController,
                     textInputNumber: false,
                   ),
               ],
@@ -2993,9 +3112,18 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
             height: 52,
             child: InkWell(
               onTap: () async {
-                if (!_ensureStep1Valid()) return;
+                if (!_ensureStep1Valid() && filledCount == 1) return;
+
+                if (filledCount == 4) {
+                  if (!_ensureStep4Valid()) return;
+                }
+
+                if (filledCount == 5 && isCheckedFBS) {
+                  if (!_ensureStep5Valid()) return;
+                }
 
                 increaseProgress();
+
                 if (filledCount == 7) {
                   List<int> subIds = [];
                   if (subCharacteristicsValue?.isNotEmpty ?? false) {

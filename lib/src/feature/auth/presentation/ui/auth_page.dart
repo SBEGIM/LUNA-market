@@ -98,7 +98,7 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginState>(listener: (context, state) {
       if (state is LoadedState) {
-        final router = AutoRouter.of(context).root; // гарантированно корень
+        final router = AutoRouter.of(context).root;
 
         context.read<AppBloc>().add(
               const AppEvent.chageState(

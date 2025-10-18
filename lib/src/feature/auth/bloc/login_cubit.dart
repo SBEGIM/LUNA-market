@@ -68,7 +68,9 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> edit(
-      String name,
+      String firstname,
+      String lastName,
+      String surName,
       String phone,
       String avatar,
       String gender,
@@ -83,8 +85,22 @@ class LoginCubit extends Cubit<LoginState> {
       String email) async {
     try {
       emit(LoadingState());
-      await loginRepository.edit(name, phone, avatar, gender, birthday, country,
-          city, street, home, porch, floor, room, email);
+      await loginRepository.edit(
+          firstname,
+          lastName,
+          surName,
+          phone,
+          avatar,
+          gender,
+          birthday,
+          country,
+          city,
+          street,
+          home,
+          porch,
+          floor,
+          room,
+          email);
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: e.toString()));

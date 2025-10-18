@@ -92,7 +92,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     Emitter<AppState> emit,
   ) async {
     if (event.key) {
-      emit(const AppState.inAppUserState());
+      emit(const AppState.inAppUserState(index: 1));
     } else {
       emit(const AppState.notAuthorizedState());
     }

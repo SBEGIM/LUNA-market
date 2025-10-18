@@ -48,7 +48,7 @@ class _EditProfileBloggerPageState extends State<EditProfileBloggerPage> {
                 iconPath: Assets.icons.jurIcon.path,
                 title: 'Основная информация',
                 onTap: () {
-                  Get.to(ReqirectProfilePage(
+                  Get.to(ReqirectBloggerProfilePage(
                     title: 'Основная информация',
                   ));
                 }),
@@ -56,7 +56,7 @@ class _EditProfileBloggerPageState extends State<EditProfileBloggerPage> {
                 iconPath: Assets.icons.internet.path,
                 title: 'Социальные сети',
                 onTap: () {
-                  Get.to(ReqirectProfilePage(
+                  Get.to(ReqirectBloggerProfilePage(
                     title: 'Социальные сети',
                   ));
                 }),
@@ -64,7 +64,7 @@ class _EditProfileBloggerPageState extends State<EditProfileBloggerPage> {
                 iconPath: Assets.icons.jurIcon.path,
                 title: 'Юридический статус',
                 onTap: () {
-                  Get.to(ReqirectProfilePage(
+                  Get.to(ReqirectBloggerProfilePage(
                     title: 'Юридический статус',
                   ));
                 }),
@@ -72,7 +72,7 @@ class _EditProfileBloggerPageState extends State<EditProfileBloggerPage> {
                 iconPath: Assets.icons.phoneIcon.path,
                 title: 'Контактные данные',
                 onTap: () {
-                  Get.to(ReqirectProfilePage(
+                  Get.to(ReqirectBloggerProfilePage(
                     title: 'Контактные данные',
                   ));
                 }),
@@ -80,7 +80,7 @@ class _EditProfileBloggerPageState extends State<EditProfileBloggerPage> {
                 iconPath: Assets.icons.propsIcon.path,
                 title: 'Реквизиты банка',
                 onTap: () {
-                  Get.to(ReqirectProfilePage(
+                  Get.to(ReqirectBloggerProfilePage(
                     title: 'Реквизиты банка',
                   ));
                 }),

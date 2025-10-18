@@ -1,42 +1,35 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
+import 'package:haji_market/src/feature/profile/data/presentation/widgets/show_blogger_register_type_widget.dart';
+import 'package:haji_market/src/feature/seller/auth/data/DTO/contry_seller_dto.dart';
+import 'package:haji_market/src/feature/seller/auth/presentation/widget/show_seller_login_phone_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import '../../../../app/widgets/custom_back_button.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../../../auth/bloc/login_cubit.dart';
 
 class EditProfilePage extends StatefulWidget {
-  final String name;
-  final String phone;
-  final String gender;
-  final String birthday;
-  final String country;
-  final String city;
-  final String street;
-  final String home;
-  final String porch;
-  final String floor;
-  final String room;
-  final String email;
+  final String? firstName;
+  final String? lastName;
+  final String? surName;
+  final String? phone;
+  final String? gender;
+  final String? birthday;
+  final String? email;
 
   const EditProfilePage(
-      {required this.name,
+      {required this.firstName,
+      required this.lastName,
+      required this.surName,
       required this.phone,
       required this.gender,
       required this.birthday,
-      required this.country,
-      required this.city,
-      required this.street,
-      required this.home,
-      required this.porch,
-      required this.floor,
-      required this.room,
       required this.email,
       Key? key})
       : super(key: key);
@@ -46,7 +39,9 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  TextEditingController userNameController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController surNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordControllerRepeat = TextEditingController();
@@ -59,6 +54,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController doorController = TextEditingController();
   TextEditingController spaceController = TextEditingController();
+  TextEditingController genController = TextEditingController();
 
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
@@ -82,23 +78,56 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   bool _obscureText = false;
   bool _obscureTextRepeat = false;
+  CountrySellerDto? countrySellerDto;
+
+  Map<String, String?> fieldErrors = {
+    'phone': null,
+    'password': null,
+  };
 
   @override
   void initState() {
-    userNameController.text = widget.name;
-    phoneController.text = widget.phone;
-    gender = widget.gender;
-    birthdayController.text = widget.birthday;
-    countryController.text = widget.country;
-    cityController.text = widget.city;
-    streetController.text = widget.street;
-    homeController.text = widget.home;
-    kvController.text = widget.room;
-    spaceController.text = widget.floor;
-    doorController.text = widget.porch;
-    emailController.text = widget.email;
-
+    countrySellerDto = CountrySellerDto(
+        code: '+7', flagPath: Assets.icons.ruFlagIcon.path, name: 'Россия');
+    firstNameController.text = widget.firstName ?? '';
+    lastNameController.text = widget.lastName ?? '';
+    surNameController.text = widget.surName ?? '';
+    phoneController.text = widget.phone ?? '';
+    gender = widget.gender ?? '';
+    birthdayController.text = widget.birthday ?? '';
+    emailController.text = widget.email ?? '';
     super.initState();
+  }
+
+  String? _validateError() {
+    final rawDigits = phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
+    if (rawDigits.length != 10) return 'Введите корректный номер телефона';
+
+    final pass = passwordController.text;
+    if (pass.isEmpty) return 'Введите пароль';
+
+    return null;
+  }
+
+  void _validateFields() {
+    final phone = phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
+    final pass = passwordController.text;
+
+    setState(() {
+      fieldErrors['phone'] =
+          phone.length != 10 ? 'Введите корректный номер телефона' : null;
+
+      fieldErrors['password'] = pass.isEmpty ? 'Введите пароль' : null;
+    });
+  }
+
+  bool _ensureValid() {
+    final msg = _validateError();
+    if (msg != null) {
+      AppSnackBar.show(context, msg, type: AppSnackType.error);
+      return false;
+    }
+    return true;
   }
 
   final maskFormatter = MaskTextInputFormatter(mask: '+7(###)-###-##-##');
@@ -106,524 +135,184 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromRGBO(252, 252, 252, 1),
+      backgroundColor: AppColors.kWhite,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.arrow_back,
-            size: 25,
-          ),
-        ),
-        // iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-        backgroundColor: Colors.white,
+        surfaceTintColor: AppColors.kWhite,
+        backgroundColor: AppColors.kWhite,
         elevation: 0,
         centerTitle: true,
-        title: const Text('Контактные данные',
-            style: AppTextStyles.appBarTextStyle),
+        title: const Text(
+          'Мои данные',
+          style: AppTextStyles.size18Weight600,
+        ),
+        leading: InkWell(
+          onTap: () {
+            Get.back(result: 'ok');
+          },
+          child: Image.asset(
+            Assets.icons.defaultBackIcon.path,
+            height: 24,
+            width: 24,
+            scale: 1.9,
+          ),
+        ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // const SizedBox(
-          //   height: 28,
-          // ),
-          // ListTile(
-          //   horizontalTitleGap: 12,
-          //   leading: GestureDetector(
-          //     onTap: () {
-          //       if (_image == null) {
-          //         Get.defaultDialog(
-          //             title: "Изменить фото",
-          //             middleText: '',
-          //             textConfirm: 'Камера',
-          //             textCancel: 'Фото',
-          //             titlePadding: const EdgeInsets.only(top: 40),
-          //             onConfirm: () {
-          //               change = true;
-          //               setState(() {
-          //                 change;
-          //               });
-          //               _getImage();
-          //             },
-          //             onCancel: () {
-          //               change = false;
-          //               setState(() {
-          //                 change;
-          //               });
-          //               _getImage();
-          //             });
-          //       }
-          //     },
-          //     child: _image != null
-          //         ? CircleAvatar(
-          //             backgroundImage: FileImage(
-          //               File(_image!.path),
-          //             ),
-          //             radius: 34,
-          //             child: Align(
-          //               alignment: Alignment.bottomRight,
-          //               child: SvgPicture.asset(
-          //                 'assets/icons/camera.svg',
-          //                 fit: BoxFit.cover,
-          //               ),
-          //             ),
-          //           )
-          //         : Container(
-          //             height: 54,
-          //             width: 54,
-          //             decoration: _box.read('avatar') != null
-          //                 ? BoxDecoration(
-          //                     borderRadius: BorderRadius.circular(34),
-          //                     image: DecorationImage(
-          //                       image: NetworkImage(
-          //                           "https://lunamarket.ru/storage/${_box.read('avatar')}"),
-          //                       fit: BoxFit.cover,
-          //                     ))
-          //                 : null,
-          //             child: _box.read('avatar') == null ||
-          //                     _box.read('avatar') == 'null'
-          //                 ? CircleAvatar(
-          //                     backgroundImage:
-          //                         const AssetImage('assets/icons/profile2.png'),
-          //                     radius: 34,
-          //                     child: Align(
-          //                       alignment: Alignment.bottomRight,
-          //                       child: SvgPicture.asset(
-          //                         'assets/icons/camera.svg',
-          //                         fit: BoxFit.cover,
-          //                       ),
-          //                     ),
-          //                   )
-          //                 : const SizedBox(),
-          //           ),
-          //   ),
-          //   title: Text(
-          //     widget.name,
-          //     style: const TextStyle(
-          //         fontWeight: FontWeight.w700,
-          //         color: AppColors.kGray900,
-          //         fontSize: 16),
-          //   ),
-          // ),
-          // const SizedBox(
-          //   height: 16,
-          // ),
-
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildFormField(
-                  controller: userNameController,
-                  label: 'Имя и фамилия',
-                ),
-                _buildFormField(
-                  controller: phoneController,
-                  label: '+7(###)-###-##-##',
-                  keyboardType: TextInputType.phone,
-                  inputFormatters: [maskFormatter],
-                ),
-                _buildDateOfBirthField(
-                    callback: () {
-                      setState(() {});
-                    },
-                    context: context,
-                    controller: birthdayController,
-                    label: 'Дата рождения'),
-
-                Text(
-                  'Выберите пол',
-                ),
-
-                Row(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.only(left: 52.0),
-                      child: const Text(
-                        'Женский',
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500),
-                      ),
+                    _buildFormField(
+                      controller: firstNameController,
+                      label: 'Имя',
                     ),
-                    Checkbox(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      checkColor: Colors.white,
-                      activeColor: AppColors.mainPurpleColor,
-                      value: woman,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          woman = value!;
-                          man = false;
-                          gender = 'y';
-                        });
-                      },
+                    _buildFormField(
+                      controller: lastNameController,
+                      label: 'Фамилия',
                     ),
-                    const SizedBox(width: 10),
-                    Container(
-                      padding: const EdgeInsets.only(left: 22.5),
-                      child: const Text(
-                        'Мужской',
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500),
-                      ),
+                    _buildFormField(
+                      controller: surNameController,
+                      label: 'Отчество',
                     ),
-                    Checkbox(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      checkColor: Colors.white,
-                      activeColor: AppColors.mainPurpleColor,
-                      value: man,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          man = value!;
-                          woman = false;
-                          gender = 'x';
-                        });
-                      },
+                    Text('Номер телефона',
+                        style: AppTextStyles.size13Weight500
+                            .copyWith(color: Color(0xff636366))),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            showSellerLoginPhone(
+                              context,
+                              countryCall: (dto) {
+                                countrySellerDto = dto;
+                                setState(() {});
+                              },
+                            );
+                          },
+                          child: Shimmer(
+                            child: Container(
+                              height: 52,
+                              width: 83,
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              decoration: BoxDecoration(
+                                color: Color(0xffEAECED),
+                                border: fieldErrors['phone'] != null
+                                    ? Border.all(
+                                        color: AppColors.mainRedColor,
+                                        width: 1.0)
+                                    : null,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    countrySellerDto!.flagPath,
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text('${countrySellerDto!.code}',
+                                      style: AppTextStyles.size16Weight400),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 6),
+                        Flexible(
+                          child: Container(
+                            height: 52,
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                              color: AppColors.kGray2,
+                              borderRadius: BorderRadius.circular(16),
+                              border: fieldErrors['phone'] != null
+                                  ? Border.all(
+                                      color: AppColors.mainRedColor, width: 1.0)
+                                  : null,
+                            ),
+                            alignment: Alignment.center,
+                            child: TextField(
+                              controller: phoneController,
+                              keyboardType: TextInputType.phone,
+                              decoration: InputDecoration(
+                                hintText: 'Введите номер телефона',
+                                hintStyle: AppTextStyles.size16Weight400
+                                    .copyWith(color: Color(0xFF8E8E93)),
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    SizedBox(height: 16),
+                    _buildFormField(
+                      controller: emailController,
+                      label: 'Email',
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    _buildDateOfBirthField(
+                        callback: () {
+                          setState(() {});
+                        },
+                        context: context,
+                        controller: birthdayController,
+                        label: 'Дата рождения'),
+                    _buildFormField(
+                        controller: genController,
+                        label: 'Выберите пол',
+                        readOnly: true,
+                        onTap: () {
+                          showGenderType(
+                            context,
+                            gender == 'x' ? true : false,
+                            typeCall: (value) {
+                              print(value);
+
+                              if (value == true) {
+                                man = true;
+                                woman = false;
+                                gender = 'x';
+                              } else {
+                                woman = true;
+                                man = false;
+                                gender = 'y';
+                              }
+
+                              setState(() {});
+                            },
+                          );
+                        },
+                        showArrow: true),
                   ],
                 ),
-                // GestureDetector(
-                //   onTap: () async {
-                //     final data =
-                //         await Get.to(() => CountryWidget());
-                //     countryController.text = data;
-                //     setState(() {});
-                //   },
-                //   child: ListTile(
-                //     horizontalTitleGap: 0,
-                //     leading: SvgPicture.asset(
-                //       'assets/icons/country.svg',
-                //       height: 24,
-                //       width: 24,
-                //     ),
-                //     trailing: Image.asset(
-                //       'assets/icons/down.png',
-                //       height: 16.5,
-                //       width: 9.5,
-                //     ),
-                //     title: TextField(
-                //       controller: countryController,
-                //       decoration: const InputDecoration(
-                //         border: InputBorder.none,
-                //         hintText: 'Страна',
-                //         enabledBorder: UnderlineInputBorder(
-                //           borderSide:
-                //               BorderSide(color: Colors.white),
-                //           // borderRadius: BorderRadius.circular(3),
-                //         ),
-                //       ),
-                //     ),
-                //     // trailing: SvgPicture.asset(
-                //     //   'assets/icons/delete_circle.svg',
-                //     //   height: 24,
-                //     //   width: 24,
-                //     // ),
-                //   ),
-                // ),
-                // GestureDetector(
-                //   onTap: () async {
-                //     final data =
-                //         await Get.to(() => const CityPage());
-                //     cityController.text = data;
-                //     setState(() {});
-                //   },
-                //   child: ListTile(
-                //     horizontalTitleGap: 0,
-                //     leading: SvgPicture.asset(
-                //       'assets/icons/location.svg',
-                //       height: 24,
-                //       width: 24,
-                //     ),
-                //     trailing: Image.asset(
-                //       'assets/icons/down.png',
-                //       height: 16.5,
-                //       width: 9.5,
-                //     ),
-                //     title: TextField(
-                //       controller: cityController,
-                //       decoration: const InputDecoration(
-                //         border: InputBorder.none,
-                //         hintText: 'Город',
-                //         enabledBorder: UnderlineInputBorder(
-                //           borderSide:
-                //               BorderSide(color: Colors.white),
-                //           // borderRadius: BorderRadius.circular(3),
-                //         ),
-                //       ),
-                //     ),
-                //     // trailing: SvgPicture.asset(
-                //     //   'assets/icons/delete_circle.svg',
-                //     //   height: 24,
-                //     //   width: 24,
-                //     // ),
-                //   ),
-                // ),
-                // ListTile(
-                //   horizontalTitleGap: 0,
-                //   leading: SvgPicture.asset(
-                //     'assets/icons/street.svg',
-                //     height: 24,
-                //     width: 24,
-                //   ),
-                //   title: TextField(
-                //     controller: streetController,
-                //     decoration: const InputDecoration(
-                //       border: InputBorder.none,
-                //       hintText: 'Улица',
-                //       enabledBorder: UnderlineInputBorder(
-                //         borderSide: BorderSide(color: Colors.white),
-                //         // borderRadius: BorderRadius.circular(3),
-                //       ),
-                //     ),
-                //   ),
-                // trailing: SvgPicture.asset(
-                //   'assets/icons/delete_circle.svg',
-                //   height: 24,
-                //   width: 24,
-                // ),
-                //),
-                // ListTile(
-                //   horizontalTitleGap: 0,
-                //   leading: SvgPicture.asset(
-                //     'assets/icons/Route.svg',
-                //     height: 24,
-                //     width: 24,
-                //   ),
-                //   title: TextField(
-                //     controller: homeController,
-                //     decoration: const InputDecoration(
-                //       border: InputBorder.none,
-                //       hintText: 'Дом',
-                //       enabledBorder: UnderlineInputBorder(
-                //         borderSide: BorderSide(color: Colors.white),
-                //         // borderRadius: BorderRadius.circular(3),
-                //       ),
-                //     ),
-                //   ),
-                // trailing: SvgPicture.asset(
-                //   'assets/icons/delete_circle.svg',
-                //   height: 24,
-                //   width: 24,
-                // ),
-                // ),
-                // SizedBox(
-                //   height: 48,
-                //   child: Row(
-                //     children: [
-                //       Expanded(
-                //         child: Container(
-                //             padding:
-                //                 const EdgeInsets.only(left: 16),
-                //             child: Row(
-                //               children: [
-                //                 SvgPicture.asset(
-                //                     'assets/icons/Door-open.svg'),
-                //                 const SizedBox(
-                //                   width: 21,
-                //                 ),
-                //                 Expanded(
-                //                   child: TextField(
-                //                     controller: doorController,
-                //                     decoration:
-                //                         const InputDecoration(
-                //                       border: InputBorder.none,
-                //                       hintText: 'Подъезд',
-                //                       enabledBorder:
-                //                           UnderlineInputBorder(
-                //                         borderSide: BorderSide(
-                //                             color: Colors.white),
-                //                         // borderRadius: BorderRadius.circular(3),
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ],
-                //             )),
-                //       ),
-                //       const SizedBox(
-                //         width: 10,
-                //       ),
-                //       Expanded(
-                //         child: Container(
-                //             padding:
-                //                 const EdgeInsets.only(left: 16),
-                //             child: Row(
-                //               children: [
-                //                 SvgPicture.asset(
-                //                     'assets/icons/Stairs.svg'),
-                //                 const SizedBox(
-                //                   width: 21,
-                //                 ),
-                //                 Expanded(
-                //                   child: TextField(
-                //                     controller: spaceController,
-                //                     decoration:
-                //                         const InputDecoration(
-                //                       border: InputBorder.none,
-                //                       hintText: 'Этаж',
-                //                       enabledBorder:
-                //                           UnderlineInputBorder(
-                //                         borderSide: BorderSide(
-                //                             color: Colors.white),
-                //                         // borderRadius: BorderRadius.circular(3),
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 ),
-                //                 //  const Text('3 этаж'),
-                //               ],
-                //             )),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // ListTile(
-                //   horizontalTitleGap: 0,
-                //   leading: SvgPicture.asset(
-                //     'assets/icons/Key.svg',
-                //     height: 24,
-                //     width: 24,
-                //   ),
-                //   title: TextField(
-                //     controller: kvController,
-                //     decoration: const InputDecoration(
-                //       border: InputBorder.none,
-                //       hintText: 'Квартира',
-                //       enabledBorder: UnderlineInputBorder(
-                //         borderSide: BorderSide(color: Colors.white),
-                //         // borderRadius: BorderRadius.circular(3),
-                //       ),
-                //     ),
-                //   ),
-                //   // trailing: SvgPicture.asset(
-                //   //   'assets/icons/delete_circle.svg',
-                //   //   height: 24,
-                //   //   width: 24,
-                //   // ),
-                // ),
-                // ListTile(
-                //   horizontalTitleGap: 0,
-                //   leading: SvgPicture.asset(
-                //     'assets/icons/ion_mail-outline.svg',
-                //     height: 24,
-                //     width: 24,
-                //   ),
-                //   title: TextField(
-                //     controller: emailController,
-                //     decoration: const InputDecoration(
-                //       border: InputBorder.none,
-                //       hintText: 'Почта',
-                //       enabledBorder: UnderlineInputBorder(
-                //         borderSide: BorderSide(color: Colors.white),
-                //         // borderRadius: BorderRadius.circular(3),
-                //       ),
-                //     ),
-                //   ),
-                //   // trailing: SvgPicture.asset(
-                //   //   'assets/icons/delete_circle.svg',
-                //   //   height: 24,
-                //   //   width: 24,
-                //   // ),
-                // ),
-                _buildPasswordField(
-                  controller: passwordController,
-                  label: 'Старый пароль',
-                  obscureText: _obscureText,
-                  onToggle: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                ),
-                _buildPasswordField(
-                  controller: passwordControllerRepeat,
-                  label: 'Новый пароль',
-                  obscureText: _obscureTextRepeat,
-                  onToggle: () {
-                    setState(() {
-                      _obscureTextRepeat = !_obscureTextRepeat;
-                    });
-                  },
-                ),
-                // ListTile(
-                //     horizontalTitleGap: 0,
-                //     leading: SvgPicture.asset(
-                //       'assets/icons/password.svg',
-                //       height: 24,
-                //       width: 24,
-                //     ),
-                //     title: TextField(
-                //       controller: passwordController,
-                //       decoration: const InputDecoration(
-                //         hintText: 'Пароль',
-                //         border: InputBorder.none,
-                //         enabledBorder: UnderlineInputBorder(
-                //           borderSide: BorderSide(color: Colors.white),
-                //         ),
-                //       ),
-                //       obscureText: _obscureText,
-                //     ),
-                //     trailing: GestureDetector(
-                //       onTap: () {
-                //         setState(() {
-                //           _obscureText = !_obscureText;
-                //         });
-                //       },
-                //       child: Icon(_obscureText
-                //           ? Icons.visibility_off
-                //           : Icons.visibility),
-                //     )),
-                // ListTile(
-                //     leading: SvgPicture.asset(
-                //       'assets/icons/password.svg',
-                //       height: 24,
-                //       width: 24,
-                //     ),
-                //     horizontalTitleGap: 0,
-                //     title: TextField(
-                //       controller: passwordControllerRepeat,
-                //       decoration: const InputDecoration(
-                //         hintText: 'Введите новый пароль',
-                //         border: InputBorder.none,
-                //         enabledBorder: UnderlineInputBorder(
-                //           borderSide: BorderSide(color: Colors.white),
-                //         ),
-                //       ),
-                //       obscureText: _obscureTextRepeat,
-                //     ),
-                //     trailing: GestureDetector(
-                //       onTap: () {
-                //         setState(() {
-                //           _obscureTextRepeat = !_obscureTextRepeat;
-                //         });
-                //       },
-                //       child: Icon(_obscureTextRepeat
-                //           ? Icons.visibility_off
-                //           : Icons.visibility),
-                //     )),
-              ],
-            ),
-          )
-        ],
+              )
+            ],
+          ),
+        ),
       ),
-      bottomSheet: Container(
-        color: const Color.fromRGBO(252, 252, 252, 1),
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 26, bottom: 26),
+      bottomNavigationBar: Container(
+        color: Colors.transparent,
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 42),
         child: InkWell(
           onTap: () async {
             final edit = BlocProvider.of<LoginCubit>(context);
             await edit.edit(
-                userNameController.text,
+                firstNameController.text,
+                lastNameController.text,
+                surNameController.text,
                 phoneController.text != widget.phone
                     ? phoneController.text
                     : '',
@@ -643,19 +332,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
             // Navigator.pop(context);
           },
           child: Container(
+              height: 52,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(16),
                 color: AppColors.mainPurpleColor,
               ),
               width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(16),
-              child: const Text(
+              alignment: Alignment.center,
+              child: Text(
                 'Сохранить',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
-                textAlign: TextAlign.center,
+                style: AppTextStyles.size18Weight600
+                    .copyWith(color: AppColors.kWhite),
               )),
         ),
       ),
@@ -677,20 +364,18 @@ Widget _buildFormField({
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.grey,
-          ),
-        ),
+        Text(label,
+            style: AppTextStyles.size13Weight500
+                .copyWith(color: Color(0xff636366))),
         const SizedBox(height: 8),
         GestureDetector(
           onTap: readOnly ? onTap : null,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            height: 52,
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
-              color: Colors.grey.shade200,
+              color: Color(0xffEAECED),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -703,8 +388,11 @@ Widget _buildFormField({
                       keyboardType: keyboardType,
                       inputFormatters: inputFormatters,
                       readOnly: readOnly,
-                      decoration: const InputDecoration.collapsed(hintText: ''),
-                      style: const TextStyle(fontSize: 16),
+                      decoration: InputDecoration.collapsed(
+                          hintText: 'Введите $label',
+                          hintStyle: AppTextStyles.size16Weight400
+                              .copyWith(color: Color(0xff8E8E93))),
+                      style: AppTextStyles.size16Weight400,
                     ),
                   ),
                 ),
@@ -731,18 +419,14 @@ Widget _buildPasswordField({
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.grey,
-          ),
-        ),
+        Text(label,
+            style: AppTextStyles.size13Weight500
+                .copyWith(color: Color(0xff636366))),
         const SizedBox(height: 8),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
-            color: Colors.grey.shade200,
+            color: Color(0xffEAECED),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
@@ -757,13 +441,15 @@ Widget _buildPasswordField({
                   style: const TextStyle(fontSize: 16),
                 ),
               ),
-              IconButton(
-                icon: Icon(
-                  obscureText ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.grey,
-                  size: 20,
+              InkWell(
+                onTap: onToggle,
+                child: Image.asset(
+                  obscureText
+                      ? Assets.icons.passwordViewHiddenIcon.path
+                      : Assets.icons.passwordViewIcon.path,
+                  height: 24,
+                  width: 24,
                 ),
-                onPressed: onToggle,
               ),
             ],
           ),
@@ -784,13 +470,9 @@ Widget _buildDateOfBirthField({
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.grey,
-          ),
-        ),
+        Text(label,
+            style: AppTextStyles.size13Weight500
+                .copyWith(color: Color(0xff636366))),
         const SizedBox(height: 8),
         GestureDetector(
           onTap: () async {
@@ -819,7 +501,7 @@ Widget _buildDateOfBirthField({
               children: [
                 Expanded(
                   child: Text(
-                    controller.text.isEmpty ? 'ДД.ММ.ГГГГ' : controller.text,
+                    controller.text.isEmpty ? 'дд.дд.гггг' : controller.text,
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black,

@@ -63,6 +63,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
       backgroundColor: AppColors.kWhite,
       extendBody: true,
       appBar: AppBar(
+        surfaceTintColor: AppColors.kWhite,
         backgroundColor: AppColors.kWhite,
         title: Text('Мои товары', style: AppTextStyles.defaultAppBarTextStyle),
       ),

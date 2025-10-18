@@ -22,11 +22,10 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleIdentifier</key>
-			<string></string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
@@ -37,49 +36,38 @@
 			</array>
 		</dict>
 	</array>
+
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+
+	<!-- РАЗРЕШЕНИЯ -->
 	<key>NSCameraUsageDescription</key>
-	<string>Приложению требуется доступ к камере, для публикации фото в ваш аватар</string>
+	<string>Нужен доступ к камере для съёмки и сканера.</string>
+
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Приложению необходим доступ к микрофону
-&lt;string&gt;Приложению требуется доступ к камере, для публикации фото и сканеру&lt;/string&gt;
-&lt;/plist&gt;
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
-&lt;plist version=&quot;1.0&quot;&gt;
-&lt;string&gt;Приложению требуется доступ к камере, для публикации фото и сканеру&lt;/string&gt;
-&lt;/plist&gt;
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
-&lt;plist version=&quot;1.0&quot;&gt;
-&lt;string&gt;Приложению требуется доступ к камере, для публикации фото и сканеру&lt;/string&gt;
-&lt;/plist&gt;
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
-&lt;plist version=&quot;1.0&quot;&gt;
-&lt;string&gt;Приложению требуется доступ к камере, для публикации фото и сканеру&lt;/string&gt;
-&lt;/plist&gt;
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
-&lt;plist version=&quot;1.0&quot;&gt;
-&lt;string&gt;Приложению требуется доступ к камере, для публикации фото и сканеру&lt;/string&gt;
-&lt;/plist&gt;
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
-&lt;plist version=&quot;1.0&quot;&gt;
-&lt;string&gt;Приложению требуется доступ к камере, для публикации фото и сканеру&lt;/string&gt;
-Приложению требуется доступ к микрофону, для</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Приложению требуется доступ к местоположению, для работы карты </string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>YES</string>
-	<key>NSMotionUsageDescription</key>
-	<string>YES</string>
+	<string>Нужен доступ к микрофону для записи звука в видео и голосовых сообщениях.</string>
+
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Приложению требуется доступ к камере, для публикации фото и сканеру</string>
+	<string>Нужен доступ к Фото, чтобы выбирать изображения из галереи.</string>
+
+	<!-- Укажите, если сохраняете фото/видео в галерею -->
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Нужен доступ для сохранения фото и видео в галерею.</string>
+
+	<!-- Геолокация: если вам не нужен доступ «всегда», оставьте только WhenInUse -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Нужен доступ к геолокации для показа карты и определения вашего местоположения во время использования приложения.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Нужен доступ к геолокации в фоновом режиме для работы карт и связанных функций.</string>
+	<!-- Для старых iOS можно оставить: -->
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Нужен доступ к геолокации в фоновом режиме.</string>
+
+	<key>NSMotionUsageDescription</key>
+	<string>Нужен доступ к данным движения для корректной работы функций приложения.</string>
+
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

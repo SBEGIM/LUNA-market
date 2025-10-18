@@ -1,11 +1,17 @@
+import 'dart:developer';
+
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/pre_order_dialog.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/show_basket_bottom_sheet_widget.dart';
 import 'package:haji_market/src/feature/favorite/bloc/favorite_cubit.dart';
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart'
@@ -35,14 +41,12 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     compoundPrice = (widget.product.price!.toInt() *
             (((100 - widget.product.compound!.toInt())) / 100))
         .toInt();
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
     count += widget.product.basketCount ?? 0;
     inFavorite = widget.product.inFavorite ?? false;
     compoundPrice =
         (widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100;
 
     setState(() {});
-    // });
 
     super.initState();
   }
@@ -57,21 +61,21 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     final basketCount = widget.product.basketCount ?? 0;
 
     return Container(
-      height: 315,
-      width: 173,
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.only(top: 12, left: 9.3, right: 9.3),
       decoration: BoxDecoration(
-          color: AppColors.kWhite,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: const [
-            BoxShadow(
-              offset: Offset(0, 2),
-              // blurRadius: 4,
-              color: Colors.white,
-            ),
-          ]),
+        color: AppColors.kWhite,
+        borderRadius: BorderRadius.circular(16),
+
+        // boxShadow: const [
+        //   BoxShadow(
+        //     offset: Offset(0, 2),
+        //     color: Colors.white,
+        //   ),
+        // ]
+      ),
       // height: MediaQuery.of(context).size.height * 0.86,
       // color: Colors.red,
+      alignment: Alignment.center,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -79,12 +83,11 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
             children: [
               Container(
                 height: 144,
-                width: 154,
+                width: 300,
                 decoration: BoxDecoration(
                   color: AppColors.kWhite,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                padding: const EdgeInsets.all(5), // White border effect
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(
                       12), // Slightly smaller than container
@@ -125,20 +128,17 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
+                            height: 26,
                             decoration: BoxDecoration(
                                 color: AppColors.kYellowDark,
-                                borderRadius: BorderRadius.circular(6)),
-                            child: const Padding(
-                              padding: EdgeInsets.only(
-                                  left: 8.0, right: 8, top: 4, bottom: 4),
-                              child: Text(
-                                '0·0·12',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                              ),
+                                borderRadius: BorderRadius.circular(10)),
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            child: Text(
+                              '0·0·12',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.size13Weight500,
                             ),
                           ),
 
@@ -182,12 +182,11 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     widget.product.point != 0
                         ? Container(
                             width: 52,
-                            height: 22,
+                            height: 26,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                                 gradient: LinearGradient(
-                                  begin: Alignment(-0.6,
-                                      -1), // приблизительное направление 128.49°
+                                  begin: Alignment(-0.6, -1),
                                   end: Alignment(1, 1),
                                   colors: [
                                     Color(0xFF7D2DFF),
@@ -198,7 +197,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                     1.0
                                   ], // соответствуют 26.85% и 100%
                                 ),
-                                borderRadius: BorderRadius.circular(4)),
+                                borderRadius: BorderRadius.circular(10)),
                             child: Text(
                               '${widget.product.point ?? 0}% Б',
                               textAlign: TextAlign.center,
@@ -224,14 +223,14 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 Container(
                   constraints: const BoxConstraints(
                     maxHeight: 40, // Ensures minimum width
-                    minHeight: 20, // Prevents excessive width
+                    minHeight: 40, // Prevents excessive width
                   ),
                   child: Text(
                     widget.product.name.toString(),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.categoryTextStyle
-                        .copyWith(color: AppColors.kGray300),
+                    style: AppTextStyles.size14Weight400
+                        .copyWith(color: Color(0xff636366)),
                   ),
                 ),
                 SizedBox(height: 4),
@@ -243,24 +242,15 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                             // width: 75,
                             child: Text(
                               '${formatPrice(compoundPrice)} ₽ ',
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 0,
-                                  fontSize: 16),
+                              style: AppTextStyles.size16Weight700,
                             ),
                           ),
-                          Text(
-                            '${formatPrice(widget.product.price!)} ₽ ',
-                            style: const TextStyle(
-                              color: AppColors.kGray300,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: -1,
-                              fontSize: 14,
-                              decoration: TextDecoration.lineThrough,
-                              decorationColor: AppColors.kGray300,
-                            ),
-                          ),
+                          Text('${formatPrice(widget.product.price!)} ₽ ',
+                              style: AppTextStyles.size14Weight500.copyWith(
+                                decoration: TextDecoration.lineThrough,
+                                color: Color(0xff8E8E93),
+                                decorationColor: Color(0xff8E8E93),
+                              )),
                         ],
                       )
                     : Text(
@@ -273,7 +263,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                         ),
                       ),
                 const SizedBox(
-                  height: 7,
+                  height: 4,
                 ),
                 Container(
                   constraints: const BoxConstraints(
@@ -311,7 +301,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                         height: 32,
                         decoration: BoxDecoration(
                           color: AppColors.mainPurpleColor,
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         alignment: Alignment.center,
                         child: Text(
@@ -326,78 +316,128 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          if (basketCount != 0)
-                            Row(
-                              children: [
-                                InkWell(
+                          //   if (basketCount != 0)
+                          //     Row(
+                          //       children: [
+                          //         InkWell(
+                          //           onTap: () {
+                          //             /// FIXME
+                          //             BlocProvider.of<BasketCubit>(context)
+                          //                 .basketMinus(
+                          //                     widget.product.id.toString(),
+                          //                     '1',
+                          //                     0,
+                          //                     'fbs');
+
+                          //             BlocProvider.of<productCubit.ProductCubit>(
+                          //                     context)
+                          //                 .updateProductByIndex(
+                          //               index: widget.index,
+                          //               updatedProduct: widget.product.copyWith(
+                          //                 basketCount: basketCount - 1,
+                          //               ),
+                          //             );
+                          //             // setState(() {
+                          //             //   if (count == 0) {
+                          //             //     isvisible = false;
+                          //             //   } else {
+                          //             //     isvisible = true;
+                          //             //   }
+                          //             //   count -= 1;
+                          //             // });
+                          //           },
+                          //           child: Container(
+                          //             height: 32,
+                          //             width: 32,
+                          //             padding: const EdgeInsets.all(4),
+                          //             decoration: BoxDecoration(
+                          //               borderRadius: BorderRadius.circular(6),
+                          //               color: Colors.white,
+                          //               boxShadow: [
+                          //                 BoxShadow(
+                          //                   color: Colors.grey.withOpacity(0.1),
+                          //                   spreadRadius: 1,
+                          //                   blurRadius: 1,
+                          //                   offset: const Offset(0,
+                          //                       1), // changes position of shadow
+                          //                 ),
+                          //               ],
+                          //             ),
+                          //             child: basketCount == 1
+                          //                 ? SvgPicture.asset(
+                          //                     'assets/icons/basket_1.svg',
+                          //                     width: 3.12,
+                          //                     height: 15,
+                          //                   )
+                          //                 : const Icon(
+                          //                     Icons.remove,
+                          //                     color: AppColors.mainPurpleColor,
+                          //                   ),
+                          //           ),
+                          //         ),
+                          //         // const SizedBox(
+                          //         //   width: 14,
+                          //         // ),
+                          //         Container(
+                          //           width: 28,
+                          //           alignment: Alignment.center,
+                          //           child: Text('$basketCount'),
+                          //         ),
+                          //         // const SizedBox(
+                          //         //   width: 14,
+                          //         // ),
+                          //         InkWell(
+                          //           onTap: () {
+                          //             BlocProvider.of<BasketCubit>(context)
+                          //                 .basketAdd(widget.product.id.toString(),
+                          //                     '1', 0, '', '');
+                          //             BlocProvider.of<productCubit.ProductCubit>(
+                          //                     context)
+                          //                 .updateProductByIndex(
+                          //               index: widget.index,
+                          //               updatedProduct: widget.product.copyWith(
+                          //                 basketCount: basketCount + 1,
+                          //               ),
+                          //             );
+
+                          //             /// FIXME
+                          //             // setState(() {
+                          //             //   count += 1;
+                          //             // });
+                          //           },
+                          //           child: Container(
+                          //             padding: const EdgeInsets.all(4),
+                          //             decoration: BoxDecoration(
+                          //               borderRadius: BorderRadius.circular(10),
+                          //               color: Colors.white,
+                          //               boxShadow: [
+                          //                 BoxShadow(
+                          //                   color: Colors.grey.withOpacity(0.1),
+                          //                   spreadRadius: 1,
+                          //                   blurRadius: 1,
+                          //                   offset: const Offset(0,
+                          //                       1), // changes position of shadow
+                          //                 ),
+                          //               ],
+                          //             ),
+                          //             // child: SvgPicture.asset(
+                          //             //     'assets/icons/add_1.svg'),
+                          //             child: const Icon(
+                          //               Icons.add,
+                          //               color: AppColors.mainPurpleColor,
+                          //             ),
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     )
+
+                          //  else
+                          // if
+                          (widget.product.pre_order == 1 &&
+                                  widget.product.product_count == 0)
+                              ? GestureDetector(
                                   onTap: () {
                                     /// FIXME
-                                    BlocProvider.of<BasketCubit>(context)
-                                        .basketMinus(
-                                            widget.product.id.toString(),
-                                            '1',
-                                            0,
-                                            'fbs');
-
-                                    BlocProvider.of<productCubit.ProductCubit>(
-                                            context)
-                                        .updateProductByIndex(
-                                      index: widget.index,
-                                      updatedProduct: widget.product.copyWith(
-                                        basketCount: basketCount - 1,
-                                      ),
-                                    );
-                                    // setState(() {
-                                    //   if (count == 0) {
-                                    //     isvisible = false;
-                                    //   } else {
-                                    //     isvisible = true;
-                                    //   }
-                                    //   count -= 1;
-                                    // });
-                                  },
-                                  child: Container(
-                                    height: 32,
-                                    width: 32,
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.1),
-                                          spreadRadius: 1,
-                                          blurRadius: 1,
-                                          offset: const Offset(0,
-                                              1), // changes position of shadow
-                                        ),
-                                      ],
-                                    ),
-                                    child: basketCount == 1
-                                        ? SvgPicture.asset(
-                                            'assets/icons/basket_1.svg',
-                                            width: 3.12,
-                                            height: 15,
-                                          )
-                                        : const Icon(
-                                            Icons.remove,
-                                            color: AppColors.mainPurpleColor,
-                                          ),
-                                  ),
-                                ),
-                                // const SizedBox(
-                                //   width: 14,
-                                // ),
-                                Container(
-                                  width: 28,
-                                  alignment: Alignment.center,
-                                  child: Text('$basketCount'),
-                                ),
-                                // const SizedBox(
-                                //   width: 14,
-                                // ),
-                                InkWell(
-                                  onTap: () {
                                     BlocProvider.of<BasketCubit>(context)
                                         .basketAdd(widget.product.id.toString(),
                                             '1', 0, '', '');
@@ -409,50 +449,115 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                         basketCount: basketCount + 1,
                                       ),
                                     );
-
-                                    /// FIXME
                                     // setState(() {
                                     //   count += 1;
+                                    //   if (count == 0) {
+                                    //     isvisible = false;
+                                    //   } else {
+                                    //     isvisible = true;
+                                    //   }
                                     // });
                                   },
                                   child: Container(
-                                    padding: const EdgeInsets.all(4),
+                                    width: 150,
+                                    height: 32,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.1),
-                                          spreadRadius: 1,
-                                          blurRadius: 1,
-                                          offset: const Offset(0,
-                                              1), // changes position of shadow
-                                        ),
-                                      ],
-                                    ),
-                                    // child: SvgPicture.asset(
-                                    //     'assets/icons/add_1.svg'),
-                                    child: const Icon(
-                                      Icons.add,
                                       color: AppColors.mainPurpleColor,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      'Предзаказ',
+                                      // textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            )
-                          else
-                            (widget.product.pre_order == 1 &&
-                                    widget.product.product_count == 0)
-                                ? GestureDetector(
-                                    onTap: () {
-                                      /// FIXME
+                                )
+                              : GestureDetector(
+                                  onTap: () {
+                                    if (widget.product.product_count != 0) {
+                                      AppSnackBar.show(
+                                        context,
+                                        'Товар уже в корзине',
+                                        type: AppSnackType.error,
+                                      );
+
+                                      return;
+                                    }
+
+                                    showBasketBottomSheetOptions(
+                                        context,
+                                        '${widget.product.shop?.name}',
+                                        0,
+                                        widget.product, (int callBackCount,
+                                            int callBackPrice,
+                                            bool callBackOptom) {
+                                      if (widget.product.product_count == 0 &&
+                                          widget.product.pre_order == 1) {
+                                        if (widget.product.inBasket == false) {
+                                          showCupertinoModalPopup<void>(
+                                            context: context,
+                                            builder: (context) =>
+                                                PreOrderDialog(
+                                              onYesTap: () {
+                                                Navigator.pop(context);
+                                                if (widget.product.inBasket ==
+                                                    false) {
+                                                  BlocProvider.of<BasketCubit>(
+                                                          context)
+                                                      .basketAdd(
+                                                          widget.product.id
+                                                              .toString(),
+                                                          callBackCount,
+                                                          callBackPrice,
+                                                          '',
+                                                          '',
+                                                          isOptom:
+                                                              callBackOptom);
+                                                  setState(() {
+                                                    // isvisible = true;
+                                                  });
+                                                  BlocProvider.of<
+                                                              productCubit
+                                                              .ProductCubit>(
+                                                          context)
+                                                      .products();
+                                                } else {
+                                                  context.router.replaceAll([
+                                                    const LauncherRoute(
+                                                        children: [
+                                                          BasketRoute()
+                                                        ]),
+                                                  ]);
+                                                }
+                                              },
+                                            ),
+                                          );
+                                        } else {
+                                          context.router.pushAndPopUntil(
+                                            const LauncherRoute(
+                                                children: [BasketRoute()]),
+                                            predicate: (route) => false,
+                                          );
+                                        }
+
+                                        return;
+                                      }
+
+                                      // if (widget.product.inBasket == false) {
                                       BlocProvider.of<BasketCubit>(context)
                                           .basketAdd(
                                               widget.product.id.toString(),
-                                              '1',
-                                              0,
+                                              callBackCount,
+                                              callBackPrice,
                                               '',
-                                              '');
+                                              '',
+                                              isOptom: callBackOptom);
+
                                       BlocProvider.of<
                                               productCubit
                                               .ProductCubit>(context)
@@ -462,61 +567,54 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                           basketCount: basketCount + 1,
                                         ),
                                       );
-                                      // setState(() {
-                                      //   count += 1;
-                                      //   if (count == 0) {
-                                      //     isvisible = false;
-                                      //   } else {
-                                      //     isvisible = true;
-                                      //   }
+                                      setState(() {
+                                        count += 1;
+                                        // if (count == 0) {
+                                        //   isvisible = false;
+                                        // } else {
+                                        //   isvisible = true;
+                                        // }
+                                      });
+
+                                      // BlocProvider.of<
+                                      //         productCubit
+                                      //         .ProductCubit>(context)
+                                      //     .products();
+                                      // } else {
+                                      //   log('pushReplaceAll',
+                                      //       name: 'Detail Card Product Page');
+                                      //   context.router.replaceAll([
+                                      //     const LauncherRoute(
+                                      //         children: [BasketRoute()]),
+                                      //   ]);
+                                      // }
                                       // });
-                                    },
-                                    child: Container(
-                                      width: 150,
-                                      height: 32,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.mainPurpleColor,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Предзаказ',
-                                        // textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : GestureDetector(
-                                    onTap: () {
+
                                       /// FIXME
-                                      if (widget.product.product_count != 0) {
-                                        BlocProvider.of<BasketCubit>(context)
-                                            .basketAdd(
-                                                widget.product.id.toString(),
-                                                '1',
-                                                0,
-                                                '',
-                                                '');
-                                        BlocProvider.of<
-                                                productCubit
-                                                .ProductCubit>(context)
-                                            .updateProductByIndex(
-                                          index: widget.index,
-                                          updatedProduct:
-                                              widget.product.copyWith(
-                                            basketCount: basketCount + 1,
-                                          ),
-                                        );
-                                      } else {
-                                        Get.snackbar(
-                                            'Ошибка запроса нет предзаказа!',
-                                            'количество товара 0 шт',
-                                            backgroundColor: Colors.blueAccent);
-                                      }
+                                      // if (widget.product.product_count != 0) {
+                                      //   BlocProvider.of<BasketCubit>(context)
+                                      //       .basketAdd(
+                                      //           widget.product.id.toString(),
+                                      //           '1',
+                                      //           0,
+                                      //           '',
+                                      //           '');
+                                      //   BlocProvider.of<
+                                      //           productCubit
+                                      //           .ProductCubit>(context)
+                                      //       .updateProductByIndex(
+                                      //     index: widget.index,
+                                      //     updatedProduct:
+                                      //         widget.product.copyWith(
+                                      //       basketCount: basketCount + 1,
+                                      //     ),
+                                      //   );
+                                      // } else {
+                                      //   Get.snackbar(
+                                      //       'Ошибка запроса нет предзаказа!',
+                                      //       'количество товара 0 шт',
+                                      //       backgroundColor: Colors.blueAccent);
+                                      // }
 
                                       // setState(() {
                                       //   count += 1;
@@ -526,28 +624,23 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                       //     isvisible = true;
                                       //   }
                                       // });
-                                    },
-                                    child: Container(
-                                      width: 150,
-                                      height: 32,
-                                      decoration: BoxDecoration(
-                                        color: widget.product.product_count != 0
-                                            ? AppColors.mainPurpleColor
-                                            : Colors.grey,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Купить',
-                                        // textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 150,
+                                    height: 32,
+                                    decoration: BoxDecoration(
+                                      color: widget.product.product_count == 0
+                                          ? AppColors.mainPurpleColor
+                                          : AppColors.mainBackgroundPurpleColor,
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
+                                    alignment: Alignment.center,
+                                    child: Text('Купить',
+                                        style: AppTextStyles.size14Weight600
+                                            .copyWith(color: AppColors.kWhite)),
                                   ),
+                                )
                         ],
                       ),
               ],

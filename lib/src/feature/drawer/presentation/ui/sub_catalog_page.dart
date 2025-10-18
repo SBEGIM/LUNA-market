@@ -1,13 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../../home/data/model/cat_model.dart';
 import '../../bloc/sub_cats_cubit.dart';
 import '../../bloc/sub_cats_state.dart';
@@ -18,8 +14,10 @@ import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart'
 @RoutePage()
 class SubCatalogPage extends StatefulWidget {
   final CatsModel? cats;
+  final List<CatsModel>? catChapters;
 
-  const SubCatalogPage({Key? key, this.cats}) : super(key: key);
+  const SubCatalogPage({Key? key, this.cats, this.catChapters})
+      : super(key: key);
 
   @override
   State<SubCatalogPage> createState() => _SubCatalogPageState();
@@ -29,7 +27,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
   TextEditingController searchController = TextEditingController();
   int _selectedChapter = -1;
 
-  List<String> catChapters = ['Женская', 'Мусжская', 'Детская'];
+  // List<String> catChapters = ['Женская', 'Мужская', 'Детская'];
   List<CatsModel> brands = [];
   CatsModel? brand;
 
@@ -44,6 +42,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
       BlocProvider.of<brandCubit.BrandCubit>(context)
           .brands(subCatId: widget.cats!.id);
     }
+
     brandList();
 
     super.initState();
@@ -78,7 +77,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
         titleSpacing: 0,
         title: Text(
           '${widget.cats?.name ?? ''}',
-          style: AppTextStyles.appBarTextStylea,
+          style: AppTextStyles.size18Weight600,
         ),
         // leadingWidth: 1,
         // title: Container(
@@ -161,144 +160,150 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
 
             if (state is LoadedState) {
               return ListView(children: [
-                Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  padding: EdgeInsets.only(left: 16, top: 16, bottom: 16),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(12),
-                          bottomLeft: Radius.circular(12))),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 36,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: catChapters.length,
-                          itemBuilder: (context, index) {
-                            bool isEvenIndex = index % 2 == 0;
-                            return InkWell(
-                              onTap: () {
-                                if (_selectedChapter == index) {
-                                  _selectedChapter = -1;
-                                  setState(() {});
-                                  return;
-                                }
+                ((widget.catChapters?.length ?? 0) != 0)
+                    ? Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        padding: EdgeInsets.only(left: 16, top: 16, bottom: 16),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(12),
+                                bottomLeft: Radius.circular(12))),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 36,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: widget.catChapters?.length,
+                                itemBuilder: (context, index) {
+                                  bool isEvenIndex = index % 2 == 0;
+                                  return InkWell(
+                                    onTap: () {
+                                      if (_selectedChapter == index) {
+                                        _selectedChapter = -1;
+                                        setState(() {});
+                                        return;
+                                      }
 
-                                _selectedChapter = index;
-                                setState(() {});
-                              },
-                              child: Container(
-                                width: 120,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: _selectedChapter == index
-                                      ? AppColors.mainPurpleColor
-                                      : AppColors.kWhite,
-                                  border: Border(
-                                    top: BorderSide(
-                                        color: AppColors.mainPurpleColor,
-                                        width: 1),
-                                    bottom: BorderSide(
-                                        color: AppColors.mainPurpleColor,
-                                        width: 1),
-                                    left: isEvenIndex
-                                        ? BorderSide(
-                                            color: AppColors.mainPurpleColor,
-                                            width: 1)
-                                        : BorderSide.none,
-                                    right: isEvenIndex
-                                        ? BorderSide(
-                                            color: AppColors.mainPurpleColor,
-                                            width: 1)
-                                        : BorderSide.none,
-                                  ),
-                                ),
-                                child: Text(
-                                  catChapters[index],
-                                  style: AppTextStyles.categoryTextStyle
-                                      .copyWith(
-                                          color: _selectedChapter == index
-                                              ? Colors.white
-                                              : AppColors.mainPurpleColor,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        'Популярные бренды',
-                        style: AppTextStyles.defaultButtonTextStyle,
-                      ),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      SizedBox(
-                        height: 64,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: brands.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                brand = brands[index];
-                                setState(() {});
-                              },
-                              child: Container(
-                                width: 64,
-                                height: 64,
-                                margin: const EdgeInsets.only(right: 4),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  gradient: brand?.id == brands[index].id
-                                      ? const LinearGradient(
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                          colors: [
-                                            Color(0xFF7D2DFF),
-                                            Color(0xFF41DDFF)
-                                          ],
-                                        )
-                                      : null,
-                                ),
-                                padding: const EdgeInsets.all(
-                                    2.2), // толщина границы
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(14),
-                                    color:
-                                        const Color(0xFFF5F4FF), // светлый фон
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(14),
-                                    child: Image(
-                                      image: brands[index].icon != null
-                                          ? NetworkImage(
-                                              "https://lunamarket.ru/storage/${brands[index].icon}")
-                                          : const AssetImage(
-                                                  'assets/icons/profile2.png')
-                                              as ImageProvider,
-                                      fit: BoxFit.contain,
+                                      _selectedChapter = index;
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      width: 120,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: _selectedChapter == index
+                                            ? AppColors.mainPurpleColor
+                                            : AppColors.kWhite,
+                                        border: Border(
+                                          top: BorderSide(
+                                              color: AppColors.mainPurpleColor,
+                                              width: 1),
+                                          bottom: BorderSide(
+                                              color: AppColors.mainPurpleColor,
+                                              width: 1),
+                                          left: isEvenIndex
+                                              ? BorderSide(
+                                                  color:
+                                                      AppColors.mainPurpleColor,
+                                                  width: 1)
+                                              : BorderSide.none,
+                                          right: isEvenIndex
+                                              ? BorderSide(
+                                                  color:
+                                                      AppColors.mainPurpleColor,
+                                                  width: 1)
+                                              : BorderSide.none,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        widget.catChapters?[index].name ?? '',
+                                        style: AppTextStyles.categoryTextStyle
+                                            .copyWith(
+                                                color: _selectedChapter == index
+                                                    ? Colors.white
+                                                    : AppColors.mainPurpleColor,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14),
+                                      ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               ),
-                            );
-                          },
+                            ),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            Text(
+                              'Популярные бренды',
+                              style: AppTextStyles.defaultButtonTextStyle,
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            SizedBox(
+                              height: 64,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: brands.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      brand = brands[index];
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      width: 64,
+                                      height: 64,
+                                      margin: const EdgeInsets.only(right: 4),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        gradient: brand?.id == brands[index].id
+                                            ? const LinearGradient(
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: [
+                                                  Color(0xFF7D2DFF),
+                                                  Color(0xFF41DDFF)
+                                                ],
+                                              )
+                                            : null,
+                                      ),
+                                      padding: const EdgeInsets.all(
+                                          2.2), // толщина границы
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(14),
+                                          color: const Color(
+                                              0xFFF5F4FF), // светлый фон
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(14),
+                                          child: Image(
+                                            image: brands[index].icon != null
+                                                ? NetworkImage(
+                                                    "https://lunamarket.ru/storage/${brands[index].icon}")
+                                                : const AssetImage(
+                                                        'assets/icons/profile2.png')
+                                                    as ImageProvider,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                ),
+                      )
+                    : SizedBox.shrink(),
                 SizedBox(
                   height: 8,
                 ),

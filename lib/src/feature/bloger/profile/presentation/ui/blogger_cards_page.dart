@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:haji_market/src/feature/bloger/auth/data/DTO/blogger_dto.dart';
 import '../../../../../core/common/constants.dart';
 import '../../../auth/bloc/edit_blogger_cubit.dart';
 
@@ -106,8 +107,12 @@ class _BloggerCardPageState extends State<BloggerCardPage> {
           onTap: () async {
             // print('object');
             final edit = BlocProvider.of<EditBloggerCubit>(context);
-            await edit.edit('', '', '', '', checkController.text, '', null,
-                cardController.text, '', '');
+
+            final BloggerDTO dto = BloggerDTO(
+              check: checkController.text,
+              card: cardController.text,
+            );
+            await edit.edit(context, dto);
 
             //Get.to(const BloggerNewCardPage());
             // GetStorage().write('blogger_invoice', checkController.text);

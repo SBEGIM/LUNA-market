@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/seller/main/data/model/stories_seller_model.dart';
 import 'package:shimmer/shimmer.dart';
+import 'dart:ui' as ui;
 
 class StoryScreen extends StatefulWidget {
   final List<SellerStoriesItemModel> stories;
@@ -72,11 +74,10 @@ class _StoryScreenState extends State<StoryScreen> {
     }
   }
 
-  // ===== Навигация между сторис =====
   void _nextStory() {
     if (_currentIndex < widget.stories.length - 1) {
       _pageController.nextPage(
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 700),
         curve: Curves.linear,
       );
     } else {
@@ -187,55 +188,52 @@ class _StoryScreenState extends State<StoryScreen> {
           ),
 
           // Кнопка закрытия
-          Positioned(
-            top: 80,
-            right: 16,
-            child: IconButton(
-              icon: Image.asset(
-                Assets.icons.defaultCloseIcon.path,
-                scale: 1.9,
-                width: 24,
-                height: 24,
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ),
 
           // Прогресс-бар
           Positioned(
             top: 64,
             left: 16,
-            right: 46,
-            child: IgnorePointer(
-              // чтобы тапы по прогрессу не мешали
-              ignoring: true,
-              child: Row(
-                children: List.generate(widget.stories.length, (index) {
-                  double value;
-                  if (index < _currentIndex) {
-                    value = 1.0;
-                  } else if (index == _currentIndex) {
-                    value = _progress;
-                  } else {
-                    value = 0.0;
-                  }
-                  return Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: LinearProgressIndicator(
-                        value: value,
-                        backgroundColor: const Color(0xffC4C4C480),
-                        borderRadius: BorderRadius.circular(50),
-                        minHeight: 2,
-                        valueColor:
-                            const AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
+            right: 16, // 46 больше не нужен
+            child: Row(
+              children: [
+                // Только прогресс-бары игнорируют тапы
+                Expanded(
+                  child: IgnorePointer(
+                    ignoring: true,
+                    child: Row(
+                      children: List.generate(widget.stories.length, (index) {
+                        final value = index < _currentIndex
+                            ? 1.0
+                            : (index == _currentIndex ? _progress : 0.0);
+                        return Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: ClipRRect(
+                              // чтобы радиус реально работал
+                              borderRadius: BorderRadius.circular(50),
+                              child: LinearProgressIndicator(
+                                value: value,
+                                minHeight: 2,
+                                backgroundColor: const Color(0xffC4C4C480),
+                                valueColor: const AlwaysStoppedAnimation<Color>(
+                                    Color(0xffFFFFFFBF)),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                     ),
-                  );
-                }),
-              ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Image.asset(
+                  Assets.icons.defaultClosePurpleIcon.path,
+                  width: 24,
+                  height: 24,
+                ),
+              ],
             ),
-          ),
+          )
         ],
       ),
     );

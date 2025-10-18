@@ -50,7 +50,7 @@ class _BaseState extends State<Base> with TickerProviderStateMixin {
           });
         }
         return Container(
-          height: 94,
+          height: 96,
           decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(
@@ -74,100 +74,92 @@ class _BaseState extends State<Base> with TickerProviderStateMixin {
             showUnselectedLabels: true,
             backgroundColor: Colors.white,
             type: BottomNavigationBarType.fixed,
+            selectedLabelStyle: AppTextStyles.size13Weight400,
+            unselectedLabelStyle: AppTextStyles.size13Weight400,
             items: [
               BottomNavigationBarItem(
-                icon: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Image.asset(
-                    Assets.icons.rollsBottomIcon.path,
-                    scale: 1.9,
-                    color: AppColors.kunSelectColor,
-                  ),
+                icon: Image.asset(
+                  Assets.icons.rollsBottomIcon.path,
+                  scale: 2.1,
+                  height: 24,
+                  width: 24,
+                  color: AppColors.kunSelectColor,
                 ),
                 label: 'Roolls',
-                activeIcon: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Image.asset(
-                    Assets.icons.rollsBotoomFullIcon.path,
-                    scale: 1.9,
-                    color: Colors.black,
-                  ),
+                activeIcon: Image.asset(
+                  Assets.icons.rollsBotoomFullIcon.path,
+                  scale: 2.1,
+                  height: 24,
+                  width: 24,
+                  color: Colors.black,
                 ),
               ),
               BottomNavigationBarItem(
-                icon: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Image.asset(
-                    Assets.icons.sellerNavigationUnfullIcon.path,
-                    scale: 1.9,
-                    color: AppColors.kunSelectColor,
-                  ),
+                icon: Image.asset(
+                  Assets.icons.sellerNavigationUnfullIcon.path,
+                  scale: 2.1,
+                  height: 24,
+                  width: 24,
+                  color: AppColors.kunSelectColor,
                 ),
                 label: 'Маркет',
-                activeIcon: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Image.asset(
-                    Assets.icons.sellerNavigationIcon.path,
-                    scale: 1.9,
-                    color: Colors.black,
-                  ),
+                activeIcon: Image.asset(
+                  Assets.icons.sellerNavigationIcon.path,
+                  scale: 2.1,
+                  height: 24,
+                  width: 24,
+                  color: Colors.black,
                 ),
               ),
               BottomNavigationBarItem(
-                icon: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Image.asset(
-                    Assets.icons.favoriteBottomIcon.path,
-                    scale: 1.9,
-                    color: AppColors.kunSelectColor,
-                  ),
+                icon: Image.asset(
+                  Assets.icons.favoriteBottomIcon.path,
+                  scale: 2.1,
+                  height: 24,
+                  width: 24,
+                  color: AppColors.kunSelectColor,
                 ),
                 label: 'Избранное',
-                activeIcon: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Image.asset(
-                    Assets.icons.favoriteBottomFullIcon.path,
-                    scale: 1.9,
-                    color: Colors.black,
-                  ),
+                activeIcon: Image.asset(
+                  Assets.icons.favoriteBottomFullIcon.path,
+                  scale: 2.1,
+                  height: 24,
+                  width: 24,
+                  color: Colors.black,
                 ),
               ),
               BottomNavigationBarItem(
-                icon: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Image.asset(
-                    Assets.icons.basketBottomIcon.path,
-                    scale: 1.9,
-                    color: AppColors.kunSelectColor,
-                  ),
+                icon: Image.asset(
+                  Assets.icons.basketBottomIcon.path,
+                  scale: 2.1,
+                  height: 24,
+                  width: 24,
+                  color: AppColors.kunSelectColor,
                 ),
                 label: 'Корзина',
-                activeIcon: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Image.asset(
-                    Assets.icons.basketBottomFullIcon.path,
-                    scale: 1.9,
-                    color: Colors.black,
-                  ),
+                activeIcon: Image.asset(
+                  Assets.icons.basketBottomFullIcon.path,
+                  scale: 2.1,
+                  height: 24,
+                  width: 24,
+                  color: Colors.black,
                 ),
               ),
               BottomNavigationBarItem(
-                icon: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Image.asset(
-                    Assets.icons.accountBottomIcon.path,
-                    scale: 1.9,
-                    color: AppColors.kunSelectColor,
-                  ),
+                icon: Image.asset(
+                  Assets.icons.accountBottomIcon.path,
+                  scale: 2.1,
+                  height: 24,
+                  width: 24,
+                  color: AppColors.kunSelectColor,
                 ),
                 label: 'Профиль',
-                activeIcon: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Image.asset(
-                    Assets.icons.accountBottomFullIcon.path,
-                    scale: 1.9,
-                    color: Colors.black,
-                  ),
+                activeIcon: Image.asset(
+                  Assets.icons.accountBottomFullIcon.path,
+                  scale: 2.1,
+                  height: 24,
+                  width: 24,
+                  color: Colors.black,
                 ),
               ),
             ],
