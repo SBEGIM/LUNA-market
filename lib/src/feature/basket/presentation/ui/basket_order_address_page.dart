@@ -174,40 +174,33 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                   ),
                   child: CustomSwitchButton<int>(
                     groupValue: segmentValue,
+                    backgroundColor: Color(0xffEAECED),
+                    thumbColor: AppColors.kWhite,
                     children: {
                       0: Container(
                         alignment: Alignment.center,
-                        height: 39,
-                        width: MediaQuery.of(context).size.width,
+                        height: 36,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Text(
-                          'Самовывоз',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: segmentValue == 0
-                                ? Colors.black
-                                : const Color(0xff9B9B9B),
-                          ),
-                        ),
+                        child: Text('Самовывоз',
+                            style: AppTextStyles.size14Weight500.copyWith(
+                                color: segmentValue == 0
+                                    ? Colors.black
+                                    : const Color(0xff636366))),
                       ),
                       1: Container(
                         width: MediaQuery.of(context).size.width,
                         alignment: Alignment.center,
-                        height: 39,
+                        height: 36,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Text(
-                          'Курьером',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: segmentValue == 1
-                                ? Colors.black
-                                : const Color(0xff9B9B9B),
-                          ),
-                        ),
+                        child: Text('Курьером',
+                            style: AppTextStyles.size14Weight500.copyWith(
+                                color: segmentValue == 1
+                                    ? Colors.black
+                                    : const Color(0xff636366))),
                       ),
                     },
                     onValueChanged: (int? value) async {
@@ -468,7 +461,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
               BlocBuilder<BasketCubit, BasketState>(builder: (context, state) {
                 if (state is LoadedState) {
                   return SizedBox(
-                    height: (165 * state.basketShowModel.length).toDouble(),
+                    height: (175 * state.basketShowModel.length).toDouble(),
                     width: double.infinity,
                     child: ListView.builder(
                         padding: EdgeInsets.zero,
@@ -477,7 +470,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                         itemCount: state.basketShowModel.length,
                         itemBuilder: (context, index) {
                           return Container(
-                            padding: EdgeInsets.only(top: 10),
+                            padding: EdgeInsets.only(top: 8),
                             width: MediaQuery.of(context).size.width,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -489,107 +482,97 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                   padding: EdgeInsets.only(left: 16),
                                   alignment: Alignment.centerLeft,
                                   decoration: BoxDecoration(
-                                    color: Colors.amberAccent,
+                                    color: Color.fromRGBO(255, 190, 0, 0.2),
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(12),
                                         topRight: Radius.circular(12)),
                                   ),
                                   child: Text(
                                     'Дата доставки: ${state.basketShowModel[index].deliveryDay} дня',
-                                    style: TextStyle(
-                                        color: AppColors.kLightBlackColor,
-                                        letterSpacing: 0,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
+                                    style: AppTextStyles.size16Weight500,
                                   ),
                                 ),
                                 Container(
-                                  height: 110,
+                                  height: 123,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                     color: AppColors.kWhite,
                                     borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(12),
-                                        bottomRight: Radius.circular(12)),
+                                        bottomLeft: Radius.circular(16),
+                                        bottomRight: Radius.circular(16)),
                                   ),
-                                  padding: EdgeInsets.only(left: 16, top: 12),
+                                  padding: EdgeInsets.only(left: 16),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        '1 товар(a)',
-                                        style: TextStyle(
-                                            color: AppColors.kGray300,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500),
-                                      ),
+                                      SizedBox(height: 8),
+                                      Text('1 товар(a)',
+                                          style: AppTextStyles.size14Weight500
+                                              .copyWith(
+                                                  color: Color(0xff8E8E93))),
+                                      SizedBox(height: 8),
                                       Container(
                                         height: 54,
                                         width: 54,
                                         decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black
-                                                  .withOpacity(0.05),
-                                              blurRadius: 8,
-                                              spreadRadius: 2,
-                                            ),
-                                          ],
+                                          color: AppColors.kWhite,
+                                          borderRadius:
+                                              BorderRadius.circular(16),
                                         ),
-                                        padding: const EdgeInsets.all(
-                                            5), // White border effect
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                              12), // Slightly smaller than container
-                                          child: Image.network(
-                                            state.basketShowModel[index]
-                                                        .image !=
-                                                    null
-                                                ? "https://lunamarket.ru/storage/${state.basketShowModel[index].image!.first}"
-                                                : "https://lunamarket.ru/storage/banners/2.png",
-                                            fit: BoxFit.contain,
-                                            loadingBuilder: (context, child,
-                                                loadingProgress) {
-                                              if (loadingProgress == null)
-                                                return child;
-                                              return Container(
-                                                color: Colors.grey[100],
-                                                child: Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    value: loadingProgress
-                                                                .expectedTotalBytes !=
-                                                            null
-                                                        ? loadingProgress
-                                                                .cumulativeBytesLoaded /
-                                                            loadingProgress
-                                                                .expectedTotalBytes!
-                                                        : null,
-                                                    strokeWidth: 2,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(1.0),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                                12), // Slightly smaller than container
+                                            child: Image.network(
+                                              state.basketShowModel[index]
+                                                          .image !=
+                                                      null
+                                                  ? "https://lunamarket.ru/storage/${state.basketShowModel[index].image!.first}"
+                                                  : "https://lunamarket.ru/storage/banners/2.png",
+                                              fit: BoxFit.cover,
+                                              loadingBuilder: (context, child,
+                                                  loadingProgress) {
+                                                if (loadingProgress == null)
+                                                  return child;
+                                                return Container(
+                                                  color: Colors.grey[100],
+                                                  child: Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      value: loadingProgress
+                                                                  .expectedTotalBytes !=
+                                                              null
+                                                          ? loadingProgress
+                                                                  .cumulativeBytesLoaded /
+                                                              loadingProgress
+                                                                  .expectedTotalBytes!
+                                                          : null,
+                                                      strokeWidth: 2,
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                            errorBuilder:
-                                                (context, error, stackTrace) =>
-                                                    Container(
-                                              color: Colors.grey[100],
-                                              child: const Icon(
-                                                  Icons.broken_image,
-                                                  color: Colors.grey),
+                                                );
+                                              },
+                                              errorBuilder: (context, error,
+                                                      stackTrace) =>
+                                                  Container(
+                                                color: Colors.grey[100],
+                                                child: const Icon(
+                                                    Icons.broken_image,
+                                                    color: Colors.grey),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
+                                      SizedBox(height: 8),
                                       Text(
-                                        '${formatPrice(state.basketShowModel[index].price!)} ₽',
-                                        style: TextStyle(
-                                            color: AppColors.kGray300,
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w400),
-                                      )
+                                          '${formatPrice(state.basketShowModel[index].price!)} ₽',
+                                          style: AppTextStyles.size11Weight400
+                                              .copyWith(
+                                                  color: Color(0xff8E8E93))),
                                     ],
                                   ),
                                 ),

@@ -162,9 +162,9 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                           Text(
                             'Дата регистрации: ${widget.sellerCreatedAt}',
                             style: AppTextStyles.size11Weight400.copyWith(
-                              color: AppColors.kGray300,
+                              color: Color(0xffAEAEB2),
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ],
@@ -298,7 +298,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                             height: 72,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(12)),
+                                borderRadius: BorderRadius.circular(16)),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -326,7 +326,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                             height: 72,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(12)),
+                                borderRadius: BorderRadius.circular(16)),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -354,7 +354,7 @@ class _ProfileBloggerTapePageState extends State<ProfileSellerTapePage> {
                             height: 72,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(12)),
+                                borderRadius: BorderRadius.circular(16)),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

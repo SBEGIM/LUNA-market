@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../home/data/model/cat_model.dart';
 import '../../bloc/sub_cats_cubit.dart';
 import '../../bloc/sub_cats_state.dart';
@@ -14,9 +16,9 @@ import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart'
 @RoutePage()
 class SubCatalogPage extends StatefulWidget {
   final CatsModel? cats;
-  final List<CatsModel>? catChapters;
+  final List<CatSections>? catChapters;
 
-  const SubCatalogPage({Key? key, this.cats, this.catChapters})
+  const SubCatalogPage({Key? key, this.cats, required this.catChapters})
       : super(key: key);
 
   @override
@@ -125,8 +127,7 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
               );
             }
             if (state is LoadingState) {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+              return const _SubCatalogShimmer();
             }
             // if (state is NoDataState) {
             //   return Container(
@@ -160,20 +161,20 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
 
             if (state is LoadedState) {
               return ListView(children: [
-                ((widget.catChapters?.length ?? 0) != 0)
-                    ? Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        padding: EdgeInsets.only(left: 16, top: 16, bottom: 16),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(12),
-                                bottomLeft: Radius.circular(12))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
+                Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  padding: EdgeInsets.only(left: 16, top: 16, bottom: 16),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(12),
+                          bottomLeft: Radius.circular(12))),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ((widget.catChapters?.length ?? 0) != 0)
+                          ? SizedBox(
                               height: 36,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
@@ -185,11 +186,23 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                                       if (_selectedChapter == index) {
                                         _selectedChapter = -1;
                                         setState(() {});
+                                        BlocProvider.of<SubCatsCubit>(context)
+                                            .subCats(widget.cats!.id);
                                         return;
+                                      } else {
+                                        _selectedChapter = index;
+                                        BlocProvider.of<SubCatsCubit>(context)
+                                            .subCatsBrandOptions(
+                                                widget.cats!.id,
+                                                brand?.id ?? 0,
+                                                widget
+                                                        .catChapters?[
+                                                            _selectedChapter]
+                                                        .section
+                                                        ?.id ??
+                                                    0);
+                                        setState(() {});
                                       }
-
-                                      _selectedChapter = index;
-                                      setState(() {});
                                     },
                                     child: Container(
                                       width: 120,
@@ -220,7 +233,9 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                                         ),
                                       ),
                                       child: Text(
-                                        widget.catChapters?[index].name ?? '',
+                                        widget.catChapters?[index].section
+                                                ?.name ??
+                                            '',
                                         style: AppTextStyles.categoryTextStyle
                                             .copyWith(
                                                 color: _selectedChapter == index
@@ -233,77 +248,95 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                                   );
                                 },
                               ),
-                            ),
-                            SizedBox(
+                            )
+                          : SizedBox.shrink(),
+                      ((widget.catChapters?.length ?? 0) != 0)
+                          ? SizedBox(
                               height: 24,
-                            ),
-                            Text(
-                              'Популярные бренды',
-                              style: AppTextStyles.defaultButtonTextStyle,
-                            ),
-                            SizedBox(
-                              height: 12,
-                            ),
-                            SizedBox(
-                              height: 64,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: brands.length,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      brand = brands[index];
-                                      setState(() {});
-                                    },
-                                    child: Container(
-                                      width: 64,
-                                      height: 64,
-                                      margin: const EdgeInsets.only(right: 4),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(16),
-                                        gradient: brand?.id == brands[index].id
-                                            ? const LinearGradient(
-                                                begin: Alignment.topLeft,
-                                                end: Alignment.bottomRight,
-                                                colors: [
-                                                  Color(0xFF7D2DFF),
-                                                  Color(0xFF41DDFF)
-                                                ],
-                                              )
-                                            : null,
-                                      ),
-                                      padding: const EdgeInsets.all(
-                                          2.2), // толщина границы
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(14),
-                                          color: const Color(
-                                              0xFFF5F4FF), // светлый фон
-                                        ),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(14),
-                                          child: Image(
-                                            image: brands[index].icon != null
-                                                ? NetworkImage(
-                                                    "https://lunamarket.ru/storage/${brands[index].icon}")
-                                                : const AssetImage(
-                                                        'assets/icons/profile2.png')
-                                                    as ImageProvider,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
+                            )
+                          : SizedBox.shrink(),
+                      Text(
+                        'Популярные бренды',
+                        style: AppTextStyles.defaultButtonTextStyle,
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      SizedBox(
+                        height: 64,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: brands.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                if (brands[index] == brand) {
+                                  brand = null;
+                                  BlocProvider.of<SubCatsCubit>(context)
+                                      .subCats(widget.cats!.id);
+                                } else {
+                                  brand = brands[index];
+                                  BlocProvider.of<SubCatsCubit>(context)
+                                      .subCatsBrandOptions(
+                                          widget.cats!.id,
+                                          brand?.id ?? 0,
+                                          _selectedChapter != -1
+                                              ? (widget
+                                                      .catChapters?[
+                                                          _selectedChapter]
+                                                      .section
+                                                      ?.id ??
+                                                  0)
+                                              : null);
+                                }
+                                setState(() {});
+                              },
+                              child: Container(
+                                width: 64,
+                                height: 64,
+                                margin: const EdgeInsets.only(right: 4),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  gradient: brand?.id == brands[index].id
+                                      ? const LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: [
+                                            Color(0xFF7D2DFF),
+                                            Color(0xFF41DDFF)
+                                          ],
+                                        )
+                                      : null,
+                                ),
+                                padding: const EdgeInsets.all(
+                                    2.2), // толщина границы
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(14),
+                                    color:
+                                        const Color(0xFFF5F4FF), // светлый фон
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(14),
+                                    child: Image(
+                                      image: brands[index].icon != null
+                                          ? NetworkImage(
+                                              "https://lunamarket.ru/storage/${brands[index].icon}")
+                                          : const AssetImage(
+                                                  'assets/icons/profile2.png')
+                                              as ImageProvider,
+                                      fit: BoxFit.contain,
                                     ),
-                                  );
-                                },
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
-                      )
-                    : SizedBox.shrink(),
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(
                   height: 8,
                 ),
@@ -382,36 +415,230 @@ class CatalogListTile extends StatelessWidget {
         color: AppColors.mainBackgroundPurpleColor,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          Container(
-            margin: EdgeInsets.only(top: 8, left: 8, bottom: 2),
-            height: 32,
-            child: Text(title,
-                textAlign: TextAlign.left,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: AppTextStyles.size13Weight500),
-          ),
           Align(
             alignment: Alignment.bottomRight,
             child: Container(
               width: 80,
               height: 80,
-              margin: const EdgeInsets.only(right: 8),
+              margin: const EdgeInsets.only(right: 8, bottom: 4),
               decoration: BoxDecoration(
                 color: AppColors.mainBackgroundPurpleColor,
-                image: DecorationImage(
-                  image: NetworkImage(url),
-                  fit: BoxFit.contain,
-                ),
                 borderRadius: BorderRadius.circular(10),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: CachedNetworkImage(
+                  imageUrl: url,
+                  fit: BoxFit.contain,
+                  placeholder: (context, _) => Shimmer.fromColors(
+                    baseColor: const Color(0xFFF7F7F7),
+                    highlightColor: const Color(0xFFF7F7F7),
+                    child: Container(color: Colors.white),
+                  ),
+                  errorWidget: (context, _, __) =>
+                      const Icon(Icons.image_not_supported_outlined),
+                ),
               ),
             ),
           ),
+          Container(
+            height: 34,
+            width: double.infinity,
+            margin: const EdgeInsets.only(top: 8, left: 8, bottom: 2),
+            child: Text(
+              title,
+              textAlign: TextAlign.left,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: AppTextStyles.size13Weight500,
+            ),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class _SubCatalogShimmer extends StatelessWidget {
+  const _SubCatalogShimmer({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final base = const Color(0xFFF7F7F7);
+    final highlight = const Color(0xFFF7F7F7);
+
+    return ListView(
+      children: [
+        // Блок с главами + брендами (как у вас сверху)
+        Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(12),
+              bottomLeft: Radius.circular(12),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Чипы глав
+              SizedBox(
+                height: 36,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 6,
+                  separatorBuilder: (_, __) => const SizedBox(width: 8),
+                  itemBuilder: (context, index) => Shimmer.fromColors(
+                    baseColor: base,
+                    highlightColor: highlight,
+                    child: Container(
+                      width: 120,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(color: base),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Заголовок "Популярные бренды"
+              Shimmer.fromColors(
+                baseColor: base,
+                highlightColor: highlight,
+                child: Container(
+                  width: 180,
+                  height: 18,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              // Горизонтальный список брендов
+              SizedBox(
+                height: 64,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 8,
+                  separatorBuilder: (_, __) => const SizedBox(width: 4),
+                  itemBuilder: (context, index) => Shimmer.fromColors(
+                    baseColor: base,
+                    highlightColor: highlight,
+                    child: Container(
+                      width: 64,
+                      height: 64,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 8),
+
+        // Сетка подкатегорий
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          child: GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: 8,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 175 / 120,
+            ),
+            itemBuilder: (context, index) => _CatalogTileShimmer(
+              baseColor: base,
+              highlightColor: highlight,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _CatalogTileShimmer extends StatelessWidget {
+  final Color baseColor;
+  final Color highlightColor;
+
+  const _CatalogTileShimmer({
+    Key? key,
+    required this.baseColor,
+    required this.highlightColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: baseColor,
+      highlightColor: highlightColor,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.mainBackgroundPurpleColor,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Stack(
+          children: [
+            // "текст" — две строки
+            Positioned(
+              left: 8,
+              top: 8,
+              right: 50,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _rect(width: 90, height: 12),
+                  const SizedBox(height: 6),
+                  _rect(width: 120, height: 12),
+                ],
+              ),
+            ),
+            // "картинка"
+            Positioned(
+              right: 8,
+              bottom: 8,
+              child: Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _rect({required double width, required double height}) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(4),
       ),
     );
   }

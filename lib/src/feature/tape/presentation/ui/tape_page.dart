@@ -22,8 +22,13 @@ class TapePage extends StatefulWidget {
 }
 
 class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
-  late final TabController _tabs =
-      TabController(length: 3, vsync: this, initialIndex: 0);
+  late final TabController _tabs = TabController(
+      length: 3,
+      vsync: this,
+      initialIndex: 0,
+      animationDuration: Duration(seconds: 0));
+
+  final _tabKeys = List.generate(3, (_) => GlobalKey<_TapeTabState>());
 
   final RefreshController refreshController = RefreshController();
   final TextEditingController searchController = TextEditingController();
@@ -43,25 +48,12 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
   bool get _isSubs => _tabs.index == 1;
   bool get _isFavs => _tabs.index == 2;
 
-  Future<void> _refresh() async {
-    await context
-        .read<TapeCubit>()
-        .tapes(_isSubs, _isFavs, searchController.text, 0);
-    refreshController.refreshCompleted();
-  }
-
-  Future<void> _loadMore() async {
-    // Если у тебя в Cubit есть номер следующей страницы — подставь его вместо 0
-    await context
-        .read<TapeCubit>()
-        .tapePagination(_isSubs, _isFavs, searchController.text, 0);
-    refreshController.loadComplete();
-  }
-
   void _onTabChanged() {
     // Дёргать загрузку только при завершённой смене и смене индекса
     if (!_tabs.indexIsChanging && _lastTabIndex != _tabs.index) {
       _lastTabIndex = _tabs.index;
+      _tabs.animateTo(_lastTabIndex,
+          curve: Curves.easeInOut, duration: Duration(milliseconds: 300));
       context
           .read<TapeCubit>()
           .tapes(_isSubs, _isFavs, searchController.text, 0);
@@ -172,122 +164,132 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
           ),
         ),
       ),
-      body: Column(
+      body: TabBarView(
+        controller: _tabs,
+        physics: BouncingScrollPhysics(),
         children: [
-          BlocConsumer<TapeCubit, TapeState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              if (state is ErrorState) {
-                return Expanded(
-                  child: Center(
-                    child: Text(
-                      state.message,
-                      style:
-                          const TextStyle(fontSize: 20.0, color: Colors.grey),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                );
-              }
-
-              if (state is LoadingState) {
-                return SizedBox.shrink();
-              }
-
-              if (state is NoDataState) {
-                return Expanded(
-                  child: SmartRefresher(
-                    controller: refreshController,
-                    enablePullDown: true,
-                    enablePullUp: false,
-                    onRefresh: _refresh,
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.75,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(top: 209),
-                              child: Image.asset(
-                                Assets.icons.defaultNoDataIcon.path,
-                                height: 72,
-                                width: 72,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Text(
-                              noDataText[_tabs.index],
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff8E8E93),
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }
-
-              if (state is LoadedState) {
-                return Expanded(
-                  child: SmartRefresher(
-                    controller: refreshController,
-                    enablePullDown: true,
-                    enablePullUp: true,
-                    onRefresh: _refresh,
-                    onLoading: _loadMore,
-                    child: GridView.builder(
-                      cacheExtent: 10000,
-                      gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 150,
-                        childAspectRatio: 1 / 2,
-                        mainAxisSpacing: 1,
-                        crossAxisSpacing: 1,
-                      ),
-                      itemCount: state.tapeModel.length,
-                      itemBuilder: (context, index) {
-                        return Shimmer(
-                          duration: const Duration(seconds: 3),
-                          interval: const Duration(microseconds: 1),
-                          color: AppColors.kGray300,
-                          colorOpacity: 0,
-                          enabled: true,
-                          direction: const ShimmerDirection.fromLTRB(),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.white,
-                            ),
-                            child: TapeCardWidget(
-                              tape: state.tapeModel[index],
-                              index: index,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                );
-              }
-
-              return const Expanded(
-                child: Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent),
-                ),
-              );
-            },
-          ),
+          TapeTab(key: _tabKeys[0], isSubs: false, isFavs: false),
+          TapeTab(key: _tabKeys[1], isSubs: true, isFavs: false),
+          TapeTab(key: _tabKeys[2], isSubs: false, isFavs: true),
         ],
       ),
+      // Column(
+      //   children: [
+      //     BlocConsumer<TapeCubit, TapeState>(
+      //       listener: (context, state) {},
+      //       builder: (context, state) {
+      //         if (state is ErrorState) {
+      //           return Expanded(
+      //             child: Center(
+      //               child: Text(
+      //                 state.message,
+      //                 style:
+      //                     const TextStyle(fontSize: 20.0, color: Colors.grey),
+      //                 textAlign: TextAlign.center,
+      //               ),
+      //             ),
+      //           );
+      //         }
+
+      //         if (state is LoadingState) {
+      //           return SizedBox.shrink();
+      //         }
+
+      //         if (state is NoDataState) {
+      //           return Expanded(
+      //             child: SmartRefresher(
+      //               controller: refreshController,
+      //               enablePullDown: true,
+      //               enablePullUp: false,
+      //               onRefresh: _refresh,
+      //               child: SingleChildScrollView(
+      //                 physics: const AlwaysScrollableScrollPhysics(),
+      //                 child: SizedBox(
+      //                   width: MediaQuery.of(context).size.width,
+      //                   height: MediaQuery.of(context).size.height * 0.75,
+      //                   child: Column(
+      //                     crossAxisAlignment: CrossAxisAlignment.center,
+      //                     mainAxisSize: MainAxisSize.max,
+      //                     children: [
+      //                       Container(
+      //                         margin: const EdgeInsets.only(top: 209),
+      //                         child: Image.asset(
+      //                           Assets.icons.defaultNoDataIcon.path,
+      //                           height: 72,
+      //                           width: 72,
+      //                         ),
+      //                       ),
+      //                       const SizedBox(height: 12),
+      //                       Text(
+      //                         noDataText[_tabs.index],
+      //                         style: const TextStyle(
+      //                           fontSize: 16,
+      //                           fontWeight: FontWeight.w500,
+      //                           color: Color(0xff8E8E93),
+      //                         ),
+      //                         textAlign: TextAlign.center,
+      //                       ),
+      //                     ],
+      //                   ),
+      //                 ),
+      //               ),
+      //             ),
+      //           );
+      //         }
+
+      //         if (state is LoadedState) {
+      //           return Expanded(
+      //             child: SmartRefresher(
+      //               controller: refreshController,
+      //               enablePullDown: true,
+      //               enablePullUp: true,
+      //               onRefresh: _refresh,
+      //               onLoading: _loadMore,
+      //               child: GridView.builder(
+      //                 padding: EdgeInsets.only(bottom: 100),
+      //                 cacheExtent: 10000,
+      //                 gridDelegate:
+      //                     const SliverGridDelegateWithMaxCrossAxisExtent(
+      //                   maxCrossAxisExtent: 150,
+      //                   childAspectRatio: 1 / 2,
+      //                   mainAxisSpacing: 1,
+      //                   crossAxisSpacing: 1,
+      //                 ),
+      //                 itemCount: state.tapeModel.length,
+      //                 itemBuilder: (context, index) {
+      //                   return Shimmer(
+      //                     duration: const Duration(seconds: 3),
+      //                     interval: const Duration(microseconds: 1),
+      //                     color: AppColors.kGray300,
+      //                     colorOpacity: 0,
+      //                     enabled: true,
+      //                     direction: const ShimmerDirection.fromLTRB(),
+      //                     child: Container(
+      //                       decoration: BoxDecoration(
+      //                         borderRadius: BorderRadius.circular(12),
+      //                         color: Colors.white,
+      //                       ),
+      //                       child: TapeCardWidget(
+      //                         tape: state.tapeModel[index],
+      //                         index: index,
+      //                       ),
+      //                     ),
+      //                   );
+      //                 },
+      //               ),
+      //             ),
+      //           );
+      //         }
+
+      //         return const Expanded(
+      //           child: Center(
+      //             child: CircularProgressIndicator(color: Colors.indigoAccent),
+      //           ),
+      //         );
+      //       },
+      //     ),
+      //   ],
+      // ),
     );
   }
 }
@@ -329,5 +331,192 @@ class _FixedWidthPainter extends BoxPainter {
     final double endX = tabCenter + decoration.width / 2;
 
     canvas.drawLine(Offset(startX, y), Offset(endX, y), paint);
+  }
+}
+
+class TapeTab extends StatefulWidget {
+  const TapeTab({super.key, required this.isSubs, required this.isFavs});
+
+  final bool isSubs;
+  final bool isFavs;
+
+  @override
+  State<TapeTab> createState() => _TapeTabState();
+}
+
+class _TapeTabState extends State<TapeTab>
+    with AutomaticKeepAliveClientMixin<TapeTab> {
+  final RefreshController refreshController =
+      RefreshController(initialRefresh: false);
+
+  int _page = 0;
+  String _query = '';
+
+  // публичные методы для родителя
+  Future<void> refresh(String query) async {
+    _query = query;
+    _page = 0;
+
+    // FIX: ждём завершения запроса и корректно закрываем refresh
+    await context
+        .read<TapeCubit>()
+        .tapes(widget.isSubs, widget.isFavs, _query, _page);
+    refreshController.resetNoData();
+    refreshController.refreshCompleted();
+  }
+
+  Future<void> loadMore() async {
+    _page += 1;
+
+    // FIX: если у тебя есть отдельный метод пагинации — используй его
+    // final hasMore = await context.read<TapeCubit>()
+    //     .tapePagination(widget.isSubs, widget.isFavs, _query, _page);
+    // if (hasMore) {
+    //   refreshController.loadComplete();
+    // } else {
+    //   refreshController.loadNoData();
+    // }
+
+    await context
+        .read<TapeCubit>()
+        .tapes(widget.isSubs, widget.isFavs, _query, _page);
+    refreshController.loadComplete();
+  }
+
+  Future<void> _refresh() async {
+    await context
+        .read<TapeCubit>()
+        .tapes(widget.isSubs, widget.isFavs, _query, _page);
+    refreshController.refreshCompleted();
+  }
+
+  Future<void> _loadMore() async {
+    // Если у тебя в Cubit есть номер следующей страницы — подставь его вместо 0
+    await context
+        .read<TapeCubit>()
+        .tapePagination(widget.isSubs, widget.isFavs, _query, _page);
+
+    refreshController.loadComplete();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void dispose() {
+    refreshController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return BlocConsumer<TapeCubit, TapeState>(
+      // FIX: убрали isRefresh/isLoading — их нет в API. Управляем анимациями прямо в колбэках refresh/loadMore выше.
+      listener: (context, state) {},
+      builder: (context, state) {
+        // --- Error ---
+        if (state is ErrorState) {
+          return Center(
+            child: Text(
+              state.message,
+              style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
+          );
+        }
+
+        // --- Loading (первичная загрузка) ---
+        if (state is LoadingState) {
+          // можно показать шиммер/спиннер, если хочется
+          return const SizedBox.shrink();
+        }
+
+        // --- NoData ---
+        if (state is NoDataState) {
+          return SmartRefresher(
+            controller: refreshController,
+            enablePullDown: true,
+            enablePullUp: false,
+            onRefresh: () => refresh(_query),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.75,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 209),
+                      child: Image.asset(
+                        Assets.icons.defaultNoDataIcon.path,
+                        height: 72,
+                        width: 72,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      _noDataByTab(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff8E8E93),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+
+        // --- Loaded ---
+        if (state is LoadedState) {
+          return SmartRefresher(
+            controller: refreshController,
+            enablePullDown: true,
+            enablePullUp: true,
+            onRefresh: _refresh,
+            onLoading: _loadMore,
+            child: GridView.builder(
+              padding: EdgeInsets.only(bottom: 100),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 150,
+                childAspectRatio: 1 / 2,
+                mainAxisSpacing: 1,
+                crossAxisSpacing: 1,
+              ),
+              itemCount: state.tapeModel.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Color(0xffF7F7F7),
+                  ),
+                  child: TapeCardWidget(
+                    tape: state.tapeModel[index],
+                    index: index,
+                  ),
+                );
+              },
+            ),
+          );
+        }
+
+        // --- Fallback spinner ---
+        return const Center(
+          child: CircularProgressIndicator(color: Colors.indigoAccent),
+        );
+      },
+    );
+  }
+
+  String _noDataByTab() {
+    if (widget.isSubs) return 'Нет записей из подписок';
+    if (widget.isFavs) return 'В избранном пока пусто';
+    return 'Пока ничего нет';
   }
 }

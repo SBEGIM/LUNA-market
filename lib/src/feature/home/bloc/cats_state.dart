@@ -6,6 +6,8 @@ class InitState extends CatsState {}
 
 class LoadingState extends CatsState {}
 
+class NoDataState extends CatsState {}
+
 class LoadedState extends CatsState {
   List<CatsModel> cats;
   LoadedState(this.cats);

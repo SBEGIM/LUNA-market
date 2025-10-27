@@ -8,6 +8,7 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import '../../../product/cubit/product_state.dart';
 
 @RoutePage()
@@ -23,7 +24,9 @@ class _SearchProductPageState extends State<SearchProductPage> {
 
   @override
   void initState() {
-    BlocProvider.of<ProductCubit>(context).products();
+    final filters = context.read<FilterProvider>();
+
+    BlocProvider.of<ProductCubit>(context).products(filters);
     super.initState();
   }
 
@@ -65,8 +68,9 @@ class _SearchProductPageState extends State<SearchProductPage> {
                 GetStorage().write('search', value);
 
                 // GetStorage().write('shopFilterId', "[0]");
+                final filters = context.read<FilterProvider>();
 
-                await BlocProvider.of<ProductCubit>(context).products();
+                await BlocProvider.of<ProductCubit>(context).products(filters);
 
                 // if(value.isEmpty){
                 //   BlocProvider.of<SubCatsCubit>(context)

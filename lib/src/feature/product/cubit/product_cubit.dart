@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:haji_market/src/feature/product/cubit/product_state.dart';
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 
 import '../data/model/product_model.dart';
 import '../data/repository/product_repo.dart';
@@ -13,11 +14,12 @@ class ProductCubit extends Cubit<ProductState> {
   int page = 1;
   List<ProductModel> _products = [];
 
-  Future<void> products() async {
+  Future<void> products(FilterProvider filter) async {
     try {
       page = 1;
       emit(LoadingState());
-      final List<ProductModel> data = await productRepository.product(page);
+      final List<ProductModel> data =
+          await productRepository.product(filter, page);
       _products.clear();
       _products.addAll(data);
 
@@ -27,11 +29,12 @@ class ProductCubit extends Cubit<ProductState> {
     }
   }
 
-  Future<void> productsPagination() async {
+  Future<void> productsPagination(FilterProvider filter) async {
     try {
       // emit(LoadingState());
       page++;
-      final List<ProductModel> data = await productRepository.product(page);
+      final List<ProductModel> data =
+          await productRepository.product(filter, page);
 
       for (int i = 0; i < data.length; i++) {
         _products.add(data[i]);
@@ -43,10 +46,11 @@ class ProductCubit extends Cubit<ProductState> {
     }
   }
 
-  Future<void> productsMbInteresting() async {
+  Future<void> productsMbInteresting(FilterProvider filter) async {
     try {
       emit(LoadingState());
-      final List<ProductModel> data = await productRepository.product(page);
+      final List<ProductModel> data =
+          await productRepository.product(filter, page);
       emit(LoadedState(data));
     } catch (e) {
       log(e.toString());

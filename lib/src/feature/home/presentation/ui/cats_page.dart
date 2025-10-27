@@ -100,7 +100,8 @@ class _CatsPageState extends State<CatsPage> {
 
                                           context.router.push(SubCatalogRoute(
                                               cats: state.cats[index],
-                                              catChapters: options));
+                                              catChapters: state
+                                                  .cats[index].catSections));
                                         },
                                         icon: state.cats[index].icon.toString(),
                                         image:

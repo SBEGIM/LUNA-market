@@ -33,6 +33,32 @@ class SubCatsCubit extends Cubit<SubCatsState> {
     }
   }
 
+  Future<void> subCatsBrandOptions(
+    subCatId,
+    int? brandId,
+    int? optionId, {
+    bool? isAddAllProducts,
+  }) async {
+    try {
+      emit(LoadingState());
+
+      final List<CatsModel> data =
+          await subCatRepository.subCatBrandApi(subCatId, brandId, optionId);
+
+      _subCats = data;
+      if (isAddAllProducts == false) {
+      } else {
+        _subCats.insert(
+            0, CatsModel(id: 1, name: "Все товары", icon: 'cats/all_cats.png'));
+      }
+
+      emit(LoadedState(data));
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
   Future<List<CatsModel>> subCatList(subCatId) async {
     if (_subCats.isEmpty) {
       await subCats(subCatId);

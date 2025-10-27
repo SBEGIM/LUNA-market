@@ -73,229 +73,241 @@ class _FilterPageState extends State<FilterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.kBackgroundColor,
+      extendBody: true,
+      appBar: AppBar(
+        title: Text(
+          'Фильтр',
+          style: AppTextStyles.size18Weight600,
+        ),
+        iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         backgroundColor: AppColors.kBackgroundColor,
-        appBar: AppBar(
-          title: Text(
-            'Фильтр',
-            style: TextStyle(color: AppColors.kLightBlackColor, fontSize: 16),
-          ),
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          leadingWidth: 100,
-          leading: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: const Padding(
-              padding: EdgeInsets.only(top: 20.0, left: 8),
-              child: Text(
-                'Отмена',
-                style: TextStyle(
-                    color: AppColors.mainPurpleColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600),
+        surfaceTintColor: AppColors.kBackgroundColor,
+        elevation: 0,
+        centerTitle: true,
+        leadingWidth: 100,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Padding(
+            padding: EdgeInsets.only(top: 20.0, left: 16),
+            child: Text(
+              'Отмена',
+              style: AppTextStyles.size18Weight600.copyWith(
+                color: AppColors.mainPurpleColor,
               ),
             ),
           ),
-          actions: [
-            InkWell(
-              onTap: () {
-                // GetStorage().remove('CatId');
-                // GetStorage().remove('subCatFilterId');
-                // GetStorage().remove('shopFilterId');
-                // GetStorage().remove('search');
-              },
-              child: Container(
-                width: 82,
-                height: 32,
-                margin: EdgeInsets.only(right: 8),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: AppColors.kGray200),
-                child: const Text(
-                  'Сбросить',
-                  style: TextStyle(color: AppColors.kGray2, fontSize: 12),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: _selectListChar.isEmpty
+                ? null
+                : () {
+                    print(_selectListChar.isEmpty);
+
+                    // GetStorage().remove('CatId');
+                    // GetStorage().remove('subCatFilterId');
+                    // GetStorage().remove('shopFilterId');
+                    // GetStorage().remove('search');
+                    setState(() {
+                      _selectListChar.clear();
+                    });
+
+                    // либо удаляем ключ, либо пишем пустой список — выберите один вариант
+                    GetStorage().remove('charFilterId');
+                    // GetStorage().write('charFilterId', jsonEncode(<int>[]));
+                  },
+            child: Container(
+              width: 82,
+              height: 32,
+              margin: const EdgeInsets.only(right: 16),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: _selectListChar.isEmpty
+                    ? const Color(0xffEAECED)
+                    : AppColors.kAlpha12,
+              ),
+              child: Text(
+                'Сбросить',
+                style: AppTextStyles.size13Weight500.copyWith(
+                  color: _selectListChar.isEmpty
+                      ? const Color(0xffD1D1D6)
+                      : const Color(0xff3A3A3C),
                 ),
               ),
             ),
-          ],
-        ),
-        body: ListView(
-          shrinkWrap: true,
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            BlocConsumer<charCubit.CharacteristicSellerCubit,
-                    charState.CharacteristicSellerState>(
-                listener: (context, state) {
-              if (state is charState.LoadedState) {
-                //   _subCharMap.clear();
-                //   final characteristics = state.characteristics.take(3);
-                //   for (final item in characteristics) {
-                //     subChars(item.id ?? 0);
-                //   }
-                // }
-              }
-            }, builder: (context, state) {
-              if (state is charState.ErrorState) {
-                return Center(
-                  child: Text(
-                    state.message,
-                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-                  ),
-                );
-              }
-              if (state is charState.LoadedState) {
-                return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: state.characteristics.length,
-                    itemBuilder: (BuildContext ctx, index) {
-                      final subList =
-                          _subCharMap[state.characteristics[index].id] ?? [];
+          ),
+        ],
+      ),
+      body: ListView(
+        children: [
+          const SizedBox(
+            height: 10,
+          ),
+          BlocConsumer<charCubit.CharacteristicSellerCubit,
+              charState.CharacteristicSellerState>(listener: (context, state) {
+            if (state is charState.LoadedState) {
+              //   _subCharMap.clear();
+              //   final characteristics = state.characteristics.take(3);
+              //   for (final item in characteristics) {
+              //     subChars(item.id ?? 0);
+              //   }
+              // }
+            }
+          }, builder: (context, state) {
+            if (state is charState.ErrorState) {
+              return Center(
+                child: Text(
+                  state.message,
+                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                ),
+              );
+            }
+            if (state is charState.LoadedState) {
+              return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: state.characteristics.length,
+                  itemBuilder: (BuildContext ctx, index) {
+                    final subList =
+                        _subCharMap[state.characteristics[index].id] ?? [];
 
-                      print(
-                          "subList for ${state.characteristics[index].id} : ${subList.length}");
-                      return Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
-                          padding: const EdgeInsets.only(
-                              left: 13, right: 8, bottom: 13, top: 13),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${state.characteristics[index].key}',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Wrap(
-                                  spacing: 8.0,
-                                  runSpacing: 8.0,
-                                  children: List.generate(
-                                    subList.length >= 9 ? 9 : subList.length,
-                                    (index) => chipBrand(
-                                      subList[index].value ?? '',
-                                      subList[index].id ?? 0,
-                                    ),
+                    // print(
+                    //     "subList for ${state.characteristics[index].id} : ${subList.length}");
+                    return Container(
+                        margin: EdgeInsets.only(right: 16, left: 16, top: 12),
+                        padding: const EdgeInsets.only(
+                            left: 16, right: 16, bottom: 16, top: 16),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${state.characteristics[index].key}',
+                                style: AppTextStyles.size14Weight600,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Wrap(
+                                spacing: 8.0,
+                                runSpacing: 8.0,
+                                children: List.generate(
+                                  subList.length >= 9 ? 9 : subList.length,
+                                  (index) => chipBrand(
+                                    subList[index].value ?? '',
+                                    subList[index].id ?? 0,
                                   ),
                                 ),
-                                const Divider(
-                                  color: AppColors.kGray2,
-                                ),
-                                subList.length >= 9
-                                    ? GestureDetector(
-                                        onTap: (() {
-                                          Get.to(() => const BrandsPage());
-                                        }),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'Показать еще (${subList.length - 9})',
-                                              style: TextStyle(
-                                                  color:
-                                                      AppColors.mainPurpleColor,
-                                                  letterSpacing: 0,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            Icon(
-                                              Icons.arrow_forward_ios,
-                                              color: AppColors.mainPurpleColor,
-                                              size: 13,
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    : SizedBox.shrink(),
-                              ]));
-                    });
-              } else {
-                return const Center(
-                    child:
-                        CircularProgressIndicator(color: Colors.indigoAccent));
-              }
-            }),
-          ],
+                              ),
+                              subList.length >= 6
+                                  ? const Divider(
+                                      color: AppColors.kGray2,
+                                    )
+                                  : SizedBox(),
+                              subList.length >= 6
+                                  ? GestureDetector(
+                                      onTap: (() {
+                                        Get.to(() => const BrandsPage());
+                                      }),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Показать еще (${subList.length - 9})',
+                                            style: TextStyle(
+                                                color:
+                                                    AppColors.mainPurpleColor,
+                                                letterSpacing: 0,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: AppColors.mainPurpleColor,
+                                            size: 13,
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  : SizedBox.shrink(),
+                            ]));
+                  });
+            } else {
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.indigoAccent));
+            }
+          }),
+        ],
+      ),
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+        child: SizedBox(
+          height: 52,
+          width: double.infinity,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.mainPurpleColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+            ),
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'Применить',
+              style: AppTextStyles.size18Weight600
+                  .copyWith(color: AppColors.kWhite),
+            ),
+          ),
         ),
-        bottomSheet: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, top: 16, bottom: 16),
-              child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColors.mainPurpleColor,
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    'Применить',
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16),
-                    textAlign: TextAlign.center,
-                  )),
-            )));
+      ),
+    );
   }
 
   Widget chipBrand(String label, int index) {
     return InkWell(
       onTap: () async {
-        if (_selectListChar.contains(index)) {
-          _selectListChar.remove(index);
-        } else {
-          _selectListChar.add(index);
-        }
+        setState(() {
+          print(_selectListChar.contains(index));
+          _selectListChar.contains(index)
+              ? _selectListChar.remove(index)
+              : _selectListChar.add(index);
+        });
+        // GetStorage().write('charFilterId', jsonEncode(_selectListChar));
+
         GetStorage().write('charFilterId', _selectListChar.toString());
-        setState(() {});
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         child: Chip(
-          labelPadding:
-              const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+          labelPadding: const EdgeInsets.symmetric(horizontal: 8.0),
           label: Text(
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: _selectListChar.contains(index)
-                  ? AppColors.mainPurpleColor
-                  : AppColors.kGray300,
-              fontWeight: FontWeight.w500,
-            ),
+            style: AppTextStyles.size14Weight500.copyWith(
+                color: _selectListChar.contains(index)
+                    ? AppColors.mainPurpleColor
+                    : Color(0xff636366),
+                fontWeight: _selectListChar.contains(index)
+                    ? FontWeight.w700
+                    : FontWeight.w500),
           ),
           shape: RoundedRectangleBorder(
             side: BorderSide(
               color: _selectListChar.contains(index)
                   ? AppColors.mainPurpleColor
-                  : Colors.grey.shade300,
+                  : Color(0xff636366),
             ),
             borderRadius: BorderRadius.circular(12),
           ),
           backgroundColor: Colors.white,
-          elevation: 2.0,
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
         ),
       ),
     );

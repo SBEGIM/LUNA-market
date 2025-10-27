@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
 import 'package:haji_market/src/feature/basket/data/DTO/basket_order_dto.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
@@ -16,10 +17,12 @@ class BasketProductCardWidget extends StatefulWidget {
   final BasketShowModel basketProducts;
   final int count;
   final String fulfillment;
-  const BasketProductCardWidget({
+  bool isChecked;
+  BasketProductCardWidget({
     required this.count,
     required this.basketProducts,
     required this.fulfillment,
+    required this.isChecked,
     Key? key,
   }) : super(key: key);
 
@@ -33,7 +36,6 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
   int basketPrice = 0;
   bool isVisible = true;
   String fulfillmentApi = 'fbs';
-  bool isChecked = false;
 
   int compoundPrice = 0;
 
@@ -80,8 +82,9 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
   Widget build(BuildContext context) {
     return Visibility(
         visible: isVisible,
-        child: SizedBox(
+        child: Container(
           height: 152,
+          padding: EdgeInsets.only(top: 12),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,27 +94,18 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                 Stack(children: [
                   Container(
                     height: 94,
-                    width: 104,
+                    width: 114,
                     decoration: BoxDecoration(
                       color: AppColors.kWhite,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 8,
-                          spreadRadius: 2,
-                        ),
-                      ],
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    padding: const EdgeInsets.all(5), // White border effect
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                          12), // Slightly smaller than container
+                      borderRadius: BorderRadius.circular(8),
                       child: Image.network(
                         widget.basketProducts.image != null
                             ? "https://lunamarket.ru/storage/${widget.basketProducts.image!.first}"
                             : "https://lunamarket.ru/storage/banners/2.png",
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
                           return Container(
@@ -141,26 +135,27 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                     top: 5.6,
                     child: InkWell(
                       onTap: () {
-                        isChecked = !isChecked;
+                        widget.isChecked = !widget.isChecked;
                         setState(() {});
                       },
                       child: Container(
                         width: 16,
                         height: 16,
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.grey, width: 1),
-                          color: isChecked
-                              ? AppColors.mainPurpleColor
-                              : Colors.transparent,
-                        ),
-                        child: isChecked
-                            ? const Icon(
-                                Icons.check,
-                                size: 16,
-                                color: AppColors.kWhite,
+                            shape: BoxShape.circle, color: AppColors.kWhite),
+                        child: widget.isChecked
+                            ? Image.asset(
+                                Assets.icons.defaultCheckIcon.path,
+                                height: 16,
+                                width: 16,
+                                color: AppColors.mainPurpleColor,
                               )
-                            : null,
+                            : Image.asset(
+                                Assets.icons.defaultUncheckIcon.path,
+                                height: 16,
+                                width: 16,
+                                color: AppColors.kAlpha12,
+                              ),
                       ),
                     ),
                   ),
@@ -176,104 +171,76 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              // width: 75,
-                              child: Text(
-                                '${formatPrice(compoundPrice)} ₽ ',
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    letterSpacing: 0,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 18),
-                              ),
+                            Text(
+                              '${formatPrice(compoundPrice)} ₽ ',
+                              style: AppTextStyles.size18Weight700,
                             ),
                             Text(
                               '${formatPrice(widget.basketProducts.product!.price!)} ₽ ',
-                              style: const TextStyle(
-                                color: AppColors.kGray300,
-                                letterSpacing: -1,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
+                              style: AppTextStyles.size14Weight400.copyWith(
+                                color: Color(0xff8E8E93),
                                 decoration: TextDecoration.lineThrough,
-                                decorationColor: AppColors.kGray300,
+                                decorationColor: Color(0xff8E8E93),
                               ),
                             ),
                           ],
                         )
                       : Text(
                           '${formatPrice(widget.basketProducts.product!.price!)} ₽ ',
-                          style: const TextStyle(
-                            color: AppColors.kGray900,
-                            letterSpacing: 0,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                          ),
+                          style: AppTextStyles.size18Weight700,
                         ),
-
                   const SizedBox(
-                    height: 2,
+                    height: 4,
                   ),
                   Text(
                     '${(widget.basketProducts.product!.price!.toInt() - (widget.basketProducts.product!.price!.toInt() * (widget.basketProducts.product!.compound!.toInt() / 100))).toInt() * basketCount} ₽/$basketCount шт',
-                    style: const TextStyle(
-                      color: AppColors.kGray300,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13,
-                    ),
+                    style: AppTextStyles.size13Weight400
+                        .copyWith(color: Color(0xff8E8E93)),
                   ),
                   const SizedBox(
-                    height: 2,
+                    height: 4,
                   ),
                   SizedBox(
-                    width: 250,
-                    child: Text(
-                      '${widget.basketProducts.product!.name}',
-                      style: const TextStyle(
-                          fontSize: 13,
-                          color: AppColors.kGray300,
-                          fontWeight: FontWeight.w400),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                    width: 234,
+                    child: Flexible(
+                      child: Text(
+                        '${widget.basketProducts.product?.name ?? ''}',
+                        style: AppTextStyles.size13Weight400
+                            .copyWith(color: Color(0xff636366)),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       if (widget.basketProducts.optom == 1)
                         Container(
-                          height: 32,
-                          padding: const EdgeInsets.all(4),
+                          height: 40,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.1),
-                                spreadRadius: 1,
-                                blurRadius: 1,
-                                offset: const Offset(
-                                    0, 1), // changes position of shadow
-                              ),
-                            ],
+                            borderRadius: BorderRadius.circular(100),
+                            color: Color(0xffF7F7F7),
                           ),
+                          alignment: Alignment.center,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
                               'Оптом ${widget.basketProducts.basketCount} шт.',
-                              style: const TextStyle(
-                                  color: AppColors.kPrimaryColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400),
+                              style: AppTextStyles.size16Weight600
+                                  .copyWith(color: AppColors.mainPurpleColor),
                             ),
                           ),
                         )
                       else
                         Container(
-                          padding: EdgeInsets.all(8),
+                          height: 40,
+                          padding: EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
-                              color: AppColors.kGray1,
-                              borderRadius: BorderRadius.circular(12)),
+                              color: Color(0xffF7F7F7),
+                              borderRadius: BorderRadius.circular(100)),
+                          alignment: Alignment.center,
                           child: Row(
                             children: [
                               GestureDetector(
@@ -411,45 +378,6 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                         ),
                     ],
                   )
-
-                  // const SizedBox(
-                  //   height: 8,
-                  // ),
-                  // Text(
-                  //   'Продавец: ${widget.basketProducts.shopName}',
-                  //   style: const TextStyle(
-                  //       fontSize: 12,
-                  //       color: AppColors.kGray900,
-                  //       fontWeight: FontWeight.w400),
-                  // ),
-                  // const SizedBox(
-                  //   height: 8,
-                  // ),
-                  // GestureDetector(
-                  //   onTap: (() {
-                  //     Get.to(() => MessagePage(
-                  //         userId:
-                  //             widget.basketProducts.product?.shopId,
-                  //         name: widget.basketProducts.shopName,
-                  //         avatar:
-                  //             widget.basketProducts.image?.first ??
-                  //                 '',
-                  //         chatId: widget.basketProducts.chatId));
-                  //   }),
-                  //   child: Text(
-                  //     widget.basketProducts.fulfillment != 'realFBS'
-                  //         ? 'Доставка: ${widget.basketProducts.deliveryDay} дня'
-                  //         : 'Узнать срок и цену доставки',
-                  //     style: TextStyle(
-                  //         fontSize: 14,
-                  //         fontWeight: FontWeight.w400,
-                  //         color:
-                  //             widget.basketProducts.fulfillment ==
-                  //                     'realFBS'
-                  //                 ? Colors.orangeAccent
-                  //                 : Colors.black),
-                  //   ),
-                  // ),
                 ],
               )
             ],

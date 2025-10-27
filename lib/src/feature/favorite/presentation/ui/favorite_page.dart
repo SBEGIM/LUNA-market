@@ -141,6 +141,7 @@ class _FavoritePageState extends State<FavoritePage> {
                   },
                   child: ListView.builder(
                       shrinkWrap: false,
+                      padding: EdgeInsets.only(bottom: 100),
                       itemCount: state.productModel.length,
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(

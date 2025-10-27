@@ -6,6 +6,7 @@ import 'package:haji_market/src/feature/drawer/bloc/sub_cats_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/sub_cats_state.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart'
     as productCubit;
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import '../../../drawer/bloc/brand_cubit.dart' as brandCubit;
 
 class CatsProductWidget extends StatefulWidget {
@@ -53,8 +54,10 @@ class _CatsProductWidgetState extends State<CatsProductWidget> {
                             subCatName = state.cats[index].name.toString();
                           });
                         }
+                        final filters = context.read<FilterProvider>();
+
                         BlocProvider.of<productCubit.ProductCubit>(context)
-                            .products();
+                            .products(filters);
                         BlocProvider.of<brandCubit.BrandCubit>(context)
                             .brands(subCatId: state.cats[index].id);
                       },

@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import '../../../product/cubit/product_cubit.dart';
 
 class SortingPage extends StatefulWidget {
@@ -74,31 +75,29 @@ class _SortingPageState extends State<SortingPage> {
                   child: InkWell(
                       onTap: () {
                         setState(() {
-                          // устанавливаем индекс выделенного элемента
                           _selectedIndexSort = index;
                         });
+                        final filters = context.read<FilterProvider>();
 
                         switch (sort[_selectedIndexSort]) {
                           case 'Популярные':
-                            GetStorage().write('sortFilter', 'orderByPopular');
+                            filters.setSort('orderByPopular');
                             break;
                           case 'Новинки':
-                            GetStorage().write('sortFilter', 'orderByNew');
+                            filters.setSort('orderByNew');
                             break;
                           case 'Сначала дешевые':
-                            GetStorage().write('sortFilter', 'priceAsc');
+                            filters.setSort('priceAsc');
                             break;
                           case 'Сначала дорогие':
-                            GetStorage().write('sortFilter', 'priceDesc');
+                            filters.setSort('priceDesc');
                             break;
                           case 'Высокий рейтинг':
-                            GetStorage().write('sortFilter', 'rating');
+                            filters.setSort('rating');
                             break;
-                          default:
-                            print("число не равно 1, 2, 3");
                         }
-
-                        BlocProvider.of<ProductCubit>(context).products();
+                        BlocProvider.of<ProductCubit>(context)
+                            .products(filters);
                       },
                       child: ListTile(
                         selected: index == _selectedIndexSort,

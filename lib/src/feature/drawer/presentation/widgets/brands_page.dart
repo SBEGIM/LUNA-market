@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import '../../../../core/common/constants.dart';
 import '../../bloc/brand_cubit.dart';
 import '../../bloc/brand_state.dart';
@@ -97,8 +98,12 @@ class _BrandsPageState extends State<BrandsPage> {
 
                                   GetStorage().write('brandFilterId',
                                       _selectedListSort.toString());
+
+                                  final filters =
+                                      context.read<FilterProvider>();
+
                                   BlocProvider.of<ProductCubit>(context)
-                                      .products();
+                                      .products(filters);
 
                                   // subCatName =
                                   //     state.cats[index].name.toString();

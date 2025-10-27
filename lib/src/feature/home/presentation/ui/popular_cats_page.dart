@@ -100,7 +100,8 @@ class _PopularCatsHomePageState extends State<PopularCatsHomepage> {
                 ),
                 InkWell(
                   onTap: () {
-                    context.router.push(SubCatalogRoute());
+                    context.router.push(SubCatalogRoute(
+                        catChapters: state.cats[1].catSections));
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(builder: (context) => const CatalogPage()),

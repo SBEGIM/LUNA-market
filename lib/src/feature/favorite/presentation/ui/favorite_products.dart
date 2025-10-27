@@ -60,7 +60,7 @@ class _FavoriteProductsCardWidgetState
           width: 358,
           padding: const EdgeInsets.only(left: 4, top: 4, bottom: 4),
           decoration: BoxDecoration(
-            color: Color(0xffF7F7F7),
+            color: Color(0xffF7F7f7),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
@@ -351,10 +351,9 @@ class _FavoriteProductsCardWidgetState
                             Text(
                               '${formatPrice(widget.product.price!)} ₽ ',
                               style: AppTextStyles.size14Weight600.copyWith(
-                                decoration: TextDecoration.lineThrough,
-                                color: AppColors.kGray300,
-                                decorationColor: AppColors.kGray300,
-                              ),
+                                  decoration: TextDecoration.lineThrough,
+                                  color: Color(0xff8E8E93),
+                                  decorationColor: Color(0xff8E8E93)),
                             ),
                           ],
                         )
@@ -433,7 +432,7 @@ class _FavoriteProductsCardWidgetState
                               width: 114,
                               height: 25,
                               decoration: BoxDecoration(
-                                color: count < 1
+                                color: count != 0
                                     ? Color(0xFFD1D1D6)
                                     : AppColors.mainPurpleColor,
                                 borderRadius: BorderRadius.circular(10),
@@ -442,7 +441,7 @@ class _FavoriteProductsCardWidgetState
                               child: Text(
                                 'В корзину',
                                 style: TextStyle(
-                                    color: count < 1
+                                    color: count != 0
                                         ? AppColors.kLightBlackColor
                                         : Colors.white,
                                     fontSize: 11,

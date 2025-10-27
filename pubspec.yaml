@@ -84,6 +84,8 @@ dependencies:
   glowy_borders: ^1.0.2
   cached_network_image: ^3.4.1
   dotted_border: ^2.1.0
+  google_fonts: ^6.0.0
+
 
 dev_dependencies:
   auto_route_generator: ^8.0.0
@@ -107,11 +109,10 @@ flutter:
     - assets/images/
 
   fonts:
-    - family: Nunito
-      fonts:
-        - asset: fonts/Nunito-VariableFont_wght.ttf
-        - asset: fonts/Nunito-Italic-VariableFont_wght.ttf
-          style: italic
+    - family: Inter
+      fonts: 
+        - asset: fonts/Inter-Medium.otf
+          weight: 500
     - family: SFProDisplay
       fonts:
         - asset: fonts/SF-Pro-Display-Regular.otf

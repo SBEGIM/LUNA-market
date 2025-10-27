@@ -236,7 +236,7 @@ class _DrawerPageState extends State<DrawerPage> {
                             },
                             child: Container(
                               height: 36,
-                              width: 177,
+                              padding: EdgeInsets.symmetric(horizontal: 8),
                               decoration: BoxDecoration(
                                 color: AppColors.kWhite,
                                 border: Border.all(
@@ -254,14 +254,16 @@ class _DrawerPageState extends State<DrawerPage> {
                                 ],
                               ),
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  SizedBox(width: 13),
                                   Image.asset(
                                     Assets.icons.backClientIcon.path,
                                     height: 18,
                                     width: 18,
                                   ),
-                                  SizedBox(width: 9),
+                                  SizedBox(width: 5),
                                   Text('Сменить кабинет',
                                       style: AppTextStyles.size16Weight500)
                                 ],

@@ -3,6 +3,7 @@ import 'package:haji_market/src/feature/home/data/repository/cats_remote_ds.dart
 
 abstract interface class ICatsRepository {
   Future<List<CatsModel>> getCats();
+  Future<List<CatsModel>> getBrandCats(int id);
 }
 
 class CatsRepositoryImpl implements ICatsRepository {
@@ -16,6 +17,14 @@ class CatsRepositoryImpl implements ICatsRepository {
   Future<List<CatsModel>> getCats() async {
     try {
       return await _remoteDS.getCats();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<CatsModel>> getBrandCats(int brandId) async {
+    try {
+      return await _remoteDS.getBrandCats(brandId);
     } catch (e) {
       rethrow;
     }

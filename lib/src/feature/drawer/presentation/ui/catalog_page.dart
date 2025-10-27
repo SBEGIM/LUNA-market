@@ -6,6 +6,7 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../drawer/bloc/brand_cubit.dart' as brandCubit;
 import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart'
     as brandState;
@@ -114,172 +115,201 @@ class _CatalogPageState extends State<CatalogPage> {
           // ),
 
           ),
-      body: BlocConsumer<CatsCubit, CatsState>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            if (state is ErrorState) {
-              return Center(
-                child: Text(
-                  state.message,
-                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-                ),
-              );
-            }
-            if (state is LoadingState) {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
-            }
-
-            if (state is LoadedState) {
-              return ListView(
-                children: [
-                  Container(
-                    height: 80,
-                    // alignment: Alignment.center,
-                    color: AppColors.kWhite,
-                    alignment: Alignment.center,
-                    child: SizedBox(
+      body: Column(
+        children: [
+          Container(
+            height: 80,
+            // alignment: Alignment.center,
+            color: AppColors.kWhite,
+            alignment: Alignment.center,
+            child: SizedBox(
+              height: 64,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: brands.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (brands[index] == brand) {
+                        brand = null;
+                        BlocProvider.of<CatsCubit>(context).cats();
+                      } else {
+                        brand = brands[index];
+                        BlocProvider.of<CatsCubit>(context)
+                            .catsByBrand(brand!.id!);
+                      }
+                      setState(() {});
+                    },
+                    child: Container(
+                      width: 64,
                       height: 64,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: brands.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              if (brands[index] == brand) {
-                                brand = null;
-                                BlocProvider.of<CatsCubit>(context).cats();
-                              } else {
-                                brand = brands[index];
-                                BlocProvider.of<CatsCubit>(context)
-                                    .searchCats(brand!.name.toString());
-                              }
-                              setState(() {});
-                            },
-                            child: Container(
-                              width: 64,
-                              height: 64,
-                              padding: EdgeInsets.all(2),
-                              margin: EdgeInsets.only(
-                                  right: 4, left: index == 0 ? 16 : 0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                gradient: brand?.id == brands[index].id
-                                    ? const LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [
-                                          Color(0xFF7D2DFF),
-                                          Color(0xFF41DDFF)
-                                        ],
-                                      )
-                                    : null,
-                              ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: const Color(0xFFF5F4FF),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: Image(
-                                    image: brands[index].icon != null
-                                        ? NetworkImage(
-                                            "https://lunamarket.ru/storage/${brands[index].icon}")
-                                        : const AssetImage(
-                                                'assets/icons/profile2.png')
-                                            as ImageProvider,
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
+                      padding: EdgeInsets.all(2),
+                      margin:
+                          EdgeInsets.only(right: 4, left: index == 0 ? 16 : 0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        gradient: brand?.id == brands[index].id
+                            ? const LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [Color(0xFF7D2DFF), Color(0xFF41DDFF)],
+                              )
+                            : null,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: const Color(0xFFF5F4FF),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image(
+                            image: brands[index].icon != null
+                                ? NetworkImage(
+                                    "https://lunamarket.ru/storage/${brands[index].icon}")
+                                : const AssetImage('assets/icons/profile2.png')
+                                    as ImageProvider,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.kWhite,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    margin: EdgeInsets.only(top: 12, bottom: 12),
-                    padding: const EdgeInsets.only(
-                        top: 16, left: 16, right: 16, bottom: 16),
-                    child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                childAspectRatio: 114 / 120,
-                                crossAxisSpacing: 8,
-                                mainAxisSpacing: 8),
-                        itemCount: state.cats.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              context.router.push(
-                                  SubCatalogRoute(cats: state.cats[index]));
-                              // context.router.push(
-                              //     UnderCatalogRoute(cats: state.cats[index]));
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) =>
-                              //           UnderCatalogPage(cats: state.cats[index])),
-                              // );
-                            },
-                            child: CatalogListTile(
-                              title: '${state.cats[index].name}',
-                              credit: state.cats[index].credit!,
-                              bonus: '${state.cats[index].bonus}',
-                              url:
-                                  "https://lunamarket.ru/storage/${state.cats[index].image!}",
-                            ),
-                          );
-                        }),
-                  ),
-                ],
-              );
+                  );
+                },
+              ),
+            ),
+          ),
+          Expanded(
+            child: BlocConsumer<CatsCubit, CatsState>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  if (state is ErrorState) {
+                    return Center(
+                      child: Text(
+                        state.message,
+                        style:
+                            const TextStyle(fontSize: 20.0, color: Colors.grey),
+                      ),
+                    );
+                  }
+                  if (state is LoadingState) {
+                    return const Center(
+                        child: CircularProgressIndicator(
+                            color: Colors.indigoAccent));
+                  }
 
-              // ListView.builder(
-              //   itemCount: state.cats.length,
-              //   itemBuilder: (context, index) {
-              //     return
-              // return Column(
-              //   mainAxisSize: MainAxisSize.max,
-              //   children: [
-              // if (index == 0) const SizedBox(height: 5),
-              // InkWell(
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (context) =>
-              //               UnderCatalogPage(cats: state.cats[index])),
-              //     );
-              //   },
-              //   child:
-              //     CatalogListTile(
-              //   title: '${state.cats[index].name}',
-              //   url:
-              //       "http://80.87.202.73:8001/storage/${state.cats[index].icon!}",
-              // );
+                  if (state is NoDataState) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          Assets.icons.defaultNoDataIcon.path,
+                          height: 72,
+                          width: 72,
+                        ),
+                        SizedBox(height: 12),
+                        Text(
+                          'Пока здесь пусто',
+                          style: AppTextStyles.size16Weight500
+                              .copyWith(color: Color(0xFF8E8E93)),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    );
+                  }
 
-              //   const Divider(
-              //     color: AppColors.kGray400,
-              //   ),
-              // ],
-              // );
-              //},
-              // );
-            } else {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
-            }
-          }),
+                  if (state is LoadedState) {
+                    return ListView(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.kWhite,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          margin: EdgeInsets.only(top: 12, bottom: 12),
+                          padding: const EdgeInsets.only(
+                              top: 16, left: 16, right: 16, bottom: 16),
+                          child: GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      childAspectRatio: 114 / 120,
+                                      crossAxisSpacing: 8,
+                                      mainAxisSpacing: 8),
+                              itemCount: state.cats.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    context.router.push(SubCatalogRoute(
+                                        cats: state.cats[index],
+                                        catChapters:
+                                            state.cats[index].catSections!));
+                                    // context.router.push(
+                                    //     UnderCatalogRoute(cats: state.cats[index]));
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //       builder: (context) =>
+                                    //           UnderCatalogPage(cats: state.cats[index])),
+                                    // );
+                                  },
+                                  child: CatalogListTile(
+                                    title: '${state.cats[index].name}',
+                                    credit: state.cats[index].credit!,
+                                    bonus: '${state.cats[index].bonus}',
+                                    url:
+                                        "https://lunamarket.ru/storage/${state.cats[index].image!}",
+                                  ),
+                                );
+                              }),
+                        ),
+                      ],
+                    );
+
+                    // ListView.builder(
+                    //   itemCount: state.cats.length,
+                    //   itemBuilder: (context, index) {
+                    //     return
+                    // return Column(
+                    //   mainAxisSize: MainAxisSize.max,
+                    //   children: [
+                    // if (index == 0) const SizedBox(height: 5),
+                    // InkWell(
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) =>
+                    //               UnderCatalogPage(cats: state.cats[index])),
+                    //     );
+                    //   },
+                    //   child:
+                    //     CatalogListTile(
+                    //   title: '${state.cats[index].name}',
+                    //   url:
+                    //       "http://80.87.202.73:8001/storage/${state.cats[index].icon!}",
+                    // );
+
+                    //   const Divider(
+                    //     color: AppColors.kGray400,
+                    //   ),
+                    // ],
+                    // );
+                    //},
+                    // );
+                  } else {
+                    return const Center(
+                        child: CircularProgressIndicator(
+                            color: Colors.indigoAccent));
+                  }
+                }),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/products_card_widget.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
 import 'package:haji_market/src/feature/product/cubit/product_state.dart';
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 
 class ProductWidget extends StatefulWidget {
   const ProductWidget({Key? key}) : super(key: key);
@@ -20,7 +21,9 @@ class _ProductWidgetState extends State<ProductWidget> {
 
   @override
   void initState() {
-    BlocProvider.of<ProductCubit>(context).products();
+    final filters = context.read<FilterProvider>();
+
+    BlocProvider.of<ProductCubit>(context).products(filters);
     super.initState();
   }
 

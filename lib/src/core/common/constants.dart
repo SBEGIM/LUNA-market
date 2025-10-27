@@ -106,7 +106,7 @@ mixin AppTextStyles {
     fontSize: 16,
     color: AppColors.kLightBlackColor,
     letterSpacing: 0,
-    fontFamily: 'SFProDisplay',
+    fontFamily: 'Inter',
     fontWeight: FontWeight.w500,
   );
   static const catalogTextStyle = TextStyle(
@@ -127,7 +127,7 @@ mixin AppTextStyles {
     fontSize: 16,
     color: Colors.white,
     letterSpacing: 0,
-    fontFamily: 'SFProDisplay',
+    fontFamily: 'Inter',
     fontWeight: FontWeight.w500,
   );
   static const drawer2TextStyle = TextStyle(
@@ -141,7 +141,7 @@ mixin AppTextStyles {
     fontSize: 14,
     letterSpacing: 0,
     color: AppColors.kPrimaryColor,
-    fontFamily: 'SFProDisplay',
+    fontFamily: 'Inter',
     fontWeight: FontWeight.w500,
   );
   static const kcolorPartnerTextStyle = TextStyle(
@@ -157,7 +157,7 @@ mixin AppTextStyles {
     color: AppColors.kGray900,
     fontWeight: FontWeight.w500,
     letterSpacing: 0,
-    fontFamily: 'SFProDisplay',
+    fontFamily: 'Inter',
   );
   static const bannerTextStyle = TextStyle(
     fontSize: 11,
@@ -231,7 +231,7 @@ mixin AppTextStyles {
     letterSpacing: 0,
     color: Color(0xFFAEAEB2),
     fontWeight: FontWeight.w500,
-    fontFamily: 'SFProDisplay',
+    fontFamily: 'Inter',
   );
 
   static const navigationUnSelectLabelStyle = TextStyle(
@@ -239,7 +239,7 @@ mixin AppTextStyles {
     letterSpacing: 0,
     color: Color(0xFF0F0F0F),
     fontWeight: FontWeight.w500,
-    fontFamily: 'SFProDisplay',
+    fontFamily: 'Inter',
   );
 
   static const aboutTextStyle = TextStyle(
@@ -303,7 +303,7 @@ mixin AppTextStyles {
     letterSpacing: 0,
     color: Color(0xFF0F0F0F),
     fontWeight: FontWeight.w500,
-    fontFamily: 'SFProDisplay',
+    fontFamily: 'Inter',
   );
   static const size13Weight600 = TextStyle(
     fontSize: 13,
@@ -326,7 +326,7 @@ mixin AppTextStyles {
     letterSpacing: 0,
     color: Color(0xFF0F0F0F),
     fontWeight: FontWeight.w500,
-    fontFamily: 'SFProDisplay',
+    fontFamily: 'Inter',
   );
 
   static const size14Weight600 = TextStyle(
@@ -342,7 +342,7 @@ mixin AppTextStyles {
     letterSpacing: 0,
     color: Color(0xFF0F0F0F),
     fontWeight: FontWeight.w500,
-    fontFamily: 'SFProDisplay',
+    fontFamily: 'Inter',
   );
   static const size15Weight600 = TextStyle(
     fontSize: 15,
@@ -365,7 +365,7 @@ mixin AppTextStyles {
     letterSpacing: 0,
     color: Color(0xFF000000),
     fontWeight: FontWeight.w500,
-    fontFamily: 'SFProDisplay',
+    fontFamily: 'Inter',
   );
 
   static const size16Weight600 = TextStyle(
@@ -389,7 +389,7 @@ mixin AppTextStyles {
     letterSpacing: 0,
     color: Color(0xFF0F0F0F),
     fontWeight: FontWeight.w500,
-    fontFamily: 'SFProDisplay',
+    fontFamily: 'Inter',
   );
 
   static const size18Weight400 = TextStyle(
@@ -429,7 +429,7 @@ mixin AppTextStyles {
       color: Colors.black,
       letterSpacing: 0,
       fontWeight: FontWeight.w500,
-      fontFamily: 'SFProDisplay');
+      fontFamily: 'Inter');
 
   static const size22Weight600 = TextStyle(
       fontSize: 22,

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
@@ -16,6 +17,7 @@ import 'package:haji_market/src/feature/favorite/bloc/favorite_cubit.dart';
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart'
     as productCubit;
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:intl/intl.dart';
 
 class ProductCardWidget extends StatefulWidget {
@@ -152,15 +154,16 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                   inFavorite = !inFavorite;
                                 });
                               },
-                              child: inFavorite == true
-                                  ? SvgPicture.asset(
-                                      'assets/icons/heart_fill.svg')
-                                  : SvgPicture.asset(
-                                      'assets/icons/favorite.svg',
-                                      color: inFavorite == true
-                                          ? Colors.red
-                                          : Colors.grey,
-                                    ))
+                              child: Image.asset(
+                                inFavorite == true
+                                    ? Assets.icons.favoriteBottomFullIcon.path
+                                    : Assets.icons.favoriteBottomIcon.path,
+                                scale: 1.9,
+                                color: inFavorite == true
+                                    ? const Color.fromRGBO(255, 50, 72, 1)
+                                    : Colors.grey,
+                              )),
+
                           // IconButton(
                           //     padding: EdgeInsets.zero,
                           //     onPressed: () async {
@@ -479,7 +482,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                 )
                               : GestureDetector(
                                   onTap: () {
-                                    if (widget.product.product_count != 0) {
+                                    if (widget.product.basketCount != 0) {
                                       AppSnackBar.show(
                                         context,
                                         'Товар уже в корзине',
@@ -521,11 +524,15 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                                   setState(() {
                                                     // isvisible = true;
                                                   });
+
+                                                  final filters = context
+                                                      .read<FilterProvider>();
+
                                                   BlocProvider.of<
                                                               productCubit
                                                               .ProductCubit>(
                                                           context)
-                                                      .products();
+                                                      .products(filters);
                                                 } else {
                                                   context.router.replaceAll([
                                                     const LauncherRoute(
@@ -630,7 +637,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                     width: 150,
                                     height: 32,
                                     decoration: BoxDecoration(
-                                      color: widget.product.product_count == 0
+                                      color: widget.product.basketCount == 0
                                           ? AppColors.mainPurpleColor
                                           : AppColors.mainBackgroundPurpleColor,
                                       borderRadius: BorderRadius.circular(12),

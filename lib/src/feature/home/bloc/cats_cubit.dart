@@ -10,6 +10,9 @@ class CatsCubit extends Cubit<CatsState> {
   CatsCubit({required this.catsRepository}) : super(InitState());
 
   List<CatsModel> _cats = [];
+
+  List<CatsModel> _catsBrand = [];
+
   Future<void> cats() async {
     try {
       emit(LoadingState());
@@ -17,6 +20,23 @@ class CatsCubit extends Cubit<CatsState> {
       _cats = data;
 
       emit(LoadedState(data));
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  Future<void> catsByBrand(int brandId) async {
+    try {
+      emit(LoadingState());
+      final List<CatsModel> data = await catsRepository.getBrandCats(brandId);
+
+      if (data.length != 0) {
+        _catsBrand = data;
+        emit(LoadedState(_catsBrand));
+      } else {
+        emit(NoDataState());
+      }
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));

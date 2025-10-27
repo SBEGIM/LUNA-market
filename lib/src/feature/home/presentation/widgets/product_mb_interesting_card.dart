@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
@@ -14,6 +14,7 @@ import 'package:haji_market/src/feature/drawer/presentation/widgets/show_basket_
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart'
     as productCubit;
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:intl/intl.dart';
 
 import '../../../favorite/bloc/favorite_cubit.dart';
@@ -92,7 +93,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.only(left: 8, right: 4, bottom: 8, top: 8),
+                    const EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -120,22 +121,33 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                           ),
 
                           GestureDetector(
-                            onTap: () async {
-                              final favorite =
-                                  BlocProvider.of<FavoriteCubit>(context);
-                              await favorite
-                                  .favorite(widget.product.id.toString());
-                              setState(() {
-                                inFavorite = !inFavorite;
-                              });
-                            },
-                            child: SvgPicture.asset(
-                              'assets/icons/heart_fill.svg',
-                              color: inFavorite == true
-                                  ? const Color.fromRGBO(255, 50, 72, 1)
-                                  : Colors.grey,
-                            ),
-                          )
+                              onTap: () async {
+                                final favorite =
+                                    BlocProvider.of<FavoriteCubit>(context);
+                                await favorite
+                                    .favorite(widget.product.id.toString());
+                                setState(() {
+                                  inFavorite = !inFavorite;
+                                });
+                              },
+                              child: Image.asset(
+                                inFavorite == true
+                                    ? Assets.icons.favoriteBottomFullIcon.path
+                                    : Assets.icons.favoriteBottomIcon.path,
+                                color: inFavorite == true
+                                    ? const Color.fromRGBO(255, 50, 72, 1)
+                                    : Colors.grey,
+                                height: 18,
+                                width: 21,
+                              )
+
+                              // SvgPicture.asset(
+                              //   'assets/icons/heart_fill.svg',
+                              //   color: inFavorite == true
+                              //       ? const Color.fromRGBO(255, 50, 72, 1)
+                              //       : Colors.grey,
+                              // ),
+                              )
                           // IconButton(
                           //     padding: EdgeInsets.zero,
                           //     onPressed: () async {
@@ -211,12 +223,14 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
           ),
           Container(
             width: 173,
-            padding: const EdgeInsets.all(8),
+            padding:
+                const EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 4),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 40,
+                  width: 150,
                   child: Text(
                     '${widget.product.name}',
                     overflow: TextOverflow.ellipsis,
@@ -224,7 +238,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                     style: const TextStyle(
                         fontSize: 14,
                         letterSpacing: 0,
-                        color: AppColors.kGray400,
+                        color: Color(0xff636366),
                         fontWeight: FontWeight.w400),
                   ),
                 ),
@@ -240,7 +254,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                 //       fontWeight: FontWeight.w400),
                 // ),
                 const SizedBox(
-                  height: 3,
+                  height: 5,
                 ),
 
                 compoundPrice != 0
@@ -266,7 +280,7 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                               letterSpacing: -1,
                               fontSize: 14,
                               decoration: TextDecoration.lineThrough,
-                              decorationColor: AppColors.kGray300,
+                              decorationColor: Color(0xff8E8E93),
                             ),
                           ),
                         ],
@@ -357,22 +371,26 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                   height: 4,
                 ),
 
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  height: 21,
-                  decoration: BoxDecoration(
-                    color: AppColors.kYellowDark,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    '${formatPrice(int.parse((widget.product.price! / 3).round().toString()))} ₽ / мес ',
-                    style: const TextStyle(
-                        color: Colors.black,
-                        letterSpacing: 0,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      height: 21,
+                      decoration: BoxDecoration(
+                        color: AppColors.kYellowDark,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        '${formatPrice(int.parse((widget.product.price! / 3).round().toString()))} ₽ / мес ',
+                        style: const TextStyle(
+                            color: Colors.black,
+                            letterSpacing: 0,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 12),
                 InkWell(
@@ -414,9 +432,12 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                                     setState(() {
                                       // isvisible = true;
                                     });
+                                    final filters =
+                                        context.read<FilterProvider>();
+
                                     BlocProvider.of<productCubit.ProductCubit>(
                                             context)
-                                        .products();
+                                        .products(filters);
                                   } else {
                                     context.router.replaceAll([
                                       const LauncherRoute(

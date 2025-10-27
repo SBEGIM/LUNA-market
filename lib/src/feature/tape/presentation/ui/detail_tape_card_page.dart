@@ -724,15 +724,15 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                           width: 56,
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                                  BorderRadius.circular(16),
+                                                  BorderRadius.circular(8),
                                               border: Border.all(
-                                                  width: 0.33,
-                                                  color: AppColors.kGray300)),
+                                                  width: 0.7,
+                                                  color: Color(0xffEAECED))),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(0.3),
+                                            padding: const EdgeInsets.all(0.7),
                                             child: ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(16),
+                                                  BorderRadius.circular(8),
                                               child: Image.network(
                                                 'https://lunamarket.ru/storage/${state.tapeModel[index].image}',
                                                 fit: BoxFit.cover,
@@ -775,9 +775,14 @@ class _DetailTapeCardPageState extends State<DetailTapeCardPage> {
                                                           style: AppTextStyles
                                                               .size14Weight500
                                                               .copyWith(
-                                                            color: AppColors
-                                                                .kGray300,
-                                                          ),
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .lineThrough,
+                                                                  color: Color(
+                                                                      0xff8E8E93),
+                                                                  decorationColor:
+                                                                      Color(
+                                                                          0xff8E8E93)),
                                                         ),
                                                       ],
                                                     )
@@ -1594,6 +1599,30 @@ class _VideosState extends State<Videos> {
                       )),
                     )
                   : SizedBox.shrink(),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: IgnorePointer(
+                  child: Container(
+                    // увеличь при необходимости до 140–160
+                    height: MediaQuery.of(context).padding.top + 120,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xF0000000), // 0% — очень тёмный
+                          Color(0xB3000000), // 50%
+                          Color(0x66000000), // 60%
+                          Color(0x00000000), // 70% — прозрачно
+                        ],
+                        stops: [0.0, 0.5, 0.6, 0.7],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           )
         : const Center(
@@ -1819,8 +1848,8 @@ class _inBasketsState extends State<inBaskets> {
       builder: (context, state) {
         if (state is tapeState.LoadedState) {
           return SizedBox(
-            height: 46,
-            width: 46,
+            height: 36,
+            width: 36,
             child: GestureDetector(
               onTap: () {
                 if (state.tapeModel.isNotEmpty &&
@@ -1941,7 +1970,7 @@ class _inBasketsState extends State<inBaskets> {
                   height: 36,
                   width: 36,
                 ),
-                state.tapeModel[widget.index].inBasket != true
+                state.tapeModel[widget.index].inBasket == true
                     ? Positioned(
                         top: 0,
                         right: 4,

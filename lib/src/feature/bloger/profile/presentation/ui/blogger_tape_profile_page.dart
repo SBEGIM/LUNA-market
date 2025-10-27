@@ -157,7 +157,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                           Text(
                             'Дата регистрации: ${widget.bloggerCreatedAt}',
                             style: AppTextStyles.size11Weight400.copyWith(
-                              color: AppColors.kGray300,
+                              color: Color(0xffAEAEB2),
                             ),
                           ),
                         ],
@@ -210,7 +210,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                             height: 72,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(12)),
+                                borderRadius: BorderRadius.circular(16)),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -238,7 +238,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                             height: 72,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(12)),
+                                borderRadius: BorderRadius.circular(16)),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -266,7 +266,7 @@ class _ProfileBloggerTapePageState extends State<ProfileBloggerTapePage> {
                             height: 72,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(12)),
+                                borderRadius: BorderRadius.circular(16)),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/home/data/model/characteristic_model.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -26,9 +27,9 @@ void showListBrandsOptions(BuildContext context, String title, String type,
           return ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: 200,
-              maxHeight: (_filteredCategories.length * 75 + 100)
+              maxHeight: (_filteredCategories.length * 75 + 120)
                   .toDouble()
-                  .clamp(250, 500),
+                  .clamp(250, 600),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -45,7 +46,11 @@ void showListBrandsOptions(BuildContext context, String title, String type,
                       Text(title, style: AppTextStyles.size16Weight500),
                       InkWell(
                         onTap: () => Navigator.of(context).pop(),
-                        child: const Icon(Icons.close),
+                        child: Image.asset(
+                          Assets.icons.defaultCloseIcon.path,
+                          height: 24,
+                          width: 24,
+                        ),
                       ),
                     ],
                   ),
@@ -92,7 +97,7 @@ void showListBrandsOptions(BuildContext context, String title, String type,
                 // Список категорий
                 Flexible(
                   child: Container(
-                    margin: EdgeInsets.all(12),
+                    margin: EdgeInsets.only(left: 16, right: 16),
                     decoration: BoxDecoration(
                         color: AppColors.kWhite,
                         borderRadius: BorderRadius.circular(12)),
@@ -101,7 +106,11 @@ void showListBrandsOptions(BuildContext context, String title, String type,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       itemCount: categories.length,
                       separatorBuilder: (context, index) {
-                        return Divider(height: 1, thickness: 0.5);
+                        return Divider(
+                          height: 1,
+                          thickness: 1,
+                          color: Color(0xffEAECED),
+                        );
                       },
                       itemBuilder: (context, index) {
                         final category = categories[index];
@@ -118,9 +127,8 @@ void showListBrandsOptions(BuildContext context, String title, String type,
                             selectIndex = index;
                           }),
                           child: Container(
-                            margin: const EdgeInsets.only(bottom: 6),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 12),
+                            height: 56,
+                            alignment: Alignment.center,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -136,9 +144,13 @@ void showListBrandsOptions(BuildContext context, String title, String type,
                                   ),
                                 ),
                                 if (isSelected)
-                                  const Icon(Icons.check,
-                                      color: AppColors.mainPurpleColor,
-                                      size: 18),
+                                  Image.asset(
+                                    Assets.icons.selectIcon.path,
+                                    color: AppColors.mainPurpleColor,
+                                    height: 24,
+                                    width: 24,
+                                    scale: 2.1,
+                                  )
                               ],
                             ),
                           ),
@@ -148,32 +160,32 @@ void showListBrandsOptions(BuildContext context, String title, String type,
                   ),
                 ),
 
-                const SizedBox(height: 12),
+                const SizedBox(height: 24),
 
-                // Кнопка "Выбрать"
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        callback.call(categories[selectIndex]);
-                        Navigator.pop(context, selectedCategory);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.mainPurpleColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                SafeArea(
+                  top: false,
+                  bottom: true,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          callback.call(categories[selectIndex]);
+                          Navigator.pop(context, selectedCategory);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.mainPurpleColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                         ),
-                      ),
-                      child: const Text(
-                        "Выбрать",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16),
+                        child: Text(
+                          "Выбрать",
+                          style: AppTextStyles.size18Weight600
+                              .copyWith(color: AppColors.kWhite),
+                        ),
                       ),
                     ),
                   ),

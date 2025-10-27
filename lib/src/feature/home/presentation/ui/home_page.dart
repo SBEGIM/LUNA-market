@@ -23,6 +23,7 @@ import 'package:haji_market/src/feature/home/bloc/meta_state.dart' as metaState;
 import 'package:haji_market/src/feature/home/presentation/ui/banner_page.dart';
 import 'package:haji_market/src/feature/home/presentation/ui/cats_page.dart';
 import 'package:haji_market/src/feature/home/presentation/widgets/product_mb_interesting_card.dart';
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/main/cubit/stories_seller_state.dart';
 import 'package:haji_market/src/feature/seller/main/presentation/widget/stories_card_widget.dart';
@@ -103,7 +104,9 @@ class _HomePageState extends State<HomePage> {
 
     if (BlocProvider.of<productCubit.ProductCubit>(context).state
         is! productState.LoadedState) {
-      BlocProvider.of<productCubit.ProductCubit>(context).products();
+      final filters = context.read<FilterProvider>();
+
+      BlocProvider.of<productCubit.ProductCubit>(context).products(filters);
     }
 
     super.initState();
@@ -121,8 +124,11 @@ class _HomePageState extends State<HomePage> {
       body: SmartRefresher(
         controller: refreshController,
         onRefresh: () {
+          final filters = context.read<FilterProvider>();
+
           Future.wait([
-            BlocProvider.of<productCubit.ProductCubit>(context).products(),
+            BlocProvider.of<productCubit.ProductCubit>(context)
+                .products(filters),
             BlocProvider.of<partnerCubit.PartnerCubit>(context).partners(),
             BlocProvider.of<popShopsCubit.PopularShopsCubit>(context)
                 .popShops(),
@@ -321,19 +327,12 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Рекомендуем',
-                          style: TextStyle(
-                              color: AppColors.kGray900,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        const Text(
+                        const Text('Рекомендуем',
+                            style: AppTextStyles.size18Weight700),
+                        Text(
                           'Показать все',
-                          style: TextStyle(
-                              color: AppColors.mainPurpleColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
+                          style: AppTextStyles.size14Weight500
+                              .copyWith(color: AppColors.mainPurpleColor),
                         ),
                       ],
                     ),
@@ -354,9 +353,24 @@ class _HomePageState extends State<HomePage> {
                             );
                           }
                           if (state is productState.LoadingState) {
-                            return const Center(
-                                child: CircularProgressIndicator(
-                                    color: Colors.indigoAccent));
+                            return Container(
+                              color: Colors.transparent,
+                              child: SizedBox(
+                                height: 315,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 2,
+                                    itemBuilder: (BuildContext ctx, index) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(right: 12),
+                                        child: const ShimmerBox(
+                                            height: 315,
+                                            width: 173,
+                                            radius: 16),
+                                      );
+                                    }),
+                              ),
+                            );
                           }
 
                           if (state is productState.LoadedState) {
@@ -396,7 +410,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            Container(
+            SizedBox(
               // color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -406,19 +420,12 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Недавно смотрели',
-                          style: TextStyle(
-                              color: AppColors.kGray900,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        const Text(
+                        const Text('Недавно смотрели',
+                            style: AppTextStyles.size18Weight700),
+                        Text(
                           'Показать все',
-                          style: TextStyle(
-                              color: AppColors.mainPurpleColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
+                          style: AppTextStyles.size14Weight500
+                              .copyWith(color: AppColors.mainPurpleColor),
                         ),
                       ],
                     ),
@@ -439,9 +446,24 @@ class _HomePageState extends State<HomePage> {
                             );
                           }
                           if (state is productAdState.LoadingState) {
-                            return const Center(
-                                child: CircularProgressIndicator(
-                                    color: Colors.indigoAccent));
+                            return Container(
+                              color: Colors.transparent,
+                              child: SizedBox(
+                                height: 315,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 2,
+                                    itemBuilder: (BuildContext ctx, index) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(right: 12),
+                                        child: const ShimmerBox(
+                                            height: 315,
+                                            width: 173,
+                                            radius: 16),
+                                      );
+                                    }),
+                              ),
+                            );
                           }
                           if (state is productAdState.NoDataState) {
                             return const SizedBox(
@@ -480,9 +502,24 @@ class _HomePageState extends State<HomePage> {
                                   },
                                 ));
                           } else {
-                            return const Center(
-                                child: CircularProgressIndicator(
-                                    color: Colors.indigoAccent));
+                            return Container(
+                              color: Colors.transparent,
+                              child: SizedBox(
+                                height: 315,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 2,
+                                    itemBuilder: (BuildContext ctx, index) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(right: 12),
+                                        child: const ShimmerBox(
+                                            height: 315,
+                                            width: 173,
+                                            radius: 16),
+                                      );
+                                    }),
+                              ),
+                            );
                           }
                         }),
                     // SingleChildScrollView(

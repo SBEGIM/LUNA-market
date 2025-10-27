@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_switch_button.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
+import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
+import 'package:haji_market/src/feature/seller/product/data/DTO/optom_price_seller_dto.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -12,11 +15,13 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
   int selectedCategory = -1;
   int compoundPrice = (product.price!.toInt() - product.compound!.toInt());
 
+  TextEditingController optomController = TextEditingController();
+
   int basketCount = 0;
   int basketPrice = 0;
   bool isOptom = false;
 
-  int selectedIndex3 = 0;
+  int selectedIndex3 = -1;
   int segmentValue = 0;
 
   String formatPrice(int price) {
@@ -39,8 +44,8 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
             bottom: true,
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: product.bloc?.length != 0 ? 350 : 332,
-                maxHeight: product.bloc?.length != 0 ? 450 : 332,
+                minHeight: product.bloc?.length != 0 ? 400 : 332,
+                maxHeight: product.bloc?.length != 0 ? 500 : 332,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -68,54 +73,71 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                     ),
                   ),
                   product.bloc?.length != 0
-                      ? Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
+                      ? Theme(
+                          data: Theme.of(context).copyWith(
+                            shadowColor: Colors.transparent,
                           ),
-                          child: CustomSwitchButton<int>(
-                            groupValue: segmentValue,
-                            backgroundColor: Color(0xffEDEDED),
-                            thumbColor: AppColors.kWhite,
-                            children: {
-                              0: Container(
-                                alignment: Alignment.center,
-                                height: 39,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
+                          child: Material(
+                              color: Colors.transparent,
+                              elevation: 0,
+                              shadowColor: Colors.transparent,
+                              clipBehavior: Clip.antiAlias,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(4),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 0,
+                                  ),
+                                  child: CustomSwitchButton<int>(
+                                    groupValue: segmentValue,
+                                    backgroundColor: Color(0xffEDEDED),
+                                    thumbColor: AppColors.kWhite,
+                                    children: {
+                                      0: Container(
+                                        alignment: Alignment.center,
+                                        height: 39,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        child: Text('Штучно',
+                                            style: AppTextStyles.size16Weight600
+                                                .copyWith(
+                                              color: segmentValue == 0
+                                                  ? Colors.black
+                                                  : const Color(0xff9B9B9B),
+                                            )),
+                                      ),
+                                      1: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        alignment: Alignment.center,
+                                        height: 39,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        child: Text('Оптом',
+                                            style: AppTextStyles.size16Weight600
+                                                .copyWith(
+                                                    color: segmentValue == 0
+                                                        ? Colors.black
+                                                        : const Color(
+                                                            0xff9B9B9B))),
+                                      ),
+                                    },
+                                    onValueChanged: (int? value) {
+                                      if (value != null) {
+                                        segmentValue = value;
+                                        setState(() {});
+                                      }
+                                    },
+                                  ),
                                 ),
-                                child: Text('Штучно',
-                                    style:
-                                        AppTextStyles.size16Weight600.copyWith(
-                                      color: segmentValue == 0
-                                          ? Colors.black
-                                          : const Color(0xff9B9B9B),
-                                    )),
-                              ),
-                              1: Container(
-                                width: MediaQuery.of(context).size.width,
-                                alignment: Alignment.center,
-                                height: 39,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Text('Оптом',
-                                    style: AppTextStyles.size16Weight600
-                                        .copyWith(
-                                            color: segmentValue == 0
-                                                ? Colors.black
-                                                : const Color(0xff9B9B9B))),
-                              ),
-                            },
-                            onValueChanged: (int? value) {
-                              if (value != null) {
-                                segmentValue = value;
-                                setState(() {});
-                              }
-                            },
-                          ),
-                        )
+                              )))
                       : SizedBox.shrink(),
                   segmentValue == 0
                       ? Container(
@@ -124,8 +146,7 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                             borderRadius: BorderRadius.circular(16),
                           ),
                           height: product.bloc?.isEmpty != true ? 210 : 162,
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                          margin: EdgeInsets.only(left: 16, right: 16, top: 12),
                           padding:
                               EdgeInsets.only(top: 12, right: 12, left: 12),
                           child: Column(
@@ -214,7 +235,7 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                         SizedBox(
                                           width: 212,
                                           child: Text(
-                                            '${product.name} Смартфон Apple iPhone 16 512GB Pink',
+                                            '${product.name}',
                                             maxLines: 2,
                                             style: AppTextStyles.size13Weight400
                                                 .copyWith(
@@ -355,19 +376,20 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                           ),
                         )
                       : Container(
-                          height: 230,
+                          height: 300,
                           decoration: BoxDecoration(
                               color: AppColors.kWhite,
                               borderRadius: BorderRadius.circular(16)),
-                          margin: EdgeInsets.only(left: 16, right: 16, top: 8),
-                          padding: EdgeInsets.all(12),
+                          margin: EdgeInsets.only(left: 16, right: 16, top: 12),
+                          padding:
+                              EdgeInsets.only(top: 12, right: 12, left: 12),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
                                     height: 94,
@@ -397,7 +419,7 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                   SizedBox(width: 8),
                                   Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -444,7 +466,7 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                         SizedBox(
                                           width: 212,
                                           child: Text(
-                                            '${product.name} Смартфон Apple iPhone 16 512GB Pink',
+                                            '${product.name}',
                                             style: AppTextStyles.size13Weight400
                                                 .copyWith(
                                                     color: Color(0xff636366)),
@@ -468,87 +490,78 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                     1, // общая высота виджета (должна быть ≥ thickness)
                               ),
                               const SizedBox(height: 6),
+                              Text(
+                                'Укажите количество  (от ${product.bloc?.first.count ?? 0} шт.)',
+                                style: AppTextStyles.size13Weight400
+                                    .copyWith(color: Color(0xff636366)),
+                              ),
+                              const SizedBox(height: 8),
+                              GestureDetector(
+                                behavior: HitTestBehavior
+                                    .opaque, // ловит тап по всей области
+                                onTap: () => _showOptomPickerBottomSheet(
+                                  context,
+                                  selectedIndex3 != -1 ? selectedIndex3 : 0,
+                                  product.bloc!,
+                                  (optomIndex) {
+                                    if (selectedIndex3 == optomIndex) {
+                                      selectedIndex3 = -1;
+                                      setState(() {
+                                        basketCount = 0;
+                                        basketPrice = 0;
+                                        isOptom = false;
+                                      });
+                                    } else {
+                                      selectedIndex3 = optomIndex;
+                                      setState(() {
+                                        basketCount =
+                                            product.bloc?[optomIndex].count ??
+                                                0;
+                                        basketPrice =
+                                            product.bloc?[optomIndex].price ??
+                                                0;
+                                        isOptom = true;
+                                      });
+                                    }
+                                  },
+                                ),
+                                child: Container(
+                                  height: 52,
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 15),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.kGray2,
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: IgnorePointer(
+                                    // чтобы тап ушел наружу
+                                    child: TextField(
+                                      controller: optomController,
+                                      readOnly: true,
+                                      keyboardType: TextInputType.phone,
+                                      decoration: InputDecoration(
+                                        hintText: '$basketCount шт',
+                                        hintStyle: AppTextStyles.size16Weight400
+                                            .copyWith(
+                                                color: const Color(0xFF8E8E93)),
+                                        border: InputBorder.none,
+                                      ),
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      onSubmitted: (_) =>
+                                          FocusScope.of(context).unfocus(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 14),
                               Column(
                                 children: [
                                   SizedBox(
                                     height: 30,
                                     child: Row(children: [
-                                      SizedBox(
-                                        height: 28,
-                                        child: ListView.builder(
-                                          itemCount: product.bloc?.length ?? 0,
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context, index) {
-                                            return InkWell(
-                                              onTap: () {
-                                                if (selectedIndex3 == index) {
-                                                  selectedIndex3 = -1;
-                                                  setState(() {
-                                                    basketCount = 0;
-                                                    basketPrice = 0;
-                                                    isOptom = false;
-                                                  });
-                                                } else {
-                                                  selectedIndex3 = index;
-                                                  setState(() {
-                                                    basketCount = product
-                                                            .bloc?[index]
-                                                            .count ??
-                                                        0;
-                                                    basketPrice = product
-                                                            .bloc?[index]
-                                                            .price ??
-                                                        0;
-                                                    isOptom = true;
-                                                  });
-                                                }
-                                              },
-                                              child: Container(
-                                                margin:
-                                                    EdgeInsets.only(right: 4),
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 8),
-                                                decoration: BoxDecoration(
-                                                  color: selectedIndex3 == index
-                                                      ? AppColors
-                                                          .mainPurpleColor
-                                                      : AppColors.kGray2,
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  border: Border.all(
-                                                    width: 1,
-                                                    color:
-                                                        selectedIndex3 == index
-                                                            ? AppColors
-                                                                .mainPurpleColor
-                                                            : AppColors.kGray2,
-                                                  ),
-                                                ),
-                                                // padding: const EdgeInsets.only(
-                                                //   top: 8,
-                                                //   bottom: 8,
-                                                // ),
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  'x${product.bloc?[index].count ?? 0}шт',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      color: selectedIndex3 ==
-                                                              index
-                                                          ? Colors.white
-                                                          : Colors.black,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      Spacer(),
-
                                       Container(
                                         decoration: BoxDecoration(
                                           gradient: const LinearGradient(
@@ -588,8 +601,8 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                                       horizontal: 10.0),
                                               child: Text(
                                                 selectedIndex3 != -1
-                                                    ? " = ${product.bloc![selectedIndex3].price} ₽"
-                                                    : '',
+                                                    ? " ${product.bloc![selectedIndex3].price} ₽"
+                                                    : '0 ₽',
                                                 style: const TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -602,6 +615,12 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                         ),
                                       ),
 
+                                      Text(
+                                        selectedIndex3 != -1
+                                            ? '  x ${product.bloc?[selectedIndex3].count ?? 0} шт'
+                                            : '  x 0 шт',
+                                        style: AppTextStyles.size16Weight400,
+                                      ),
                                       // Text(
                                       //   ' x${count != -1 ? count : 0}',
                                       //   style: const TextStyle(
@@ -609,14 +628,14 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                       //       fontWeight: FontWeight.w400,
                                       //       color: Colors.grey),
                                       // ),
-                                      // Spacer(),
-                                      // Text(
-                                      //     ' = ${(selectedIndex3 != -1 ? product.bloc![selectedIndex3].price as int : 1)}₽',
-                                      //     style: const TextStyle(
-                                      //         fontSize: 16,
-                                      //         letterSpacing: 0,
-                                      //         fontWeight: FontWeight.w500,
-                                      //         color: Colors.black)),
+                                      Spacer(),
+                                      Text(
+                                          ' = ${(selectedIndex3 != -1 ? (product.bloc![selectedIndex3].price! * product.bloc![selectedIndex3].count!) : 0)}₽',
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              letterSpacing: 0,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black)),
                                     ]),
                                   ),
 
@@ -762,24 +781,12 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                   SizedBox(height: 12),
                                   Row(
                                     children: [
-                                      ShaderMask(
-                                        shaderCallback: (bounds) =>
-                                            const LinearGradient(
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                          colors: [
-                                            Color(0xFF7D2DFF),
-                                            Color(0xFF41DDFF),
-                                          ],
-                                        ).createShader(bounds),
-                                        blendMode: BlendMode.srcIn,
-                                        child: const Icon(
-                                          Icons.card_giftcard_outlined,
-                                          size: 24,
-                                          color: Colors
-                                              .white, // Будет заменён градиентом
-                                        ),
+                                      Image.asset(
+                                        Assets.icons.savingMoneyIcon.path,
+                                        height: 22,
+                                        width: 22,
                                       ),
+                                      SizedBox(width: 6),
                                       ShaderMask(
                                         shaderCallback: (bounds) =>
                                             const LinearGradient(
@@ -850,6 +857,128 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                   ),
                 ],
               ),
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
+void _showOptomPickerBottomSheet(
+  BuildContext context,
+  int initialSelected,
+  List<Bloc> listOptom,
+  void Function(int) onOptomSelected,
+) {
+  final List<Bloc> optoms = listOptom;
+
+  final int initialIndex = optoms.indexOf(listOptom[initialSelected]);
+  final FixedExtentScrollController scrollController =
+      FixedExtentScrollController(
+    initialItem:
+        initialIndex == -1 ? 0 : initialIndex, // фолбэк, если года нет в списке
+  );
+
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    backgroundColor: Color(0xffF7F7F7),
+    builder: (context) {
+      int selected =
+          initialSelected; // Локальный selectedYear для обновления в билдере
+
+      return StatefulBuilder(
+        builder: (context, setModalState) {
+          return SizedBox(
+            height: 402,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Укажите количество',
+                        style: AppTextStyles.size16Weight500,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Image.asset(
+                          Assets.icons.defaultCloseIcon.path,
+                          scale: 1.9,
+                          width: 24,
+                          height: 24,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    width: 326,
+                    height: 212,
+                    decoration: BoxDecoration(
+                        color: AppColors.kWhite,
+                        borderRadius: BorderRadius.circular(16)),
+                    child: ListWheelScrollView.useDelegate(
+                      controller: scrollController,
+                      itemExtent: 50,
+                      physics: const FixedExtentScrollPhysics(),
+                      onSelectedItemChanged: (index) {
+                        setModalState(() {
+                          selected = index;
+                        });
+                      },
+                      childDelegate: ListWheelChildBuilderDelegate(
+                        builder: (context, index) {
+                          if (index < 0 || index >= optoms.length) return null;
+                          final year = index;
+                          final isSelected = year == selected;
+
+                          return Container(
+                            height: 36,
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? Color(0xffEAECED)
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 24),
+                            child: Text('${optoms[index].count} шт',
+                                style: AppTextStyles.size20Weight500.copyWith(
+                                  color: isSelected
+                                      ? AppColors.kGray900
+                                      : Color(0xff8E8E93),
+                                )),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16.0, right: 16, top: 16, bottom: 50),
+                  child: DefaultButton(
+                      text: 'Выбрать',
+                      press: () {
+                        onOptomSelected(selected);
+                        Navigator.of(context).pop();
+                      },
+                      color: AppColors.kWhite,
+                      backgroundColor: AppColors.mainPurpleColor,
+                      width: double.infinity),
+                )
+              ],
             ),
           );
         },

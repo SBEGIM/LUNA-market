@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/basket/data/models/cdek_office_old_model.dart';
 import 'package:haji_market/src/feature/basket/data/DTO/map_geo_dto.dart';
 import 'package:haji_market/src/feature/basket/bloc/cdek_office_cubit.dart';
@@ -60,8 +61,10 @@ class _MapPickerPageState extends State<MapPickerPage> {
             longitude: double.tryParse(data[i].coordX!)!),
         icon: PlacemarkIcon.single(
           PlacemarkIconStyle(
-              image: BitmapDescriptor.fromAssetImage('assets/icons/place.png'),
-              scale: 2),
+              image: BitmapDescriptor.fromAssetImage(
+                Assets.icons.location.path,
+              ),
+              scale: 3),
         ),
         onTap: ((mapObject, point) {
           Get.snackbar(data[i].name!, data[i].addressComment!,
@@ -146,11 +149,9 @@ class _MapPickerPageState extends State<MapPickerPage> {
                                 topRight: Radius.circular(24),
                               ),
                             ),
-                            child: SvgPicture.asset(
-                              'assets/icons/icon-tab-plus.svg',
-                              color: Colors.black,
-                              width: 24,
-                              height: 24,
+                            child: Icon(
+                              Icons.add,
+                              color: AppColors.mainPurpleColor,
                             ),
                           ),
                         ),
@@ -177,11 +178,9 @@ class _MapPickerPageState extends State<MapPickerPage> {
                                 bottomRight: Radius.circular(24),
                               ),
                             ),
-                            child: SvgPicture.asset(
-                              'assets/icons/icon-tab-minus.svg',
-                              color: Colors.black,
-                              width: 24,
-                              height: 24,
+                            child: Icon(
+                              Icons.remove,
+                              color: AppColors.mainPurpleColor,
                             ),
                           ),
                         ),
@@ -190,45 +189,37 @@ class _MapPickerPageState extends State<MapPickerPage> {
                   ),
                 ),
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height / 8,
-                  right: 16,
-                  child: GestureDetector(
-                    onTap: () async {
-                      try {
-                        final loc = await Geolocator.getCurrentPosition();
-                        final _myPoint = Point(
-                            latitude: loc.latitude, longitude: loc.longitude);
+                  bottom: 120,
+                  right: -15,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () async {
+                        try {
+                          final loc = await Geolocator.getCurrentPosition();
+                          final _myPoint = Point(
+                              latitude: loc.latitude, longitude: loc.longitude);
 
-                        controller!.moveCamera(
-                          CameraUpdate.newCameraPosition(
-                              CameraPosition(target: _myPoint, zoom: 6)),
-                          animation: const MapAnimation(duration: 2.0),
-                        );
+                          controller!.moveCamera(
+                            CameraUpdate.newCameraPosition(
+                                CameraPosition(target: _myPoint, zoom: 6)),
+                            animation: const MapAnimation(duration: 2.0),
+                          );
 
-                        //  controller!.move(point: _myPoint);
-                      } catch (exception) {
-                        Get.snackbar(
-                            'Ошибка ', 'Не удалось найти местоположение',
-                            backgroundColor: Colors.red);
-                      }
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(11),
-                      decoration: const BoxDecoration(
-                        color: Color(0xe5fefefe),
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x33000000),
-                            offset: Offset(0, 1),
-                            blurRadius: 4,
-                          )
-                        ],
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          'assets/icons/icon-tab-navigation.svg',
-                          color: AppColors.kPrimaryColor,
+                          //  controller!.move(point: _myPoint);
+                        } catch (exception) {
+                          Get.snackbar(
+                              'Ошибка ', 'Не удалось найти местоположение',
+                              backgroundColor: Colors.red);
+                        }
+                      },
+                      child: SizedBox(
+                        height: 104,
+                        width: 104,
+                        child: Center(
+                          child: Image.asset(
+                            Assets.icons.userLocation.path,
+                          ),
                         ),
                       ),
                     ),
@@ -264,13 +255,13 @@ class _MapPickerPageState extends State<MapPickerPage> {
           backgroundColor: MaterialStateProperty.all(Colors.white),
         ),
         child: Container(
-          height: 48,
+          height: 52,
           margin:
               EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 40),
           decoration: BoxDecoration(
-            color: AppColors.kPrimaryColor,
+            color: AppColors.mainPurpleColor,
             border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(16),
           ),
           child: const Center(
             child: Text(

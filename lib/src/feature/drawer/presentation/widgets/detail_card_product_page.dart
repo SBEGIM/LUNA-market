@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/mont_selector_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_basket_bottom_sheet_widget.dart';
 import 'package:haji_market/src/feature/home/presentation/widgets/product_buy_with_card.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
@@ -13,6 +14,7 @@ import 'package:haji_market/src/feature/drawer/bloc/profit_cubit.dart'
 import 'package:haji_market/src/feature/drawer/bloc/profit_state.dart'
     as profitState;
 import 'package:haji_market/src/feature/drawer/presentation/widgets/pre_order_dialog.dart';
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/foundation.dart';
@@ -72,8 +74,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
   List textInst = [
     '3 мес',
     '6 мес',
-    '9 мес',
     '12 мес',
+    '24 мес',
   ];
 
   List texts = [
@@ -266,7 +268,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         padding: EdgeInsets.only(left: 16, right: 16),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
@@ -290,14 +291,39 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   top: 10,
                   left: 20,
                   child: Container(
-                    width: 52,
+                    width: 57,
                     height: 22,
                     decoration: BoxDecoration(
                         color: AppColors.kYellowDark,
-                        borderRadius: BorderRadius.circular(4)),
-                    child: Text('0·0·12',
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.statisticsTextStyle),
+                        borderRadius: BorderRadius.circular(24)),
+                    alignment: Alignment.center,
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        style: AppTextStyles
+                            .size12Weight400, // базовый стиль для цифр
+                        children: [
+                          const TextSpan(
+                              text: '0', style: AppTextStyles.size12Weight400),
+                          TextSpan(
+                            text: '·',
+                            style: AppTextStyles.size14Weight500.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const TextSpan(
+                              text: '0', style: AppTextStyles.size12Weight400),
+                          TextSpan(
+                            text: '·',
+                            style: AppTextStyles.size14Weight500.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const TextSpan(
+                              text: '12', style: AppTextStyles.size12Weight400),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 widget.product.point != 0
@@ -322,7 +348,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                   1.0
                                 ], // соответствуют 26.85% и 100%
                               ),
-                              borderRadius: BorderRadius.circular(4)),
+                              borderRadius: BorderRadius.circular(24)),
                           child: Text(
                             '${widget.product.point ?? 0}% Б',
                             textAlign: TextAlign.center,
@@ -332,8 +358,40 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         ),
                       )
                     : const SizedBox.shrink(),
+                widget.product.bloggerPoint != 0
+                    ? Positioned(
+                        bottom: 6,
+                        left: 20,
+                        child: Container(
+                          width: 205,
+                          height: 26,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment(-0.6,
+                                    -1), // приблизительное направление 128.49°
+                                end: Alignment(1, 1),
+                                colors: [
+                                  Color(0xFF7D2DFF),
+                                  Color(0xFF41DDFF),
+                                ],
+                                stops: [
+                                  0.2685,
+                                  1.0
+                                ], // соответствуют 26.85% и 100%
+                              ),
+                              borderRadius: BorderRadius.circular(24)),
+                          child: Text(
+                            'Вознаграждение блогера: ${widget.product.bloggerPoint ?? 0}%',
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.size13Weight400
+                                .copyWith(color: AppColors.kWhite),
+                          ),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
                 Positioned(
-                  bottom: 0,
+                  bottom: 6,
                   right: 20,
                   child: GestureDetector(
                     onTap: (() {
@@ -356,7 +414,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             height: 30,
             decoration: BoxDecoration(
                 color: AppColors.kWhite,
-                borderRadius: BorderRadius.circular(16)),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16))),
             //  width: 12,
             //  alignment: Alignment.r,
             //     margin: const EdgeInsets.only(
@@ -386,12 +446,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               ),
             )),
           ),
-
           const SizedBox(
-            height: 10,
+            height: 16,
           ),
           Container(
-            padding: const EdgeInsets.only(right: 16, left: 16, top: 14),
+            padding: const EdgeInsets.only(right: 16, left: 16, top: 12),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(16)),
             child: Column(
@@ -444,18 +503,22 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           setState(() {
                             inFavorite = !inFavorite;
                           });
-                          BlocProvider.of<ProductCubit>(context).products();
+
+                          final filters = context.read<FilterProvider>();
+
+                          BlocProvider.of<ProductCubit>(context)
+                              .products(filters);
                         },
                         child: inFavorite != true
                             ? Image.asset(
                                 Assets.icons.favoriteBottomIcon.path,
-                                height: 19,
-                                width: 19,
+                                height: 28,
+                                width: 28,
                               )
                             : Image.asset(
                                 Assets.icons.favoriteBottomFullIcon.path,
-                                height: 19,
-                                width: 19,
+                                height: 28,
+                                width: 28,
                                 color: AppColors.kunSelectColor,
                               ))
                   ],
@@ -472,9 +535,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       initialRating:
                           double.parse(widget.product.rating.toString()),
                       unratedColor: const Color(0x30F11712),
-                      itemSize: 12,
-                      // itemPadding:
-                      // const EdgeInsets.symmetric(horizontal: 4.0),
+                      itemSize: 16,
                       ratingWidget: RatingWidget(
                         full: const Icon(
                           Icons.star,
@@ -493,30 +554,20 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     ),
                     Row(
                       children: [
-                        Text(
-                          'Код товара: ',
-                          style: const TextStyle(
-                            color: AppColors.kGray300,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        Text(
-                          widget.product.id.toString().padLeft(10, '0'),
-                          style: const TextStyle(
-                            color: AppColors.kLightBlackColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold, // жирный текст
-                          ),
-                        ),
+                        Text('Код товара: ',
+                            style: AppTextStyles.size13Weight400
+                                .copyWith(color: Color(0xffAEAEB2))),
+                        Text(widget.product.id.toString().padLeft(10, '0'),
+                            style: AppTextStyles.size13Weight400),
                       ],
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: 15),
                 Divider(
-                  thickness: 0.3,
-                  color: AppColors.kGray200,
+                  height: 1,
+                  thickness: 0.33,
+                  color: Color(0xffEAECED),
                 ),
                 if ((widget.product.size ?? []).isNotEmpty)
                   Column(
@@ -524,7 +575,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
-                        height: 10,
+                        height: 15,
                       ),
                       const Text(
                         'Выберите Размер',
@@ -596,9 +647,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 6,
-                      ),
+                      SizedBox(height: 15),
                       Text(
                         'Цвет:  ${selectedIndex != -1 ? (widget.product.color?[selectedIndex!].name) : 'Не выбран'}',
                         style: TextStyle(
@@ -636,21 +685,18 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 child: Container(
                                   height: 54,
                                   width: 54,
-                                  padding: const EdgeInsets.all(4),
+                                  padding: const EdgeInsets.all(2),
                                   decoration: BoxDecoration(
                                       color: Color(AppColors.getColorFromHex(
                                           widget.product.color![index].value!)),
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(10),
                                       border: selectedIndex == index
                                           ? Border.all(
                                               color: AppColors.mainPurpleColor,
                                               width: 2)
-                                          : Border.all(color: Colors.white)),
-
-                                  // child: Image.asset(
-                                  //   'assets/images/black_wireles.png',
-                                  //   height: 80,
-                                  // ),
+                                          : Border.all(
+                                              color: Color(0xffEAECED),
+                                              width: 2)),
                                 ),
                               ),
                             );
@@ -962,86 +1008,90 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           // ),
 
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 16),
             color: Colors.white,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'В рассрочку',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      color: AppColors.kGray300),
+                  style: AppTextStyles.size14Weight400
+                      .copyWith(color: Color(0xff636366)),
                 ),
                 SizedBox(
-                  height: 28,
-                  child: ListView.builder(
-                    itemCount: textInst.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      BorderRadius radius = BorderRadius.zero;
-                      if (index == 0) {
-                        radius = const BorderRadius.only(
-                          topLeft: Radius.circular(6),
-                          bottomLeft: Radius.circular(6),
-                        );
-                      } else if (index == textInst.length - 1) {
-                        radius = const BorderRadius.only(
-                          topRight: Radius.circular(6),
-                          bottomRight: Radius.circular(6),
-                        );
-                      }
-                      return InkWell(
-                        onTap: () {
-                          if (index == 0) {
-                            selectedIndexMonth = 3;
-                          } else if (index == 1) {
-                            selectedIndexMonth = 6;
-                          } else if (index == 2) {
-                            selectedIndexMonth = 9;
-                          } else if (index == 3) {
-                            selectedIndexMonth = 12;
-                          } else {
-                            selectedIndexMonth = 3;
-                          }
-
-                          setState(() {
-                            selectedIndex2 = index;
-                          });
-                        },
-                        child: Container(
-                          width: 54,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: selectedIndex2 == index
-                                ? AppColors.kYellowDark
-                                : Colors.white,
-                            borderRadius: radius,
-                            border: Border(
-                              top: BorderSide(color: AppColors.kYellowDark),
-                              bottom: BorderSide(color: AppColors.kYellowDark),
-                              left: index == 0
-                                  ? BorderSide(color: AppColors.kYellowDark)
-                                  : BorderSide.none,
-                              right: BorderSide(color: AppColors.kYellowDark),
-                            ),
-                          ),
-                          child: Text(
-                            textInst[index],
-                            style: AppTextStyles.categoryTextStyle,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  width: 23,
                 ),
+                Flexible(
+                    child: SizedBox(
+                        width: 300, height: 28, child: MonthSelector())),
+                //   height: 28,
+                //   child: ListView.builder(
+                //     itemCount: textInst.length,
+                //     shrinkWrap: true,
+                //     physics: const NeverScrollableScrollPhysics(),
+                //     scrollDirection: Axis.horizontal,
+                //     itemBuilder: (context, index) {
+                //       BorderRadius radius = BorderRadius.zero;
+                //       if (index == 0) {
+                //         radius = const BorderRadius.only(
+                //           topLeft: Radius.circular(10),
+                //           bottomLeft: Radius.circular(10),
+                //         );
+                //       } else if (index == textInst.length - 1) {
+                //         radius = const BorderRadius.only(
+                //           topRight: Radius.circular(10),
+                //           bottomRight: Radius.circular(10),
+                //         );
+                //       }
+                //       return InkWell(
+                //         onTap: () {
+                //           if (index == 0) {
+                //             selectedIndexMonth = 3;
+                //           } else if (index == 1) {
+                //             selectedIndexMonth = 6;
+                //           } else if (index == 2) {
+                //             selectedIndexMonth = 9;
+                //           } else if (index == 3) {
+                //             selectedIndexMonth = 12;
+                //           } else {
+                //             selectedIndexMonth = 3;
+                //           }
+
+                //           setState(() {
+                //             selectedIndex2 = index;
+                //           });
+                //         },
+                //         child: Container(
+                //           width: 61,
+                //           alignment: Alignment.center,
+                //           decoration: BoxDecoration(
+                //             color: selectedIndex2 == index
+                //                 ? AppColors.kYellowDark
+                //                 : Colors.white,
+                //             borderRadius: radius,
+                //             border: Border(
+                //               top: BorderSide(color: AppColors.kYellowDark),
+                //               bottom: BorderSide(color: AppColors.kYellowDark),
+                //               left: index == 0
+                //                   ? BorderSide(color: AppColors.kYellowDark)
+                //                   : BorderSide.none,
+                //               right: BorderSide(color: AppColors.kYellowDark),
+                //             ),
+                //           ),
+                //           child: Text(
+                //             textInst[index],
+                //             style: AppTextStyles.size14w,
+                //           ),
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // ),
               ],
             ),
           ),
           Container(
+              padding: EdgeInsets.only(top: 16),
               color: Colors.white,
               child: ListView.separated(
                 separatorBuilder: (BuildContext context, int index) =>
@@ -1067,13 +1117,38 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                '${widget.product.shops![index].shop!.name}',
-                                style: const TextStyle(
-                                    color: AppColors.kGray900,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${widget.product.shops![index].shop!.name}',
+                                    style: const TextStyle(
+                                        color: AppColors.kGray900,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        Assets.icons.sellerIcon.path,
+                                        color: Color(0xff34C759),
+                                        height: 12,
+                                        width: 12,
+                                      ),
+                                      SizedBox(
+                                        width: 4.5,
+                                      ),
+                                      Text(
+                                        'Официальный партнер',
+                                        style: AppTextStyles.size11Weight400
+                                            .copyWith(color: Color(0xff34C759)),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                               InkWell(
                                 onTap: () {
@@ -1111,6 +1186,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 ),
                               ),
                             ],
+                          ),
+
+                          SizedBox(
+                            height: 4.5,
                           ),
                           Row(
                             children: [
@@ -1221,7 +1300,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                           SizedBox(width: 5),
                                           Text('Доставка:',
                                               style: TextStyle(
-                                                  color: AppColors.kGray300,
+                                                  color: Color(0xff8E8E93),
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400)),
                                         ],
@@ -1259,7 +1338,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                           SizedBox(width: 5),
                                           Text('Доставка:',
                                               style: TextStyle(
-                                                  color: AppColors.kGray300,
+                                                  color: Color(0xff8E8E93),
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400)),
                                         ],
@@ -1313,7 +1392,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                     SizedBox(width: 5),
                                     Text('Оптовая продажа:',
                                         style: TextStyle(
-                                            color: AppColors.kGray300,
+                                            color: Color(0xff8E8E93),
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400)),
                                   ],
@@ -1710,6 +1789,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () async {
+                      final filters = context.read<FilterProvider>();
+
                       if (index == 0) {
                         List<int> selectedListSort = [];
 
@@ -1717,7 +1798,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
                         GetStorage()
                             .write('shopFilterId', selectedListSort.toString());
-                        await BlocProvider.of<ProductCubit>(context).products();
+                        await BlocProvider.of<ProductCubit>(context)
+                            .products(filters);
 
                         context.router.push(ProductsRoute(
                           cats: CatsModel(id: 0, name: ''),
@@ -1731,7 +1813,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         GetStorage().write(
                             'brandFilterId', selectedListSort.toString());
 
-                        await BlocProvider.of<ProductCubit>(context).products();
+                        await BlocProvider.of<ProductCubit>(context)
+                            .products(filters);
 
                         context.router.push(ProductsRoute(
                             cats: CatsModel(id: 0, name: ''),
@@ -1749,7 +1832,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               widget.product.catId,
                             ].toString());
                         GetStorage().remove('shopFilterId');
-                        await BlocProvider.of<ProductCubit>(context).products();
+                        await BlocProvider.of<ProductCubit>(context)
+                            .products(filters);
 
                         context.router.push(ProductsRoute(
                           cats: CatsModel(
@@ -1965,6 +2049,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     context: context,
                     builder: (context) => PreOrderDialog(
                       onYesTap: () {
+                        final filters = context.read<FilterProvider>();
+
                         Navigator.pop(context);
                         if (isvisible == false &&
                             widget.product.inBasket == false) {
@@ -1978,7 +2064,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           setState(() {
                             isvisible = true;
                           });
-                          BlocProvider.of<ProductCubit>(context).products();
+                          BlocProvider.of<ProductCubit>(context)
+                              .products(filters);
                         } else {
                           context.router.replaceAll([
                             const LauncherRoute(children: [BasketRoute()]),
@@ -2008,7 +2095,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 setState(() {
                   isvisible = true;
                 });
-                BlocProvider.of<ProductCubit>(context).products();
+                final filters = context.read<FilterProvider>();
+
+                BlocProvider.of<ProductCubit>(context).products(filters);
               } else {
                 log('pushReplaceAll', name: 'Detail Card Product Page');
                 context.router.replaceAll([

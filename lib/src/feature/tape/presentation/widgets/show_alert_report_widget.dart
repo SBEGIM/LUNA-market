@@ -51,7 +51,7 @@ Future<bool?> showBrandedAlert(
                   child: Container(
                     constraints: const BoxConstraints(maxWidth: 360),
                     margin: const EdgeInsets.symmetric(horizontal: 20),
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 16, 16),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
@@ -75,12 +75,10 @@ Future<bool?> showBrandedAlert(
                         Text(
                           message,
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.size14Weight600
-                              .copyWith(color: AppColors.kGray300),
+                          style: AppTextStyles.size16Weight400
+                              .copyWith(color: Color(0xff636366)),
                         ),
                         const SizedBox(height: 16),
-
-                        // --- КНОПКИ ---
                         if (mode == BrandedAlertMode.confirm)
                           Row(
                             children: [
@@ -94,7 +92,7 @@ Future<bool?> showBrandedAlert(
                                       foregroundColor: const Color(0xFF111111),
                                       backgroundColor: const Color(0xFFF1F1F1),
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
+                                        borderRadius: BorderRadius.circular(16),
                                       ),
                                     ),
                                     child: Text(cancelText,
@@ -113,7 +111,7 @@ Future<bool?> showBrandedAlert(
                                       backgroundColor: primaryColor,
                                       elevation: 0,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
+                                        borderRadius: BorderRadius.circular(16),
                                       ),
                                     ),
                                     child: Text(primaryText,
@@ -130,7 +128,7 @@ Future<bool?> showBrandedAlert(
                             text: primaryText,
                             onPressed: () => Navigator.of(ctx).pop(true),
                             height: 52,
-                            borderRadius: 26,
+                            borderRadius: 16,
                             gradient: primaryGradient ??
                                 const LinearGradient(
                                   begin: Alignment.centerLeft,

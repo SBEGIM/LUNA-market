@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/core/presentation/widgets/shimmer/shimmer_box.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/basket_card_widget.dart';
@@ -32,6 +34,8 @@ class _BasketPageState extends State<BasketPage> {
   int price = 0;
   String fulfillment = 'FBS';
   String deleveryDay = '';
+
+  final Set<int> isChecked = {};
 
   String fulfillmentApi = 'FBS';
 
@@ -166,7 +170,7 @@ class _BasketPageState extends State<BasketPage> {
         appBar: AppBar(
           centerTitle: true,
           iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.kWhite,
           elevation: 0,
           // leading: IconButton(
           //   onPressed: () {
@@ -177,21 +181,9 @@ class _BasketPageState extends State<BasketPage> {
           //     color: AppColors.kPrimaryColor,
           //   ),
           // ),
-          actions: [
-            Padding(
-                padding: const EdgeInsets.only(right: 22.0),
-                child: GestureDetector(
-                    onTap: () async {
-                      await Share.share('${productNames}');
-                    },
-                    child: SvgPicture.asset(
-                      'assets/icons/share.svg',
-                      color: AppColors.kLightBlackColor,
-                    )))
-          ],
           title: const Text(
             'Корзина',
-            style: AppTextStyles.appBarTextStylea,
+            style: AppTextStyles.size18Weight600,
             textAlign: TextAlign.center,
           ),
           // bottom: PreferredSize(
@@ -314,12 +306,76 @@ class _BasketPageState extends State<BasketPage> {
                     .basketShow(fulfillmentApi);
                 refreshController.refreshCompleted();
               },
-              child: const Column(
-                children: [
-                  Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent)),
-                ],
+              child: Container(
+                margin: EdgeInsets.only(bottom: 12),
+                decoration: BoxDecoration(
+                  color: AppColors.kWhite,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(16),
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 5,
+                  padding: EdgeInsets.zero,
+                  separatorBuilder: (context, index) => const Divider(
+                    height: 0.4,
+                    thickness: 0.33,
+                    color: Color(0xffD1D1D6),
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      height: 152,
+                      padding: EdgeInsets.only(top: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              height: 94,
+                              width: 114,
+                              decoration: BoxDecoration(
+                                color: AppColors.kWhite,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: ShimmerBox()),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [ShimmerBox()],
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              ShimmerBox(),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              SizedBox(
+                                width: 234,
+                                child: Flexible(
+                                  child: ShimmerBox(),
+                                ),
+                              ),
+                              SizedBox(height: 12),
+                              ShimmerBox(
+                                height: 40,
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             );
           }
@@ -367,12 +423,92 @@ class _BasketPageState extends State<BasketPage> {
                 shrinkWrap: true,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: 10),
+                    height: 36,
+                    width: double.infinity,
+                    margin: EdgeInsets.only(bottom: 12),
+                    padding: EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                        color: AppColors.kWhite,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(16),
+                            bottomRight: Radius.circular(16))),
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                // Проверяем: все ли уже выбраны
+                                final allSelected = state.basketShowModel.every(
+                                  (item) => isChecked.contains(item.basketId),
+                                );
+
+                                if (allSelected) {
+                                  // UNSELECT ALL
+                                  isChecked.clear();
+                                } else {
+                                  // SELECT ALL
+                                  for (final item in state.basketShowModel) {
+                                    isChecked.add(item.basketId!);
+                                  }
+                                }
+
+                                setState(() {});
+                              },
+                              child: Image.asset(
+                                // Иконка зависит от того, все ли выбраны сейчас
+                                state.basketShowModel.every(
+                                  (item) => isChecked.contains(item.basketId),
+                                )
+                                    ? Assets.icons.defaultCheckIcon
+                                        .path // все выбраны
+                                    : Assets.icons.defaultUncheckIcon
+                                        .path, // не все выбраны
+                                height: 24,
+                                width: 24,
+                                color: state.basketShowModel.every(
+                                  (item) => isChecked.contains(item.basketId),
+                                )
+                                    ? AppColors.mainPurpleColor
+                                    : null,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              'Выбрать все',
+                              style: AppTextStyles.size16Weight400,
+                            ),
+                            Spacer(),
+                            GestureDetector(
+                                onTap: () async {
+                                  await Share.share('${productNames}');
+                                },
+                                child: Image.asset(
+                                  Assets.icons.basketShare.path,
+                                  width: 21,
+                                  height: 21,
+                                  color: AppColors.kLightBlackColor,
+                                )),
+                            SizedBox(width: 16),
+                            GestureDetector(
+                                onTap: () async {
+                                  await Share.share('${productNames}');
+                                },
+                                child: Image.asset(
+                                  Assets.icons.trashIcon.path,
+                                  width: 21,
+                                  height: 21,
+                                  color: AppColors.kLightBlackColor,
+                                )),
+                          ],
+                        )),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
                       color: AppColors.kWhite,
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(16),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(16),
                       ),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -381,25 +517,21 @@ class _BasketPageState extends State<BasketPage> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: state.basketShowModel.length,
                       padding: EdgeInsets.zero,
-                      // separatorBuilder: (BuildContext context, int index) =>
-                      //     const Divider(),
                       separatorBuilder: (context, index) => const Divider(
-                        height: 0.05,
-                        color: AppColors.kGray2,
+                        height: 0.4,
+                        thickness: 0.33,
+                        color: Color(0xffD1D1D6),
                       ),
                       itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          margin: const EdgeInsets.only(top: 16),
-                          child: BasketProductCardWidget(
+                        return BasketProductCardWidget(
                             basketProducts: state.basketShowModel[index],
                             count: index,
                             fulfillment: fulfillmentApi,
-                          ),
-                        );
+                            isChecked: isChecked.contains(
+                                state.basketShowModel[index].basketId));
                       },
                     ),
                   ),
-
                   Container(
                     padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
