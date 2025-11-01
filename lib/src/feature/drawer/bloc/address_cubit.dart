@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/drawer/data/models/address_model.dart';
 import '../data/repository/address_repo.dart';
 import 'address_state.dart';
@@ -22,28 +24,50 @@ class AddressCubit extends Cubit<AddressState> {
     }
   }
 
-  Future<void> store(country, city, street, home, floor, porch, room) async {
+  Future<int> store(BuildContext context, country, city, street, entrance,
+      floor, apartament, intercom, comment, phone) async {
     try {
-      await addressRepository.store(
-          country, city, street, home, floor, porch, room);
+      final data = await addressRepository.store(country, city, street,
+          entrance, floor, apartament, intercom, comment, phone);
+
+      print(data);
+      if (data == 200) {
+        AppSnackBar.show(
+          context,
+          'Адрес успешно добавлен',
+          type: AppSnackType.success,
+        );
+      } else {}
+
+      return data;
+    } catch (e) {
+      emit(ErrorState(message: 'Ошибка сервера'));
+      return 500;
+    }
+  }
+
+  Future<void> update(id, country, city, street, entrance, floor, apartament,
+      intercom, comment, phone) async {
+    try {
+      await addressRepository.update(id, country, city, street, entrance, floor,
+          apartament, intercom, comment, phone);
     } catch (e) {
       emit(ErrorState(message: 'Ошибка сервера'));
     }
   }
 
-  Future<void> update(
-      id, country, city, street, home, floor, porch, room) async {
+  Future<void> delete(BuildContext context, id) async {
     try {
-      await addressRepository.update(
-          id, country, city, street, home, floor, porch, room);
-    } catch (e) {
-      emit(ErrorState(message: 'Ошибка сервера'));
-    }
-  }
+      final data = await addressRepository.delete(id);
 
-  Future<void> delete(id) async {
-    try {
-      await addressRepository.delete(id);
+      if (data == 200) {
+        address();
+        AppSnackBar.show(
+          context,
+          'Адрес удален',
+          type: AppSnackType.success,
+        );
+      } else {}
     } catch (e) {
       emit(ErrorState(message: 'Ошибка сервера'));
     }

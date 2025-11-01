@@ -63,6 +63,24 @@ class BasketCubit extends Cubit<BasketState> {
     }
   }
 
+  Future<void> basketDeleteProducts(List<int> productIds) async {
+    try {
+      print('basket');
+      print(productIds.toString());
+      final data = await basketRepository.basketDeleteProducts(productIds);
+      if (data != 200) {
+        Get.snackbar('Ошибка', 'Товар не удален',
+            backgroundColor: Colors.redAccent);
+      }
+      if (data == 200) {
+        await basketShowWithoutLoading('fbs');
+      }
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
   Future<void> basketShow(String? fulfillment) async {
     try {
       emit(LoadingState());

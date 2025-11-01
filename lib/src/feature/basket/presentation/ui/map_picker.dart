@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/basket/data/models/cdek_office_old_model.dart';
 import 'package:haji_market/src/feature/basket/data/DTO/map_geo_dto.dart';
 import 'package:haji_market/src/feature/basket/bloc/cdek_office_cubit.dart';
@@ -56,19 +57,25 @@ class _MapPickerPageState extends State<MapPickerPage> {
     for (int i = 0; i < data.length; i++) {
       MapObjects.add(PlacemarkMapObject(
         mapId: MapObjectId('placeMark $i'),
+        opacity: 1.0,
         point: Point(
             latitude: double.tryParse(data[i].coordY!)!,
             longitude: double.tryParse(data[i].coordX!)!),
         icon: PlacemarkIcon.single(
           PlacemarkIconStyle(
               image: BitmapDescriptor.fromAssetImage(
-                Assets.icons.location.path,
+                Assets.icons.mapLocation.path,
               ),
-              scale: 3),
+              scale: 1),
         ),
         onTap: ((mapObject, point) {
-          Get.snackbar(data[i].name!, data[i].addressComment!,
-              backgroundColor: Colors.blueAccent);
+          AppSnackBar.show(
+            context,
+            data[i].addressComment!,
+            type: AppSnackType.success,
+          );
+          // Get.snackbar(data[i].name!, data[i].addressComment!,
+          //     backgroundColor: Colors.blueAccent);
           //[i].name!;
           place = data[i].fullAddress;
         }),
@@ -80,11 +87,9 @@ class _MapPickerPageState extends State<MapPickerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         title: const Text(
           'Способ доставки',
-          style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
+          style: AppTextStyles.size18Weight600,
         ),
         backgroundColor: Colors.white,
       ),

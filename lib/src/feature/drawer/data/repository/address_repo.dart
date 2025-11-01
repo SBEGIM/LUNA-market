@@ -9,11 +9,15 @@ class AddressRepository {
   final AddressApi _addressApi = AddressApi();
 
   Future<List<AddressModel>> address() => _addressApi.address();
-  Future<int> store(country, city, street, home, floor, porch, room) =>
-      _addressApi.store(country, city, street, home, floor, porch, room);
+  Future<int> store(country, city, street, entrance, floor, apartament,
+          intercom, comment, phone) =>
+      _addressApi.store(country, city, street, entrance, floor, apartament,
+          intercom, comment, phone);
 
-  Future<int> update(id, country, city, street, home, floor, porch, room) =>
-      _addressApi.update(id, country, city, street, home, floor, porch, room);
+  Future<int> update(id, country, city, street, entrance, floor, apartament,
+          intercom, comment, phone) =>
+      _addressApi.update(id, country, city, street, entrance, floor, apartament,
+          intercom, comment, phone);
 
   Future<int> delete(id) => _addressApi.delete(id);
 }
@@ -32,39 +36,47 @@ class AddressApi {
     return (data as List).map((e) => AddressModel.fromJson(e)).toList();
   }
 
-  Future<int> store(country, city, street, home, floor, porch, room) async {
+  Future<int> store(country, city, street, entrance, floor, apartament,
+      intercom, comment, phone) async {
     final String? token = _box.read('token');
+
+    final rawDigits = phone.replaceAll(RegExp(r'[^0-9]'), '');
+
     final response =
         await http.post(Uri.parse("$baseUrl/user/address/store"), headers: {
       "Authorization": "Bearer $token"
     }, body: {
+      'country': country,
       'city': city,
-      'floor': floor,
-      'room': room,
-      'porch': porch,
       'street': street,
-      'home': home,
-      'country': country
+      'entrance': entrance,
+      'floor': floor,
+      'apartament': apartament,
+      'intercom': intercom,
+      'comment': comment,
+      'phone': rawDigits,
     });
 
     return response.statusCode;
   }
 
-  Future<int> update(
-      id, country, city, street, home, floor, porch, room) async {
+  Future<int> update(id, country, city, street, entrance, floor, apartament,
+      intercom, comment, phone) async {
     final String? token = _box.read('token');
     final response =
         await http.post(Uri.parse("$baseUrl/user/address/update"), headers: {
       "Authorization": "Bearer $token"
     }, body: {
       'id': id.toString(),
+      'country': country,
       'city': city,
-      'floor': floor,
-      'room': room,
-      'porch': porch,
       'street': street,
-      'home': home,
-      'country': country
+      'entrance': entrance,
+      'floor': floor,
+      'apartament': apartament,
+      'intercom': intercom,
+      'comment': comment,
+      'phone': phone,
     });
 
     return response.statusCode;

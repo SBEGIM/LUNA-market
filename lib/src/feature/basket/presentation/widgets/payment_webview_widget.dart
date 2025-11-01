@@ -1,9 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 @RoutePage()
@@ -54,16 +57,30 @@ class _PaymentWebviewPageState extends State<PaymentWebviewPage> {
           backgroundColor: Colors.white,
           title: const Text(
             'Оплата',
-            style: TextStyle(color: Colors.black),
+            style: AppTextStyles.size18Weight600,
           ),
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
           centerTitle: true,
           leading: IconButton(
               icon: const Icon(
                 Icons.arrow_back_ios_new,
               ),
               onPressed: () {
-                Navigator.pop(context);
+                final router =
+                    AutoRouter.of(context).root; // гарантированно корень
+                context.read<AppBloc>().add(
+                      const AppEvent.chageState(
+                          state: AppState.inAppUserState(index: 2)),
+                    );
+                router.replaceAll([const LauncherRoute()]);
+
+                BlocProvider.of<BasketCubit>(context).basketShow('');
+                // context.router.pushAndPopUntil(
+                //   const LauncherRoute(
+                //     children: [BasketRoute()],
+                //   ),
+                //   predicate: (_) => false,
+                // );
+                // Navigator.pop(context);
 
                 // FIXME: Убрать getx
                 // Get.back();

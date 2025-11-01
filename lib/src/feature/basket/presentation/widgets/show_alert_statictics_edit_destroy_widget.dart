@@ -64,10 +64,8 @@ Future<dynamic> showAlertEditDestroyWidget(BuildContext context, int id,
             ],
           ),
           onPressed: () async {
-            print('delete');
-            await BlocProvider.of<AddressCubit>(context).delete(id);
+            await BlocProvider.of<AddressCubit>(context).delete(context, id);
             Navigator.pop(context);
-            // showAlertAddWidget(context, product);
           },
         ),
       ],

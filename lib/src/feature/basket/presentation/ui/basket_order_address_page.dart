@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/core/presentation/widgets/other/custom_switch_button.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
+import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_country_basket_widget.dart';
 import 'package:haji_market/src/feature/drawer/bloc/address_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart'
@@ -60,6 +63,9 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
   void initState() {
     basketData();
 
+    if (State is! metaState.LoadedState) {
+      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+    }
     getAddress();
     if (widget.office != null) {
       office = widget.office;
@@ -134,6 +140,30 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
     basket(BlocProvider.of<BasketCubit>(context).state);
   }
 
+  String getTotalCount(BasketState state) {
+    int totalCount = 0;
+    if (state is LoadedState) {
+      for (final BasketShowModel basketItem in state.basketShowModel) {
+        totalCount += basketItem.basketCount ?? 0;
+      }
+      return totalCount.toString();
+    } else {
+      return '....';
+    }
+  }
+
+  String getTotalPrice(BasketState state) {
+    int totalPrice = 0;
+    if (state is LoadedState) {
+      for (final BasketShowModel basketItem in state.basketShowModel) {
+        totalPrice += basketItem.price ?? 0;
+      }
+      return formatPrice(totalPrice);
+    } else {
+      return '....';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,16 +191,14 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
             child: Column(
               children: [
                 Container(
-                  height: 12,
-                  color: AppColors.kBackgroundColor,
+                  color: AppColors.kWhite,
                 ),
                 Container(
                   padding: const EdgeInsets.only(
-                    top: 8,
+                    top: 0,
                     left: 16,
-                    bottom: 8,
+                    bottom: 12,
                     right: 16,
-                    // right: screenSize.height * 0.016,
                   ),
                   child: CustomSwitchButton<int>(
                     groupValue: segmentValue,
@@ -181,7 +209,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                         alignment: Alignment.center,
                         height: 36,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text('Самовывоз',
                             style: AppTextStyles.size14Weight500.copyWith(
@@ -194,7 +222,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                         alignment: Alignment.center,
                         height: 36,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text('Курьером',
                             style: AppTextStyles.size14Weight500.copyWith(
@@ -253,7 +281,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16)),
-                      height: 115,
+                      height: 88,
                       child: Material(
                         color: Colors.transparent,
                         child: Padding(
@@ -264,30 +292,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                               children: [
                                 const Text(
                                   'Адрес доставки',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                // Text(
-                                //   widget.deleveryDay != null &&
-                                //           widget.deleveryDay != '0'
-                                //       ? 'Доставка: ${widget.deleveryDay} дня'
-                                //       : 'Доставка: Нет срока доставки СДЕК',
-                                //   style: TextStyle(
-                                //     fontSize: 14,
-                                //     fontWeight: FontWeight.w400,
-                                //   ),
-                                // ),
-                                Text(
-                                  office ?? 'Выберите пунк доставки',
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.kGray200),
+                                  style: AppTextStyles.size18Weight600,
                                 ),
                                 const SizedBox(height: 8),
                                 Flexible(
@@ -305,8 +310,10 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                                 BorderRadius.circular(12),
                                             color: AppColors
                                                 .mainBackgroundPurpleColor),
-                                        child: Icon(Icons.location_pin,
-                                            color: AppColors.mainPurpleColor),
+                                        child: Image.asset(
+                                          Assets.icons.location.path,
+                                          scale: 2.1,
+                                        ),
                                       ),
                                       SizedBox(width: 12),
                                       GestureDetector(
@@ -327,21 +334,17 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                           // office = data;
                                           setState(() {});
                                         },
-                                        child: const Text(
-                                          'Изменить адрес самовывоза',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color:
-                                                  AppColors.kLightBlackColor),
+                                        child: Text(
+                                          office ?? 'Изменить адрес самовывоза',
+                                          style: AppTextStyles.size16Weight500,
                                         ),
                                       ),
                                       Spacer(),
-                                      Icon(
-                                        Icons.arrow_forward_ios_outlined,
-                                        color: AppColors.kGray300,
-                                        size: 18,
-                                      )
+                                      Image.asset(
+                                        Assets
+                                            .icons.defaultArrowForwardIcon.path,
+                                        scale: 1.9,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -350,16 +353,13 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                       ),
                     )
                   : SizedBox.shrink(),
-              const SizedBox(
-                height: 1,
-              ),
               segmentValue == 1
                   ? Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16)),
-                      height: 135,
+                      height: 88,
                       width: MediaQuery.of(context).size.width,
                       child: Material(
                         color: Colors.transparent,
@@ -380,84 +380,52 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Aдрес доставки',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    office ?? 'Выберите адрес доставки',
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.kGray200),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  // Text(
-                                  //   widget.deleveryDay != null &&
-                                  //           widget.deleveryDay != '0'
-                                  //       ? 'Доставка: ${widget.deleveryDay} дня'
-                                  //       : 'Доставка: Нет срока доставки СДЕК',
-                                  //   style: const TextStyle(
-                                  //     fontSize: 14,
-                                  //     fontWeight: FontWeight.w400,
-                                  //   ),
-                                  // ),
-
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: 32,
-                                          width: 32,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              color: AppColors
-                                                  .mainBackgroundPurpleColor),
-                                          child: Icon(Icons.location_pin,
-                                              color: AppColors.mainPurpleColor),
+                                  Text('Aдрес доставки',
+                                      style: AppTextStyles.size18Weight600),
+                                  SizedBox(height: 8),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 32,
+                                        width: 32,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            color: AppColors
+                                                .mainBackgroundPurpleColor),
+                                        child: Image.asset(
+                                          Assets.icons.location.path,
+                                          scale: 2.1,
                                         ),
-                                        SizedBox(width: 12),
-                                        SizedBox(
-                                          width: 278,
-                                          child: Text(
-                                            address,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                letterSpacing: -1,
-                                                fontWeight: FontWeight.w400,
-                                                color:
-                                                    AppColors.kLightBlackColor),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                      ),
+                                      SizedBox(width: 12),
+                                      SizedBox(
+                                        width: 278,
+                                        child: Text(
+                                          address,
+                                          style: AppTextStyles.size16Weight500,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                        Spacer(),
-                                        Icon(
-                                          Icons.arrow_forward_ios_outlined,
-                                          color: AppColors.kGray300,
-                                          size: 18,
-                                        )
-                                      ],
-                                    ),
+                                      ),
+                                      Spacer(),
+                                      Image.asset(
+                                        Assets
+                                            .icons.defaultArrowForwardIcon.path,
+                                        scale: 1.9,
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(height: 24),
                                 ]),
                           ),
                         ),
                       ),
                     )
                   : SizedBox.shrink(),
+              const SizedBox(height: 8),
               BlocBuilder<BasketCubit, BasketState>(builder: (context, state) {
                 if (state is LoadedState) {
                   return SizedBox(
@@ -586,13 +554,15 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                 }
               }),
               Container(
-                padding: const EdgeInsets.only(left: 16, right: 16),
+                margin: EdgeInsets.only(top: 8, bottom: 16),
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                ),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12))),
+                    borderRadius: BorderRadius.circular(16)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -792,27 +762,25 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                       height: 12,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Итого',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Итого',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(right: 16),
-                          child: Text(
+                          Text(
                             ' ${isSwitched == true ? (bonus < (price * 0.1) ? ((price - bonus) + courierPrice) : ((price - price * 0.1) + courierPrice)).toInt() : (courierPrice + price)} ₽',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ]),
+                    SizedBox(height: 16)
+
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     //   children: [
@@ -842,68 +810,6 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                     //   ],
                     // ),
                     // const SizedBox(height: 1),
-                    SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(Icons.check_circle),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
-                            builder: (context, state) {
-                          if (state is metaState.LoadedState) {
-                            metasBody.addAll([
-                              state.metas.terms_of_use!,
-                              state.metas.privacy_policy!,
-                              state.metas.contract_offer!,
-                              state.metas.shipping_payment!,
-                              state.metas.TTN!,
-                            ]);
-                            return GestureDetector(
-                              onTap: () {
-                                Get.to(() => MetasPage(
-                                      title: metas[3],
-                                      body: metasBody[3],
-                                    ));
-                              },
-                              child: RichText(
-                                textAlign: TextAlign.left,
-                                text: const TextSpan(
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.black),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text:
-                                          "Нажимая «Оплатить», вы принимаете\nусловия ",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.kGray300,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    TextSpan(
-                                      text: "Типового договора купли-продажи\n",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: AppColors.mainPurpleColor),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          } else {
-                            return const Center(
-                                child: CircularProgressIndicator(
-                                    color: Colors.indigoAccent));
-                          }
-                        }),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 57,
-                    ),
                   ],
                 ),
               ),
@@ -919,70 +825,163 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
             context.router.push(PaymentWebviewRoute(url: state.url));
           }
         }, builder: (context, state) {
-          return Container(
-            color: Colors.white,
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
-            child: InkWell(
-              onTap: () async {
-                if (point == false && courier == false && shop == false) {
-                  Get.snackbar('Ошибка', 'Выберите способ доставки',
-                      backgroundColor: Colors.redAccent);
-                  return;
-                }
-
-                if (point == true) {
-                  if (office == null) {
-                    Get.snackbar('Ошибка', 'Выберите адрес самовывоза',
-                        backgroundColor: Colors.redAccent);
-                    return;
-                  }
-                }
-
-                if (courier == true) {
-                  if (address.isEmpty) {
-                    Get.snackbar('Ошибка', 'Напишите адрес для курьера',
-                        backgroundColor: Colors.redAccent);
-                    return;
-                  }
-                }
-
-                if (shop == true) {
-                  if (address.isEmpty) {
-                    Get.snackbar('Ошибка', 'Напишите адрес для курьера',
-                        backgroundColor: Colors.redAccent);
-                    return;
-                  }
-                }
-
-                BlocProvider.of<orderCubit.OrderCubit>(context).payment(
-                    address: address,
-                    bonus: isSwitched == true
-                        ? (bonus < (price * 0.1) ? bonus : (price * 0.1))
-                            .toString()
-                        : '0',
-                    fulfillment: 'fbs');
-
-                // Navigator.pop(context);
-              },
-              child: Container(
-                  height: 52,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColors.mainPurpleColor,
+          return SafeArea(
+            bottom: false,
+            child: Container(
+              height: 120,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16))),
+              padding:
+                  const EdgeInsets.only(left: 23, right: 23, bottom: 8, top: 8),
+              child: Column(
+                children: [
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Text(
+                  //       '$count товаров',
+                  //       style: AppTextStyles.size16Weight500,
+                  //     ),
+                  //     Text(
+                  //       "$price ₽",
+                  //       style: AppTextStyles.size16Weight500,
+                  //     ),
+                  //   ],
+                  // ),
+                  // SizedBox(height: 14),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.check_circle),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      BlocBuilder<metaCubit.MetaCubit, metaState.MetaState>(
+                          builder: (context, state) {
+                        if (state is metaState.LoadedState) {
+                          metasBody.addAll([
+                            state.metas.terms_of_use!,
+                            state.metas.privacy_policy!,
+                            state.metas.contract_offer!,
+                            state.metas.shipping_payment!,
+                            state.metas.TTN!,
+                          ]);
+                          return GestureDetector(
+                            onTap: () {
+                              Get.to(() => MetasPage(
+                                    title: metas[3],
+                                    body: metasBody[3],
+                                  ));
+                            },
+                            child: RichText(
+                              textAlign: TextAlign.left,
+                              text: const TextSpan(
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text:
+                                        "Нажимая «Оплатить», вы принимаете\nусловия ",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: AppColors.kGray300,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  TextSpan(
+                                    text: "Типового договора купли-продажи\n",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.mainPurpleColor),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator(
+                                  color: Colors.indigoAccent));
+                        }
+                      }),
+                    ],
                   ),
-                  width: MediaQuery.of(context).size.width,
-                  alignment: Alignment.center,
-                  child: state is orderCubit.LoadingState
-                      ? Center(child: CircularProgressIndicator.adaptive())
-                      : Text(
-                          'Оплатить',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18),
-                          textAlign: TextAlign.center,
-                        )),
+                  InkWell(
+                    onTap: () async {
+                      if (point == false && courier == false && shop == false) {
+                        AppSnackBar.show(
+                          context,
+                          'Выберите способ доставки',
+                          type: AppSnackType.error,
+                        );
+                        return;
+                      }
+
+                      if (point == true) {
+                        if (office == null) {
+                          AppSnackBar.show(
+                            context,
+                            'Выберите адрес самовывоза',
+                            type: AppSnackType.error,
+                          );
+                          return;
+                        }
+                      }
+
+                      if (courier == true) {
+                        if (address.isEmpty) {
+                          AppSnackBar.show(
+                            context,
+                            'Напишите адрес для курьера',
+                            type: AppSnackType.error,
+                          );
+                          return;
+                        }
+                      }
+
+                      if (shop == true) {
+                        if (address.isEmpty) {
+                          AppSnackBar.show(
+                            context,
+                            'Напишите адрес для курьера',
+                            type: AppSnackType.error,
+                          );
+                          return;
+                        }
+                      }
+
+                      BlocProvider.of<orderCubit.OrderCubit>(context).payment(
+                          address: address,
+                          bonus: isSwitched == true
+                              ? (bonus < (price * 0.1) ? bonus : (price * 0.1))
+                                  .toString()
+                              : '0',
+                          fulfillment: 'fbs');
+                    },
+                    child: Container(
+                        height: 52,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: AppColors.mainPurpleColor,
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        child: state is orderCubit.LoadingState
+                            ? Center(
+                                child: CircularProgressIndicator.adaptive())
+                            : Text(
+                                'Оплатить',
+                                style: AppTextStyles.size18Weight600
+                                    .copyWith(color: AppColors.kWhite),
+                                textAlign: TextAlign.center,
+                              )),
+                  ),
+                ],
+              ),
             ),
           );
         }));

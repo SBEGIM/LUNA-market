@@ -296,13 +296,16 @@ Future<dynamic> showAlertStoreWidget(BuildContext context) async {
                   GestureDetector(
                     onTap: () async {
                       await BlocProvider.of<AddressCubit>(context).store(
+                          context,
                           countryController.text,
                           cityController.text,
                           streetController.text,
                           homeController.text,
                           floorController.text,
                           porchController.text,
-                          roomController.text);
+                          roomController.text,
+                          '',
+                          '');
 
                       Get.back();
                       Get.back();

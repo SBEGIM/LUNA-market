@@ -18,11 +18,13 @@ class BasketProductCardWidget extends StatefulWidget {
   final int count;
   final String fulfillment;
   bool isChecked;
+  final void Function() onCheckedChanged;
   BasketProductCardWidget({
     required this.count,
     required this.basketProducts,
     required this.fulfillment,
     required this.isChecked,
+    required this.onCheckedChanged,
     Key? key,
   }) : super(key: key);
 
@@ -134,10 +136,7 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                     left: 5.6,
                     top: 5.6,
                     child: InkWell(
-                      onTap: () {
-                        widget.isChecked = !widget.isChecked;
-                        setState(() {});
-                      },
+                      onTap: () => widget.onCheckedChanged(),
                       child: Container(
                         width: 16,
                         height: 16,
@@ -202,14 +201,12 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                   ),
                   SizedBox(
                     width: 234,
-                    child: Flexible(
-                      child: Text(
-                        '${widget.basketProducts.product?.name ?? ''}',
-                        style: AppTextStyles.size13Weight400
-                            .copyWith(color: Color(0xff636366)),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    child: Text(
+                      '${widget.basketProducts.product?.name ?? ''}',
+                      style: AppTextStyles.size13Weight400
+                          .copyWith(color: Color(0xff636366)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   SizedBox(height: 12),

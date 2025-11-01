@@ -11,6 +11,7 @@ import 'package:haji_market/src/core/presentation/widgets/shimmer/shimmer_box.da
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/basket_card_widget.dart';
+import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_basket_widget.dart';
 import 'package:haji_market/src/feature/product/cubit/product_ad_cubit.dart'
     as productAdCubit;
 import 'package:haji_market/src/feature/product/cubit/product_ad_state.dart'
@@ -168,100 +169,15 @@ class _BasketPageState extends State<BasketPage> {
     return Scaffold(
         backgroundColor: AppColors.kBackgroundColor,
         appBar: AppBar(
+          surfaceTintColor: AppColors.kWhite,
           centerTitle: true,
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
           backgroundColor: AppColors.kWhite,
           elevation: 0,
-          // leading: IconButton(
-          //   onPressed: () {
-          //     // Navigator.pop(context);
-          //   },
-          //   icon: const Icon(
-          //     Icons.arrow_back_ios,
-          //     color: AppColors.kPrimaryColor,
-          //   ),
-          // ),
           title: const Text(
             'Корзина',
             style: AppTextStyles.size18Weight600,
             textAlign: TextAlign.center,
           ),
-          // bottom: PreferredSize(
-          //   preferredSize: const Size.fromHeight(60),
-          //   child: Column(
-          //     children: [
-          //       // Container(
-          //       //   height: 12,
-          //       //   color: AppColors.kBackgroundColor,
-          //       // ),
-          //       // Container(
-          //       //   padding: const EdgeInsets.only(
-          //       //     top: 8,
-          //       //     left: 16,
-          //       //     bottom: 8,
-          //       //     right: 16,
-          //       //     // right: screenSize.height * 0.016,
-          //       //   ),
-          //       //   child: CustomSwitchButton<int>(
-          //       //     groupValue: segmentValue,
-          //       //     children: {
-          //       //       0: Container(
-          //       //         alignment: Alignment.center,
-          //       //         height: 39,
-          //       //         width: MediaQuery.of(context).size.width,
-          //       //         decoration: BoxDecoration(
-          //       //           borderRadius: BorderRadius.circular(4),
-          //       //         ),
-          //       //         child: Text(
-          //       //           'FBS',
-          //       //           style: TextStyle(
-          //       //             fontSize: 15,
-          //       //             color: segmentValue == 0
-          //       //                 ? Colors.black
-          //       //                 : const Color(0xff9B9B9B),
-          //       //           ),
-          //       //         ),
-          //       //       ),
-          //       //       1: Container(
-          //       //         width: MediaQuery.of(context).size.width,
-          //       //         alignment: Alignment.center,
-          //       //         height: 39,
-          //       //         decoration: BoxDecoration(
-          //       //           borderRadius: BorderRadius.circular(4),
-          //       //         ),
-          //       //         child: Text(
-          //       //           'realFBS',
-          //       //           style: TextStyle(
-          //       //             fontSize: 14,
-          //       //             color: segmentValue == 1
-          //       //                 ? Colors.black
-          //       //                 : const Color(0xff9B9B9B),
-          //       //           ),
-          //       //         ),
-          //       //       ),
-          //       //     },
-          //       //     onValueChanged: (int? value) async {
-          //       //       if (value != null) {
-          //       //         segmentValue = value;
-          //       //         if (segmentValue == 0) {
-          //       //           fulfillmentApi = 'FBS';
-          //       //           fulfillment = 'FBS';
-          //       //         } else {
-          //       //           fulfillmentApi = 'realFBS';
-          //       //           fulfillment = 'realFBS';
-          //       //         }
-
-          //       //         BlocProvider.of<BasketCubit>(context)
-          //       //             .basketShow(fulfillmentApi);
-
-          //       //         // BlocProvider.of<BasketAdminCubit>(context).basketSwitchState(value);
-          //       //       }
-          //       //     },
-          //       //   ),
-          //       // ),
-          //     ],
-          //   ),
-          // ),
         ),
         body:
             BlocConsumer<BasketCubit, BasketState>(listener: (context, state) {
@@ -361,9 +277,7 @@ class _BasketPageState extends State<BasketPage> {
                               ),
                               SizedBox(
                                 width: 234,
-                                child: Flexible(
-                                  child: ShimmerBox(),
-                                ),
+                                child: ShimmerBox(),
                               ),
                               SizedBox(height: 12),
                               ShimmerBox(
@@ -492,7 +406,22 @@ class _BasketPageState extends State<BasketPage> {
                             SizedBox(width: 16),
                             GestureDetector(
                                 onTap: () async {
-                                  await Share.share('${productNames}');
+                                  final ok = await showBasketAlert(context,
+                                      title: 'Удалить',
+                                      message:
+                                          'Вы действительно хотите удалить выбранные товары?',
+                                      mode: AccountAlertMode.confirm,
+                                      cancelText: 'Отмена',
+                                      primaryText: 'Да',
+                                      primaryColor: Colors.red);
+
+                                  if (ok == true) {
+                                    await BlocProvider.of<BasketCubit>(context)
+                                        .basketDeleteProducts(
+                                            isChecked.toList());
+
+                                    isChecked.clear();
+                                  } else {}
                                 },
                                 child: Image.asset(
                                   Assets.icons.trashIcon.path,
@@ -524,15 +453,29 @@ class _BasketPageState extends State<BasketPage> {
                       ),
                       itemBuilder: (BuildContext context, int index) {
                         return BasketProductCardWidget(
-                            basketProducts: state.basketShowModel[index],
-                            count: index,
-                            fulfillment: fulfillmentApi,
-                            isChecked: isChecked.contains(
-                                state.basketShowModel[index].basketId));
+                          basketProducts: state.basketShowModel[index],
+                          count: index,
+                          fulfillment: fulfillmentApi,
+                          isChecked: isChecked
+                              .contains(state.basketShowModel[index].basketId),
+                          onCheckedChanged: () {
+                            if (isChecked.contains(
+                                state.basketShowModel[index].basketId!)) {
+                              isChecked.remove(
+                                  state.basketShowModel[index].basketId!);
+                            } else {
+                              isChecked
+                                  .add(state.basketShowModel[index].basketId!);
+                            }
+
+                            setState(() {});
+                          },
+                        );
                       },
                     ),
                   ),
                   Container(
+                    height: 174,
                     padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
                         color: AppColors.kWhite,
@@ -543,36 +486,29 @@ class _BasketPageState extends State<BasketPage> {
                       children: [
                         Text(
                           'Сумма заказа',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0,
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '${getTotalCount(state)} товар',
-                              style: AppTextStyles.catalogTextStyle,
-                            ),
-                            Text(
-                              '${getTotalProductPrice(state)} ₽',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0,
-                              ),
-                            )
-                          ],
+                          style: AppTextStyles.size18Weight700,
                         ),
                         SizedBox(height: 12),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
+                              '${getTotalCount(state)} товар',
+                              style: AppTextStyles.size16Weight400,
+                            ),
+                            Text(
+                              '${getTotalProductPrice(state)} ₽',
+                              style: AppTextStyles.size16Weight600,
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 11),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
                               'Скидка',
+                              style: AppTextStyles.size16Weight400,
                             ),
                             ShaderMask(
                               shaderCallback: (bounds) => const LinearGradient(
@@ -580,25 +516,20 @@ class _BasketPageState extends State<BasketPage> {
                               ).createShader(bounds),
                               child: Text(
                                 '${getTotalCompound(state)} ₽',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: -1,
-                                  color: Colors
-                                      .white, // Неважно — будет заменён градиентом
-                                ),
+                                style: AppTextStyles.size16Weight600
+                                    .copyWith(color: AppColors.kWhite),
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 11),
+                        SizedBox(height: 10),
                         SizedBox(
                           height: 1,
                           child: LayoutBuilder(
                             builder: (BuildContext context,
                                 BoxConstraints constraints) {
                               const dashWidth = 5.0;
-                              final dashHeight = 0.5;
+                              final dashHeight = 0.99;
                               final dashCount = 30;
                               return Flex(
                                 mainAxisAlignment:
@@ -618,108 +549,23 @@ class _BasketPageState extends State<BasketPage> {
                             },
                           ),
                         ),
-                        SizedBox(height: 11),
+                        SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               'Итого',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 0,
-                              ),
+                              style: AppTextStyles.size18Weight600,
                             ),
                             Text(
                               '${getTotalPrice(state)}₽',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 0,
-                              ),
+                              style: AppTextStyles.size18Weight700,
                             )
                           ],
                         ),
                       ],
                     ),
                   ),
-
-                  SizedBox(height: 200)
-
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
-                  // Container(
-                  //   color: Colors.white,
-                  //   padding: const EdgeInsets.all(16),
-                  //   child: Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       const Text(
-                  //         'Вас могут заинтересовать',
-                  //         style: TextStyle(
-                  //             color: AppColors.kGray900,
-                  //             fontWeight: FontWeight.w700,
-                  //             fontSize: 16),
-                  //       ),
-                  //       const SizedBox(
-                  //         height: 10,
-                  //       ),
-                  //       BlocConsumer<productAdCubit.ProductAdCubit,
-                  //               productAdState.ProductAdState>(
-                  //           listener: (context, state) {},
-                  //           builder: (context, state) {
-                  //             if (state is productAdState.ErrorState) {
-                  //               return Center(
-                  //                 child: Text(
-                  //                   state.message,
-                  //                   style: const TextStyle(
-                  //                       fontSize: 20.0, color: Colors.grey),
-                  //                 ),
-                  //               );
-                  //             }
-                  //             if (state is productAdState.LoadingState) {
-                  //               return const Center(
-                  //                   child: CircularProgressIndicator(
-                  //                       color: Colors.indigoAccent));
-                  //             }
-
-                  //             if (state is productAdState.LoadedState) {
-                  //               return SizedBox(
-                  //                   height: MediaQuery.of(context).size.height *
-                  //                       0.29,
-                  //                   // width: MediaQuery.of(context).size.height * 0.20,
-                  //                   child: ListView.builder(
-                  //                     scrollDirection: Axis.horizontal,
-                  //                     itemCount: state.productModel.length,
-                  //                     itemBuilder: (context, index) {
-                  //                       return GestureDetector(
-                  //                         onTap: () => context.router.push(
-                  //                             DetailCardProductRoute(
-                  //                                 product: state
-                  //                                     .productModel[index])),
-                  //                         child: ProductAdCard(
-                  //                           product: state.productModel[index],
-                  //                         ),
-                  //                       );
-                  //                     },
-                  //                   ));
-                  //             } else {
-                  //               return const Center(
-                  //                   child: CircularProgressIndicator(
-                  //                       color: Colors.indigoAccent));
-                  //             }
-                  //           }),
-                  //       const SizedBox(
-                  //         height: 80,
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
-
-                  // const SizedBox(
-                  //   height: 30,
-                  // ),
                 ],
               ),
             );
@@ -741,75 +587,72 @@ class _BasketPageState extends State<BasketPage> {
             );
           }
         }),
-        bottomSheet: bootSheet == true
+        bottomNavigationBar: bootSheet == true
             ? BlocBuilder<BasketCubit, BasketState>(builder: (context, state) {
-                return Container(
-                  color: Colors.white,
-                  padding: const EdgeInsets.only(
-                      left: 16, right: 16, top: 8, bottom: 100),
-                  child: InkWell(
-                      onTap: () {
-                        if (count != 0) {
-                          if (fulfillment != 'realFBS') {
+                return SafeArea(
+                  top: false,
+                  child: Container(
+                    height: 110,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(16),
+                            topRight: Radius.circular(16))),
+                    padding: const EdgeInsets.only(
+                        left: 23, right: 23, bottom: 8, top: 8),
+                    child: InkWell(
+                        onTap: () {
+                          if (count != 0) {
                             context.router.push(BasketOrderAddressRoute(
                                 deleveryDay: deleveryDay));
-                          } else {
-                            context.router.push(BasketOrderRoute(
-                                fbs: fulfillment == 'FBS' ? true : false,
-                                address: '',
-                                fulfillment: fulfillment));
+                            // if (fulfillment != 'realFBS') {
+                            //   context.router.push(BasketOrderAddressRoute(
+                            //       deleveryDay: deleveryDay));
+                            // } else {
+                            //   context.router.push(BasketOrderRoute(
+                            //       fbs: fulfillment == 'FBS' ? true : false,
+                            //       address: '',
+                            //       fulfillment: fulfillment));
+                            // }
+                            // Get.to(const BasketOrderAddressPage())
                           }
-                          // Get.to(const BasketOrderAddressPage())
-                        }
 
-                        // int bottomPrice = GetStorage().read('bottomPrice');
-                        // int bottomCount = GetStorage().read('bottomCount');
-                        // Navigator.pop(context);
-                      },
-                      child: SizedBox(
-                          height: 80,
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "${getTotalCount(state)} товара",
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  Text(
-                                    "Всего: ${getTotalPrice(state)} ₽",
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              Container(
-                                  height: 45,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: count != 0
-                                        ? AppColors.mainPurpleColor
-                                        : AppColors.kGray300,
-                                  ),
-                                  width: MediaQuery.of(context).size.width,
-                                  alignment: Alignment.center,
-                                  // padding: const EdgeInsets.only(left: 16, right: 16),
-                                  child: const Text(
-                                    'Продолжить',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16),
-                                    textAlign: TextAlign.center,
-                                  )),
-                            ],
-                          ))),
+                          // int bottomPrice = GetStorage().read('bottomPrice');
+                          // int bottomCount = GetStorage().read('bottomCount');
+                          // Navigator.pop(context);
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("${getTotalCount(state)} товара",
+                                    style: AppTextStyles.size16Weight500),
+                                Text("Всего: ${getTotalPrice(state)} ₽",
+                                    style: AppTextStyles.size16Weight500),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            Container(
+                                height: 52,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  color: count != 0
+                                      ? AppColors.mainPurpleColor
+                                      : AppColors.kGray300,
+                                ),
+                                width: MediaQuery.of(context).size.width,
+                                alignment: Alignment.center,
+                                // padding: const EdgeInsets.only(left: 16, right: 16),
+                                child: Text(
+                                  'Продолжить',
+                                  style: AppTextStyles.size18Weight600
+                                      .copyWith(color: AppColors.kWhite),
+                                  textAlign: TextAlign.center,
+                                )),
+                          ],
+                        )),
+                  ),
                 );
               })
             : null);

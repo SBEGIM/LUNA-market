@@ -8,6 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
+import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
 import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/show_module_profile_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/ui/about_us_page.dart';
@@ -557,11 +558,7 @@ class _DrawerPageState extends State<DrawerPage> {
 
                     buildProfileItem(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AboutUsPage()),
-                        );
+                        context.router.push(AddressRoute());
                       },
                       title: 'Cохраненные адреса',
                       iconPath: Assets.icons.locationProfileIcon.path,

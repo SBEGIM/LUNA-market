@@ -5,6 +5,8 @@ import 'package:haji_market/src/feature/app/widgets/custom_back_button.dart';
 import 'package:haji_market/src/feature/drawer/bloc/bonus_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/bonus_state.dart';
 
+import '../../../../core/constant/generated/assets.gen.dart';
+
 class BonusUserPage extends StatefulWidget {
   const BonusUserPage({Key? key}) : super(key: key);
 
@@ -58,13 +60,11 @@ class _BonusUserPageState extends State<BonusUserPage> {
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.kWhite,
+        surfaceTintColor: AppColors.kWhite,
         title: const Text(
           'Мои бонусы',
-          style: TextStyle(
-              color: AppColors.kGray900,
-              fontSize: 16,
-              fontWeight: FontWeight.w500),
+          style: AppTextStyles.size18Weight600,
         ),
         leading: Padding(
           padding: const EdgeInsets.only(left: 22.0),
@@ -77,101 +77,83 @@ class _BonusUserPageState extends State<BonusUserPage> {
       body: ListView(
         shrinkWrap: true,
         children: [
-          Container(
-            margin: const EdgeInsets.only(top: 16, left: 16, bottom: 8),
-            height: 23,
-            child: const Text(
-              'Бонусы продавцов',
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.kGray900),
-            ),
-          ),
           SizedBox(
-            height: bonusDesciptionHeight == true ? 300 : 200,
-            child: ListView.builder(
-              itemCount: titleBonus.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: const EdgeInsets.only(
-                      top: 16, left: 16, bottom: 8, right: 16),
-                  height: showBonus[index] == true ? 170 : 70,
-                  color: Colors.white,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            titleBonus[index],
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.kGray900),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              showBonus[index] = !showBonus[index];
+            height: 220,
+            child:
 
-                              bonusDesciptionHeight = !bonusDesciptionHeight;
-                              setState(() {});
-                            },
-                            child: showBonus[index] == true
-                                ? Icon(
-                                    Icons.keyboard_arrow_up_outlined,
-                                    color: AppColors.kPrimaryColor,
-                                  )
-                                : Icon(
-                                    Icons.keyboard_arrow_down_outlined,
-                                    color: AppColors.kPrimaryColor,
-                                  ),
-                          )
-                        ],
-                      ),
-                      showBonus[index] == true
-                          ? Text(
-                              descriptionBonus[index],
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.kGray900),
-                            )
-                          : SizedBox(),
-                    ],
-                  ),
-                );
-              },
+                //  ListView.builder(
+                //   itemCount: titleBonus.length,
+                //   itemBuilder: (context, index) {
+                //     return
+
+                BonusList(
+              titles: titleBonus,
+              descriptions: descriptionBonus,
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 16, left: 16, bottom: 8),
-            height: 23,
-            child: const Text(
-              'Ваши накопленные бонусы',
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.kGray900),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 16),
-            height: 23,
-            alignment: Alignment.centerLeft,
-            color: Colors.white,
-            child: const Text(
-              'Магазины',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.kGray900),
-            ),
+
+            // Container(
+            //   padding: const EdgeInsets.only(
+            //       top: 8, left: 16, bottom: 8, right: 16),
+            //   height: showBonus[index] == true ? 190 : 50,
+            //   color: Colors.white,
+            //   child: Column(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //         children: [
+            //           Text(
+            //             titleBonus[index],
+            //             style: AppTextStyles.size18Weight500,
+            //           ),
+            //           GestureDetector(
+            //             onTap: () {
+            //               showBonus[index] = !showBonus[index];
+
+            //               bonusDesciptionHeight = !bonusDesciptionHeight;
+            //               setState(() {});
+            //             },
+            //             child: showBonus[index] == true
+            //                 ? Icon(
+            //                     Icons.keyboard_arrow_up_outlined,
+            //                     color: AppColors.kGray200,
+            //                   )
+            //                 : Icon(
+            //                     Icons.keyboard_arrow_down_outlined,
+            //                     color: AppColors.kGray200,
+            //                   ),
+            //           )
+            //         ],
+            //       ),
+            //       SizedBox(height: 8),
+            //       showBonus[index] == true
+            //           ? Text(
+            //               descriptionBonus[index],
+            //               style: AppTextStyles.size16Weight400
+            //                   .copyWith(color: Color(0xff3A3A3C)),
+            //             )
+            //           : SizedBox.shrink(),
+            //     ],
+            //   ),
+            // );
+            //     },
+            //   ),
           ),
           Container(
             height: 10,
+          ),
+          Container(
+            padding: const EdgeInsets.only(left: 16, top: 8),
+            height: 23,
+            alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(12)),
+            child: Text(
+              'Магазины',
+              style: AppTextStyles.size14Weight400
+                  .copyWith(color: Color(0xff8E8E93)),
+            ),
           ),
           Container(
               color: Colors.white,
@@ -188,19 +170,22 @@ class _BonusUserPageState extends State<BonusUserPage> {
                             Container(
                                 color: Colors.white,
                                 margin: const EdgeInsets.only(top: 146),
-                                child: Image.asset('assets/icons/no_data.png')),
-                            const Text(
-                              'У вас пока нет бонусов',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w600),
+                                child: Image.asset(
+                                  Assets.icons.defaultNoDataIcon.path,
+                                  height: 72,
+                                  width: 72,
+                                )),
+                            SizedBox(height: 12),
+                            Text(
+                              'Пока здесь пусто',
+                              style: AppTextStyles.size16Weight500,
                               textAlign: TextAlign.center,
                             ),
-                            const Text(
-                              'Для выбора вещей перейдите в маркет',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff717171)),
+                            SizedBox(height: 4),
+                            Text(
+                              'Здесь появятся ваши бонусы от продавцов',
+                              style: AppTextStyles.size11Weight400
+                                  .copyWith(color: Color(0xff8E8E93)),
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -285,4 +270,107 @@ class TrapeziumClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(TrapeziumClipper oldClipper) => false;
+}
+
+class BonusList extends StatefulWidget {
+  final List<String> titles;
+  final List<String> descriptions;
+
+  const BonusList({
+    Key? key,
+    required this.titles,
+    required this.descriptions,
+  }) : super(key: key);
+
+  @override
+  State<BonusList> createState() => _BonusListState();
+}
+
+class _BonusListState extends State<BonusList> with TickerProviderStateMixin {
+  late List<bool> _isOpen; // состояние раскрытия для каждого элемента
+
+  @override
+  void initState() {
+    super.initState();
+    _isOpen = List<bool>.filled(widget.titles.length, false);
+
+    _isOpen[0] = true;
+  }
+
+  void _toggle(int index) {
+    setState(() {
+      _isOpen[index] = !_isOpen[index];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(
+                  16))), // не задаём фиксированную высоту, пусть само растёт
+      child: ListView.builder(
+        // если ты это в Column кладёшь — добавь shrinkWrap: true и physics: NeverScrollableScrollPhysics()
+        itemCount: widget.titles.length,
+        itemBuilder: (context, index) {
+          final opened = _isOpen[index];
+
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Column(
+              children: [
+                // Заголовок + стрелка
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        widget.titles[index],
+                        style: AppTextStyles.size18Weight500,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => _toggle(index),
+                      behavior: HitTestBehavior.translucent,
+                      child: Icon(
+                        opened
+                            ? Icons.keyboard_arrow_up_outlined
+                            : Icons.keyboard_arrow_down_outlined,
+                        color: AppColors.kGray200,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 8),
+
+                // Тело с описанием + плавная анимация высоты
+                AnimatedSize(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeInOut,
+                  alignment: Alignment.topCenter,
+                  child: opened
+                      ? Container(
+                          width: double.infinity,
+                          // отдельный отступ чтобы текст не лип к стрелке
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            widget.descriptions[index],
+                            style: AppTextStyles.size16Weight400.copyWith(
+                              color: const Color(0xff3A3A3C),
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
 }

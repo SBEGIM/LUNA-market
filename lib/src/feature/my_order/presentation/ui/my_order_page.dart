@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/my_order/presentation/widget/my_order_card_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../basket/bloc/basket_cubit.dart';
@@ -15,6 +16,9 @@ class MyOrderPage extends StatefulWidget {
 }
 
 class _MyOrderPageState extends State<MyOrderPage> {
+  int segmentValue = 0;
+  final TextEditingController _searchController = TextEditingController();
+
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -46,24 +50,139 @@ class _MyOrderPageState extends State<MyOrderPage> {
       backgroundColor: AppColors.kBackgroundColor,
       drawer: const DrawerPage(),
       appBar: AppBar(
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.kPrimaryColor,
-            ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Image.asset(
+            Assets.icons.defaultBackIcon.path,
+            scale: 2.1,
           ),
-          centerTitle: true,
-          title: const Text(
-            'Мои заказы',
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
-          )),
+        ),
+        centerTitle: true,
+        title: const Text('Мои заказы', style: AppTextStyles.size18Weight600),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(120),
+          child: Column(
+            children: [
+              Container(
+                height: 44,
+                margin: const EdgeInsets.only(top: 24, left: 16, right: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: const Color(0xffF7F7F7),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  keyboardType: TextInputType.text,
+                  textAlign: TextAlign.start,
+                  textAlignVertical: TextAlignVertical.center,
+                  onChanged: (value) {},
+                  decoration: InputDecoration(
+                    isDense: true,
+                    border: InputBorder.none,
+                    hintText: 'Поиск',
+                    hintStyle: AppTextStyles.size16Weight400
+                        .copyWith(color: const Color(0xff8E8E93)),
+                    contentPadding: EdgeInsets.zero,
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: Image.asset(
+                        Assets.icons.defaultSearchIcon.path,
+                        width: 18,
+                        height: 18,
+                      ),
+                    ),
+                    prefixIconConstraints: const BoxConstraints(
+                      minWidth: 18 + 5,
+                      minHeight: 18,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: 72,
+                decoration: BoxDecoration(
+                  color: Color(0xffF7F7F7),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 8,
+                      offset: const Offset(0, -2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      height: 36,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        physics: const BouncingScrollPhysics(),
+                        children: [
+                          _buildSegmentItem(
+                            index: 0,
+                            status: '',
+                            label: 'Все',
+                            isActive: segmentValue == 0,
+                            width: 56,
+                          ),
+                          const SizedBox(width: 8),
+                          _buildSegmentItem(
+                            index: 1,
+                            label: 'Новые',
+                            status: 'active',
+                            isActive: segmentValue == 1,
+                            width: 74,
+                          ),
+                          const SizedBox(width: 8),
+                          _buildSegmentItem(
+                            index: 2,
+                            label: 'В процессе',
+                            status: 'in_process',
+                            isActive: segmentValue == 2,
+                            width: 108,
+                          ),
+                          const SizedBox(width: 8),
+                          _buildSegmentItem(
+                            index: 3,
+                            label: 'Завершенные',
+                            status: 'end',
+                            isActive: segmentValue == 3,
+                            width: 122,
+                          ),
+                          const SizedBox(width: 8),
+                          _buildSegmentItem(
+                            index: 4,
+                            label: 'Отмененные',
+                            status: 'cancel',
+                            isActive: segmentValue == 4,
+                            width: 122,
+                          ),
+                          const SizedBox(width: 8),
+                          _buildSegmentItem(
+                            index: 5,
+                            label: 'Спорные',
+                            status: 'error',
+                            isActive: segmentValue == 5,
+                            width: 108,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
       body: BlocConsumer<BasketCubit, BasketState>(
           listener: (context, state) {},
           builder: (context, state) {
@@ -104,6 +223,43 @@ class _MyOrderPageState extends State<MyOrderPage> {
                   child: CircularProgressIndicator(color: Colors.indigoAccent));
             }
           }),
+    );
+  }
+
+  Widget _buildSegmentItem({
+    required int index,
+    required String label,
+    required String status,
+    required bool isActive,
+    required double width,
+  }) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          segmentValue = index;
+          BlocProvider.of<BasketCubit>(context).basketOrderShow();
+        });
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+        width: width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: isActive ? AppColors.mainPurpleColor : Colors.white,
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: isActive ? Colors.white : Colors.grey[700],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

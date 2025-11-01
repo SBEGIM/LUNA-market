@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/chat/data/cubit/chat_cubit.dart';
 import 'package:haji_market/src/feature/chat/data/cubit/chat_state.dart';
 import 'package:haji_market/src/feature/chat/presentation/message.dart';
@@ -58,24 +59,21 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: AppColors.kWhite,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.kWhite,
           centerTitle: true,
           elevation: 0,
-          leading: GestureDetector(
+          leading: InkWell(
             onTap: () {
               Navigator.pop(context);
             },
-            child: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.kPrimaryColor,
+            child: Image.asset(
+              Assets.icons.defaultBackIcon.path,
+              scale: 2.1,
             ),
           ),
-          title: const Text(
-            'Сообщение',
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
-          ),
+          title: const Text('Сообщение', style: AppTextStyles.size18Weight600),
         ),
         body: BlocConsumer<ChatCubit, ChatState>(
             listener: (context, state) {},
@@ -96,45 +94,40 @@ class _ChatPageState extends State<ChatPage> {
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        height: 36,
-                        margin: const EdgeInsets.only(top: 20),
+                        height: 44,
+                        margin:
+                            const EdgeInsets.only(top: 24, left: 16, right: 16),
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        alignment: Alignment.centerLeft,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: const Color(0xffF7F7F7),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                         child: TextField(
-                          textAlign: TextAlign.left,
-                          textAlignVertical: TextAlignVertical.bottom,
-                          keyboardType: TextInputType.text,
                           controller: searchController,
-                          onChanged: ((value) {
-                            setState(() {});
-                          }),
+                          keyboardType: TextInputType.text,
+                          textAlign: TextAlign.start,
+                          textAlignVertical: TextAlignVertical.center,
+                          onChanged: (value) {},
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(width: 1)),
-
-                            prefixIcon: searchController.text.isEmpty
-                                ? Transform.translate(
-                                    offset: const Offset(5, 0),
-                                    child: const Icon(
-                                      Icons.search,
-                                      color: Colors.grey,
-                                    ),
-                                  )
-                                : null,
+                            isDense: true,
+                            border: InputBorder.none,
                             hintText: 'Поиск',
-                            hintStyle: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(
-                                    width: 0.3, color: Colors.grey)),
-                            // suffixIcon: IconButton(
-                            //     onPressed: () {},
-                            //     icon: SvgPicture.asset('assets/icons/back_menu.svg ',
-                            //         color: Colors.grey)),
+                            hintStyle: AppTextStyles.size16Weight400
+                                .copyWith(color: const Color(0xff8E8E93)),
+                            contentPadding: EdgeInsets.zero,
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.only(right: 5),
+                              child: Image.asset(
+                                Assets.icons.defaultSearchIcon.path,
+                                width: 18,
+                                height: 18,
+                              ),
+                            ),
+                            prefixIconConstraints: const BoxConstraints(
+                              minWidth: 18 + 5,
+                              minHeight: 18,
+                            ),
                           ),
                         ),
                       ),
@@ -169,8 +162,12 @@ class _ChatPageState extends State<ChatPage> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 16),
                                       height: 80,
-                                      //  width: 400,
+                                      width: double.infinity,
                                       child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           CircleAvatar(
                                             backgroundImage: state
@@ -185,17 +182,15 @@ class _ChatPageState extends State<ChatPage> {
                                                 Colors.grey.withOpacity(0.3),
                                             radius: 30,
                                           ),
-                                          const SizedBox(width: 12),
+                                          const SizedBox(width: 8),
                                           Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Container(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10.5,
-                                                    left: 0,
-                                                    right: 10),
-                                                width: 260,
+                                              SizedBox(
+                                                width: 280,
                                                 child: Row(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -205,80 +200,67 @@ class _ChatPageState extends State<ChatPage> {
                                                   children: [
                                                     Text(
                                                       '${state.chat[index].name}',
-                                                      style: const TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w500),
+                                                      style: AppTextStyles
+                                                          .size16Weight500,
                                                     ),
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: [
-                                                        Text(
-                                                          ' ${parseDate(state.chat[index].createdAt)}',
-                                                          style: const TextStyle(
-                                                              color:
-                                                                  Colors.grey,
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                        state.chat[index]
-                                                                    .countNewMessages !=
-                                                                0
-                                                            ? Container(
-                                                                width: 22,
-                                                                height: 22,
-                                                                margin:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                        top: 6),
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            12),
-                                                                    color: AppColors
-                                                                        .kPrimaryColor),
-                                                                child: Text(
-                                                                  '${state.chat[index].countNewMessages}',
-                                                                  style: const TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          12,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
-                                                                ))
-                                                            : SizedBox()
-                                                      ],
+                                                    Text(
+                                                      ' ${parseDate(state.chat[index].createdAt)}',
+                                                      style: const TextStyle(
+                                                          color: Colors.grey,
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w400),
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                              Container(
-                                                padding: const EdgeInsets.only(
-                                                    top: 0, left: 0),
-                                                alignment: Alignment.topLeft,
-                                                width: 260,
-                                                child: Text(
-                                                  '${state.chat[index].lastMessage != null ? state.chat[index].lastMessage!.text : ''}',
-                                                  style: const TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
+                                              SizedBox(height: 4),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'Вы:${state.chat[index].lastMessage != null ? state.chat[index].lastMessage!.text : ''}',
+                                                    style: AppTextStyles
+                                                        .size14Weight400
+                                                        .copyWith(
+                                                            color: Color(
+                                                                0xff8E8E93)),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                  state.chat[index]
+                                                              .countNewMessages !=
+                                                          0
+                                                      ? Container(
+                                                          width: 22,
+                                                          height: 22,
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(top: 6),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12),
+                                                              color: AppColors
+                                                                  .kPrimaryColor),
+                                                          child: Text(
+                                                            '${state.chat[index].countNewMessages}',
+                                                            style: const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ))
+                                                      : SizedBox.shrink()
+                                                ],
                                               ),
                                             ],
                                           )
@@ -286,14 +268,6 @@ class _ChatPageState extends State<ChatPage> {
                                       ),
                                     ),
                                   ),
-                                  if (state.chat.length - 1 != index)
-                                    Container(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: const Divider(
-                                        height: 5,
-                                        color: AppColors.kGray400,
-                                      ),
-                                    )
                                 ],
                               );
                             }),

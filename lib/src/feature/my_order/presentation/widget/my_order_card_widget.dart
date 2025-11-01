@@ -135,267 +135,175 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(
-          height: 12,
-        ),
-        Text(
-          '${widget.basketOrder.date}',
-          style: const TextStyle(
-              color: AppColors.kGray300,
-              fontSize: 12,
-              fontWeight: FontWeight.w500),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(10)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Заказ № ${widget.basketOrder.id}',
-                  textAlign: TextAlign.right,
-                  style: const TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600),
+    return InkWell(
+      onTap: () {
+        widget.basketOrder.id != null
+            ? Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MyOrderStatusPage(basketOrder: widget.basketOrder)),
+              )
+            : printError();
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(16)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Заказ № ${widget.basketOrder.id}',
+                          textAlign: TextAlign.right,
+                          style: AppTextStyles.size14Weight500
+                              .copyWith(color: Color(0xff8E8E93))),
+                    ),
+                    Text(
+                      '${statusFBS ?? statusRealFBS}',
+                      style: AppTextStyles.size14Weight500
+                          .copyWith(color: AppColors.mainPurpleColor),
+                    )
+                  ],
                 ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              // if (widget.basketOrder.product != null &&
-              //     widget.basketOrder.product!.isNotEmpty &&
-              //     widget.basketOrder.product!.first.path != null &&
-              //     widget.basketOrder.product!.first.path!.isNotEmpty)
-              //   Image.network(
-              //     "https://lunamarket.ru/storage/${widget.basketOrder.product!.first.path!.first.toString()}",
-              //     height: 80,
-              //     width: 80,
-              //     errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
-              //       height: 80,
-              //       width: 80,
-              //     ),
-              //   )
-              // else
-              //   const ErrorImageWidget(
-              //     height: 80,
-              //     width: 80,
-              //   ),
+                const SizedBox(
+                  height: 4,
+                ),
+                // if (widget.basketOrder.product != null &&
+                //     widget.basketOrder.product!.isNotEmpty &&
+                //     widget.basketOrder.product!.first.path != null &&
+                //     widget.basketOrder.product!.first.path!.isNotEmpty)
+                //   Image.network(
+                //     "https://lunamarket.ru/storage/${widget.basketOrder.product!.first.path!.first.toString()}",
+                //     height: 80,
+                //     width: 80,
+                //     errorBuilder: (context, error, stackTrace) => const ErrorImageWidget(
+                //       height: 80,
+                //       width: 80,
+                //     ),
+                //   )
+                // else
+                //   const ErrorImageWidget(
+                //     height: 80,
+                //     width: 80,
+                //   ),
 
-              if (widget.basketOrder.productFBS?.isNotEmpty ?? false)
-                Column(
-                  children: [
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Тип доставки:',
-                          style: TextStyle(
-                              color: AppColors.kGray400,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          'FBS',
-                          style: TextStyle(
-                              color: AppColors.kGray750,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Доставка:',
-                          style: TextStyle(
-                              color: AppColors.kGray400,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          '${widget.basketOrder.deliveryDay} дней',
-                          style: const TextStyle(
-                              color: AppColors.kGray750,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Статус:',
-                          style: TextStyle(
-                              color: AppColors.kGray400,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: const Color(0x104BB34B),
-                              borderRadius: BorderRadius.circular(4)),
-                          padding: const EdgeInsets.all(5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                statusFBS,
-                                style: const TextStyle(
-                                    color: Color(0xFF4BB34B),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              if ((widget.basketOrder.productFBS?.isNotEmpty ?? false) &&
-                  (widget.basketOrder.productRealFBS?.isNotEmpty ?? false))
-                const Divider(
-                  height: 1,
-                  color: AppColors.kGray300,
-                ),
-              const SizedBox(height: 8),
-              if (widget.basketOrder.productRealFBS?.isNotEmpty ?? false)
-                Column(
-                  children: [
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Тип доставки:',
-                          style: TextStyle(
-                              color: AppColors.kGray400,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          'realFBS',
-                          style: TextStyle(
-                              color: AppColors.kGray750,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Доставка:',
-                          style: TextStyle(
-                              color: AppColors.kGray400,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          'Неизвестно',
-                          style: TextStyle(
-                              color: AppColors.kGray750,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Статус:',
-                          style: TextStyle(
-                              color: AppColors.kGray400,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: const Color(0x104BB34B),
-                              borderRadius: BorderRadius.circular(4)),
-                          padding: const EdgeInsets.all(5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                statusRealFBS,
-                                style: const TextStyle(
-                                    color: Color(0xFF4BB34B),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              const SizedBox(
-                height: 8,
-              ),
-              // const Divider(
-              //   height: 1,
-              //   color: AppColors.kGray300,
-              // ),
-              Container(
-                padding: const EdgeInsets.only(top: 8),
-                alignment: Alignment.center,
-                child: InkWell(
-                  onTap: () {
-                    widget.basketOrder.id != null
-                        ? Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyOrderStatusPage(
-                                    basketOrder: widget.basketOrder)),
-                          )
-                        : printError();
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                if (widget.basketOrder.productFBS?.isNotEmpty ?? false)
+                  Column(
                     children: [
-                      Text(
-                        'Детали заказа',
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.kPrimaryColor),
+                      // const Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Text(
+                      //       'Тип доставки:',
+                      //       style: TextStyle(
+                      //           color: AppColors.kGray400,
+                      //           fontSize: 12,
+                      //           fontWeight: FontWeight.w500),
+                      //     ),
+                      //     Text(
+                      //       'FBS',
+                      //       style: TextStyle(
+                      //           color: AppColors.kGray750,
+                      //           fontSize: 12,
+                      //           fontWeight: FontWeight.w500),
+                      //     )
+                      //   ],
+                      // ),
+                      const SizedBox(
+                        height: 4,
                       ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: AppColors.kPrimaryColor,
-                        size: 18,
-                      )
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${widget.basketOrder.deliveryDay} дней',
+                            style: AppTextStyles.size16Weight500
+                                .copyWith(color: Color(0xff3A3A3C)),
+                          ),
+                          Text(
+                            '${widget.basketOrder.priceFBS ?? widget.basketOrder.priceRealFBS} ₽',
+                            style: AppTextStyles.size16Weight700
+                                .copyWith(color: Color(0xff3A3A3C)),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
+
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 60,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: widget.basketOrder.product?.length ?? 0,
+                          itemBuilder: (BuildContext context, int i) {
+                            final path = widget.basketOrder.product?[i].path
+                                        ?.isNotEmpty ==
+                                    true
+                                ? widget.basketOrder.product![i].path!.first
+                                : null;
+                            final url = path != null
+                                ? 'https://lunamarket.ru/storage/$path'
+                                : null;
+
+                            final dpr = MediaQuery.of(context).devicePixelRatio;
+                            final cacheSize = (48 * dpr).round();
+                            return Container(
+                              height: 48,
+                              width: 48,
+                              margin: EdgeInsets.only(right: 9, top: 12),
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: AppColors.kGray200,
+                              ),
+                              child: url == null
+                                  ? const Icon(
+                                      Icons.image_not_supported_outlined)
+                                  : Image.network(
+                                      url,
+                                      fit: BoxFit.cover,
+                                      cacheWidth: cacheSize,
+                                      cacheHeight: cacheSize,
+                                      loadingBuilder:
+                                          (context, child, progress) {
+                                        if (progress == null) return child;
+                                        return const Center(
+                                            child: SizedBox(
+                                          width: 18,
+                                          height: 18,
+                                          child: CircularProgressIndicator(
+                                              strokeWidth: 2),
+                                        ));
+                                      },
+                                      errorBuilder: (context, error, stack) =>
+                                          const Icon(
+                                              Icons.broken_image_outlined),
+                                    ),
+                            );
+                          }),
+                    ),
+                  ],
                 ),
-              )
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

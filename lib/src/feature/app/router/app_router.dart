@@ -17,6 +17,8 @@ import 'package:haji_market/src/feature/bloger/tape/data/model/tape_blogger_mode
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/detail_tape_card_page.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/edit_tape_vidoe.dart';
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/tape_card_widget.dart';
+import 'package:haji_market/src/feature/drawer/presentation/ui/address_page.dart';
+import 'package:haji_market/src/feature/drawer/presentation/ui/address_store_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/change_password_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/forgot_password_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/init_seller_page.dart';
@@ -123,6 +125,9 @@ class AppRouter extends _$AppRouter {
         ),
         AutoRoute(page: RegisterRoute.page),
         AutoRoute(page: BlogRegisterRoute.page),
+
+        AutoRoute(page: AddressRoute.page),
+        AutoRoute(page: AddressStoreRoute.page),
 
         AutoRoute(page: ViewAuthRegisterRoute.page),
         AutoRoute(page: SuccessBloggerRegisterRoute.page),

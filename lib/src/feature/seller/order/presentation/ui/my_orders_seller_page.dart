@@ -43,8 +43,8 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: const Color(0xffEAECED),
-                    borderRadius: BorderRadius.circular(10),
+                    color: const Color(0xffF7F7F7),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: TextField(
                     controller: _searchController,
@@ -88,9 +88,9 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
                   ),
                   child: Column(
                     children: [
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 16),
                       SizedBox(
-                        height: 48,
+                        height: 36,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -101,7 +101,7 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
                               status: '',
                               label: 'Все',
                               isActive: segmentValue == 0,
-                              width: 72,
+                              width: 56,
                             ),
                             const SizedBox(width: 8),
                             _buildSegmentItem(
@@ -109,7 +109,7 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
                               label: 'Новые',
                               status: 'active',
                               isActive: segmentValue == 1,
-                              width: 84,
+                              width: 74,
                             ),
                             const SizedBox(width: 8),
                             _buildSegmentItem(
@@ -125,7 +125,7 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
                               label: 'Завершенные',
                               status: 'end',
                               isActive: segmentValue == 3,
-                              width: 120,
+                              width: 122,
                             ),
                             const SizedBox(width: 8),
                             _buildSegmentItem(
@@ -133,7 +133,7 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
                               label: 'Отмененные',
                               status: 'cancel',
                               isActive: segmentValue == 4,
-                              width: 120,
+                              width: 122,
                             ),
                             const SizedBox(width: 8),
                             _buildSegmentItem(

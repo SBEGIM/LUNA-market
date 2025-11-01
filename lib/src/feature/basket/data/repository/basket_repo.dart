@@ -18,6 +18,10 @@ class BasketRepository {
   Future<int> basketMinus(productId, count, price) =>
       _basket.basketMinus(productId, count, price);
   Future<int> basketDelete(productId) => _basket.basketDelete(productId);
+
+  Future<int> basketDeleteProducts(productIds) =>
+      _basket.basketDeleteProducts(productIds);
+
   Future<List<BasketShowModel>> basketShow(String? fulfillment) =>
       _basket.basketShow(fulfillment);
   Future<List<BasketOrderModel>> basketOrderShow() => _basket.basketOrderShow();
@@ -91,6 +95,29 @@ class Basket {
     final data = response.statusCode;
 
     return data;
+  }
+
+  Future<int> basketDeleteProducts(List<int> productIds) async {
+    final String? token = _box.read('token');
+
+    final uri = Uri.parse('$baseUrl/basket/delete/products');
+    final headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    final payload = <String, dynamic>{
+      'product_ids': productIds,
+    };
+
+    final response = await http.delete(
+      uri,
+      headers: headers,
+      body: jsonEncode(payload),
+    );
+
+    return response.statusCode;
   }
 
   Future<List<BasketShowModel>> basketShow(String? fulfillment) async {
