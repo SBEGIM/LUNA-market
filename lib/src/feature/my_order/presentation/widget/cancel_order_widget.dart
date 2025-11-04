@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/order_status_seller_cubit.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
@@ -19,9 +20,12 @@ class _CancelOrderWidgetState extends State<CancelOrderWidget> {
   int selectIndex = -1;
 
   List<String> cancel = [
-    'Не устрайвает сроки',
-    'Товара нет в наличи',
-    'Продовец попросил отменить',
+    'Передумал покупать',
+    'Сроки доставки изменились',
+    'У продавца нет товара в наличии',
+    'У продавца нет цвета/размера/модели',
+    'Продавец предлагал другую модель/товар',
+    'Товар не соответствует описанию/фото',
     'Другое'
   ];
 
@@ -30,135 +34,62 @@ class _CancelOrderWidgetState extends State<CancelOrderWidget> {
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
-          leading: GestureDetector(
-              onTap: () => Get.back(),
+          leading: InkWell(
+              onTap: () => Navigator.pop(context),
               child: Container(
-                padding: const EdgeInsets.only(top: 20, bottom: 20),
-                height: 9.5,
-                width: 16.5,
-                child: SvgPicture.asset('assets/icons/back_header.svg',
-                    height: 9.5, width: 16.5),
-              )),
+                  padding: const EdgeInsets.only(top: 20, bottom: 20),
+                  height: 9.5,
+                  width: 16.5,
+                  child: Image.asset(Assets.icons.defaultBackIcon.path))),
           //   iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
           backgroundColor: Colors.white,
           centerTitle: true,
           elevation: 0,
-          title: const Text(
-            'Выберите причину',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 16,
-            ),
-          )),
+          title: const Text('Выберите причину',
+              style: AppTextStyles.appBarTextStyle)),
       body: Column(
         children: [
           const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.only(top: 12, left: 8, right: 12),
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      selectIndex = 0;
-                      setState(() {});
-                    },
-                    child: SizedBox(
-                      height: 50,
-                      child: ListTile(
-                        title: Text(
-                          cancel[0],
-                          style: const TextStyle(
-                              color: AppColors.kGray900,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
+            child: SizedBox(
+              height: cancel.length * 48,
+              child: ListView.builder(
+                  itemCount: cancel.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        selectIndex = index;
+                        setState(() {});
+                      },
+                      child: Container(
+                        height: 48,
+                        margin: EdgeInsets.only(top: 8),
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                            color: AppColors.kWhite,
+                            borderRadius: BorderRadius.circular(16)),
+                        child: Row(
+                          children: [
+                            Text(
+                              cancel[index],
+                              style: AppTextStyles.size16Weight600,
+                            ),
+                            Spacer(),
+                            Image.asset(
+                              selectIndex == index
+                                  ? Assets.icons.defaultCheckIcon.path
+                                  : Assets.icons.defaultUncheckIcon.path,
+                              scale: 2.1,
+                              color: selectIndex == index
+                                  ? AppColors.kLightBlackColor
+                                  : null,
+                            )
+                          ],
                         ),
-                        trailing: selectIndex == 0
-                            ? const Icon(
-                                Icons.done,
-                                color: AppColors.kPrimaryColor,
-                              )
-                            : null,
                       ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      selectIndex = 1;
-                      setState(() {});
-                    },
-                    child: SizedBox(
-                      height: 50,
-                      child: ListTile(
-                        title: Text(
-                          cancel[1],
-                          style: const TextStyle(
-                              color: AppColors.kGray900,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        trailing: selectIndex == 1
-                            ? const Icon(
-                                Icons.done,
-                                color: AppColors.kPrimaryColor,
-                              )
-                            : null,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      selectIndex = 2;
-                      setState(() {});
-                    },
-                    child: SizedBox(
-                      height: 50,
-                      child: ListTile(
-                        title: Text(
-                          cancel[2],
-                          style: const TextStyle(
-                              color: AppColors.kGray900,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        trailing: selectIndex == 2
-                            ? const Icon(
-                                Icons.done,
-                                color: AppColors.kPrimaryColor,
-                              )
-                            : null,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      selectIndex = 3;
-                      setState(() {});
-                    },
-                    child: SizedBox(
-                      height: 50,
-                      child: ListTile(
-                        title: Text(
-                          cancel[3],
-                          style: const TextStyle(
-                              color: AppColors.kGray900,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        trailing: selectIndex == 3
-                            ? const Icon(
-                                Icons.done,
-                                color: AppColors.kPrimaryColor,
-                              )
-                            : null,
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                    );
+                  }),
             ),
           )
         ],
@@ -174,11 +105,8 @@ class _CancelOrderWidgetState extends State<CancelOrderWidget> {
           BlocProvider.of<OrderStatusSellerCubit>(context).toInitState();
         }
       }, builder: (context, state) {
-        return Container(
-          width: MediaQuery.of(context).size.width,
-          color: Colors.white,
-          padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 26),
+        return SafeArea(
+          bottom: true,
           child: InkWell(
             onTap: () async {
               if (selectIndex == -1) {
@@ -190,26 +118,23 @@ class _CancelOrderWidgetState extends State<CancelOrderWidget> {
               }
             },
             child: Container(
+              height: 52,
+              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 50),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.kPrimaryColor,
+                borderRadius: BorderRadius.circular(16),
+                color: AppColors.mainPurpleColor,
               ),
               width: MediaQuery.of(context).size.width,
+              alignment: Alignment.center,
               child: state is LoadingState
                   ? const SizedBox(
                       height: 51,
                       child:
                           Center(child: CircularProgressIndicator.adaptive()))
-                  : const Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Text(
-                        'Отменить заказ',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16),
-                        textAlign: TextAlign.center,
-                      ),
+                  : Text(
+                      'Отменить заказ',
+                      style: AppTextStyles.size18Weight600
+                          .copyWith(color: AppColors.kWhite),
                     ),
             ),
           ),

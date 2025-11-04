@@ -56,12 +56,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
   bool isvisible = false;
 
-  int? selectedIndex = -1;
+  int? selectedIndex = 0;
   int? selectedIndex2 = 0;
   int? selectedIndexMonth = 3;
 
   int? selectedIndex3 = -1;
-  int? selectedIndex4 = -1;
+  int? selectedIndex4 = 0;
 
   double procentPrice = 0;
   int compoundPrice = 0;
@@ -84,7 +84,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
     'Отзыв',
   ];
 
-  String textBloc = '';
+  String textBloc = 'Описание';
 
   List bloc = [
     10,
@@ -288,8 +288,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   ),
                 ),
                 Positioned(
-                  top: 10,
-                  left: 20,
+                  top: 16,
+                  left: 28,
                   child: Container(
                     width: 57,
                     height: 22,
@@ -329,7 +329,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 widget.product.point != 0
                     ? Positioned(
                         top: 40,
-                        left: 20,
+                        left: 28,
                         child: Container(
                           width: 52,
                           height: 22,
@@ -360,8 +360,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     : const SizedBox.shrink(),
                 widget.product.bloggerPoint != 0
                     ? Positioned(
-                        bottom: 6,
-                        left: 20,
+                        bottom: 16,
+                        left: 28,
                         child: Container(
                           width: 205,
                           height: 26,
@@ -470,10 +470,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           Text(
                             '${formatPrice(widget.product.price!)} ₽ ',
                             style: AppTextStyles.size13Weight400.copyWith(
-                              color: AppColors.kGray300,
-                              letterSpacing: -1,
+                              color: Color(0xff8E8E93),
                               decoration: TextDecoration.lineThrough,
-                              decorationColor: AppColors.kGray300,
+                              decorationColor: Color(0xff8E8E93),
                             ),
                           ),
                         ],
@@ -509,18 +508,17 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           BlocProvider.of<ProductCubit>(context)
                               .products(filters);
                         },
-                        child: inFavorite != true
-                            ? Image.asset(
-                                Assets.icons.favoriteBottomIcon.path,
-                                height: 28,
-                                width: 28,
-                              )
-                            : Image.asset(
-                                Assets.icons.favoriteBottomFullIcon.path,
-                                height: 28,
-                                width: 28,
-                                color: AppColors.kunSelectColor,
-                              ))
+                        child: SizedBox(
+                          width: 28,
+                          height: 28,
+                          child: Image.asset(
+                            Assets.icons.favoriteBottomFullIcon.path,
+                            fit: BoxFit.contain,
+                            color: inFavorite == true
+                                ? AppColors.mainRedColor
+                                : const Color(0xffAEAEB2),
+                          ),
+                        ))
                   ],
                 ),
                 // const SizedBox(
@@ -536,19 +534,29 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           double.parse(widget.product.rating.toString()),
                       unratedColor: const Color(0x30F11712),
                       itemSize: 16,
+                      itemPadding: EdgeInsets.only(right: 3.2),
                       ratingWidget: RatingWidget(
-                        full: const Icon(
-                          Icons.star,
-                          color: Color(0xFFFFD54F),
-                        ),
-                        half: const Icon(
-                          Icons.star,
-                          color: Colors.grey,
-                        ),
-                        empty: const Icon(
-                          Icons.star,
-                          color: Colors.grey,
-                        ),
+                        full: SizedBox(
+                            height: 12.8,
+                            width: 12.8,
+                            child: Image.asset(
+                                Assets.icons.defaultStarIcon.path,
+                                fit: BoxFit.contain,
+                                color: Color(0xFFFFD54F))),
+                        half: SizedBox(
+                            height: 12.8,
+                            width: 12.8,
+                            child: Image.asset(
+                                Assets.icons.defaultStarIcon.path,
+                                fit: BoxFit.contain,
+                                color: Color(0xffAEAEB2))),
+                        empty: SizedBox(
+                            height: 12.8,
+                            width: 12.8,
+                            child: Image.asset(
+                                Assets.icons.defaultStarIcon.path,
+                                fit: BoxFit.contain,
+                                color: Color(0xffAEAEB2))),
                       ),
                       onRatingUpdate: (double value) {},
                     ),
@@ -566,7 +574,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 SizedBox(height: 15),
                 Divider(
                   height: 1,
-                  thickness: 0.33,
+                  thickness: 1,
                   color: Color(0xffEAECED),
                 ),
                 if ((widget.product.size ?? []).isNotEmpty)
@@ -649,19 +657,16 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     children: [
                       SizedBox(height: 15),
                       Text(
-                        'Цвет:  ${selectedIndex != -1 ? (widget.product.color?[selectedIndex!].name) : 'Не выбран'}',
-                        style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                      ),
+                          'Цвет:${selectedIndex != -1 ? (widget.product.color?[selectedIndex!].name) : 'Не выбран'}',
+                          style: AppTextStyles.size14Weight400),
                       const SizedBox(
-                        height: 12,
+                        height: 4,
                       ),
                       SizedBox(
-                        height: 60,
+                        height: 54,
                         child: ListView.builder(
                           shrinkWrap: true,
+                          padding: EdgeInsets.zero,
                           scrollDirection: Axis.horizontal,
                           itemCount: widget.product.color!.length,
                           itemBuilder: (BuildContext context, int index) {
@@ -681,7 +686,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 }
                               },
                               child: Padding(
-                                padding: const EdgeInsets.all(4.0),
+                                padding: const EdgeInsets.only(right: 8.0),
                                 child: Container(
                                   height: 54,
                                   width: 54,
@@ -705,7 +710,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       ),
                     ],
                   ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 24),
                 // Stack(children: [
                 //   Container(
                 //     transform: Matrix4.translationValues(-16.0, 0.0, 00.0),
@@ -1091,11 +1096,13 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             ),
           ),
           Container(
-              padding: EdgeInsets.only(top: 16),
+              padding: EdgeInsets.only(top: 4),
               color: Colors.white,
               child: ListView.separated(
                 separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(),
+                    const Divider(
+                  height: 1,
+                ),
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: widget.product.shops!.length,
@@ -1104,16 +1111,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     onTap: () {
                       context.router.push(
                           DetailStoreRoute(shop: widget.product.shops![index]));
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => DetailStorePage(shop: widget.product.shops![index])),
-                      // );
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        // mainAxisAlignment: ,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1124,12 +1126,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${widget.product.shops![index].shop!.name}',
-                                    style: const TextStyle(
-                                        color: AppColors.kGray900,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600),
-                                  ),
+                                      '${widget.product.shops![index].shop!.name}',
+                                      style: AppTextStyles.size18Weight600),
                                   Row(
                                     children: [
                                       SvgPicture.asset(
@@ -1143,7 +1141,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                       ),
                                       Text(
                                         'Официальный партнер',
-                                        style: AppTextStyles.size11Weight400
+                                        style: AppTextStyles.size11Weight500
                                             .copyWith(color: Color(0xff34C759)),
                                       ),
                                     ],
@@ -1171,16 +1169,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                   decoration: BoxDecoration(
                                       color:
                                           AppColors.mainBackgroundPurpleColor,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  padding: const EdgeInsets.only(
-                                      top: 8, bottom: 8, left: 16, right: 16),
+                                      borderRadius: BorderRadius.circular(16)),
                                   child: Text(
                                     'Выбрать',
-                                    style: AppTextStyles.defButtonTextStyle
+                                    style: AppTextStyles.size16Weight600
                                         .copyWith(
-                                            fontSize: 16,
-                                            letterSpacing: 0,
-                                            fontWeight: FontWeight.w600,
                                             color: AppColors.mainPurpleColor),
                                   ),
                                 ),
@@ -1195,40 +1188,50 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             children: [
                               Text(
                                 '3.0 ',
-                                style: const TextStyle(
-                                    color: AppColors.kLightBlackColor,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w400),
+                                style: AppTextStyles.size13Weight400,
                               ),
                               RatingBar(
                                 ignoreGestures: true,
                                 initialRating: 3,
                                 unratedColor: const Color(0x30F11712),
                                 itemSize: 14,
-                                // itemPadding:
-                                // const EdgeInsets.symmetric(horizontal: 4.0),
+                                itemPadding: const EdgeInsets.only(left: 3.2),
                                 ratingWidget: RatingWidget(
-                                  full: const Icon(
-                                    Icons.star,
-                                    color: Color(0xFFFFD54F),
+                                  full: SizedBox(
+                                    width: 12.8,
+                                    height: 12.8,
+                                    child: Image.asset(
+                                      Assets.icons.defaultStarIcon.path,
+                                      fit: BoxFit.contain,
+                                      color: Color(0xffFFC107),
+                                    ),
                                   ),
-                                  half: const Icon(
-                                    Icons.star,
-                                    color: Colors.grey,
+                                  half: SizedBox(
+                                    width: 12.8,
+                                    height: 12.8,
+                                    child: Image.asset(
+                                      Assets.icons.defaultStarIcon.path,
+                                      fit: BoxFit.contain,
+                                      color: Color(0xffAEAEB2),
+                                    ),
                                   ),
-                                  empty: const Icon(
-                                    Icons.star,
-                                    color: Colors.grey,
+                                  empty: SizedBox(
+                                    width: 12.8,
+                                    height: 12.8,
+                                    child: Image.asset(
+                                      Assets.icons.defaultStarIcon.path,
+                                      fit: BoxFit.contain,
+                                      color: Color(0xffAEAEB2),
+                                    ),
                                   ),
                                 ),
                                 onRatingUpdate: (double value) {},
                               ),
+                              SizedBox(width: 2.4),
                               Text(
                                 ' ${widget.product.shop!.id} отзыва',
-                                style: const TextStyle(
-                                    color: AppColors.kGray300,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w400),
+                                style: AppTextStyles.size13Weight400
+                                    .copyWith(color: Color(0xff8E8E93)),
                               ),
                             ],
                           ),
@@ -1257,7 +1260,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       color: AppColors.kYellowDark,
-                                      borderRadius: BorderRadius.circular(6),
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Text(
                                       '${((widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100.toInt() / 3).round()} ₽',
@@ -1270,12 +1273,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                   const SizedBox(
                                     width: 4,
                                   ),
-                                  const Text(
+                                  Text(
                                     'х3 мес',
-                                    style: TextStyle(
-                                        color: AppColors.kLightBlackColor,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400),
+                                    style: AppTextStyles.size13Weight400,
                                   )
                                 ],
                               ),
@@ -1294,27 +1294,32 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                     children: [
                                       Row(
                                         children: [
-                                          Image.asset(
-                                            Assets.icons.bus.path,
+                                          SizedBox(
+                                            height: 16,
+                                            width: 16,
+                                            child: Image.asset(
+                                              Assets.icons.busIcon.path,
+                                              fit: BoxFit.contain,
+                                            ),
                                           ),
                                           SizedBox(width: 5),
-                                          Text('Доставка:',
-                                              style: TextStyle(
-                                                  color: Color(0xff8E8E93),
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400)),
+                                          Text(
+                                            'Доставка:',
+                                            style: AppTextStyles.size14Weight400
+                                                .copyWith(
+                                                    color: Color(0xff8E8E93)),
+                                          ),
                                         ],
                                       ),
                                       RichText(
                                         text: TextSpan(
                                           text:
                                               '${widget.product.shops![index].deliveryDay ?? 'Неизвестно'} дня ,',
-                                          style: const TextStyle(
-                                              color: AppColors.kGray900,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400),
+                                          style: AppTextStyles.size14Weight400,
                                           children: <TextSpan>[
                                             TextSpan(
+                                              style:
+                                                  AppTextStyles.size14Weight400,
                                               text:
                                                   '${widget.product.shops![index].deliveryPrice ?? 'Неизвестно'} руб',
                                             ),
@@ -1332,15 +1337,21 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                     children: [
                                       Row(
                                         children: [
-                                          Image.asset(
-                                            Assets.icons.bus.path,
+                                          SizedBox(
+                                            height: 16,
+                                            width: 16,
+                                            child: Image.asset(
+                                              Assets.icons.busIcon.path,
+                                              fit: BoxFit.contain,
+                                            ),
                                           ),
                                           SizedBox(width: 5),
                                           Text('Доставка:',
-                                              style: TextStyle(
-                                                  color: Color(0xff8E8E93),
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400)),
+                                              style: AppTextStyles
+                                                  .size14Weight400
+                                                  .copyWith(
+                                                      color:
+                                                          Color(0xff8E8E93))),
                                         ],
                                       ),
                                       Text('Неивестно',
@@ -1380,31 +1391,29 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/bi_box-fill.svg',
-                                      color: AppColors.kGray300,
-                                      height: 14,
-                                      width: 13,
+                                    SizedBox(
+                                      height: 16,
+                                      width: 16,
+                                      child: Image.asset(
+                                        Assets.icons.optomIcon.path,
+                                        fit: BoxFit.contain,
+                                      ),
                                     ),
                                     SizedBox(width: 5),
                                     Text('Оптовая продажа:',
-                                        style: TextStyle(
-                                            color: Color(0xff8E8E93),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400)),
+                                        style: AppTextStyles.size14Weight400
+                                            .copyWith(
+                                                color: Color(0xff8E8E93))),
                                   ],
                                 ),
                                 Text(
                                     widget.product.bloc?.length != 0
                                         ? 'Доступна'
                                         : 'Не доступна',
-                                    style: TextStyle(
-                                        color: AppColors.kGray900,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400)),
+                                    style: AppTextStyles.size14Weight400),
                               ],
                             ),
                           ),
@@ -1418,362 +1427,365 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           //   height: 5,
           // ),
 
+          // Вверху файла, если используешь рейтинг
+// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+          /// ... где-то внутри build:
+
+// Хедер с вкладками
           Container(
-            height: 56,
+            height: 70,
+            margin: EdgeInsets.only(top: 16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(16)),
-            padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: texts.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      if (textBloc == texts[index]) {
-                        textBloc = '';
-                        setState(() {});
-                        return;
-                      }
-                      textBloc = texts[index];
-                      setState(() {});
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(right: 26),
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      decoration: BoxDecoration(
-                          color: textBloc == texts[index]
-                              ? AppColors.mainPurpleColor
-                              : AppColors.kGray200,
-                          borderRadius: BorderRadius.circular(12)),
-                      // width: MediaQuery.of(context).size.width / 3.2,
-                      height: 32,
-                      alignment: Alignment.center,
-                      child: Text(
-                        texts[index],
-                        style: AppTextStyles.catalogTextStyle.copyWith(
-                          color: textBloc == texts[index]
-                              ? AppColors.kWhite
-                              : AppColors.kGray1,
+              color: AppColors.kWhite,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              scrollDirection: Axis.horizontal,
+              itemCount: texts.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 8),
+              itemBuilder: (context, index) {
+                final selected = textBloc == texts[index];
+                return InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  onTap: () {
+                    setState(() {
+                      textBloc = selected ? '' : texts[index];
+                    });
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    alignment: Alignment.center,
+                    height: 36,
+                    width: index == 2 ? 94 : null,
+                    decoration: BoxDecoration(
+                      color: selected
+                          ? AppColors.mainPurpleColor
+                          : AppColors.kGray200,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      texts[index],
+                      style: AppTextStyles.size14Weight500.copyWith(
+                        color: selected ? AppColors.kWhite : AppColors.kGray1,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+
+// ===== ХАРАКТЕРИСТИКИ =====
+          if (widget.product.characteristics != null &&
+              textBloc == 'Характеристики')
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Builder(builder: (_) {
+                    final items = widget.product.characteristics ?? [];
+                    final preview = items.take(5).toList();
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: preview.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 8),
+                      itemBuilder: (_, i) {
+                        final it = preview[i];
+                        return Text(
+                          '${it.name}: ${it.value}',
+                          style: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w400),
+                        );
+                      },
+                    );
+                  }),
+                  if ((widget.product.characteristics?.length ?? 0) > 5)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: TextButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  SpecificationsPage(product: widget.product),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.arrow_forward_ios, size: 14),
+                        label: const Text(
+                          'Подробнее',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          foregroundColor: AppColors.kPrimaryColor,
+                          alignment: Alignment.centerLeft,
                         ),
                       ),
                     ),
-                  );
-                }),
-          ),
+                ],
+              ),
+            )
+          else
+            const SizedBox.shrink(),
 
-          widget.product.characteristics != null && textBloc == 'Характеристики'
-              ? Container(
-                  // padding: const EdgeInsets.all(16),
-                  color: Colors.white,
-                  child: Column(
+// ===== ОПИСАНИЕ =====
+          if (widget.product.description != null && textBloc == 'Описание')
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeInOut,
+                    child: Text(
+                      '${widget.product.description}',
+                      softWrap: true,
+                      maxLines: showText ? null : 4,
+                      overflow: showText
+                          ? TextOverflow.visible
+                          : TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: AppColors.kLightBlackColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  const Divider(height: 1),
+                  TextButton(
+                    onPressed: () => setState(() => showText = !showText),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      alignment: Alignment.centerLeft,
+                      foregroundColor: AppColors.mainPurpleColor,
+                    ),
+                    child: Text(showText ? 'Скрыть' : 'Читать полностью',
+                        style: const TextStyle(fontSize: 14)),
+                  ),
+                ],
+              ),
+            )
+          else
+            const SizedBox.shrink(),
+
+// ===== ОТЗЫВЫ =====
+          if (textBloc == 'Отзыв')
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Column(
+                children: [
+                  // верхняя плашка с рейтингом и распределением
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: (widget.product.characteristics?.length ??
-                                      0) *
-                                  20,
-                              child: ListView.builder(
-                                  itemCount:
-                                      widget.product.characteristics?.length ??
-                                          0,
-                                  itemBuilder: (context, index) {
-                                    return Text(
-                                      '${widget.product.characteristics![index].name}: ${widget.product.characteristics![index].value}',
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400),
-                                    );
-                                  }),
+                      Column(
+                        children: [
+                          Text(
+                            '${(widget.product.rating ?? 0).toDouble()}',
+                            style: const TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
                             ),
-                          ],
+                          ),
+                          Text(
+                            '${widget.product.count ?? 0} отзывов',
+                            style: const TextStyle(
+                              color: AppColors.kGray300,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 240,
+                        height: 70,
+                        child: ListView.builder(
+                          itemCount: 5,
+                          physics: const NeverScrollableScrollPhysics(),
+                          reverse: true,
+                          itemBuilder: (_, i) {
+                            final total =
+                                (widget.product.count ?? 0).clamp(0, 999999);
+                            final value = (widget.product.review?[i] ?? 0);
+                            final barWidth =
+                                total > 0 ? 160.0 * (value / total) : 0.0;
+                            return Row(
+                              children: [
+                                RatingBar.builder(
+                                  initialRating: i.toDouble() + 1,
+                                  minRating: 1,
+                                  itemSize: 13,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: false,
+                                  itemCount: 5,
+                                  ignoreGestures: true,
+                                  itemPadding: const EdgeInsets.symmetric(
+                                      horizontal: 0.0),
+                                  itemBuilder: (context, _) => const Icon(
+                                      Icons.star,
+                                      color: Colors.amber),
+                                  onRatingUpdate: (_) {},
+                                ),
+                                const SizedBox(width: 8),
+                                Stack(
+                                  children: [
+                                    Container(
+                                        height: 4,
+                                        width: 160,
+                                        color: const Color(0xffe5f1ff)),
+                                    if (barWidth > 0)
+                                      Container(
+                                          height: 4,
+                                          width: barWidth,
+                                          color: const Color(0xffFFC107)),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ),
-                      // const Divider(
-                      //   height: 0,
-                      //   color: AppColors.kGray400,
-                      // ),
-                      (widget.product.characteristics?.length ?? 0) >= 5
-                          ? Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            SpecificationsPage(
-                                                product: widget.product)),
-                                  );
-                                  // SpecificationsPage
-                                },
-                                child: const Row(
+                    ],
+                  ),
+
+                  // список отзывов из блока
+                  BlocConsumer<reviewProductCubit.ReviewCubit,
+                      reviewProductState.ReviewState>(
+                    listener: (_, __) {},
+                    builder: (context, state) {
+                      if (state is reviewProductState.ErrorState) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 16),
+                          child: Center(
+                            child: Text(
+                              state.message,
+                              style: const TextStyle(
+                                  fontSize: 16.0, color: Colors.grey),
+                            ),
+                          ),
+                        );
+                      }
+                      if (state is reviewProductState.LoadingState) {
+                        return const Padding(
+                          padding: EdgeInsets.only(top: 16),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                                color: Colors.indigoAccent),
+                          ),
+                        );
+                      }
+                      if (state is reviewProductState.LoadedState) {
+                        final reviews = state.reviewModel;
+                        return ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: reviews.length,
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(height: 16),
+                          itemBuilder: (_, index) {
+                            final r = reviews[index];
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      'Подробнее',
-                                      style: TextStyle(
-                                          color: AppColors.kPrimaryColor,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
+                                    Expanded(
+                                      child: Text(
+                                        '${r.user?.name ?? 'Пользователь'}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          color: AppColors.kGray900,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                     ),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: AppColors.kPrimaryColor,
-                                      size: 14,
-                                    )
+                                    RatingBar.builder(
+                                      initialRating: (r.rating ?? 0).toDouble(),
+                                      minRating: 1,
+                                      itemSize: 15,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: false,
+                                      itemCount: 5,
+                                      ignoreGestures: true,
+                                      itemPadding: const EdgeInsets.symmetric(
+                                          horizontal: 0.0),
+                                      itemBuilder: (context, _) => const Icon(
+                                          Icons.star,
+                                          color: Colors.amber),
+                                      onRatingUpdate: (_) {},
+                                    ),
                                   ],
                                 ),
-                              ),
-                            )
-                          : const SizedBox()
-                    ],
-                  ),
-                )
-              : const SizedBox.shrink(),
-
-          widget.product.description != null && textBloc == 'Описание'
-              ? Container(
-                  color: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${widget.product.description}',
-                        softWrap: showText == false ? true : false,
-                        maxLines: showText == false ? 4 : 40,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            color: AppColors.kLightBlackColor,
-                            fontSize: 14,
-                            letterSpacing: 0,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      const SizedBox(
-                        height: 14,
-                      ),
-                      const Divider(),
-                      GestureDetector(
-                        onTap: () {
-                          showText = !showText;
-                          setState(() {});
-                        },
-                        child: Text(
-                          showText == false ? 'Читать полностью' : 'Скрыть',
-                          style: TextStyle(
-                              color: AppColors.mainPurpleColor, fontSize: 14),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              : const SizedBox.shrink(),
-
-          textBloc == 'Отзыв'
-              ? Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              children: [
+                                const SizedBox(height: 8),
                                 Text(
-                                  "${widget.product.rating?.toDouble()}",
+                                  '${r.date ?? ''}',
                                   style: const TextStyle(
-                                      fontSize: 36,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black),
+                                    color: AppColors.kGray300,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                  ),
                                 ),
+                                const SizedBox(height: 4),
                                 Text(
-                                  '${widget.product.count} отзывы',
+                                  '${r.text ?? ''}',
+                                  maxLines: 4,
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                      color: AppColors.kGray300,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ],
-                            ),
-                            Container(
-                              width: 240,
-                              height: 70,
-                              margin: EdgeInsets.only(right: 20),
-                              child: ListView.builder(
-                                  itemCount: 5,
-                                  // scrollDirection: Axis.vertical,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  reverse: true,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Row(
-                                      children: [
-                                        RatingBar.builder(
-                                          initialRating: index.toDouble() + 1,
-                                          minRating: 1,
-                                          itemSize: 13,
-                                          direction: Axis.horizontal,
-                                          allowHalfRating: true,
-                                          itemCount: 5,
-                                          itemPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 0.0),
-                                          itemBuilder: (context, _) =>
-                                              const Icon(
-                                            Icons.star,
-                                            color: Colors.amber,
-                                          ),
-                                          onRatingUpdate: (rating) {},
-                                        ),
-                                        SizedBox(width: 8),
-                                        Stack(
-                                          children: [
-                                            Container(
-                                                height: 4,
-                                                width: 160,
-                                                color: const Color(0xffe5f1ff)),
-                                            widget.product.review?[index] != 0
-                                                ? Container(
-                                                    height: 4,
-                                                    width: 186.0 /
-                                                        widget.product.count!,
-                                                    color:
-                                                        const Color(0xffFFC107))
-                                                : const SizedBox.shrink()
-                                          ],
-                                        )
-                                      ],
-                                    );
-                                  }),
-                            ),
-                          ],
-                        ),
-                      ),
-                      BlocConsumer<reviewProductCubit.ReviewCubit,
-                              reviewProductState.ReviewState>(
-                          listener: (context, state) {},
-                          builder: (context, state) {
-                            if (state is reviewProductState.ErrorState) {
-                              return Center(
-                                child: Text(
-                                  state.message,
-                                  style: const TextStyle(
-                                      fontSize: 20.0, color: Colors.grey),
-                                ),
-                              );
-                            }
-                            if (state is reviewProductState.LoadingState) {
-                              return const Center(
-                                  child: CircularProgressIndicator(
-                                      color: Colors.indigoAccent));
-                            }
+                            );
+                          },
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                ],
+              ),
+            )
+          else
+            const SizedBox.shrink(),
 
-                            if (state is reviewProductState.LoadedState) {
-                              return Container(
-                                  height: state.reviewModel.isEmpty
-                                      ? 20
-                                      : (100 *
-                                          state.reviewModel.length.toDouble()),
-                                  padding: const EdgeInsets.all(16),
-                                  child: ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: state.reviewModel.length,
-                                    itemBuilder: (context, index) {
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                '${state.reviewModel[index].user!.name}',
-                                                style: const TextStyle(
-                                                    color: AppColors.kGray900,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              RatingBar.builder(
-                                                initialRating: state
-                                                    .reviewModel[index].rating!
-                                                    .toDouble(),
-                                                minRating: 1,
-                                                itemSize: 15,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: false,
-                                                itemCount: 5,
-                                                ignoreGestures: true,
-                                                itemPadding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 0.0),
-                                                itemBuilder: (context, _) =>
-                                                    const Icon(
-                                                  Icons.star,
-                                                  color: Colors.amber,
-                                                ),
-                                                onRatingUpdate: (value) {
-                                                  rating = value.toInt();
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text(
-                                            '${state.reviewModel[index].date}',
-                                            style: const TextStyle(
-                                                color: AppColors.kGray300,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12),
-                                          ),
-                                          const SizedBox(
-                                            height: 4,
-                                          ),
-                                          Text(
-                                            '${state.reviewModel[index].text}',
-                                            maxLines: 4,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14.0,
-                                                color: Colors.black),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          //   Flexible(
-                                          //       child: Text(
-                                          //           'The Dropbox HQ in San Francisco is one of the best designed & most comfortable offices I have ever witnessed. Great stuff! If you happen to visit SanFran, dont miss the chance to witness it yourself. ',style: TextStyle(color: Colors.black),))
-                                          // ],
-                                        ],
-                                      );
-                                    },
-                                  ));
-                            } else {
-                              return const Center(
-                                  child: CircularProgressIndicator(
-                                      color: Colors.indigoAccent));
-                            }
-                          }),
-                    ],
-                  ))
-              : SizedBox.shrink(),
-
-          SizedBox(height: 8),
+          SizedBox(height: 16),
           // textBloc == '111'
           // ?
 

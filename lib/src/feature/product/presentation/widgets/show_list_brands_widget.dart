@@ -27,7 +27,7 @@ void showListBrandsOptions(BuildContext context, String title, String type,
           return ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: 200,
-              maxHeight: (_filteredCategories.length * 75 + 120)
+              maxHeight: (_filteredCategories.length * 75 + 90)
                   .toDouble()
                   .clamp(250, 600),
             ),

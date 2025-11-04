@@ -157,7 +157,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                               child: Image.asset(
                                 inFavorite == true
                                     ? Assets.icons.favoriteBottomFullIcon.path
-                                    : Assets.icons.favoriteBottomIcon.path,
+                                    : Assets.icons.favoriteBottomFullIcon.path,
                                 scale: 1.9,
                                 color: inFavorite == true
                                     ? const Color.fromRGBO(255, 50, 72, 1)

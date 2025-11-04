@@ -287,6 +287,7 @@ class _ProductsPageState extends State<ProductsPage> {
                 ),
         ),
 
+        actionsPadding: EdgeInsets.only(right: 8),
         actions: _searchOpen
             ? [
                 TextButton(
@@ -301,9 +302,10 @@ class _ProductsPageState extends State<ProductsPage> {
                 IconButton(
                   icon: Image.asset(
                     Assets.icons.defaultSearchIcon.path,
-                    scale: 3.1,
-                    height: 20,
-                    width: 20,
+                    scale: 2.1,
+                    height: 24,
+                    width: 24,
+                    color: Colors.black,
                   ),
                   onPressed: _openSearch,
                   tooltip: 'Поиск',

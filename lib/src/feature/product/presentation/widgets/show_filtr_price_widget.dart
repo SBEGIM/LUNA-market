@@ -26,7 +26,7 @@ void showFiltrPriceOptions(
           return ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: 200,
-              maxHeight: (300).toDouble().clamp(200, 300),
+              maxHeight: (250).toDouble().clamp(200, 250),
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

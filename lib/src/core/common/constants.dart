@@ -15,6 +15,8 @@ mixin AppColors {
 
   static const Color mainPurpleGradient = Color(0xffCEE31C);
 
+  static const Color mainGreenColor = Color(0xff34C759);
+
   static const Color mainIconPurpleColor = Color(0x106F32F8);
 
   static const Color mainBackgroundPurpleColor = Color(
@@ -274,6 +276,14 @@ mixin AppTextStyles {
     fontFamily: 'SFProDisplay',
   );
 
+  static const size11Weight500 = TextStyle(
+    fontSize: 11,
+    letterSpacing: 0,
+    color: Color(0xFF0F0F0F),
+    fontWeight: FontWeight.w500,
+    fontFamily: 'SFProDisplay',
+  );
+
   static const size12Weight400 = TextStyle(
     fontSize: 12,
     letterSpacing: 0,
@@ -286,8 +296,8 @@ mixin AppTextStyles {
     fontSize: 12,
     letterSpacing: 0,
     color: Color(0xFF0F0F0F),
-    fontWeight: FontWeight.w400,
-    fontFamily: 'SFProDisplay',
+    fontWeight: FontWeight.w500,
+    fontFamily: 'Inter',
   );
 
   static const size13Weight400 = TextStyle(
@@ -404,8 +414,8 @@ mixin AppTextStyles {
     fontSize: 18,
     letterSpacing: 0,
     color: Color(0xFF0F0F0F),
-    fontWeight: FontWeight.w400,
-    fontFamily: 'SFProDisplay',
+    fontWeight: FontWeight.w500,
+    fontFamily: 'Inter',
   );
 
   static const size18Weight600 = TextStyle(

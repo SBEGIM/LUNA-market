@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:haji_market/src/feature/auth/presentation/ui/auth_page.dart';
 import 'package:haji_market/src/feature/auth/presentation/ui/register_page.dart';
 import 'package:haji_market/src/feature/auth/presentation/ui/success_register_page.dart';
 import 'package:haji_market/src/feature/auth/presentation/ui/view_auth_register_page.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/login_forget_password_modal_bottom.dart';
+import 'package:haji_market/src/feature/basket/data/models/basket_order_model.dart';
 import 'package:haji_market/src/feature/bloger/auth/presentation/ui/login_forget_password_modal_bottom.dart';
 import 'package:haji_market/src/feature/bloger/chat/presentation/chat_blogger_page.dart';
 import 'package:haji_market/src/feature/bloger/coop_request/presentation/ui/blogger_register_page.dart';
@@ -19,6 +19,7 @@ import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/edit_ta
 import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/tape_card_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/ui/address_page.dart';
 import 'package:haji_market/src/feature/drawer/presentation/ui/address_store_page.dart';
+import 'package:haji_market/src/feature/my_order/presentation/widget/review_order_widget.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/change_password_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/forgot_password_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/init_seller_page.dart';
@@ -148,6 +149,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: BasketOrderAddressRoute.page),
         AutoRoute(page: BasketOrderRoute.page),
         AutoRoute(page: MapPickerRoute.page),
+        AutoRoute(page: ReviewOrderWidgetRoute.page),
 
         AutoRoute(
           page: LoginForgotSellerPasswordRoute.page,

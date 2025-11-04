@@ -303,7 +303,7 @@ class _FilterPageState extends State<FilterPage> {
             side: BorderSide(
               color: _selectListChar.contains(index)
                   ? AppColors.mainPurpleColor
-                  : Color(0xff636366),
+                  : Color(0xffAEAEB2),
             ),
             borderRadius: BorderRadius.circular(12),
           ),

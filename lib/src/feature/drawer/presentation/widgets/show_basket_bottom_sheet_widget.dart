@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/app/widgets/custom_switch_button.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/auth/presentation/widgets/default_button.dart';
@@ -831,11 +832,22 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                       height: 52,
                       child: ElevatedButton(
                         onPressed: () {
+                          if (basketCount <= 0) {
+                            AppSnackBar.show(
+                              context,
+                              'Неверный номер телефона или пароль',
+                              type: AppSnackType.error,
+                            );
+                            return;
+                          }
+
                           callback.call(basketCount, basketPrice, isOptom);
                           Navigator.pop(context, selectedCategory);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.mainPurpleColor,
+                          backgroundColor: basketCount == 0
+                              ? AppColors.kGray200
+                              : AppColors.mainPurpleColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),

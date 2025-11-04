@@ -74,20 +74,20 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
           Stack(
             children: [
               Container(
-                margin: const EdgeInsets.only(top: 12),
+                margin: const EdgeInsets.only(top: 12, left: 14),
                 height: 144,
-                width: 173,
+                width: 144,
                 child: Image.network(
                   widget.product.path?.length != 0
                       ? "https://lunamarket.ru/storage/${widget.product.path?.first}"
                       : '',
                   height: 144,
-                  width: 173,
+                  width: 144,
                   alignment: Alignment.center,
                   errorBuilder: (context, error, stackTrace) =>
                       const ErrorImageWidget(
                     height: 144,
-                    width: 173,
+                    width: 144,
                   ),
                 ),
               ),
@@ -272,15 +272,19 @@ class _ProductMbInterestingCardState extends State<ProductMbInterestingCard> {
                                   fontSize: 16),
                             ),
                           ),
-                          Text(
-                            '${formatPrice(widget.product.price!)} ₽ ',
-                            style: const TextStyle(
-                              color: AppColors.kGray300,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: -1,
-                              fontSize: 14,
-                              decoration: TextDecoration.lineThrough,
-                              decorationColor: Color(0xff8E8E93),
+                          Flexible(
+                            child: Text(
+                              '${formatPrice(widget.product.price!)} ₽ ',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: AppColors.kGray300,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: -1,
+                                fontSize: 14,
+                                decoration: TextDecoration.lineThrough,
+                                decorationColor: Color(0xff8E8E93),
+                              ),
                             ),
                           ),
                         ],
