@@ -6,12 +6,13 @@ import 'package:haji_market/src/feature/home/data/model/characteristic_model.dar
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 void showListBrandsOptions(BuildContext context, String title, String type,
-    List<CatsModel> categories, Function callback) {
+    List<CatsModel> categories, int selectedIndex, Function callback) {
   List<CatsModel> _filteredCategories = [...categories];
 
-  int selectedCategory = -1;
+  int selectedCategory = selectedIndex;
 
-  int selectIndex = -1;
+  int selectIndex = selectedIndex;
+
   TextEditingController searchController = TextEditingController();
 
   showMaterialModalBottomSheet(
@@ -123,8 +124,13 @@ void showListBrandsOptions(BuildContext context, String title, String type,
 
                         return InkWell(
                           onTap: () => setState(() {
-                            selectedCategory = category.id!;
-                            selectIndex = index;
+                            if (selectedCategory == category.id!) {
+                              selectedCategory = -1;
+                              selectIndex = -1;
+                            } else {
+                              selectedCategory = category.id!;
+                              selectIndex = index;
+                            }
                           }),
                           child: Container(
                             height: 56,
@@ -172,7 +178,12 @@ void showListBrandsOptions(BuildContext context, String title, String type,
                       height: 52,
                       child: ElevatedButton(
                         onPressed: () {
-                          callback.call(categories[selectIndex]);
+                          print(selectIndex);
+                          if (selectIndex != -1) {
+                            callback.call(categories[selectIndex]);
+                          } else {
+                            callback.call(CatsModel(id: 0, name: ''));
+                          }
                           Navigator.pop(context, selectedCategory);
                         },
                         style: ElevatedButton.styleFrom(

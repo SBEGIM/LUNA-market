@@ -6,6 +6,7 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../drawer/bloc/brand_cubit.dart' as brandCubit;
 import 'package:haji_market/src/feature/drawer/bloc/brand_state.dart'
@@ -65,6 +66,8 @@ class _CatalogPageState extends State<CatalogPage> {
           automaticallyImplyLeading: false,
           leading: InkWell(
               onTap: () {
+                BlocProvider.of<CatsCubit>(context).cats();
+                context.read<FilterProvider>().resetAll();
                 context.router.pop();
               },
               child: Image.asset(

@@ -2,9 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../home/data/model/cat_model.dart';
 import '../../bloc/sub_cats_cubit.dart';
@@ -360,12 +363,11 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () async {
-                            GetStorage().write('CatId', widget.cats?.id ?? 0);
-                            GetStorage().write('catId', widget.cats?.id ?? 0);
-
-                            GetStorage().write('subCatFilterId',
-                                [state.cats[index].id].toString());
-                            GetStorage().remove('shopFilterId');
+                            final filters = context.read<FilterProvider>();
+                            filters.resetAll;
+                            filters.setBrands([]);
+                            filters.setCategory(widget.cats?.id ?? 0);
+                            filters.setSubCats([state.cats[index].id ?? 0]);
 
                             context.router.push(ProductsRoute(
                                 cats: widget.cats ??

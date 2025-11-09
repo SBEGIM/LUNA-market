@@ -9,114 +9,110 @@ class MonthSelector extends StatefulWidget {
 }
 
 class _MonthSelectorState extends State<MonthSelector> {
-  // элементы как в макете
   final List<String> items = ['3 мес', '6 мес', '12 мес', '24 мес'];
-
   int selectedIndex = 0;
-  int selectedIndexMonth = 3; // то, что ты хранишь отдельно
+  int selectedIndexMonth = 3;
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final double height = 28;
-        final double radius = 12;
-        final double borderWidth = 2;
-        final double segmentWidth = constraints.maxWidth / items.length;
+    const double height = 44; // как в дизайне
+    const double borderWidth = 2;
+    const double gap = 0; // зазор между сегментами
+    final double radius = height / 2; // внешняя капсула
+    final double innerRadius = radius - borderWidth;
 
-        return SizedBox(
-          height: height,
-          child: Stack(
-            children: [
-              // 1. Общая капсула с бордером
-              Container(
-                height: height,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(radius),
-                  border: Border.all(
-                    color: AppColors.kYellowDark, // твой лаймово-жёлтый бордер
-                    width: borderWidth,
-                  ),
-                ),
-              ),
+    Alignment _alignmentFor(int index, int len) {
+      if (len <= 1) return Alignment.center;
+      // -1,  -1/3,  +1/3,  +1  для 4 сегментов
+      return Alignment(-1 + (2 * index) / (len - 1), 0);
+    }
 
-              // 2. Жёлтый хайлайт под выбранным сегментом
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.easeOut,
-                left: selectedIndex * segmentWidth,
-                top: 0,
-                height: height,
-                width: segmentWidth,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.kYellowDark,
-                    borderRadius: BorderRadius.only(
-                      topLeft: selectedIndex == 0
-                          ? Radius.circular(radius)
-                          : Radius.circular(0),
-                      bottomLeft: selectedIndex == 0
-                          ? Radius.circular(radius)
-                          : Radius.circular(0),
-                      topRight: selectedIndex == items.length - 1
-                          ? Radius.circular(radius)
-                          : Radius.circular(0),
-                      bottomRight: selectedIndex == items.length - 1
-                          ? Radius.circular(radius)
-                          : Radius.circular(0),
-                    ),
-                  ),
-                ),
-              ),
-
-              // 3. Текстовые кнопки сверху (Row с Expanded)
-              Row(
-                children: List.generate(items.length, (index) {
-                  return Expanded(
-                    child: InkWell(
-                      borderRadius: BorderRadius.only(
-                        topLeft: index == 0
-                            ? Radius.circular(radius)
-                            : Radius.circular(0),
-                        bottomLeft: index == 0
-                            ? Radius.circular(radius)
-                            : Radius.circular(0),
-                        topRight: index == items.length - 1
-                            ? Radius.circular(radius)
-                            : Radius.circular(0),
-                        bottomRight: index == items.length - 1
-                            ? Radius.circular(radius)
-                            : Radius.circular(0),
+    return SizedBox(
+      height: height,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(radius),
+          border: Border.all(color: AppColors.kYellowDark, width: borderWidth),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(borderWidth),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(innerRadius),
+            child: Stack(
+              children: [
+                // Пилюля выбора БЕЗ “ступенек”, скруглённая с обеих сторон
+                AnimatedAlign(
+                  duration: const Duration(milliseconds: 220),
+                  curve: Curves.easeOutCubic,
+                  alignment: _alignmentFor(selectedIndex, items.length),
+                  child: FractionallySizedBox(
+                    widthFactor: 1 / items.length,
+                    heightFactor: 1,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 220),
+                      curve: Curves.easeOutCubic,
+                      // зазор внутри своего сегмента: по краям только внутренняя сторона
+                      margin: EdgeInsets.only(
+                        left: selectedIndex == 0 ? 0 : gap,
+                        right: selectedIndex == items.length - 1 ? 0 : gap,
                       ),
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = index;
-
-                          // обновляем твоё selectedIndexMonth
-                          if (index == 0) {
-                            selectedIndexMonth = 3;
-                          } else if (index == 1) {
-                            selectedIndexMonth = 6;
-                          } else if (index == 2) {
-                            selectedIndexMonth = 12;
-                          } else {
-                            selectedIndexMonth = 24;
-                          }
-                        });
-                      },
-                      child: Center(
-                        child: Text(items[index],
-                            style: AppTextStyles.size14Weight500),
+                      decoration: BoxDecoration(
+                        color: AppColors.kYellowDark,
+                        borderRadius: BorderRadius.circular(innerRadius),
                       ),
                     ),
-                  );
-                }),
-              ),
-            ],
+                  ),
+                ),
+
+                // Тап-зоны и текст
+                Row(
+                  children: List.generate(items.length, (i) {
+                    final bool isSelected = i == selectedIndex;
+                    return Expanded(
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          hoverColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          borderRadius: BorderRadius.only(
+                            topLeft: i == 0
+                                ? Radius.circular(innerRadius)
+                                : Radius.zero,
+                            bottomLeft: i == 0
+                                ? Radius.circular(innerRadius)
+                                : Radius.zero,
+                            topRight: i == items.length - 1
+                                ? Radius.circular(innerRadius)
+                                : Radius.zero,
+                            bottomRight: i == items.length - 1
+                                ? Radius.circular(innerRadius)
+                                : Radius.zero,
+                          ),
+                          onTap: () {
+                            setState(() {
+                              selectedIndex = i;
+                              selectedIndexMonth = const [3, 6, 12, 24][i];
+                            });
+                          },
+                          child: Center(
+                            child: Text(
+                              items[i],
+                              style: isSelected
+                                  ? AppTextStyles.size14Weight600
+                                  : AppTextStyles.size14Weight500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ],
+            ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

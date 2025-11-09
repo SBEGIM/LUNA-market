@@ -369,22 +369,25 @@ class _BasketPageState extends State<BasketPage> {
 
                                 setState(() {});
                               },
-                              child: Image.asset(
-                                // Иконка зависит от того, все ли выбраны сейчас
-                                state.basketShowModel.every(
-                                  (item) => isChecked.contains(item.basketId),
-                                )
-                                    ? Assets.icons.defaultCheckIcon
-                                        .path // все выбраны
-                                    : Assets.icons.defaultUncheckIcon
-                                        .path, // не все выбраны
-                                height: 24,
-                                width: 24,
-                                color: state.basketShowModel.every(
-                                  (item) => isChecked.contains(item.basketId),
-                                )
-                                    ? AppColors.mainPurpleColor
-                                    : null,
+                              child: SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: Image.asset(
+                                  // Иконка зависит от того, все ли выбраны сейчас
+                                  state.basketShowModel.every(
+                                    (item) => isChecked.contains(item.basketId),
+                                  )
+                                      ? Assets.icons.defaultCheckIcon
+                                          .path // все выбраны
+                                      : Assets.icons.defaultUncheckIcon
+                                          .path, // не все выбраны
+
+                                  color: state.basketShowModel.every(
+                                    (item) => isChecked.contains(item.basketId),
+                                  )
+                                      ? AppColors.mainPurpleColor
+                                      : Color(0xffD1D1D6),
+                                ),
                               ),
                             ),
                             SizedBox(width: 10),

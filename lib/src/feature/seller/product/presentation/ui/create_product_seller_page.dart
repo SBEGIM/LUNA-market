@@ -2596,7 +2596,7 @@ class _CreateProductSellerPageState extends State<CreateProductSellerPage> {
                                   },
                                 ];
                                 showUploadMediaPicker(
-                                    context, 'Загрузить видео', options,
+                                    context, 'Загрузить фото', options,
                                     (value) {
                                   context.router.pop();
                                   switch (value) {

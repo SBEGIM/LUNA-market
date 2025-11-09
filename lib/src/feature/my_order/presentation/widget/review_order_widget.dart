@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -5,13 +6,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
-import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widget/show_upload_media_pricker_widget.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_order_model.dart';
 import 'package:haji_market/src/feature/drawer/bloc/review_cubit.dart';
-import 'package:haji_market/src/feature/seller/order/bloc/order_status_seller_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/review_state.dart';
+
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
+import 'package:image_picker/image_picker.dart';
 
 @RoutePage()
 class ReviewOrderWidgetPage extends StatefulWidget {
@@ -31,6 +34,11 @@ class _ReviewOrderWidgetPageState extends State<ReviewOrderWidgetPage> {
   String productId = '';
   String productName = '';
   int rating = 0;
+  final List<XFile?> _image = [];
+
+  final ImagePicker _picker = ImagePicker();
+
+  bool change = false;
 
   TextEditingController _commentController = TextEditingController();
 
@@ -43,6 +51,22 @@ class _ReviewOrderWidgetPageState extends State<ReviewOrderWidgetPage> {
     'Товар не соответствует описанию/фото',
     'Другое'
   ];
+
+  Future<void> _getImage() async {
+    final image = change == true
+        ? await _picker.pickImage(source: ImageSource.camera)
+        : await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image.add(image);
+    });
+  }
+
+  @override
+  void initState() {
+    productId = widget.basketOrder.product![widget.index].productId.toString();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -241,9 +265,106 @@ class _ReviewOrderWidgetPageState extends State<ReviewOrderWidgetPage> {
                           border: InputBorder.none),
                     ),
                   ),
-                  SizedBox(height: 12),
+                  SizedBox(height: 20),
+                  _image.isNotEmpty
+                      ? SizedBox(
+                          width: double.infinity,
+                          height: 64,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.zero,
+                            physics: const ClampingScrollPhysics(),
+                            itemCount: _image.length,
+                            separatorBuilder: (_, __) =>
+                                const SizedBox(width: 8),
+                            itemBuilder: (context, index) {
+                              return SizedBox(
+                                width: 64,
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: Image.file(
+                                          File(_image[index]!.path),
+                                          width: 64,
+                                          height: 64,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  Container(
+                                            color: Colors.grey[200],
+                                            child: const Icon(
+                                                Icons.broken_image,
+                                                color: Colors.grey),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Center(
+                                      child: GestureDetector(
+                                        onTap: () => setState(
+                                            () => _image.removeAt(index)),
+                                        child: Container(
+                                          width: 28,
+                                          height: 28,
+                                          alignment: Alignment.center,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Image.asset(
+                                            Assets.icons.trashGreyIcon.path,
+                                            width: 16,
+                                            height: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : SizedBox.shrink(),
+                  SizedBox(height: 16),
                   GestureDetector(
-                    onTap: () async {},
+                    onTap: () async {
+                      final List<Map<String, String>> options = [
+                        {
+                          'title': 'Выбрать из галереи',
+                          'iconPath': Assets.icons.galleryIcon.path,
+                        },
+                        {
+                          'title': 'Открыть камеру',
+                          'iconPath': Assets.icons.cameraIcon.path,
+                        },
+                      ];
+                      showUploadMediaPicker(context, 'Загрузить фото', options,
+                          (value) {
+                        context.router.pop();
+                        switch (value) {
+                          case 'Выбрать из галереи':
+                            change = false;
+                            setState(() {
+                              change;
+                            });
+                            _getImage();
+                            break;
+                          case 'Открыть камеру':
+                            change = true;
+                            setState(() {
+                              change;
+                            });
+                            _getImage();
+                            break;
+                        }
+                      });
+                    },
                     child: DottedBorder(
                       dashPattern: [5, 5],
                       strokeWidth: 2,
@@ -277,29 +398,35 @@ class _ReviewOrderWidgetPageState extends State<ReviewOrderWidgetPage> {
           ),
         ],
       ),
-      bottomSheet: BlocConsumer<OrderStatusSellerCubit, OrderStatusSellerState>(
-          listener: (context, state) {
-        if (state is CancelState) {
-          // int count = 0;
-          // Navigator.of(context).popUntil((_) => count++ >= 2);
-          // BlocProvider.of<BasketCubit>(context).basketOrderShow();
-          // Get.snackbar('Заказ', 'Заказ успешно отменен',
-          //     backgroundColor: Colors.blueAccent);
-          // BlocProvider.of<OrderStatusSellerCubit>(context).toInitState();
+      bottomSheet:
+          BlocConsumer<ReviewCubit, ReviewState>(listener: (context, state) {
+        if (state is LoadedState) {
+          context.router.pop();
         }
       }, builder: (context, state) {
         return SafeArea(
           bottom: true,
           child: InkWell(
             onTap: () async {
+              if (_commentController.text.isEmpty || rating == 0) {
+                AppSnackBar.show(
+                  context,
+                  'Заполните данные для отзыва',
+                  type: AppSnackType.error,
+                );
+                return;
+              }
+
               await BlocProvider.of<ReviewCubit>(context).reviewStore(
-                  _commentController.text, rating.toString(), productId);
+                  context,
+                  widget.basketOrder.id!,
+                  _commentController.text,
+                  rating.toString(),
+                  productId,
+                  _image);
               _commentController.clear();
 
               setState(() {});
-
-              Get.snackbar('Успешно', 'отзыв добавлен',
-                  backgroundColor: Colors.blueAccent);
             },
             child: Container(
               height: 52,

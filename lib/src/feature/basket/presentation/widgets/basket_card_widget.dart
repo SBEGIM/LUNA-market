@@ -9,6 +9,8 @@ import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
 import 'package:haji_market/src/feature/basket/data/DTO/basket_order_dto.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
+import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_basket_widget.dart';
+import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_count_zero_basket_widget.dart';
 import 'package:haji_market/src/feature/chat/presentation/message.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/count_zero_dialog.dart';
 import 'package:intl/intl.dart';
@@ -138,22 +140,23 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                     child: InkWell(
                       onTap: () => widget.onCheckedChanged(),
                       child: Container(
-                        width: 16,
-                        height: 16,
+                        width: 20,
+                        height: 20,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: AppColors.kWhite),
+                            shape: BoxShape.circle,
+                            color: widget.isChecked ? AppColors.kWhite : null),
                         child: widget.isChecked
                             ? Image.asset(
                                 Assets.icons.defaultCheckIcon.path,
-                                height: 16,
-                                width: 16,
+                                height: 20,
+                                width: 20,
                                 color: AppColors.mainPurpleColor,
                               )
                             : Image.asset(
                                 Assets.icons.defaultUncheckIcon.path,
-                                height: 16,
-                                width: 16,
-                                color: AppColors.kAlpha12,
+                                height: 20,
+                                width: 20,
+                                color: Color(0xffD1D1D6),
                               ),
                       ),
                     ),
@@ -311,10 +314,19 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                                   if ((widget.basketProducts.product?.count ??
                                           0) <=
                                       basketCount) {
-                                    showCupertinoModalPopup<void>(
-                                        context: context,
-                                        builder: (context) =>
-                                            CountZeroDialog(onYesTap: () {}));
+                                    showBasketCountZeroAlert(
+                                      context,
+                                      title: 'Внимание',
+                                      message:
+                                          'К сожалению, товара нет в наличии, предзаказ недоступен!',
+                                      mode: BaskerAlertMode.confirm,
+                                      primaryText: 'Понятно',
+                                    );
+
+                                    // showCupertinoModalPopup<void>(
+                                    //     context: context,
+                                    //     builder: (context) =>
+                                    //         CountZeroDialog(onYesTap: () {}));
                                     return;
                                   } else {
                                     BlocProvider.of<BasketCubit>(context)

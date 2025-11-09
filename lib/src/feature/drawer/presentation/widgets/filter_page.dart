@@ -5,6 +5,8 @@ import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/home/data/model/characteristic_model.dart';
+import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:haji_market/src/feature/seller/product/bloc/characteristic_seller_cubit.dart'
     as charCubit;
 import 'package:haji_market/src/feature/seller/product/bloc/characteristics_seller_state.dart'
@@ -24,21 +26,56 @@ class _FilterPageState extends State<FilterPage> {
   final List<int> _selectListChar = [];
   List<CharacteristicsModel> subChar = [];
   Map<int, List<CharacteristicsModel>> _subCharMap = {};
+  final box = GetStorage();
 
   @override
   void initState() {
     super.initState();
     final initCharCubit =
         BlocProvider.of<charCubit.CharacteristicSellerCubit>(context);
-    initCharCubit.characteristic();
-    subChars();
-    if (GetStorage().hasData('charFilterId')) {
-      var brandId = GetStorage().read('charFilterId');
-      try {
-        var ab = json.decode(brandId).cast<int>().toList();
-        _selectListChar.addAll(ab);
-      } catch (e) {
-        print('Ошибка при чтении фильтров: $e');
+
+    if (charState.CharacteristicSellerState is! charState.LoadedState) {
+      initCharCubit.characteristic();
+      subChars();
+    }
+
+    clearFilterIds();
+  }
+
+  Future<void> clearFilterIds() async {
+    print('hasData ${box.hasData('charFilterId')}');
+
+    if (box.hasData('charFilterId')) {
+      final raw = box.read('charFilterId');
+
+      // Если вообще ничего внятного нет – удаляем ключ и выходим
+      if (raw == null ||
+          (raw is String && raw.trim().isEmpty) ||
+          (raw is String && raw.trim() == '[]')) {
+        _selectListChar.clear();
+        box.remove('charFilterId');
+
+        print('charFilterId пустой, удаляю из хранилища');
+      } else {
+        try {
+          // Если хранишь как строку JSON: "[1,2,3]"
+          final decoded = raw is String ? json.decode(raw) : raw;
+          final ab = (decoded as List).cast<int>().toList();
+
+          ab.forEach(
+            (element) {
+              print('charFilterId: $element');
+
+              _selectListChar.contains(element)
+                  ? _selectListChar.remove(element)
+                  : _selectListChar.add(element);
+            },
+          );
+
+          // _selectListChar.addAll(ab);
+        } catch (e) {
+          print('Ошибка при чтении фильтров: $e');
+        }
       }
     }
   }
@@ -50,7 +87,6 @@ class _FilterPageState extends State<FilterPage> {
     final subCharList = await initCharCubit.subListCharacteristic();
 
     subCharList!.forEach((e) {
-      print('${e.value} : ${e.mainId}');
       _subCharMap.putIfAbsent(e.mainId!, () => []).add(e);
     });
 
@@ -105,8 +141,6 @@ class _FilterPageState extends State<FilterPage> {
             onTap: _selectListChar.isEmpty
                 ? null
                 : () {
-                    print(_selectListChar.isEmpty);
-
                     // GetStorage().remove('CatId');
                     // GetStorage().remove('subCatFilterId');
                     // GetStorage().remove('shopFilterId');
@@ -258,7 +292,17 @@ class _FilterPageState extends State<FilterPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16)),
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () async {
+              final filters = context.read<FilterProvider>();
+              if (_selectListChar.isEmpty) {
+                _selectListChar.clear();
+                filters.resetChar();
+              } else {
+                filters.setChar(_selectListChar);
+              }
+              await BlocProvider.of<ProductCubit>(context).products(filters);
+              Navigator.pop(context);
+            },
             child: Text(
               'Применить',
               style: AppTextStyles.size18Weight600
@@ -274,7 +318,6 @@ class _FilterPageState extends State<FilterPage> {
     return InkWell(
       onTap: () async {
         setState(() {
-          print(_selectListChar.contains(index));
           _selectListChar.contains(index)
               ? _selectListChar.remove(index)
               : _selectListChar.add(index);

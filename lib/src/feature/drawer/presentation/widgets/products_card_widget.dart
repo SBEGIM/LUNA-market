@@ -1,11 +1,7 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
@@ -160,8 +156,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                     : Assets.icons.favoriteBottomFullIcon.path,
                                 scale: 1.9,
                                 color: inFavorite == true
-                                    ? const Color.fromRGBO(255, 50, 72, 1)
-                                    : Colors.grey,
+                                    ? const Color(0xffFF3347)
+                                    : const Color(0xffD1D1D6),
                               )),
 
                           // IconButton(

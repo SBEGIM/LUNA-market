@@ -92,20 +92,16 @@ class _ProductWatchingCardState extends State<ProductWatchingCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
+                            width: 60,
+                            height: 26,
                             decoration: BoxDecoration(
                                 color: AppColors.kYellowDark,
-                                borderRadius: BorderRadius.circular(6)),
-                            child: const Padding(
-                              padding: EdgeInsets.only(
-                                  left: 8.0, right: 8, top: 4, bottom: 4),
-                              child: Text(
-                                '0·0·12',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                              ),
+                                borderRadius: BorderRadius.circular(10)),
+                            alignment: Alignment.center,
+                            child: Text(
+                              '0·0·12',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.size13Weight500,
                             ),
                           ),
 
@@ -163,15 +159,15 @@ class _ProductWatchingCardState extends State<ProductWatchingCard> {
                                     1.0
                                   ], // соответствуют 26.85% и 100%
                                 ),
-                                borderRadius: BorderRadius.circular(4)),
+                                borderRadius: BorderRadius.circular(10)),
                             child: Text(
                               '${widget.product.point ?? 0}% Б',
                               textAlign: TextAlign.center,
-                              style: AppTextStyles.statisticsTextStyle
+                              style: AppTextStyles.size13Weight500
                                   .copyWith(color: AppColors.kWhite),
                             ),
                           )
-                        : const SizedBox(),
+                        : const SizedBox.shrink(),
                     // widget.product.point != 0
                     //     ? const SizedBox(height: 66)
                     //     : const SizedBox(),

@@ -12,8 +12,10 @@ class ReviewProductRepository {
   Future<List<ReviewProductModel>> productReviews(String product_id) =>
       _reviewProductApi.productReviews(product_id);
 
-  Future<int> storeReview(String review, String rating, String product_id) =>
-      _reviewProductApi.storeReview(review, rating, product_id);
+  Future<int> storeReview(int orderId, String review, String rating,
+          String product_id, List<dynamic> images) =>
+      _reviewProductApi.storeReview(
+          orderId, review, rating, product_id, images);
 }
 
 class ReviewProductApi {
@@ -34,19 +36,53 @@ class ReviewProductApi {
   }
 
   Future<int> storeReview(
-      String review, String rating, String product_id) async {
+    int OrderId,
+    String review,
+    String rating,
+    String product_id,
+    List<dynamic> image,
+  ) async {
     final String? token = _box.read('token');
 
-    final response =
-        await http.post(Uri.parse("$baseUrl/shop/review/store"), headers: {
-      "Authorization": "Bearer $token"
-    }, body: {
+    // final response =
+    //     await http.post(Uri.parse("$baseUrl/shop/review/store"), headers: {
+    //   "Authorization": "Bearer $token"
+    // }, body: {
+    //   'review': review,
+    //   'rating': rating,
+    //   'product_id': product_id,
+    // });
+
+    final bodys = {
+      'basket_shop_id': OrderId.toString(),
       'review': review,
       'rating': rating,
       'product_id': product_id,
+    };
+
+    Map<String, dynamic> queryParams = {};
+
+    final request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+          '$baseUrl/shop/review/store',
+        ).replace(queryParameters: queryParams));
+
+    final headers = {
+      'Authorization': 'Bearer $token',
+    };
+
+    request.headers.addAll(headers);
+    request.fields.addAll(bodys);
+
+    image!.forEach((element) async {
+      request.files.add(
+        await http.MultipartFile.fromPath('images[]', element!.path),
+      );
     });
 
-    // final data = jsonDecode(response.body);
+    final http.StreamedResponse response = await request.send();
+    final respStr = await response.stream.bytesToString();
 
     return response.statusCode;
   }

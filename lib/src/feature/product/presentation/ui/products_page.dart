@@ -1,10 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart'
@@ -52,9 +49,11 @@ class _ProductsPageState extends State<ProductsPage> {
   final boxMain = GetStorage().write('rating', false);
   final _box = GetStorage();
 
-  late final dynamic
-      _scrollViewListener; // может быть StreamSubscription или VoidCallback
-  bool _hideProducts = false;
+  // late final dynamic
+  //     _scrollViewListener; // может быть StreamSubscription или VoidCallback
+
+  late final dynamic _charFilterListener;
+  // bool _hideProducts = false;
   TextEditingController searchController = TextEditingController();
 
   List<CatsModel> subCats = [];
@@ -65,7 +64,13 @@ class _ProductsPageState extends State<ProductsPage> {
   bool sortIcon = false;
   bool filterIcon = false;
 
+  int selectedSortIndex = -1;
+  int selectedDelliveryIndex = -1;
+  String? selectedDelliveryText;
+
   Function? scrollView;
+
+  String? filterPriceLabel;
 
   @override
   void initState() {
@@ -74,43 +79,22 @@ class _ProductsPageState extends State<ProductsPage> {
       final v = searchController.text.isNotEmpty;
       if (v != _hasText) setState(() => _hasText = v);
     });
-    final initial = _box.read('scrollView');
-    _hideProducts = initial is bool ? initial : (initial == 'true');
+    // final initial = _box.read('scrollView');
+    // _hideProducts = initial is bool ? initial : (initial == 'true');
 
     // слушаем изменения ключа 'scrollView'
-    _scrollViewListener = _box.listenKey('scrollView', (value) {
+    // _scrollViewListener = _box.listenKey('scrollView', (value) {
+    // if (!mounted) return;
+    // final v = value is bool ? value : (value == 'true');
+    // if (v != _hideProducts) {
+    //   setState(() => _hideProducts = v);
+    // }
+    // });
+
+    _charFilterListener = _box.listenKey('charFilterId', (value) {
       if (!mounted) return;
-      final v = value is bool ? value : (value == 'true');
-      if (v != _hideProducts) {
-        setState(() => _hideProducts = v);
-      }
+      filterCharIcon(value);
     });
-
-    if (widget.cats.id == 0) {
-      GetStorage().remove('CatId');
-      GetStorage().remove('catId');
-    }
-
-    GetStorage().remove('priceFilter');
-    if (widget.brandId == null) {
-      GetStorage().remove('brandFilterId');
-    }
-    if (widget.cats.id == 0 && widget.cats.name == null) {
-      GetStorage().remove('search');
-    }
-    GetStorage().remove('sub_cat_id');
-    GetStorage().remove('subCatId');
-
-    if (widget.subCats == null) {
-      GetStorage().remove('subCatFilterId');
-    }
-
-    if (widget.shopId == null) {
-      GetStorage().remove('shopFilterId');
-    }
-    GetStorage().remove('ratingFilter');
-    GetStorage().remove('rating');
-
     BlocProvider.of<shopsDrawerCubit.ShopsDrawerCubit>(context)
         .shopsDrawer(widget.cats.id);
     BlocProvider.of<brandCubit.BrandCubit>(context)
@@ -125,8 +109,6 @@ class _ProductsPageState extends State<ProductsPage> {
 
     subCatList();
     brandList();
-
-    context.read<FilterProvider>().resetAll;
 
     super.initState();
   }
@@ -162,17 +144,25 @@ class _ProductsPageState extends State<ProductsPage> {
     setState(() => _searchOpen = false);
   }
 
+  void filterCharIcon(value) {
+    if (value != null) {
+      setState(() => filterIcon = true);
+    } else {
+      setState(() => filterIcon = false);
+    }
+  }
+
   @override
   void dispose() {
     GetStorage().remove('scrollView');
 
-    if (_scrollViewListener is Function) {
-      (_scrollViewListener as void Function()).call();
-    } else {
-      try {
-        _scrollViewListener.cancel();
-      } catch (_) {}
-    }
+    // if (_scrollViewListener is Function) {
+    //   (_scrollViewListener as void Function()).call();
+    // } else {
+    //   try {
+    //     _scrollViewListener.cancel();
+    //   } catch (_) {}
+    // }
     _focus.dispose();
     super.dispose();
   }
@@ -210,6 +200,7 @@ class _ProductsPageState extends State<ProductsPage> {
         titleSpacing: _searchOpen ? 0 : null,
 
         surfaceTintColor: AppColors.kWhite,
+
         title: AnimatedSwitcher(
           duration: const Duration(milliseconds: 180),
           child: _searchOpen
@@ -223,8 +214,13 @@ class _ProductsPageState extends State<ProductsPage> {
                       focusNode: _focus,
                       textInputAction: TextInputAction.search,
                       onSubmitted: (q) {
-                        // TODO: дерни свой Cubit/поиск
-                        // context.read<ProductCubit>().products();
+                        final filters = context.read<FilterProvider>();
+
+                        filters.setSearch(searchController.text);
+
+                        context
+                            .read<productCubit.ProductCubit>()
+                            .products(filters);
                       },
                       textAlignVertical: TextAlignVertical.center,
                       decoration: InputDecoration(
@@ -312,10 +308,8 @@ class _ProductsPageState extends State<ProductsPage> {
                 ),
               ],
 
-        iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
         backgroundColor: Colors.white,
         elevation: 0,
-
         leading: _searchOpen
             ? null
             : IconButton(
@@ -325,6 +319,10 @@ class _ProductsPageState extends State<ProductsPage> {
                   GetStorage().remove('shopFilterId');
                   GetStorage().remove('search');
                   // Navigator.pop(context);
+
+                  final filters = context.read<FilterProvider>();
+
+                  filters.resetAll();
                   context.router.pop();
                 },
                 icon: Icon(
@@ -375,12 +373,6 @@ class _ProductsPageState extends State<ProductsPage> {
         //     ),
         //   ),
         // ),
-
-        // actions: [
-        //   Padding(
-        //       padding: const EdgeInsets.only(right: 20.0),
-        //       child: SvgPicture.asset('assets/icons/share.svg'))
-        // ],
       ),
       body: SmartRefresher(
           controller: _refreshController,
@@ -596,19 +588,20 @@ class _ProductsPageState extends State<ProductsPage> {
                           onTap: () {
                             final filters = context.read<FilterProvider>();
                             showListBrandsOptions(
-                                context, 'Подкатегории', 'params', subCats,
-                                (CatsModel value) {
-                              if (subCat?.name == value.name) {
+                                context,
+                                'Подкатегории',
+                                'params',
+                                subCats,
+                                subCat?.id ?? -1, (CatsModel value) {
+                              if (subCat?.name == value.name || value.id == 0) {
                                 subCat = null;
-                                setState(() {});
-                                GetStorage().remove('subCatId');
+                                filters.resetSubCats();
                               } else {
-                                GetStorage().write('subCatId', value.id);
-                                GetStorage().write('subCatFilterId', value.id);
-                                setState(() {
-                                  subCat = value;
-                                });
+                                filters.setSubCats([value.id!]);
+                                subCat = value;
                               }
+                              setState(() {});
+
                               BlocProvider.of<productCubit.ProductCubit>(
                                       context)
                                   .products(filters);
@@ -650,7 +643,7 @@ class _ProductsPageState extends State<ProductsPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 8),
+                        SizedBox(height: 16),
                         Container(
                           height: 40,
                           alignment: Alignment.centerLeft,
@@ -658,7 +651,9 @@ class _ProductsPageState extends State<ProductsPage> {
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(16)),
-                          child: Row(
+                          child: ListView(
+                            padding: EdgeInsets.zero,
+                            scrollDirection: Axis.horizontal,
                             children: [
                               InkWell(
                                 onTap: () {
@@ -674,35 +669,44 @@ class _ProductsPageState extends State<ProductsPage> {
                                   ];
 
                                   showListBrandsOptions(
-                                      context, 'Сортировка', 'params', sorts,
-                                      (CatsModel value) {
-                                    switch (value.name) {
-                                      case 'Популярные':
-                                        GetStorage().write(
-                                            'sortFilter', 'orderByPopular');
-                                        break;
-                                      case 'Новинки':
-                                        GetStorage()
-                                            .write('sortFilter', 'orderByNew');
-                                        break;
-                                      case 'Сначала дешевые':
-                                        GetStorage()
-                                            .write('sortFilter', 'priceAsc');
-                                        break;
-                                      case 'Сначала дорогие':
-                                        GetStorage()
-                                            .write('sortFilter', 'priceDesc');
-                                        break;
-                                      case 'Высокий рейтинг':
-                                        GetStorage()
-                                            .write('sortFilter', 'rating');
-                                        break;
-                                      default:
-                                        print("число не равно 1, 2, 3");
+                                      context,
+                                      'Сортировка',
+                                      'params',
+                                      sorts,
+                                      selectedSortIndex, (CatsModel value) {
+                                    if (value.id != 0) {
+                                      selectedSortIndex = value.id!;
+                                      String sortKey = '';
+                                      switch (value.name) {
+                                        case 'Популярные':
+                                          sortKey = 'orderByPopular';
+
+                                          break;
+                                        case 'Новинки':
+                                          sortKey = 'orderByNew';
+                                          break;
+                                        case 'Сначала дешевые':
+                                          sortKey = 'priceAsc';
+                                          break;
+                                        case 'Сначала дорогие':
+                                          sortKey = 'priceDesc';
+                                          break;
+                                        case 'Высокий рейтинг':
+                                          sortKey = 'rating';
+                                          break;
+                                        default:
+                                          print("число не равно 1, 2, 3");
+                                      }
+
+                                      filters.setSort(sortKey);
+                                      sortIcon = true;
+                                    } else {
+                                      sortIcon = false;
+                                      selectedSortIndex = -1;
                                     }
 
-                                    sortIcon = true;
                                     setState(() {});
+
                                     BlocProvider.of<productCubit.ProductCubit>(
                                             context)
                                         .products(filters);
@@ -762,9 +766,14 @@ class _ProductsPageState extends State<ProductsPage> {
                                           color: AppColors.kGray1,
                                           borderRadius:
                                               BorderRadius.circular(12)),
-                                      child: SvgPicture.asset(
-                                        Assets.icons.filter.path,
-                                        color: Colors.black,
+                                      child: SizedBox(
+                                        height: 11.5,
+                                        width: 15,
+                                        child: Image.asset(
+                                          Assets.icons.filterBlackIcon.path,
+                                          color: Colors.black,
+                                          fit: BoxFit.cover,
+                                        ),
                                       )),
                                   filterIcon == true
                                       ? Positioned(
@@ -794,31 +803,41 @@ class _ProductsPageState extends State<ProductsPage> {
                                     CatsModel(id: 4, name: 'До 7 дней'),
                                   ];
 
-                                  showListBrandsOptions(
-                                      context, 'Доставка', 'params', sorts,
+                                  showListBrandsOptions(context, 'Доставка',
+                                      'params', sorts, selectedDelliveryIndex,
                                       (CatsModel value) {
+                                    selectedDelliveryIndex = value.id ?? -1;
+
+                                    String delliveryKey = '';
+
                                     switch (value.name) {
                                       case 'Сегодня,завтра':
-                                        GetStorage()
-                                            .write('dellivery', 'one_day');
+                                        delliveryKey = 'one_day';
+                                        selectedDelliveryText =
+                                            'Сегодня,завтра';
+
                                         break;
                                       case 'До 2 дней':
-                                        GetStorage()
-                                            .write('dellivery', 'two_day');
+                                        delliveryKey = 'two_day';
+                                        selectedDelliveryText = 'До 2 дней';
+
                                         break;
                                       case 'До 5 дней':
-                                        GetStorage()
-                                            .write('dellivery', 'three_day');
+                                        delliveryKey = 'three_day';
+                                        selectedDelliveryText = 'До 5 дней';
                                         break;
                                       case 'До 7 дней':
-                                        GetStorage()
-                                            .write('dellivery', 'seven_day');
+                                        delliveryKey = 'seven_day';
+                                        selectedDelliveryText = 'До 7 дней';
                                         break;
 
                                       default:
-                                        GetStorage()
-                                            .write('dellivery', 'one_day');
+                                        delliveryKey = '';
+                                        selectedDelliveryText = null;
                                     }
+
+                                    setState(() {});
+                                    filters.setDelivery(delliveryKey);
                                     BlocProvider.of<productCubit.ProductCubit>(
                                             context)
                                         .products(filters);
@@ -826,7 +845,6 @@ class _ProductsPageState extends State<ProductsPage> {
                                 },
                                 child: Container(
                                     height: 36,
-                                    width: 105,
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                         color: AppColors.kGray1,
@@ -840,16 +858,30 @@ class _ProductsPageState extends State<ProductsPage> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'Доставка',
-                                            style:
-                                                AppTextStyles.size14Weight400,
+                                            selectedDelliveryText ?? 'Доставка',
+                                            style: AppTextStyles.size14Weight400
+                                                .copyWith(
+                                              color: selectedDelliveryText !=
+                                                      null
+                                                  ? AppColors.mainPurpleColor
+                                                  : null,
+                                              fontWeight:
+                                                  selectedDelliveryText != null
+                                                      ? FontWeight.w500
+                                                      : null,
+                                            ),
                                           ),
                                           SizedBox(width: 8),
                                           SizedBox(
                                             height: 6,
                                             width: 12,
                                             child: Image.asset(
-                                                Assets.icons.dropDownIcon.path),
+                                              Assets.icons.dropDownIcon.path,
+                                              color: selectedDelliveryText !=
+                                                      null
+                                                  ? AppColors.mainPurpleColor
+                                                  : null,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -862,7 +894,11 @@ class _ProductsPageState extends State<ProductsPage> {
                                 onTap: () {
                                   final filters =
                                       context.read<FilterProvider>();
-                                  showFiltrPriceOptions(context, 'Цена,₸', () {
+                                  showFiltrPriceOptions(context, 'Цена,₸',
+                                      (value) {
+                                    setState(() {
+                                      filterPriceLabel = value;
+                                    });
                                     Navigator.pop(context);
 
                                     BlocProvider.of<productCubit.ProductCubit>(
@@ -872,7 +908,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                 },
                                 child: Container(
                                     height: 36,
-                                    width: 80,
+                                    // width: 80,
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                         color: AppColors.kGray1,
@@ -886,18 +922,31 @@ class _ProductsPageState extends State<ProductsPage> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'Цена',
+                                            filterPriceLabel ?? 'Цена',
                                             style: AppTextStyles.size14Weight500
                                                 .copyWith(
-                                                    color: AppColors
-                                                        .kLightBlackColor),
+                                                    color: (filterPriceLabel !=
+                                                            null)
+                                                        ? AppColors
+                                                            .mainPurpleColor
+                                                        : AppColors
+                                                            .kLightBlackColor,
+                                                    fontWeight:
+                                                        (filterPriceLabel !=
+                                                                null)
+                                                            ? FontWeight.w500
+                                                            : null),
                                           ),
                                           SizedBox(width: 8),
                                           SizedBox(
                                             height: 6,
                                             width: 12,
                                             child: Image.asset(
-                                                Assets.icons.dropDownIcon.path),
+                                                Assets.icons.dropDownIcon.path,
+                                                color: (filterPriceLabel !=
+                                                        null)
+                                                    ? AppColors.mainPurpleColor
+                                                    : null),
                                           ),
                                         ],
                                       ),
@@ -906,27 +955,9 @@ class _ProductsPageState extends State<ProductsPage> {
                               const SizedBox(
                                 width: 6,
                               ),
-
-                              // const chipWithDropDown(label: 'Цена'),
-                              // const SizedBox(
-                              //   width: 6,
-                              // ),
-                              // const chipWithDropDown(label: 'Бренд'),
-                              // const SizedBox(
-                              //   width: 6,
-                              // ),
-                              // widget.shopId == null
-                              //     ? const chipWithDropDown(
-                              //         label: 'Продавцы')
-                              //     : SizedBox.shrink(),
-                              // const SizedBox(
-                              //   width: 6,
-                              // ),
-                              // const chipWithDropDown(
-                              //     label: 'Высокий рейтинг'),
                             ],
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -936,752 +967,5 @@ class _ProductsPageState extends State<ProductsPage> {
             const ProductWidget(),
           ])),
     );
-  }
-}
-
-class chipWithDropDown extends StatefulWidget {
-  final label;
-
-  const chipWithDropDown({Key? key, required this.label}) : super(key: key);
-
-  @override
-  _chipWithDropDownState createState() => _chipWithDropDownState();
-}
-
-class _chipWithDropDownState extends State<chipWithDropDown> {
-  bool rating = false;
-  String shopName = '';
-  String brandName = '';
-  RangeValues price = const RangeValues(0, 0);
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        switch (widget.label) {
-          case "Цена":
-            {
-              GetStorage().listen(() {
-                if (GetStorage().read('priceFilter') != null) {
-                  setState(() {
-                    price = GetStorage().read('priceFilter');
-                  });
-                }
-              });
-              await showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                isScrollControlled: true,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                isDismissible: true,
-                builder: (context) {
-                  return DraggableScrollableSheet(
-                    initialChildSize: 0.30, //set this as you want
-                    maxChildSize: 0.30, //set this as you want
-                    minChildSize: 0.30, //set this as you want
-                    builder: (context, scrollController) {
-                      return const PriceBottomSheet(
-                        productId: 1,
-                      );
-                    },
-                  );
-                },
-              );
-            }
-            break;
-
-          case "Бренд":
-            {
-              GetStorage().listenKey('brandFilter', (value) {
-                brandName = value ?? 'Бренд';
-                setState(() {});
-              });
-              await showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                isScrollControlled: true,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                isDismissible: true,
-                builder: (context) {
-                  return DraggableScrollableSheet(
-                    initialChildSize: 0.60, //set this as you want
-                    maxChildSize: 0.60, //set this as you want
-                    minChildSize: 0.60, //set this as you want
-                    builder: (context, scrollController) {
-                      return const BrandBottomSheet(
-                        productId: 1,
-                      );
-                    },
-                  );
-                },
-              );
-            }
-            break;
-
-          case "Продавцы":
-            {
-              GetStorage().listenKey('shopFilter', (value) {
-                brandName = value ?? 'Продавцы';
-                setState(() {});
-              });
-
-              await showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                isScrollControlled: true,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                isDismissible: true,
-                builder: (context) {
-                  return DraggableScrollableSheet(
-                    initialChildSize: 0.60, //set this as you want
-                    maxChildSize: 0.60, //set this as you want
-                    minChildSize: 0.60, //set this as you want
-                    builder: (context, scrollController) {
-                      return const ShopBottomSheet(
-                        productId: 1,
-                      );
-                    },
-                  );
-                },
-              );
-            }
-            break;
-
-          case "Высокий рейтинг":
-            {
-              setState(() {
-                rating = !rating;
-              });
-            }
-            break;
-
-          default:
-            {
-              print("Invalid choice");
-            }
-            break;
-        }
-      },
-      child: Chip(
-        //labelPadding: const EdgeInsets.only(left: 6.0, right: 0.0),
-        label: Row(
-          children: [
-            if (widget.label == 'Высокий рейтинг' && rating == true)
-              Text(
-                widget.label,
-                style: const TextStyle(
-                  color: AppColors.kPrimaryColor,
-                ),
-              )
-            else if (shopName != '')
-              Text(
-                shopName,
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-              )
-            else if (price.start != 0 && price.end != 0)
-              Text(
-                "${price.start.toInt()} - ${price.end.toInt()} ₸",
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-              )
-            else if (brandName != '')
-              Text(
-                brandName,
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-              )
-            else
-              Text(
-                widget.label,
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-            if (widget.label == 'Высокий рейтинг' && rating == true)
-              const Icon(
-                Icons.close,
-                color: AppColors.kGray400,
-                size: 16,
-              )
-            else
-              const Icon(
-                Icons.keyboard_arrow_down_sharp,
-                color: AppColors.kGray400,
-                size: 16,
-              )
-          ],
-        ),
-        backgroundColor: Colors.white,
-        shape: const RoundedRectangleBorder(
-            side: BorderSide(color: AppColors.kGray2), //the outline color
-            borderRadius: BorderRadius.all(Radius.circular(10))),
-        padding: const EdgeInsets.all(0),
-      ),
-    );
-  }
-}
-
-class PriceBottomSheet extends StatefulWidget {
-  final int productId;
-
-  const PriceBottomSheet({
-    Key? key,
-    required this.productId,
-  }) : super(key: key);
-
-  @override
-  _PriceBottomSheetState createState() => _PriceBottomSheetState();
-}
-
-class _PriceBottomSheetState extends State<PriceBottomSheet> {
-  RangeValues values = const RangeValues(1, 100000);
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-      child: ListView(children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: const Text(
-                    'Цена',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: SvgPicture.asset(
-                      'assets/icons/icon-tab-close.svg',
-                      color: AppColors.kPrimaryColor,
-                      height: 30,
-                      width: 30,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-              child: Container(
-                color: Colors.white,
-                // height: 200,
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // const SizedBox(
-                    //   height: 20,
-                    // ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.38,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: AppColors.kGray200,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            'от ${values.start.toInt()}',
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.42,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: AppColors.kGray200,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            'до ${values.end.toInt()}',
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      padding: EdgeInsets.zero,
-                      child: RangeSlider(
-                          divisions: 60,
-                          activeColor: AppColors.kPrimaryColor,
-                          inactiveColor: AppColors.kGray300,
-                          min: 1,
-                          max: 100000,
-                          values: values,
-                          onChanged: (value) {
-                            setState(() {
-                              values = value;
-                              final filters = context.read<FilterProvider>();
-                              filters.setPriceRange(values);
-                            });
-                          }),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.only(
-                          left: 0, right: 0, top: 16, bottom: 26),
-                      child: InkWell(
-                        onTap: () {
-                          final filters = context.read<FilterProvider>();
-
-                          BlocProvider.of<productCubit.ProductCubit>(context)
-                              .products(filters);
-
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColors.kPrimaryColor,
-                            ),
-                            width: MediaQuery.of(context).size.width,
-                            padding: const EdgeInsets.all(16),
-                            child: const Text(
-                              'Применить',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16),
-                              textAlign: TextAlign.center,
-                            )),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ]),
-    );
-  }
-}
-
-class BrandBottomSheet extends StatefulWidget {
-  final int productId;
-
-  const BrandBottomSheet({
-    Key? key,
-    required this.productId,
-  }) : super(key: key);
-
-  @override
-  _BrandBottomSheetState createState() => _BrandBottomSheetState();
-}
-
-class _BrandBottomSheetState extends State<BrandBottomSheet> {
-  final List<int> _selectedListSort = [];
-
-  @override
-  void initState() {
-    // if (GetStorage().read('selectedIndexSort') != null) {
-    //   _selectedIndexSort = GetStorage().read('selectedIndexSort');
-    // }
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<brandCubit.BrandCubit, brandState.BrandState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is brandState.ErrorState) {
-            return Center(
-              child: Text(
-                state.message,
-                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-              ),
-            );
-          }
-          if (state is brandState.NoDataState) {
-            return Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20)),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-              width: MediaQuery.of(context).size.height,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Container(
-                      margin: const EdgeInsets.only(top: 130),
-                      child: Image.asset('assets/icons/no_data.png')),
-                  const Text(
-                    'Нет данных',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Text(
-                    'Под эту категорию нет брендов',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff717171)),
-                    textAlign: TextAlign.center,
-                  ),
-                  Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.only(
-                        left: 0, right: 0, top: 22, bottom: 26),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColors.kPrimaryColor,
-                          ),
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.all(16),
-                          child: const Text(
-                            'Закрыть',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16),
-                            textAlign: TextAlign.center,
-                          )),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-          if (state is brandState.LoadedState) {
-            return Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20)),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                child: Column(
-                  children: [
-                    Container(
-                      color: Colors.white,
-                      height: 360,
-                      child: ListView.separated(
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
-                        // shrinkWrap: true,
-                        itemCount: state.cats.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            height: 40,
-                            child: InkWell(
-                                onTap: () {
-                                  // if (_selectedIndexSort == index) {
-                                  //   GetStorage().remove('brandFilter');
-                                  //   GetStorage().remove('brandFilterId');
-                                  //   GetStorage().remove('selectedIndexSort');
-
-                                  //   _selectedIndexSort = -1;
-                                  // } else {
-                                  //   GetStorage().write('brandFilter',
-                                  //       state.cats[index].name.toString());
-                                  //   GetStorage().write(
-                                  //       'brandFilterId', state.cats[index].id);
-                                  //   GetStorage()
-                                  //       .write('selectedIndexSort', index);
-
-                                  if (_selectedListSort
-                                      .contains(state.cats[index].id as int)) {
-                                    _selectedListSort
-                                        .remove(state.cats[index].id as int);
-                                  } else {
-                                    _selectedListSort
-                                        .add(state.cats[index].id as int);
-                                  }
-
-                                  GetStorage().write('brandFilterId',
-                                      _selectedListSort.toString());
-
-                                  setState(() {
-                                    // устанавливаем индекс выделенного элемента
-                                    // _selectedIndexSort = index;
-                                  });
-
-                                  //  Get.back();
-                                  // BlocProvider.of<productCubit.ProductCubit>(
-                                  //         context)
-                                  //     .products();
-                                },
-                                child: ListTile(
-                                  selected: _selectedListSort
-                                      .contains(state.cats[index].id),
-                                  leading: Text(
-                                    state.cats[index].name.toString(),
-                                    style: AppTextStyles.appBarTextStyle,
-                                  ),
-                                  trailing: _selectedListSort
-                                          .contains(state.cats[index].id)
-                                      ? SvgPicture.asset(
-                                          'assets/icons/check_circle.svg',
-                                        )
-                                      : SvgPicture.asset(
-                                          'assets/icons/check_circle_no_selected.svg',
-                                        ),
-                                )),
-                          );
-                        },
-                      ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.only(
-                          left: 0, right: 0, top: 16, bottom: 26),
-                      child: InkWell(
-                        onTap: () {
-                          final filters = context.read<FilterProvider>();
-
-                          BlocProvider.of<productCubit.ProductCubit>(context)
-                              .products(filters);
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColors.kPrimaryColor,
-                            ),
-                            width: MediaQuery.of(context).size.width,
-                            padding: const EdgeInsets.all(16),
-                            child: const Text(
-                              'Готово',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16),
-                              textAlign: TextAlign.center,
-                            )),
-                      ),
-                    ),
-                  ],
-                ));
-          } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
-        });
-  }
-}
-
-class ShopBottomSheet extends StatefulWidget {
-  final int productId;
-
-  const ShopBottomSheet({
-    Key? key,
-    required this.productId,
-  }) : super(key: key);
-
-  @override
-  _ShopBottomSheetState createState() => _ShopBottomSheetState();
-}
-
-class _ShopBottomSheetState extends State<ShopBottomSheet> {
-  //int _selectedIndexSort = -1;
-
-  final List<int> _selectedListSort = [];
-
-  @override
-  void initState() {
-    // if (GetStorage().read('shopSelectedIndexSort') != null) {
-    //   _selectedIndexSort = GetStorage().read('shopSelectedIndexSort');
-    // }
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<shopsDrawerCubit.ShopsDrawerCubit,
-            shopsDrawerState.ShopsDrawerState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is shopsDrawerState.ErrorState) {
-            return Center(
-              child: Text(
-                state.message,
-                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-              ),
-            );
-          }
-          if (state is shopsDrawerState.LoadingState) {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
-
-          if (state is shopsDrawerState.LoadedState) {
-            return Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20)),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                child: Column(
-                  children: [
-                    Container(
-                      color: Colors.white,
-                      height: 360,
-                      child: ListView.separated(
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
-                        // shrinkWrap: true,
-                        itemCount: state.shopsDrawer.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            height: 40,
-                            child: InkWell(
-                                onTap: () {
-                                  // if (_selectedListSort == index) {
-                                  //   GetStorage().remove('shopFilter');
-                                  //   GetStorage().remove('shopFilterId');
-                                  //   GetStorage()
-                                  //       .remove('shopSelectedIndexSort');
-
-                                  //   setState(() {
-                                  //     _selectedIndexSort = -1;
-                                  //   });
-                                  // } else {
-                                  //   GetStorage().write(
-                                  //       'shopFilter',
-                                  //       state.shopsDrawer[index].name
-                                  //           .toString());
-                                  //   GetStorage().write('shopFilterId',
-                                  //       state.shopsDrawer[index].id);
-                                  //   GetStorage()
-                                  //       .write('shopSelectedIndexSort', index);
-
-                                  //   setState(() {
-                                  //     _selectedIndexSort = index;
-                                  //   });
-                                  // }
-
-                                  // Get.back();
-
-                                  if (_selectedListSort
-                                      .contains(state.shopsDrawer[index].id)) {
-                                    _selectedListSort
-                                        .remove(state.shopsDrawer[index].id);
-                                  } else {
-                                    _selectedListSort.add(
-                                        state.shopsDrawer[index].id as int);
-                                  }
-
-                                  GetStorage().write('shopFilterId',
-                                      _selectedListSort.toString());
-
-                                  setState(() {});
-
-                                  // print(GetStorage().read('shopFilterId'));
-                                },
-                                child: ListTile(
-                                  selected: _selectedListSort
-                                      .contains(state.shopsDrawer[index].id),
-                                  leading: Text(
-                                    state.shopsDrawer[index].name.toString(),
-                                    style: AppTextStyles.appBarTextStyle,
-                                  ),
-                                  trailing: _selectedListSort
-                                          .contains(state.shopsDrawer[index].id)
-                                      ? SvgPicture.asset(
-                                          'assets/icons/check_circle.svg',
-                                        )
-                                      : SvgPicture.asset(
-                                          'assets/icons/check_circle_no_selected.svg',
-                                        ),
-                                )),
-                          );
-                        },
-                      ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.only(
-                          left: 0, right: 0, top: 16, bottom: 26),
-                      child: InkWell(
-                        onTap: () {
-                          final filters = context.read<FilterProvider>();
-
-                          BlocProvider.of<productCubit.ProductCubit>(context)
-                              .products(filters);
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColors.kPrimaryColor,
-                            ),
-                            width: MediaQuery.of(context).size.width,
-                            padding: const EdgeInsets.all(16),
-                            child: const Text(
-                              'Готово',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16),
-                              textAlign: TextAlign.center,
-                            )),
-                      ),
-                    ),
-                  ],
-                ));
-          } else {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.indigoAccent));
-          }
-        });
   }
 }

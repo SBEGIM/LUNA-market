@@ -53,84 +53,77 @@ class _CatsPageState extends State<CatsPage> {
               child: Padding(
                 padding: const EdgeInsets.only(
                     left: 16, top: 16, bottom: 8, right: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 248,
-                      child: GridView.builder(
-                          cacheExtent: 10000,
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 8,
-                            mainAxisSpacing: 8,
-                            childAspectRatio: 1.02,
-                          ),
-                          itemCount: 6,
-                          itemBuilder: (BuildContext ctx, index) {
-                            return index != 5
-                                ? GridOptionsCategory(
-                                    layout: GridLayoutCategory(
-                                        title: state.cats[index].name,
-                                        onTap: () {
-                                          // Navigator.push(
-                                          //   context,
-                                          //   MaterialPageRoute(
-                                          //       builder: (context) => UnderCatalogPage(
-                                          //           cats: state.cats[index])),
-                                          // );
+                child: SizedBox(
+                  height: 240,
+                  child: GridView.builder(
+                      cacheExtent: 10000,
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 8,
+                              childAspectRatio: 120 / 114),
+                      itemCount: 6,
+                      itemBuilder: (BuildContext ctx, index) {
+                        return index != 5
+                            ? GridOptionsCategory(
+                                layout: GridLayoutCategory(
+                                    title: state.cats[index].name,
+                                    onTap: () {
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //       builder: (context) => UnderCatalogPage(
+                                      //           cats: state.cats[index])),
+                                      // );
 
-                                          // Navigator.push(
-                                          //   context,
-                                          //   MaterialPageRoute(builder: (context) => SubCatalogPage(cats: state.cats[index])),
-                                          // );
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(builder: (context) => SubCatalogPage(cats: state.cats[index])),
+                                      // );
 
-                                          List<CatsModel> options = [];
-                                          if (index == 1) {
-                                            options.add(CatsModel(
-                                                id: 0, name: 'Женская'));
-                                            options.add(CatsModel(
-                                                id: 0, name: 'Мужская'));
-                                            options.add(CatsModel(
-                                                id: 0, name: 'Детская'));
-                                          }
+                                      List<CatsModel> options = [];
+                                      if (index == 1) {
+                                        options.add(
+                                            CatsModel(id: 0, name: 'Женская'));
+                                        options.add(
+                                            CatsModel(id: 0, name: 'Мужская'));
+                                        options.add(
+                                            CatsModel(id: 0, name: 'Детская'));
+                                      }
 
-                                          context.router.push(SubCatalogRoute(
-                                              cats: state.cats[index],
-                                              catChapters: state
-                                                  .cats[index].catSections));
-                                        },
-                                        icon: state.cats[index].icon.toString(),
-                                        image:
-                                            state.cats[index].image.toString(),
-                                        catOptions: []),
-                                  )
-                                : GridOptionsCategory(
-                                    layout: GridLayoutCategory(
-                                      title: allCat.name,
-                                      onTap: () {
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //       builder: (context) => UnderCatalogPage(
-                                        //           cats: state.cats[index])),
-                                        // );
-                                        context.router.push(CatalogRoute());
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(builder: (context) => SubCatalogPage(cats: state.cats[index])),
-                                        // );
-                                      },
-                                      icon: allCat.icon.toString(),
-                                      image: allCat.image.toString(),
-                                    ),
-                                  );
-                          }),
-                    ),
-                  ],
+                                      context.router.push(SubCatalogRoute(
+                                          cats: state.cats[index],
+                                          catChapters:
+                                              state.cats[index].catSections));
+                                    },
+                                    icon: state.cats[index].icon.toString(),
+                                    image: state.cats[index].image.toString(),
+                                    catOptions: []),
+                              )
+                            : GridOptionsCategory(
+                                layout: GridLayoutCategory(
+                                  title: allCat.name,
+                                  onTap: () {
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //       builder: (context) => UnderCatalogPage(
+                                    //           cats: state.cats[index])),
+                                    // );
+                                    context.router.push(CatalogRoute());
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(builder: (context) => SubCatalogPage(cats: state.cats[index])),
+                                    // );
+                                  },
+                                  icon: allCat.icon.toString(),
+                                  image: allCat.image.toString(),
+                                ),
+                              );
+                      }),
                 ),
               ),
             );

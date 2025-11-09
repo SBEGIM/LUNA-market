@@ -45,8 +45,12 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
             bottom: true,
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: product.bloc?.length != 0 ? 400 : 332,
-                maxHeight: product.bloc?.length != 0 ? 500 : 332,
+                minHeight: product.bloc?.length != 0 && segmentValue == 1
+                    ? 400
+                    : (product.bloc?.length != 0 ? 337 : 300),
+                maxHeight: product.bloc?.length != 0 && segmentValue == 1
+                    ? 500
+                    : (product.bloc?.length != 0 ? 337 : 300),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -74,71 +78,48 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                     ),
                   ),
                   product.bloc?.length != 0
-                      ? Theme(
-                          data: Theme.of(context).copyWith(
-                            shadowColor: Colors.transparent,
+                      ? Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 0,
                           ),
-                          child: Material(
-                              color: Colors.transparent,
-                              elevation: 0,
-                              shadowColor: Colors.transparent,
-                              clipBehavior: Clip.antiAlias,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(4),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 0,
-                                  ),
-                                  child: CustomSwitchButton<int>(
-                                    groupValue: segmentValue,
-                                    backgroundColor: Color(0xffEDEDED),
-                                    thumbColor: AppColors.kWhite,
-                                    children: {
-                                      0: Container(
-                                        alignment: Alignment.center,
-                                        height: 39,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                        child: Text('Штучно',
-                                            style: AppTextStyles.size16Weight600
-                                                .copyWith(
-                                              color: segmentValue == 0
-                                                  ? Colors.black
-                                                  : const Color(0xff9B9B9B),
-                                            )),
-                                      ),
-                                      1: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        alignment: Alignment.center,
-                                        height: 39,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                        child: Text('Оптом',
-                                            style: AppTextStyles.size16Weight600
-                                                .copyWith(
-                                                    color: segmentValue == 0
-                                                        ? Colors.black
-                                                        : const Color(
-                                                            0xff9B9B9B))),
-                                      ),
-                                    },
-                                    onValueChanged: (int? value) {
-                                      if (value != null) {
-                                        segmentValue = value;
-                                        setState(() {});
-                                      }
-                                    },
-                                  ),
-                                ),
-                              )))
+                          child: CustomSwitchButton<int>(
+                            groupValue: segmentValue,
+                            backgroundColor: Color(0xffEDEDED),
+                            thumbColor: AppColors.kWhite,
+                            children: {
+                              0: Container(
+                                alignment: Alignment.center,
+                                height: 32,
+                                width: MediaQuery.of(context).size.width,
+                                child: Text('Штучно',
+                                    style:
+                                        AppTextStyles.size16Weight600.copyWith(
+                                      color: segmentValue == 0
+                                          ? Colors.black
+                                          : const Color(0xff9B9B9B),
+                                    )),
+                              ),
+                              1: Container(
+                                width: MediaQuery.of(context).size.width,
+                                alignment: Alignment.center,
+                                height: 32,
+                                child: Text('Оптом',
+                                    style: AppTextStyles.size16Weight600
+                                        .copyWith(
+                                            color: segmentValue == 1
+                                                ? Colors.black
+                                                : const Color(0xff9B9B9B))),
+                              ),
+                            },
+                            onValueChanged: (int? value) {
+                              if (value != null) {
+                                segmentValue = value;
+                                setState(() {});
+                              }
+                            },
+                          ),
+                        )
                       : SizedBox.shrink(),
                   segmentValue == 0
                       ? Container(
@@ -146,7 +127,10 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          height: product.bloc?.isEmpty != true ? 210 : 162,
+                          height:
+                              product.bloc?.isEmpty != true && segmentValue == 1
+                                  ? 210
+                                  : 152,
                           margin: EdgeInsets.only(left: 16, right: 16, top: 12),
                           padding:
                               EdgeInsets.only(top: 12, right: 12, left: 12),
@@ -250,129 +234,101 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                               .copyWith(
                                                   color: Color(0xff636366)),
                                         ),
+                                        SizedBox(height: 12),
+                                        Container(
+                                          // margin: EdgeInsets.only(left: 154),
+                                          height: 40,
+                                          width: 111,
+                                          decoration: BoxDecoration(
+                                              color: Color(0xffF7F7F7),
+                                              borderRadius:
+                                                  BorderRadius.circular(100)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              InkWell(
+                                                splashColor: AppColors.kWhite,
+                                                onTap: () {
+                                                  /// FIXME
+                                                  // BlocProvider.of<BasketCubit>(context)
+                                                  //     .basketMinus(
+                                                  //         widget.product.id.toString(),
+                                                  //         '1',
+                                                  //         0,
+                                                  //         'fbs');
+
+                                                  // BlocProvider.of<productCubit.ProductCubit>(
+                                                  //         context)
+                                                  //     .updateProductByIndex(
+                                                  //   index: widget.index,
+                                                  //   updatedProduct: widget.product.copyWith(
+                                                  //     basketCount: basketCount - 1,
+                                                  //   ),
+                                                  //);
+                                                  setState(() {
+                                                    if (basketCount == 0) {
+                                                      return;
+                                                      // isvisible = false;
+                                                    } else {
+                                                      // isvisible = true;
+                                                    }
+                                                    basketCount -= 1;
+                                                  });
+                                                },
+                                                child: const Icon(
+                                                  Icons.remove,
+                                                  color:
+                                                      AppColors.mainPurpleColor,
+                                                ),
+                                              ),
+                                              // const SizedBox(
+                                              //   width: 14,
+                                              // ),
+                                              Container(
+                                                width: 28,
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  '$basketCount',
+                                                  style: AppTextStyles
+                                                      .size16Weight600,
+                                                ),
+                                              ),
+                                              // const SizedBox(
+                                              //   width: 14,
+                                              // ),
+                                              InkWell(
+                                                splashColor: AppColors.kWhite,
+                                                onTap: () {
+                                                  // BlocProvider.of<BasketCubit>(context)
+                                                  //     .basketAdd(widget.product.id.toString(),
+                                                  //         '1', 0, '', '');
+                                                  // BlocProvider.of<productCubit.ProductCubit>(
+                                                  //         context)
+                                                  //     .updateProductByIndex(
+                                                  //   index: widget.index,
+                                                  //   updatedProduct: widget.product.copyWith(
+                                                  //     basketCount: basketCount + 1,
+                                                  //   ),
+                                                  //  );
+
+                                                  /// FIXME
+                                                  setState(() {
+                                                    basketCount += 1;
+                                                  });
+                                                },
+                                                child: const Icon(
+                                                  Icons.add,
+                                                  color:
+                                                      AppColors.mainPurpleColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
                                       ])
                                 ],
                               ),
-                              SizedBox(height: 12),
-                              Container(
-                                // margin: EdgeInsets.only(left: 154),
-                                alignment: Alignment.center,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      splashColor: AppColors.kWhite,
-                                      onTap: () {
-                                        /// FIXME
-                                        // BlocProvider.of<BasketCubit>(context)
-                                        //     .basketMinus(
-                                        //         widget.product.id.toString(),
-                                        //         '1',
-                                        //         0,
-                                        //         'fbs');
-
-                                        // BlocProvider.of<productCubit.ProductCubit>(
-                                        //         context)
-                                        //     .updateProductByIndex(
-                                        //   index: widget.index,
-                                        //   updatedProduct: widget.product.copyWith(
-                                        //     basketCount: basketCount - 1,
-                                        //   ),
-                                        //);
-                                        setState(() {
-                                          if (basketCount == 0) {
-                                            return;
-                                            // isvisible = false;
-                                          } else {
-                                            // isvisible = true;
-                                          }
-                                          basketCount -= 1;
-                                        });
-                                      },
-                                      child: Container(
-                                        height: 32,
-                                        width: 32,
-                                        padding: const EdgeInsets.all(4),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.1),
-                                              spreadRadius: 1,
-                                              blurRadius: 1,
-                                              offset: const Offset(0,
-                                                  1), // changes position of shadow
-                                            ),
-                                          ],
-                                        ),
-                                        child: const Icon(
-                                          Icons.remove,
-                                          color: AppColors.mainPurpleColor,
-                                        ),
-                                      ),
-                                    ),
-                                    // const SizedBox(
-                                    //   width: 14,
-                                    // ),
-                                    Container(
-                                      width: 28,
-                                      alignment: Alignment.center,
-                                      child: Text('$basketCount'),
-                                    ),
-                                    // const SizedBox(
-                                    //   width: 14,
-                                    // ),
-                                    InkWell(
-                                      splashColor: AppColors.kWhite,
-                                      onTap: () {
-                                        // BlocProvider.of<BasketCubit>(context)
-                                        //     .basketAdd(widget.product.id.toString(),
-                                        //         '1', 0, '', '');
-                                        // BlocProvider.of<productCubit.ProductCubit>(
-                                        //         context)
-                                        //     .updateProductByIndex(
-                                        //   index: widget.index,
-                                        //   updatedProduct: widget.product.copyWith(
-                                        //     basketCount: basketCount + 1,
-                                        //   ),
-                                        //  );
-
-                                        /// FIXME
-                                        setState(() {
-                                          basketCount += 1;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(4),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.1),
-                                              spreadRadius: 1,
-                                              blurRadius: 1,
-                                              offset: const Offset(0,
-                                                  1), // changes position of shadow
-                                            ),
-                                          ],
-                                        ),
-                                        // child: SvgPicture.asset(
-                                        //     'assets/icons/add_1.svg'),
-                                        child: const Icon(
-                                          Icons.add,
-                                          color: AppColors.mainPurpleColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
                             ],
                           ),
                         )
@@ -440,16 +396,15 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                                   ),
                                                   Text(
                                                     '${formatPrice(product.price!)} ₽ ',
-                                                    style: const TextStyle(
-                                                      color: AppColors.kGray300,
+                                                    style: AppTextStyles
+                                                        .size14Weight400
+                                                        .copyWith(
+                                                      color: Color(0xff8E8E93),
                                                       letterSpacing: -1,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 13,
                                                       decoration: TextDecoration
                                                           .lineThrough,
                                                       decorationColor:
-                                                          AppColors.kGray300,
+                                                          Color(0xff8E8E93),
                                                     ),
                                                   ),
                                                 ],
@@ -465,9 +420,11 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                               ),
                                         SizedBox(height: 4),
                                         SizedBox(
+                                          height: 18,
                                           width: 212,
                                           child: Text(
                                             '${product.name}',
+                                            maxLines: 1,
                                             style: AppTextStyles.size13Weight400
                                                 .copyWith(
                                                     color: Color(0xff636366)),
@@ -484,7 +441,7 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                       ])
                                 ],
                               ),
-                              const SizedBox(height: 6),
+                              const SizedBox(height: 12),
                               const Divider(
                                 thickness: 0.1, // толщина линии
                                 height:
@@ -543,9 +500,8 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                       keyboardType: TextInputType.phone,
                                       decoration: InputDecoration(
                                         hintText: '$basketCount шт',
-                                        hintStyle: AppTextStyles.size16Weight400
-                                            .copyWith(
-                                                color: const Color(0xFF8E8E93)),
+                                        hintStyle:
+                                            AppTextStyles.size16Weight400,
                                         border: InputBorder.none,
                                       ),
                                       inputFormatters: [
@@ -809,10 +765,7 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                       Spacer(),
                                       Text(
                                         '${selectedIndex3 != -1 ? ((((product.price! - product.price! / 100 * product.compound!) * product.bloc![selectedIndex3].count!) - product.bloc![selectedIndex3].price!)) : 0} ₽',
-                                        style: const TextStyle(
-                                            color: AppColors.kLightBlackColor,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w400),
+                                        style: AppTextStyles.size13Weight500,
                                       ),
                                     ],
                                   ),
@@ -835,7 +788,7 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                           if (basketCount <= 0) {
                             AppSnackBar.show(
                               context,
-                              'Неверный номер телефона или пароль',
+                              'Ой! Ноль — не вариант. Выберите хотя бы 1.',
                               type: AppSnackType.error,
                             );
                             return;
@@ -931,49 +884,48 @@ void _showOptomPickerBottomSheet(
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    width: 326,
-                    height: 212,
-                    decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(16)),
-                    child: ListWheelScrollView.useDelegate(
-                      controller: scrollController,
-                      itemExtent: 50,
-                      physics: const FixedExtentScrollPhysics(),
-                      onSelectedItemChanged: (index) {
-                        setModalState(() {
-                          selected = index;
-                        });
-                      },
-                      childDelegate: ListWheelChildBuilderDelegate(
-                        builder: (context, index) {
-                          if (index < 0 || index >= optoms.length) return null;
-                          final year = index;
-                          final isSelected = year == selected;
+                Container(
+                  width: double.infinity,
+                  height: 212,
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(16)),
+                  child: ListWheelScrollView.useDelegate(
+                    controller: scrollController,
+                    itemExtent: 50,
+                    physics: const FixedExtentScrollPhysics(),
+                    onSelectedItemChanged: (index) {
+                      setModalState(() {
+                        selected = index;
+                      });
+                    },
+                    childDelegate: ListWheelChildBuilderDelegate(
+                      builder: (context, index) {
+                        if (index < 0 || index >= optoms.length) return null;
+                        final year = index;
+                        final isSelected = year == selected;
 
-                          return Container(
-                            height: 36,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? Color(0xffEAECED)
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 24),
-                            child: Text('${optoms[index].count} шт',
-                                style: AppTextStyles.size20Weight500.copyWith(
-                                  color: isSelected
-                                      ? AppColors.kGray900
-                                      : Color(0xff8E8E93),
-                                )),
-                          );
-                        },
-                      ),
+                        return Container(
+                          height: 36,
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? Color(0xffEAECED)
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 24),
+                          child: Text('${optoms[index].count} шт',
+                              style: AppTextStyles.size20Weight500.copyWith(
+                                color: isSelected
+                                    ? AppColors.kGray900
+                                    : Color(0xff8E8E93),
+                              )),
+                        );
+                      },
                     ),
                   ),
                 ),

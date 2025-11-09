@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/drawer/bloc/review_state.dart';
 import 'package:haji_market/src/feature/drawer/data/models/review_product_model.dart';
 
@@ -25,24 +26,38 @@ class ReviewCubit extends Cubit<ReviewState> {
   }
 
   Future<void> reviewStore(
-      String review, String rating, String product_id) async {
+    BuildContext context,
+    int orderId,
+    String review,
+    String rating,
+    String productId,
+    List<dynamic> images,
+  ) async {
     try {
       emit(LoadingState());
-      final statusCode =
-          await reviewProductRepository.storeReview(review, rating, product_id);
+      final statusCode = await reviewProductRepository.storeReview(
+          orderId, review, rating, productId, images);
       if (statusCode == 200) {
         final List<ReviewProductModel> data =
-            await reviewProductRepository.productReviews(product_id);
+            await reviewProductRepository.productReviews(productId);
 
         emit(LoadedState(data));
+        AppSnackBar.show(
+          context,
+          'Ваш  отзыв добавлен',
+          type: AppSnackType.success,
+        );
       } else {
         final List<ReviewProductModel> data =
-            await reviewProductRepository.productReviews(product_id);
+            await reviewProductRepository.productReviews(productId);
 
         emit(LoadedState(data));
 
-        Get.snackbar('Ошибка', 'Вы не можете оставлять отзыв',
-            backgroundColor: Colors.orangeAccent);
+        AppSnackBar.show(
+          context,
+          'Вы не можете оставлять отзыв',
+          type: AppSnackType.error,
+        );
       }
     } catch (e) {
       log(e.toString());

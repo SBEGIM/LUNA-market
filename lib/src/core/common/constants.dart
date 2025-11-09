@@ -22,6 +22,12 @@ mixin AppColors {
   static const Color mainBackgroundPurpleColor = Color(
     0x1A6F32F8,
   );
+
+  static const Color boxDecorBackgroundPurpleColor = Color(
+    0x1A6F32F8,
+  );
+  static Color kMainPurpleMuted10b = const Color(0xFF6F32F8).withOpacity(0.10);
+
   static const Color buttonBackgroundPurpleColor = Color(
     0xFFC5ADFC,
   );

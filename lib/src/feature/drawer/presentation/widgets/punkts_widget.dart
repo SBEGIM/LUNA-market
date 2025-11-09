@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 
 class PunktsWidget extends StatelessWidget {
   const PunktsWidget({
@@ -17,28 +18,29 @@ class PunktsWidget extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: 4,
-        separatorBuilder: (BuildContext context, int index) =>
-            const Divider(height: 1),
+        separatorBuilder: (BuildContext context, int index) => const Divider(
+          height: 1,
+          thickness: 0.33,
+          color: Color(0xffC7C7CC),
+        ),
         itemBuilder: (BuildContext context, int index) {
           return SizedBox(
             height: 70,
             child: ListTile(
-              //minLeadingWidth: 23,
-              horizontalTitleGap: 0,
-              leading: SvgPicture.asset('assets/icons/location.svg'),
+              contentPadding: EdgeInsets.zero,
+              horizontalTitleGap: 11,
+              leading: SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: Image.asset(Assets.icons.location.path)),
               title: const Text(
                 'Алматы, улица Байзакова, 280',
-                style: TextStyle(
-                    color: AppColors.kGray900,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
+                style: AppTextStyles.size18Weight600,
               ),
-              subtitle: const Text(
+              subtitle: Text(
                 'Пн – Сб с 10:00 до 18:00, Вс – выходной',
-                style: TextStyle(
-                    color: AppColors.kGray300,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400),
+                style: AppTextStyles.size14Weight400
+                    .copyWith(color: Color(0xff8E8E93)),
               ),
             ),
           );

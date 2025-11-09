@@ -145,11 +145,13 @@ class BasketOrderModel {
 class Product {
   Product({
     int? id,
+    int? shopId,
     String? shopName,
     String? shopImage,
     int? shopCourier,
     String? shopCityName,
     String? shopPhone,
+    int? productId,
     String? productName,
     List<String>? path,
     int? count,
@@ -159,11 +161,13 @@ class Product {
     String? shopSchedule,
   }) {
     _id = id;
+    _shopId = shopId;
     _shopName = shopName;
     _shopImage = shopImage;
     _shopCourier = shopCourier;
     _shopPhone = shopPhone;
     _shopCityName = shopCityName;
+    _productId = productId;
     _productName = productName;
     _path = path;
     _count = count;
@@ -175,10 +179,12 @@ class Product {
 
   Product.fromJson(dynamic json) {
     _id = json['id'];
+    _shopId = json['shop_id'];
     _shopName = json['shop_name'];
     _shopImage = json['shop_image'];
     _shopPhone = json['shop_phone'];
     _shopCourier = json['shop_courier'];
+    _productId = json['product_id'];
     _productName = json['product_name'];
     _shopCityName = json['shop_city_name'];
     _path = json['path'] != null ? json['path'].cast<String>() : [];
@@ -189,11 +195,13 @@ class Product {
     _shopSchedule = json['shop_schedule'];
   }
   int? _id;
+  int? _shopId;
   String? _shopName;
   String? _shopImage;
   int? _shopCourier;
   String? _shopCityName;
   String? _shopPhone;
+  int? _productId;
   String? _productName;
   List<String>? _path;
   int? _count;
@@ -203,11 +211,13 @@ class Product {
   String? _shopSchedule;
 
   int? get id => _id;
+  int? get shopId => _shopId;
   String? get shopName => _shopName;
   String? get shopImage => _shopImage;
   String? get shopCityName => _shopCityName;
   int? get shopCourier => _shopCourier;
   String? get shopPhone => _shopPhone;
+  int? get productId => _productId;
   String? get productName => _productName;
   List<String>? get path => _path;
   int? get count => _count;
@@ -219,11 +229,13 @@ class Product {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
+    map['shop_id'] = _shopId;
     map['shop_name'] = _shopName;
     map['shopImage'] = _shopImage;
     map['shopCityName'] = _shopCityName;
     map['shop_phone'] = _shopPhone;
     map['shop_courier'] = _shopCourier;
+    map['product_id'] = _productId;
     map['product_name'] = _productName;
     map['path'] = _path;
     map['count'] = _count;

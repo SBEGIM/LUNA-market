@@ -5,11 +5,18 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/core/presentation/widgets/other/custom_switch_button.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/drawer/bloc/review_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/review_state.dart';
+import 'package:haji_market/src/feature/drawer/presentation/widgets/punkts_widget.dart';
+import 'package:haji_market/src/feature/home/bloc/cats_cubit.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
+import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/common/constants.dart';
 import '../../../chat/presentation/message.dart';
@@ -17,8 +24,8 @@ import '../../../product/data/model/product_model.dart';
 
 @RoutePage()
 class DetailStorePage extends StatefulWidget {
-  final Shops shop;
-  const DetailStorePage({required this.shop, Key? key}) : super(key: key);
+  final ProductModel product;
+  const DetailStorePage({required this.product, Key? key}) : super(key: key);
 
   @override
   State<DetailStorePage> createState() => _DetailStorePageState();
@@ -27,6 +34,8 @@ class DetailStorePage extends StatefulWidget {
 class _DetailStorePageState extends State<DetailStorePage> {
   int segmentValue = 0;
   // List<bool>? isSelected;
+
+  List<String> textDescrp = [];
   int index = 0;
   bool isSelected = false;
 
@@ -38,7 +47,10 @@ class _DetailStorePageState extends State<DetailStorePage> {
 
   @override
   void initState() {
-    isSelected = widget.shop.inSubs!;
+    textDescrp = [
+      'Чат с поддержкой',
+      'Все товары “${widget.product.shop!.name}”',
+    ];
     super.initState();
   }
 
@@ -48,24 +60,22 @@ class _DetailStorePageState extends State<DetailStorePage> {
       // resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.kBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.kWhite,
+        surfaceTintColor: AppColors.kWhite,
         elevation: 0,
-        leading: InkWell(
-          onTap: () {
-            // Navigator.pop(context);
-            context.router.pop();
+        leadingWidth: 18,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
           },
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.kPrimaryColor,
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
           ),
         ),
         title: Text(
-          '${widget.shop.shop!.name}',
-          style: const TextStyle(
-              color: AppColors.kGray900,
-              fontWeight: FontWeight.w500,
-              fontSize: 18),
+          'Продавец',
+          style: AppTextStyles.size18Weight600,
         ),
         // actions: [
         //   Padding(
@@ -78,133 +88,68 @@ class _DetailStorePageState extends State<DetailStorePage> {
         shrinkWrap: true,
         children: [
           const SizedBox(
-            height: 10,
+            height: 12,
           ),
           Container(
-              // padding: const EdgeInsets.only(
-              //   left: 16,
-              //   // right: 16,
-              // ),
-              color: Colors.white,
+              padding: const EdgeInsets.only(
+                left: 16,
+                top: 16,
+                right: 16,
+              ),
+              decoration: BoxDecoration(
+                  color: AppColors.kWhite,
+                  borderRadius: BorderRadius.circular(16)),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ListTile(
-                    minVerticalPadding: 14,
-                    leading: Image.network(
-                      'https://lunamarket.ru/storage/${widget.shop.shop!.image}',
-                      width: 50,
-                      height: 50,
-                      errorBuilder: (context, error, stackTrace) =>
-                          const ErrorImageWidget(
-                        height: 50,
-                        width: 50,
-                      ),
-                    ),
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      // mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Дата регистрации: ${widget.shop.shop!.createdAt}',
-                          //  maxLines: 1,
-                          //overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              color: AppColors.kGray300,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        RatingBar(
-                          ignoreGestures: true,
-                          initialRating: 2,
-                          unratedColor: const Color(0x30F11712),
-                          itemSize: 15,
-                          // itemPadding:
-                          // const EdgeInsets.symmetric(horizontal: 4.0),
-                          ratingWidget: RatingWidget(
-                            full: const Icon(
-                              Icons.star,
-                              color: Color(0xFFFFC107),
-                            ),
-                            half: const Icon(
-                              Icons.star,
-                              color: Colors.grey,
-                            ),
-                            empty: const Icon(
-                              Icons.star,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          onRatingUpdate: (double value) {},
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset('assets/icons/check_circle.svg'),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            const Text(
-                              'Более 1 000 успешных продаж',
-                              style: TextStyle(
-                                  color: AppColors.kPrimaryColor,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    ),
+                  Text(
+                    '${widget.product.shop?.name ?? ''}',
+                    style: AppTextStyles.size18Weight600,
                   ),
+                  Text('Дата регистрации: ${widget.product.shop!.createdAt}',
+                      style: AppTextStyles.size14Weight400
+                          .copyWith(color: Color(0xffAEAEB2))),
+                  SizedBox(height: 9),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SvgPicture.asset(
+                        Assets.icons.sellerIcon.path,
+                        color: Color(0xff34C759),
+                        height: 12,
+                        width: 12,
+                      ),
+                      const SizedBox(
+                        width: 7,
+                      ),
+                      Text(
+                        'Более 1 000 успешных продаж',
+                        style: AppTextStyles.size13Weight400
+                            .copyWith(color: AppColors.mainGreenColor),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 9),
                   InkWell(
                     onTap: () {
-                      //  Get.to(() => const ChatPage());
-
                       Get.to(MessagePage(
-                          userId: widget.shop.shop?.id,
-                          name: widget.shop.shop?.name,
-                          avatar: widget.shop.shop?.image,
-                          chatId: widget.shop.chatId));
-
-                      // Get.to(Message(
-                      //                   userId: widget.shop.shop?.id!
-                      //                       .tapeModel[index].shop!.id,
-                      //                   name: state.tapeModel[index]
-                      //                       .shop!.name,
-                      //                   avatar: state.tapeModel[index]
-                      //                       .shop!.image,
-                      //                   chatId: state
-                      //                       .tapeModel[index].chatId));
+                          userId: widget.product.shop?.id,
+                          name: widget.product.shop?.name,
+                          avatar: widget.product.shop?.image,
+                          chatId: widget.product.shop?.chat_id ?? 0));
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Container(
-                        width: 400,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.kPrimaryColor),
-                          borderRadius: BorderRadius.circular(10),
-                          color: const Color(0x331DC4CF),
-                          // : const Color.fromRGBO(29, 196, 207, 0.2),
-                        ),
-                        padding: const EdgeInsets.only(
-                            left: 16, right: 16, top: 16, bottom: 16),
-                        child: const Text(
-                          'Чат с магазином',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.kPrimaryColor),
-                        ),
+                    child: Container(
+                      height: 40,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: AppColors.mainBackgroundPurpleColor,
                       ),
+                      alignment: Alignment.center,
+                      child: Text('Чат с магазином',
+                          style: AppTextStyles.size16Weight600
+                              .copyWith(color: AppColors.mainPurpleColor)),
                     ),
                   ),
                   const SizedBox(
@@ -212,165 +157,160 @@ class _DetailStorePageState extends State<DetailStorePage> {
                   ),
                 ],
               )),
-          const Divider(
-            height: 1,
-            color: AppColors.kGray300,
+
+          const SizedBox(
+            height: 16,
           ),
-          GestureDetector(
-            onTap: () =>
-                launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false),
-            child: Container(
-              height: 56,
-              padding: EdgeInsets.only(left: 16),
-              color: Colors.white,
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.forum,
-                    color: AppColors.kPrimaryColor,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    'Чат с поддержкой',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                  )
-                ],
-              ),
-            ),
+
+          Container(
+              padding: EdgeInsets.only(top: 8, bottom: 8),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(16)),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: textDescrp.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () async {
+                      final filters = context.read<FilterProvider>();
+
+                      final CatsModel catsModel =
+                          await BlocProvider.of<CatsCubit>(context)
+                              .catById(widget.product.shop!.chat_id.toString());
+
+                      if (index == 0) {
+                        launch("https://t.me/LUNAmarketAdmin",
+                            forceSafariVC: false);
+                      }
+
+                      if (index == 1) {
+                        context.router.push(ProductsRoute(
+                          cats: catsModel,
+                          shopId: widget.product.shop!.id.toString(),
+                        ));
+                        filters.setShops([widget.product.shop!.id ?? 0]);
+
+                        await BlocProvider.of<ProductCubit>(context)
+                            .products(filters);
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      margin: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                          color: AppColors.kMainPurpleMuted10b,
+                          borderRadius: BorderRadius.circular(16)),
+                      height: 50,
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              textDescrp[index],
+                              maxLines: 2,
+                              style: AppTextStyles.size16Weight500,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                            width: 20,
+                            child: Image.asset(
+                              Assets.icons.defaultArrowForwardIcon.path,
+                              color: AppColors.mainPurpleColor,
+                              fit: BoxFit.contain,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              )),
+
+          const SizedBox(
+            height: 16,
           ),
           Container(
-            color: Colors.white,
+            decoration: BoxDecoration(
+                color: AppColors.kWhite,
+                borderRadius: BorderRadius.circular(12)),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: Column(
               children: [
-                // const Divider(
-                //   color: AppColors.kGray300,
-                // ),
-                // ListTile(
-                //   minLeadingWidth: 10,
-                //   leading: SvgPicture.asset('assets/icons/message.svg'),
-                //   title: const Text(
-                //     'Чат с поддержкой',
-                //     style: TextStyle(
-                //         color: AppColors.kGray900,
-                //         fontSize: 16,
-                //         fontWeight: FontWeight.w400),
-                //   ),
-                // ),
-                const Divider(
-                  height: 1,
-                  color: AppColors.kGray300,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    final List<int> _selectedListSort = [];
-
-                    _selectedListSort.add(widget.shop.shop!.id as int);
-
-                    GetStorage()
-                        .write('shopFilterId', _selectedListSort.toString());
-
-                    context.router.push(ProductsRoute(
-                      cats: CatsModel(id: 0, name: ''),
-                      shopId: widget.shop.shop!.id.toString(),
-                    ));
-                    // Get.to(ProductsPage(
-                    //   cats: Cats(id: 0, name: ''),
-                    //   shopId: widget.shop.shop!.id.toString(),
-                    // ));
-                  },
-                  child: ListTile(
-                      leading: Text(
-                        'Все товары ${widget.shop.shop!.name}',
-                        style: const TextStyle(
-                            color: AppColors.kPrimaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                Row(
+                  children: [
+                    Flexible(
+                      child: InkWell(
+                        onTap: () {
+                          segmentValue = 0;
+                          setState(() {});
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 36,
+                          width: 175,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: segmentValue == 0
+                                  ? AppColors.mainPurpleColor
+                                  : Color(0xffEAECED)),
+                          child: Text(
+                            'Отзывы ',
+                            style: AppTextStyles.size14Weight500.copyWith(
+                                color: segmentValue == 0
+                                    ? AppColors.kWhite
+                                    : Color(0xff636366)),
+                          ),
+                        ),
                       ),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: AppColors.kPrimaryColor,
-                        size: 16,
-                      )),
+                    ),
+                    SizedBox(width: 8),
+                    Flexible(
+                      child: InkWell(
+                        onTap: () {
+                          segmentValue = 1;
+
+                          setState(() {});
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 36,
+                          width: 175,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: segmentValue == 1
+                                  ? AppColors.mainPurpleColor
+                                  : Color(0xffEAECED)),
+                          child: Text(
+                            'Пункты самовывоза ',
+                            style: AppTextStyles.size14Weight500.copyWith(
+                                color: segmentValue == 1
+                                    ? AppColors.kWhite
+                                    : Color(0xff636366)),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-                const Divider(
-                  height: 1,
-                  color: AppColors.kGray300,
-                ),
-                // const SizedBox(
-                //   height: 16,
-                // ),
-                // Container(
-                //   padding: const EdgeInsets.symmetric(horizontal: 16),
-                //   child: CustomSwitchButton<int>(
-                //     groupValue: segmentValue,
-                //     children: {
-                //       0: Container(
-                //         width: MediaQuery.of(context).size.width,
-                //         alignment: Alignment.center,
-                //         height: 39,
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(4),
-                //         ),
-                //         child: const Text(
-                //           'Пункты самовывоза',
-                //           style: TextStyle(
-                //               fontWeight: FontWeight.w400,
-                //               fontSize: 14,
-                //               color: Colors.black
-                //               // : const Color(0xff9B9B9B),
-                //               ),
-                //         ),
-                //       ),
-                //       1: Container(
-                //         alignment: Alignment.center,
-                //         height: 39,
-                //         width: MediaQuery.of(context).size.width,
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(4),
-                //         ),
-                //         child: const Text(
-                //           'Отзывы ',
-                //           style: TextStyle(
-                //               fontSize: 15,
-                //               fontWeight: FontWeight.w400,
-                //               color:
-                //                   // segmentValue == 0
-                //                   Colors.black
-                //               // : const Color(0xff9B9B9B),
-                //               ),
-                //         ),
-                //       ),
-                //     },
-                //     onValueChanged: (int? value) async {
-                //       if (value != null && value != 1) {
-                //         segmentValue = value;
-                //       } else {
-                //         Get.snackbar('Нет доступа', 'временно не доступен',
-                //             backgroundColor: Colors.orangeAccent);
-                //       }
-                //       setState(() {});
-                //     },
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 20,
-                // )
+                SizedBox(height: 16),
+                IndexedStack(
+                  index: segmentValue,
+                  children: [
+                    ReviewsWidget(product: widget.product),
+                    PunktsWidget(),
+                  ],
+                )
               ],
             ),
           ),
 
-          // const SizedBox(
-          //   height: 10,
-          // ),
-          // IndexedStack(
-          //   index: segmentValue,
-          //   children: const [
-          //     PunktsWidget(),
-          //     SizedBox()
-          //     // ReviewsWidget(),
-          //   ],
-          // )
+          const SizedBox(
+            height: 20,
+          ),
 
           // ReviewsWidget(),
 
@@ -385,9 +325,9 @@ class _DetailStorePageState extends State<DetailStorePage> {
 }
 
 class ReviewsWidget extends StatefulWidget {
-  final String product_id;
+  final ProductModel product;
   ReviewsWidget({
-    required this.product_id,
+    required this.product,
     Key? key,
   }) : super(key: key);
 
@@ -403,313 +343,261 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
   void initState() {
     // TODO: implement initState
 
-    BlocProvider.of<ReviewCubit>(context).reviews(widget.product_id);
+    BlocProvider.of<ReviewCubit>(context).reviews(widget.product.id.toString());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
-      color: Colors.white,
-      child: ListView(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        // crossAxisAlignment: CrossAxisAlignment.start,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
+      ),
+      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 0),
+      child: Column(
         children: [
           Container(
-              color: Colors.white,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(bottom: 8, left: 16),
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      'Отзывы',
-                      textAlign: TextAlign.start,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            height: 73,
+            alignment: Alignment.topCenter,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // НЕ spaceBetween, сами контролируем отступ
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // левая колонка (оценка и кол-во отзывов)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${(widget.product.rating ?? 0).toDouble()}',
+                      style: const TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    //  height: 300,
-                    alignment: Alignment.centerLeft,
-                    child: Stack(
-                      //mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: RichText(
-                            text: const TextSpan(
-                              //  style: DefaultTextStyle.of(context).style,
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: "4.8",
-                                  style: TextStyle(
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black),
+                    const SizedBox(height: 2),
+                    Text(
+                      '${widget.product.count ?? 0} отзывов',
+                      style: const TextStyle(
+                        color: AppColors.kGray300,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: 254,
+                  height: 73,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(5, (row) {
+                      final stars = 5 - row;
+                      final total =
+                          (widget.product.count ?? 0).clamp(0, 999999);
+                      final value = (widget.product.review?[(stars - 1)] ?? 0);
+                      final double barWidth =
+                          total > 0 ? 160.0 * (value / total) : 0.0;
+
+                      return Container(
+                        height: 12,
+                        margin: EdgeInsets.only(bottom: 2),
+                        child: Row(
+                          children: [
+                            RatingBarIndicator(
+                              rating: stars.toDouble(),
+                              itemCount: 5,
+                              itemSize: 10,
+                              unratedColor: const Color(0xffD1D1D6),
+                              itemPadding: EdgeInsets.only(left: 2.5),
+                              itemBuilder: (context, _) => SizedBox(
+                                height: 10,
+                                width: 10,
+                                child: Image.asset(
+                                  Assets.icons.defaultStarIcon.path,
+                                  color: const Color(0xffFFBE00),
+                                  fit: BoxFit.contain,
                                 ),
-                                TextSpan(
-                                  text: " из 5",
-                                  style: TextStyle(
-                                      color: AppColors.kGray300,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Stack(
+                              children: [
+                                Container(
+                                  height: 4,
+                                  width: 160,
+                                  color: const Color(0xffD1D1D6),
                                 ),
+                                if (barWidth > 0)
+                                  Container(
+                                    height: 4,
+                                    width: barWidth,
+                                    color: const Color(0xffFFBE00),
+                                  ),
                               ],
                             ),
-                          ),
+                            Spacer(),
+                            Text(
+                              '${value}',
+                              style: AppTextStyles.size11Weight500
+                                  .copyWith(color: Color(0xff8E8E93)),
+                            )
+                          ],
                         ),
-                        Container(
-                          height: 65,
-                          margin: const EdgeInsets.only(top: 0, left: 98),
-                          child: ListView.builder(
-                              itemCount: 5,
-                              // scrollDirection: Axis.vertical,
-                              reverse: true,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Row(
-                                  children: [
-                                    RatingBar.builder(
-                                      initialRating: index.toDouble(),
-                                      ignoreGestures: true,
-                                      itemSize: 13,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: true,
-                                      itemCount: 5,
-                                      itemPadding: const EdgeInsets.symmetric(
-                                          horizontal: 0.0),
-                                      itemBuilder: (context, _) => const Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
-                                      onRatingUpdate: (rating) {},
-                                    ),
-                                    Stack(
-                                      children: [
-                                        Container(
-                                            height: 4,
-                                            width: 186,
-                                            color: Color(0xffe5f1ff)),
-                                        Container(
-                                            height: 4,
-                                            width: index.toDouble() * 10,
-                                            color: Color(0xffFFC107))
-                                      ],
-                                    )
-                                  ],
-                                );
-                              }),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 55),
-                          child: const Text(
-                            '98 отзывов',
-                            style: TextStyle(
-                                color: AppColors.kGray300,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ],
-                    ),
+                      );
+                    }),
                   ),
-                ],
-              )),
-          const SizedBox(
-            height: 20,
+                ),
+              ],
+            ),
           ),
-          const Divider(
-            height: 1,
-            color: AppColors.kGray300,
-          ),
+
+          // список отзывов из блока
           BlocConsumer<ReviewCubit, ReviewState>(
-              listener: (context, state) {},
-              builder: (context, state) {
-                if (state is ErrorState) {
-                  return Center(
+            listener: (_, __) {},
+            builder: (context, state) {
+              if (state is ErrorState) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Center(
                     child: Text(
                       state.message,
                       style:
-                          const TextStyle(fontSize: 20.0, color: Colors.grey),
+                          const TextStyle(fontSize: 16.0, color: Colors.grey),
                     ),
-                  );
-                }
-                if (state is LoadingState) {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent));
-                }
-
-                if (state is LoadedState) {
-                  return Container(
-                      height: state.reviewModel.isNotEmpty
-                          ? (80 * state.reviewModel.length.toDouble())
-                          : 20,
-                      padding: const EdgeInsets.all(16),
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: state.reviewModel.length,
-                        itemBuilder: (context, index) {
-                          return Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '${state.reviewModel[index].user!.name}',
-                                      style: const TextStyle(
-                                          color: AppColors.kGray900,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    RatingBar.builder(
-                                      initialRating: state
-                                          .reviewModel[index].rating!
-                                          .toDouble(),
-                                      minRating: 1,
-                                      itemSize: 15,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: false,
-                                      itemCount: 5,
-                                      ignoreGestures: true,
-                                      itemPadding: const EdgeInsets.symmetric(
-                                          horizontal: 0.0),
-                                      itemBuilder: (context, _) => const Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
-                                      onRatingUpdate: (value) {
-                                        rating = value.toInt();
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  '${state.reviewModel[index].date}',
-                                  style: const TextStyle(
-                                      color: AppColors.kGray300,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12),
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  '${state.reviewModel[index].text}',
-                                  maxLines: 4,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14.0,
-                                      color: Colors.black),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ));
-                } else {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                          color: Colors.indigoAccent));
-                }
-              }),
-          const Divider(
-            height: 1,
-            color: AppColors.kGray300,
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
-            color: Colors.white,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Оставьте отзыв',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                    textAlign: TextAlign.start,
                   ),
-                  RatingBar.builder(
-                    initialRating: 0,
-                    minRating: 1,
-                    itemSize: 15,
-                    direction: Axis.horizontal,
-                    allowHalfRating: false,
-                    itemCount: 5,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (value) {
-                      rating = value.toInt();
-                    },
+                );
+              }
+              if (state is LoadingState) {
+                return const Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.indigoAccent),
                   ),
-                ],
-              ),
-              TextFormField(
-                controller: _commentController,
-                maxLines: 5,
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                    hintText: 'Напишите отзывь', border: InputBorder.none),
-              ),
-              GestureDetector(
-                onTap: () async {
-                  await BlocProvider.of<ReviewCubit>(context).reviewStore(
-                      _commentController.text, rating.toString(), '28');
-                  _commentController.clear();
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 39,
-                  width: 209,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(width: 0.2),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black,
-                        offset: Offset(
-                          0.2,
-                          0.2,
-                        ), //Offset
-                        blurRadius: 0.1,
-                        spreadRadius: 0.1,
-                      ), //BoxShadow
-                      BoxShadow(
-                        color: Colors.white,
-                        offset: Offset(0.0, 0.0),
-                        blurRadius: 0.0,
-                        spreadRadius: 0.0,
-                      ), //BoxShadow
-                    ],
+                );
+              }
+              if (state is LoadedState) {
+                final reviews = state.reviewModel;
+                return ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: reviews.length,
+                  separatorBuilder: (_, __) => const Divider(
+                    height: 16,
+                    thickness: 0.35,
+                    color: Color(0xffC7C7CC),
                   ),
-                  child: const Text(
-                    'Оставить свой отзыв',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
-            ]),
-          ),
-          const SizedBox(
-            height: 10,
+                  itemBuilder: (_, index) {
+                    final r = reviews[index];
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 16),
+                        Text(
+                          '${r.user?.first_name ?? 'Пользователь'} ${r.user?.last_name}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.size14Weight600,
+                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              RatingBar.builder(
+                                initialRating: (r.rating ?? 0).toDouble(),
+                                minRating: 1,
+                                itemSize: 15,
+                                direction: Axis.horizontal,
+                                allowHalfRating: false,
+                                itemCount: 5,
+                                ignoreGestures: true,
+                                unratedColor: Color(0xffD1D1D6),
+                                itemPadding: const EdgeInsets.only(right: 3.4),
+                                itemBuilder: (context, _) => SizedBox(
+                                  height: 12,
+                                  width: 12,
+                                  child: Image.asset(
+                                    Assets.icons.defaultStarIcon.path,
+                                    color: Color(0xffFFBE00),
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                                onRatingUpdate: (_) {},
+                              ),
+                              Text(
+                                '${r.date ?? ''}',
+                                style: const TextStyle(
+                                  color: AppColors.kGray300,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ]),
+                        const SizedBox(height: 4),
+                        Text(
+                          '${r.text ?? ''}',
+                          maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                        (r.images ?? []).isNotEmpty
+                            ? Container(
+                                height: 64,
+                                margin: EdgeInsets.only(top: 8),
+                                child: ListView.builder(
+                                    itemCount: r.images?.length,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      final image = r.images?[index];
+                                      return Container(
+                                          height: 64,
+                                          width: 64,
+                                          margin: EdgeInsets.only(right: 8),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xffF7F7F7),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            border: Border.all(
+                                                width: 1,
+                                                color: const Color(0xffD9D9D9)),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            child: Image.network(
+                                              "https://lunamarket.ru/storage/${image}",
+                                              fit: BoxFit.cover,
+                                              height: 64,
+                                              width: 64,
+                                              errorBuilder: (context, error,
+                                                      stackTrace) =>
+                                                  const ErrorImageWidget(
+                                                height: 64,
+                                                width: 64,
+                                              ),
+                                            ),
+                                          ));
+                                    }),
+                              )
+                            : SizedBox.shrink(),
+                        SizedBox(height: 16)
+                      ],
+                    );
+                  },
+                );
+              }
+              return const SizedBox.shrink();
+            },
           ),
         ],
       ),

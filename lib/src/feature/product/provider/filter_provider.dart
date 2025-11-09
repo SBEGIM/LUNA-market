@@ -22,6 +22,8 @@ class FilterProvider extends ChangeNotifier {
   List<int> shopIds = [];
   List<int> subCatIds = [];
 
+  List<int> characteristicIds = [];
+
   String? delivery; // "one_day", "two_day", "three_day", "seven_day"
 
   FilterProvider() {
@@ -97,6 +99,12 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setChar(List<int> ids) {
+    characteristicIds = ids;
+    _box.write('charFilterId', jsonEncode(ids));
+    notifyListeners();
+  }
+
   void setShops(List<int> ids) {
     shopIds = ids;
     _box.write('shopFilterId', jsonEncode(ids));
@@ -106,6 +114,18 @@ class FilterProvider extends ChangeNotifier {
   void setSubCats(List<int> ids) {
     subCatIds = ids;
     _box.write('subCatFilterId', jsonEncode(ids));
+    notifyListeners();
+  }
+
+  void resetSubCats() {
+    subCatIds.clear();
+    _box.remove('subCatFilterId');
+    notifyListeners();
+  }
+
+  void resetChar() {
+    characteristicIds.clear();
+    _box.remove('charFilterId');
     notifyListeners();
   }
 
@@ -122,9 +142,9 @@ class FilterProvider extends ChangeNotifier {
     orderByNew = 0;
     orderByPopular = 0;
 
-    brandIds = [];
-    shopIds = [];
-    subCatIds = [];
+    brandIds.clear();
+    shopIds.clear();
+    subCatIds.clear();
 
     delivery = null;
 
@@ -133,6 +153,7 @@ class FilterProvider extends ChangeNotifier {
     _box.remove('brandFilterId');
     _box.remove('shopFilterId');
     _box.remove('subCatFilterId');
+    _box.remove('charFilterId');
     _box.remove('CatId');
     _box.remove('sortFilter');
     _box.remove('ratingFilter');
@@ -148,14 +169,34 @@ class FilterProvider extends ChangeNotifier {
 
     // массивы превращаем в brand_id[0], brand_id[1], ...
     for (var i = 0; i < shopIds.length; i++) {
-      params['shop_id[$i]'] = shopIds[i].toString();
+      if (shopIds[i] != 0) {
+        params['shop_id[$i]'] = shopIds[i].toString();
+      } else {
+        shopIds.remove(shopIds[i]);
+      }
     }
     for (var i = 0; i < brandIds.length; i++) {
-      params['brand_id[$i]'] = brandIds[i].toString();
+      if (brandIds[i] != 0) {
+        params['brand_id[$i]'] = brandIds[i].toString();
+      } else {
+        brandIds.remove(brandIds[i]);
+      }
     }
     for (var i = 0; i < subCatIds.length; i++) {
       if (subCatIds[i] != 1) {
-        params['sub_cat_id[$i]'] = subCatIds[i].toString();
+        if (subCatIds[i] != 0) {
+          params['sub_cat_id[$i]'] = subCatIds[i].toString();
+        } else {
+          subCatIds.remove(subCatIds[i]);
+        }
+      }
+    }
+
+    for (var i = 0; i < characteristicIds.length; i++) {
+      if (characteristicIds[i] != 0) {
+        params['characteristic_id[$i]'] = characteristicIds[i].toString();
+      } else {
+        characteristicIds.remove(characteristicIds[i]);
       }
     }
 

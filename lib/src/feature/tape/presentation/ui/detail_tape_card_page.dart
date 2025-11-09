@@ -1965,18 +1965,24 @@ class _inBasketsState extends State<inBaskets> {
                 }
               },
               child: Stack(children: [
-                Image.asset(
-                  Assets.icons.tapeBasketIcon.path,
+                SizedBox(
                   height: 36,
                   width: 36,
+                  child: Image.asset(
+                    Assets.icons.tapeBasketIcon.path,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 state.tapeModel[widget.index].inBasket == true
-                    ? Positioned(
-                        top: 0,
-                        right: 4,
-                        child: Image.asset(
-                          Assets.icons.doneInBasketIcon.path,
-                          scale: 3.1,
+                    ? Align(
+                        alignment: Alignment.topRight,
+                        child: SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: Image.asset(
+                            Assets.icons.doneInBasketIcon.path,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       )
                     : SizedBox.shrink()

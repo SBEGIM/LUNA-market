@@ -8,26 +8,37 @@ class CountZeroDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
-      title: const Padding(
-        padding: EdgeInsets.only(bottom: 8),
-        child: Text(
-          'Внимание',
-        ),
-      ),
-      content: const Text(
-        'Товара нет в наличии, предзаказ не доступен!',
-      ),
-      actions: <CupertinoDialogAction>[
-        CupertinoDialogAction(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          textStyle: AppTextStyles.appBarTextStyle.copyWith(
-            color: AppColors.kPrimaryColor,
+        title: const Padding(
+          padding: EdgeInsets.only(bottom: 8),
+          child: Text(
+            'Внимание',
+            style: AppTextStyles.size22Weight600,
           ),
-          child: const Text('Ok'),
         ),
-      ],
-    );
+        content: Text(
+          'К сожалению, товара нет в наличии, предзаказ недоступен!',
+          style:
+              AppTextStyles.size16Weight400.copyWith(color: Color(0xff636366)),
+        ),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              height: 52,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: AppColors.mainPurpleColor,
+              ),
+              alignment: Alignment.center,
+              child: Text('Понятно',
+                  style: AppTextStyles.size18Weight700.copyWith(
+                    color: AppColors.kWhite,
+                  )),
+            ),
+          )
+        ]);
   }
 }

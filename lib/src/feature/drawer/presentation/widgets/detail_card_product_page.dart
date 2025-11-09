@@ -4,9 +4,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/mont_selector_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_basket_bottom_sheet_widget.dart';
+import 'package:haji_market/src/feature/home/bloc/cats_cubit.dart';
 import 'package:haji_market/src/feature/home/presentation/widgets/product_buy_with_card.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/profit_cubit.dart'
@@ -119,12 +121,28 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
   VideoPlayerController? _controller;
   PageController controller = PageController();
 
+// если из бэка приходит список недоступных размеров — заполни сюда
+// можно в виде ['XS', '6XL'] или полных значений ['XS-42'].
+  final Set<String> outOfStock = {
+    // пример: 'L', '5XL-58'
+  };
+
+  String labelOf(String raw) {
+    final i = raw.indexOf('-');
+    return i == -1 ? raw : raw.substring(0, i);
+  }
+
+  String numberOf(String raw) {
+    final i = raw.indexOf('-');
+    return i == -1 ? '' : raw.substring(i + 1);
+  }
+
   @override
   void initState() {
     textDescrp = [
-      'Все товары ${widget.product.shop!.name}',
-      'Все товары из брэнда  ${widget.product.brandName ?? ''}',
-      'Все товары из категории  ${widget.product.catName}',
+      'Все товары “${widget.product.shop!.name}”',
+      'Все товары этого бренда',
+      'Все товары из категории ${widget.product.catName}',
     ];
     isvisible = widget.product.inBasket ?? false;
     inFavorite = widget.product.inFavorite ?? false;
@@ -170,10 +188,14 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    final sizesRaw = widget.product.size ?? [];
+
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
+      extendBody: true,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.kWhite,
+        surfaceTintColor: AppColors.kWhite,
         elevation: 0,
         leading: InkWell(
           onTap: () {
@@ -239,23 +261,24 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                   child: VideoPlayer(_controller!),
                                 ),
                               ),
-                              Container(
-                                height: 358,
-                                alignment: Alignment.bottomCenter,
-                                padding: EdgeInsets.only(
-                                  bottom:
-                                      MediaQuery.of(context).size.height * 0.01,
-                                ),
-                                child: VideoProgressIndicator(
-                                  _controller!,
-                                  allowScrubbing: true,
-                                ),
-                              ),
+                              // Container(
+                              //   height: 358,
+                              //   alignment: Alignment.bottomCenter,
+                              //   padding: EdgeInsets.only(
+                              //     bottom:
+                              //         MediaQuery.of(context).size.height * 0.01,
+                              //   ),
+                              //   child: VideoProgressIndicator(
+                              //     _controller!,
+                              //     allowScrubbing: true,
+                              //   ),
+                              // ),
                               if (icon)
                                 Center(
-                                  child: SvgPicture.asset(
-                                    'assets/icons/play_tape.svg',
-                                    color: Color.fromRGBO(29, 196, 207, 1),
+                                  child: Image.asset(
+                                    Assets.icons.tapePlayIcon.path,
+                                    height: 36,
+                                    width: 36,
                                   ),
                                 ),
                             ],
@@ -269,20 +292,39 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.network(
-                            "https://lunamarket.ru/storage/${widget.product.path![index]}",
-                            fit: BoxFit.cover,
-                            height: 283,
-                            width: 345,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const ErrorImageWidget(
+                        child: Stack(children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.network(
+                              "https://lunamarket.ru/storage/${widget.product.path![index]}",
+                              fit: BoxFit.cover,
                               height: 283,
                               width: 345,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const ErrorImageWidget(
+                                height: 283,
+                                width: 345,
+                              ),
                             ),
                           ),
-                        ),
+                          Positioned(
+                            bottom: 6,
+                            right: 20,
+                            child: GestureDetector(
+                              onTap: (() {
+                                Get.to(() => ProductImages(
+                                      images: widget.product.path,
+                                      video: widget.product.video,
+                                    ));
+                              }),
+                              child: Image.asset(
+                                Assets.icons.fullscreen.path,
+                                height: 25,
+                                width: 25,
+                              ),
+                            ),
+                          )
+                        ]),
                       );
                     },
                   ),
@@ -390,23 +432,6 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                         ),
                       )
                     : const SizedBox.shrink(),
-                Positioned(
-                  bottom: 6,
-                  right: 20,
-                  child: GestureDetector(
-                    onTap: (() {
-                      Get.to(() => ProductImages(
-                            images: widget.product.path,
-                            video: widget.product.video,
-                          ));
-                    }),
-                    child: Image.asset(
-                      Assets.icons.fullscreen.path,
-                      height: 25,
-                      width: 25,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -577,79 +602,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                   thickness: 1,
                   color: Color(0xffEAECED),
                 ),
-                if ((widget.product.size ?? []).isNotEmpty)
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const Text(
-                        'Выберите Размер',
-                        style: TextStyle(
-                            color: AppColors.kGray900,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      SizedBox(
-                        // width:
-                        //     MediaQuery.of(context).size.width, // 229,
-                        height: 28,
-                        child: ListView.builder(
-                          itemCount: widget.product.size?.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                setState(() {
-                                  selectedIndex4 = index;
-                                  sizeValue = widget.product.size![index];
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 4.0),
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 4),
-                                  decoration: BoxDecoration(
-                                    color: selectedIndex4 == index
-                                        ? Colors.black
-                                        : const Color.fromRGBO(
-                                            235, 237, 240, 1),
-                                    borderRadius: BorderRadius.circular(8),
-                                    // border: Border.all(
-                                    //   width: 1,
-                                    //   color: selectedIndex3 != index
-                                    //       ? AppColors.kPrimaryColor
-                                    //       : Colors.white,
-                                    // ),
-                                  ),
-                                  // padding: const EdgeInsets.only(
-                                  //   top: 8,
-                                  //   bottom: 8,
-                                  // ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    widget.product.size![index],
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: selectedIndex4 == index
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+
                 if ((widget.product.color ?? []).isNotEmpty)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -710,6 +663,32 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       ),
                     ],
                   ),
+
+                if ((widget.product.size ?? []).isNotEmpty)
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 15),
+                      Text(
+                          'Размер:${selectedIndex4 != -1 ? (widget.product.size?[selectedIndex4!]) : 'Не выбран'}',
+                          style: AppTextStyles.size14Weight400),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      SizedBox(
+                        height: 54,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: sizesRaw.length,
+                          itemBuilder: (_, i) => sizeTile(i),
+                        ),
+                      ),
+                    ],
+                  ),
+
                 const SizedBox(height: 24),
                 // Stack(children: [
                 //   Container(
@@ -1109,8 +1088,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
-                      context.router.push(
-                          DetailStoreRoute(shop: widget.product.shops![index]));
+                      context.router
+                          .push(DetailStoreRoute(product: widget.product));
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -1435,46 +1414,63 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 // Хедер с вкладками
           Container(
             height: 70,
-            margin: EdgeInsets.only(top: 16),
-            padding: EdgeInsets.all(16),
+            margin: const EdgeInsets.only(top: 16),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: AppColors.kWhite,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
-              scrollDirection: Axis.horizontal,
-              itemCount: texts.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 8),
-              itemBuilder: (context, index) {
+            child: Row(
+              children: List.generate(texts.length, (index) {
                 final selected = textBloc == texts[index];
-                return InkWell(
-                  borderRadius: BorderRadius.circular(12),
-                  onTap: () {
-                    setState(() {
-                      textBloc = selected ? '' : texts[index];
-                    });
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    alignment: Alignment.center,
-                    height: 36,
-                    width: index == 2 ? 94 : null,
-                    decoration: BoxDecoration(
-                      color: selected
-                          ? AppColors.mainPurpleColor
-                          : AppColors.kGray200,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      texts[index],
-                      style: AppTextStyles.size14Weight500.copyWith(
-                        color: selected ? AppColors.kWhite : AppColors.kGray1,
+                return Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        right: index == texts.length - 1 ? 0 : 8),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () {
+                          setState(() {
+                            textBloc = selected ? '' : texts[index];
+                          });
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 180),
+                          curve: Curves.easeOut,
+                          height: double.infinity,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: selected
+                                ? AppColors.mainPurpleColor
+                                : const Color(0xffEAECED),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: FittedBox(
+                            // 👈 уменьшит текст, чтобы он поместился
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              texts[index],
+                              maxLines: 1, // одна строка
+                              softWrap: false, // без переноса
+                              style: AppTextStyles.size14Weight500.copyWith(
+                                color: selected
+                                    ? AppColors.kWhite
+                                    : const Color(0xff636366),
+                                fontWeight: selected
+                                    ? FontWeight.w700
+                                    : FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 );
-              },
+              }),
             ),
           ),
 
@@ -1488,28 +1484,38 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     bottomLeft: Radius.circular(16),
                     bottomRight: Radius.circular(16)),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Builder(builder: (_) {
-                    final items = widget.product.characteristics ?? [];
-                    final preview = items.take(5).toList();
-                    return ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: preview.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 8),
-                      itemBuilder: (_, i) {
-                        final it = preview[i];
-                        return Text(
-                          '${it.name}: ${it.value}',
-                          style: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w400),
-                        );
-                      },
-                    );
-                  }),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Builder(builder: (_) {
+                      final items = widget.product.characteristics ?? [];
+                      final preview = items.take(5).toList();
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: preview.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 8),
+                        itemBuilder: (_, i) {
+                          final it = preview[i];
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${it.name}:',
+                                style: AppTextStyles.size14Weight400
+                                    .copyWith(color: Color(0xff8E8E93)),
+                              ),
+                              Text(' ${it.value}',
+                                  style: AppTextStyles.size14Weight400),
+                            ],
+                          );
+                        },
+                      );
+                    }),
+                  ),
                   if ((widget.product.characteristics?.length ?? 0) > 5)
                     Padding(
                       padding: const EdgeInsets.only(top: 12),
@@ -1551,7 +1557,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     bottomLeft: Radius.circular(16),
                     bottomRight: Radius.circular(16)),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              padding: const EdgeInsets.only(left: 16, right: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -1573,7 +1579,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Divider(height: 1),
+                  const Divider(
+                    height: 1,
+                    thickness: 0.33,
+                    color: Color(0xffEAECED),
+                  ),
                   TextButton(
                     onPressed: () => setState(() => showText = !showText),
                     style: TextButton.styleFrom(
@@ -1599,84 +1609,106 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     bottomLeft: Radius.circular(16),
                     bottomRight: Radius.circular(16)),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, bottom: 16, top: 0),
               child: Column(
                 children: [
-                  // верхняя плашка с рейтингом и распределением
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            '${(widget.product.rating ?? 0).toDouble()}',
-                            style: const TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
+                  Container(
+                    height: 73,
+                    alignment: Alignment.topCenter,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // НЕ spaceBetween, сами контролируем отступ
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // левая колонка (оценка и кол-во отзывов)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${(widget.product.rating ?? 0).toDouble()}',
+                              style: const TextStyle(
+                                fontSize: 36,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          Text(
-                            '${widget.product.count ?? 0} отзывов',
-                            style: const TextStyle(
-                              color: AppColors.kGray300,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
+                            const SizedBox(height: 2),
+                            Text(
+                              '${widget.product.count ?? 0} отзывов',
+                              style: const TextStyle(
+                                color: AppColors.kGray300,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 240,
-                        height: 70,
-                        child: ListView.builder(
-                          itemCount: 5,
-                          physics: const NeverScrollableScrollPhysics(),
-                          reverse: true,
-                          itemBuilder: (_, i) {
-                            final total =
-                                (widget.product.count ?? 0).clamp(0, 999999);
-                            final value = (widget.product.review?[i] ?? 0);
-                            final barWidth =
-                                total > 0 ? 160.0 * (value / total) : 0.0;
-                            return Row(
-                              children: [
-                                RatingBar.builder(
-                                  initialRating: i.toDouble() + 1,
-                                  minRating: 1,
-                                  itemSize: 13,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: false,
-                                  itemCount: 5,
-                                  ignoreGestures: true,
-                                  itemPadding: const EdgeInsets.symmetric(
-                                      horizontal: 0.0),
-                                  itemBuilder: (context, _) => const Icon(
-                                      Icons.star,
-                                      color: Colors.amber),
-                                  onRatingUpdate: (_) {},
-                                ),
-                                const SizedBox(width: 8),
-                                Stack(
+                          ],
+                        ),
+                        SizedBox(
+                          width: 254,
+                          height: 73,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: List.generate(5, (row) {
+                              final stars = 5 - row;
+                              final total =
+                                  (widget.product.count ?? 0).clamp(0, 999999);
+                              final value =
+                                  (widget.product.review?[(stars - 1)] ?? 0);
+                              final double barWidth =
+                                  total > 0 ? 160.0 * (value / total) : 0.0;
+
+                              return Container(
+                                height: 12,
+                                margin: EdgeInsets.only(bottom: 2),
+                                child: Row(
                                   children: [
-                                    Container(
-                                        height: 4,
-                                        width: 160,
-                                        color: const Color(0xffe5f1ff)),
-                                    if (barWidth > 0)
-                                      Container(
+                                    RatingBarIndicator(
+                                      rating: stars.toDouble(),
+                                      itemCount: 5,
+                                      itemSize: 10,
+                                      unratedColor: const Color(0xffD1D1D6),
+                                      itemPadding: EdgeInsets.only(left: 2.5),
+                                      itemBuilder: (context, _) => SizedBox(
+                                        height: 10,
+                                        width: 10,
+                                        child: Image.asset(
+                                          Assets.icons.defaultStarIcon.path,
+                                          color: const Color(0xffFFBE00),
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Stack(
+                                      children: [
+                                        Container(
                                           height: 4,
-                                          width: barWidth,
-                                          color: const Color(0xffFFC107)),
+                                          width: 160,
+                                          color: const Color(0xffD1D1D6),
+                                        ),
+                                        if (barWidth > 0)
+                                          Container(
+                                            height: 4,
+                                            width: barWidth,
+                                            color: const Color(0xffFFBE00),
+                                          ),
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      '${value}',
+                                      style: AppTextStyles.size11Weight500
+                                          .copyWith(color: Color(0xff8E8E93)),
+                                    )
                                   ],
                                 ),
-                              ],
-                            );
-                          },
+                              );
+                            }),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
 
                   // список отзывов из блока
@@ -1711,55 +1743,59 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: reviews.length,
-                          separatorBuilder: (_, __) =>
-                              const SizedBox(height: 16),
+                          separatorBuilder: (_, __) => const Divider(
+                            height: 16,
+                            thickness: 0.35,
+                            color: Color(0xffC7C7CC),
+                          ),
                           itemBuilder: (_, index) {
                             final r = reviews[index];
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                SizedBox(height: 16),
+                                Text(
+                                  '${r.user?.first_name ?? 'Пользователь'} ${r.user?.last_name}',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: AppTextStyles.size14Weight600,
+                                ),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        '${r.user?.name ?? 'Пользователь'}',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      RatingBar.builder(
+                                        initialRating:
+                                            (r.rating ?? 0).toDouble(),
+                                        minRating: 1,
+                                        itemSize: 15,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: false,
+                                        itemCount: 5,
+                                        ignoreGestures: true,
+                                        unratedColor: Color(0xffD1D1D6),
+                                        itemPadding:
+                                            const EdgeInsets.only(right: 3.4),
+                                        itemBuilder: (context, _) => SizedBox(
+                                          height: 12,
+                                          width: 12,
+                                          child: Image.asset(
+                                            Assets.icons.defaultStarIcon.path,
+                                            color: Color(0xffFFBE00),
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                        onRatingUpdate: (_) {},
+                                      ),
+                                      Text(
+                                        '${r.date ?? ''}',
                                         style: const TextStyle(
-                                          color: AppColors.kGray900,
-                                          fontSize: 16,
+                                          color: AppColors.kGray300,
                                           fontWeight: FontWeight.w500,
+                                          fontSize: 12,
                                         ),
                                       ),
-                                    ),
-                                    RatingBar.builder(
-                                      initialRating: (r.rating ?? 0).toDouble(),
-                                      minRating: 1,
-                                      itemSize: 15,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: false,
-                                      itemCount: 5,
-                                      ignoreGestures: true,
-                                      itemPadding: const EdgeInsets.symmetric(
-                                          horizontal: 0.0),
-                                      itemBuilder: (context, _) => const Icon(
-                                          Icons.star,
-                                          color: Colors.amber),
-                                      onRatingUpdate: (_) {},
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  '${r.date ?? ''}',
-                                  style: const TextStyle(
-                                    color: AppColors.kGray300,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                  ),
-                                ),
+                                    ]),
                                 const SizedBox(height: 4),
                                 Text(
                                   '${r.text ?? ''}',
@@ -1771,6 +1807,56 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                     color: Colors.black,
                                   ),
                                 ),
+                                (r.images ?? []).isNotEmpty
+                                    ? Container(
+                                        height: 64,
+                                        margin: EdgeInsets.only(top: 8),
+                                        child: ListView.builder(
+                                            itemCount: r.images?.length,
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            itemBuilder: (context, index) {
+                                              final image = r.images?[index];
+                                              return Container(
+                                                  height: 64,
+                                                  width: 64,
+                                                  margin:
+                                                      EdgeInsets.only(right: 8),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xffF7F7F7),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    border: Border.all(
+                                                        width: 1,
+                                                        color: const Color(
+                                                            0xffD9D9D9)),
+                                                  ),
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    child: Image.network(
+                                                      "https://lunamarket.ru/storage/${image}",
+                                                      fit: BoxFit.cover,
+                                                      height: 64,
+                                                      width: 64,
+                                                      errorBuilder: (context,
+                                                              error,
+                                                              stackTrace) =>
+                                                          const ErrorImageWidget(
+                                                        height: 64,
+                                                        width: 64,
+                                                      ),
+                                                    ),
+                                                  ));
+                                            }),
+                                      )
+                                    : SizedBox.shrink(),
+                                SizedBox(height: 16)
                               ],
                             );
                           },
@@ -1803,66 +1889,52 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                     onTap: () async {
                       final filters = context.read<FilterProvider>();
 
+                      final CatsModel catsModel =
+                          await BlocProvider.of<CatsCubit>(context)
+                              .catById(widget.product.catId.toString());
+
                       if (index == 0) {
-                        List<int> selectedListSort = [];
-
-                        selectedListSort.add(widget.product.shop!.id as int);
-
-                        GetStorage()
-                            .write('shopFilterId', selectedListSort.toString());
-                        await BlocProvider.of<ProductCubit>(context)
-                            .products(filters);
-
                         context.router.push(ProductsRoute(
-                          cats: CatsModel(id: 0, name: ''),
+                          cats: catsModel,
                           shopId: widget.product.shop!.id.toString(),
                         ));
+                        filters.setShops([widget.product.shop!.id ?? 0]);
+
+                        await BlocProvider.of<ProductCubit>(context)
+                            .products(filters);
                       } else if (index == 1) {
-                        GetStorage().remove('brandFilterId');
-                        List<int> selectedListSort = [];
+                        if (widget.product.brandId != null) {
+                          context.router.push(ProductsRoute(
+                              cats: catsModel,
+                              brandId: widget.product.brandId));
 
-                        selectedListSort.add(widget.product.brandId ?? 0);
-                        GetStorage().write(
-                            'brandFilterId', selectedListSort.toString());
+                          filters.setBrands([widget.product.brandId!]);
 
-                        await BlocProvider.of<ProductCubit>(context)
-                            .products(filters);
-
-                        context.router.push(ProductsRoute(
-                            cats: CatsModel(id: 0, name: ''),
-                            brandId: widget.product.brandId));
-                        // Get.to(() => ProductsPage(
-                        //       cats: Cats(id: 0, name: ''),
-                        //     ));
+                          await BlocProvider.of<ProductCubit>(context)
+                              .products(filters);
+                        } else {
+                          AppSnackBar.show(
+                            context,
+                            'У товара не указан бренд',
+                            type: AppSnackType.error,
+                          );
+                        }
                       } else if (index == 2) {
-                        GetStorage().write('CatId', widget.product.catId ?? 0);
-                        GetStorage().write('catId', widget.product.catId ?? 0);
+                        context.router.push(ProductsRoute(
+                          cats: catsModel,
+                        ));
 
-                        GetStorage().write(
-                            'subCatFilterId',
-                            [
-                              widget.product.catId,
-                            ].toString());
-                        GetStorage().remove('shopFilterId');
+                        filters.setCategory(widget.product.catId ?? 0);
                         await BlocProvider.of<ProductCubit>(context)
                             .products(filters);
-
-                        context.router.push(ProductsRoute(
-                          cats: CatsModel(
-                              id: widget.product.catId,
-                              name: widget.product.catName),
-                        ));
-                        // Get.to(() => ProductsPage(
-                        //       cats: Cats(id: 1, name: widget.product.catName),
-                        //     ));
                       }
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      padding: EdgeInsets.symmetric(horizontal: 16),
                       margin: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       decoration: BoxDecoration(
-                          color: AppColors.mainBackgroundPurpleColor,
-                          borderRadius: BorderRadius.circular(12)),
+                          color: AppColors.kMainPurpleMuted10b,
+                          borderRadius: BorderRadius.circular(16)),
                       height: 50,
                       alignment: Alignment.center,
                       child: Row(
@@ -1873,17 +1945,17 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             child: Text(
                               textDescrp[index],
                               maxLines: 2,
-                              style: const TextStyle(
-                                  color: AppColors.kGray900,
-                                  fontSize: 16,
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.w400),
+                              style: AppTextStyles.size16Weight500,
                             ),
                           ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            size: 14,
-                            color: AppColors.mainPurpleColor,
+                          SizedBox(
+                            height: 15,
+                            width: 20,
+                            child: Image.asset(
+                              Assets.icons.defaultArrowForwardIcon.path,
+                              color: AppColors.mainPurpleColor,
+                              fit: BoxFit.contain,
+                            ),
                           )
                         ],
                       ),
@@ -1900,12 +1972,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'С этим товаром покупают',
-                  style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700),
+                  style: AppTextStyles.size18Weight700,
                 ),
                 const SizedBox(
                   height: 8,
@@ -1959,21 +2028,16 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
               ],
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
+
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 0),
             color: AppColors.kBackgroundColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
                   'Похожие товары',
-                  style: TextStyle(
-                      color: AppColors.kGray900,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700),
+                  style: AppTextStyles.size18Weight700,
                 ),
                 const SizedBox(
                   height: 8,
@@ -2045,203 +2109,307 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
           ),
         ],
       ),
-      bottomSheet: Container(
-        color: Colors.white,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 36),
-        child: InkWell(
-          onTap: () {
-            showBasketBottomSheetOptions(
-                context, '${widget.product.shop?.name}', optom, widget.product,
-                (int callBackCount, int callBackPrice, bool callBackOptom) {
-              if (widget.product.product_count == 0 &&
-                  widget.product.pre_order == 1) {
-                if (isvisible == false && widget.product.inBasket == false) {
-                  showCupertinoModalPopup<void>(
-                    context: context,
-                    builder: (context) => PreOrderDialog(
-                      onYesTap: () {
-                        final filters = context.read<FilterProvider>();
-
-                        Navigator.pop(context);
-                        if (isvisible == false &&
-                            widget.product.inBasket == false) {
-                          BlocProvider.of<BasketCubit>(context).basketAdd(
-                              widget.product.id.toString(),
-                              callBackCount,
-                              callBackPrice,
-                              sizeValue,
-                              colorValue,
-                              isOptom: callBackOptom);
-                          setState(() {
-                            isvisible = true;
-                          });
-                          BlocProvider.of<ProductCubit>(context)
-                              .products(filters);
-                        } else {
-                          context.router.replaceAll([
-                            const LauncherRoute(children: [BasketRoute()]),
-                          ]);
-                        }
-                      },
-                    ),
-                  );
-                } else {
-                  context.router.pushAndPopUntil(
-                    const LauncherRoute(children: [BasketRoute()]),
-                    predicate: (route) => false,
-                  );
-                }
-
-                return;
-              }
-
+      bottomNavigationBar: SafeArea(
+        bottom: false,
+        child: Container(
+          color: Colors.transparent,
+          padding:
+              const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 36),
+          child: InkWell(
+            onTap: () {
               if (isvisible == false && widget.product.inBasket == false) {
-                BlocProvider.of<BasketCubit>(context).basketAdd(
-                    widget.product.id.toString(),
-                    callBackCount,
-                    callBackPrice,
-                    sizeValue,
-                    colorValue,
-                    isOptom: callBackOptom);
-                setState(() {
-                  isvisible = true;
-                });
-                final filters = context.read<FilterProvider>();
+                showBasketBottomSheetOptions(context,
+                    '${widget.product.shop?.name}', optom, widget.product,
+                    (int callBackCount, int callBackPrice, bool callBackOptom) {
+                  if (widget.product.product_count == 0 &&
+                      widget.product.pre_order == 1) {
+                    if (isvisible == false &&
+                        widget.product.inBasket == false) {
+                      showCupertinoModalPopup<void>(
+                        context: context,
+                        builder: (context) => PreOrderDialog(
+                          onYesTap: () {
+                            final filters = context.read<FilterProvider>();
 
-                BlocProvider.of<ProductCubit>(context).products(filters);
+                            Navigator.pop(context);
+                            if (isvisible == false &&
+                                widget.product.inBasket == false) {
+                              BlocProvider.of<BasketCubit>(context).basketAdd(
+                                  widget.product.id.toString(),
+                                  callBackCount,
+                                  callBackPrice,
+                                  sizeValue,
+                                  colorValue,
+                                  isOptom: callBackOptom);
+                              setState(() {
+                                isvisible = true;
+                              });
+                              BlocProvider.of<ProductCubit>(context)
+                                  .products(filters);
+                            } else {
+                              context.router.replaceAll([
+                                const LauncherRoute(children: [BasketRoute()]),
+                              ]);
+                            }
+                          },
+                        ),
+                      );
+                    } else {
+                      context.router.pushAndPopUntil(
+                        const LauncherRoute(children: [BasketRoute()]),
+                        predicate: (route) => false,
+                      );
+                    }
+
+                    return;
+                  }
+
+                  BlocProvider.of<BasketCubit>(context).basketAdd(
+                      widget.product.id.toString(),
+                      callBackCount,
+                      callBackPrice,
+                      sizeValue,
+                      colorValue,
+                      isOptom: callBackOptom);
+                  setState(() {
+                    isvisible = true;
+                  });
+                  final filters = context.read<FilterProvider>();
+
+                  BlocProvider.of<ProductCubit>(context).products(filters);
+                });
               } else {
                 log('pushReplaceAll', name: 'Detail Card Product Page');
                 context.router.replaceAll([
                   const LauncherRoute(children: [BasketRoute()]),
                 ]);
               }
-            });
-          },
-          child: Container(
-              height: 52,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: AppColors.mainPurpleColor,
-              ),
-              alignment: Alignment.center,
-              child: (isvisible == false && widget.product.inBasket == false)
-                  ? const Text(
-                      'В корзину',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18),
-                      textAlign: TextAlign.center,
-                    )
-                  : const Text(
-                      'Товар в корзине',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18),
-                      textAlign: TextAlign.center,
-                    )),
+            },
+            child: Container(
+                height: 52,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: AppColors.mainPurpleColor,
+                ),
+                alignment: Alignment.center,
+                child: (isvisible == false && widget.product.inBasket == false)
+                    ? const Text(
+                        'В корзину',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18),
+                        textAlign: TextAlign.center,
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Перейти в корзину',
+                            style: AppTextStyles.size18Weight600
+                                .copyWith(color: AppColors.kWhite),
+                          ),
+                          Text(
+                            'Товар в корзине',
+                            style: AppTextStyles.size13Weight400
+                                .copyWith(color: AppColors.kWhite),
+                          ),
+                        ],
+                      )),
+          ),
+
+          //  Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          // InkWell(
+          //   onTap: () async {
+          //     if (widget.product.product_count == 0 &&
+          //         widget.product.pre_order == 1) {
+          //       showCupertinoModalPopup<void>(
+          //         context: context,
+          //         builder: (context) => PreOrderDialog(
+          //           onYesTap: () {
+          //             Navigator.pop(context);
+          //             Future.wait<void>([
+          //               BlocProvider.of<BasketCubit>(context).basketAdd(
+          //                   widget.product.id.toString(),
+          //                   '1',
+          //                   0,
+          //                   sizeValue,
+          //                   colorValue),
+          //             ]);
+
+          //             if (BlocProvider.of<BasketCubit>(context).state
+          //                 is! LoadedState) {
+          //               Future.wait<void>([
+          //                 BlocProvider.of<BasketCubit>(context)
+          //                     .basketShow('fbs'),
+          //               ]);
+          //             }
+
+          //             Future.wait<void>([
+          //               BlocProvider.of<ProductCubit>(context).products()
+          //             ]);
+          //             this.context.router.push(BasketOrderAddressRoute(
+          //                   fulfillment: 'fbs',
+          //                 ));
+          //           },
+          //         ),
+          //       );
+          //       return;
+          //     }
+          //     if (count == 0) {
+          //       Future.wait<void>([
+          //         BlocProvider.of<BasketCubit>(context).basketAdd(
+          //             widget.product.id.toString(),
+          //             '1',
+          //             0,
+          //             sizeValue,
+          //             colorValue),
+          //       ]);
+          //     }
+
+          //     if (BlocProvider.of<BasketCubit>(context).state
+          //         is! LoadedState) {
+          //       Future.wait<void>([
+          //         BlocProvider.of<BasketCubit>(context).basketShow('fbs'),
+          //       ]);
+          //     }
+
+          //     context.router.push(BasketOrderAddressRoute(
+          //       fulfillment: 'fbs',
+          //     ));
+
+          //     await Future.wait<void>(
+          //         [BlocProvider.of<ProductCubit>(context).products()]);
+
+          //     // Navigator.popUntil(context, (route) => route.isFirst);
+          //     // BlocProvider.of<NavigationCubit>(context)
+          //     //     .getNavBarItem(const NavigationState.basket());
+          //     // setState(() {
+          //     //   isvisible = true;
+          //     // });
+
+          //     //    Get.to(() => BasketOrderPage(fbs: false));
+          //   },
+          //   child: Container(
+          //       height: 46,
+          //       decoration: BoxDecoration(
+          //         borderRadius: BorderRadius.circular(10),
+          //         color: AppColors.mainPurpleColor,
+          //       ),
+          //       width: MediaQuery.of(context).size.width * 0.440,
+          //       padding: const EdgeInsets.only(
+          //           left: 15, right: 15, top: 15, bottom: 15),
+          //       child: const Text(
+          //         'Оформить сейчас',
+          //         style: TextStyle(
+          //             color: Colors.white,
+          //             fontWeight: FontWeight.w400,
+          //             fontSize: 14),
+          //         textAlign: TextAlign.center,
+          //       )),
+          // ),
+          //   ],
+          // ),
         ),
-
-        //  Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [
-        // InkWell(
-        //   onTap: () async {
-        //     if (widget.product.product_count == 0 &&
-        //         widget.product.pre_order == 1) {
-        //       showCupertinoModalPopup<void>(
-        //         context: context,
-        //         builder: (context) => PreOrderDialog(
-        //           onYesTap: () {
-        //             Navigator.pop(context);
-        //             Future.wait<void>([
-        //               BlocProvider.of<BasketCubit>(context).basketAdd(
-        //                   widget.product.id.toString(),
-        //                   '1',
-        //                   0,
-        //                   sizeValue,
-        //                   colorValue),
-        //             ]);
-
-        //             if (BlocProvider.of<BasketCubit>(context).state
-        //                 is! LoadedState) {
-        //               Future.wait<void>([
-        //                 BlocProvider.of<BasketCubit>(context)
-        //                     .basketShow('fbs'),
-        //               ]);
-        //             }
-
-        //             Future.wait<void>([
-        //               BlocProvider.of<ProductCubit>(context).products()
-        //             ]);
-        //             this.context.router.push(BasketOrderAddressRoute(
-        //                   fulfillment: 'fbs',
-        //                 ));
-        //           },
-        //         ),
-        //       );
-        //       return;
-        //     }
-        //     if (count == 0) {
-        //       Future.wait<void>([
-        //         BlocProvider.of<BasketCubit>(context).basketAdd(
-        //             widget.product.id.toString(),
-        //             '1',
-        //             0,
-        //             sizeValue,
-        //             colorValue),
-        //       ]);
-        //     }
-
-        //     if (BlocProvider.of<BasketCubit>(context).state
-        //         is! LoadedState) {
-        //       Future.wait<void>([
-        //         BlocProvider.of<BasketCubit>(context).basketShow('fbs'),
-        //       ]);
-        //     }
-
-        //     context.router.push(BasketOrderAddressRoute(
-        //       fulfillment: 'fbs',
-        //     ));
-
-        //     await Future.wait<void>(
-        //         [BlocProvider.of<ProductCubit>(context).products()]);
-
-        //     // Navigator.popUntil(context, (route) => route.isFirst);
-        //     // BlocProvider.of<NavigationCubit>(context)
-        //     //     .getNavBarItem(const NavigationState.basket());
-        //     // setState(() {
-        //     //   isvisible = true;
-        //     // });
-
-        //     //    Get.to(() => BasketOrderPage(fbs: false));
-        //   },
-        //   child: Container(
-        //       height: 46,
-        //       decoration: BoxDecoration(
-        //         borderRadius: BorderRadius.circular(10),
-        //         color: AppColors.mainPurpleColor,
-        //       ),
-        //       width: MediaQuery.of(context).size.width * 0.440,
-        //       padding: const EdgeInsets.only(
-        //           left: 15, right: 15, top: 15, bottom: 15),
-        //       child: const Text(
-        //         'Оформить сейчас',
-        //         style: TextStyle(
-        //             color: Colors.white,
-        //             fontWeight: FontWeight.w400,
-        //             fontSize: 14),
-        //         textAlign: TextAlign.center,
-        //       )),
-        // ),
-        //   ],
-        // ),
       ),
     );
   }
+
+  Widget sizeTile(int index) {
+    final raw = widget.product.size![index];
+    final label = labelOf(raw);
+    final number = numberOf(raw);
+
+    final disabled = outOfStock.contains(label) || outOfStock.contains(raw);
+    final selected = !disabled && selectedIndex4 == index;
+
+    return InkWell(
+      onTap: disabled
+          ? null
+          : () {
+              if (selectedIndex4 != index) {
+                sizeValue = raw;
+                setState(() => selectedIndex4 = index);
+              } else {
+                sizeValue = '';
+                setState(() => selectedIndex4 = -1);
+              }
+            },
+      child: Padding(
+        padding: const EdgeInsets.only(right: 8),
+        child: Container(
+          height: 54,
+          width: 54,
+          padding: const EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            color: const Color(0xffF7F7F7),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              width: 2,
+              color: selected
+                  ? AppColors.mainPurpleColor
+                  : (disabled
+                      ? const Color(0xffECECEC)
+                      : const Color(0xffEAECED)),
+            ),
+          ),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              // контент
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    label,
+                    style: AppTextStyles.size14Weight400.copyWith(
+                      color: disabled ? const Color(0xffBDBDBD) : null,
+                    ),
+                  ),
+                  if (number.isNotEmpty)
+                    Text(
+                      number,
+                      maxLines: 1,
+                      style: AppTextStyles.size14Weight400.copyWith(
+                        color: disabled
+                            ? const Color(0xffC2C2C2)
+                            : const Color(0xff636366),
+                      ),
+                    ),
+                ],
+              ),
+              // диагональная линия для "нет в наличии"
+              if (disabled)
+                CustomPaint(
+                  painter: _DiagonalSlashPainter(),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DiagonalSlashPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()
+      ..color = const Color(0xffE0E0E0)
+      ..strokeWidth = 2;
+    canvas.drawLine(
+      Offset(size.width * 0.18, size.height * 0.82),
+      Offset(size.width * 0.82, size.height * 0.18),
+      p,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class SelectColor extends StatefulWidget {
