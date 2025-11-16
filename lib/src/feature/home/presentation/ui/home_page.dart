@@ -6,10 +6,15 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/core/presentation/widgets/shimmer/shimmer_box.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/product/cubit/product_ad_cubit.dart'
     as productAdCubit;
 import 'package:haji_market/src/feature/product/cubit/product_ad_state.dart'
     as productAdState;
+import 'package:haji_market/src/feature/product/cubit/recently_watched_product_cubit.dart'
+    as productRecentlyWatchedCubit;
+import 'package:haji_market/src/feature/product/cubit/recently_watched_product_state.dart'
+    as productRecentlyWatchedState;
 import 'package:haji_market/src/feature/home/bloc/banners_cubit.dart'
     as bannerCubit;
 import 'package:haji_market/src/feature/home/bloc/banners_state.dart'
@@ -75,10 +80,14 @@ class _HomePageState extends State<HomePage> {
     if (BlocProvider.of<StoriesSellerCubit>(context).state is! LoadedState) {
       BlocProvider.of<StoriesSellerCubit>(context).news();
     }
+    final filters = context.read<FilterProvider>();
 
-    // if (BlocProvider.of<productAdCubit.ProductAdCubit>(context).state
-    //     is! productAdState.LoadedState) {
-    BlocProvider.of<productAdCubit.ProductAdCubit>(context).adProducts(null);
+    // if (BlocProvider.of<
+    //         productRecentlyWatchedCubit.RecentlyWatchedProductCubit>(context)
+    //     .state is! productRecentlyWatchedState.LoadedState) {
+    BlocProvider.of<productRecentlyWatchedCubit.RecentlyWatchedProductCubit>(
+            context)
+        .products(filters);
     // }
 
     // if (BlocProvider.of<subCatCubit.SubCatsCubit>(context).state
@@ -105,8 +114,16 @@ class _HomePageState extends State<HomePage> {
     if (BlocProvider.of<productCubit.ProductCubit>(context).state
         is! productState.LoadedState) {
       final filters = context.read<FilterProvider>();
-
+      filters.resetAll();
       BlocProvider.of<productCubit.ProductCubit>(context).products(filters);
+    }
+
+    if (BlocProvider.of<productAdCubit.ProductAdCubit>(context).state
+        is! productState.LoadedState) {
+      final filters = context.read<FilterProvider>();
+      filters.resetAll();
+      BlocProvider.of<productAdCubit.ProductAdCubit>(context)
+          .adProducts(filters);
     }
 
     super.initState();
@@ -199,31 +216,36 @@ class _HomePageState extends State<HomePage> {
                             scrollDirection: Axis.horizontal,
                             itemCount: state.storiesSeelerModel.length,
                             itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                  top: 8,
-                                  bottom: 8,
-                                  left: index == 0 ? 16 : 5,
-                                ),
-                                child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(2),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: index == 0
-                                            ? AppColors.mainPurpleColor
-                                            : const Color(0xffAEAEB2),
-                                        width: index == 0 ? 2 : 1,
+                              return InkWell(
+                                onTap: () => Get.to(StoryScreen(
+                                    stories: state
+                                        .storiesSeelerModel[index].stories)),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    top: 8,
+                                    bottom: 8,
+                                    left: index == 0 ? 16 : 5,
+                                  ),
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(2),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: index == 0
+                                              ? AppColors.mainPurpleColor
+                                              : const Color(0xffAEAEB2),
+                                          width: index == 0 ? 2 : 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(16),
                                       ),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: ClipRRect(
-                                      // чтобы визуально совпадали скругления: 16 - border - padding ≈ 13
-                                      borderRadius: BorderRadius.circular(13),
-                                      child: Image.network(
-                                        "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
-                                        fit: BoxFit.cover,
+                                      child: ClipRRect(
+                                        // чтобы визуально совпадали скругления: 16 - border - padding ≈ 13
+                                        borderRadius: BorderRadius.circular(13),
+                                        child: Image.network(
+                                          "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -329,21 +351,27 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         const Text('Рекомендуем',
                             style: AppTextStyles.size18Weight700),
-                        Text(
-                          'Показать все',
-                          style: AppTextStyles.size14Weight500
-                              .copyWith(color: AppColors.mainPurpleColor),
+                        InkWell(
+                          onTap: () {
+                            context.router.push(
+                                ProductsRecommendedRoute(cats: CatsModel()));
+                          },
+                          child: Text(
+                            'Показать все',
+                            style: AppTextStyles.size14Weight500
+                                .copyWith(color: AppColors.mainPurpleColor),
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(
                       height: 16,
                     ),
-                    BlocConsumer<productCubit.ProductCubit,
-                            productState.ProductState>(
+                    BlocConsumer<productAdCubit.ProductAdCubit,
+                            productAdState.ProductAdState>(
                         listener: (context, state) {},
                         builder: (context, state) {
-                          if (state is productState.ErrorState) {
+                          if (state is productAdState.ErrorState) {
                             return Center(
                               child: Text(
                                 state.message,
@@ -352,7 +380,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           }
-                          if (state is productState.LoadingState) {
+                          if (state is productAdState.LoadingState) {
                             return Container(
                               color: Colors.transparent,
                               child: SizedBox(
@@ -373,7 +401,7 @@ class _HomePageState extends State<HomePage> {
                             );
                           }
 
-                          if (state is productState.LoadedState) {
+                          if (state is productAdState.LoadedState) {
                             return SizedBox(
                                 height: 315,
                                 child: ListView.builder(
@@ -422,21 +450,30 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         const Text('Недавно смотрели',
                             style: AppTextStyles.size18Weight700),
-                        Text(
-                          'Показать все',
-                          style: AppTextStyles.size14Weight500
-                              .copyWith(color: AppColors.mainPurpleColor),
+                        InkWell(
+                          onTap: () {
+                            context.router.push(ProductsRecentlyWatchedRoute(
+                                cats: CatsModel(id: 0, name: '')));
+                          },
+                          child: Text(
+                            'Показать все',
+                            style: AppTextStyles.size14Weight500
+                                .copyWith(color: AppColors.mainPurpleColor),
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(
                       height: 16,
                     ),
-                    BlocConsumer<productAdCubit.ProductAdCubit,
-                            productAdState.ProductAdState>(
+                    BlocConsumer<
+                            productRecentlyWatchedCubit
+                            .RecentlyWatchedProductCubit,
+                            productRecentlyWatchedState
+                            .RecentlyWatchedProductState>(
                         listener: (context, state) {},
                         builder: (context, state) {
-                          if (state is productAdState.ErrorState) {
+                          if (state is productRecentlyWatchedState.ErrorState) {
                             return Center(
                               child: Text(
                                 state.message,
@@ -445,7 +482,8 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           }
-                          if (state is productAdState.LoadingState) {
+                          if (state
+                              is productRecentlyWatchedState.LoadingState) {
                             return Container(
                               color: Colors.transparent,
                               child: SizedBox(
@@ -465,13 +503,15 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           }
-                          if (state is productAdState.NoDataState) {
+                          if (state
+                              is productRecentlyWatchedState.NoDataState) {
                             return const SizedBox(
                               height: 20,
                               width: 20,
                             );
                           }
-                          if (state is productAdState.LoadedState) {
+                          if (state
+                              is productRecentlyWatchedState.LoadedState) {
                             return SizedBox(
                                 // width: 400,
                                 height: state.productModel.length >= 2
@@ -479,12 +519,13 @@ class _HomePageState extends State<HomePage> {
                                     : MediaQuery.of(context).size.height * 0.32,
                                 child: GridView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true,
+                                  shrinkWrap: false,
+                                  // physics: NeverScrollableScrollPhysics(),
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 2,
                                           childAspectRatio: 1.70,
-                                          crossAxisSpacing: 10,
+                                          crossAxisSpacing: 12,
                                           mainAxisSpacing: 0),
                                   itemCount: state.productModel.length >= 8
                                       ? 8

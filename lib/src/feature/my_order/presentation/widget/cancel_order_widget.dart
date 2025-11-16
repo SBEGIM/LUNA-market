@@ -99,7 +99,8 @@ class _CancelOrderWidgetState extends State<CancelOrderWidget> {
         if (state is CancelState) {
           int count = 0;
           Navigator.of(context).popUntil((_) => count++ >= 2);
-          BlocProvider.of<BasketCubit>(context).basketOrderShow();
+          BlocProvider.of<BasketCubit>(context)
+              .basketOrderShow(status: 'cancel');
           Get.snackbar('Заказ', 'Заказ успешно отменен',
               backgroundColor: Colors.blueAccent);
           BlocProvider.of<OrderStatusSellerCubit>(context).toInitState();

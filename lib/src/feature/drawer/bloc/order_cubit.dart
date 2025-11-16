@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:haji_market/src/feature/basket/data/repository/basket_repo.dart';
 
 class OrderCubit extends Cubit<OrderState> {
@@ -8,11 +9,19 @@ class OrderCubit extends Cubit<OrderState> {
   OrderCubit({required this.basketRepository}) : super(InitState());
 
   Future<void> payment(
-      {String? address, String? bonus, String? fulfillment}) async {
+      {required BuildContext context,
+      required List<int> basketIds,
+      String? address,
+      String? bonus,
+      String? fulfillment}) async {
     try {
       emit(LoadingState());
       final data = await basketRepository.payment(
-          address: address, bonus: bonus, fulfillment: fulfillment);
+          context: context,
+          basketIds: basketIds,
+          address: address,
+          bonus: bonus,
+          fulfillment: fulfillment);
       emit(LoadedState(url: data));
     } catch (e) {
       log(e.toString());

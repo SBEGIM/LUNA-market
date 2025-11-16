@@ -76,7 +76,7 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  color: AppColors.kGray2,
+                  color: Color(0xffEAECED),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -89,14 +89,11 @@ class _MyProductsAdminPageState extends State<MyProductsAdminPage> {
                         controller: nameController,
                         onChanged: (value) =>
                             context.read<ProductSellerCubit>().products(value),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Поиск',
-                          hintStyle: TextStyle(
-                            color: AppColors.kGray300,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          hintText: 'Поиск товаров',
+                          hintStyle: AppTextStyles.size16Weight400
+                              .copyWith(color: Color(0xff8E8E93)),
                         ),
                       ),
                     ),

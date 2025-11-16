@@ -207,26 +207,29 @@ Future<dynamic> showAlertCityBasketWidget(
             //   await BlocProvider.of<ProfileEditAdminCubit>(context).cityCode(cityCode);
             // }
 
-            final data = await Get.to(() => MapPickerPage(
-                  cc: cityCode,
-                  lat: lat,
-                  long: long,
-                ));
+            context.router
+                .push(MapPickerRoute(cc: cityCode, lat: lat, long: long));
 
-            GetStorage().write('cc', data);
+            // Get.to(() => MapPickerPage(
+            //       cc: cityCode,
+            //       lat: lat,
+            //       long: long,
+            //     ));
+
+            // GetStorage().write('cc', data);
 
             //  Get.back(result: place);
 
             // Get.back();
 
-            if (data != null) {
-              context.router.push(BasketOrderAddressRoute(office: data));
+            // if (data != null) {
+            //   context.router.push(BasketOrderAddressRoute(office: data));
 
-              // Get.to(() => BasketOrderAddressPage(
-              //       office: data,
-              //       fulfillment: 'fbs',
-              //     ));
-            }
+            //   // Get.to(() => BasketOrderAddressPage(
+            //   //       office: data,
+            //   //       fulfillment: 'fbs',
+            //   //     ));
+            // }
 
             // callBack?.call();
           },

@@ -133,15 +133,27 @@ class _CatalogPageState extends State<CatalogPage> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      if (brands[index] == brand) {
-                        brand = null;
-                        BlocProvider.of<CatsCubit>(context).cats();
-                      } else {
-                        brand = brands[index];
-                        BlocProvider.of<CatsCubit>(context)
-                            .catsByBrand(brand!.id!);
-                      }
-                      setState(() {});
+                      final filters = context.read<FilterProvider>();
+                      filters.resetAll;
+                      CatsModel allCats = CatsModel(
+                          id: 0,
+                          name: 'Все категории',
+                          text: 'Для тех, кто хочет всё',
+                          image:
+                              'cat/36/image/8mWKc4Kk0ArxqBPnOCVtqhIqdmJicFzlPkMmLDvD.png');
+                      context.router.push(ProductsRoute(
+                          cats: allCats,
+                          subCats: null,
+                          brandId: brands[index].id));
+                      // if (brands[index] == brand) {
+                      //   brand = null;
+                      //   BlocProvider.of<CatsCubit>(context).cats();
+                      // } else {
+                      //   brand = brands[index];
+                      //   BlocProvider.of<CatsCubit>(context)
+                      //       .catsByBrand(brand!.id!);
+                      // }
+                      // setState(() {});
                     },
                     child: Container(
                       width: 64,

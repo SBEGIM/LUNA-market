@@ -273,26 +273,40 @@ class _SubCatalogPageState extends State<SubCatalogPage> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                if (brands[index] == brand) {
-                                  brand = null;
-                                  BlocProvider.of<SubCatsCubit>(context)
-                                      .subCats(widget.cats!.id);
-                                } else {
-                                  brand = brands[index];
-                                  BlocProvider.of<SubCatsCubit>(context)
-                                      .subCatsBrandOptions(
-                                          widget.cats!.id,
-                                          brand?.id ?? 0,
-                                          _selectedChapter != -1
-                                              ? (widget
-                                                      .catChapters?[
-                                                          _selectedChapter]
-                                                      .section
-                                                      ?.id ??
-                                                  0)
-                                              : null);
-                                }
-                                setState(() {});
+                                final filters = context.read<FilterProvider>();
+                                filters.resetAll;
+                                filters.setBrands([]);
+                                filters.setCategory(widget.cats?.id ?? 0);
+                                filters.setSubCats([state.cats[index].id ?? 0]);
+
+                                context.router.push(ProductsRoute(
+                                    cats: widget.cats ??
+                                        CatsModel(
+                                            id: widget.cats?.id ?? 0,
+                                            name: widget.cats?.name ?? ''),
+                                    subCats: state.cats[index],
+                                    brandId: brands[index].id));
+
+                                // if (brands[index] == brand) {
+                                //   brand = null;
+                                //   BlocProvider.of<SubCatsCubit>(context)
+                                //       .subCats(widget.cats!.id);
+                                // } else {
+                                //   brand = brands[index];
+                                //   BlocProvider.of<SubCatsCubit>(context)
+                                //       .subCatsBrandOptions(
+                                //           widget.cats!.id,
+                                //           brand?.id ?? 0,
+                                //           _selectedChapter != -1
+                                //               ? (widget
+                                //                       .catChapters?[
+                                //                           _selectedChapter]
+                                //                       .section
+                                //                       ?.id ??
+                                //                   0)
+                                //               : null);
+                                // }
+                                // setState(() {});
                               },
                               child: Container(
                                 width: 64,

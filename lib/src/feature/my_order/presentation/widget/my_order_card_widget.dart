@@ -162,7 +162,7 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                   children: [
                     Container(
                       alignment: Alignment.centerLeft,
-                      child: Text('Заказ № ${widget.basketOrder.id}',
+                      child: Text('№${widget.basketOrder.id}',
                           textAlign: TextAlign.right,
                           style: AppTextStyles.size14Weight500
                               .copyWith(color: Color(0xff8E8E93))),
@@ -218,9 +218,7 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
                       //     )
                       //   ],
                       // ),
-                      const SizedBox(
-                        height: 4,
-                      ),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

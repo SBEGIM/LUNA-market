@@ -2,20 +2,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/core/presentation/widgets/shimmer/shimmer_box.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/basket_card_widget.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_basket_widget.dart';
-import 'package:haji_market/src/feature/product/cubit/product_ad_cubit.dart'
-    as productAdCubit;
-import 'package:haji_market/src/feature/product/cubit/product_ad_state.dart'
-    as productAdState;
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
@@ -141,7 +136,6 @@ class _BasketPageState extends State<BasketPage> {
   @override
   void initState() {
     BlocProvider.of<BasketCubit>(context).basketShow(fulfillmentApi);
-    BlocProvider.of<productAdCubit.ProductAdCubit>(context).adProducts(null);
     bottomPrice = GetStorage().listenKey('bottomPrice', (value) {
       basketPrice(value);
     });
@@ -168,15 +162,129 @@ class _BasketPageState extends State<BasketPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.kBackgroundColor,
+        extendBody: true,
         appBar: AppBar(
-          surfaceTintColor: AppColors.kWhite,
           centerTitle: true,
-          backgroundColor: AppColors.kWhite,
+          surfaceTintColor: Colors.white,
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(16),
+            ),
+          ),
           elevation: 0,
           title: const Text(
             'Корзина',
             style: AppTextStyles.size18Weight600,
             textAlign: TextAlign.center,
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(36),
+            child: BlocConsumer<BasketCubit, BasketState>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  if (state is LoadedState) {
+                    return Container(
+                      height: 36,
+                      margin: const EdgeInsets.only(bottom: 13),
+                      width: double.infinity,
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  // Проверяем: все ли уже выбраны
+                                  final allSelected =
+                                      state.basketShowModel.every(
+                                    (item) => isChecked.contains(item.basketId),
+                                  );
+
+                                  if (allSelected) {
+                                    // UNSELECT ALL
+                                    isChecked.clear();
+                                  } else {
+                                    // SELECT ALL
+                                    for (final item in state.basketShowModel) {
+                                      isChecked.add(item.basketId!);
+                                    }
+                                  }
+
+                                  setState(() {});
+                                },
+                                child: SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: Image.asset(
+                                    // Иконка зависит от того, все ли выбраны сейчас
+                                    state.basketShowModel.every(
+                                      (item) =>
+                                          isChecked.contains(item.basketId),
+                                    )
+                                        ? Assets.icons.defaultCheckIcon
+                                            .path // все выбраны
+                                        : Assets.icons.defaultUncheckIcon
+                                            .path, // не все выбраны
+
+                                    color: state.basketShowModel.every(
+                                      (item) =>
+                                          isChecked.contains(item.basketId),
+                                    )
+                                        ? AppColors.mainPurpleColor
+                                        : Color(0xffD1D1D6),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                'Выбрать все',
+                                style: AppTextStyles.size16Weight400,
+                              ),
+                              Spacer(),
+                              GestureDetector(
+                                  onTap: () async {
+                                    await Share.share('${productNames}');
+                                  },
+                                  child: Image.asset(
+                                    Assets.icons.basketShare.path,
+                                    width: 21,
+                                    height: 21,
+                                    color: AppColors.kLightBlackColor,
+                                  )),
+                              SizedBox(width: 16),
+                              GestureDetector(
+                                  onTap: () async {
+                                    final ok = await showBasketAlert(context,
+                                        title: 'Удалить',
+                                        message:
+                                            'Вы действительно хотите удалить выбранные товары?',
+                                        mode: AccountAlertMode.confirm,
+                                        cancelText: 'Отмена',
+                                        primaryText: 'Да',
+                                        primaryColor: Colors.red);
+
+                                    if (ok == true) {
+                                      await BlocProvider.of<BasketCubit>(
+                                              context)
+                                          .basketDeleteProducts(
+                                              isChecked.toList());
+
+                                      isChecked.clear();
+                                    } else {}
+                                  },
+                                  child: Image.asset(
+                                    Assets.icons.trashIcon.path,
+                                    width: 21,
+                                    height: 21,
+                                    color: AppColors.kLightBlackColor,
+                                  )),
+                            ],
+                          )),
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                }),
           ),
         ),
         body:
@@ -336,105 +444,7 @@ class _BasketPageState extends State<BasketPage> {
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 children: [
-                  Container(
-                    height: 36,
-                    width: double.infinity,
-                    margin: EdgeInsets.only(bottom: 12),
-                    padding: EdgeInsets.only(bottom: 16),
-                    decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(16),
-                            bottomRight: Radius.circular(16))),
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                // Проверяем: все ли уже выбраны
-                                final allSelected = state.basketShowModel.every(
-                                  (item) => isChecked.contains(item.basketId),
-                                );
-
-                                if (allSelected) {
-                                  // UNSELECT ALL
-                                  isChecked.clear();
-                                } else {
-                                  // SELECT ALL
-                                  for (final item in state.basketShowModel) {
-                                    isChecked.add(item.basketId!);
-                                  }
-                                }
-
-                                setState(() {});
-                              },
-                              child: SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: Image.asset(
-                                  // Иконка зависит от того, все ли выбраны сейчас
-                                  state.basketShowModel.every(
-                                    (item) => isChecked.contains(item.basketId),
-                                  )
-                                      ? Assets.icons.defaultCheckIcon
-                                          .path // все выбраны
-                                      : Assets.icons.defaultUncheckIcon
-                                          .path, // не все выбраны
-
-                                  color: state.basketShowModel.every(
-                                    (item) => isChecked.contains(item.basketId),
-                                  )
-                                      ? AppColors.mainPurpleColor
-                                      : Color(0xffD1D1D6),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              'Выбрать все',
-                              style: AppTextStyles.size16Weight400,
-                            ),
-                            Spacer(),
-                            GestureDetector(
-                                onTap: () async {
-                                  await Share.share('${productNames}');
-                                },
-                                child: Image.asset(
-                                  Assets.icons.basketShare.path,
-                                  width: 21,
-                                  height: 21,
-                                  color: AppColors.kLightBlackColor,
-                                )),
-                            SizedBox(width: 16),
-                            GestureDetector(
-                                onTap: () async {
-                                  final ok = await showBasketAlert(context,
-                                      title: 'Удалить',
-                                      message:
-                                          'Вы действительно хотите удалить выбранные товары?',
-                                      mode: AccountAlertMode.confirm,
-                                      cancelText: 'Отмена',
-                                      primaryText: 'Да',
-                                      primaryColor: Colors.red);
-
-                                  if (ok == true) {
-                                    await BlocProvider.of<BasketCubit>(context)
-                                        .basketDeleteProducts(
-                                            isChecked.toList());
-
-                                    isChecked.clear();
-                                  } else {}
-                                },
-                                child: Image.asset(
-                                  Assets.icons.trashIcon.path,
-                                  width: 21,
-                                  height: 21,
-                                  color: AppColors.kLightBlackColor,
-                                )),
-                          ],
-                        )),
-                  ),
+                  SizedBox(height: 12),
                   Container(
                     margin: EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
@@ -602,12 +612,17 @@ class _BasketPageState extends State<BasketPage> {
                             topLeft: Radius.circular(16),
                             topRight: Radius.circular(16))),
                     padding: const EdgeInsets.only(
-                        left: 23, right: 23, bottom: 8, top: 8),
+                        left: 23, right: 23, bottom: 0, top: 8),
                     child: InkWell(
-                        onTap: () {
-                          if (count != 0) {
+                        onTap: () async {
+                          if (count != 0 && isChecked.toList().isNotEmpty) {
+                            await BlocProvider.of<BasketCubit>(context)
+                                .basketSelectProducts(isChecked.toList());
+
                             context.router.push(BasketOrderAddressRoute(
                                 deleveryDay: deleveryDay));
+
+                            isChecked.clear();
                             // if (fulfillment != 'realFBS') {
                             //   context.router.push(BasketOrderAddressRoute(
                             //       deleveryDay: deleveryDay));
@@ -618,6 +633,12 @@ class _BasketPageState extends State<BasketPage> {
                             //       fulfillment: fulfillment));
                             // }
                             // Get.to(const BasketOrderAddressPage())
+                          } else {
+                            AppSnackBar.show(
+                              context,
+                              'Выберите товары,чтобы продолжить',
+                              type: AppSnackType.error,
+                            );
                           }
 
                           // int bottomPrice = GetStorage().read('bottomPrice');

@@ -19,6 +19,7 @@ void showProductOptions(
 ) {
   showMaterialModalBottomSheet(
     context: parentCtx,
+    backgroundColor: AppColors.kBackgroundColor,
     useRootNavigator: true, // <-- чтобы модалка в корневом навигаторе
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(

@@ -18,7 +18,7 @@ Future<dynamic> showAlertCountryBasketWidget(
   return showCupertinoModalPopup(
     context: context,
     builder: (BuildContext context) =>
-        StatefulBuilder(builder: (context, setState) {
+        StatefulBuilder(builder: (contextBtmSheet, setState) {
       return CustomCupertinoActionSheet(
         actions: <Widget>[
           CupertinoActionSheetAction(
@@ -31,12 +31,14 @@ Future<dynamic> showAlertCountryBasketWidget(
           ),
           CupertinoActionSheetAction(
             child: BlocConsumer<CountryCubit, CountryState>(
-              listener: (context, state) {},
-              builder: (context, state) {
+              listener: (contextBtmSheet, state) {},
+              builder: (contextBtmSheet, state) {
                 if (state is LoadedState) {
                   return Container(
                     constraints: BoxConstraints(
-                        maxHeight: (MediaQuery.of(context).size.height) * 0.85),
+                        maxHeight:
+                            (MediaQuery.of(contextBtmSheet).size.height) *
+                                0.85),
                     height: state.country.length * 50,
                     child: ListView.builder(
                         itemCount: state.country.length,

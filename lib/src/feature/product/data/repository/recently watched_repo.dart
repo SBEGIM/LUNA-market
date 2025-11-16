@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 const baseUrl = 'https://lunamarket.ru/api';
 
-class ProductAdRepository {
+class RecentlyWatchedRepository {
   final ProductApi _productApi = ProductApi();
 
   Future<List<ProductModel>> product(FilterProvider filters) =>
@@ -40,8 +40,8 @@ class ProductApi {
 
     final String? token = _box.read('token');
 
-    final uri =
-        Uri.parse('$baseUrl/shop/ads').replace(queryParameters: queryParams);
+    final uri = Uri.parse('$baseUrl/shop/recently/watched')
+        .replace(queryParameters: queryParams);
 
     final response = await http.get(
       uri,
@@ -56,25 +56,5 @@ class ProductApi {
         (data['data'] as List).map((e) => ProductModel.fromJson(e)).toList();
 
     return products;
-
-    // Map<String, dynamic> queryParams = {};
-
-    // Map<String, dynamic> body = {
-    //   "cat_id": catId.toString(),
-    // };
-
-    // queryParams.addAll(body);
-
-    // final String? token = _box.read('token');
-    // final response = await http.get(
-    //   Uri.parse(
-    //     '$baseUrl/shop/ads',
-    //   ).replace(queryParameters: queryParams),
-    //   headers: {"Authorization": "Bearer $token"},
-    // );
-
-    // final data = jsonDecode(response.body);
-
-    // return (data['data'] as List).map((e) => ProductModel.fromJson(e)).toList();
   }
 }

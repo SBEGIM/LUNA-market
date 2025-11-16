@@ -515,6 +515,8 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.kWhite,
+        extendBody: true,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
@@ -703,7 +705,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                         padding: EdgeInsets.all(6),
                         margin: EdgeInsets.only(top: 12),
                         decoration: BoxDecoration(
-                            color: AppColors.kBackgroundColor,
+                            color: Color(0xffEAECED),
                             borderRadius: BorderRadius.circular(8)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -795,7 +797,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                         padding: EdgeInsets.all(6),
                         margin: EdgeInsets.only(top: 12),
                         decoration: BoxDecoration(
-                            color: AppColors.kBackgroundColor,
+                            color: Color(0xffEAECED),
                             borderRadius: BorderRadius.circular(8)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -3346,7 +3348,8 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
             ],
           ),
         ),
-        bottomSheet: BlocConsumer<ProductSellerCubit, ProductAdminState>(
+        bottomNavigationBar:
+            BlocConsumer<ProductSellerCubit, ProductAdminState>(
           listener: (context, state) {
             if (state is ChangeState) {
               Navigator.of(context).pop(true); // один pop
@@ -3357,10 +3360,8 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
             }
           },
           builder: (context, state) {
-            return Container(
-              color: Colors.white,
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, top: 16, bottom: 26),
+            return SafeArea(
+              top: false,
               child: InkWell(
                 onTap: () async {
                   filledCount = filledCount > 0 ? filledCount + 1 : 0;
@@ -3438,21 +3439,22 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                   }
                 },
                 child: Container(
+                    height: 52,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(16),
                       color: AppColors.mainPurpleColor,
                     ),
                     width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.all(16),
+                    margin:
+                        const EdgeInsets.only(left: 16, right: 16, bottom: 0),
+                    alignment: Alignment.center,
                     child: state is LoadingState
                         ? const Center(
                             child: CircularProgressIndicator.adaptive())
-                        : const Text(
+                        : Text(
                             'Далее',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16),
+                            style: AppTextStyles.size18Weight600
+                                .copyWith(color: AppColors.kWhite),
                             textAlign: TextAlign.center,
                           )),
               ),
@@ -3522,7 +3524,7 @@ class _FieldsProductRequestState extends State<FieldsProductRequest> {
           const SizedBox(height: 4),
           Container(
             decoration: BoxDecoration(
-                color: AppColors.kGray2,
+                color: Color(0xffEAECED),
                 borderRadius: BorderRadius.circular(16)),
             child: Padding(
               padding: const EdgeInsets.only(left: 14.0),

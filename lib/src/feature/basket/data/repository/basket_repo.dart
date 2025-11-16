@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_order_model.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
 import 'package:http/http.dart' as http;
@@ -24,11 +25,19 @@ class BasketRepository {
 
   Future<List<BasketShowModel>> basketShow(String? fulfillment) =>
       _basket.basketShow(fulfillment);
-  Future<List<BasketOrderModel>> basketOrderShow() => _basket.basketOrderShow();
+  Future<List<BasketOrderModel>> basketOrderShow(
+          {required String status, required int page}) =>
+      _basket.basketOrderShow(status: status, page: page);
   Future<int> basketOrder(List id) => _basket.basketOrder(id);
   Future<String> payment(
-          {String? address, String? bonus, String? fulfillment}) =>
+          {required BuildContext context,
+          required List<int> basketIds,
+          String? address,
+          String? bonus,
+          String? fulfillment}) =>
       _basket.payment(
+        context: context,
+        basketIds: basketIds,
         address: address,
         bonus: bonus,
         fulfillment: fulfillment,
@@ -134,11 +143,12 @@ class Basket {
         .toList();
   }
 
-  Future<List<BasketOrderModel>> basketOrderShow() async {
+  Future<List<BasketOrderModel>> basketOrderShow(
+      {required String status, required int page}) async {
     final String? token = _box.read('token');
 
     final response = await http.get(
-        Uri.parse("$baseUrl/basket/order/status?status=active&page=1"),
+        Uri.parse("$baseUrl/basket/order/status?status=$status&page=$page"),
         headers: {"Authorization": "Bearer $token"});
 
     final data = jsonDecode(response.body);
@@ -167,20 +177,36 @@ class Basket {
     return data;
   }
 
-  Future<String> payment(
-      {String? address, String? bonus, String? fulfillment}) async {
+  Future<String> payment({
+    required BuildContext context,
+    required List<int> basketIds,
+    String? address,
+    String? bonus,
+    String? fulfillment,
+  }) async {
     final String? token = _box.read('token');
 
     final response = await http.post(
-        Uri.parse('$baseUrl/payment/tinkoff/payment/v1'),
-        headers: {"Authorization": "Bearer $token"},
-        body: {'address': address, 'bonus': bonus, 'fulfillment': fulfillment});
-
+      Uri.parse('$baseUrl/payment/tinkoff/payment/v1'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'address': address,
+        'bonus': bonus,
+        'fulfillment': fulfillment,
+        'basket_ids': basketIds,
+      }),
+    );
     final data = jsonDecode(response.body);
 
-    if (!data['data_tinkoff']['Success']) {
-      Get.snackbar('Ошибка Тинькофф банк', '${data['data_tinkoff']['Details']}',
-          backgroundColor: Colors.orange);
+    if (data['data_tinkoff']?['Success'] != true) {
+      AppSnackBar.show(
+        context,
+        '${data['data_tinkoff']?['Details'] ?? 'Ошибка оплаты'}',
+        type: AppSnackType.error,
+      );
     }
 
     return data['data_tinkoff']['PaymentURL'];

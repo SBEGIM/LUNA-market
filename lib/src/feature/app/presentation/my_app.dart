@@ -9,6 +9,8 @@ import 'package:haji_market/src/feature/bloger/shop/data/repository/blogger_noti
 import 'package:haji_market/src/feature/bloger/tape/bloc/upload_video_blogger_cubit.dart';
 import 'package:haji_market/src/feature/bloger/tape/data/repository/upload_video_blogger_repo.dart';
 import 'package:haji_market/src/feature/initialization/logic/composition_root.dart';
+import 'package:haji_market/src/feature/product/cubit/recently_watched_product_cubit.dart';
+import 'package:haji_market/src/feature/product/data/repository/recently%20watched_repo.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/register_seller_cubit.dart';
 import 'package:haji_market/src/feature/seller/auth/bloc/sms_seller_cubit.dart';
@@ -489,6 +491,12 @@ class MultiBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (_) => ProductAdCubit(
             productAdRepository: ProductAdRepository(),
+          ),
+        ),
+
+        BlocProvider(
+          create: (_) => RecentlyWatchedProductCubit(
+            productRepository: RecentlyWatchedRepository(),
           ),
         ),
         BlocProvider(

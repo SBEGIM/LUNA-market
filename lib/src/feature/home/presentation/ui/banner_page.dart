@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -171,18 +172,6 @@ class BannerImage extends StatelessWidget {
     return InkWell(
       onTap: () {
         UrlUtil.launch(context, url: url);
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) => BonusPage(
-        //             name: title,
-        //             bonus: bonus,
-        //             date: date,
-        //             image: image,
-        //             url: url,
-        //             description: description,
-        //           )),
-        // );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -193,41 +182,38 @@ class BannerImage extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Container(
+                SizedBox(
                   height: 120,
                   width: double.infinity,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image:
-                          NetworkImage("https://lunamarket.ru/storage/$image"),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: CachedNetworkImage(
+                      imageUrl: "https://lunamarket.ru/storage/$image",
                       fit: BoxFit.cover,
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) {
+                        return Container(
+                          color: Colors.grey[100],
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              value: downloadProgress.progress, // 0..1 или null
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        );
+                      },
+                      errorWidget: (context, url, error) {
+                        return Container(
+                          color: Colors.grey[100],
+                          child: const Icon(
+                            Icons.broken_image,
+                            color: Colors.grey,
+                          ),
+                        );
+                      },
                     ),
-                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                // Container(
-                //   padding: const EdgeInsets.only(top: 40, left: 12),
-                //   child: Text(
-                //     title,
-                //     style: AppTextStyles.bannerTextStyle,
-                //   ),
-                // ),
-                // Container(
-                //   width: 46,
-                //   height: 22,
-                //   decoration: BoxDecoration(
-                //     color: Colors.black,
-                //     borderRadius: BorderRadius.circular(6),
-                //   ),
-                //   margin: const EdgeInsets.only(top: 12, left: 12),
-                //   alignment: Alignment.center,
-                //   child: Text(
-                //     "${bonus.toString()}% Б",
-                //     style: AppTextStyles.bannerTextStyle,
-                //     textAlign: TextAlign.center,
-                //   ),
-                // ),
-
                 Positioned(
                   right: 12,
                   bottom: 12,
@@ -266,156 +252,8 @@ class BannerImage extends StatelessWidget {
                     ),
                   ),
                 )
-                //   Positioned(
-                //     right: 20,
-                //     bottom: 20,
-                //     child: GestureDetector(
-                //       onTap: () async {
-                //         await showModalBottomSheet(
-                //           context: context,
-                //           backgroundColor: Colors.transparent,
-                //           isScrollControlled: true,
-                //           shape: RoundedRectangleBorder(
-                //             borderRadius: BorderRadius.circular(10.0),
-                //           ),
-                //           // isDismissible: true,
-                //           builder: (context) {
-                //             return DraggableScrollableSheet(
-                //               initialChildSize: 0.30, //set this as you want
-                //               maxChildSize: 0.30, //set this as you want
-                //               minChildSize: 0.30, //set this as you want
-                //               builder: (context, scrollController) {
-                //                 return Container(
-                //                   padding: const EdgeInsets.all(16),
-                //                   color: Colors.white,
-                //                   child: ListView(
-                //                     controller: scrollController,
-                //                     children: [
-                //                       const SizedBox(height: 16),
-                //                       const Text(
-                //                         'Рекламный баннер',
-                //                         style: TextStyle(
-                //                             fontSize: 16,
-                //                             fontWeight: FontWeight.w500),
-                //                         textAlign: TextAlign.center,
-                //                       ),
-                //                       const SizedBox(height: 16),
-                //                       // GestureDetector(
-                //                       //   onTap: () {
-                //                       //     // Get.to(const ContractOfSale());
-                //                       //   },
-                //                       //   child: Container(
-                //                       //     padding: const EdgeInsets.only(
-                //                       //         top: 8, left: 16),
-                //                       //     alignment: Alignment.centerLeft,
-                //                       //     child: Text(
-                //                       //       '${widget.description}',
-                //                       //       style: const TextStyle(
-                //                       //           fontSize: 14,
-                //                       //           color:
-                //                       //               AppColors.kPrimaryColor),
-                //                       //     ),
-                //                       //   ),
-                //                       // ),
-                //                       // const Text(
-                //                       //   'Мы помогаем нашим продавцам рассказать об их товарах на LUNA market.Для этого у нас есть разные способы продвижения. Узнать больше о рекламе на LUNA market',
-                //                       //   style: TextStyle(
-                //                       //       fontSize: 12,
-                //                       //       fontWeight: FontWeight.w400),
-                //                       //   textAlign: TextAlign.center,
-                //                       // ),
-                //                       // const SizedBox(height: 16),
-
-                //                       Container(
-                //                         alignment: Alignment.bottomLeft,
-                //                         child: Row(
-                //                           children: [
-                //                             const Text(
-                //                               'Описание:',
-                //                               style: TextStyle(
-                //                                 fontSize: 14,
-                //                               ),
-                //                             ),
-                //                             const SizedBox(width: 4),
-                //                             Text(
-                //                               description,
-                //                               style: const TextStyle(
-                //                                   fontSize: 14,
-                //                                   color: AppColors.kPrimaryColor),
-                //                             ),
-                //                           ],
-                //                         ),
-                //                       ),
-
-                //                       const SizedBox(height: 50),
-
-                //                       Container(
-                //                         alignment: Alignment.bottomLeft,
-                //                         child: Row(
-                //                           children: [
-                //                             const Icon(Icons.link),
-                //                             const SizedBox(width: 10),
-                //                             const Text(
-                //                               'Ссылка:',
-                //                               style: TextStyle(
-                //                                 fontSize: 14,
-                //                               ),
-                //                             ),
-                //                             const SizedBox(width: 4),
-                //                             InkWell(
-                //                               onTap: () {
-                //                                 UrlUtil.launch(context, url: url);
-                //                               },
-                //                               child: Text(
-                //                                 url,
-                //                                 style: const TextStyle(
-                //                                     fontSize: 14,
-                //                                     color:
-                //                                         AppColors.kPrimaryColor),
-                //                               ),
-                //                             ),
-                //                           ],
-                //                         ),
-                //                       )
-                //                     ],
-                //                   ),
-                //                 );
-                //               },
-                //             );
-                //           },
-                //         );
-                //       },
-                //       child: Container(
-                //         decoration: BoxDecoration(
-                //             color: Colors.grey.withOpacity(0.2),
-                //             borderRadius: BorderRadius.circular(6)),
-                //         child: const Padding(
-                //           padding: EdgeInsets.only(
-                //               left: 4.0, right: 4, top: 4, bottom: 4),
-                //           child: Text(
-                //             'РЕКЛАМА',
-                //             textAlign: TextAlign.center,
-                //             style: TextStyle(
-                //                 color: Colors.grey,
-                //                 fontSize: 12,
-                //                 fontWeight: FontWeight.w400),
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
               ],
             ),
-            // const SizedBox(
-            //   height: 7,
-            // ),
-            // //8
-            // Text(date,
-            //     style: const TextStyle(
-            //       fontSize: 12,
-            //       fontWeight: FontWeight.w400,
-            //       color: Color.fromRGBO(173, 176, 181, 1),
-            //     )),
           ],
         ),
       ),

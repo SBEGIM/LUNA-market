@@ -226,10 +226,13 @@ class _StoryScreenState extends State<StoryScreen> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Image.asset(
-                  Assets.icons.defaultClosePurpleIcon.path,
-                  width: 24,
-                  height: 24,
+                InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: Image.asset(
+                    Assets.icons.defaultClosePurpleIcon.path,
+                    width: 24,
+                    height: 24,
+                  ),
                 ),
               ],
             ),

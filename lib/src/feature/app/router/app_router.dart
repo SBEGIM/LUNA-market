@@ -20,6 +20,9 @@ import 'package:haji_market/src/feature/bloger/tape/presentation/widgets/tape_ca
 import 'package:haji_market/src/feature/drawer/presentation/ui/address_page.dart';
 import 'package:haji_market/src/feature/drawer/presentation/ui/address_store_page.dart';
 import 'package:haji_market/src/feature/my_order/presentation/widget/review_order_widget.dart';
+import 'package:haji_market/src/feature/product/presentation/ui/products_recently_watched_page.dart';
+import 'package:haji_market/src/feature/product/presentation/ui/products_recommend_page.dart';
+import 'package:haji_market/src/feature/product/presentation/widgets/search_product_widget.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/change_password_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/forgot_password_seller_page.dart';
 import 'package:haji_market/src/feature/seller/auth/presentation/ui/init_seller_page.dart';
@@ -69,7 +72,6 @@ import 'package:haji_market/src/feature/drawer/presentation/widgets/under_catalo
 import 'package:haji_market/src/feature/favorite/presentation/ui/favorite_page.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:haji_market/src/feature/home/presentation/ui/home_page.dart';
-import 'package:haji_market/src/feature/home/presentation/widgets/search_product_page.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
 import 'package:haji_market/src/feature/tape/presentation/ui/seller_tape_profile_page.dart';
 import 'package:haji_market/src/feature/tape/presentation/ui/tape_page.dart';
@@ -165,6 +167,9 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: DetailStoreRoute.page),
         AutoRoute(page: UnderCatalogRoute.page),
         AutoRoute(page: ProductsRoute.page),
+        AutoRoute(page: ProductsRecommendedRoute.page),
+        AutoRoute(page: ProductsRecentlyWatchedRoute.page),
+        AutoRoute(page: MapPickerRoute.page),
         AutoRoute(page: SearchProductRoute.page),
         AutoRoute(page: DetailCardProductRoute.page),
 

@@ -175,7 +175,8 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                           children: [
                             Text(
                               '${formatPrice(compoundPrice)} ₽ ',
-                              style: AppTextStyles.size18Weight700,
+                              style: AppTextStyles.size18Weight700
+                                  .copyWith(color: Color(0xff1A1C1F)),
                             ),
                             Text(
                               '${formatPrice(widget.basketProducts.product!.price!)} ₽ ',
@@ -206,8 +207,9 @@ class _BasketProductCardWidgetState extends State<BasketProductCardWidget> {
                     width: 234,
                     child: Text(
                       '${widget.basketProducts.product?.name ?? ''}',
-                      style: AppTextStyles.size13Weight400
-                          .copyWith(color: Color(0xff636366)),
+                      style: AppTextStyles.size13Weight400.copyWith(
+                        color: Color(0xff636366),
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

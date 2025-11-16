@@ -5,31 +5,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/products_card_widget.dart';
-import 'package:haji_market/src/feature/product/cubit/product_cubit.dart';
-import 'package:haji_market/src/feature/product/cubit/product_state.dart';
+import 'package:haji_market/src/feature/product/cubit/product_ad_cubit.dart';
+import 'package:haji_market/src/feature/product/cubit/product_ad_state.dart';
 import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 
-class ProductWidget extends StatefulWidget {
-  const ProductWidget({Key? key}) : super(key: key);
+class ProductRecommendWidget extends StatefulWidget {
+  const ProductRecommendWidget({Key? key}) : super(key: key);
 
   @override
-  _ProductWidgetState createState() => _ProductWidgetState();
+  _ProductRecommendWidgetState createState() => _ProductRecommendWidgetState();
 }
 
-class _ProductWidgetState extends State<ProductWidget> {
+class _ProductRecommendWidgetState extends State<ProductRecommendWidget> {
   final _box = GetStorage();
 
   @override
   void initState() {
     final filters = context.read<FilterProvider>();
 
-    BlocProvider.of<ProductCubit>(context).products(filters);
+    BlocProvider.of<ProductAdCubit>(context).adProducts(filters);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProductCubit, ProductState>(builder: (context, state) {
+    return BlocBuilder<ProductAdCubit, ProductAdState>(
+        builder: (context, state) {
       if (state is ErrorState) {
         return SliverToBoxAdapter(
           child: Center(

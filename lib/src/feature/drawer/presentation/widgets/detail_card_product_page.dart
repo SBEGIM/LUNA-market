@@ -25,7 +25,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/basket/bloc/basket_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/review_cubit.dart'
@@ -37,7 +36,6 @@ import 'package:haji_market/src/feature/drawer/presentation/widgets/product_imag
 import 'package:haji_market/src/feature/drawer/presentation/widgets/specifications_page.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../../home/presentation/widgets/product_mb_interesting_card.dart';
 import '../../../home/presentation/widgets/product_watching_card.dart';
 import '../../../favorite/bloc/favorite_cubit.dart';
 import '../../../product/cubit/product_state.dart';
@@ -1129,17 +1127,117 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  BlocProvider.of<BasketCubit>(context)
-                                      .basketAdd(
-                                          widget
-                                              .product.shops![index].productId,
-                                          '1',
-                                          0,
-                                          sizeValue,
-                                          colorValue);
-                                  setState(() {
-                                    isvisible = true;
-                                  });
+                                  if (widget.product.shops![index].inBasket ==
+                                      false) {
+                                    showBasketBottomSheetOptions(
+                                        context,
+                                        '${widget.product.shops![index].shop?.name ?? ''}',
+                                        optom,
+                                        widget.product, (int callBackCount,
+                                            int callBackPrice,
+                                            bool callBackOptom) {
+                                      if (widget.product.shops![index]
+                                                  .product_count ==
+                                              0 &&
+                                          widget.product.shops![index]
+                                                  .pre_order ==
+                                              1) {
+                                        if (isvisible == false &&
+                                            widget.product.shops![index]
+                                                    .inBasket ==
+                                                false) {
+                                          showCupertinoModalPopup<void>(
+                                            context: context,
+                                            builder: (context) =>
+                                                PreOrderDialog(
+                                              onYesTap: () {
+                                                final filters = context
+                                                    .read<FilterProvider>();
+
+                                                Navigator.pop(context);
+                                                if (isvisible == false &&
+                                                    widget.product.shops![index]
+                                                            .inBasket ==
+                                                        false) {
+                                                  BlocProvider.of<BasketCubit>(
+                                                          context)
+                                                      .basketAdd(
+                                                          widget
+                                                              .product
+                                                              .shops![index]
+                                                              .productId,
+                                                          callBackCount,
+                                                          callBackPrice,
+                                                          sizeValue,
+                                                          colorValue,
+                                                          isOptom:
+                                                              callBackOptom);
+                                                  setState(() {
+                                                    isvisible = true;
+                                                  });
+                                                  BlocProvider.of<ProductCubit>(
+                                                          context)
+                                                      .products(filters);
+                                                } else {
+                                                  context.router.replaceAll([
+                                                    const LauncherRoute(
+                                                        children: [
+                                                          BasketRoute()
+                                                        ]),
+                                                  ]);
+                                                }
+                                              },
+                                            ),
+                                          );
+                                        } else {
+                                          context.router.pushAndPopUntil(
+                                            const LauncherRoute(
+                                                children: [BasketRoute()]),
+                                            predicate: (route) => false,
+                                          );
+                                        }
+
+                                        return;
+                                      }
+
+                                      BlocProvider.of<BasketCubit>(context)
+                                          .basketAdd(
+                                              widget.product.shops![index]
+                                                  .productId,
+                                              callBackCount,
+                                              callBackPrice,
+                                              sizeValue,
+                                              colorValue,
+                                              isOptom: callBackOptom);
+                                      setState(() {
+                                        isvisible = true;
+                                      });
+                                      final filters =
+                                          context.read<FilterProvider>();
+
+                                      BlocProvider.of<ProductCubit>(context)
+                                          .products(filters);
+                                    });
+                                  } else {
+                                    log('pushReplaceAll',
+                                        name: 'Detail Card Product Page');
+                                    context.router.replaceAll([
+                                      const LauncherRoute(
+                                          children: [BasketRoute()]),
+                                    ]);
+                                  }
+
+                                  // BlocProvider.of<BasketCubit>(context)
+                                  //     .basketAdd(
+                                  //         widget
+                                  //             .product.shops![index].productId,
+                                  //         '1',
+                                  //         0,
+                                  //         sizeValue,
+                                  //         colorValue);
+                                  // setState(() {
+                                  //   isvisible = true;
+                                  // });
                                 },
                                 child: Container(
                                   height: 40,

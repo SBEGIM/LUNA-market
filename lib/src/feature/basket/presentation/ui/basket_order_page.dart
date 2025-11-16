@@ -55,7 +55,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
   int count = 0;
   String? productNames;
 
-  List<int> id = [];
+  List<int> basketIds = [];
 
   bool isSwitched = false;
   void toggleSwitch(bool value) {
@@ -78,7 +78,7 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
   Future<void> basket(BasketState state) async {
     if (state is LoadedState) {
       for (var element in state.basketShowModel) {
-        id.add(element.basketId!.toInt());
+        basketIds.add(element.basketId!.toInt());
         count += element.basketCount ?? 0;
         price += element.price ?? 0;
         bonus += element.userBonus ?? 0;
@@ -895,6 +895,8 @@ class _BasketOrderPageState extends State<BasketOrderPage> {
                 ));
               } else if (isCheckedOnline == true) {
                 BlocProvider.of<orderCubit.OrderCubit>(context).payment(
+                    context: context,
+                    basketIds: basketIds,
                     address: widget.address.toString(),
                     bonus: isSwitched == true
                         ? (bonus < (price * 0.1) ? bonus : (price * 0.1))

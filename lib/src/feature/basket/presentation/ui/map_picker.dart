@@ -3,7 +3,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
@@ -13,7 +12,6 @@ import 'package:haji_market/src/feature/basket/data/models/cdek_office_old_model
 import 'package:haji_market/src/feature/basket/data/DTO/map_geo_dto.dart';
 import 'package:haji_market/src/feature/basket/bloc/cdek_office_cubit.dart';
 import 'package:haji_market/src/feature/basket/bloc/cdek_office_state.dart';
-import 'package:haji_market/src/feature/basket/presentation/ui/basket_order_page.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,8 +21,14 @@ class MapPickerPage extends StatefulWidget {
   final int? cc;
   final double? lat;
   final double? long;
-  const MapPickerPage({Key? key, this.mapGeo, this.cc, this.lat, this.long})
-      : super(key: key);
+
+  const MapPickerPage({
+    Key? key,
+    this.mapGeo,
+    this.cc,
+    this.lat,
+    this.long,
+  }) : super(key: key);
 
   @override
   State<MapPickerPage> createState() => _MapPickerPageState();
@@ -37,7 +41,9 @@ class _MapPickerPageState extends State<MapPickerPage> {
   Point? _point;
   Uint8List? asd;
   String? place;
-  List<MapObject> MapObjects = [];
+  final List<MapObject> mapObjects = [];
+
+  bool _mapObjectsInitialized = false;
 
   @override
   void initState() {
@@ -49,37 +55,41 @@ class _MapPickerPageState extends State<MapPickerPage> {
 
   @override
   void dispose() {
-    controller!.dispose();
+    // НЕ диспоузим controller здесь — YandexMap сделает это сам
     super.dispose();
   }
 
-  _placeMarkAdd(List<CdekOfficeOldModel> data) {
+  void _placeMarkAdd(List<CdekOfficeOldModel> data) {
+    if (_mapObjectsInitialized) return;
+    _mapObjectsInitialized = true;
+
     for (int i = 0; i < data.length; i++) {
-      MapObjects.add(PlacemarkMapObject(
-        mapId: MapObjectId('placeMark $i'),
-        opacity: 1.0,
-        point: Point(
+      mapObjects.add(
+        PlacemarkMapObject(
+          mapId: MapObjectId('placeMark $i'),
+          opacity: 1.0,
+          point: Point(
             latitude: double.tryParse(data[i].coordY!)!,
-            longitude: double.tryParse(data[i].coordX!)!),
-        icon: PlacemarkIcon.single(
-          PlacemarkIconStyle(
+            longitude: double.tryParse(data[i].coordX!)!,
+          ),
+          icon: PlacemarkIcon.single(
+            PlacemarkIconStyle(
               image: BitmapDescriptor.fromAssetImage(
                 Assets.icons.mapLocation.path,
               ),
-              scale: 1),
+              scale: 1,
+            ),
+          ),
+          onTap: (mapObject, point) {
+            AppSnackBar.show(
+              context,
+              data[i].addressComment!,
+              type: AppSnackType.success,
+            );
+            place = data[i].fullAddress;
+          },
         ),
-        onTap: ((mapObject, point) {
-          AppSnackBar.show(
-            context,
-            data[i].addressComment!,
-            type: AppSnackType.success,
-          );
-          // Get.snackbar(data[i].name!, data[i].addressComment!,
-          //     backgroundColor: Colors.blueAccent);
-          //[i].name!;
-          place = data[i].fullAddress;
-        }),
-      ));
+      );
     }
   }
 
@@ -108,7 +118,6 @@ class _MapPickerPageState extends State<MapPickerPage> {
           if (state is LoadedState) {
             _placeMarkAdd(state.cdekOffice);
 
-            sleep(Duration(seconds: 2));
             return Stack(
               children: <Widget>[
                 YandexMap(
@@ -117,11 +126,12 @@ class _MapPickerPageState extends State<MapPickerPage> {
                     controller = yandexMapController;
                     controller!.moveCamera(
                       CameraUpdate.newCameraPosition(
-                          CameraPosition(target: _point!, zoom: 14)),
+                        CameraPosition(target: _point!, zoom: 14),
+                      ),
                       animation: const MapAnimation(duration: 3.0),
                     );
                   },
-                  mapObjects: MapObjects,
+                  mapObjects: mapObjects,
                 ),
                 Positioned.fill(
                   right: 15,
@@ -132,7 +142,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            // await controller!.getMaxZoom();
+                            if (controller == null) return;
                             controller!.moveCamera(
                               CameraUpdate.zoomIn(),
                               animation: const MapAnimation(duration: 2.0),
@@ -162,6 +172,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
                         ),
                         GestureDetector(
                           onTap: () async {
+                            if (controller == null) return;
                             controller!.moveCamera(
                               CameraUpdate.zoomOut(),
                               animation: const MapAnimation(duration: 2.0),
@@ -202,20 +213,26 @@ class _MapPickerPageState extends State<MapPickerPage> {
                       onTap: () async {
                         try {
                           final loc = await Geolocator.getCurrentPosition();
-                          final _myPoint = Point(
-                              latitude: loc.latitude, longitude: loc.longitude);
+
+                          if (!mounted || controller == null) return;
+
+                          final myPoint = Point(
+                            latitude: loc.latitude,
+                            longitude: loc.longitude,
+                          );
 
                           controller!.moveCamera(
                             CameraUpdate.newCameraPosition(
-                                CameraPosition(target: _myPoint, zoom: 6)),
+                              CameraPosition(target: myPoint, zoom: 6),
+                            ),
                             animation: const MapAnimation(duration: 2.0),
                           );
-
-                          //  controller!.move(point: _myPoint);
                         } catch (exception) {
                           Get.snackbar(
-                              'Ошибка ', 'Не удалось найти местоположение',
-                              backgroundColor: Colors.red);
+                            'Ошибка ',
+                            'Не удалось найти местоположение',
+                            backgroundColor: Colors.red,
+                          );
                         }
                       },
                       child: SizedBox(
@@ -235,7 +252,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
           } else {
             return const Center(
               child: CircularProgressIndicator(
-                color: AppColors.kPrimaryColor,
+                color: AppColors.mainPurpleColor,
               ),
             );
           }
@@ -243,26 +260,19 @@ class _MapPickerPageState extends State<MapPickerPage> {
       ),
       bottomSheet: TextButton(
         onPressed: () async {
-          // final mapgeo = MapGeo(
-          //   address: place,
-          //   lat: controller!.placemarks[0].point.latitude,
-          //   long: controller!.placemarks[0].point.longitude,
-          // );
+          if (place == null) return;
 
-          Get.to(BasketOrderPage(
-            fbs: true,
-            fulfillment: 'fbs',
-          ));
-
-          // context.router.push(BasketOrderRoute(fbs: true, address: place, fulfillment: 'fbs'));
+          // возвращаем значение наверх
+          context.router.pop<String>(place!);
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Colors.white),
         ),
         child: Container(
           height: 52,
-          margin:
-              EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 40),
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height / 40,
+          ),
           decoration: BoxDecoration(
             color: AppColors.mainPurpleColor,
             border: Border.all(color: Colors.grey),
@@ -270,7 +280,7 @@ class _MapPickerPageState extends State<MapPickerPage> {
           ),
           child: const Center(
             child: Text(
-              'Готово',
+              'Заберу отсюда',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,

@@ -8,13 +8,18 @@ import 'package:haji_market/src/core/presentation/widgets/other/custom_switch_bu
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
+import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_city_basket_widget.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_country_basket_widget.dart';
 import 'package:haji_market/src/feature/drawer/bloc/address_cubit.dart';
+import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart'
+    as cityCubit;
 import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart'
     as countryCubit;
 import 'package:haji_market/src/feature/drawer/bloc/order_cubit.dart'
     as orderCubit;
+import 'package:haji_market/src/feature/drawer/data/models/address_model.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
+import 'package:haji_market/src/feature/seller/order/data/repository/basket_seller_repository.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/common/constants.dart';
 import '../../../app/bloc/navigation_cubit/navigation_cubit.dart' as navCubit;
@@ -41,14 +46,55 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
   bool point = false;
   bool shop = false;
   bool fbs = false;
-  String address = 'Изменить адрес доставки';
+  AddressModel? address;
+
+  String? addressLine;
+  String? phoneText;
+
   int segmentValue = 0;
 
   String? office;
 
-  void getAddress() {
-    address =
-        "${(GetStorage().read('country') ?? '*') + ', г. ' + (GetStorage().read('city') ?? '*') + ', ул. ' + (GetStorage().read('street') ?? '*') + ', дом ' + (GetStorage().read('home') ?? '*') + ',подъезд ' + (GetStorage().read('porch') ?? '*') + ',этаж ' + (GetStorage().read('floor') ?? '*') + ',кв ' + (GetStorage().read('room') ?? '*')}";
+  void getAddress(AddressModel addressItem) {
+    final a = addressItem;
+    final parts = <String>[
+      if ((a.city ?? '').isNotEmpty) a.city!,
+      if ((a.street ?? '').isNotEmpty) a.street!,
+      if ((a.home ?? '').isNotEmpty) a.home!,
+      if ((a.entrance ?? '').isNotEmpty) 'подъезд ${a.entrance!}',
+      if ((a.floor ?? '').isNotEmpty) 'этаж ${a.floor!}',
+      if ((a.apartament ?? '').isNotEmpty) 'кв. ${a.apartament!}',
+    ];
+    addressLine = parts.join(', ');
+
+    phoneText = _formatKzPhone(a.phone);
+
+    setState(() {});
+    // address =
+    // "${(GetStorage().read('country') ?? '*') + ', г. ' + (GetStorage().read('city') ?? '*') + ', ул. ' + (GetStorage().read('street') ?? '*') + ', дом ' + (GetStorage().read('home') ?? '*') + ',подъезд ' + (GetStorage().read('porch') ?? '*') + ',этаж ' + (GetStorage().read('floor') ?? '*') + ',кв ' + (GetStorage().read('room') ?? '*')}";
+  }
+
+  String _formatKzPhone(String? input) {
+    if (input == null || input.trim().isEmpty) return '+0 (000) 000-00-00';
+    // Оставляем только цифры
+    var d = input.replaceAll(RegExp(r'\D'), '');
+
+    // Приводим 8XXXXXXXXXX → 7XXXXXXXXXX
+    if (d.startsWith('8')) d = '7${d.substring(1)}';
+
+    // Если нет кода страны — добавим 7
+    if (!d.startsWith('7')) d = '7$d';
+
+    // Нужно минимум 11 цифр (включая код страны)
+    if (d.length < 11) return '+$d';
+
+    final c = d[0]; // 7
+    final p1 = d.substring(1, 4); // XXX
+    final p2 = d.substring(4, 7); // XXX
+    final p3 = d.substring(7, 9); // XX
+    final p4 = d.substring(9, 11); // XX
+
+    return '+$c ($p1) $p2-$p3-$p4';
   }
 
   String formatPrice(int price) {
@@ -56,7 +102,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
     return format.format(price).replaceAll(',', ' ');
   }
 
-  List<int> id = [];
+  List<int> basketIds = [];
   String? productNames;
 
   @override
@@ -66,7 +112,6 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
     if (State is! metaState.LoadedState) {
       BlocProvider.of<metaCubit.MetaCubit>(context).partners();
     }
-    getAddress();
     if (widget.office != null) {
       office = widget.office;
     }
@@ -104,8 +149,11 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
         });
       }
     } else {
-      Get.snackbar('Ошибка', 'У вас нет бонусов от этого магазина',
-          backgroundColor: Colors.blueAccent);
+      AppSnackBar.show(
+        context,
+        'У вас нет бонусов от этого магазина',
+        type: AppSnackType.error,
+      );
     }
   }
 
@@ -122,9 +170,9 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
   Future<void> basket(BasketState state) async {
     if (state is LoadedState) {
       for (var element in state.basketShowModel) {
-        id.add(element.basketId!.toInt());
+        basketIds.add(element.basketId!.toInt());
         count += element.basketCount ?? 0;
-        price += element.price ?? 0;
+        price += (element.product?.price ?? 0) * (element.basketCount ?? 0);
         bonus += element.userBonus ?? 0;
 
         if (element.fulfillment == 'fbs')
@@ -164,6 +212,29 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
     }
   }
 
+  String getTotalCompound(BasketState state) {
+    int total = 0;
+
+    if (state is LoadedState) {
+      for (final item in state.basketShowModel) {
+        // final int price = item.product?.price?.toInt() ?? 0;
+        // final int percent = item.product?.compound?.toInt() ?? 0;
+
+        // print(item.product?.compound);
+
+        // final int discounted =
+        //     (price * (100 - percent) / 100).round(); // тут округляем в конце
+
+        total +=
+            (item.product?.compound?.toInt() ?? 0) * (item?.basketCount ?? 1);
+      }
+
+      return formatPrice(total);
+    } else {
+      return '....';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,7 +245,9 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
           elevation: 0,
           centerTitle: true,
           leading: IconButton(
-            onPressed: () {
+            onPressed: () async {
+              await BlocProvider.of<BasketCubit>(context)
+                  .basketBackSelectProducts();
               Navigator.pop(context);
             },
             icon: const Icon(
@@ -202,7 +275,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                   ),
                   child: CustomSwitchButton<int>(
                     groupValue: segmentValue,
-                    backgroundColor: Color(0xffEAECED),
+                    backgroundColor: Color(0xFFeaeced),
                     thumbColor: AppColors.kWhite,
                     children: {
                       0: Container(
@@ -215,7 +288,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                             style: AppTextStyles.size14Weight500.copyWith(
                                 color: segmentValue == 0
                                     ? Colors.black
-                                    : const Color(0xff636366))),
+                                    : const Color(0xff646466))),
                       ),
                       1: Container(
                         width: MediaQuery.of(context).size.width,
@@ -228,7 +301,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                             style: AppTextStyles.size14Weight500.copyWith(
                                 color: segmentValue == 1
                                     ? Colors.black
-                                    : const Color(0xff636366))),
+                                    : const Color(0xff646466))),
                       ),
                     },
                     onValueChanged: (int? value) async {
@@ -287,68 +360,71 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                         child: Padding(
                           padding: EdgeInsets.only(left: 16, right: 16, top: 8),
                           child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Адрес доставки',
-                                  style: AppTextStyles.size18Weight600,
-                                ),
-                                const SizedBox(height: 8),
-                                Flexible(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        height: 32,
-                                        width: 32,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            color: AppColors
-                                                .mainBackgroundPurpleColor),
-                                        child: Image.asset(
-                                          Assets.icons.location.path,
-                                          scale: 2.1,
-                                        ),
-                                      ),
-                                      SizedBox(width: 12),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          //  final data = await Get.to(() => const Mapp());
-                                          // final data = '';
-                                          Future.wait([
-                                            BlocProvider.of<
-                                                    countryCubit
-                                                    .CountryCubit>(context)
-                                                .country()
-                                          ]);
-                                          showAlertCountryBasketWidget(context,
-                                              () {
-                                            // context.router.pop();
-                                            // setState(() {});
-                                          }, true);
-                                          // office = data;
-                                          setState(() {});
-                                        },
-                                        child: Text(
-                                          office ?? 'Изменить адрес самовывоза',
-                                          style: AppTextStyles.size16Weight500,
-                                        ),
-                                      ),
-                                      Spacer(),
-                                      Image.asset(
-                                        Assets
-                                            .icons.defaultArrowForwardIcon.path,
-                                        scale: 1.9,
-                                      ),
-                                    ],
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Адрес доставки',
+                                style: AppTextStyles.size18Weight600,
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 32,
+                                    width: 32,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color:
+                                          AppColors.mainBackgroundPurpleColor,
+                                    ),
+                                    child: Image.asset(
+                                      Assets.icons.location.path,
+                                      scale: 2.1,
+                                    ),
                                   ),
-                                ),
-                              ]),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        // ждём результат от карты
+                                        final result =
+                                            await context.router.push(
+                                          MapPickerRoute(
+                                            cc: 4756,
+                                            lat: 43.238949,
+                                            long: 76.889709,
+                                          ),
+                                        ) as String?;
+
+                                        print(result.toString());
+
+                                        if (!mounted) return;
+
+                                        if (result != null) {
+                                          setState(() {
+                                            office = result;
+                                            point = true;
+                                          });
+                                        }
+                                      },
+                                      child: Text(
+                                        office ?? 'Изменить адрес самовывоза',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: AppTextStyles.size16Weight500,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Image.asset(
+                                    Assets.icons.defaultArrowForwardIcon.path,
+                                    scale: 1.9,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     )
@@ -359,19 +435,31 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16)),
-                      height: 88,
+                      height: phoneText != null ? 99 : 88,
                       width: MediaQuery.of(context).size.width,
                       child: Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: () {
-                            Future.wait([
-                              BlocProvider.of<AddressCubit>(context).address()
-                            ]);
-                            showAlertAddressWidget(context, () {
-                              getAddress();
-                              setState(() {});
-                            });
+                          onTap: () async {
+                            final result = await context.router.push(
+                              AddressRoute(select: true),
+                            );
+
+                            if (result is AddressModel) {
+                              setState(() {
+                                address = result;
+                              });
+
+                              getAddress(address!);
+                            }
+
+                            // Future.wait([
+                            //   BlocProvider.of<AddressCubit>(context).address()
+                            // ]);
+                            // showAlertAddressWidget(context, () {
+                            //   getAddress();
+                            //   setState(() {});
+                            // });
                           },
                           child: Padding(
                             padding:
@@ -404,11 +492,34 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                       SizedBox(width: 12),
                                       SizedBox(
                                         width: 278,
-                                        child: Text(
-                                          address,
-                                          style: AppTextStyles.size16Weight500,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // Заголовок адреса
+                                            Text(
+                                              '${addressLine != null ? addressLine : 'Изменить адрес доставки'}',
+                                              style:
+                                                  AppTextStyles.size16Weight500,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+
+                                            phoneText != null
+                                                ? const SizedBox(height: 4)
+                                                : SizedBox.shrink(),
+
+                                            phoneText != null
+                                                ? Text(
+                                                    '${phoneText != null ? phoneText : '+0(000)000-00-00'}',
+                                                    style: AppTextStyles
+                                                        .size14Weight400
+                                                        .copyWith(
+                                                            color: Color(
+                                                                0xff8E8E93)),
+                                                  )
+                                                : SizedBox.shrink(),
+                                          ],
                                         ),
                                       ),
                                       Spacer(),
@@ -476,7 +587,8 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(height: 8),
-                                      Text('1 товар(a)',
+                                      Text(
+                                          '${state.basketShowModel[index].basketCount} товар(a)',
                                           style: AppTextStyles.size14Weight500
                                               .copyWith(
                                                   color: Color(0xff8E8E93))),
@@ -540,7 +652,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                           '${formatPrice(state.basketShowModel[index].price!)} ₽',
                                           style: AppTextStyles.size11Weight400
                                               .copyWith(
-                                                  color: Color(0xff8E8E93))),
+                                                  color: Color(0xff8f8f94))),
                                     ],
                                   ),
                                 ),
@@ -617,7 +729,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                             colors: [Color(0xFF7D2DFF), Color(0xFF41DDFF)],
                           ).createShader(bounds),
                           child: Text(
-                            '- ${courierPrice} ₽',
+                            '- ${getTotalCompound(state)} ₽',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -643,7 +755,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                           ),
                         ),
                         Text(
-                          'Без доплат',
+                          '${courierPrice == 0 ? 'Без доплат' : courierPrice} ${courierPrice != 0 ? '₽' : ''} ',
                           style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -903,9 +1015,30 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                             ),
                           );
                         } else {
-                          return const Center(
-                              child: CircularProgressIndicator(
-                                  color: Colors.indigoAccent));
+                          return RichText(
+                            textAlign: TextAlign.left,
+                            text: const TextSpan(
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text:
+                                      "Нажимая «Оплатить», вы принимаете\nусловия ",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: AppColors.kGray300,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                TextSpan(
+                                  text: "Типового договора купли-продажи\n",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.mainPurpleColor),
+                                ),
+                              ],
+                            ),
+                          );
                         }
                       }),
                     ],
@@ -933,7 +1066,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                       }
 
                       if (courier == true) {
-                        if (address.isEmpty) {
+                        if (address == null) {
                           AppSnackBar.show(
                             context,
                             'Напишите адрес для курьера',
@@ -944,7 +1077,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                       }
 
                       if (shop == true) {
-                        if (address.isEmpty) {
+                        if (address == null) {
                           AppSnackBar.show(
                             context,
                             'Напишите адрес для курьера',
@@ -955,7 +1088,9 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                       }
 
                       BlocProvider.of<orderCubit.OrderCubit>(context).payment(
-                          address: address,
+                          context: context,
+                          basketIds: basketIds,
+                          address: addressLine,
                           bonus: isSwitched == true
                               ? (bonus < (price * 0.1) ? bonus : (price * 0.1))
                                   .toString()

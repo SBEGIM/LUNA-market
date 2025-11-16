@@ -308,7 +308,13 @@ class Shops {
     String? sizeTitle,
     int? deliveryDay,
     int? deliveryPrice,
+    int? product_count,
+    int? pre_order,
     bool? inSubs,
+    bool? inBasket,
+    bool? buyed,
+    bool? optom,
+    int? basketCount,
     List<String>? size,
     List<String>? color,
   }) {
@@ -319,6 +325,12 @@ class Shops {
     _sizeTitle = sizeTitle;
     _deliveryDay = deliveryDay;
     _deliveryPrice = deliveryPrice;
+    _product_count = product_count;
+    _pre_order = pre_order;
+    _inBasket = inBasket;
+    _buyed = buyed;
+    _optom = optom;
+    _basketCount = basketCount;
     _size = size;
     _color = color;
   }
@@ -331,6 +343,12 @@ class Shops {
     _sizeTitle = json['size_title'];
     _deliveryDay = json['delivery_day'];
     _deliveryPrice = json['delivery_price'];
+    _product_count = json['product_count'];
+    _pre_order = json['pre_order'];
+    _inBasket = json['in_basket'];
+    _buyed = json['buyed'];
+    _optom = json['optom'];
+    _basketCount = json['basket_count'];
     _size = json['size'] != null ? json['size'].cast<String>() : [];
     _color = json['color'] != null ? json['color'].cast<String>() : [];
   }
@@ -341,6 +359,12 @@ class Shops {
   String? _sizeTitle;
   int? _deliveryDay;
   int? _deliveryPrice;
+  int? _product_count;
+  int? _pre_order;
+  bool? _inBasket;
+  bool? _buyed;
+  bool? _optom;
+  int? _basketCount;
   List<String>? _size;
   List<String>? _color;
 
@@ -351,6 +375,11 @@ class Shops {
   String? get sizeTitle => _sizeTitle;
   int? get deliveryDay => _deliveryDay;
   int? get deliveryPrice => _deliveryPrice;
+  int? get product_count => _product_count;
+  int? get pre_order => _pre_order;
+  bool? get inBasket => _inBasket;
+  bool? get buyed => _buyed;
+  bool? get optom => _optom;
   List<String>? get size => _size;
   List<String>? get color => _color;
 
@@ -365,6 +394,11 @@ class Shops {
     map['size_title'] = _sizeTitle;
     map['deliveryDay'] = _deliveryDay;
     map['deliveryPrice'] = _deliveryPrice;
+    map['product_count'] = _product_count;
+    map['pre_order'] = _pre_order;
+    map['inBasket'] = _inBasket;
+    map['buyed'] = _buyed;
+    map['optom'] = _optom;
     map['size'] = _size;
     map['color'] = _color;
     return map;

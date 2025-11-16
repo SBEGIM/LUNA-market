@@ -7,17 +7,24 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_basket_widget.dart';
 import 'package:haji_market/src/feature/drawer/bloc/address_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/address_state.dart';
+import 'package:haji_market/src/feature/drawer/data/models/address_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 @RoutePage()
 class AddressPage extends StatefulWidget {
-  const AddressPage({super.key});
+  bool? select;
+
+  AddressPage({super.key, this.select});
 
   @override
   State<AddressPage> createState() => _AddressPageState();
 }
 
 class _AddressPageState extends State<AddressPage> {
+  final Set<int> isChecked = {};
+
+  AddressModel? selectedAddress;
+
   final RefreshController _refreshController = RefreshController();
 
   Future<void> _refresh() async {
@@ -56,7 +63,13 @@ class _AddressPageState extends State<AddressPage> {
             width: double.infinity,
             child: InkWell(
               borderRadius: BorderRadius.circular(16),
-              onTap: () => context.router.push(const AddressStoreRoute()),
+              onTap: () {
+                if (widget.select == true && isChecked.isNotEmpty) {
+                  context.router.pop(selectedAddress);
+                } else {
+                  context.router.push(const AddressStoreRoute());
+                }
+              },
               child: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
@@ -64,7 +77,9 @@ class _AddressPageState extends State<AddressPage> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
-                  'Добавить новый адрес',
+                  isChecked.isNotEmpty
+                      ? 'Сохранить и продолжить'
+                      : 'Добавить новый адрес',
                   style: AppTextStyles.size18Weight600
                       .copyWith(color: AppColors.kWhite),
                 ),
@@ -199,23 +214,53 @@ class _AddressPageState extends State<AddressPage> {
                   ),
                 ),
                 const SizedBox(width: 12),
-                InkWell(
-                  onTap: () async {
-                    final ok = await showBasketAlert(
-                      context,
-                      title: 'Удалить',
-                      message: 'Вы действительно хотите удалить этот адрес?',
-                      mode: AccountAlertMode.confirm,
-                      cancelText: 'Отмена',
-                      primaryText: 'Да',
-                      primaryColor: Colors.red,
-                    );
-                    if (ok == true) {
-                      context.read<AddressCubit>().delete(context, a.id!);
-                    }
-                  },
-                  child: Image.asset(Assets.icons.trashIcon.path, height: 21),
-                ),
+
+                widget.select == true
+                    ? InkWell(
+                        onTap: () async {
+                          if (isChecked.contains(a.id!)) {
+                            isChecked.remove(a.id!);
+                          } else {
+                            isChecked.clear();
+                            selectedAddress = items[index];
+                            isChecked.add(a.id!);
+                          }
+
+                          setState(() {});
+                        },
+                        child: isChecked.contains(a.id!)
+                            ? Image.asset(
+                                Assets.icons.defaultCheckIcon.path,
+                                height: 20,
+                                width: 20,
+                                color: AppColors.mainPurpleColor,
+                              )
+                            : Image.asset(
+                                Assets.icons.defaultUncheckIcon.path,
+                                height: 20,
+                                width: 20,
+                                color: Color(0xffD1D1D6),
+                              ),
+                      )
+                    : InkWell(
+                        onTap: () async {
+                          final ok = await showBasketAlert(
+                            context,
+                            title: 'Удалить',
+                            message:
+                                'Вы действительно хотите удалить этот адрес?',
+                            mode: AccountAlertMode.confirm,
+                            cancelText: 'Отмена',
+                            primaryText: 'Да',
+                            primaryColor: Colors.red,
+                          );
+                          if (ok == true) {
+                            context.read<AddressCubit>().delete(context, a.id!);
+                          }
+                        },
+                        child: Image.asset(Assets.icons.trashIcon.path,
+                            height: 21),
+                      ),
               ],
             ),
           );

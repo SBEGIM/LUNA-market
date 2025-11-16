@@ -22,6 +22,7 @@ class PopularShopsApi {
 
     final data = jsonDecode(response.body);
 
+    print(data.toString());
     return (data as List).map((e) => PopularShops.fromJson(e)).toList();
   }
 }

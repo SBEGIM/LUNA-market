@@ -79,39 +79,35 @@ class _FavoriteProductsCardWidgetState
                         color: AppColors.kWhite,
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                              12), // Slightly smaller than container
-                          child: Image.network(
-                            widget.product.path != null
-                                ? "https://lunamarket.ru/storage/${widget.product.path!.first}"
-                                : "https://lunamarket.ru/storage/banners/2.png",
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Container(
-                                color: Colors.grey[100],
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                        : null,
-                                    strokeWidth: 2,
-                                  ),
-                                ),
-                              );
-                            },
-                            errorBuilder: (context, error, stackTrace) =>
-                                Container(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            12), // Slightly smaller than container
+                        child: Image.network(
+                          widget.product.path != null
+                              ? "https://lunamarket.ru/storage/${widget.product.path!.first}"
+                              : "https://lunamarket.ru/storage/banners/2.png",
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
                               color: Colors.grey[100],
-                              child: const Icon(Icons.broken_image,
-                                  color: Colors.grey),
-                            ),
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                            color: Colors.grey[100],
+                            child: const Icon(Icons.broken_image,
+                                color: Colors.grey),
                           ),
                         ),
                       ),
@@ -425,8 +421,6 @@ class _FavoriteProductsCardWidgetState
                                   count -= 1;
                                 });
                               }
-
-                              print(count);
                             },
                             child: Container(
                               width: 114,
@@ -439,7 +433,7 @@ class _FavoriteProductsCardWidgetState
                               ),
                               alignment: Alignment.center,
                               child: Text(
-                                'В корзину',
+                                count == 0 ? 'В корзину' : 'В корзине ',
                                 style: TextStyle(
                                     color: count != 0
                                         ? AppColors.kLightBlackColor

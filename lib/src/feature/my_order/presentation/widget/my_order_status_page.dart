@@ -113,7 +113,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
       RefreshController(initialRefresh: false);
 
   Future<void> onRefresh() async {
-    await BlocProvider.of<BasketCubit>(context).basketOrderShow();
+    await BlocProvider.of<BasketCubit>(context)
+        .basketOrderShow(status: 'active');
     if (mounted) {
       setState(() {});
     }
@@ -121,7 +122,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
   }
 
   Future<void> onLoading() async {
-    await BlocProvider.of<BasketCubit>(context).basketOrderShow();
+    await BlocProvider.of<BasketCubit>(context)
+        .basketOrderShow(status: 'active');
     await Future.delayed(const Duration(milliseconds: 2000));
 
     _refreshController.loadComplete();
@@ -519,7 +521,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                             if (state is LoadedState) {
                                               BlocProvider.of<BasketCubit>(
                                                       context)
-                                                  .basketOrderShow();
+                                                  .basketOrderShow(
+                                                      status: 'end');
                                               Navigator.pop(context);
                                               Get.snackbar('Заказ',
                                                   'Вы совершили покупку',
