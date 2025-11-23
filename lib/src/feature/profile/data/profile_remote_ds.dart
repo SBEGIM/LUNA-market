@@ -14,36 +14,21 @@ abstract interface class IProfileRemoteDS {
 
   Future deleteAccount();
 
-  Future updateLanguage({
-    required String languageCode,
-  });
+  Future updateLanguage({required String languageCode});
 
-  Future<UserDTO> updateAvatar({
-    required Uint8List? imageByteUint8List,
-  });
+  Future<UserDTO> updateAvatar({required Uint8List? imageByteUint8List});
 
-  Future<void> addChild({
-    required int id,
-  });
+  Future<void> addChild({required int id});
 
-  Future<void> deleteChild({
-    required int id,
-  });
+  Future<void> deleteChild({required int id});
   Future<CommonListsDTO> getProfileUpdateFormOptions();
 
-  Future<UserDTO> updateProfile({
-    required UserPayload payload,
-  });
+  Future<UserDTO> updateProfile({required UserPayload payload});
 
   Future<List<UserDTO>> getChildren();
-  Future<int> updatePhoneSmsSend({
-    required String phone,
-  });
+  Future<int> updatePhoneSmsSend({required String phone});
 
-  Future<UserDTO> updatePhoneSmsCheck({
-    required String phone,
-    required String code,
-  });
+  Future<UserDTO> updatePhoneSmsCheck({required String phone, required String code});
 
   Future<UserDTO> changePassword({
     required String oldPassword,
@@ -51,28 +36,17 @@ abstract interface class IProfileRemoteDS {
     required String passwordConfirmation,
   });
 
-  Future<List<AchievementDTO>> getAchievements();
-
-  Future makeAchievementShown({
-    required int achievementId,
-  });
+  Future makeAchievementShown({required int achievementId});
 }
 
 class ProfileRemoteDSImpl implements IProfileRemoteDS {
-  const ProfileRemoteDSImpl({
-    required this.restClient,
-  });
+  const ProfileRemoteDSImpl({required this.restClient});
   final IRestClient restClient;
 
   @override
-  Future<void> addChild({
-    required int id,
-  }) async {
+  Future<void> addChild({required int id}) async {
     try {
-      final response = await restClient.post(
-        '/v1/user/parent/child/$id',
-        body: null,
-      );
+      final response = await restClient.post('/v1/user/parent/child/$id', body: null);
       TalkerLoggerUtil.talker.info('#addChild - Success: $response');
     } catch (e, st) {
       TalkerLoggerUtil.talker.error('#addChild - Error: $e', e, st);
@@ -81,13 +55,9 @@ class ProfileRemoteDSImpl implements IProfileRemoteDS {
   }
 
   @override
-  Future<void> deleteChild({
-    required int id,
-  }) async {
+  Future<void> deleteChild({required int id}) async {
     try {
-      final response = await restClient.delete(
-        '/v1/user/parent/child/$id',
-      );
+      final response = await restClient.delete('/v1/user/parent/child/$id');
       TalkerLoggerUtil.talker.info('#deleteChild - Success: $response');
     } catch (e, st) {
       TalkerLoggerUtil.talker.error('#deleteChild - Error: $e', e, st);
@@ -120,10 +90,7 @@ class ProfileRemoteDSImpl implements IProfileRemoteDS {
   @override
   Future logout() async {
     try {
-      await restClient.post(
-        '/v1/user/logout',
-        body: null,
-      );
+      await restClient.post('/v1/user/logout', body: null);
     } catch (e, st) {
       TalkerLoggerUtil.talker.error('#logout - $e', e, st);
       rethrow;
@@ -131,16 +98,9 @@ class ProfileRemoteDSImpl implements IProfileRemoteDS {
   }
 
   @override
-  Future updateLanguage({
-    required String languageCode,
-  }) async {
+  Future updateLanguage({required String languageCode}) async {
     try {
-      await restClient.put(
-        '/v1/user/lang',
-        body: {
-          'lang': languageCode,
-        },
-      );
+      await restClient.put('/v1/user/lang', body: {'lang': languageCode});
     } catch (e, st) {
       TalkerLoggerUtil.talker.error('#updateLanguage - $e', e, st);
       rethrow;
@@ -148,33 +108,22 @@ class ProfileRemoteDSImpl implements IProfileRemoteDS {
   }
 
   @override
-  Future<UserDTO> updateAvatar({
-    required Uint8List? imageByteUint8List,
-  }) async {
+  Future<UserDTO> updateAvatar({required Uint8List? imageByteUint8List}) async {
     try {
       FormData? formData;
       if (imageByteUint8List != null) {
-        formData = FormData.fromMap(
-          {
-            'avatar': MultipartFile.fromBytes(
-              imageByteUint8List,
-              filename: 'test.png',
-            ),
-            '_method': 'PUT',
-          },
-        );
-      } else {
         formData = FormData.fromMap({
+          'avatar': MultipartFile.fromBytes(imageByteUint8List, filename: 'test.png'),
           '_method': 'PUT',
         });
+      } else {
+        formData = FormData.fromMap({'_method': 'PUT'});
       }
 
       final Map<String, dynamic> response = await restClient.post(
         '/v1/user/avatar',
         body: formData,
-        headers: {
-          'connection': 'keep-alive',
-        },
+        headers: {'connection': 'keep-alive'},
       );
 
       return UserDTO.fromJson(response);
@@ -187,13 +136,9 @@ class ProfileRemoteDSImpl implements IProfileRemoteDS {
   @override
   Future<CommonListsDTO> getProfileUpdateFormOptions() async {
     try {
-      final Map<String, dynamic> response =
-          await restClient.get('/v1/user/form');
+      final Map<String, dynamic> response = await restClient.get('/v1/user/form');
 
-      return await compute<Map<String, dynamic>, CommonListsDTO>(
-        CommonListsDTO.fromJson,
-        response,
-      );
+      return await compute<Map<String, dynamic>, CommonListsDTO>(CommonListsDTO.fromJson, response);
     } catch (e, st) {
       TalkerLoggerUtil.talker.error('#getProfileUpdateFormOptions - $e', e, st);
       rethrow;
@@ -201,9 +146,7 @@ class ProfileRemoteDSImpl implements IProfileRemoteDS {
   }
 
   @override
-  Future<UserDTO> updateProfile({
-    required UserPayload payload,
-  }) async {
+  Future<UserDTO> updateProfile({required UserPayload payload}) async {
     try {
       final Map<String, dynamic> response = await restClient.put(
         '/v1/user/profile',
@@ -218,15 +161,11 @@ class ProfileRemoteDSImpl implements IProfileRemoteDS {
   }
 
   @override
-  Future<int> updatePhoneSmsSend({
-    required String phone,
-  }) async {
+  Future<int> updatePhoneSmsSend({required String phone}) async {
     try {
       final Map<String, dynamic> response = await restClient.post(
         '/v1/user/phone/sms/send',
-        body: {
-          'phone': phone,
-        },
+        body: {'phone': phone},
       );
 
       final int? smsDelay = response['sms_delay'] as int?;
@@ -235,8 +174,7 @@ class ProfileRemoteDSImpl implements IProfileRemoteDS {
         return smsDelay;
       } else {
         throw WrongResponseTypeException(
-          message:
-              '''Unexpected response body type: ${response.runtimeType}\n$response''',
+          message: '''Unexpected response body type: ${response.runtimeType}\n$response''',
         );
       }
     } catch (e, st) {
@@ -246,17 +184,11 @@ class ProfileRemoteDSImpl implements IProfileRemoteDS {
   }
 
   @override
-  Future<UserDTO> updatePhoneSmsCheck({
-    required String phone,
-    required String code,
-  }) async {
+  Future<UserDTO> updatePhoneSmsCheck({required String phone, required String code}) async {
     try {
       final Map<String, dynamic> response = await restClient.put(
         '/v1/user/phone/sms/check',
-        body: {
-          'phone': phone,
-          'code': code,
-        },
+        body: {'phone': phone, 'code': code},
       );
 
       return UserDTO.fromJson(response);
@@ -290,31 +222,9 @@ class ProfileRemoteDSImpl implements IProfileRemoteDS {
   }
 
   @override
-  Future<List<AchievementDTO>> getAchievements() async {
+  Future makeAchievementShown({required int achievementId}) async {
     try {
-      final Map<String, dynamic> response = await restClient.get(
-        '/v1/user/achievement',
-      );
-      final data = response['data'] as List<dynamic>? ?? [];
-
-      return data
-          .map((e) => AchievementDTO.fromJson(e as Map<String, dynamic>))
-          .toList();
-    } catch (e, st) {
-      TalkerLoggerUtil.talker.error('#getAchievements - $e', e, st);
-      rethrow;
-    }
-  }
-
-  @override
-  Future makeAchievementShown({
-    required int achievementId,
-  }) async {
-    try {
-      await restClient.post(
-        '/v1/user/achievement/$achievementId/shown',
-        body: null,
-      );
+      await restClient.post('/v1/user/achievement/$achievementId/shown', body: null);
     } catch (e, st) {
       TalkerLoggerUtil.talker.error('#makeAchievementShown - $e', e, st);
       rethrow;

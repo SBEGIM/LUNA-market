@@ -4,7 +4,7 @@ part 'app_version_dto.freezed.dart';
 part 'app_version_dto.g.dart';
 
 @freezed
-class AppVersionDTO with _$AppVersionDTO {
+sealed class AppVersionDTO with _$AppVersionDTO {
   const factory AppVersionDTO({
     @JsonKey(name: 'force_update_version') String? forceUpdateVersion,
     @JsonKey(name: 'store_review_version') String? storeReviewVersion,

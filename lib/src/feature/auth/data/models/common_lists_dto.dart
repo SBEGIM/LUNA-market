@@ -5,7 +5,7 @@ part 'common_lists_dto.freezed.dart';
 part 'common_lists_dto.g.dart';
 
 @freezed
-class CommonListsDTO with _$CommonListsDTO {
+sealed class CommonListsDTO with _$CommonListsDTO {
   const factory CommonListsDTO({
     List<CommonDTO>? cities,
     List<CommonDTO>? classes,
