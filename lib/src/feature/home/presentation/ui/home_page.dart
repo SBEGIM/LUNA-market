@@ -1,12 +1,17 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/core/presentation/widgets/shimmer/shimmer_box.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
+import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_country_widget.dart';
+import 'package:haji_market/src/feature/drawer/bloc/country_cubit.dart';
 import 'package:haji_market/src/feature/home/data/model/cat_model.dart';
+import 'package:haji_market/src/feature/home/data/model/city_model.dart';
 import 'package:haji_market/src/feature/product/cubit/product_ad_cubit.dart'
     as productAdCubit;
 import 'package:haji_market/src/feature/product/cubit/product_ad_state.dart'
@@ -70,63 +75,86 @@ class _HomePageState extends State<HomePage> {
 
   List<String> metasUrlLinks = [];
 
+  final box = GetStorage();
+
+  CityModel? city;
+// Город
+  CityModel? loadCity() {
+    final data = box.read('city');
+    if (data == null) return null;
+
+    if (data is! Map<String, dynamic>) {
+      // Unexpected type, bail out
+      return null;
+    }
+    print(data);
+    return CityModel.fromJson(Map<String, dynamic>.from(data));
+  }
+
   @override
   void initState() {
-    if (BlocProvider.of<bannerCubit.BannersCubit>(context).state
-        is! bannerState.LoadedState) {
-      BlocProvider.of<bannerCubit.BannersCubit>(context).banners();
-    }
-
-    if (BlocProvider.of<StoriesSellerCubit>(context).state is! LoadedState) {
-      BlocProvider.of<StoriesSellerCubit>(context).news();
-    }
-    final filters = context.read<FilterProvider>();
-
-    // if (BlocProvider.of<
-    //         productRecentlyWatchedCubit.RecentlyWatchedProductCubit>(context)
-    //     .state is! productRecentlyWatchedState.LoadedState) {
-    BlocProvider.of<productRecentlyWatchedCubit.RecentlyWatchedProductCubit>(
-            context)
-        .products(filters);
-    // }
-
-    // if (BlocProvider.of<subCatCubit.SubCatsCubit>(context).state
-    //     is! subCatState.LoadedState) {
-    BlocProvider.of<subCatCubit.SubCatsCubit>(context)
-        .subCats(0, isAddAllProducts: false);
-    //}
-
-    if (BlocProvider.of<popShopsCubit.PopularShopsCubit>(context).state
-        is! popShopsState.LoadedState) {
-      BlocProvider.of<popShopsCubit.PopularShopsCubit>(context).popShops();
-    }
-
-    if (BlocProvider.of<partnerCubit.PartnerCubit>(context).state
-        is! partnerState.LoadedState) {
-      BlocProvider.of<partnerCubit.PartnerCubit>(context).partners();
-    }
-
-    if (BlocProvider.of<metaCubit.MetaCubit>(context).state
-        is! metaState.LoadedState) {
-      BlocProvider.of<metaCubit.MetaCubit>(context).partners();
-    }
-
-    if (BlocProvider.of<productCubit.ProductCubit>(context).state
-        is! productState.LoadedState) {
-      final filters = context.read<FilterProvider>();
-      filters.resetAll();
-      BlocProvider.of<productCubit.ProductCubit>(context).products(filters);
-    }
-
-    if (BlocProvider.of<productAdCubit.ProductAdCubit>(context).state
-        is! productState.LoadedState) {
-      final filters = context.read<FilterProvider>();
-      filters.resetAll();
-      BlocProvider.of<productAdCubit.ProductAdCubit>(context)
-          .adProducts(filters);
-    }
-
     super.initState();
+
+    city = loadCity();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+
+      // Banners
+      if (BlocProvider.of<bannerCubit.BannersCubit>(context).state
+          is! bannerState.LoadedState) {
+        BlocProvider.of<bannerCubit.BannersCubit>(context).banners();
+      }
+
+      // Stories
+      if (BlocProvider.of<StoriesSellerCubit>(context).state is! LoadedState) {
+        BlocProvider.of<StoriesSellerCubit>(context).news();
+      }
+
+      final filters = context.read<FilterProvider>();
+
+      // Recently watched
+      BlocProvider.of<productRecentlyWatchedCubit.RecentlyWatchedProductCubit>(
+              context)
+          .products(filters);
+
+      // Sub categories
+      BlocProvider.of<subCatCubit.SubCatsCubit>(context)
+          .subCats(0, isAddAllProducts: false);
+
+      // Popular shops
+      if (BlocProvider.of<popShopsCubit.PopularShopsCubit>(context).state
+          is! popShopsState.LoadedState) {
+        BlocProvider.of<popShopsCubit.PopularShopsCubit>(context).popShops();
+      }
+
+      // Partners
+      if (BlocProvider.of<partnerCubit.PartnerCubit>(context).state
+          is! partnerState.LoadedState) {
+        BlocProvider.of<partnerCubit.PartnerCubit>(context).partners();
+      }
+
+      // Meta
+      if (BlocProvider.of<metaCubit.MetaCubit>(context).state
+          is! metaState.LoadedState) {
+        BlocProvider.of<metaCubit.MetaCubit>(context).partners();
+      }
+
+      // Products
+      if (BlocProvider.of<productCubit.ProductCubit>(context).state
+          is! productState.LoadedState) {
+        filters.resetAll(); // safe now, after first frame
+        BlocProvider.of<productCubit.ProductCubit>(context).products(filters);
+      }
+
+      // Ad products
+      if (BlocProvider.of<productAdCubit.ProductAdCubit>(context).state
+          is! productState.LoadedState) {
+        filters.resetAll(); // or remove if you don't really need to reset twice
+        BlocProvider.of<productAdCubit.ProductAdCubit>(context)
+            .adProducts(filters);
+      }
+    });
   }
 
   @override
@@ -170,30 +198,40 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                          Assets.icons.location.path,
-                          height: 20,
-                          width: 20,
-                        ),
-                        SizedBox(
-                          width: 4.0,
-                        ),
-                        Text(
-                          'Алматы',
-                          style: AppTextStyles.size16Weight500.copyWith(
-                            color: AppColors.mainPurpleColor,
+                    child: InkWell(
+                      onTap: () {
+                        Future.wait(
+                          [BlocProvider.of<CountryCubit>(context).country()],
+                        );
+                        showAlertCountryWidget(context, () {
+                          setState(() {});
+                        }, false);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset(
+                            Assets.icons.location.path,
+                            height: 20,
+                            width: 20,
                           ),
-                        ),
-                        Spacer(),
-                        Image.asset(
-                          Assets.icons.defaultNotificationIcon.path,
-                          height: 26,
-                          width: 26,
-                        )
-                      ],
+                          SizedBox(
+                            width: 4.0,
+                          ),
+                          Text(
+                            '${loadCity()?.city ?? 'Не указан'}',
+                            style: AppTextStyles.size16Weight500.copyWith(
+                              color: AppColors.mainPurpleColor,
+                            ),
+                          ),
+                          Spacer(),
+                          Image.asset(
+                            Assets.icons.defaultNotificationIcon.path,
+                            height: 26,
+                            width: 26,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 15),
@@ -239,14 +277,50 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         borderRadius: BorderRadius.circular(16),
                                       ),
-                                      child: ClipRRect(
-                                        // чтобы визуально совпадали скругления: 16 - border - padding ≈ 13
-                                        borderRadius: BorderRadius.circular(13),
-                                        child: Image.network(
-                                          "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
-                                          fit: BoxFit.cover,
+                                      child: SizedBox(
+                                        height: 120,
+                                        width: double.infinity,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(13),
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
+                                            fit: BoxFit.cover,
+                                            progressIndicatorBuilder: (context,
+                                                url, downloadProgress) {
+                                              return Container(
+                                                color: Colors.grey[100],
+                                                child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    value: downloadProgress
+                                                        .progress, // 0..1 или null
+                                                    strokeWidth: 2,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            errorWidget: (context, url, error) {
+                                              return Container(
+                                                color: Colors.grey[100],
+                                                child: const Icon(
+                                                  Icons.broken_image,
+                                                  color: Colors.grey,
+                                                ),
+                                              );
+                                            },
+                                          ),
                                         ),
                                       ),
+                                      // ClipRRect(
+                                      //   // чтобы визуально совпадали скругления: 16 - border - padding ≈ 13
+                                      //   borderRadius: BorderRadius.circular(13),
+                                      //   child: Image.network(
+                                      //     "https://lunamarket.ru/storage/${state.storiesSeelerModel[index].image}",
+                                      //     fit: BoxFit.cover,
+                                      //   ),
+                                      // ),
                                     ),
                                   ),
                                 ),
@@ -282,42 +356,42 @@ class _HomePageState extends State<HomePage> {
                     height: 10,
                   ),
                   const BannerPage(),
-                  Container(
-                    height: 44,
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                        color: AppColors.kWhite,
-                        borderRadius: BorderRadius.circular(12)),
+                  InkWell(
+                    onTap: () {
+                      context.router.push(const SearchProductRoute());
+                    },
                     child: Container(
                       height: 44,
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
-                          color: Color(0xffF7F7F7),
+                          color: AppColors.kWhite,
                           borderRadius: BorderRadius.circular(12)),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 12,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              context.router.push(const SearchProductRoute());
-                            },
-                            child: Image.asset(
+                      child: Container(
+                        height: 44,
+                        decoration: BoxDecoration(
+                            color: Color(0xffF7F7F7),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 12,
+                            ),
+                            Image.asset(
                               Assets.icons.defaultSearchIcon.path,
                               height: 18,
                               width: 18,
                             ),
-                          ),
-                          SizedBox(
-                            width: 12,
-                          ),
-                          Text(
-                            'Искать',
-                            style: AppTextStyles.size16Weight600
-                                .copyWith(color: Color(0xff8E8E93)),
-                          )
-                        ],
+                            SizedBox(
+                              width: 12,
+                            ),
+                            Text(
+                              'Искать',
+                              style: AppTextStyles.size16Weight600
+                                  .copyWith(color: Color(0xff8E8E93)),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

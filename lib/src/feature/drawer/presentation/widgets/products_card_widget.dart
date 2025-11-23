@@ -13,7 +13,6 @@ import 'package:haji_market/src/feature/favorite/bloc/favorite_cubit.dart';
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:haji_market/src/feature/product/cubit/product_cubit.dart'
     as productCubit;
-import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:intl/intl.dart';
 
 class ProductCardWidget extends StatefulWidget {
@@ -34,8 +33,11 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
   bool inFavorite = false;
   int compoundPrice = 0;
 
+  int basketCount = 0;
+
   @override
   void initState() {
+    basketCount = widget.product.basketCount ?? 0;
     compoundPrice = (widget.product.price!.toInt() *
             (((100 - widget.product.compound!.toInt())) / 100))
         .toInt();
@@ -43,8 +45,6 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     inFavorite = widget.product.inFavorite ?? false;
     compoundPrice =
         (widget.product.price! * (100 - (widget.product.compound ?? 0))) ~/ 100;
-
-    setState(() {});
 
     super.initState();
   }
@@ -56,8 +56,6 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final basketCount = widget.product.basketCount ?? 0;
-
     return Container(
       padding: EdgeInsets.only(top: 12, left: 9.3, right: 9.3),
       decoration: BoxDecoration(
@@ -517,18 +515,33 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                                           '',
                                                           isOptom:
                                                               callBackOptom);
-                                                  setState(() {
-                                                    // isvisible = true;
-                                                  });
-
-                                                  final filters = context
-                                                      .read<FilterProvider>();
 
                                                   BlocProvider.of<
                                                               productCubit
                                                               .ProductCubit>(
                                                           context)
-                                                      .products(filters);
+                                                      .updateProductByIndex(
+                                                          index: widget.index,
+                                                          updatedProduct: widget
+                                                              .product
+                                                              .copyWith(
+                                                                  basketCount:
+                                                                      basketCount +
+                                                                          1,
+                                                                  inBasket:
+                                                                      true));
+                                                  setState(() {
+                                                    // isvisible = true;
+                                                  });
+
+                                                  // final filters = context
+                                                  //     .read<FilterProvider>();
+
+                                                  // BlocProvider.of<
+                                                  //             productCubit
+                                                  //             .ProductCubit>(
+                                                  //         context)
+                                                  //     .products(filters);
                                                 } else {
                                                   context.router.replaceAll([
                                                     const LauncherRoute(
@@ -567,8 +580,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                           .updateProductByIndex(
                                         index: widget.index,
                                         updatedProduct: widget.product.copyWith(
-                                          basketCount: basketCount + 1,
-                                        ),
+                                            basketCount: basketCount + 1,
+                                            inBasket: true),
                                       );
                                       setState(() {
                                         count += 1;

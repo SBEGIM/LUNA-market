@@ -75,12 +75,12 @@ class LoginToApi {
       _box.write('avatar', data['avatar'].toString());
       _box.write('birthday', data['birthday'].toString());
       _box.write('country', data['country'].toString());
-      _box.write('city', data['city'].toString());
-      _box.write('street', data['street'].toString());
-      _box.write('home', data['home'].toString());
-      _box.write('porch', data['porch'].toString());
-      _box.write('floor', data['floor'].toString());
-      _box.write('room', data['room'].toString());
+      // _box.write('city', data['city'].toString());
+      // _box.write('street', data['street'].toString());
+      // _box.write('home', data['home'].toString());
+      // _box.write('porch', data['porch'].toString());
+      // _box.write('floor', data['floor'].toString());
+      // _box.write('room', data['room'].toString());
       _box.write('email', data['email'].toString());
       _box.write('active', data['active'].toString());
     }

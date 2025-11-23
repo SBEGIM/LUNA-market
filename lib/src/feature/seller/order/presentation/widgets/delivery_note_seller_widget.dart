@@ -31,10 +31,10 @@ class _DeliveryNoteSellerPageState extends State<DeliveryNoteSellerPage> {
 
   addresses() {
     String? street = widget.basketOrder.user!.street;
-    String? home = widget.basketOrder.user!.home;
-    String? porch = widget.basketOrder.user!.porch;
+    String? home = widget.basketOrder.user!.apartament;
+    String? porch = widget.basketOrder.user!.entrance;
     String? floor = widget.basketOrder.user!.floor;
-    String? room = widget.basketOrder.user!.room;
+    String? room = widget.basketOrder.user!.intercom;
 
     address =
         'ул. ${street ?? '*'}, дом ${home ?? '*'},подъезд ${porch ?? '*'},этаж ${floor ?? '*'},кв ${room ?? '*'}';

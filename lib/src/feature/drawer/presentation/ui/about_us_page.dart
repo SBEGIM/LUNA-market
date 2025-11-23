@@ -112,7 +112,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                   children: [
                     Text(
                       'Luna market',
-                      style: AppTextStyles.size28Weight700,
+                      style: AppTextStyles.size22Weight600,
                       textAlign: TextAlign.right,
                     ),
                     SizedBox(height: 12),

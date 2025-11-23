@@ -2,23 +2,25 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
-import 'package:haji_market/src/feature/app/widgets/custom_switch_button.dart';
+import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_order_model.dart';
+import 'package:haji_market/src/feature/home/presentation/widgets/product_watching_card.dart';
 import 'package:haji_market/src/feature/my_order/presentation/widget/cancel_order_widget.dart';
+import 'package:haji_market/src/feature/product/cubit/product_cubit.dart'
+    as productCubit;
+import 'package:haji_market/src/feature/product/cubit/product_state.dart'
+    as productState;
+import 'package:haji_market/src/feature/product/provider/filter_provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-// import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../seller/order/bloc/order_status_seller_cubit.dart';
-import '../../../chat/presentation/message.dart';
 import '../../../basket/bloc/basket_cubit.dart';
-import '../../../drawer/bloc/review_cubit.dart';
 
 class MyOrderStatusPage extends StatefulWidget {
   final BasketOrderModel basketOrder;
@@ -36,76 +38,20 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
   String productId = '';
   String productName = '';
   int segmentValue = 0;
-  int statusProggress = 1;
 
   int rating = 0;
 
   final TextEditingController _commentController = TextEditingController();
 
-  orderTimeline(String status) {
-    switch (status) {
-      case 'order':
-        {
-          statusProggress = 1;
-        }
-        break;
-
-      case 'accepted':
-        {
-          statusProggress = 2;
-        }
-        break;
-
-      case 'courier':
-        {
-          statusProggress = 3;
-        }
-        break;
-      case 'error':
-        {
-          statusProggress = 1;
-        }
-        break;
-      case 'cancel':
-        {
-          statusProggress = 1;
-        }
-        break;
-      case 'rejected':
-        {
-          statusProggress = 2;
-        }
-        break;
-      case 'end':
-        {
-          statusProggress = 4;
-        }
-        break;
-      case 'in_process':
-        {
-          statusProggress = 1;
-        }
-        break;
-      case 'success':
-        {
-          statusProggress = 2;
-        }
-        break;
-      default:
-        {
-          statusProggress = 1;
-        }
-        break;
-    }
-
-    print('this nuber ${statusProggress}');
-
-    setState(() {});
-  }
-
   @override
   void initState() {
-    orderTimeline(widget.basketOrder.statusFBS ?? 'in_process');
+    if (State is! productState.LoadedState) {
+      final filters = context.read<FilterProvider>();
+      BlocProvider.of<productCubit.ProductCubit>(context)
+          .productsMbInteresting(filters);
+    }
+    // статус прогресса теперь приходит с бэка в basketStatusTimeline,
+    // поэтому orderTimeline больше не нужен
     super.initState();
   }
 
@@ -129,8 +75,24 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
     _refreshController.loadComplete();
   }
 
+  Future<void> _callSeller(String phone) async {
+    final Uri uri = Uri(scheme: 'tel', path: phone);
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication, // чтобы точно в звонилке
+      );
+    } else {
+      debugPrint('Не удалось открыть звонилку');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    /// новый список шагов таймлайна из модели
+    final timelineSteps = widget.basketOrder.basketStatusTimeline ?? [];
+
     return Scaffold(
         backgroundColor: AppColors.kBackgroundColor,
         appBar: AppBar(
@@ -152,124 +114,19 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
               scale: 2.1,
             ),
           ),
-          // bottom: PreferredSize(
-          //   preferredSize: const Size.fromHeight(60),
-          //   child: Column(
-          //     children: [
-          //       Container(
-          //         height: 12,
-          //         color: AppColors.kBackgroundColor,
-          //       ),
-          //       Container(
-          //         padding: const EdgeInsets.only(
-          //           top: 8,
-          //           left: 16,
-          //           bottom: 8,
-          //           right: 16,
-          //           // right: screenSize.height * 0.016,
-          //         ),
-          //         color: AppColors.kBackgroundColor,
-          //         child: CustomSwitchButton<int>(
-          //           groupValue: segmentValue,
-          //           children: {
-          //             0: Container(
-          //               alignment: Alignment.center,
-          //               height: 39,
-          //               width: MediaQuery.of(context).size.width,
-          //               decoration: BoxDecoration(
-          //                 borderRadius: BorderRadius.circular(4),
-          //               ),
-          //               child: Text(
-          //                 'FBS',
-          //                 style: TextStyle(
-          //                   fontSize: 15,
-          //                   color: segmentValue == 0
-          //                       ? Colors.black
-          //                       : const Color(0xff9B9B9B),
-          //                 ),
-          //               ),
-          //             ),
-          //             // 1: Container(
-          //             //   width: MediaQuery.of(context).size.width,
-          //             //   alignment: Alignment.center,
-          //             //   height: 39,
-          //             //   decoration: BoxDecoration(
-          //             //     borderRadius: BorderRadius.circular(4),
-          //             //   ),
-          //             //   child: Text(
-          //             //     'realFBS',
-          //             //     style: TextStyle(
-          //             //       fontSize: 14,
-          //             //       color: segmentValue == 1 ? Colors.black : const Color(0xff9B9B9B),
-          //             //     ),
-          //             //   ),
-          //             // ),
-          //             1: Container(
-          //               width: MediaQuery.of(context).size.width,
-          //               alignment: Alignment.center,
-          //               height: 39,
-          //               decoration: BoxDecoration(
-          //                 borderRadius: BorderRadius.circular(4),
-          //               ),
-          //               child: Text(
-          //                 'realFBS',
-          //                 style: TextStyle(
-          //                   fontSize: 14,
-          //                   color: segmentValue == 2
-          //                       ? Colors.black
-          //                       : const Color(0xff9B9B9B),
-          //                 ),
-          //               ),
-          //             ),
-          //           },
-          //           onValueChanged: (int? value) async {
-          //             if (value != null) {
-          //               segmentValue = value;
-          //               print('${widget.basketOrder.statusFBS}');
-
-          //               if (value == 0) {
-          //                 await BlocProvider.of<BasketCubit>(context)
-          //                     .basketOrderShow();
-          //                 orderTimeline(
-          //                     widget.basketOrder.statusFBS ?? 'in_process');
-          //               } else {
-          //                 await BlocProvider.of<BasketCubit>(context)
-          //                     .basketOrderShow();
-          //                 orderTimeline(
-          //                     widget.basketOrder.statusRealFBS ?? 'in_process');
-          //               }
-
-          //               // BlocProvider.of<BasketAdminCubit>(context).basketSwitchState(value);
-          //             }
-          //             setState(() {});
-          //           },
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ),
         body: Container(
           color: AppColors.kBackgroundColor,
           child: IndexedStack(
             index: segmentValue,
             children: [
-              if (widget.basketOrder.productFBS?.isNotEmpty ?? false)
+              if (widget.basketOrder.product?.isNotEmpty ?? false)
                 ListView(
                   children: [
+                    const SizedBox(height: 12),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Padding(
-                        //   padding: const EdgeInsets.all(16.0),
-                        //   child: Text(
-                        //     '${widget.basketOrder.date}',
-                        //     style: const TextStyle(
-                        //         color: AppColors.kGray300,
-                        //         fontSize: 12,
-                        //         fontWeight: FontWeight.w500),
-                        //   ),
-                        // ),
                         Padding(
                           padding: const EdgeInsets.only(left: 16.0, right: 16),
                           child: Container(
@@ -280,208 +137,93 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Ожидаемая доставка: 2 июня',
+                                // ********* НОВАЯ ШАПКА ОЖИДАЕМОЙ ДОСТАВКИ *********
+                                Text(
+                                  'Ожидаемая доставка: ${widget.basketOrder.expectedDeliveryDate ?? ''}',
                                   style: AppTextStyles.size18Weight700,
                                 ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                TimelineTile(
-                                  isFirst: true,
-                                  indicatorStyle: statusProggress >= 1
-                                      ? IndicatorStyle(
-                                          color: AppColors.mainGreenColor,
-                                          iconStyle: IconStyle(
-                                            color: Colors.white,
-                                            iconData: Icons.check,
+                                const SizedBox(height: 20),
+                                // ********* ДИНАМИЧЕСКИЙ ТАЙМЛАЙН ИЗ basketStatusTimeline *********
+                                if (timelineSteps.isNotEmpty)
+                                  Column(
+                                    children: [
+                                      for (int i = 0;
+                                          i < timelineSteps.length;
+                                          i++)
+                                        TimelineTile(
+                                          alignment: TimelineAlign.start,
+                                          isFirst: i == 0,
+                                          isLast: i == timelineSteps.length - 1,
+                                          indicatorStyle: (timelineSteps[i]
+                                                      .isDone ??
+                                                  false)
+                                              ? IndicatorStyle(
+                                                  color:
+                                                      AppColors.mainGreenColor,
+                                                  iconStyle: IconStyle(
+                                                    color: Colors.white,
+                                                    iconData: Icons.check,
+                                                  ),
+                                                )
+                                              : IndicatorStyle(
+                                                  color:
+                                                      const Color(0xffDDDDDD),
+                                                  iconStyle: i == 0
+                                                      ? IconStyle(
+                                                          color: Colors.white,
+                                                          iconData: Icons
+                                                              .history_toggle_off,
+                                                        )
+                                                      : null,
+                                                ),
+                                          beforeLineStyle: const LineStyle(
+                                            thickness: 1.0,
+                                            color: Color(0xffDDDDDD),
                                           ),
-                                        )
-                                      : IndicatorStyle(
-                                          color: Color(0xffDDDDDD),
-                                          iconStyle: IconStyle(
-                                            color: Colors.white,
-                                            iconData: Icons.history_toggle_off,
+                                          lineXY: 0.4,
+                                          endChild: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0, top: 4, bottom: 4),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  timelineSteps[i].title ?? '',
+                                                  style: AppTextStyles
+                                                      .size16Weight500,
+                                                ),
+                                                if ((timelineSteps[i].date ??
+                                                            '')
+                                                        .isNotEmpty ==
+                                                    true)
+                                                  Text(
+                                                    timelineSteps[i].date ?? '',
+                                                    style: AppTextStyles
+                                                        .size14Weight400
+                                                        .copyWith(
+                                                            color: Color(
+                                                                0xff979797)),
+                                                  ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                  beforeLineStyle: const LineStyle(
-                                    thickness: 1.4,
-                                    color: Color(0xffDDDDDD),
-                                  ),
-                                  lineXY: 0.4,
-                                  endChild: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, top: 10, bottom: 10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Заказ оплачен',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${widget.basketOrder.date}',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14,
-                                            color: AppColors.kGray300,
-                                          ),
-                                        ),
-                                      ],
+                                    ],
+                                  )
+                                else
+                                  // на всякий случай — если таймлайна нет, покажем старый вариант
+                                  const Text(
+                                    'Информация о статусе заказа временно недоступна',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                      color: AppColors.kGray300,
                                     ),
                                   ),
-                                ),
-                                TimelineTile(
-                                  isFirst: false,
-                                  indicatorStyle: statusProggress >= 2
-                                      ? IndicatorStyle(
-                                          color: AppColors.mainGreenColor,
-                                          iconStyle: IconStyle(
-                                            color: Colors.white,
-                                            iconData: Icons.check,
-                                          ),
-                                        )
-                                      : IndicatorStyle(
-                                          color: Color(0xffDDDDDD),
-                                          iconStyle: null,
-                                        ),
-                                  beforeLineStyle: const LineStyle(
-                                    thickness: 1.4,
-                                    color: Color(0xffDDDDDD),
-                                  ),
-                                  lineXY: 0.4,
-                                  endChild: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, top: 10, bottom: 10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          widget.basketOrder.statusFBS ==
-                                                      'cancel' ||
-                                                  widget.basketOrder
-                                                          .statusFBS ==
-                                                      'rejected'
-                                              ? 'Отменен или Отклонен'
-                                              : 'Принять',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${widget.basketOrder.statusFBS == 'cancel' ? widget.basketOrder.updated_at : widget.basketOrder.returnDate}',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14,
-                                            color: AppColors.kGray300,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                TimelineTile(
-                                  isFirst: false,
-                                  indicatorStyle: statusProggress >= 3
-                                      ? IndicatorStyle(
-                                          color: AppColors.mainGreenColor,
-                                          iconStyle: IconStyle(
-                                            color: Colors.white,
-                                            iconData: Icons.check,
-                                          ),
-                                        )
-                                      : IndicatorStyle(
-                                          color: Color(0xffDDDDDD),
-                                          iconStyle: null,
-                                        ),
-                                  beforeLineStyle: const LineStyle(
-                                    thickness: 1.4,
-                                    color: Color(0xffDDDDDD),
-                                  ),
-                                  lineXY: 0.4,
-                                  endChild: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, top: 10, bottom: 10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          widget.basketOrder.statusFBS ==
-                                                  'cancel'
-                                              ? 'Отменен'
-                                              : 'Доставка',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${widget.basketOrder.statusFBS == 'cancel' ? widget.basketOrder.updated_at : widget.basketOrder.returnDate}',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14,
-                                            color: AppColors.kGray300,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                TimelineTile(
-                                  isLast: true,
-                                  indicatorStyle: statusProggress >= 4
-                                      ? IndicatorStyle(
-                                          color: AppColors.mainGreenColor,
-                                          iconStyle: IconStyle(
-                                            color: Colors.white,
-                                            iconData: Icons.check,
-                                          ),
-                                        )
-                                      : IndicatorStyle(
-                                          color: Color(0xffDDDDDD),
-                                          iconStyle: null,
-                                        ),
-                                  beforeLineStyle: const LineStyle(
-                                    thickness: 1.4,
-                                    color: Color(0xffDDDDDD),
-                                  ),
-                                  lineXY: 0.4,
-                                  endChild: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, top: 10, bottom: 10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Выдан',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        Text(
-                                          widget.basketOrder.statusFBS == 'end'
-                                              ? 'Вы получили товар'
-                                              : 'Товар пока не получен',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14,
-                                            color: AppColors.kGray300,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                if (widget.basketOrder.statusFBS == 'cancel')
+                                const SizedBox(height: 12),
+                                // ********* ДАЛЬШЕ ВАШ СТАРЫЙ БЛОК КНОПОК / СТАТУСОВ *********
+                                if (widget.basketOrder.status == 'cancel')
                                   Row(
                                     children: [
                                       Expanded(
@@ -510,9 +252,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        SizedBox(width: 30),
-                                        if (widget.basketOrder.statusFBS ==
-                                            'end')
+                                        const SizedBox(width: 30),
+                                        if (widget.basketOrder.status == 'end')
                                           const SizedBox.shrink()
                                         else
                                           BlocConsumer<OrderStatusSellerCubit,
@@ -532,26 +273,47 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           }, builder: (context, state) {
                                             return GestureDetector(
                                               onTap: () async {
-                                                BlocProvider.of<
-                                                            OrderStatusSellerCubit>(
-                                                        context)
-                                                    .basketStatus(
-                                                        'end',
-                                                        widget.basketOrder.id
-                                                            .toString(),
-                                                        widget.basketOrder
-                                                            .product!.first.id
-                                                            .toString(),
-                                                        'fbs');
-                                                // Get.back();
+                                                if (widget
+                                                        .basketOrder
+                                                        .basketStatusTimeline!
+                                                        .last
+                                                        .isDone ==
+                                                    true) {
+                                                  BlocProvider.of<
+                                                              OrderStatusSellerCubit>(
+                                                          context)
+                                                      .basketStatus(
+                                                          'end',
+                                                          widget.basketOrder.id
+                                                              .toString(),
+                                                          widget.basketOrder
+                                                              .product!.first.id
+                                                              .toString(),
+                                                          'fbs');
+                                                } else {
+                                                  AppSnackBar.show(
+                                                    context,
+                                                    '${widget.basketOrder.basketStatusTimeline![widget.basketOrder.currentStep! + 1].title}',
+                                                    type: AppSnackType.error,
+                                                  );
+                                                }
                                               },
                                               child: Container(
                                                 height: 32,
                                                 width: 103,
                                                 alignment: Alignment.center,
                                                 decoration: BoxDecoration(
-                                                  color:
-                                                      AppColors.mainPurpleColor,
+                                                  color: widget
+                                                              .basketOrder
+                                                              .basketStatusTimeline!
+                                                              .last
+                                                              .isDone ==
+                                                          false
+                                                      ? AppColors
+                                                          .mainPurpleColor
+                                                          .withOpacity(0.5)
+                                                      : AppColors
+                                                          .mainPurpleColor,
                                                   borderRadius:
                                                       BorderRadius.circular(12),
                                                 ),
@@ -561,11 +323,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                         strokeWidth: 2,
                                                       )
                                                     : Text(
-                                                        widget.basketOrder
-                                                                    .statusFBS ==
-                                                                'courier'
-                                                            ? 'Товар получил \nПретензии не имею'
-                                                            : 'Подтвердить',
+                                                        'Подтвердить',
                                                         textAlign:
                                                             TextAlign.center,
                                                         style: AppTextStyles
@@ -584,7 +342,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (widget.basketOrder.statusFBS != 'courier') {
+                            if (widget.basketOrder.status != 'courier') {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -592,27 +350,12 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         id: widget.basketOrder.id.toString())),
                               );
                             }
-                            // setState(() {});
-
-                            // Navigator.of(context)
-                            //     .push(MaterialPageRoute(
-                            //   builder: (context) =>
-                            //       QRViewExample(
-                            //           id: widget
-                            //               .basketOrder.id!,
-                            //           product_id: widget
-                            //               .basketOrder
-                            //               .product!
-                            //               .first
-                            //               .id!,
-                            //           fulfillment: 'fbs'),
-                            // ));
                           },
                           child: Container(
                             height: 40,
-                            margin:
-                                EdgeInsets.only(left: 16, right: 16, top: 12),
-                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            margin: const EdgeInsets.only(
+                                left: 16, right: 16, top: 12),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
                             width: double.infinity,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
@@ -638,49 +381,61 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             ),
                           ),
                         ),
+                        InkWell(
+                          onTap: () {
+                            final phone =
+                                widget.basketOrder.product?.first.shopPhone;
 
-                        Container(
-                          height: 110,
-                          margin: EdgeInsets.only(left: 16, right: 16, top: 12),
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: AppColors.kWhite,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 16),
-                              Text('Продавец',
-                                  style: AppTextStyles.size14Weight500.copyWith(
-                                    color: Color(0xffAEAEB2),
-                                  )),
-                              SizedBox(height: 8),
-                              Text(
-                                '${widget.basketOrder.product!.first.shopName}',
-                                style: AppTextStyles.size18Weight600,
-                              ),
-                              Text(
-                                widget.basketOrder.productFBS?.first
-                                                .shopPhone !=
-                                            null ||
-                                        widget.basketOrder.productFBS?.first
-                                                .shopPhone !=
-                                            ''
-                                    ? '${widget.basketOrder.productFBS?.first.shopPhone}'
-                                    : 'Неизвестен',
-                                style: AppTextStyles.size16Weight500
-                                    .copyWith(color: AppColors.mainPurpleColor),
-                              ),
-                            ],
+                            if (phone != null && phone.isNotEmpty) {
+                              _callSeller(phone);
+                            }
+                          },
+                          child: Container(
+                            height: 110,
+                            margin: const EdgeInsets.only(
+                                left: 16, right: 16, top: 12),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: AppColors.kWhite,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 16),
+                                Text('Продавец',
+                                    style:
+                                        AppTextStyles.size14Weight500.copyWith(
+                                      color: const Color(0xffAEAEB2),
+                                    )),
+                                const SizedBox(height: 8),
+                                Text(
+                                  '${widget.basketOrder.product!.first.shopName}',
+                                  style: AppTextStyles.size18Weight600,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  widget.basketOrder.product?.first.shopPhone !=
+                                              null ||
+                                          widget.basketOrder.product?.first
+                                                  .shopPhone !=
+                                              ''
+                                      ? '${widget.basketOrder.product?.first.shopPhone}'
+                                      : 'Неизвестен',
+                                  style: AppTextStyles.size16Weight500.copyWith(
+                                      color: AppColors.mainPurpleColor),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Container(
                           height: 130,
-                          margin: EdgeInsets.only(left: 16, right: 16, top: 12),
-                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          margin: const EdgeInsets.only(
+                              left: 16, right: 16, top: 12),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           width: double.infinity,
                           decoration: BoxDecoration(
                             color: AppColors.kWhite,
@@ -690,174 +445,56 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               Text('Доставка',
                                   style: AppTextStyles.size14Weight500.copyWith(
-                                    color: Color(0xffAEAEB2),
+                                    color: const Color(0xffAEAEB2),
                                   )),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Text(
                                 'Пункт выдачи  СДЭК',
                                 style: AppTextStyles.size18Weight600,
                               ),
                               Text(
-                                widget.basketOrder.productFBS?.first.address ??
+                                widget.basketOrder.product?.first.address ??
                                     'Неизвестен',
                                 style: AppTextStyles.size16Weight400,
                               ),
                               Text(
                                 'пн-вс: 10:00-22:00',
                                 style: AppTextStyles.size14Weight400
-                                    .copyWith(color: Color(0xff8E8E93)),
+                                    .copyWith(color: const Color(0xff8E8E93)),
                               ),
                             ],
                           ),
                         ),
-
-                        // Padding(
-                        //   padding: const EdgeInsets.only(
-                        //       left: 16, right: 16, top: 10),
-                        //   child: Container(
-                        //       padding: const EdgeInsets.all(16),
-                        //       decoration: BoxDecoration(
-                        //           color: Colors.white,
-                        //           borderRadius: BorderRadius.circular(10)),
-                        //       child: Column(
-                        //         crossAxisAlignment: CrossAxisAlignment.start,
-                        //         children: [
-                        //           const Text(
-                        //             'Продовец',
-                        //             style: TextStyle(
-                        //                 color: AppColors.kPrimaryColor,
-                        //                 fontSize: 12,
-                        //                 fontWeight: FontWeight.w400),
-                        //           ),
-                        //           const SizedBox(
-                        //             height: 5,
-                        //           ),
-                        //           Row(
-                        //             children: [
-                        //               Container(
-                        //                 height: 54,
-                        //                 width: 54,
-                        //                 decoration: BoxDecoration(
-                        //                     borderRadius:
-                        //                         BorderRadius.circular(34),
-                        //                     image: DecorationImage(
-                        //                       image: NetworkImage(
-                        //                           "https://lunamarket.ru/storage/${widget.basketOrder.product!.first.shopImage}"),
-                        //                       fit: BoxFit.cover,
-                        //                     )),
-                        //               ),
-                        //               const SizedBox(width: 13),
-                        //               if (widget.basketOrder.product != null &&
-                        //                   widget
-                        //                       .basketOrder.product!.isNotEmpty)
-                        //                 Column(
-                        //                   crossAxisAlignment:
-                        //                       CrossAxisAlignment.start,
-                        //                   children: [
-                        //                     Text(
-                        //                       '${widget.basketOrder.product!.first.shopName}',
-                        //                       style: const TextStyle(
-                        //                           color: Colors.black,
-                        //                           fontSize: 16,
-                        //                           fontWeight: FontWeight.w400),
-                        //                     ),
-                        //                     const SizedBox(height: 8),
-                        //                     Text(
-                        //                       widget
-                        //                                       .basketOrder
-                        //                                       .productFBS
-                        //                                       ?.first
-                        //                                       .shopPhone !=
-                        //                                   null ||
-                        //                               widget
-                        //                                       .basketOrder
-                        //                                       .productFBS
-                        //                                       ?.first
-                        //                                       .shopPhone !=
-                        //                                   ''
-                        //                           ? '${widget.basketOrder.productFBS?.first.shopPhone}'
-                        //                           : 'Неизвестен',
-                        //                       style: const TextStyle(
-                        //                           color: Colors.black,
-                        //                           fontSize: 16,
-                        //                           fontWeight: FontWeight.w400),
-                        //                     ),
-                        //                   ],
-                        //                 ),
-                        //               const SizedBox(
-                        //                 width: 20,
-                        //               ),
-                        //               GestureDetector(
-                        //                 onTap: () {
-                        //                   // Get.to(() => const ChatPage());
-
-                        //                   Get.to(MessagePage(
-                        //                     userId: widget.basketOrder.shopId,
-                        //                     name: widget.basketOrder.productFBS
-                        //                         ?.first.shopName,
-                        //                     avatar: widget.basketOrder
-                        //                         .productFBS?.first.shopImage,
-                        //                     chatId: widget.basketOrder.chatId,
-                        //                   ));
-                        //                 },
-                        //                 child: Container(
-                        //                   height: 30,
-                        //                   padding: const EdgeInsets.symmetric(
-                        //                       horizontal: 8),
-                        //                   // width: 108,
-                        //                   decoration: BoxDecoration(
-                        //                       color: AppColors.kPrimaryColor,
-                        //                       borderRadius:
-                        //                           BorderRadius.circular(8)),
-                        //                   alignment: Alignment.center,
-                        //                   child: const Text(
-                        //                     'Написать',
-                        //                     style: TextStyle(
-                        //                         color: Colors.white,
-                        //                         fontSize: 12,
-                        //                         fontWeight: FontWeight.w400),
-                        //                   ),
-                        //                 ),
-                        //               )
-                        //             ],
-                        //           )
-                        //         ],
-                        //       )),
-                        // ),
-
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
-                          height: (widget.basketOrder.productFBS?.length ?? 1) *
-                              145,
+                          height:
+                              (widget.basketOrder.product?.length ?? 1) * 130,
                           child: ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: widget.basketOrder.productFBS?.length,
+                            itemCount: widget.basketOrder.product?.length,
                             scrollDirection: Axis.vertical,
                             itemBuilder: (context, index) {
                               return Container(
-                                  height: 124,
+                                  height: 112,
                                   width: 358,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(16)),
-                                  margin: EdgeInsets.only(top: 12),
-                                  padding: const EdgeInsets.only(
-                                      left: 12, right: 12, top: 12),
+                                  margin: const EdgeInsets.only(top: 12),
+                                  padding: const EdgeInsets.all(20),
                                   child: Row(
-                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      if (widget.basketOrder.productFBS !=
-                                              null &&
-                                          widget.basketOrder.productFBS?[index]
+                                      if (widget.basketOrder.product != null &&
+                                          widget.basketOrder.product?[index]
                                                   .path !=
                                               null &&
-                                          (widget.basketOrder.productFBS?[index]
+                                          (widget.basketOrder.product?[index]
                                                   .path?.isNotEmpty ??
                                               false))
                                         buildProductImage(index)
@@ -866,21 +503,19 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                           width: 88,
                                           height: 88,
                                         ),
-                                      const SizedBox(
-                                        width: 16,
-                                      ),
+                                      const SizedBox(width: 16),
                                       SizedBox(
                                         width: 238,
                                         child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                              MainAxisAlignment.center,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              CrossAxisAlignment.center,
                                           children: [
                                             SizedBox(
                                               width: 238,
                                               child: Text(
-                                                '${widget.basketOrder.productFBS?[index].productName}',
+                                                '${widget.basketOrder.product?[index].productName}',
                                                 style: AppTextStyles
                                                     .size14Weight500,
                                                 maxLines: 1,
@@ -899,11 +534,11 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                     style: AppTextStyles
                                                         .size14Weight400
                                                         .copyWith(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xff8E8E93)),
                                                   ),
                                                   Text(
-                                                    '${widget.basketOrder.productFBS?[index].price} ₽',
+                                                    '${widget.basketOrder.product?[index].price} ₽',
                                                     style: AppTextStyles
                                                         .size14Weight500,
                                                   ),
@@ -922,73 +557,25 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                                     style: AppTextStyles
                                                         .size14Weight400
                                                         .copyWith(
-                                                            color: Color(
+                                                            color: const Color(
                                                                 0xff8E8E93)),
                                                   ),
                                                   Text(
-                                                    '${widget.basketOrder.productFBS?[index].count} шт',
+                                                    '${widget.basketOrder.product?[index].count} шт',
                                                     style: AppTextStyles
                                                         .size14Weight500,
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                            // const SizedBox(height: 4),
-                                            // GestureDetector(
-                                            //   onTap: () async {
-                                            //     if (inbasket != true) {
-                                            //       await BlocProvider.of<
-                                            //               BasketCubit>(context)
-                                            //           .basketAdd(
-                                            //               widget
-                                            //                   .basketOrder
-                                            //                   .productFBS?[
-                                            //                       index]
-                                            //                   .id,
-                                            //               '1',
-                                            //               0,
-                                            //               '',
-                                            //               '');
-                                            //       Get.snackbar('Успешно',
-                                            //           'Товар добавлен в корзину',
-                                            //           backgroundColor:
-                                            //               Colors.blueAccent);
-
-                                            //       inbasket = true;
-                                            //       setState(() {});
-                                            //     }
-                                            //   },
-                                            //   child: Container(
-                                            //     height: 32,
-                                            //     width: 136,
-                                            //     alignment: Alignment.center,
-                                            //     decoration: BoxDecoration(
-                                            //       color:
-                                            //           AppColors.mainPurpleColor,
-                                            //       borderRadius:
-                                            //           BorderRadius.circular(12),
-                                            //     ),
-                                            //     child: Text(
-                                            //       inbasket != true
-                                            //           ? 'В корзину'
-                                            //           : 'Добавлен в корзину',
-                                            //       style: AppTextStyles
-                                            //           .size13Weight500
-                                            //           .copyWith(
-                                            //               color:
-                                            //                   AppColors.kWhite),
-                                            //     ),
-                                            //   ),
-                                            // ),
-
                                             const SizedBox(height: 4),
-                                            if (widget.basketOrder.statusFBS ==
+                                            if (widget.basketOrder.status ==
                                                 'end')
                                               GestureDetector(
                                                 onTap: () {
                                                   productId = (widget
                                                           .basketOrder
-                                                          .productFBS?[index]
+                                                          .product?[index]
                                                           .id
                                                           .toString() ??
                                                       '0');
@@ -1000,7 +587,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
 
                                                   productName = widget
                                                           .basketOrder
-                                                          .productFBS?[index]
+                                                          .product?[index]
                                                           .productName
                                                           .toString() ??
                                                       '0';
@@ -1039,8 +626,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         ),
                         Container(
                           height: 208,
-                          padding: EdgeInsets.all(16),
-                          margin: EdgeInsets.symmetric(horizontal: 16),
+                          padding: const EdgeInsets.all(16),
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
                               color: AppColors.kWhite,
                               borderRadius: BorderRadius.circular(16)),
@@ -1052,7 +639,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                 'Сумма заказа',
                                 style: AppTextStyles.size18Weight700,
                               ),
-                              SizedBox(height: 12),
+                              const SizedBox(height: 12),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -1062,12 +649,12 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                     style: AppTextStyles.size16Weight400,
                                   ),
                                   Text(
-                                    '${widget.basketOrder.priceFBS?.toInt()} ₽',
+                                    '${widget.basketOrder.summa?.toInt()} ₽',
                                     style: AppTextStyles.size16Weight600,
                                   )
                                 ],
                               ),
-                              SizedBox(height: 11),
+                              const SizedBox(height: 11),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -1082,7 +669,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 11),
+                              const SizedBox(height: 11),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -1107,7 +694,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               SizedBox(
                                 height: 1,
                                 child: LayoutBuilder(
@@ -1115,7 +702,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                       BoxConstraints constraints) {
                                     const dashWidth = 5.0;
                                     final dashHeight = 0.99;
-                                    final dashCount = 30;
+                                    const dashCount = 30;
                                     return Flex(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -1124,7 +711,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                         return SizedBox(
                                           width: dashWidth,
                                           height: dashHeight,
-                                          child: DecoratedBox(
+                                          child: const DecoratedBox(
                                             decoration: BoxDecoration(
                                                 color: AppColors.kGray300),
                                           ),
@@ -1134,7 +721,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                   },
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -1144,7 +731,7 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                                     style: AppTextStyles.size18Weight600,
                                   ),
                                   Text(
-                                    ' ${(widget.basketOrder.priceFBS?.toInt() ?? 0) + (widget.basketOrder.deliveryPrice ?? 0)}₽',
+                                    ' ${(widget.basketOrder.summa!.toInt() ?? 0) + (widget.basketOrder.deliveryPrice ?? 0)}₽',
                                     style: AppTextStyles.size18Weight700,
                                   )
                                 ],
@@ -1152,14 +739,98 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                             ],
                           ),
                         ),
+                        const SizedBox(height: 16),
+                        Container(
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, top: 0),
+                          color: AppColors.kBackgroundColor,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Похожие товары',
+                                style: AppTextStyles.size18Weight700,
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              BlocBuilder<productCubit.ProductCubit,
+                                      productState.ProductState>(
+                                  builder: (context, state) {
+                                if (state is productState.ErrorState) {
+                                  return Center(
+                                    child: Text(
+                                      state.message,
+                                      style: const TextStyle(
+                                          fontSize: 20.0, color: Colors.grey),
+                                    ),
+                                  );
+                                }
+                                if (state is productState.LoadingState) {
+                                  return const Center(
+                                      child: CircularProgressIndicator(
+                                          color: Colors.indigoAccent));
+                                }
 
-                        SizedBox(height: 16),
+                                if (state is productState.LoadedState) {
+                                  return state.productModel.isEmpty
+                                      ? const Center(
+                                          child: Text('Товары не найдены'))
+                                      : SizedBox(
+                                          width: 358,
+                                          // height: 558,
+                                          height: state.productModel.length >= 4
+                                              ? 558
+                                              : 291,
+                                          child: GridView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            shrinkWrap: true,
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: state
+                                                                .productModel
+                                                                .length >=
+                                                            4
+                                                        ? 2
+                                                        : 1,
+                                                    childAspectRatio: 1.50,
+                                                    crossAxisSpacing: 8,
+                                                    mainAxisSpacing: 2),
+                                            itemCount:
+                                                state.productModel.length <= 10
+                                                    ? state.productModel.length
+                                                    : 10,
+                                            itemBuilder:
+                                                (BuildContext ctx, index) {
+                                              return GestureDetector(
+                                                onTap: () => context.router.push(
+                                                    DetailCardProductRoute(
+                                                        product:
+                                                            state.productModel[
+                                                                index])),
+                                                child: ProductWatchingCard(
+                                                  product:
+                                                      state.productModel[index],
+                                                ),
+                                              );
+                                            },
+                                          ));
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator(
+                                          color: Colors.indigoAccent));
+                                }
+                              }),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 120,
+                        ),
                       ],
                     ),
                   ],
                 )
-
-              //  AllMyOrdersRealFBSPage(fulfillment: 'realFBS'),
               else
                 Container(
                   margin: const EdgeInsets.only(bottom: 60),
@@ -1176,7 +847,8 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                         textAlign: TextAlign.center,
                       ),
                       const Text(
-                        'Отсутствует заказы fbs',
+                        // убрал упоминание fbs
+                        'Отсутствуют заказы',
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -1186,1051 +858,13 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
                     ],
                   ),
                 ),
-              // if (widget.basketOrder.productRealFBS?.isNotEmpty ?? false)
-              //   ListView(
-              //     children: [
-              //       Column(
-              //         crossAxisAlignment: CrossAxisAlignment.start,
-              //         children: [
-              //           Padding(
-              //             padding: const EdgeInsets.all(16.0),
-              //             child: Text(
-              //               '${widget.basketOrder.date}',
-              //               style: const TextStyle(
-              //                   color: AppColors.kGray300,
-              //                   fontSize: 12,
-              //                   fontWeight: FontWeight.w500),
-              //             ),
-              //           ),
-              //           Padding(
-              //             padding: const EdgeInsets.only(left: 16.0, right: 16),
-              //             child: Container(
-              //               decoration: BoxDecoration(
-              //                   color: Colors.white,
-              //                   borderRadius: BorderRadius.circular(10)),
-              //               padding: const EdgeInsets.all(16),
-              //               child: Column(
-              //                 crossAxisAlignment: CrossAxisAlignment.start,
-              //                 children: [
-              //                   const Text(
-              //                     'Оплачен',
-              //                     style: TextStyle(
-              //                       color: AppColors.kGray900,
-              //                       fontSize: 20,
-              //                     ),
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 10,
-              //                   ),
-              //                   TimelineTile(
-              //                     isFirst: true,
-              //                     indicatorStyle: statusProggress >= 1
-              //                         ? IndicatorStyle(
-              //                             color: AppColors.kPrimaryColor,
-              //                             iconStyle: IconStyle(
-              //                               color: Colors.white,
-              //                               iconData: Icons.check,
-              //                             ),
-              //                           )
-              //                         : IndicatorStyle(
-              //                             color: Colors.grey,
-              //                             iconStyle: IconStyle(
-              //                               color: Colors.white,
-              //                               iconData: Icons.history_toggle_off,
-              //                             ),
-              //                           ),
-              //                     beforeLineStyle: const LineStyle(
-              //                       thickness: 1.4,
-              //                     ),
-              //                     lineXY: 0.4,
-              //                     endChild: Padding(
-              //                       padding: const EdgeInsets.only(
-              //                           left: 8.0, top: 10, bottom: 10),
-              //                       child: Column(
-              //                         crossAxisAlignment:
-              //                             CrossAxisAlignment.start,
-              //                         children: [
-              //                           const Text(
-              //                             'Заказ оплачен',
-              //                             style: TextStyle(
-              //                               fontWeight: FontWeight.w500,
-              //                               fontSize: 14,
-              //                             ),
-              //                           ),
-              //                           Text(
-              //                             '${widget.basketOrder.date}',
-              //                             style: const TextStyle(
-              //                               fontWeight: FontWeight.w400,
-              //                               fontSize: 14,
-              //                               color: AppColors.kGray300,
-              //                             ),
-              //                           ),
-              //                         ],
-              //                       ),
-              //                     ),
-              //                   ),
-              //                   TimelineTile(
-              //                     isFirst: false,
-              //                     indicatorStyle: statusProggress >= 2
-              //                         ? IndicatorStyle(
-              //                             color: AppColors.kPrimaryColor,
-              //                             iconStyle: IconStyle(
-              //                               color: Colors.white,
-              //                               iconData: Icons.check,
-              //                             ),
-              //                           )
-              //                         : IndicatorStyle(
-              //                             color: Colors.grey,
-              //                             iconStyle: IconStyle(
-              //                               color: Colors.white,
-              //                               iconData: (widget.basketOrder
-              //                                               .statusRealFBS ==
-              //                                           'end' ||
-              //                                       widget.basketOrder
-              //                                               .statusRealFBS ==
-              //                                           'accepted')
-              //                                   ? Icons.check
-              //                                   : Icons.history_toggle_off,
-              //                             ),
-              //                           ),
-              //                     beforeLineStyle: const LineStyle(
-              //                       thickness: 1.4,
-              //                     ),
-              //                     lineXY: 0.4,
-              //                     endChild: Padding(
-              //                       padding: const EdgeInsets.only(
-              //                           left: 8.0, top: 10, bottom: 10),
-              //                       child: Column(
-              //                         crossAxisAlignment:
-              //                             CrossAxisAlignment.start,
-              //                         children: [
-              //                           Text(
-              //                             widget.basketOrder.statusRealFBS ==
-              //                                         'cancel' ||
-              //                                     widget.basketOrder
-              //                                             .statusRealFBS ==
-              //                                         'rejected'
-              //                                 ? 'Отменен'
-              //                                 : 'Принять',
-              //                             style: const TextStyle(
-              //                               fontWeight: FontWeight.w500,
-              //                               fontSize: 14,
-              //                             ),
-              //                           ),
-              //                           Text(
-              //                             '${widget.basketOrder.statusRealFBS == 'cancel' ? widget.basketOrder.updated_at : widget.basketOrder.returnDate}',
-              //                             style: const TextStyle(
-              //                               fontWeight: FontWeight.w400,
-              //                               fontSize: 14,
-              //                               color: AppColors.kGray300,
-              //                             ),
-              //                           ),
-              //                         ],
-              //                       ),
-              //                     ),
-              //                   ),
-              //                   TimelineTile(
-              //                     isFirst: false,
-              //                     indicatorStyle: statusProggress >= 3
-              //                         ? IndicatorStyle(
-              //                             color: AppColors.kPrimaryColor,
-              //                             iconStyle: IconStyle(
-              //                               color: Colors.white,
-              //                               iconData: Icons.check,
-              //                             ),
-              //                           )
-              //                         : IndicatorStyle(
-              //                             color: Colors.grey,
-              //                             iconStyle: IconStyle(
-              //                               color: Colors.white,
-              //                               iconData: (widget.basketOrder
-              //                                               .statusRealFBS ==
-              //                                           'end' ||
-              //                                       widget.basketOrder
-              //                                               .statusRealFBS ==
-              //                                           'courier')
-              //                                   ? Icons.check
-              //                                   : Icons.history_toggle_off,
-              //                             ),
-              //                           ),
-              //                     beforeLineStyle: const LineStyle(
-              //                       thickness: 1.4,
-              //                     ),
-              //                     lineXY: 0.4,
-              //                     endChild: Padding(
-              //                       padding: const EdgeInsets.only(
-              //                           left: 8.0, top: 10, bottom: 10),
-              //                       child: Column(
-              //                         crossAxisAlignment:
-              //                             CrossAxisAlignment.start,
-              //                         children: [
-              //                           Text(
-              //                             widget.basketOrder.statusRealFBS ==
-              //                                     'cancel'
-              //                                 ? 'Отменен'
-              //                                 : 'Доставка',
-              //                             style: const TextStyle(
-              //                               fontWeight: FontWeight.w500,
-              //                               fontSize: 14,
-              //                             ),
-              //                           ),
-              //                           Text(
-              //                             '${widget.basketOrder.statusRealFBS == 'cancel' ? widget.basketOrder.updated_at : widget.basketOrder.returnDate}',
-              //                             style: const TextStyle(
-              //                               fontWeight: FontWeight.w400,
-              //                               fontSize: 14,
-              //                               color: AppColors.kGray300,
-              //                             ),
-              //                           ),
-              //                         ],
-              //                       ),
-              //                     ),
-              //                   ),
-              //                   TimelineTile(
-              //                     isLast: true,
-              //                     indicatorStyle: statusProggress >= 4
-              //                         ? IndicatorStyle(
-              //                             color: AppColors.kPrimaryColor,
-              //                             iconStyle: IconStyle(
-              //                               color: Colors.white,
-              //                               iconData: Icons.check,
-              //                             ),
-              //                           )
-              //                         : IndicatorStyle(
-              //                             color: Colors.grey,
-              //                             iconStyle: IconStyle(
-              //                               color: Colors.white,
-              //                               iconData: widget.basketOrder
-              //                                           .statusRealFBS ==
-              //                                       'end'
-              //                                   ? Icons.check
-              //                                   : Icons.history_toggle_off,
-              //                             ),
-              //                           ),
-              //                     beforeLineStyle: const LineStyle(
-              //                       thickness: 1.4,
-              //                     ),
-              //                     lineXY: 0.4,
-              //                     endChild: Padding(
-              //                       padding: const EdgeInsets.only(
-              //                           left: 8.0, top: 10, bottom: 10),
-              //                       child: Column(
-              //                         crossAxisAlignment:
-              //                             CrossAxisAlignment.start,
-              //                         children: [
-              //                           const Text(
-              //                             'Выдан',
-              //                             style: TextStyle(
-              //                               fontWeight: FontWeight.w500,
-              //                               fontSize: 14,
-              //                             ),
-              //                           ),
-              //                           Text(
-              //                             widget.basketOrder.statusRealFBS ==
-              //                                     'end'
-              //                                 ? 'Вы получили товар'
-              //                                 : 'Товар пока не получен',
-              //                             style: const TextStyle(
-              //                               fontWeight: FontWeight.w400,
-              //                               fontSize: 14,
-              //                               color: AppColors.kGray300,
-              //                             ),
-              //                           ),
-              //                         ],
-              //                       ),
-              //                     ),
-              //                   ),
-              //                   const SizedBox(
-              //                     height: 10,
-              //                   ),
-              //                   // const Divider(
-              //                   //   height: 1,
-              //                   //   color: AppColors.kGray500,
-              //                   // ),
-              //                   const SizedBox(height: 10),
-              //                   if (widget.basketOrder.statusRealFBS ==
-              //                       'cancel')
-              //                     Row(
-              //                       children: [
-              //                         Expanded(
-              //                           child: Container(
-              //                             height: 38,
-              //                             width: 136,
-              //                             alignment: Alignment.center,
-              //                             decoration: BoxDecoration(
-              //                               color: AppColors.kPrimaryColor,
-              //                               borderRadius:
-              //                                   BorderRadius.circular(12),
-              //                             ),
-              //                             child: const Text(
-              //                               'Заказ отменен',
-              //                               style: TextStyle(
-              //                                   color: Colors.white,
-              //                                   fontSize: 12,
-              //                                   fontWeight: FontWeight.w500),
-              //                             ),
-              //                           ),
-              //                         )
-              //                       ],
-              //                     )
-              //                   else
-              //                     Row(
-              //                         mainAxisAlignment:
-              //                             MainAxisAlignment.center,
-              //                         children: [
-              //                           if (widget.basketOrder.statusRealFBS ==
-              //                               'end')
-              //                             const SizedBox()
-              //                           else
-              //                             BlocConsumer<OrderStatusSellerCubit,
-              //                                     OrderStatusSellerState>(
-              //                                 listener: (context, state) {
-              //                               if (state is LoadedState) {
-              //                                 BlocProvider.of<BasketCubit>(
-              //                                         context)
-              //                                     .basketOrderShow();
-              //                                 Navigator.pop(context);
-              //                                 Get.snackbar('Заказ',
-              //                                     'Вы совершили покупку',
-              //                                     backgroundColor:
-              //                                         Colors.blueAccent);
-              //                               }
-              //                             }, builder: (context, state) {
-              //                               return Expanded(
-              //                                 child: GestureDetector(
-              //                                   onTap: () async {
-              //                                     if (widget.basketOrder
-              //                                             .statusRealFBS !=
-              //                                         'courier') {
-              //                                       Navigator.push(
-              //                                         context,
-              //                                         MaterialPageRoute(
-              //                                             builder: (context) =>
-              //                                                 CancelOrderWidget(
-              //                                                     id: widget
-              //                                                         .basketOrder
-              //                                                         .id
-              //                                                         .toString())),
-              //                                       );
-              //                                     } else {
-              //                                       BlocProvider.of<
-              //                                                   OrderStatusSellerCubit>(
-              //                                               context)
-              //                                           .basketStatus(
-              //                                               'end',
-              //                                               widget
-              //                                                   .basketOrder.id
-              //                                                   .toString(),
-              //                                               widget
-              //                                                   .basketOrder
-              //                                                   .product!
-              //                                                   .first
-              //                                                   .id
-              //                                                   .toString(),
-              //                                               'fbs');
-              //                                       // Get.back();
-              //                                     }
-              //                                   },
-              //                                   child: Container(
-              //                                     height: 38,
-              //                                     width: 136,
-              //                                     alignment: Alignment.center,
-              //                                     decoration: BoxDecoration(
-              //                                       color:
-              //                                           AppColors.kPrimaryColor,
-              //                                       borderRadius:
-              //                                           BorderRadius.circular(
-              //                                               12),
-              //                                     ),
-              //                                     child: state is LoadingState
-              //                                         ? const CircularProgressIndicator
-              //                                             .adaptive(
-              //                                             strokeWidth: 2,
-              //                                           )
-              //                                         : Text(
-              //                                             widget.basketOrder
-              //                                                         .statusRealFBS ==
-              //                                                     'courier'
-              //                                                 ? 'Товар получил \nПретензии не имею'
-              //                                                 : 'Отменить',
-              //                                             textAlign:
-              //                                                 TextAlign.center,
-              //                                             style: const TextStyle(
-              //                                                 color:
-              //                                                     Colors.white,
-              //                                                 fontSize: 12,
-              //                                                 fontWeight:
-              //                                                     FontWeight
-              //                                                         .w500),
-              //                                           ),
-              //                                   ),
-              //                                 ),
-              //                               );
-              //                             }),
-              //                           const SizedBox(width: 8),
-              //                           Expanded(
-              //                             child: GestureDetector(
-              //                               onTap: () {
-              //                                 // setState(() {});
-
-              //                                 // Navigator.of(context)
-              //                                 //     .push(MaterialPageRoute(
-              //                                 //   builder: (context) =>
-              //                                 //       QRViewExample(
-              //                                 //           id: widget
-              //                                 //               .basketOrder.id!,
-              //                                 //           product_id: widget
-              //                                 //               .basketOrder
-              //                                 //               .product!
-              //                                 //               .first
-              //                                 //               .id!,
-              //                                 //           fulfillment: 'realFBS'),
-              //                                 // ));
-              //                               },
-              //                               child: Container(
-              //                                 height: 38,
-              //                                 width: 136,
-              //                                 alignment: Alignment.center,
-              //                                 decoration: BoxDecoration(
-              //                                   color: const Color.fromRGBO(
-              //                                       29, 196, 207, 0.4),
-              //                                   borderRadius:
-              //                                       BorderRadius.circular(12),
-              //                                 ),
-              //                                 child: const Text(
-              //                                   'Возврат',
-              //                                   style: TextStyle(
-              //                                       color:
-              //                                           AppColors.kPrimaryColor,
-              //                                       fontSize: 12,
-              //                                       fontWeight:
-              //                                           FontWeight.w500),
-              //                                 ),
-              //                               ),
-              //                             ),
-              //                           ),
-              //                         ]),
-              //                 ],
-              //               ),
-              //             ),
-              //           ),
-              //           Padding(
-              //             padding: const EdgeInsets.only(
-              //                 left: 16, right: 16, top: 10),
-              //             child: Container(
-              //                 padding: const EdgeInsets.all(16),
-              //                 decoration: BoxDecoration(
-              //                     color: Colors.white,
-              //                     borderRadius: BorderRadius.circular(10)),
-              //                 child: Column(
-              //                   crossAxisAlignment: CrossAxisAlignment.start,
-              //                   children: [
-              //                     const Text(
-              //                       'Продовец',
-              //                       style: TextStyle(
-              //                           color: AppColors.kPrimaryColor,
-              //                           fontSize: 12,
-              //                           fontWeight: FontWeight.w400),
-              //                     ),
-              //                     const SizedBox(
-              //                       height: 5,
-              //                     ),
-              //                     Row(
-              //                       children: [
-              //                         Container(
-              //                           height: 54,
-              //                           width: 54,
-              //                           decoration: BoxDecoration(
-              //                               borderRadius:
-              //                                   BorderRadius.circular(34),
-              //                               image: DecorationImage(
-              //                                 image: NetworkImage(
-              //                                     "https://lunamarket.ru/storage/${widget.basketOrder.product!.first.shopImage}"),
-              //                                 fit: BoxFit.cover,
-              //                               )),
-              //                         ),
-              //                         const SizedBox(width: 13),
-              //                         if (widget.basketOrder.product != null &&
-              //                             widget
-              //                                 .basketOrder.product!.isNotEmpty)
-              //                           Column(
-              //                             crossAxisAlignment:
-              //                                 CrossAxisAlignment.start,
-              //                             children: [
-              //                               Text(
-              //                                 '${widget.basketOrder.product!.first.shopName}',
-              //                                 style: const TextStyle(
-              //                                     color: Colors.black,
-              //                                     fontSize: 16,
-              //                                     fontWeight: FontWeight.w400),
-              //                               ),
-              //                               const SizedBox(height: 8),
-              //                               Text(
-              //                                 widget.basketOrder.product?.first
-              //                                             .shopPhone !=
-              //                                         ''
-              //                                     ? '${widget.basketOrder.product?.first.shopPhone}'
-              //                                     : 'Неизвестен',
-              //                                 style: const TextStyle(
-              //                                     color: Colors.black,
-              //                                     fontSize: 16,
-              //                                     fontWeight: FontWeight.w400),
-              //                               ),
-              //                             ],
-              //                           ),
-              //                         const SizedBox(
-              //                           width: 20,
-              //                         ),
-              //                         GestureDetector(
-              //                           onTap: () {
-              //                             // Get.to(() => const ChatPage());
-
-              //                             Get.to(MessagePage(
-              //                               userId: widget.basketOrder.shopId,
-              //                               name: widget.basketOrder.productFBS
-              //                                   ?.first.shopName,
-              //                               avatar: widget.basketOrder
-              //                                   .productFBS?.first.shopImage,
-              //                               chatId: widget.basketOrder.chatId,
-              //                             ));
-              //                           },
-              //                           child: Container(
-              //                             height: 30,
-              //                             padding: const EdgeInsets.symmetric(
-              //                                 horizontal: 8),
-              //                             // width: 108,
-              //                             decoration: BoxDecoration(
-              //                                 color: AppColors.kPrimaryColor,
-              //                                 borderRadius:
-              //                                     BorderRadius.circular(8)),
-              //                             alignment: Alignment.center,
-              //                             child: const Text(
-              //                               'Написать',
-              //                               style: TextStyle(
-              //                                   color: Colors.white,
-              //                                   fontSize: 12,
-              //                                   fontWeight: FontWeight.w400),
-              //                             ),
-              //                           ),
-              //                         )
-              //                       ],
-              //                     )
-              //                   ],
-              //                 )),
-              //           ),
-              //           Padding(
-              //             padding: const EdgeInsets.only(
-              //                 left: 16, right: 16, top: 10),
-              //             child: Container(
-              //                 padding: const EdgeInsets.all(16),
-              //                 decoration: BoxDecoration(
-              //                     color: Colors.white,
-              //                     borderRadius: BorderRadius.circular(10)),
-              //                 child: Column(
-              //                   crossAxisAlignment: CrossAxisAlignment.start,
-              //                   children: [
-              //                     const Text(
-              //                       'Адрес доставки',
-              //                       style: TextStyle(
-              //                           color: AppColors.kPrimaryColor,
-              //                           fontSize: 12,
-              //                           fontWeight: FontWeight.w400),
-              //                     ),
-              //                     const SizedBox(
-              //                       height: 5,
-              //                     ),
-              //                     Row(
-              //                       children: [
-              //                         SvgPicture.asset(
-              //                           'assets/icons/location.svg',
-              //                         ),
-              //                         const SizedBox(width: 13),
-              //                         Expanded(
-              //                           child: Text(
-              //                             widget.basketOrder.productRealFBS
-              //                                     ?.first.address ??
-              //                                 'Неизвестен',
-              //                             style: const TextStyle(
-              //                                 fontSize: 16,
-              //                                 fontWeight: FontWeight.w400),
-              //                           ),
-              //                         )
-              //                       ],
-              //                     )
-              //                   ],
-              //                 )),
-              //           ),
-              //           Container(
-              //             margin: const EdgeInsets.all(16),
-              //             color: Colors.white,
-              //             height:
-              //                 (widget.basketOrder.productRealFBS?.length ?? 1) *
-              //                     180,
-              //             // width: 200,
-              //             child: ListView.builder(
-              //               shrinkWrap: true,
-              //               physics: const NeverScrollableScrollPhysics(),
-              //               itemCount:
-              //                   widget.basketOrder.productRealFBS?.length,
-              //               scrollDirection: Axis.vertical,
-              //               itemBuilder: (context, index) {
-              //                 return Container(
-              //                     height: 170,
-              //                     // width: 100,
-              //                     padding: const EdgeInsets.only(
-              //                         left: 16, right: 16, top: 12),
-              //                     color: Colors.white,
-              //                     child: Row(
-              //                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //                       crossAxisAlignment:
-              //                           CrossAxisAlignment.start,
-              //                       children: [
-              //                         if (widget.basketOrder.productRealFBS !=
-              //                                 null &&
-              //                             widget
-              //                                     .basketOrder
-              //                                     .productRealFBS?[index]
-              //                                     .path !=
-              //                                 null &&
-              //                             (widget
-              //                                     .basketOrder
-              //                                     .productRealFBS?[index]
-              //                                     .path
-              //                                     ?.isNotEmpty ??
-              //                                 false))
-              //                           Image.network(
-              //                             (widget
-              //                                         .basketOrder
-              //                                         .productRealFBS?[index]
-              //                                         .path!
-              //                                         .isNotEmpty ??
-              //                                     false)
-              //                                 ? "https://lunamarket.ru/storage/${widget.basketOrder.productRealFBS?[index].path?.first}"
-              //                                 : '',
-              //                             width: 120,
-              //                             height: 120,
-              //                             errorBuilder:
-              //                                 (context, error, stackTrace) =>
-              //                                     const ErrorImageWidget(
-              //                               height: 120,
-              //                               width: 120,
-              //                             ),
-              //                           )
-              //                         else
-              //                           const ErrorImageWidget(
-              //                             width: 120,
-              //                             height: 120,
-              //                           ),
-              //                         const SizedBox(
-              //                           width: 20,
-              //                         ),
-              //                         Column(
-              //                           mainAxisAlignment:
-              //                               MainAxisAlignment.start,
-              //                           crossAxisAlignment:
-              //                               CrossAxisAlignment.start,
-              //                           children: [
-              //                             SizedBox(
-              //                               width: 185,
-              //                               child: Row(
-              //                                 mainAxisAlignment:
-              //                                     MainAxisAlignment
-              //                                         .spaceBetween,
-              //                                 children: [
-              //                                   Text(
-              //                                     '${widget.basketOrder.productRealFBS?[index].price} ₽',
-              //                                     style: const TextStyle(
-              //                                         fontSize: 16,
-              //                                         fontWeight:
-              //                                             FontWeight.w600),
-              //                                   ),
-              //                                   Text(
-              //                                     '${widget.basketOrder.productRealFBS?[index].count} шт',
-              //                                     style: const TextStyle(
-              //                                         fontSize: 14,
-              //                                         fontWeight:
-              //                                             FontWeight.w400),
-              //                                   ),
-              //                                 ],
-              //                               ),
-              //                             ),
-              //                             const SizedBox(
-              //                               height: 8,
-              //                             ),
-              //                             SizedBox(
-              //                               height: 50,
-              //                               width: 185,
-              //                               child: Text(
-              //                                 '${widget.basketOrder.productRealFBS?[index].productName}',
-              //                                 style: const TextStyle(
-              //                                     fontSize: 14,
-              //                                     fontWeight: FontWeight.w400),
-              //                                 maxLines: 2,
-              //                                 overflow: TextOverflow.ellipsis,
-              //                               ),
-              //                             ),
-              //                             const SizedBox(height: 18),
-              //                             GestureDetector(
-              //                               onTap: () async {
-              //                                 if (inbasket != true) {
-              //                                   await BlocProvider.of<
-              //                                           BasketCubit>(context)
-              //                                       .basketAdd(
-              //                                           widget
-              //                                               .basketOrder
-              //                                               .productRealFBS?[
-              //                                                   index]
-              //                                               .id,
-              //                                           '1',
-              //                                           0,
-              //                                           '',
-              //                                           '');
-              //                                   Get.snackbar('Успешно',
-              //                                       'Товар добавлен в корзину',
-              //                                       backgroundColor:
-              //                                           Colors.blueAccent);
-
-              //                                   inbasket = true;
-              //                                   setState(() {});
-              //                                 }
-              //                               },
-              //                               child: Container(
-              //                                 height: 38,
-              //                                 width: 136,
-              //                                 alignment: Alignment.center,
-              //                                 decoration: BoxDecoration(
-              //                                   color: AppColors.kPrimaryColor,
-              //                                   borderRadius:
-              //                                       BorderRadius.circular(12),
-              //                                 ),
-              //                                 child: Text(
-              //                                   inbasket != true
-              //                                       ? 'В корзину'
-              //                                       : 'Добавлен в корзину',
-              //                                   style: const TextStyle(
-              //                                       color: Colors.white,
-              //                                       fontSize: 12,
-              //                                       fontWeight:
-              //                                           FontWeight.w500),
-              //                                 ),
-              //                               ),
-              //                             ),
-              //                             const SizedBox(height: 8),
-              //                             if (widget.basketOrder.status ==
-              //                                 'end')
-              //                               GestureDetector(
-              //                                 onTap: () {
-              //                                   productId = (widget
-              //                                           .basketOrder
-              //                                           .productRealFBS?[index]
-              //                                           .id
-              //                                           .toString() ??
-              //                                       '0');
-
-              //                                   productName = widget
-              //                                           .basketOrder
-              //                                           .productRealFBS?[index]
-              //                                           .productName
-              //                                           .toString() ??
-              //                                       '0';
-              //                                   hidden = !hidden;
-
-              //                                   setState(() {});
-              //                                 },
-              //                                 child: Container(
-              //                                   height: 38,
-              //                                   width: 136,
-              //                                   alignment: Alignment.center,
-              //                                   decoration: BoxDecoration(
-              //                                     color: const Color.fromRGBO(
-              //                                         29, 196, 207, 0.4),
-              //                                     borderRadius:
-              //                                         BorderRadius.circular(12),
-              //                                   ),
-              //                                   child: const Text(
-              //                                     'Оставить отзыв',
-              //                                     style: TextStyle(
-              //                                         color: AppColors
-              //                                             .kPrimaryColor,
-              //                                         fontSize: 12,
-              //                                         fontWeight:
-              //                                             FontWeight.w500),
-              //                                   ),
-              //                                 ),
-              //                               )
-              //                           ],
-              //                         )
-              //                       ],
-              //                     ));
-              //               },
-              //             ),
-              //           ),
-              //           Visibility(
-              //             visible: hidden,
-              //             child: Container(
-              //               padding: const EdgeInsets.all(16),
-              //               color: Colors.white,
-              //               child: Column(
-              //                   crossAxisAlignment: CrossAxisAlignment.start,
-              //                   children: [
-              //                     Row(
-              //                       mainAxisAlignment:
-              //                           MainAxisAlignment.spaceBetween,
-              //                       children: [
-              //                         const Text(
-              //                           'Оставьте отзыв',
-              //                           style: TextStyle(
-              //                               fontSize: 16,
-              //                               fontWeight: FontWeight.w700),
-              //                           textAlign: TextAlign.start,
-              //                         ),
-              //                         RatingBar.builder(
-              //                           initialRating: 0,
-              //                           minRating: 1,
-              //                           itemSize: 15,
-              //                           direction: Axis.horizontal,
-              //                           allowHalfRating: false,
-              //                           itemCount: 5,
-              //                           itemPadding: const EdgeInsets.symmetric(
-              //                               horizontal: 0.0),
-              //                           itemBuilder: (context, _) => const Icon(
-              //                             Icons.star,
-              //                             color: Colors.amber,
-              //                           ),
-              //                           onRatingUpdate: (value) {
-              //                             rating = value.toInt();
-              //                           },
-              //                         ),
-              //                       ],
-              //                     ),
-              //                     TextFormField(
-              //                       controller: _commentController,
-              //                       maxLines: 5,
-              //                       keyboardType: TextInputType.text,
-              //                       decoration: InputDecoration(
-              //                           hintText:
-              //                               'Напишите отзывь для $productName',
-              //                           border: InputBorder.none),
-              //                     ),
-              //                     GestureDetector(
-              //                       onTap: () async {
-              //                         await BlocProvider.of<ReviewCubit>(
-              //                                 context)
-              //                             .reviewStore(_commentController.text,
-              //                                 rating.toString(), productId);
-              //                         _commentController.clear();
-
-              //                         hidden = !hidden;
-
-              //                         setState(() {});
-
-              //                         Get.snackbar('Успешно', 'отзыв добавлен',
-              //                             backgroundColor: Colors.blueAccent);
-              //                       },
-              //                       child: Container(
-              //                         alignment: Alignment.center,
-              //                         height: 39,
-              //                         width: 209,
-              //                         decoration: BoxDecoration(
-              //                           borderRadius: BorderRadius.circular(6),
-              //                           border: Border.all(width: 0.2),
-              //                           boxShadow: const [
-              //                             BoxShadow(
-              //                               color: Colors.black,
-              //                               offset: Offset(
-              //                                 0.2,
-              //                                 0.2,
-              //                               ), //Offset
-              //                               blurRadius: 0.1,
-              //                               spreadRadius: 0.1,
-              //                             ), //BoxShadow
-              //                             BoxShadow(
-              //                               color: Colors.white,
-              //                               offset: Offset(0.0, 0.0),
-              //                               blurRadius: 0.0,
-              //                               spreadRadius: 0.0,
-              //                             ), //BoxShadow
-              //                           ],
-              //                         ),
-              //                         child: const Text(
-              //                           'Оставить свой отзыв',
-              //                           style: TextStyle(
-              //                               fontSize: 16,
-              //                               fontWeight: FontWeight.w500),
-              //                         ),
-              //                       ),
-              //                     ),
-              //                   ]),
-              //             ),
-              //           ),
-              //           Container(
-              //             color: Colors.white,
-              //             child: Column(
-              //               children: [
-              //                 SizedBox(
-              //                   height: 55,
-              //                   child: ListTile(
-              //                     title: const Text(
-              //                       'Товар',
-              //                       style: TextStyle(
-              //                           color: AppColors.kGray900,
-              //                           fontSize: 16,
-              //                           fontWeight: FontWeight.w400),
-              //                     ),
-              //                     subtitle:
-              //                         (widget.basketOrder.productRealFBS ?? [])
-              //                                 .isNotEmpty
-              //                             ? Text(
-              //                                 '${widget.basketOrder.productRealFBS!.first.productName}',
-              //                                 style: const TextStyle(
-              //                                     color: AppColors.kGray300,
-              //                                     fontSize: 12,
-              //                                     fontWeight: FontWeight.w400),
-              //                               )
-              //                             : null,
-              //                     trailing: Text(
-              //                       '${widget.basketOrder.priceRealFBS ?? 0} ₽ ',
-              //                       style: const TextStyle(
-              //                           fontSize: 16,
-              //                           fontWeight: FontWeight.w500),
-              //                     ),
-              //                   ),
-              //                 ),
-              //                 const Divider(
-              //                   color: AppColors.kGray400,
-              //                 ),
-              //                 SizedBox(
-              //                   height: 35,
-              //                   child: Row(
-              //                     mainAxisAlignment:
-              //                         MainAxisAlignment.spaceBetween,
-              //                     children: [
-              //                       Container(
-              //                         padding: const EdgeInsets.only(left: 16),
-              //                         child: const Text('Доставка'),
-              //                       ),
-              //                       Container(
-              //                           padding:
-              //                               const EdgeInsets.only(right: 16),
-              //                           child: Text(
-              //                             '0 ₽ ',
-              //                             style: const TextStyle(
-              //                                 fontSize: 16,
-              //                                 fontWeight: FontWeight.w500),
-              //                           ))
-              //                     ],
-              //                   ),
-              //                 ),
-              //                 const Divider(
-              //                   color: AppColors.kGray400,
-              //                 ),
-              //                 SizedBox(
-              //                   height: 35,
-              //                   child: Row(
-              //                     mainAxisAlignment:
-              //                         MainAxisAlignment.spaceBetween,
-              //                     children: [
-              //                       Container(
-              //                         padding: const EdgeInsets.only(left: 16),
-              //                         child: const Text(
-              //                           'К оплате',
-              //                           style: TextStyle(
-              //                               fontSize: 16,
-              //                               fontWeight: FontWeight.w500),
-              //                         ),
-              //                       ),
-              //                       Container(
-              //                           padding:
-              //                               const EdgeInsets.only(right: 16),
-              //                           child: Text(
-              //                             '${(widget.basketOrder.priceRealFBS?.toInt() ?? 0) + (widget.basketOrder.deliveryPrice ?? 0)} ₽ ',
-              //                             style: const TextStyle(
-              //                                 fontSize: 16,
-              //                                 fontWeight: FontWeight.w500),
-              //                           ))
-              //                     ],
-              //                   ),
-              //                 ),
-              //                 // const Divider(
-              //                 //   color: AppColors.kGray400,
-              //                 // ),
-              //                 // GestureDetector(
-              //                 //   onTap: () {
-              //                 //     Get.to(DeliveryNote(basketOrder: widget.basketOrder));
-              //                 //   },
-              //                 //   child: SizedBox(
-              //                 //     height: 35,
-              //                 //     child: Row(
-              //                 //       mainAxisAlignment: MainAxisAlignment.center,
-              //                 //       children: [
-              //                 //         Container(
-              //                 //           alignment: Alignment.center,
-              //                 //           padding: const EdgeInsets.only(left: 16),
-              //                 //           child: const Text(
-              //                 //             'Скачать накладную',
-              //                 //             style: TextStyle(
-              //                 //               fontSize: 16,
-              //                 //               fontWeight: FontWeight.w500,
-              //                 //               color: AppColors.kPrimaryColor,
-              //                 //             ),
-              //                 //           ),
-              //                 //         ),
-              //                 //         const SizedBox(
-              //                 //           width: 5,
-              //                 //         ),
-              //                 //         const Icon(
-              //                 //           Icons.download,
-              //                 //           color: AppColors.kPrimaryColor,
-              //                 //         )
-              //                 //       ],
-              //                 //     ),
-              //                 //   ),
-              //                 // ),
-              //                 const SizedBox(
-              //                   height: 5,
-              //                 )
-              //               ],
-              //             ),
-              //           )
-              //         ],
-              //       ),
-              //     ],
-              //   )
-              // //  AllMyOrdersRealFBSPage(fulfillment: 'realFBS'),
-              // else
-              //   Container(
-              //     margin: const EdgeInsets.only(bottom: 60),
-              //     alignment: Alignment.center,
-              //     child: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.center,
-              //       mainAxisSize: MainAxisSize.min,
-              //       children: [
-              //         Image.asset('assets/icons/no_data.png'),
-              //         const Text(
-              //           'Нет заказов',
-              //           style: TextStyle(
-              //               fontSize: 20, fontWeight: FontWeight.w600),
-              //           textAlign: TextAlign.center,
-              //         ),
-              //         const Text(
-              //           'Отсутствует заказы realFBS',
-              //           style: TextStyle(
-              //               fontSize: 16,
-              //               fontWeight: FontWeight.w400,
-              //               color: Color(0xff717171)),
-              //           textAlign: TextAlign.center,
-              //         )
-              //       ],
-              //     ),
-              //   ),
-              // const SizedBox(),
             ],
           ),
         ));
   }
 
   String? _imageUrlFor(int index) {
-    final fbs = widget.basketOrder.productFBS;
+    final fbs = widget.basketOrder.product;
     if (fbs == null || index < 0 || index >= fbs.length) return null;
 
     final paths = fbs[index].path; // предположительно List<String>?
@@ -2246,21 +880,21 @@ class _MyOrderStatusPageState extends State<MyOrderStatusPage> {
     final url = _imageUrlFor(index);
 
     return SizedBox(
-      width: 88,
-      height: 88,
+      width: 72,
+      height: 72,
       child: url != null
           ? ClipRRect(
               borderRadius: BorderRadius.circular(6),
               child: Image.network(
                 url,
-                width: 88,
-                height: 88,
+                width: 72,
+                height: 72,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) =>
                     const ErrorImageWidget(width: 88, height: 88),
               ),
             )
-          : const ErrorImageWidget(width: 88, height: 88),
+          : const ErrorImageWidget(width: 72, height: 72),
     );
   }
 }

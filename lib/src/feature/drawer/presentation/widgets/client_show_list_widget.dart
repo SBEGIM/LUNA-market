@@ -225,14 +225,14 @@ Widget buildSettingItem({
                         : Icon(
                             Icons.arrow_forward_ios,
                             size: 14,
-                            color: widgetColor ?? AppColors.kGray300,
+                            color: widgetColor ?? Color(0xff636366),
                           ))
                     : Row(
                         children: [
                           Text(
                             '$text',
                             style: AppTextStyles.size16Weight400.copyWith(
-                                color: widgetColor ?? AppColors.kGray300),
+                                color: widgetColor ?? Color(0xff636366)),
                           ),
                           SizedBox(width: 6),
                           (iconPath != null

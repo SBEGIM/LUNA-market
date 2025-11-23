@@ -99,10 +99,9 @@ class _ReviewOrderWidgetPageState extends State<ReviewOrderWidgetPage> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (widget.basketOrder.productFBS != null &&
-                      widget.basketOrder.productFBS?[widget.index].path !=
-                          null &&
-                      (widget.basketOrder.productFBS?[widget.index].path
+                  if (widget.basketOrder.product != null &&
+                      widget.basketOrder.product?[widget.index].path != null &&
+                      (widget.basketOrder.product?[widget.index].path
                               ?.isNotEmpty ??
                           false))
                     buildProductImage(widget.index)
@@ -120,7 +119,7 @@ class _ReviewOrderWidgetPageState extends State<ReviewOrderWidgetPage> {
                         SizedBox(
                           width: 238,
                           child: Text(
-                            '${widget.basketOrder.productFBS?[widget.index].productName}',
+                            '${widget.basketOrder.product?[widget.index].productName}',
                             style: AppTextStyles.size14Weight500,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -138,7 +137,7 @@ class _ReviewOrderWidgetPageState extends State<ReviewOrderWidgetPage> {
                                     .copyWith(color: Color(0xff8E8E93)),
                               ),
                               Text(
-                                '${widget.basketOrder.productFBS?[widget.index].price} ₽',
+                                '${widget.basketOrder.product?[widget.index].price} ₽',
                                 style: AppTextStyles.size14Weight500,
                               ),
                             ],
@@ -155,7 +154,7 @@ class _ReviewOrderWidgetPageState extends State<ReviewOrderWidgetPage> {
                                     .copyWith(color: Color(0xff8E8E93)),
                               ),
                               Text(
-                                '${widget.basketOrder.productFBS?[widget.index].count} шт',
+                                '${widget.basketOrder.product?[widget.index].count} шт',
                                 style: AppTextStyles.size14Weight500,
                               ),
                             ],
@@ -455,7 +454,7 @@ class _ReviewOrderWidgetPageState extends State<ReviewOrderWidgetPage> {
   }
 
   String? _imageUrlFor(int index) {
-    final fbs = widget.basketOrder.productFBS;
+    final fbs = widget.basketOrder.product;
     if (fbs == null || index < 0 || index >= fbs.length) return null;
 
     final paths = fbs[index].path; // предположительно List<String>?

@@ -18,11 +18,18 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
 
   TextEditingController optomController = TextEditingController();
 
-  int basketCount = 0;
-  int basketPrice = 0;
-  bool isOptom = false;
+  int basketCount = 1;
+  int basketPrice = product.price ?? 0;
 
-  int selectedIndex3 = -1;
+  bool hasOptom = product.bloc?.isNotEmpty ?? false;
+
+  int basketOptomCount = hasOptom ? product.bloc!.first.count! : 0;
+  int basketOptomPrice = hasOptom ? product.bloc!.first.price! : 0;
+
+  bool isOptom = hasOptom;
+
+  int selectedIndex3 = hasOptom ? 0 : -1;
+
   int segmentValue = 0;
 
   String formatPrice(int price) {
@@ -465,17 +472,17 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                     if (selectedIndex3 == optomIndex) {
                                       selectedIndex3 = -1;
                                       setState(() {
-                                        basketCount = 0;
-                                        basketPrice = 0;
+                                        basketOptomCount = 0;
+                                        basketOptomPrice = 0;
                                         isOptom = false;
                                       });
                                     } else {
                                       selectedIndex3 = optomIndex;
                                       setState(() {
-                                        basketCount =
+                                        basketOptomCount =
                                             product.bloc?[optomIndex].count ??
                                                 0;
-                                        basketPrice =
+                                        basketOptomPrice =
                                             product.bloc?[optomIndex].price ??
                                                 0;
                                         isOptom = true;
@@ -499,7 +506,7 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                                       readOnly: true,
                                       keyboardType: TextInputType.phone,
                                       decoration: InputDecoration(
-                                        hintText: '$basketCount шт',
+                                        hintText: '$basketOptomCount шт',
                                         hintStyle:
                                             AppTextStyles.size16Weight400,
                                         border: InputBorder.none,
@@ -785,7 +792,7 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                       height: 52,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (basketCount <= 0) {
+                          if (basketOptomCount <= 0 && basketCount <= 0) {
                             AppSnackBar.show(
                               context,
                               'Ой! Ноль — не вариант. Выберите хотя бы 1.',
@@ -794,7 +801,13 @@ void showBasketBottomSheetOptions(BuildContext context, String title, int optom,
                             return;
                           }
 
-                          callback.call(basketCount, basketPrice, isOptom);
+                          if (isOptom) {
+                            callback.call(
+                                basketOptomCount, basketOptomPrice, true);
+                          } else {
+                            callback.call(basketCount, basketPrice, false);
+                          }
+
                           Navigator.pop(context, selectedCategory);
                         },
                         style: ElevatedButton.styleFrom(

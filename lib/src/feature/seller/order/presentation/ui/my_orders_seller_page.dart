@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/seller/order/bloc/basket_seller_cubit.dart';
+import 'package:haji_market/src/feature/seller/order/bloc/basket_seller_state.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/widgets/all_orders_seller_page.dart';
 import 'package:haji_market/src/feature/seller/order/presentation/widgets/done_order_seller_page.dart';
 import 'package:haji_market/src/core/common/constants.dart';
+import 'package:haji_market/src/feature/seller/order/presentation/widgets/my_order_card_widget.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../../app/widgets/custom_switch_button.dart';
 
 @RoutePage()
@@ -19,6 +22,13 @@ class MyOrdersSellerPage extends StatefulWidget {
 class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
   int segmentValue = 0;
   final TextEditingController _searchController = TextEditingController();
+  final RefreshController _controller = RefreshController();
+
+  @override
+  void initState() {
+    BlocProvider.of<BasketSellerCubit>(context).basketOrderShow('');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,16 +163,59 @@ class _MyOrdersSellerPageState extends State<MyOrdersSellerPage> {
             ),
           ),
         ),
-        body: Container(
-          color: Color(0xffF7F7F7),
-          child: IndexedStack(
-            index: segmentValue,
-            children: [
-              AllOrdersSellerPage(fulfillment: 'fbs'),
-              const DoneMyOrdersPage(),
-            ],
-          ),
-        ));
+        body: Padding(
+            padding:
+                const EdgeInsets.only(left: 0, right: 0, top: 8, bottom: 100),
+            child: BlocBuilder<BasketSellerCubit, BasketAdminState>(
+                builder: (context, state) {
+              if (state is ErrorState) {
+                return Center(
+                  child: Text(
+                    state.message,
+                    style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+                  ),
+                );
+              }
+
+              if (state is LoadedState) {
+                return SmartRefresher(
+                  onRefresh: () {
+                    BlocProvider.of<BasketSellerCubit>(context)
+                        .basketOrderShow('fbs');
+                    _controller.refreshCompleted();
+                  },
+                  controller: _controller,
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: state.basketOrderModel.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, bottom: 16),
+                          child: SellerMyOrderCardWidget(
+                              basketOrder: state.basketOrderModel[index]));
+                    },
+                  ),
+                );
+              } else {
+                return SmartRefresher(
+                  onRefresh: () {
+                    BlocProvider.of<BasketSellerCubit>(context)
+                        .basketOrderShow('fbs');
+                    _controller.refreshCompleted();
+                  },
+                  controller: _controller,
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                          child: CircularProgressIndicator(
+                              color: Colors.indigoAccent)),
+                    ],
+                  ),
+                );
+              }
+            })));
   }
 
   Widget _buildSegmentItem({

@@ -129,7 +129,7 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetAll() {
+  void resetAll({bool notify = true}) {
     rating = false;
     catId = 0;
     search = null;
@@ -160,6 +160,8 @@ class FilterProvider extends ChangeNotifier {
     _box.remove('dellivery');
 
     notifyListeners();
+
+    if (notify) notifyListeners();
   }
 
   // ---------- билдим queryParams для API ----------

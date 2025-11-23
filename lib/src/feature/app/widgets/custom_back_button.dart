@@ -20,11 +20,10 @@ class CustomBackButton extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 2,
-            // horizontal: 4,
           ),
           child: Image.asset(
             Assets.icons.defaultBackIcon.path,
-            scale: 1.9,
+            scale: 2.1,
           ),
         ),
       ),

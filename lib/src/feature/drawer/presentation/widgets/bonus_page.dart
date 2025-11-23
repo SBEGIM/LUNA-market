@@ -66,27 +66,16 @@ class _BonusUserPageState extends State<BonusUserPage> {
           'Мои бонусы',
           style: AppTextStyles.size18Weight600,
         ),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 22.0),
-          child: CustomBackButton(onTap: () {
-            Navigator.pop(context);
-          }),
-        ),
+        leading: CustomBackButton(onTap: () {
+          Navigator.pop(context);
+        }),
         elevation: 0,
       ),
       body: ListView(
         shrinkWrap: true,
         children: [
-          SizedBox(
-            height: 220,
-            child:
-
-                //  ListView.builder(
-                //   itemCount: titleBonus.length,
-                //   itemBuilder: (context, index) {
-                //     return
-
-                BonusList(
+          Flexible(
+            child: BonusList(
               titles: titleBonus,
               descriptions: descriptionBonus,
             ),
@@ -156,7 +145,13 @@ class _BonusUserPageState extends State<BonusUserPage> {
             ),
           ),
           Container(
-              color: Colors.white,
+              height: 450,
+              padding: EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(12),
+                      bottomRight: Radius.circular(12))),
               child: BlocConsumer<BonusCubit, BonusState>(
                   listener: (context, state) {},
                   builder: (context, state) {
@@ -200,35 +195,35 @@ class _BonusUserPageState extends State<BonusUserPage> {
                               shrinkWrap: true,
                               separatorBuilder:
                                   (BuildContext context, int index) =>
-                                      const Divider(),
+                                      const Divider(
+                                        height: 1,
+                                        color: Color(0xffD1D1D6),
+                                        thickness: 0.33,
+                                      ),
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: state.bonusModel.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return SizedBox(
-                                  height: 47,
+                                  height: 46,
                                   child: ListTile(
                                     minLeadingWidth: 100,
                                     leading: Text(
                                       '${state.bonusModel[index].name}',
-                                      style: const TextStyle(
-                                          color: AppColors.kGray900,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400),
+                                      style: AppTextStyles.size16Weight500,
                                     ),
-                                    trailing: ClipPath(
-                                      clipper: TrapeziumClipper(),
-                                      child: Container(
-                                        height: 16,
-                                        width: 60,
-                                        alignment: Alignment.center,
-                                        decoration: const BoxDecoration(
-                                            color: AppColors.kPrimaryColor),
-                                        child: Text(
-                                          '${state.bonusModel[index].bonus} $currency',
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500),
-                                        ),
+                                    trailing: Container(
+                                      height: 26,
+                                      constraints: BoxConstraints(maxWidth: 46),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8),
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: Color(0xffCEE31C)),
+                                      child: Text(
+                                        '${state.bonusModel[index].bonus} ₽',
+                                        style: AppTextStyles.size16Weight400,
                                       ),
                                     ),
                                   ),
@@ -247,10 +242,6 @@ class _BonusUserPageState extends State<BonusUserPage> {
                       );
                     }
                   })),
-          Container(
-            height: 10,
-            color: Colors.white,
-          ),
         ],
       ),
     );
@@ -314,6 +305,8 @@ class _BonusListState extends State<BonusList> with TickerProviderStateMixin {
                   16))), // не задаём фиксированную высоту, пусть само растёт
       child: ListView.builder(
         // если ты это в Column кладёшь — добавь shrinkWrap: true и physics: NeverScrollableScrollPhysics()
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         itemCount: widget.titles.length,
         itemBuilder: (context, index) {
           final opened = _isOpen[index];
@@ -322,7 +315,6 @@ class _BonusListState extends State<BonusList> with TickerProviderStateMixin {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Column(
               children: [
-                // Заголовок + стрелка
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -344,13 +336,10 @@ class _BonusListState extends State<BonusList> with TickerProviderStateMixin {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 8),
-
-                // Тело с описанием + плавная анимация высоты
                 AnimatedSize(
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeInOut,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.linear,
                   alignment: Alignment.topCenter,
                   child: opened
                       ? Container(

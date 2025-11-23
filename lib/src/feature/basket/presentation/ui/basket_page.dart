@@ -282,7 +282,8 @@ class _BasketPageState extends State<BasketPage> {
                           )),
                     );
                   } else {
-                    return SizedBox.shrink();
+                    return Container(
+                        height: 36, color: AppColors.kBackgroundColor);
                   }
                 }),
           ),
@@ -579,6 +580,7 @@ class _BasketPageState extends State<BasketPage> {
                       ],
                     ),
                   ),
+                  SizedBox(height: 220),
                 ],
               ),
             );

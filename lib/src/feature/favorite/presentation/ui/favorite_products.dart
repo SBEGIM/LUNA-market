@@ -324,7 +324,7 @@ class _FavoriteProductsCardWidgetState
                               });
                             },
                             icon: Image.asset(
-                              Assets.icons.favoriteBottomFullIcon.path,
+                              Assets.icons.favoriteDetailProductIcon.path,
                               scale: 1.9,
                               color: inFavorite == true
                                   ? const Color.fromRGBO(255, 50, 72, 1)
@@ -369,77 +369,80 @@ class _FavoriteProductsCardWidgetState
                       height: 25,
                       width: MediaQuery.of(context).size.width * 0.55,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
-                            constraints: const BoxConstraints(
-                              minWidth: 84,
-                            ),
-                            height: 32,
-                            decoration: BoxDecoration(
-                              color: AppColors.kYellowDark,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              '${formatPrice(int.parse((widget.product.price ?? 0 / 3).toString()))} ₽ / мес ',
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 11,
-                                  letterSpacing: -1,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              if (count < 1) {
-                                BlocProvider.of<BasketCubit>(context).basketAdd(
-                                    widget.product.id.toString(),
-                                    '1',
-                                    0,
-                                    '',
-                                    '');
-                                setState(() {
-                                  count += 1;
-                                  if (count == 0) {
-                                    isvisible = false;
-                                  } else {
-                                    isvisible = true;
-                                  }
-                                });
-                              } else {
-                                BlocProvider.of<BasketCubit>(context)
-                                    .basketMinus(widget.product.id.toString(),
-                                        '1', 0, 'fbs');
-                                setState(() {
-                                  if (count == 0) {
-                                    isvisible = false;
-                                  } else {
-                                    isvisible = true;
-                                  }
-                                  count -= 1;
-                                });
-                              }
-                            },
+                          Flexible(
                             child: Container(
-                              width: 114,
-                              height: 25,
+                              padding: EdgeInsets.symmetric(horizontal: 8),
+                              constraints: const BoxConstraints(
+                                minWidth: 84,
+                              ),
+                              height: 32,
                               decoration: BoxDecoration(
-                                color: count != 0
-                                    ? Color(0xFFD1D1D6)
-                                    : AppColors.mainPurpleColor,
+                                color: AppColors.kYellowDark,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               alignment: Alignment.center,
                               child: Text(
-                                count == 0 ? 'В корзину' : 'В корзине ',
-                                style: TextStyle(
-                                    color: count != 0
-                                        ? AppColors.kLightBlackColor
-                                        : Colors.white,
+                                '${formatPrice(int.parse((widget.product.price ?? 0 / 3).toString()))} ₽ / мес ',
+                                style: const TextStyle(
+                                    color: Colors.black,
                                     fontSize: 11,
+                                    letterSpacing: -1,
                                     fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () {
+                                if (count < 1) {
+                                  BlocProvider.of<BasketCubit>(context)
+                                      .basketAdd(widget.product.id.toString(),
+                                          '1', 0, '', '');
+                                  setState(() {
+                                    count += 1;
+                                    if (count == 0) {
+                                      isvisible = false;
+                                    } else {
+                                      isvisible = true;
+                                    }
+                                  });
+                                } else {
+                                  BlocProvider.of<BasketCubit>(context)
+                                      .basketMinus(widget.product.id.toString(),
+                                          '1', 0, 'fbs');
+                                  setState(() {
+                                    if (count == 0) {
+                                      isvisible = false;
+                                    } else {
+                                      isvisible = true;
+                                    }
+                                    count -= 1;
+                                  });
+                                }
+                              },
+                              child: Container(
+                                constraints: const BoxConstraints(
+                                  minWidth: 84,
+                                ),
+                                height: 25,
+                                decoration: BoxDecoration(
+                                  color: count != 0
+                                      ? Color(0xFFD1D1D6)
+                                      : AppColors.mainPurpleColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  count == 0 ? 'В корзину' : 'В корзине ',
+                                  style: TextStyle(
+                                      color: count != 0
+                                          ? AppColors.kLightBlackColor
+                                          : Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w500),
+                                ),
                               ),
                             ),
                           ),

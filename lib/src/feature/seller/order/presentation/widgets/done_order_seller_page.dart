@@ -281,7 +281,7 @@ class _DoneMyOrdersPageState extends State<DoneMyOrdersPage> {
                                         color: AppColors.kGray400,
                                       ),
                                       Text(
-                                        ' ${state.basketEndOrderModel[index].user!.name}',
+                                        ' ${state.basketEndOrderModel[index].user!.fullName}',
                                         style: const TextStyle(
                                             color: AppColors.kGray500,
                                             fontSize: 12,

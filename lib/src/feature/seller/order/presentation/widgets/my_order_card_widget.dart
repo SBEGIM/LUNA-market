@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/utils.dart';
 import 'package:haji_market/src/core/common/constants.dart';
-import 'package:haji_market/src/feature/basket/data/models/basket_order_model.dart';
 import 'package:haji_market/src/feature/my_order/presentation/widget/my_order_status_page.dart';
+import 'package:haji_market/src/feature/seller/order/data/models/basket_order_seller_model.dart';
+import 'package:haji_market/src/feature/seller/order/presentation/widgets/detail_order_seller_page.dart';
 
-class MyOrderCardWidget extends StatefulWidget {
-  final BasketOrderModel basketOrder;
+class SellerMyOrderCardWidget extends StatefulWidget {
+  final BasketOrderSellerModel basketOrder;
 
-  const MyOrderCardWidget({
+  const SellerMyOrderCardWidget({
     Key? key,
     required this.basketOrder,
   }) : super(key: key);
 
   @override
-  State<MyOrderCardWidget> createState() => _MyOrderCardWidgetState();
+  State<SellerMyOrderCardWidget> createState() =>
+      _SellerMyOrderCardWidgetState();
 }
 
-class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
+class _SellerMyOrderCardWidgetState extends State<SellerMyOrderCardWidget> {
   // Текст статуса
   String get _statusText {
     switch (widget.basketOrder.status) {
@@ -107,10 +109,8 @@ class _MyOrderCardWidgetState extends State<MyOrderCardWidget> {
             ? Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      MyOrderStatusPage(basketOrder: widget.basketOrder),
-                ),
-              )
+                    builder: (context) =>
+                        DetailOrderSellerPage(basket: widget.basketOrder)))
             : printError();
       },
       child: Column(

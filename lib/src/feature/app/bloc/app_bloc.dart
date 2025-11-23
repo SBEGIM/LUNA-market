@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/app/presentation/location_page.dart';
+import 'package:haji_market/src/feature/home/data/model/city_model.dart';
 
 part 'app_bloc.freezed.dart';
 
@@ -36,12 +37,18 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     emit(const AppState.inAppUserState());
   }
 
+  // CityModel? loadCity() {
+  //   final data = GetStorage().read('city');
+  //   if (data == null) return null;
+  //   return CityModel.fromJson(Map<String, dynamic>.from(data));
+  // }
+
   Future<void> _location(
     _Location event,
     Emitter<AppState> emit,
   ) async {
     bool exists = GetStorage().hasData('user_location_code');
-    String? city = GetStorage().read('city');
+    // CityModel? city = loadCity();
     bool guest = GetStorage().hasData('user_guest');
 
     if (!exists && !guest) {

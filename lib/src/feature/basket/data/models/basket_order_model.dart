@@ -1,143 +1,174 @@
+import 'package:flutter_html/flutter_html.dart';
+
 class BasketOrderModel {
   BasketOrderModel({
     int? id,
     int? shopId,
     List<Product>? product,
-    List<Product>? productFBS,
-    List<Product>? productRealFBS,
     int? summa,
-    int? priceFBS,
-    int? priceRealFBS,
     int? chatId,
     String? status,
-    String? statusFBS,
-    String? statusRealFBS,
     int? deliveryDay,
     int? deliveryPrice,
     String? date,
-    String? updated_at,
+    String? updatedAt,
     String? comment,
     String? returnDate,
+    String? expectedDeliveryDate,
+    int? currentStep,
+    List<BasketStatusStep>? basketStatusTimeline,
   }) {
     _id = id;
     _shopId = shopId;
     _product = product;
-    _productFBS = productFBS;
-    _productRealFBS = productRealFBS;
     _summa = summa;
-    _priceFBS = priceFBS;
-    _priceRealFBS = priceRealFBS;
     _chatId = chatId;
     _status = status;
-    _statusFBS = statusFBS;
-    _statusRealFBS = _statusRealFBS;
     _deliveryDay = deliveryDay;
     _deliveryPrice = deliveryPrice;
     _date = date;
-    _updated_at = updated_at;
+    _updatedAt = updatedAt;
     _comment = comment;
     _returnDate = returnDate;
+    _expectedDeliveryDate = expectedDeliveryDate;
+    _currentStep = currentStep;
+    _basketStatusTimeline = basketStatusTimeline;
   }
 
   BasketOrderModel.fromJson(dynamic json) {
     _id = json['id'];
     _shopId = json['shop_id'];
+
     if (json['product'] != null) {
       _product = [];
       json['product'].forEach((v) {
         _product?.add(Product.fromJson(v));
       });
     }
-    if (json['product_fbs'] != null) {
-      _productFBS = [];
-      json['product_fbs'].forEach((v) {
-        _productFBS?.add(Product.fromJson(v));
-      });
-    }
-    if (json['product_realFBS'] != null) {
-      _productRealFBS = [];
-      json['product_realFBS'].forEach((v) {
-        _productRealFBS?.add(Product.fromJson(v));
-      });
-    }
+
     _summa = json['summa'];
-    _priceFBS = json['price_fbs'];
-    _priceRealFBS = json['price_realFBS'];
     _status = json['status'];
-    _statusFBS = json['status_fbs'];
-    _statusRealFBS = json['status_realFBS'];
     _chatId = json['chat_id'];
     _date = json['date'];
     _deliveryDay = json['delivery_day'];
     _deliveryPrice = json['delivery_price'];
-    _updated_at = json['updated_at'];
+    _updatedAt = json['updated_at'];
     _comment = json['comment'];
     _returnDate = json['return_date'];
+    _expectedDeliveryDate = json['expected_delivery_date'];
+    _currentStep = json['current_step'];
+    if (json['basket_status_timeline'] != null) {
+      _basketStatusTimeline = [];
+      json['basket_status_timeline'].forEach((v) {
+        _basketStatusTimeline?.add(BasketStatusStep.fromJson(v));
+      });
+    }
   }
+
   int? _id;
   int? _shopId;
   List<Product>? _product;
-  List<Product>? _productFBS;
-  List<Product>? _productRealFBS;
   int? _summa;
-  int? _priceFBS;
-  int? _priceRealFBS;
   int? _chatId;
   String? _status;
-  String? _statusFBS;
-  String? _statusRealFBS;
   String? _date;
   int? _deliveryDay;
   int? _deliveryPrice;
-  String? _updated_at;
+  String? _updatedAt;
   String? _comment;
   String? _returnDate;
+  String? _expectedDeliveryDate;
+  int? _currentStep;
+  List<BasketStatusStep>? _basketStatusTimeline;
 
   int? get id => _id;
   int? get shopId => _shopId;
   List<Product>? get product => _product;
-  List<Product>? get productFBS => _productFBS;
-  List<Product>? get productRealFBS => _productRealFBS;
   int? get summa => _summa;
-  int? get priceFBS => _priceFBS;
-  int? get priceRealFBS => _priceRealFBS;
   String? get status => _status;
-  String? get statusFBS => _statusFBS;
-  String? get statusRealFBS => _statusRealFBS;
   int? get chatId => _chatId;
   String? get date => _date;
   int? get deliveryDay => _deliveryDay;
   int? get deliveryPrice => _deliveryPrice;
-  String? get updated_at => _updated_at;
+  String? get updated_at => _updatedAt;
   String? get comment => _comment;
   String? get returnDate => _returnDate;
+  String? get expectedDeliveryDate => _expectedDeliveryDate;
+  int? get currentStep => _currentStep;
+  List<BasketStatusStep>? get basketStatusTimeline => _basketStatusTimeline;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['shop_id'] = _shopId;
+
     if (_product != null) {
       map['product'] = _product?.map((v) => v.toJson()).toList();
     }
-    if (_productFBS != null) {
-      map['product_fbs'] = _productFBS?.map((v) => v.toJson()).toList();
-    }
-    if (_productRealFBS != null) {
-      map['product_realFBS'] = _productRealFBS?.map((v) => v.toJson()).toList();
-    }
+
     map['summa'] = _summa;
-    map['price_FBS'] = _priceFBS;
-    map['price_realFBS'] = _priceRealFBS;
-    map['chatId'] = _chatId;
+    map['chat_id'] = _chatId;
     map['status'] = _status;
-    map['status_fbs'] = _statusFBS;
-    map['status_realFBS'] = _statusRealFBS;
     map['date'] = _date;
-    map['deliveryDay'] = _deliveryDay;
-    map['deliveryPrice'] = _deliveryPrice;
-    map['updated_at'] = _updated_at;
+    map['delivery_day'] = _deliveryDay;
+    map['delivery_price'] = _deliveryPrice;
+    map['updated_at'] = _updatedAt;
     map['comment'] = _comment;
     map['return_date'] = _returnDate;
+    map['expected_delivery_date'] = _expectedDeliveryDate;
+    map['current_step'] = _currentStep;
+    if (_basketStatusTimeline != null) {
+      map['basket_status_timeline'] =
+          _basketStatusTimeline?.map((v) => v.toJson()).toList();
+    }
+
+    return map;
+  }
+}
+
+/// Шаг таймлайна заказа
+class BasketStatusStep {
+  BasketStatusStep({
+    String? key,
+    int? step,
+    String? title,
+    String? date,
+    bool? isDone,
+  }) {
+    _key = key;
+    _step = step;
+    _title = title;
+    _date = date;
+    _isDone = isDone;
+  }
+
+  BasketStatusStep.fromJson(dynamic json) {
+    _key = json['key'];
+    _step = json['step'];
+    _title = json['title'];
+    _date = json['date'];
+    _isDone = json['is_done'];
+  }
+
+  String? _key;
+  int? _step;
+  String? _title;
+  String? _date;
+  bool? _isDone;
+
+  String? get key => _key;
+  int? get step => _step;
+  String? get title => _title;
+  String? get date => _date;
+  bool? get isDone => _isDone;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['key'] = _key;
+    map['step'] = _step;
+    map['title'] = _title;
+    map['date'] = _date;
+    map['is_done'] = _isDone;
     return map;
   }
 }

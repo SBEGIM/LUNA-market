@@ -161,9 +161,14 @@ class _LocationPageState extends State<LocationPage> {
                                     ),
                                     Spacer(),
                                     _select == index
-                                        ? Image.asset(
-                                            Assets.icons.defaultCheckIcon.path,
-                                            scale: 1.9,
+                                        ? SizedBox(
+                                            height: 24,
+                                            width: 24,
+                                            child: Image.asset(
+                                              Assets
+                                                  .icons.defaultCheckIcon.path,
+                                              color: AppColors.kWhite,
+                                            ),
                                           )
                                         : Icon(
                                             Icons.radio_button_unchecked,

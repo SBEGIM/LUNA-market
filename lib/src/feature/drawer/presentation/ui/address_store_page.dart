@@ -113,123 +113,132 @@ class _AddressStorePageState extends State<AddressStorePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.kWhite,
-      appBar: AppBar(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
         backgroundColor: AppColors.kWhite,
-        surfaceTintColor: AppColors.kWhite,
-        title: Text(
-          'Добавить новый адрес',
-          style: AppTextStyles.size18Weight600,
+        extendBody: true,
+        appBar: AppBar(
+          backgroundColor: AppColors.kWhite,
+          surfaceTintColor: AppColors.kWhite,
+          title: Text(
+            'Добавить новый адрес',
+            style: AppTextStyles.size18Weight600,
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-        child: ListView(
-          children: [
-            _buildFormField(
-              controller: streetController,
-              text: 'Улица',
-              label: 'Укажите улица',
-              errorText: fieldErrors['street'],
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Flexible(
-                child: _buildFormField(
-                  controller: entranceController,
-                  text: 'Подъезд',
-                  label: 'Номер подъезда',
-                  errorText: fieldErrors['entrance'],
-                ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+          child: ListView(
+            children: [
+              _buildFormField(
+                controller: streetController,
+                text: 'Улица',
+                label: 'Укажите улица',
+                errorText: fieldErrors['street'],
               ),
-              SizedBox(width: 12),
-              Flexible(
-                child: _buildFormField(
-                  controller: floorController,
-                  text: 'Этаж',
-                  label: 'На каком этаже',
-                  errorText: fieldErrors['floor'],
-                ),
-              ),
-            ]),
-            Row(
-              children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Flexible(
                   child: _buildFormField(
-                    controller: apartmentController,
-                    text: 'Квартира',
-                    label: 'Номер квартиры',
-                    errorText: fieldErrors['apartment'],
-                  ),
+                      controller: entranceController,
+                      text: 'Подъезд',
+                      label: 'Номер подъезда',
+                      errorText: fieldErrors['entrance'],
+                      keyboardType: TextInputType.number),
                 ),
                 SizedBox(width: 12),
                 Flexible(
                   child: _buildFormField(
-                    controller: intercomController,
-                    text: 'Домофон',
-                    label: 'Номер домофона',
-                    errorText: fieldErrors['intercom'],
+                      controller: floorController,
+                      text: 'Этаж',
+                      label: 'На каком этаже',
+                      errorText: fieldErrors['floor'],
+                      keyboardType: TextInputType.number),
+                ),
+              ]),
+              Row(
+                children: [
+                  Flexible(
+                    child: _buildFormField(
+                      controller: apartmentController,
+                      text: 'Квартира',
+                      label: 'Номер квартиры',
+                      errorText: fieldErrors['apartment'],
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Flexible(
+                    child: _buildFormField(
+                      controller: intercomController,
+                      text: 'Домофон',
+                      label: 'Номер домофона',
+                      errorText: fieldErrors['intercom'],
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                ],
+              ),
+              FieldsProductRequest(
+                titleText: 'Комментарии курьеру',
+                hintText: 'Написать',
+                maxLines: 4,
+                star: true,
+                arrow: false,
+                controller: commentsCourierController,
+                errorText: fieldErrors['comments'],
+              ),
+              _buildFormField(
+                controller: phoneController,
+                keyboardType: TextInputType.phone,
+                text: 'Номер телефона получателя',
+                label: 'Укажите номер телефона получателя ',
+                errorText: fieldErrors['phone'],
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Container(
+          color: Colors.transparent,
+          child: SafeArea(
+              bottom: true,
+              child: InkWell(
+                onTap: () async {
+                  _validateFields();
+                  if (!_ensureValid()) return;
+                  final statusCode =
+                      await BlocProvider.of<AddressCubit>(context).store(
+                          context,
+                          GetStorage().read('country'),
+                          GetStorage().read('city'),
+                          streetController.text,
+                          entranceController.text,
+                          floorController.text,
+                          apartmentController.text,
+                          intercomController.text,
+                          commentsCourierController.text,
+                          phoneController.text);
+
+                  if (statusCode == 200) {
+                    context.router.pop();
+                  }
+                },
+                child: Container(
+                  margin: EdgeInsets.only(left: 16, right: 16, bottom: 10),
+                  height: 52,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: AppColors.mainPurpleColor,
+                      borderRadius: BorderRadius.circular(16)),
+                  child: Text(
+                    'Сохранить',
+                    style: AppTextStyles.size18Weight600
+                        .copyWith(color: AppColors.kWhite),
                   ),
                 ),
-              ],
-            ),
-            FieldsProductRequest(
-              titleText: 'Комментарии курьеру',
-              hintText: 'Написать',
-              maxLines: 4,
-              star: true,
-              arrow: false,
-              controller: commentsCourierController,
-              errorText: fieldErrors['comments'],
-            ),
-            _buildFormField(
-              controller: phoneController,
-              keyboardType: TextInputType.phone,
-              text: 'Номер телефона получателя',
-              label: 'Укажите номер телефона получателя ',
-              errorText: fieldErrors['phone'],
-            ),
-          ],
+              )),
         ),
       ),
-      bottomSheet: SafeArea(
-          bottom: true,
-          child: InkWell(
-            onTap: () async {
-              _validateFields();
-              if (!_ensureValid()) return;
-              final statusCode = await BlocProvider.of<AddressCubit>(context)
-                  .store(
-                      context,
-                      GetStorage().read('country'),
-                      GetStorage().read('city'),
-                      streetController.text,
-                      entranceController.text,
-                      floorController.text,
-                      apartmentController.text,
-                      intercomController.text,
-                      commentsCourierController.text,
-                      phoneController.text);
-
-              if (statusCode == 200) {
-                context.router.pop();
-              }
-            },
-            child: Container(
-              margin: EdgeInsets.only(left: 16, right: 16, bottom: 50),
-              height: 52,
-              width: double.infinity,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: AppColors.mainPurpleColor,
-                  borderRadius: BorderRadius.circular(16)),
-              child: Text(
-                'Сохранить',
-                style: AppTextStyles.size18Weight600
-                    .copyWith(color: AppColors.kWhite),
-              ),
-            ),
-          )),
     );
   }
 }

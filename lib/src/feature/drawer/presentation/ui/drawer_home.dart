@@ -17,6 +17,7 @@ import 'package:haji_market/src/feature/drawer/presentation/widgets/client_show_
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_cabinet_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_language_widget.dart';
+import 'package:haji_market/src/feature/home/data/model/city_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../chat/presentation/chat_page.dart';
@@ -89,8 +90,21 @@ class _DrawerPageState extends State<DrawerPage> {
     });
   }
 
+  CityModel? city;
+
+  CityModel? loadCity() {
+    final data = GetStorage().read('city');
+    if (data == null) return null;
+
+    if (data is! Map<String, dynamic>) {
+      return null;
+    }
+    return CityModel.fromJson(Map<String, dynamic>.from(data));
+  }
+
   @override
   void initState() {
+    city = loadCity();
     isAuthUser = _box.read('active') == '1' ? true : false;
     _box.read('avatar');
     _box.read('name');
@@ -205,7 +219,7 @@ class _DrawerPageState extends State<DrawerPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                _box.read('city') ?? 'Алматы',
+                                city?.city ?? 'Алматы',
                                 style: AppTextStyles.size14Weight500
                                     .copyWith(color: Color(0xff959595)),
                               ),
@@ -657,8 +671,8 @@ class _DrawerPageState extends State<DrawerPage> {
 
                     buildProfileItem(
                       onTap: () => showClientSettingOptions(
-                          context, isAuthUser, 'Настройка', () {}),
-                      title: 'Настройка',
+                          context, isAuthUser, 'Настройки', () {}),
+                      title: 'Настройки',
                       count: 4,
                       iconPath: Assets.icons.settingIcon.path,
                     ),

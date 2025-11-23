@@ -168,9 +168,24 @@ class _TapePageState extends State<TapePage> with TickerProviderStateMixin {
         controller: _tabs,
         physics: BouncingScrollPhysics(),
         children: [
-          TapeTab(key: _tabKeys[0], isSubs: false, isFavs: false),
-          TapeTab(key: _tabKeys[1], isSubs: true, isFavs: false),
-          TapeTab(key: _tabKeys[2], isSubs: false, isFavs: true),
+          TapeTab(
+            key: _tabKeys[0],
+            isSubs: false,
+            isFavs: false,
+            search: searchController.text,
+          ),
+          TapeTab(
+            key: _tabKeys[1],
+            isSubs: true,
+            isFavs: false,
+            search: searchController.text,
+          ),
+          TapeTab(
+            key: _tabKeys[2],
+            isSubs: false,
+            isFavs: true,
+            search: searchController.text,
+          ),
         ],
       ),
       // Column(
@@ -335,10 +350,15 @@ class _FixedWidthPainter extends BoxPainter {
 }
 
 class TapeTab extends StatefulWidget {
-  const TapeTab({super.key, required this.isSubs, required this.isFavs});
+  const TapeTab(
+      {super.key,
+      required this.isSubs,
+      required this.isFavs,
+      required this.search});
 
   final bool isSubs;
   final bool isFavs;
+  final String? search;
 
   @override
   State<TapeTab> createState() => _TapeTabState();
@@ -450,10 +470,15 @@ class _TapeTabState extends State<TapeTab>
                   children: [
                     Container(
                       margin: const EdgeInsets.only(top: 209),
+                      width: 72,
+                      height: 72,
                       child: Image.asset(
-                        Assets.icons.defaultNoDataIcon.path,
+                        _noDataByTab() == 'Мы ничего не нашли по вашему запросу'
+                            ? Assets.icons.defaultCloseStateIcon.path
+                            : Assets.icons.defaultNoDataIcon.path,
                         height: 72,
                         width: 72,
+                        fit: BoxFit.contain,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -515,8 +540,13 @@ class _TapeTabState extends State<TapeTab>
   }
 
   String _noDataByTab() {
-    if (widget.isSubs) return 'Нет записей из подписок';
-    if (widget.isFavs) return 'В избранном пока пусто';
-    return 'Пока ничего нет';
+    if (widget.isSubs)
+      return 'Пока здесь пусто\nЗдесь будут обзоры от тех, на кого \nвы подписаны';
+    if (widget.isFavs)
+      return 'Пока здесь пусто\nВаши избранные видеообзоры \nпоявятся здесь';
+    if (widget.search != '')
+      return 'Мы ничего не нашли по вашему запросу';
+    else
+      return 'Загляните позже — мы готовим подборку для вас';
   }
 }

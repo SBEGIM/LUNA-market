@@ -11,23 +11,22 @@ import 'package:haji_market/src/feature/app/presentation/my_app.dart';
 import 'package:haji_market/src/feature/initialization/logic/composition_root.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
-  'high_importance_channel', // id
-  'High Importance Notifications', // title
-  description:
-      'This channel is used for important notifications.', // description
+  'high_importance_channel',
+  'High Importance Notifications',
+  description: 'This channel is used for important notifications.',
   importance: Importance.low,
   playSound: true,
 );
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
+
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
 
 Future<void> getDeviceToken() async {
   final box = GetStorage();
-
   final deviceToken = await FirebaseMessaging.instance.getToken();
 
   if (deviceToken != null) {
@@ -38,13 +37,17 @@ Future<void> getDeviceToken() async {
 // configs
 const config = Config();
 
-void main() async {
+Future<void> main() async {
   try {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    await GetStorage.init();
-
+    // 👇 MUST be first line
     WidgetsFlutterBinding.ensureInitialized();
 
+    // Now it's safe to call platform-channel APIs
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
+    await GetStorage.init();
     await Firebase.initializeApp();
 
     const initializationSettingsAndroid =
@@ -56,10 +59,6 @@ void main() async {
     );
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
-    // await flutterLocalNotificationsPlugin
-    //     .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-    //     ?.createNotificationChannel(channel);
-
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: true,
@@ -69,7 +68,6 @@ void main() async {
 
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    // NotificationSettings settings =
     await messaging.requestPermission(
       alert: true,
       announcement: false,
@@ -79,6 +77,7 @@ void main() async {
       provisional: false,
       sound: true,
     );
+
     await getDeviceToken();
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -87,8 +86,8 @@ void main() async {
   } finally {
     final result = await CompositionRoot(config, logger).compose();
 
-    runApp(MyApp(
-      result: result,
-    ));
+    runApp(
+      MyApp(result: result),
+    );
   }
 }

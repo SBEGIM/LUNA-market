@@ -153,8 +153,8 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
     BlocProvider.of<reviewProductCubit.ReviewCubit>(context)
         .reviews(widget.product.id.toString());
-    BlocProvider.of<profitCubit.ProfitCubit>(context)
-        .profit(widget.product.id.toString());
+    // BlocProvider.of<profitCubit.ProfitCubit>(context)
+    //     .profit(widget.product.id.toString());
 
     if (widget.product.video != null) {
       _controller = VideoPlayerController.network(
@@ -224,11 +224,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
         shrinkWrap: true,
         children: [
           SizedBox(
-            height: 405,
+            height: 377,
             child: Stack(
               children: [
                 Container(
-                  height: 405,
+                  height: 377,
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(12)),
                   child: PageView.builder(
@@ -286,7 +286,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
                       // Фото
                       return Container(
-                        padding: EdgeInsets.only(left: 16, right: 16),
+                        padding: EdgeInsets.only(left: 16, right: 16, top: 8),
                         decoration: BoxDecoration(
                           color: Colors.white,
                         ),
@@ -296,12 +296,12 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             child: Image.network(
                               "https://lunamarket.ru/storage/${widget.product.path![index]}",
                               fit: BoxFit.cover,
-                              height: 283,
-                              width: 345,
+                              height: 377,
+                              width: double.infinity,
                               errorBuilder: (context, error, stackTrace) =>
                                   const ErrorImageWidget(
                                 height: 283,
-                                width: 345,
+                                width: double.infinity,
                               ),
                             ),
                           ),
@@ -532,10 +532,10 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                               .products(filters);
                         },
                         child: SizedBox(
-                          width: 28,
-                          height: 28,
+                          width: 21,
+                          height: 21,
                           child: Image.asset(
-                            Assets.icons.favoriteBottomFullIcon.path,
+                            Assets.icons.favoriteDetailProductIcon.path,
                             fit: BoxFit.contain,
                             color: inFavorite == true
                                 ? AppColors.mainRedColor
@@ -1511,9 +1511,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
 
 // Хедер с вкладками
           Container(
-            height: 70,
-            margin: const EdgeInsets.only(top: 16),
-            padding: const EdgeInsets.all(16),
+            height: 62,
+            margin: const EdgeInsets.only(top: 8, left: 0, right: 0),
+            padding: EdgeInsets.only(top: 16, left: 8, right: 8, bottom: 16),
             decoration: BoxDecoration(
               color: AppColors.kWhite,
               borderRadius: BorderRadius.circular(16),
@@ -1521,10 +1521,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
             child: Row(
               children: List.generate(texts.length, (index) {
                 final selected = textBloc == texts[index];
-                return Expanded(
+                return Flexible(
                   child: Padding(
-                    padding: EdgeInsets.only(
-                        right: index == texts.length - 1 ? 0 : 8),
+                    padding: const EdgeInsets.only(right: 8.0),
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
@@ -1546,21 +1545,16 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: FittedBox(
-                            // 👈 уменьшит текст, чтобы он поместился
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              texts[index],
-                              maxLines: 1, // одна строка
-                              softWrap: false, // без переноса
-                              style: AppTextStyles.size14Weight500.copyWith(
-                                color: selected
-                                    ? AppColors.kWhite
-                                    : const Color(0xff636366),
-                                fontWeight: selected
-                                    ? FontWeight.w700
-                                    : FontWeight.w500,
-                              ),
+                          child: Text(
+                            texts[index],
+                            maxLines: 1, // одна строка
+                            softWrap: false, // без переноса
+                            style: AppTextStyles.size13Weight400.copyWith(
+                              color: selected
+                                  ? AppColors.kWhite
+                                  : const Color(0xff636366),
+                              fontWeight:
+                                  selected ? FontWeight.w700 : FontWeight.w500,
                             ),
                           ),
                         ),
@@ -1719,9 +1713,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                       // НЕ spaceBetween, сами контролируем отступ
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // левая колонка (оценка и кол-во отзывов)
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               '${(widget.product.rating ?? 0).toDouble()}',
@@ -1731,20 +1725,15 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                 color: Colors.black,
                               ),
                             ),
-                            const SizedBox(height: 2),
                             Text(
                               '${widget.product.count ?? 0} отзывов',
-                              style: const TextStyle(
-                                color: AppColors.kGray300,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: AppTextStyles.size14Weight500
+                                  .copyWith(color: Color(0xffAEAEB2)),
                             ),
                           ],
                         ),
                         SizedBox(
                           width: 254,
-                          height: 73,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: List.generate(5, (row) {
@@ -1783,13 +1772,19 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                         Container(
                                           height: 4,
                                           width: 160,
-                                          color: const Color(0xffD1D1D6),
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xffD1D1D6),
+                                              borderRadius:
+                                                  BorderRadius.circular(100)),
                                         ),
                                         if (barWidth > 0)
                                           Container(
                                             height: 4,
                                             width: barWidth,
-                                            color: const Color(0xffFFBE00),
+                                            decoration: BoxDecoration(
+                                                color: const Color(0xffFFBE00),
+                                                borderRadius:
+                                                    BorderRadius.circular(100)),
                                           ),
                                       ],
                                     ),
@@ -1858,6 +1853,7 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                   overflow: TextOverflow.ellipsis,
                                   style: AppTextStyles.size14Weight600,
                                 ),
+                                SizedBox(height: 4),
                                 Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -1887,14 +1883,11 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                                       ),
                                       Text(
                                         '${r.date ?? ''}',
-                                        style: const TextStyle(
-                                          color: AppColors.kGray300,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 12,
-                                        ),
+                                        style: AppTextStyles.size14Weight400
+                                            .copyWith(color: Color(0xffAEAEB2)),
                                       ),
                                     ]),
-                                const SizedBox(height: 4),
+                                const SizedBox(height: 12),
                                 Text(
                                   '${r.text ?? ''}',
                                   maxLines: 4,
@@ -2163,9 +2156,9 @@ class _DetailCardProductPageState extends State<DetailCardProductPage> {
                             ? const Center(child: Text('Товары не найдены'))
                             : SizedBox(
                                 width: 358,
-                                height: 558,
-                                // height:
-                                //     state.productModel.length >= 4 ? 600 : 275,
+                                // height: 558,
+                                height:
+                                    state.productModel.length >= 4 ? 558 : 291,
                                 child: GridView.builder(
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,

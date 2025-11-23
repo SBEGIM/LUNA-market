@@ -3,185 +3,260 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:haji_market/src/feature/app/widgets/custom_cupertino_action_sheet.dart';
-import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_city_widget.dart';
+import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
+import 'package:haji_market/src/feature/basket/presentation/widgets/show_module_cities_widget.dart';
 import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart'
     as cityCubit;
 import 'package:haji_market/src/feature/drawer/bloc/country_state.dart';
+import 'package:haji_market/src/feature/home/data/model/city_model.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 import '../../../../core/common/constants.dart';
 import '../../../drawer/bloc/country_cubit.dart';
 
 Future<dynamic> showAlertCountryWidget(
-    BuildContext context, Function()? callBack, bool shop) async {
-  int? country;
-  int? countryId;
-  String? countryCode;
+  BuildContext context,
+  Function()? callBack,
+  bool shop,
+) async {
+  int? selectedCountryId;
+  String? selectedCountryCode;
+  String? selectedCountryName;
 
-  return showCupertinoModalPopup(
-    context: context,
-    builder: (BuildContext context) =>
-        StatefulBuilder(builder: (context, setState) {
-      return CustomCupertinoActionSheet(
-        actions: <Widget>[
-          CupertinoActionSheetAction(
-            child: const Text(
-              'Выберите страну для СДЕК',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-            ),
-            onPressed: () {
-              print('ok 1');
-            },
-          ),
-          CupertinoActionSheetAction(
-            child: BlocConsumer<CountryCubit, CountryState>(
-              listener: (context, state) {},
-              builder: (context, state) {
-                if (state is LoadedState) {
-                  return Container(
-                    constraints: BoxConstraints(
-                        maxHeight: (MediaQuery.of(context).size.height) * 0.85),
-                    height: state.country.length * 50,
-                    child: ListView.builder(
-                        itemCount: state.country.length,
-                        itemBuilder: (context, int index) {
-                          return SizedBox(
-                            height: 50,
-                            child: GestureDetector(
-                              onTap: () {
-                                country = index;
-                                countryId = state.country[index].id;
-                                countryCode = state.country[index].code;
-                                setState(() {});
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    country == index
-                                        ? Icons.check_circle
-                                        : Icons.check_box_outline_blank,
-                                    color: AppColors.kPrimaryColor,
-                                    size: 24.0,
-                                  ),
-                                  const SizedBox(width: 6),
-                                  SizedBox(
-                                    width: 300,
-                                    child: Text(
-                                      "${state.country[index].name ?? ''}",
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16),
-                                      maxLines: 1,
+  final TextEditingController searchController = TextEditingController();
+  final rootContext = Get.context ?? context;
+
+  // тут будем хранить список стран из кубита и отфильтрованный
+  List<dynamic> allCountries = [];
+  List<dynamic> filteredCountries = [];
+
+  return showMaterialModalBottomSheet(
+    context: rootContext,
+    expand: false,
+    backgroundColor: AppColors.kGray1,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+    ),
+    builder: (ctx) {
+      return StatefulBuilder(
+        builder: (ctx, setState) {
+          final media = MediaQuery.of(ctx);
+
+          return SizedBox(
+            height: media.size.height * 0.4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          'Выберите страну для СДЕК',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            height: 1.1,
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.of(ctx).pop(),
+                        child: SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: Image.asset(
+                              Assets.icons.defaultCloseIcon.path,
+                              fit: BoxFit.contain,
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 16),
+                // Список стран
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: BlocBuilder<CountryCubit, CountryState>(
+                        builder: (context, state) {
+                          if (state is LoadedState) {
+                            // сохраняем список из кубита один раз
+                            if (allCountries.isEmpty) {
+                              allCountries = state.country;
+                              if (searchController.text.isNotEmpty) {
+                                final q = searchController.text.toLowerCase();
+                                filteredCountries = allCountries.where((c) {
+                                  final name =
+                                      (c.name ?? '').toString().toLowerCase();
+                                  return name.contains(q);
+                                }).toList();
+                              }
+                            }
+
+                            final list = (filteredCountries.isNotEmpty ||
+                                    searchController.text.isNotEmpty)
+                                ? filteredCountries
+                                : allCountries;
+
+                            return ListView.separated(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              itemCount: list.length,
+                              separatorBuilder: (_, __) => const Divider(
+                                height: 1,
+                                color: AppColors.kGray2,
+                              ),
+                              itemBuilder: (context, index) {
+                                final item = list[index];
+                                final bool isSelected =
+                                    selectedCountryId != null &&
+                                        selectedCountryId == item.id;
+
+                                return InkWell(
+                                  borderRadius: BorderRadius.circular(8),
+                                  onTap: () {
+                                    setState(() {
+                                      selectedCountryId = item.id as int?;
+                                      selectedCountryCode =
+                                          item.code?.toString();
+                                      selectedCountryName =
+                                          item.name?.toString();
+                                    });
+                                  },
+                                  child: Container(
+                                    height: 52,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            item.name ?? '',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              height: 1.2,
+                                              color: isSelected
+                                                  ? AppColors.mainPurpleColor
+                                                  : Colors.black,
+                                              fontWeight: isSelected
+                                                  ? FontWeight.w600
+                                                  : FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                        if (isSelected)
+                                          const Icon(
+                                            Icons.check,
+                                            color: AppColors.mainPurpleColor,
+                                            size: 18,
+                                          ),
+                                      ],
                                     ),
                                   ),
-                                  // SizedBox(
-                                  //   height: 270,
-                                  //   child: ListView.builder(
+                                );
+                              },
+                            );
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ),
 
-                                  //     itemCount: 3,
-                                  //     itemBuilder: (context, state) {
-                                  //       return
-                                  //     },
-                                  //   ),
-                                  // ),
-                                  //   GestureDetector(
-                                  //     onTap: () {
-                                  //       Navigator.pop(context);
+                const SizedBox(height: 16),
 
-                                  //       // showAlertEditDestroyWidget(
-                                  //       //         context,
-                                  //       //         state.addressModel[index].id!,
-                                  //       //         state.addressModel[index].country,
-                                  //       //         state.addressModel[index].city,
-                                  //       //         state.addressModel[index].street,
-                                  //       //         state.addressModel[index].home,
-                                  //       //         state.addressModel[index].floor,
-                                  //       //         state.addressModel[index].porch,
-                                  //       //         state.addressModel[index].room)
-                                  //       //     .whenComplete(() {
-                                  //       //   callBack?.call();
-                                  //       // });
-                                  //     },
-                                  //     child: const Icon(
-                                  //       Icons.more_horiz,
-                                  //       color: AppColors.kPrimaryColor,
-                                  //       size: 24.0,
-                                  //     ),
-                                  //   ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
-                  );
-                  // } else if (state is NoDataState) {
-                  //   return SizedBox(
-                  //     child: Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.center,
-                  //       mainAxisSize: MainAxisSize.max,
-                  //       children: [
-                  //         Image.asset('assets/icons/no_data.png'),
-                  //         const Text(
-                  //           'У вас нет адресов для доставки',
-                  //           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),
-                  //           textAlign: TextAlign.center,
-                  //         ),
-                  //         const Text(
-                  //           'Добавьте адреса для доставки товаров',
-                  //           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xff717171)),
-                  //           textAlign: TextAlign.center,
-                  //         )
-                  //       ],
-                  //     ),
-                  //   );
-                  // }
-                } else {
-                  return const CircularProgressIndicator(
-                    backgroundColor: Colors.blueAccent,
-                  );
-                }
-              },
+                // Кнопка "Выбрать" — открывает модалку городов
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    bottom: 16 + media.viewPadding.bottom,
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: ElevatedButton(
+                      onPressed: selectedCountryId != null
+                          ? () async {
+                              // Берём кубит городов и стабильный контекст
+                              final citiesCubit =
+                                  BlocProvider.of<cityCubit.CityCubit>(ctx);
+                              final navigatorContext = Get.context ?? ctx;
+
+                              // закрываем модалку стран
+                              Navigator.of(ctx).pop();
+
+                              // сохраняем выбранную страну
+                              if (selectedCountryName != null) {
+                                GetStorage()
+                                    .write('country', selectedCountryName);
+                              }
+                              if (selectedCountryId != null) {
+                                GetStorage().write(
+                                  'user_country_id',
+                                  selectedCountryId.toString(),
+                                );
+                              }
+
+                              // грузим города по коду страны
+                              final data = await citiesCubit
+                                  .citiesCdek(selectedCountryCode ?? 'KZ');
+
+                              // открываем модалку городов в новом контексте
+                              showModuleCities(
+                                navigatorContext,
+                                'Область/Район ОГД',
+                                data,
+                                (CityModel city) {
+                                  print(city.lat);
+                                  print(city.long);
+                                  final box = GetStorage();
+                                  box.write('city', city.toJson());
+                                  callBack?.call();
+                                },
+                              );
+                            }
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.mainPurpleColor,
+                        disabledBackgroundColor:
+                            AppColors.boxDecorBackgroundPurpleColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        padding: EdgeInsets.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: Text(
+                        'Выбрать',
+                        style: AppTextStyles.size18Weight600
+                            .copyWith(color: AppColors.kWhite),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            onPressed: () {},
-          ),
-          // CupertinoActionSheetAction(
-          //   child: const Text(
-          //     'Добавить новый адрес',
-          //     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
-          //   ),
-          //   onPressed: () {
-          //     // showAlertAddWidget(context, product);
-          //     Navigator.pop(context);
-          //     showAlertStoreWidget(context);
-          //   },
-          // ),
-        ],
-        cancelButton: GestureDetector(
-          onTap: () {
-            Get.back();
-            GetStorage().write('country', 'Казахстан');
-            GetStorage().write('user_country_id', countryId.toString());
-
-            Future.wait([
-              BlocProvider.of<cityCubit.CityCubit>(context)
-                  .citiesCdek(countryCode ?? 'KZ')
-            ]);
-
-            showAlertCityWidget(context, shop);
-          },
-          child: CupertinoActionSheetAction(
-            child: const Text(
-              'Выбрать',
-              style: TextStyle(
-                  color: AppColors.kPrimaryColor, fontWeight: FontWeight.w600),
-            ),
-            onPressed: () {},
-          ),
-        ),
+          );
+        },
       );
-    }),
+    },
   );
 }

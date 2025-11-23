@@ -28,6 +28,17 @@ class CityModel {
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
   }
+
+  CityModel.fromStorageJson(dynamic json) {
+    _id = json['id'];
+    _name = json['name'];
+    _city = json['city'];
+    _code = json['code'];
+    _long = json['long'];
+    _lat = json['lat'];
+    _createdAt = json['created_at'];
+    _updatedAt = json['updated_at'];
+  }
   int? _id;
   String? _name;
   String? _city;
@@ -50,6 +61,7 @@ class CityModel {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['name'] = _name;
+    map['city'] = _city;
     map['code'] = _code;
     map['lat'] = _lat;
     map['long'] = _long;
