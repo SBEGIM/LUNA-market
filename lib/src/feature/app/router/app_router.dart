@@ -142,9 +142,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: PaymentWebviewRoute.page),
     AutoRoute(page: BasketOrderAddressRoute.page),
     AutoRoute(page: BasketOrderRoute.page),
-    AutoRoute(page: MapPickerRoute.page),
     AutoRoute(page: ReviewOrderWidgetRoute.page),
-
     AutoRoute(page: LoginForgotSellerPasswordRoute.page),
 
     ///
