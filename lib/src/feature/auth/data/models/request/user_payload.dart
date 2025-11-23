@@ -4,7 +4,7 @@ part 'user_payload.freezed.dart';
 part 'user_payload.g.dart';
 
 @freezed
-class UserPayload with _$UserPayload {
+sealed class UserPayload with _$UserPayload {
   const factory UserPayload({
     @JsonKey(name: 'first_name', includeIfNull: false) String? firstName,
     @JsonKey(name: 'last_name', includeIfNull: false) String? lastName,

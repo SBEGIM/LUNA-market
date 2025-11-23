@@ -14,34 +14,21 @@ abstract interface class IProfileRepository {
 
   Future deleteAccount();
 
-  Future updateLanguage({
-    required String languageCode,
-  });
+  Future updateLanguage({required String languageCode});
 
-  Future<UserDTO> updateAvatar({
-    required Uint8List? imageByteUint8List,
-  });
+  Future<UserDTO> updateAvatar({required Uint8List? imageByteUint8List});
 
   Future<CommonListsDTO> getProfileUpdateFormOptions();
 
   Future<List<UserDTO>> getChildren();
 
-  Future<void> addChild({
-    required int id,
-  });
+  Future<void> addChild({required int id});
 
-  Future<void> deleteChild({
-    required int id,
-  });
+  Future<void> deleteChild({required int id});
 
-  Future<int> updatePhoneSmsSend({
-    required String phone,
-  });
+  Future<int> updatePhoneSmsSend({required String phone});
 
-  Future<UserDTO> updatePhoneSmsCheck({
-    required String phone,
-    required String code,
-  });
+  Future<UserDTO> updatePhoneSmsCheck({required String phone, required String code});
 
   Future<UserDTO> changePassword({
     required String oldPassword,
@@ -49,19 +36,13 @@ abstract interface class IProfileRepository {
     required String passwordConfirmation,
   });
 
-  Future<List<AchievementDTO>> getAchievements();
-
-  Future makeAchievementShown({
-    required int achievementId,
-  });
+  Future makeAchievementShown({required int achievementId});
 }
 
 class ProfileRepositoryImpl implements IProfileRepository {
-  const ProfileRepositoryImpl({
-    required IProfileRemoteDS remoteDS,
-    required IAuthDao authDao,
-  })  : _remoteDS = remoteDS,
-        _authDao = authDao;
+  const ProfileRepositoryImpl({required IProfileRemoteDS remoteDS, required IAuthDao authDao})
+    : _remoteDS = remoteDS,
+      _authDao = authDao;
   final IProfileRemoteDS _remoteDS;
   final IAuthDao _authDao;
 
@@ -89,26 +70,18 @@ class ProfileRepositoryImpl implements IProfileRepository {
   }
 
   @override
-  Future<void> addChild({
-    required int id,
-  }) async {
+  Future<void> addChild({required int id}) async {
     try {
-      return await _remoteDS.addChild(
-        id: id,
-      );
+      return await _remoteDS.addChild(id: id);
     } catch (e) {
       rethrow;
     }
   }
 
   @override
-  Future<void> deleteChild({
-    required int id,
-  }) async {
+  Future<void> deleteChild({required int id}) async {
     try {
-      return await _remoteDS.deleteChild(
-        id: id,
-      );
+      return await _remoteDS.deleteChild(id: id);
     } catch (e) {
       rethrow;
     }
@@ -133,9 +106,7 @@ class ProfileRepositoryImpl implements IProfileRepository {
   }
 
   @override
-  Future updateLanguage({
-    required String languageCode,
-  }) async {
+  Future updateLanguage({required String languageCode}) async {
     try {
       await _remoteDS.updateLanguage(languageCode: languageCode);
     } catch (e) {
@@ -144,13 +115,9 @@ class ProfileRepositoryImpl implements IProfileRepository {
   }
 
   @override
-  Future<UserDTO> updateAvatar({
-    required Uint8List? imageByteUint8List,
-  }) async {
+  Future<UserDTO> updateAvatar({required Uint8List? imageByteUint8List}) async {
     try {
-      final result = await _remoteDS.updateAvatar(
-        imageByteUint8List: imageByteUint8List,
-      );
+      final result = await _remoteDS.updateAvatar(imageByteUint8List: imageByteUint8List);
 
       await _authDao.user.setValue(
         jsonEncode(
@@ -189,13 +156,9 @@ class ProfileRepositoryImpl implements IProfileRepository {
   }
 
   @override
-  Future<UserDTO> updateProfile({
-    required UserPayload payload,
-  }) async {
+  Future<UserDTO> updateProfile({required UserPayload payload}) async {
     try {
-      final result = await _remoteDS.updateProfile(
-        payload: payload,
-      );
+      final result = await _remoteDS.updateProfile(payload: payload);
 
       await _authDao.user.setValue(
         jsonEncode(
@@ -216,9 +179,7 @@ class ProfileRepositoryImpl implements IProfileRepository {
   }
 
   @override
-  Future<int> updatePhoneSmsSend({
-    required String phone,
-  }) async {
+  Future<int> updatePhoneSmsSend({required String phone}) async {
     try {
       return await _remoteDS.updatePhoneSmsSend(phone: phone);
     } catch (e) {
@@ -227,15 +188,9 @@ class ProfileRepositoryImpl implements IProfileRepository {
   }
 
   @override
-  Future<UserDTO> updatePhoneSmsCheck({
-    required String phone,
-    required String code,
-  }) async {
+  Future<UserDTO> updatePhoneSmsCheck({required String phone, required String code}) async {
     try {
-      final result = await _remoteDS.updatePhoneSmsCheck(
-        phone: phone,
-        code: code,
-      );
+      final result = await _remoteDS.updatePhoneSmsCheck(phone: phone, code: code);
 
       await _authDao.user.setValue(
         jsonEncode(
@@ -281,15 +236,6 @@ class ProfileRepositoryImpl implements IProfileRepository {
       );
 
       return result;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<List<AchievementDTO>> getAchievements() async {
-    try {
-      return await _remoteDS.getAchievements();
     } catch (e) {
       rethrow;
     }

@@ -17,11 +17,11 @@ final class Localization {
 
   /// List of localization delegates.
   static List<LocalizationsDelegate<void>> get localizationDelegates => [
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        _delegate,
-      ];
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    _delegate,
+  ];
 
   /// {@macro localization}
   static Localization? get current => _current;
@@ -45,8 +45,7 @@ final class Localization {
 
   /// Obtain [AppLocalizations] instance from [BuildContext].
   static AppLocalizations of(BuildContext context) =>
-      AppLocalizations.of(context) ??
-      (throw FlutterError('No Localization found in context'));
+      AppLocalizations.of(context) ?? (throw FlutterError('No Localization found in context'));
 
   static late AppLocalizations _localizations;
 

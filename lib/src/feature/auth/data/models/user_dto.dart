@@ -5,7 +5,7 @@ part 'user_dto.freezed.dart';
 part 'user_dto.g.dart';
 
 @freezed
-class UserDTO with _$UserDTO {
+sealed class UserDTO with _$UserDTO {
   const factory UserDTO({
     @JsonKey(name: 'access_token') String? accessToken,
     @JsonKey(defaultValue: -1) required int id,
