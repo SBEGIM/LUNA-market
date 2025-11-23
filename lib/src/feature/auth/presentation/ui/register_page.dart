@@ -59,11 +59,6 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController repeatPasswordController = TextEditingController();
 
-  bool _visibleIconClearName = false;
-  bool _visibleIconClearPhone = false;
-
-  bool _visibleIconView = false;
-  bool _visibleIconViewRepeat = false;
 
   setIsButtonEnabled(bool value) {
     // log("is button state changed $value");
