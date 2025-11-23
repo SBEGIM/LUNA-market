@@ -14,6 +14,8 @@ class BasketCubit extends Cubit<BasketState> {
 
   int basketOrderShowPage = 1;
 
+  List<BasketOrderModel> _orders = [];
+
   List<BasketShowModel> basketProducts = [];
   List<BasketShowModel> buyProducts = [];
 
@@ -166,6 +168,8 @@ class BasketCubit extends Cubit<BasketState> {
 
   Future<void> basketOrderShow({required String status}) async {
     try {
+      basketOrderShowPage = 1;
+
       emit(LoadingState());
       final List<BasketOrderModel> data = await basketRepository
           .basketOrderShow(status: status, page: basketOrderShowPage);
@@ -173,8 +177,29 @@ class BasketCubit extends Cubit<BasketState> {
       if (data.isEmpty) {
         emit(NoDataState());
       } else {
+        _orders.clear();
+        _orders.addAll(data);
+
         emit(LoadedOrderState(data));
       }
+    } catch (e) {
+      log(e.toString());
+      emit(ErrorState(message: 'Ошибка сервера'));
+    }
+  }
+
+  Future<void> basketOrderShowPaginate({required String status}) async {
+    try {
+      basketOrderShowPage++;
+
+      final List<BasketOrderModel> data = await basketRepository
+          .basketOrderShow(status: status, page: basketOrderShowPage);
+
+      for (int i = 0; i < data.length; i++) {
+        _orders.add(data[i]);
+      }
+
+      emit(LoadedOrderState(_orders));
     } catch (e) {
       log(e.toString());
       emit(ErrorState(message: 'Ошибка сервера'));

@@ -115,11 +115,15 @@ class _ProductWatchingCardState extends State<ProductWatchingCard> {
                                 inFavorite = !inFavorite;
                               });
                             },
-                            child: SvgPicture.asset(
-                              Assets.icons.favoriteFullIcon.path,
-                              color: inFavorite == true
-                                  ? const Color.fromRGBO(255, 50, 72, 1)
-                                  : Colors.red,
+                            child: SizedBox(
+                              height: 21,
+                              width: 21,
+                              child: Image.asset(
+                                Assets.icons.favoriteDetailProductIcon.path,
+                                color: inFavorite == true
+                                    ? AppColors.mainRedColor
+                                    : Color(0xffD1D1D6),
+                              ),
                             ),
                           )
                           // IconButton(

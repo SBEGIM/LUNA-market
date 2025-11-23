@@ -21,8 +21,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
 
   final TextEditingController _searchController = TextEditingController();
 
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  final RefreshController _refreshController = RefreshController();
 
   Future<void> onRefresh() async {
     await BlocProvider.of<BasketCubit>(context)
@@ -36,7 +35,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
 
   Future<void> onLoading() async {
     await BlocProvider.of<BasketCubit>(context)
-        .basketOrderShow(status: currentStatus);
+        .basketOrderShowPaginate(status: currentStatus);
     await Future.delayed(const Duration(milliseconds: 2000));
 
     _refreshController.loadComplete();
@@ -56,7 +55,8 @@ class _MyOrderPageState extends State<MyOrderPage> {
       drawer: const DrawerPage(),
       appBar: AppBar(
         toolbarHeight: 70,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.kWhite,
+        surfaceTintColor: AppColors.kWhite,
         elevation: 0,
         leading: InkWell(
           onTap: () {

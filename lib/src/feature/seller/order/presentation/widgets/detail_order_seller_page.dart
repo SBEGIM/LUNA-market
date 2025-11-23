@@ -49,7 +49,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
 
   @override
   void initState() {
-    switch (widget.basket.statusFBS) {
+    switch (widget.basket.status) {
       case 'order':
         {
           statusFBS = 'Заказ оформлен';
@@ -144,7 +144,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
         break;
     }
 
-    switch (widget.basket.statusRealFBS) {
+    switch (widget.basket.status) {
       case 'order':
         {
           statusRealFBS = 'Заказ оформлен';
@@ -335,7 +335,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
       body: IndexedStack(
         index: segmentValue,
         children: [
-          if (widget.basket.productFBS?.isNotEmpty ?? false)
+          if (widget.basket.product?.isNotEmpty ?? false)
             ListView(
               shrinkWrap: true,
               children: [
@@ -343,7 +343,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                   padding: const EdgeInsets.all(16),
                   child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: widget.basket.productFBS?.length,
+                      itemCount: widget.basket.product?.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
                           decoration: BoxDecoration(
@@ -352,10 +352,10 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                           ),
                           child: ListTile(
                             leading: Image.network(
-                              widget.basket.productFBS![index].path != null &&
-                                      widget.basket.productFBS![index].path!
+                              widget.basket.product![index].path != null &&
+                                      widget.basket.product![index].path!
                                           .isNotEmpty
-                                  ? "https://lunamarket.ru/storage/${widget.basket.productFBS![index].path?.first}"
+                                  ? "https://lunamarket.ru/storage/${widget.basket.product![index].path?.first}"
                                   : '',
                               fit: BoxFit.cover,
                               height: 72,
@@ -370,7 +370,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${widget.basket.productFBS?[index].productName}',
+                                  '${widget.basket.product?[index].productName}',
                                   style: const TextStyle(
                                       color: AppColors.kGray900,
                                       fontSize: 12,
@@ -391,7 +391,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                           fontWeight: FontWeight.w400),
                                     ),
                                     Text(
-                                      '${widget.basket.productFBS?[index].price}₽',
+                                      '${widget.basket.product?[index].price}₽',
                                       style: const TextStyle(
                                           color: AppColors.kGray900,
                                           fontSize: 12,
@@ -411,7 +411,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                           fontWeight: FontWeight.w400),
                                     ),
                                     Text(
-                                      '${widget.basket.productFBS?[index].count}',
+                                      '${widget.basket.product?[index].count}',
                                       style: const TextStyle(
                                           color: AppColors.kGray900,
                                           fontSize: 12,
@@ -485,7 +485,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                   .copyWith(color: AppColors.kGray200),
                             ),
                             Text(
-                              '${widget.basket.priceFBS} ₽ ',
+                              '${widget.basket.summa} ₽ ',
                               style: const TextStyle(
                                   color: AppColors.kGray900,
                                   fontSize: 16,
@@ -548,7 +548,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                   .copyWith(color: AppColors.kGray200),
                             ),
                             Text(
-                              '${widget.basket.priceFBS! + widget.basket.deliveryPrice! - widget.basket.bonus!} ₽ ',
+                              '${widget.basket.summa! + widget.basket.deliveryPrice! - widget.basket.bonus!} ₽ ',
                               style: const TextStyle(
                                   color: AppColors.kGray900,
                                   fontSize: 16,
@@ -657,7 +657,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${widget.basket.user!.name}',
+                                  '${widget.basket.user!.fullName}',
                                   style: AppTextStyles.defaultButtonTextStyle,
                                 ),
                                 const SizedBox(height: 10),
@@ -665,7 +665,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                   onTap: () {
                                     Get.to(MessageSeller(
                                         userId: widget.basket.user!.id,
-                                        userName: widget.basket.user!.name,
+                                        userName: widget.basket.user!.fullName,
                                         // avatar: state.tapeModel[index].shop!.image,
                                         chatId: widget.basket.chatId));
                                   },
@@ -852,7 +852,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                 ],
               ),
             ),
-          if (widget.basket.productRealFBS?.isNotEmpty ?? false)
+          if (widget.basket.product?.isNotEmpty ?? false)
             ListView(
               shrinkWrap: true,
               children: [
@@ -860,7 +860,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                   padding: const EdgeInsets.all(16),
                   child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: widget.basket.productRealFBS?.length,
+                      itemCount: widget.basket.product?.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
                           padding: const EdgeInsets.all(10),
@@ -872,11 +872,10 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                             ),
                             child: ListTile(
                               leading: Image.network(
-                                widget.basket.productRealFBS![index].path !=
-                                            null &&
-                                        widget.basket.productRealFBS![index]
-                                            .path!.isNotEmpty
-                                    ? "https://lunamarket.ru/storage/${widget.basket.productRealFBS![index].path?.first}"
+                                widget.basket.product![index].path != null &&
+                                        widget.basket.product![index].path!
+                                            .isNotEmpty
+                                    ? "https://lunamarket.ru/storage/${widget.basket.product![index].path?.first}"
                                     : '',
                                 fit: BoxFit.cover,
                                 height: 104,
@@ -891,7 +890,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${widget.basket.productRealFBS?[index].productName}',
+                                    '${widget.basket.product?[index].productName}',
                                     style: const TextStyle(
                                         color: AppColors.kGray900,
                                         fontSize: 12,
@@ -903,7 +902,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                   Row(
                                     children: [
                                       Text(
-                                        '${widget.basket.productRealFBS?[index].price}',
+                                        '${widget.basket.product?[index].price}',
                                         style: const TextStyle(
                                             color: AppColors.kGray900,
                                             fontSize: 12,
@@ -913,7 +912,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                         width: 10,
                                       ),
                                       Text(
-                                        '${widget.basket.productRealFBS?[index].count}x',
+                                        '${widget.basket.product?[index].count}x',
                                         style: const TextStyle(
                                             color: AppColors.kPrimaryColor,
                                             fontSize: 12,
@@ -991,7 +990,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            '${widget.basket.priceRealFBS} ₽ ',
+                            '${widget.basket.summa} ₽ ',
                             style: const TextStyle(
                                 color: AppColors.kGray900,
                                 fontSize: 16,
@@ -1069,7 +1068,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            '${widget.basket.priceRealFBS! + widget.basket.deliveryPrice! - widget.basket.bonus!} ₽ ',
+                            '${widget.basket.summa! + widget.basket.deliveryPrice! - widget.basket.bonus!} ₽ ',
                             style: const TextStyle(
                                 color: AppColors.kGray900,
                                 fontSize: 16,
@@ -1150,7 +1149,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                       ),
                       minLeadingWidth: 12,
                       title: Text(
-                        '${widget.basket.productRealFBS!.first.address}',
+                        '${widget.basket.product!.first.address}',
                         style: const TextStyle(
                             color: AppColors.kGray900,
                             fontSize: 16,
@@ -1205,7 +1204,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${widget.basket.user!.name}',
+                                  '${widget.basket.user!.fullName}',
                                   style: const TextStyle(
                                       color: AppColors.kGray700,
                                       fontSize: 16,
@@ -1216,7 +1215,7 @@ class _DetailOrderSellerPageState extends State<DetailOrderSellerPage> {
                                   onTap: () {
                                     Get.to(MessageSeller(
                                         userId: widget.basket.user!.id,
-                                        userName: widget.basket.user!.name,
+                                        userName: widget.basket.user!.fullName,
                                         // avatar: state.tapeModel[index].shop!.image,
                                         chatId: widget.basket.chatId));
                                   },

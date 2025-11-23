@@ -282,7 +282,7 @@ class _AllOrdersRealFbsSellerPageState
                                         color: AppColors.kGray400,
                                       ),
                                       Text(
-                                        ' ${state.basketOrderRealFbsModel[index].user!.name}',
+                                        ' ${state.basketOrderRealFbsModel[index].user!.fullName}',
                                         style: const TextStyle(
                                             color: AppColors.kGray500,
                                             fontSize: 12,

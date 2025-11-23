@@ -49,7 +49,10 @@ class _AddressPageState extends State<AddressPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kBackgroundColor,
+      extendBody: true,
       appBar: AppBar(
+        surfaceTintColor: AppColors.kBackgroundColor,
+        backgroundColor: AppColors.kBackgroundColor,
         title: Text('Сохраненные адреса', style: AppTextStyles.size18Weight600),
       ),
 
@@ -57,7 +60,7 @@ class _AddressPageState extends State<AddressPage> {
       bottomNavigationBar: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
           child: SizedBox(
             height: 52,
             width: double.infinity,
@@ -163,10 +166,10 @@ class _AddressPageState extends State<AddressPage> {
 
     if (state is LoadedState) {
       final items = state.addressModel;
-      return ListView.separated(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 88), // низ — под кнопку
+      return ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16), // низ — под кнопку
         itemCount: items.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
+        // separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final a = items[index];
           // Аккуратно формируем строку адреса (без "лишних запятых")
@@ -186,7 +189,15 @@ class _AddressPageState extends State<AddressPage> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: AppColors.kWhite,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: index == 0
+                  ? BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16))
+                  : items.length - 1 == index
+                      ? BorderRadius.only(
+                          bottomLeft: Radius.circular(16),
+                          bottomRight: Radius.circular(16))
+                      : null,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,

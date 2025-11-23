@@ -7,9 +7,11 @@ import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/core/presentation/widgets/other/custom_switch_button.dart';
 import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/app/widgets/app_snack_bar.dart';
+import 'package:haji_market/src/feature/basket/data/DTO/map_geo_dto.dart';
 import 'package:haji_market/src/feature/basket/data/models/basket_show_model.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_city_basket_widget.dart';
 import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_country_basket_widget.dart';
+import 'package:haji_market/src/feature/basket/presentation/widgets/show_alert_country_widget.dart';
 import 'package:haji_market/src/feature/drawer/bloc/address_cubit.dart';
 import 'package:haji_market/src/feature/drawer/bloc/city_cubit.dart'
     as cityCubit;
@@ -19,6 +21,7 @@ import 'package:haji_market/src/feature/drawer/bloc/order_cubit.dart'
     as orderCubit;
 import 'package:haji_market/src/feature/drawer/data/models/address_model.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
+import 'package:haji_market/src/feature/home/data/model/city_model.dart';
 import 'package:haji_market/src/feature/seller/order/data/repository/basket_seller_repository.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/common/constants.dart';
@@ -105,9 +108,22 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
   List<int> basketIds = [];
   String? productNames;
 
+  CityModel? city;
+  CityModel? loadCity() {
+    final data = GetStorage().read('city');
+    if (data == null) return null;
+
+    if (data is! Map<String, dynamic>) {
+      return null;
+    }
+
+    return CityModel.fromStorageJson(Map<String, dynamic>.from(data));
+  }
+
   @override
   void initState() {
     basketData();
+    city = loadCity();
 
     if (State is! metaState.LoadedState) {
       BlocProvider.of<metaCubit.MetaCubit>(context).partners();
@@ -240,8 +256,8 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
     return Scaffold(
         backgroundColor: AppColors.kBackgroundColor,
         appBar: AppBar(
-          iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.kWhite,
+          surfaceTintColor: AppColors.kWhite,
           elevation: 0,
           centerTitle: true,
           leading: IconButton(
@@ -387,17 +403,36 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                                   Expanded(
                                     child: GestureDetector(
                                       onTap: () async {
+                                        if (!GetStorage().hasData('city')) {
+                                          Future.wait(
+                                            [
+                                              BlocProvider.of<
+                                                      countryCubit
+                                                      .CountryCubit>(context)
+                                                  .country()
+                                            ],
+                                          );
+                                          showAlertCountryWidget(context, () {
+                                            setState(() {});
+                                          }, false);
+
+                                          return;
+                                        }
+
+                                        print(city.toString());
+
+                                        print(city?.lat.toString());
+                                        print(city?.long.toString());
+
                                         // ждём результат от карты
                                         final result =
                                             await context.router.push(
                                           MapPickerRoute(
-                                            cc: 4756,
-                                            lat: 43.238949,
-                                            long: 76.889709,
+                                            cc: city?.code ?? 4756,
+                                            lat: city?.lat ?? 43.238949,
+                                            long: city?.long ?? 76.889709,
                                           ),
                                         ) as String?;
-
-                                        print(result.toString());
 
                                         if (!mounted) return;
 
@@ -540,7 +575,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
               BlocBuilder<BasketCubit, BasketState>(builder: (context, state) {
                 if (state is LoadedState) {
                   return SizedBox(
-                    height: (175 * state.basketShowModel.length).toDouble(),
+                    height: (169 * state.basketShowModel.length).toDouble(),
                     width: double.infinity,
                     child: ListView.builder(
                         padding: EdgeInsets.zero,
@@ -666,7 +701,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                 }
               }),
               Container(
-                margin: EdgeInsets.only(top: 8, bottom: 16),
+                margin: EdgeInsets.only(top: 14, bottom: 16),
                 padding: const EdgeInsets.only(
                   left: 16,
                   right: 16,
@@ -703,7 +738,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                               fontWeight: FontWeight.w400),
                         ),
                         Text(
-                          "$price ₽",
+                          " ${formatPrice(price)} ₽",
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -755,7 +790,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                           ),
                         ),
                         Text(
-                          '${courierPrice == 0 ? 'Без доплат' : courierPrice} ${courierPrice != 0 ? '₽' : ''} ',
+                          '${courierPrice == 0 ? 'Без доплат' : formatPrice(courierPrice)} ${courierPrice != 0 ? '₽' : ''} ',
                           style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -766,6 +801,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                     const SizedBox(
                       height: 12,
                     ),
+
                     SizedBox(
                       height: 1,
                       child: LayoutBuilder(
@@ -876,23 +912,14 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            'Итого',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                          const Text('Итого',
+                              style: AppTextStyles.size18Weight600),
                           Text(
-                            ' ${isSwitched == true ? (bonus < (price * 0.1) ? ((price - bonus) + courierPrice) : ((price - price * 0.1) + courierPrice)).toInt() : (courierPrice + price)} ₽',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            ' ${isSwitched == true ? formatPrice((bonus < (price * 0.1) ? ((price - bonus) + courierPrice) : ((price - price * 0.1) + courierPrice)).toInt()) : formatPrice(courierPrice + price)} ₽',
+                            style: AppTextStyles.size18Weight700,
                           ),
                         ]),
-                    SizedBox(height: 16)
-
+                    SizedBox(height: 16),
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     //   children: [
@@ -925,6 +952,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                   ],
                 ),
               ),
+              SizedBox(height: 140),
             ]);
           } else {
             return const Center(
@@ -940,7 +968,7 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
           return SafeArea(
             bottom: false,
             child: Container(
-              height: 120,
+              height: 175,
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -950,20 +978,20 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                   const EdgeInsets.only(left: 23, right: 23, bottom: 8, top: 8),
               child: Column(
                 children: [
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Text(
-                  //       '$count товаров',
-                  //       style: AppTextStyles.size16Weight500,
-                  //     ),
-                  //     Text(
-                  //       "$price ₽",
-                  //       style: AppTextStyles.size16Weight500,
-                  //     ),
-                  //   ],
-                  // ),
-                  // SizedBox(height: 14),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '$count товаров',
+                        style: AppTextStyles.size16Weight500,
+                      ),
+                      Text(
+                        '${isSwitched == true ? formatPrice((bonus < (price * 0.1) ? ((price - bonus) + courierPrice) : ((price - price * 0.1) + courierPrice)).toInt()) : formatPrice(courierPrice + price)} ₽',
+                        style: AppTextStyles.size16Weight500,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 14),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -991,24 +1019,20 @@ class _BasketOrderAddressPageState extends State<BasketOrderAddressPage> {
                             },
                             child: RichText(
                               textAlign: TextAlign.left,
-                              text: const TextSpan(
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.black),
+                              text: TextSpan(
+                                style: AppTextStyles.size14Weight400,
                                 children: <TextSpan>[
                                   TextSpan(
                                     text:
                                         "Нажимая «Оплатить», вы принимаете\nусловия ",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: AppColors.kGray300,
-                                        fontWeight: FontWeight.w400),
+                                    style: AppTextStyles.size14Weight400
+                                        .copyWith(color: Color(0xff8E8E93)),
                                   ),
                                   TextSpan(
                                     text: "Типового договора купли-продажи\n",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.mainPurpleColor),
+                                    style: AppTextStyles.size14Weight400
+                                        .copyWith(
+                                            color: AppColors.mainPurpleColor),
                                   ),
                                 ],
                               ),
