@@ -6,19 +6,13 @@ import 'package:haji_market/src/feature/app/router/app_router.dart';
 import 'package:haji_market/src/feature/tape/bloc/tape_cubit.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:haji_market/src/feature/tape/data/models/tape_model.dart';
 
 class TapeCardWidget extends StatefulWidget {
   final TapeModel tape;
   final int index;
   final String? bloggerName;
-  const TapeCardWidget({
-    required this.tape,
-    required this.index,
-    this.bloggerName,
-    Key? key,
-  }) : super(key: key);
+  const TapeCardWidget({required this.tape, required this.index, this.bloggerName, super.key});
 
   @override
   State<TapeCardWidget> createState() => _TapeCardWidgetState();
@@ -29,12 +23,12 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network(
-        'https://lunamarket.ru/storage/${widget.tape.video}')
-      ..initialize().then((_) {
-        _controller!.pause();
-        setState(() {});
-      });
+    _controller =
+        VideoPlayerController.network('https://lunamarket.ru/storage/${widget.tape.video}')
+          ..initialize().then((_) {
+            _controller!.pause();
+            setState(() {});
+          });
     super.initState();
   }
 
@@ -78,10 +72,13 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
           ),
           InkWell(
             onTap: () {
-              context.router.push(DetailTapeCardRoute(
+              context.router.push(
+                DetailTapeCardRoute(
                   index: widget.index,
                   shopName: widget.tape.shop!.name!,
-                  tapeBloc: BlocProvider.of<TapeCubit>(context)));
+                  tapeBloc: BlocProvider.of<TapeCubit>(context),
+                ),
+              );
               // Navigator.push(
               //   context,
               //   MaterialPageRoute(
@@ -93,22 +90,25 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
             child: Padding(
               padding: const EdgeInsets.only(left: 12.0, top: 8, right: 24),
               child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    '${widget.bloggerName ?? widget.tape.shop?.name}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.size14Weight500
-                        .copyWith(color: AppColors.kWhite),
-                  )),
+                alignment: Alignment.topLeft,
+                child: Text(
+                  '${widget.bloggerName ?? widget.tape.shop?.name}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.size14Weight500.copyWith(color: AppColors.kWhite),
+                ),
+              ),
             ),
           ),
           InkWell(
             onTap: () {
-              context.router.push(DetailTapeCardRoute(
+              context.router.push(
+                DetailTapeCardRoute(
                   index: widget.index,
                   shopName: widget.tape.shop!.name!,
-                  tapeBloc: BlocProvider.of<TapeCubit>(context)));
+                  tapeBloc: BlocProvider.of<TapeCubit>(context),
+                ),
+              );
               // Navigator.push(
               //   context,
               //   MaterialPageRoute(
@@ -120,16 +120,18 @@ class _TapeCardWidgetState extends State<TapeCardWidget> {
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0, bottom: 8),
               child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Row(children: [
+                alignment: Alignment.bottomLeft,
+                child: Row(
+                  children: [
                     Image.asset(Assets.icons.viewTapeIcon.path, scale: 1.9),
                     SizedBox(width: 8),
                     Text(
                       '${formatViews(widget.tape.view ?? 0)}',
-                      style: AppTextStyles.size14Weight600
-                          .copyWith(color: AppColors.kWhite),
-                    )
-                  ])),
+                      style: AppTextStyles.size14Weight600.copyWith(color: AppColors.kWhite),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
           // Container(
