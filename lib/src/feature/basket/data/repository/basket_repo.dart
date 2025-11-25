@@ -12,59 +12,75 @@ const baseUrl = 'https://lunamarket.ru/api';
 class BasketRepository {
   final Basket _basket = Basket();
 
-  Future<int> basketAdd(productId, count, price, size, color,
-          {bool? isOptom, String? blogger_id}) =>
-      _basket.basketAdd(productId, count, price, size, color,
-          isOptom: isOptom, blogger_id: blogger_id);
-  Future<int> basketMinus(productId, count, price) =>
-      _basket.basketMinus(productId, count, price);
+  Future<int> basketAdd(
+    productId,
+    count,
+    price,
+    size,
+    color, {
+    bool? isOptom,
+    String? blogger_id,
+  }) => _basket.basketAdd(
+    productId,
+    count,
+    price,
+    size,
+    color,
+    isOptom: isOptom,
+    blogger_id: blogger_id,
+  );
+  Future<int> basketMinus(productId, count, price) => _basket.basketMinus(productId, count, price);
   Future<int> basketDelete(productId) => _basket.basketDelete(productId);
 
-  Future<int> basketDeleteProducts(productIds) =>
-      _basket.basketDeleteProducts(productIds);
+  Future<int> basketDeleteProducts(productIds) => _basket.basketDeleteProducts(productIds);
 
-  Future<List<BasketShowModel>> basketShow(String? fulfillment) =>
-      _basket.basketShow(fulfillment);
-  Future<List<BasketOrderModel>> basketOrderShow(
-          {required String status, required int page}) =>
+  Future<List<BasketShowModel>> basketShow() => _basket.basketShow();
+  Future<List<BasketOrderModel>> basketOrderShow({required String status, required int page}) =>
       _basket.basketOrderShow(status: status, page: page);
   Future<int> basketOrder(List id) => _basket.basketOrder(id);
-  Future<String> payment(
-          {required BuildContext context,
-          required List<int> basketIds,
-          String? address,
-          String? bonus,
-          String? fulfillment}) =>
-      _basket.payment(
-        context: context,
-        basketIds: basketIds,
-        address: address,
-        bonus: bonus,
-        fulfillment: fulfillment,
-      );
-  Future<int> status(String id, String status, String? text) =>
-      _basket.status(id, status, text);
+  Future<String> payment({
+    required BuildContext context,
+    required List<int> basketIds,
+    String? address,
+    String? bonus,
+    String? fulfillment,
+  }) => _basket.payment(
+    context: context,
+    basketIds: basketIds,
+    address: address,
+    bonus: bonus,
+    fulfillment: fulfillment,
+  );
+  Future<int> status(String id, String status, String? text) => _basket.status(id, status, text);
 }
 
 class Basket {
   final _box = GetStorage();
 
-  Future<int> basketAdd(productId, count, price, size, color,
-      {bool? isOptom, String? blogger_id}) async {
+  Future<int> basketAdd(
+    productId,
+    count,
+    price,
+    size,
+    color, {
+    bool? isOptom,
+    String? blogger_id,
+  }) async {
     final String? token = _box.read('token');
 
-    final response =
-        await http.post(Uri.parse('$baseUrl/basket/add'), headers: {
-      "Authorization": "Bearer $token"
-    }, body: {
-      'product_id': productId.toString(),
-      'count': count.toString(),
-      'price': price.toString(),
-      'size': size.toString(),
-      'color': color.toString(),
-      if (isOptom == true) 'optom': '1',
-      if (blogger_id != '0' && blogger_id != null) 'blogger_id': blogger_id
-    });
+    final response = await http.post(
+      Uri.parse('$baseUrl/basket/add'),
+      headers: {"Authorization": "Bearer $token"},
+      body: {
+        'product_id': productId.toString(),
+        'count': count.toString(),
+        'price': price.toString(),
+        'size': size.toString(),
+        'color': color.toString(),
+        if (isOptom == true) 'optom': '1',
+        if (blogger_id != '0' && blogger_id != null) 'blogger_id': blogger_id,
+      },
+    );
 
     final data = response.statusCode;
 
@@ -74,32 +90,25 @@ class Basket {
   Future<int> basketMinus(productId, count, int? price) async {
     final String? token = _box.read('token');
 
-    final response = await http.post(Uri.parse('$baseUrl/basket/minus'),
-        headers: {
-          "Authorization": "Bearer $token"
-        },
-        body: {
-          'product_id': productId,
-          'count': count.toString(),
-          'price': price.toString()
-        });
+    final response = await http.post(
+      Uri.parse('$baseUrl/basket/minus'),
+      headers: {"Authorization": "Bearer $token"},
+      body: {'product_id': productId, 'count': count.toString(), 'price': price.toString()},
+    );
 
     final data = response.statusCode;
 
     return data;
   }
 
-  Future<int> basketDelete(
-    productId,
-  ) async {
+  Future<int> basketDelete(productId) async {
     final String? token = _box.read('token');
 
-    final response =
-        await http.post(Uri.parse('$baseUrl/basket/delete'), headers: {
-      "Authorization": "Bearer $token"
-    }, body: {
-      'product_id': productId,
-    });
+    final response = await http.post(
+      Uri.parse('$baseUrl/basket/delete'),
+      headers: {"Authorization": "Bearer $token"},
+      body: {'product_id': productId},
+    );
 
     final data = response.statusCode;
 
@@ -116,46 +125,40 @@ class Basket {
       'Accept': 'application/json',
     };
 
-    final payload = <String, dynamic>{
-      'product_ids': productIds,
-    };
+    final payload = <String, dynamic>{'product_ids': productIds};
 
-    final response = await http.delete(
-      uri,
-      headers: headers,
-      body: jsonEncode(payload),
-    );
+    final response = await http.delete(uri, headers: headers, body: jsonEncode(payload));
 
     return response.statusCode;
   }
 
-  Future<List<BasketShowModel>> basketShow(String? fulfillment) async {
+  Future<List<BasketShowModel>> basketShow() async {
     final String? token = _box.read('token');
 
     final response = await http.get(
-        Uri.parse('$baseUrl/basket/show?fulfillment=$fulfillment'),
-        headers: {"Authorization": "Bearer $token"});
+      Uri.parse('$baseUrl/basket/show'),
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     final data = jsonDecode(response.body);
 
-    return (data['data'] as List)
-        .map((e) => BasketShowModel.fromJson(e))
-        .toList();
+    return (data['data'] as List).map((e) => BasketShowModel.fromJson(e)).toList();
   }
 
-  Future<List<BasketOrderModel>> basketOrderShow(
-      {required String status, required int page}) async {
+  Future<List<BasketOrderModel>> basketOrderShow({
+    required String status,
+    required int page,
+  }) async {
     final String? token = _box.read('token');
 
     final response = await http.get(
-        Uri.parse("$baseUrl/basket/order/status?status=$status&page=$page"),
-        headers: {"Authorization": "Bearer $token"});
+      Uri.parse("$baseUrl/basket/order/status?status=$status&page=$page"),
+      headers: {"Authorization": "Bearer $token"},
+    );
 
     final data = jsonDecode(response.body);
 
-    return (data['data'] as List)
-        .map((e) => BasketOrderModel.fromJson(e))
-        .toList();
+    return (data['data'] as List).map((e) => BasketOrderModel.fromJson(e)).toList();
   }
 
   Future<int> basketOrder(List id) async {
@@ -166,11 +169,13 @@ class Basket {
       basketData.addAll({"id[$i]": "${id[i]}"});
     }
 
-    final response = await http.post(Uri.parse('$baseUrl/basket/order'),
-        headers: {"Authorization": "Bearer $token"}, body: basketData
-        //
-        // basketData ,
-        );
+    final response = await http.post(
+      Uri.parse('$baseUrl/basket/order'),
+      headers: {"Authorization": "Bearer $token"},
+      body: basketData,
+      //
+      // basketData ,
+    );
 
     final data = response.statusCode;
 
@@ -188,10 +193,7 @@ class Basket {
 
     final response = await http.post(
       Uri.parse('$baseUrl/payment/tinkoff/payment/v1'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
+      headers: {'Authorization': 'Bearer $token', 'Content-Type': 'application/json'},
       body: jsonEncode({
         'address': address,
         'bonus': bonus,
@@ -218,11 +220,7 @@ class Basket {
     final response = await http.post(
       Uri.parse('$baseUrl/basket/status'),
       headers: {"Authorization": "Bearer $token"},
-      body: {
-        "id": id,
-        "status": status,
-        "text": text,
-      },
+      body: {"id": id, "status": status, "text": text},
       //
       // basketData ,
     );

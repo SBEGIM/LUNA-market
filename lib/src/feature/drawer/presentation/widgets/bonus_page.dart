@@ -25,11 +25,7 @@ class _BonusUserPageState extends State<BonusUserPage> {
     'Как можно использовать бонусы ?',
   ];
 
-  List<bool> showBonus = [
-    false,
-    false,
-    false,
-  ];
+  List<bool> showBonus = [false, false, false];
 
   bool bonusDesciptionHeight = false;
 
@@ -62,186 +58,122 @@ class _BonusUserPageState extends State<BonusUserPage> {
       appBar: AppBar(
         backgroundColor: AppColors.kWhite,
         surfaceTintColor: AppColors.kWhite,
-        title: const Text(
-          'Мои бонусы',
-          style: AppTextStyles.size18Weight600,
+        title: const Text('Мои бонусы', style: AppTextStyles.size18Weight600),
+        leading: CustomBackButton(
+          onTap: () {
+            Navigator.pop(context);
+          },
         ),
-        leading: CustomBackButton(onTap: () {
-          Navigator.pop(context);
-        }),
         elevation: 0,
       ),
       body: ListView(
         shrinkWrap: true,
         children: [
-          Flexible(
-            child: BonusList(
-              titles: titleBonus,
-              descriptions: descriptionBonus,
-            ),
-
-            // Container(
-            //   padding: const EdgeInsets.only(
-            //       top: 8, left: 16, bottom: 8, right: 16),
-            //   height: showBonus[index] == true ? 190 : 50,
-            //   color: Colors.white,
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     crossAxisAlignment: CrossAxisAlignment.center,
-            //     children: [
-            //       Row(
-            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //         children: [
-            //           Text(
-            //             titleBonus[index],
-            //             style: AppTextStyles.size18Weight500,
-            //           ),
-            //           GestureDetector(
-            //             onTap: () {
-            //               showBonus[index] = !showBonus[index];
-
-            //               bonusDesciptionHeight = !bonusDesciptionHeight;
-            //               setState(() {});
-            //             },
-            //             child: showBonus[index] == true
-            //                 ? Icon(
-            //                     Icons.keyboard_arrow_up_outlined,
-            //                     color: AppColors.kGray200,
-            //                   )
-            //                 : Icon(
-            //                     Icons.keyboard_arrow_down_outlined,
-            //                     color: AppColors.kGray200,
-            //                   ),
-            //           )
-            //         ],
-            //       ),
-            //       SizedBox(height: 8),
-            //       showBonus[index] == true
-            //           ? Text(
-            //               descriptionBonus[index],
-            //               style: AppTextStyles.size16Weight400
-            //                   .copyWith(color: Color(0xff3A3A3C)),
-            //             )
-            //           : SizedBox.shrink(),
-            //     ],
-            //   ),
-            // );
-            //     },
-            //   ),
-          ),
-          Container(
-            height: 10,
-          ),
+          BonusList(titles: titleBonus, descriptions: descriptionBonus),
+          Container(height: 10),
           Container(
             padding: const EdgeInsets.only(left: 16, top: 8),
             height: 23,
             alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(12)),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
             child: Text(
               'Магазины',
-              style: AppTextStyles.size14Weight400
-                  .copyWith(color: Color(0xff8E8E93)),
+              style: AppTextStyles.size14Weight400.copyWith(color: Color(0xff8E8E93)),
             ),
           ),
           Container(
-              height: 450,
-              padding: EdgeInsets.only(bottom: 10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(12),
-                      bottomRight: Radius.circular(12))),
-              child: BlocConsumer<BonusCubit, BonusState>(
-                  listener: (context, state) {},
-                  builder: (context, state) {
-                    if (state is NoDataState) {
-                      return SizedBox(
-                        height: 1000,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Container(
-                                color: Colors.white,
-                                margin: const EdgeInsets.only(top: 146),
-                                child: Image.asset(
-                                  Assets.icons.defaultNoDataIcon.path,
-                                  height: 72,
-                                  width: 72,
-                                )),
-                            SizedBox(height: 12),
-                            Text(
-                              'Пока здесь пусто',
-                              style: AppTextStyles.size16Weight500,
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              'Здесь появятся ваши бонусы от продавцов',
-                              style: AppTextStyles.size11Weight400
-                                  .copyWith(color: Color(0xff8E8E93)),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                    if (state is LoadedState) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          ListView.separated(
-                              shrinkWrap: true,
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      const Divider(
-                                        height: 1,
-                                        color: Color(0xffD1D1D6),
-                                        thickness: 0.33,
-                                      ),
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: state.bonusModel.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return SizedBox(
-                                  height: 46,
-                                  child: ListTile(
-                                    minLeadingWidth: 100,
-                                    leading: Text(
-                                      '${state.bonusModel[index].name}',
-                                      style: AppTextStyles.size16Weight500,
-                                    ),
-                                    trailing: Container(
-                                      height: 26,
-                                      constraints: BoxConstraints(maxWidth: 46),
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 8),
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: Color(0xffCEE31C)),
-                                      child: Text(
-                                        '${state.bonusModel[index].bonus} ₽',
-                                        style: AppTextStyles.size16Weight400,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              })
-                        ],
-                      );
-                    } else {
-                      return const SizedBox(
-                        height: 100,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.blueAccent,
+            height: 450,
+            padding: EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
+              ),
+            ),
+            child: BlocConsumer<BonusCubit, BonusState>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                if (state is NoDataState) {
+                  return SizedBox(
+                    height: 1000,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                          color: Colors.white,
+                          margin: const EdgeInsets.only(top: 146),
+                          child: Image.asset(
+                            Assets.icons.defaultNoDataIcon.path,
+                            height: 72,
+                            width: 72,
                           ),
                         ),
-                      );
-                    }
-                  })),
+                        SizedBox(height: 12),
+                        Text(
+                          'Пока здесь пусто',
+                          style: AppTextStyles.size16Weight500,
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          'Здесь появятся ваши бонусы от продавцов',
+                          style: AppTextStyles.size11Weight400.copyWith(color: Color(0xff8E8E93)),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                if (state is LoadedState) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      ListView.separated(
+                        shrinkWrap: true,
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(height: 1, color: Color(0xffD1D1D6), thickness: 0.33),
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.bonusModel.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return SizedBox(
+                            height: 46,
+                            child: ListTile(
+                              minLeadingWidth: 100,
+                              leading: Text(
+                                '${state.bonusModel[index].name}',
+                                style: AppTextStyles.size16Weight500,
+                              ),
+                              trailing: Container(
+                                height: 26,
+                                constraints: BoxConstraints(maxWidth: 46),
+                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Color(0xffCEE31C),
+                                ),
+                                child: Text(
+                                  '${state.bonusModel[index].bonus} ₽',
+                                  style: AppTextStyles.size16Weight400,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                } else {
+                  return const SizedBox(
+                    height: 100,
+                    child: Center(child: CircularProgressIndicator(color: Colors.blueAccent)),
+                  );
+                }
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -267,11 +199,7 @@ class BonusList extends StatefulWidget {
   final List<String> titles;
   final List<String> descriptions;
 
-  const BonusList({
-    Key? key,
-    required this.titles,
-    required this.descriptions,
-  }) : super(key: key);
+  const BonusList({Key? key, required this.titles, required this.descriptions}) : super(key: key);
 
   @override
   State<BonusList> createState() => _BonusListState();
@@ -298,11 +226,12 @@ class _BonusListState extends State<BonusList> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(16),
-              bottomRight: Radius.circular(
-                  16))), // не задаём фиксированную высоту, пусть само растёт
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(16),
+          bottomRight: Radius.circular(16),
+        ),
+      ), // не задаём фиксированную высоту, пусть само растёт
       child: ListView.builder(
         // если ты это в Column кладёшь — добавь shrinkWrap: true и physics: NeverScrollableScrollPhysics()
         shrinkWrap: true,
@@ -319,10 +248,7 @@ class _BonusListState extends State<BonusList> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text(
-                        widget.titles[index],
-                        style: AppTextStyles.size18Weight500,
-                      ),
+                      child: Text(widget.titles[index], style: AppTextStyles.size18Weight500),
                     ),
                     GestureDetector(
                       onTap: () => _toggle(index),

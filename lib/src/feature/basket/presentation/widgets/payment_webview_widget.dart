@@ -53,54 +53,47 @@ class _PaymentWebviewPageState extends State<PaymentWebviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: const Text(
-            'Оплата',
-            style: AppTextStyles.size18Weight600,
-          ),
-          centerTitle: true,
-          leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-              ),
-              onPressed: () {
-                final router =
-                    AutoRouter.of(context).root; // гарантированно корень
-                context.read<AppBloc>().add(
-                      const AppEvent.chageState(
-                          state: AppState.inAppUserState(index: 2)),
-                    );
-                router.replaceAll([const LauncherRoute()]);
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text('Оплата', style: AppTextStyles.size18Weight600),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            final router = AutoRouter.of(context).root; // гарантированно корень
+            context.read<AppBloc>().add(
+              const AppEvent.chageState(state: AppState.inAppUserState(index: 2)),
+            );
+            router.replaceAll([const LauncherRoute()]);
 
-                BlocProvider.of<BasketCubit>(context).basketShow('');
-                // context.router.pushAndPopUntil(
-                //   const LauncherRoute(
-                //     children: [BasketRoute()],
-                //   ),
-                //   predicate: (_) => false,
-                // );
-                // Navigator.pop(context);
+            BlocProvider.of<BasketCubit>(context).basketShow();
+            // context.router.pushAndPopUntil(
+            //   const LauncherRoute(
+            //     children: [BasketRoute()],
+            //   ),
+            //   predicate: (_) => false,
+            // );
+            // Navigator.pop(context);
 
-                // FIXME: Убрать getx
-                // Get.back();
-                // TODO: этот виджет для магазина,блогера и клиента
-                // context.router.pushAndPopUntil(
-                //   const LauncherRoute(
-                //     children: [BasketRoute()],
-                //   ),
-                //   predicate: (_) => false,
-                // );
-                //  Navigator.pop(context);
-                // if (widget.role == 'shop') {
-                //   Get.to(const BaseAdmin(index: 1));
-                // } else {
-                //   Get.to(const Base(index: 1));
-                // }
-              }),
+            // FIXME: Убрать getx
+            // Get.back();
+            // TODO: этот виджет для магазина,блогера и клиента
+            // context.router.pushAndPopUntil(
+            //   const LauncherRoute(
+            //     children: [BasketRoute()],
+            //   ),
+            //   predicate: (_) => false,
+            // );
+            //  Navigator.pop(context);
+            // if (widget.role == 'shop') {
+            //   Get.to(const BaseAdmin(index: 1));
+            // } else {
+            //   Get.to(const Base(index: 1));
+            // }
+          },
         ),
-        body: WebViewWidget(
-          controller: _webViewController,
-        ));
+      ),
+      body: WebViewWidget(controller: _webViewController),
+    );
   }
 }

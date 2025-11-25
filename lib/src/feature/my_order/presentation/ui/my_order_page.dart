@@ -24,8 +24,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
   final RefreshController _refreshController = RefreshController();
 
   Future<void> onRefresh() async {
-    await BlocProvider.of<BasketCubit>(context)
-        .basketOrderShow(status: currentStatus);
+    await BlocProvider.of<BasketCubit>(context).basketOrderShow(status: currentStatus);
     await Future.delayed(Duration(milliseconds: 1000));
     if (mounted) {
       setState(() {});
@@ -34,8 +33,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
   }
 
   Future<void> onLoading() async {
-    await BlocProvider.of<BasketCubit>(context)
-        .basketOrderShowPaginate(status: currentStatus);
+    await BlocProvider.of<BasketCubit>(context).basketOrderShowPaginate(status: currentStatus);
     await Future.delayed(const Duration(milliseconds: 2000));
 
     _refreshController.loadComplete();
@@ -43,8 +41,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
 
   @override
   void initState() {
-    BlocProvider.of<BasketCubit>(context)
-        .basketOrderShow(status: currentStatus);
+    BlocProvider.of<BasketCubit>(context).basketOrderShow(status: currentStatus);
     super.initState();
   }
 
@@ -60,12 +57,11 @@ class _MyOrderPageState extends State<MyOrderPage> {
         elevation: 0,
         leading: InkWell(
           onTap: () {
+            BlocProvider.of<BasketCubit>(context).basketShow();
+
             Navigator.pop(context);
           },
-          child: Image.asset(
-            Assets.icons.defaultBackIcon.path,
-            scale: 2.1,
-          ),
+          child: Image.asset(Assets.icons.defaultBackIcon.path, scale: 2.1),
         ),
         centerTitle: true,
         title: const Text('Мои заказы', style: AppTextStyles.size18Weight600),
@@ -94,8 +90,9 @@ class _MyOrderPageState extends State<MyOrderPage> {
                       isDense: true,
                       border: InputBorder.none,
                       hintText: 'Поиск',
-                      hintStyle: AppTextStyles.size16Weight400
-                          .copyWith(color: const Color(0xff8E8E93)),
+                      hintStyle: AppTextStyles.size16Weight400.copyWith(
+                        color: const Color(0xff8E8E93),
+                      ),
                       contentPadding: EdgeInsets.zero,
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(right: 5),
@@ -105,10 +102,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                           height: 18,
                         ),
                       ),
-                      prefixIconConstraints: const BoxConstraints(
-                        minWidth: 18 + 5,
-                        minHeight: 18,
-                      ),
+                      prefixIconConstraints: const BoxConstraints(minWidth: 18 + 5, minHeight: 18),
                     ),
                   ),
                 ),
@@ -183,67 +177,65 @@ class _MyOrderPageState extends State<MyOrderPage> {
         ),
       ),
       body: BlocConsumer<BasketCubit, BasketState>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            if (state is ErrorState) {
-              return Center(
-                child: Text(
-                  state.message,
-                  style: const TextStyle(fontSize: 20.0, color: Colors.grey),
-                ),
-              );
-            }
-            if (state is NoDataState) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        height: 72,
-                        width: 72,
-                        child:
-                            Image.asset(Assets.icons.defaultNoDataIcon.path)),
-                    Text('Заказов пока нет',
-                        style: AppTextStyles.size16Weight500),
-                    Text(
-                      'Здесь появятся заказы от покупателей',
-                      style: AppTextStyles.size14Weight400
-                          .copyWith(color: Color(0xff8E8E93)),
-                    ),
-                  ],
-                ),
-              );
-            }
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is ErrorState) {
+            return Center(
+              child: Text(
+                state.message,
+                style: const TextStyle(fontSize: 20.0, color: Colors.grey),
+              ),
+            );
+          }
+          if (state is NoDataState) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 72,
+                    width: 72,
+                    child: Image.asset(Assets.icons.defaultNoDataIcon.path),
+                  ),
+                  Text('Заказов пока нет', style: AppTextStyles.size16Weight500),
+                  Text(
+                    'Здесь появятся заказы от покупателей',
+                    style: AppTextStyles.size14Weight400.copyWith(color: Color(0xff8E8E93)),
+                  ),
+                ],
+              ),
+            );
+          }
 
-            if (state is LoadedOrderState) {
-              return SmartRefresher(
-                controller: _refreshController,
-                enablePullDown: true,
-                enablePullUp: true,
-                onLoading: () {
-                  onLoading();
+          if (state is LoadedOrderState) {
+            return SmartRefresher(
+              controller: _refreshController,
+              enablePullDown: true,
+              enablePullUp: true,
+              onLoading: () {
+                onLoading();
+              },
+              onRefresh: () {
+                onRefresh();
+              },
+              child: ListView.builder(
+                shrinkWrap: true,
+                // padding: const EdgeInsets.all(8),
+                itemCount: state.basketOrderModel.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                    child: MyOrderCardWidget(basketOrder: state.basketOrderModel[index]),
+                  );
                 },
-                onRefresh: () {
-                  onRefresh();
-                },
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    // padding: const EdgeInsets.all(8),
-                    itemCount: state.basketOrderModel.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                          padding: const EdgeInsets.only(
-                              left: 16, right: 16, bottom: 16),
-                          child: MyOrderCardWidget(
-                              basketOrder: state.basketOrderModel[index]));
-                    }),
-              );
-            } else {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.indigoAccent));
-            }
-          }),
+              ),
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator(color: Colors.indigoAccent));
+          }
+        },
+      ),
     );
   }
 
