@@ -19,18 +19,31 @@ class BasketCubit extends Cubit<BasketState> {
   List<BasketShowModel> basketProducts = [];
   List<BasketShowModel> buyProducts = [];
 
-  Future<void> basketAdd(productId, count, price, String? size, String? color,
-      {bool? isOptom, String? blogger_id, String? fulfillment}) async {
+  Future<void> basketAdd(
+    productId,
+    count,
+    price,
+    String? size,
+    String? color, {
+    bool? isOptom,
+    String? blogger_id,
+    String? fulfillment,
+  }) async {
     try {
       final data = await basketRepository.basketAdd(
-          productId, count, price, size, color,
-          isOptom: isOptom, blogger_id: blogger_id);
+        productId,
+        count,
+        price,
+        size,
+        color,
+        isOptom: isOptom,
+        blogger_id: blogger_id,
+      );
       if (data != 200) {
-        Get.snackbar('Ошибка', 'Товар не добавлен',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка', 'Товар не добавлен', backgroundColor: Colors.redAccent);
       }
       if (data == 200) {
-        await basketShowWithoutLoading(fulfillment ?? 'fbs');
+        await basketShowWithoutLoading();
       }
     } catch (e) {
       log(e.toString());
@@ -42,11 +55,10 @@ class BasketCubit extends Cubit<BasketState> {
     try {
       final data = await basketRepository.basketMinus(productId, count, price);
       if (data != 200) {
-        Get.snackbar('Ошибка', 'Товар не убрань',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка', 'Товар не убрань', backgroundColor: Colors.redAccent);
       }
       if (data == 200) {
-        await basketShowWithoutLoading(fulfillment ?? 'fbs');
+        await basketShowWithoutLoading();
       }
     } catch (e) {
       log(e.toString());
@@ -58,11 +70,10 @@ class BasketCubit extends Cubit<BasketState> {
     try {
       final data = await basketRepository.basketDelete(productId);
       if (data != 200) {
-        Get.snackbar('Ошибка', 'Товар не удален',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка', 'Товар не удален', backgroundColor: Colors.redAccent);
       }
       if (data == 200) {
-        await basketShowWithoutLoading(fulfillment ?? 'fbs');
+        await basketShowWithoutLoading();
       }
     } catch (e) {
       log(e.toString());
@@ -76,11 +87,10 @@ class BasketCubit extends Cubit<BasketState> {
       print(productIds.toString());
       final data = await basketRepository.basketDeleteProducts(productIds);
       if (data != 200) {
-        Get.snackbar('Ошибка', 'Товар не удален',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка', 'Товар не удален', backgroundColor: Colors.redAccent);
       }
       if (data == 200) {
-        await basketShowWithoutLoading('fbs');
+        await basketShowWithoutLoading();
       }
     } catch (e) {
       log(e.toString());
@@ -89,8 +99,7 @@ class BasketCubit extends Cubit<BasketState> {
   }
 
   Future<void> basketSelectProducts(List<int> productIds) async {
-    buyProducts =
-        basketProducts.where((e) => productIds.contains(e.basketId)).toList();
+    buyProducts = basketProducts.where((e) => productIds.contains(e.basketId)).toList();
 
     emit(LoadedState(buyProducts));
   }
@@ -99,11 +108,10 @@ class BasketCubit extends Cubit<BasketState> {
     emit(LoadedState(basketProducts));
   }
 
-  Future<void> basketShow(String? fulfillment) async {
+  Future<void> basketShow() async {
     try {
       emit(LoadingState());
-      final List<BasketShowModel> data =
-          await basketRepository.basketShow(fulfillment);
+      final List<BasketShowModel> data = await basketRepository.basketShow();
       basketProducts.clear();
       basketProducts.addAll(data);
       if (data.length == 0) {
@@ -117,10 +125,9 @@ class BasketCubit extends Cubit<BasketState> {
     }
   }
 
-  Future<void> basketShowWithoutLoading(String? fulfillment) async {
+  Future<void> basketShowWithoutLoading() async {
     try {
-      final List<BasketShowModel> data =
-          await basketRepository.basketShow(fulfillment);
+      final List<BasketShowModel> data = await basketRepository.basketShow();
       basketProducts.clear();
       basketProducts.addAll(data);
       if (data.length == 0) {
@@ -137,8 +144,7 @@ class BasketCubit extends Cubit<BasketState> {
   Future<List<BasketShowModel>?> basketData(String fulfillment) async {
     try {
       emit(LoadingState());
-      final List<BasketShowModel> data =
-          await basketRepository.basketShow(fulfillment);
+      final List<BasketShowModel> data = await basketRepository.basketShow();
       basketProducts.clear();
       basketProducts.addAll(data);
       return data;
@@ -153,11 +159,9 @@ class BasketCubit extends Cubit<BasketState> {
     try {
       final data = await basketRepository.basketOrder(productIds);
       if (data == 200) {
-        Get.snackbar('Успешно', 'Заказ оформлен',
-            backgroundColor: Colors.blueAccent);
+        Get.snackbar('Успешно', 'Заказ оформлен', backgroundColor: Colors.blueAccent);
       } else {
-        Get.snackbar('Ошибка', 'Заказ не оформлен',
-            backgroundColor: Colors.redAccent);
+        Get.snackbar('Ошибка', 'Заказ не оформлен', backgroundColor: Colors.redAccent);
       }
       emit(OrderState());
     } catch (e) {
@@ -171,8 +175,10 @@ class BasketCubit extends Cubit<BasketState> {
       basketOrderShowPage = 1;
 
       emit(LoadingState());
-      final List<BasketOrderModel> data = await basketRepository
-          .basketOrderShow(status: status, page: basketOrderShowPage);
+      final List<BasketOrderModel> data = await basketRepository.basketOrderShow(
+        status: status,
+        page: basketOrderShowPage,
+      );
 
       if (data.isEmpty) {
         emit(NoDataState());
@@ -192,8 +198,10 @@ class BasketCubit extends Cubit<BasketState> {
     try {
       basketOrderShowPage++;
 
-      final List<BasketOrderModel> data = await basketRepository
-          .basketOrderShow(status: status, page: basketOrderShowPage);
+      final List<BasketOrderModel> data = await basketRepository.basketOrderShow(
+        status: status,
+        page: basketOrderShowPage,
+      );
 
       for (int i = 0; i < data.length; i++) {
         _orders.add(data[i]);
@@ -241,8 +249,7 @@ class BasketCubit extends Cubit<BasketState> {
     return null;
   }
 
-  Future<int?> basketStatusUpdate(
-      String id, String status, String? text) async {
+  Future<int?> basketStatusUpdate(String id, String status, String? text) async {
     try {
       final data = await basketRepository.status(id, status, text);
 
