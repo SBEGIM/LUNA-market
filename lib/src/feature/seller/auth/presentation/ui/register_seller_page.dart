@@ -439,7 +439,7 @@ class _CoopRequestPageState extends State<OldRegisterSellerPage> {
                         visualDensity:
                             const VisualDensity(horizontal: 0, vertical: 0),
                         checkColor: Colors.white,
-                        // fillColor: MaterialStateProperty.resolveWith(Colors.),
+                        // fillColor: WidgetStateProperty.resolveWith(Colors.),
                         value: isChecked,
                         onChanged: (bool? value) {
                           setState(() {

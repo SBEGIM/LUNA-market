@@ -220,7 +220,7 @@ class _MapSellerPickerPageState extends State<MapSellerPickerPage> {
           });
         },
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.white),
+          backgroundColor: WidgetStateProperty.all(Colors.white),
         ),
         child: Container(
           height: 48,

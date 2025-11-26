@@ -161,7 +161,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           children: [
                             Checkbox(
                               checkColor: Colors.white,
-                              // fillColor: MaterialStateProperty.resolveWith(Colors.),
+                              // fillColor: WidgetStateProperty.resolveWith(Colors.),
                               value: isChecked,
                               onChanged: (bool? value) {
                                 setState(() {
@@ -194,7 +194,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           children: [
                             Checkbox(
                               checkColor: Colors.white,
-                              // fillColor: MaterialStateProperty.resolveWith(Colors.),
+                              // fillColor: WidgetStateProperty.resolveWith(Colors.),
                               value: isChecked,
                               onChanged: (bool? value) {
                                 setState(() {

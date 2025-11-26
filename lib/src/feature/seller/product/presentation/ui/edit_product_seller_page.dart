@@ -998,7 +998,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                       Theme(
                         data: Theme.of(context).copyWith(
                           switchTheme: SwitchThemeData(
-                            trackOutlineWidth: MaterialStateProperty.all(
+                            trackOutlineWidth: WidgetStateProperty.all(
                                 0), // Полностью убираем границу
                           ),
                         ),
@@ -1066,7 +1066,7 @@ class _EditProductSellerPageState extends State<EditProductSellerPage> {
                             Theme(
                               data: Theme.of(context).copyWith(
                                 switchTheme: SwitchThemeData(
-                                  trackOutlineWidth: MaterialStateProperty.all(
+                                  trackOutlineWidth: WidgetStateProperty.all(
                                       0), // Полностью убираем границу
                                 ),
                               ),

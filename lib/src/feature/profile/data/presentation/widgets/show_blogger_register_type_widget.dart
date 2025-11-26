@@ -89,11 +89,11 @@ void showGenderType(BuildContext context, bool? prevGender,
                               //         color: AppColors.kGray300,
                               //         width: 1, // Толщина обводки чекбокса
                               //       ),
-                              //       fillColor: MaterialStateProperty.all(
+                              //       fillColor: WidgetStateProperty.all(
                               //           type == 1
                               //               ? AppColors.kLightBlackColor
                               //               : AppColors.kWhite),
-                              //       checkColor: MaterialStateProperty.all(
+                              //       checkColor: WidgetStateProperty.all(
                               //           AppColors.kWhite), // Цвет галочки
                               //     ),
                               //   ),

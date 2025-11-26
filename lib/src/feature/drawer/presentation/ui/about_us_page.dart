@@ -4,16 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/theme/resources.dart' show Assets;
-import 'package:haji_market/src/core/utils/extensions/object.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/metas_webview.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_cubit.dart';
 import 'package:haji_market/src/feature/home/bloc/meta_state.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutUsPage extends StatefulWidget {
-  const AboutUsPage({Key? key}) : super(key: key);
+  const AboutUsPage({super.key});
 
   @override
   State<AboutUsPage> createState() => _AboutUsPageState();
@@ -25,7 +22,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
     'Оферта для продавцов',
     'Политика конфиденциальности',
     'Типовой договор купли-продажи',
-    'Типовой договор на оказание рекламных услуг'
+    'Типовой договор на оказание рекламных услуг',
   ];
 
   List<String> metasBody = [];
@@ -75,11 +72,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Image.asset(
-                        Assets.icons.aboutBackIcon.path,
-                        width: 40,
-                        height: 40,
-                      ),
+                      icon: Image.asset(Assets.icons.aboutBackIcon.path, width: 40, height: 40),
                     ),
                   ),
                   Padding(
@@ -88,19 +81,14 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Image.asset(
-                        Assets.icons.abotShareIcon.path,
-                        width: 40,
-                        height: 40,
-                      ),
+                      icon: Image.asset(Assets.icons.abotShareIcon.path, width: 40, height: 40),
                     ),
                   ),
                 ],
               ),
               Container(
                 margin: EdgeInsets.only(top: 250),
-                padding: const EdgeInsets.only(
-                    left: 16, right: 16, bottom: 16, top: 10),
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 10),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(24)),
@@ -127,132 +115,124 @@ class _AboutUsPageState extends State<AboutUsPage> {
                         '• Раскрутка новых брендов\n\n'
                         'Уникальная программа для блогеров делает нас идеальной платформой '
                         'для эффективного взаимодействия между продавцами, покупателями и контент-мейкерами.',
-                        style: AppTextStyles.size16Weight400
-                            .copyWith(color: Color(0xff333333)),
+                        style: AppTextStyles.size16Weight400.copyWith(color: Color(0xff333333)),
                       ),
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
           Container(
-              margin: EdgeInsets.only(top: 8),
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, bottom: 16, top: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(24)),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Мы в соцсетях',
-                    style: AppTextStyles.defaultButtonTextStyle,
-                    textAlign: TextAlign.right,
+            margin: EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(24)),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Мы в соцсетях',
+                  style: AppTextStyles.defaultButtonTextStyle,
+                  textAlign: TextAlign.right,
+                ),
+                SizedBox(height: 12),
+                buildContactItem(
+                  onTap: () => launch(
+                    "https://instagram.com/luna_market.ru?igshid=YmMyMTA2M2Y=",
+                    forceSafariVC: false,
                   ),
-                  SizedBox(height: 12),
-                  buildContactItem(
-                      onTap: () => launch(
-                            "https://instagram.com/luna_market.ru?igshid=YmMyMTA2M2Y=",
-                            forceSafariVC: false,
-                          ),
-                      label: 'Instagram',
-                      iconPath: Assets.icons.insta.path),
-                  SizedBox(height: 16),
-                  buildContactItem(
-                      onTap: () => launch(
-                            "https://www.tiktok.com/@lunamarket365?_t=8bXOtWBKkIU&_r=1",
-                            forceSafariVC: false,
-                          ),
-                      label: 'TikTok',
-                      iconPath: Assets.icons.tiktok.path),
-                  SizedBox(height: 16),
-                  buildContactItem(
-                      onTap: () => launch(
-                            "https://www.youtube.com/@lunamarket365",
-                            forceSafariVC: false,
-                          ),
-                      label: 'YouTube',
-                      iconPath: Assets.icons.youtube.path),
-                ],
-              )),
+                  label: 'Instagram',
+                  iconPath: Assets.icons.insta.path,
+                ),
+                SizedBox(height: 16),
+                buildContactItem(
+                  onTap: () => launch(
+                    "https://www.tiktok.com/@lunamarket365?_t=8bXOtWBKkIU&_r=1",
+                    forceSafariVC: false,
+                  ),
+                  label: 'TikTok',
+                  iconPath: Assets.icons.tiktok.path,
+                ),
+                SizedBox(height: 16),
+                buildContactItem(
+                  onTap: () =>
+                      launch("https://www.youtube.com/@lunamarket365", forceSafariVC: false),
+                  label: 'YouTube',
+                  iconPath: Assets.icons.youtube.path,
+                ),
+              ],
+            ),
+          ),
 
           Container(
-              margin: EdgeInsets.only(top: 8),
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, bottom: 16, top: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(24)),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Администрация',
-                    style: AppTextStyles.defaultButtonTextStyle,
-                    textAlign: TextAlign.right,
-                  ),
-                  SizedBox(height: 12),
-                  buildContactItem(
-                      onTap: () => launch(
-                            "http://Lunamarket@inbox.ru",
-                            forceSafariVC: false,
-                          ),
-                      label: 'Email',
-                      iconPath: Assets.icons.mail.path),
-                  SizedBox(height: 16),
-                  buildContactItem(
-                      onTap: () => launch(
-                            "http://Lunamarket@inbox.ru",
-                            forceSafariVC: false,
-                          ),
-                      label: 'Telegram - LunaMarket',
-                      iconPath: Assets.icons.telegram.path),
-                  SizedBox(height: 16),
-                  buildContactItem(
-                      onTap: () => launch(
-                            "http://Lunamarket@inbox.ru",
-                            forceSafariVC: false,
-                          ),
-                      label: 'Telegram - Продавец',
-                      iconPath: Assets.icons.telegram.path),
-                  SizedBox(height: 16),
-                  buildContactItem(
-                      onTap: () => launch(
-                            "http://Lunamarket@inbox.ru",
-                            forceSafariVC: false,
-                          ),
-                      label: 'Telegram - Блогер',
-                      iconPath: Assets.icons.telegram.path),
-                ],
-              )),
+            margin: EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(24)),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Администрация',
+                  style: AppTextStyles.defaultButtonTextStyle,
+                  textAlign: TextAlign.right,
+                ),
+                SizedBox(height: 12),
+                buildContactItem(
+                  onTap: () => launch("http://Lunamarket@inbox.ru", forceSafariVC: false),
+                  label: 'Email',
+                  iconPath: Assets.icons.mail.path,
+                ),
+                SizedBox(height: 16),
+                buildContactItem(
+                  onTap: () => launch("http://Lunamarket@inbox.ru", forceSafariVC: false),
+                  label: 'Telegram - LunaMarket',
+                  iconPath: Assets.icons.telegram.path,
+                ),
+                SizedBox(height: 16),
+                buildContactItem(
+                  onTap: () => launch("http://Lunamarket@inbox.ru", forceSafariVC: false),
+                  label: 'Telegram - Продавец',
+                  iconPath: Assets.icons.telegram.path,
+                ),
+                SizedBox(height: 16),
+                buildContactItem(
+                  onTap: () => launch("http://Lunamarket@inbox.ru", forceSafariVC: false),
+                  label: 'Telegram - Блогер',
+                  iconPath: Assets.icons.telegram.path,
+                ),
+              ],
+            ),
+          ),
 
           Container(
-              margin: EdgeInsets.only(top: 8),
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, bottom: 16, top: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(24)),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Условия и политики',
-                    style: AppTextStyles.defaultButtonTextStyle,
-                    textAlign: TextAlign.right,
-                  ),
-                  BlocBuilder<MetaCubit, MetaState>(builder: (context, state) {
+            margin: EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(24)),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Условия и политики',
+                  style: AppTextStyles.defaultButtonTextStyle,
+                  textAlign: TextAlign.right,
+                ),
+                BlocBuilder<MetaCubit, MetaState>(
+                  builder: (context, state) {
                     if (state is LoadedState) {
                       metasBody.addAll([
                         state.metas.terms_of_use!,
@@ -262,42 +242,40 @@ class _AboutUsPageState extends State<AboutUsPage> {
                         state.metas.TTN!,
                       ]);
                       return ListView.builder(
-                          padding: EdgeInsets.only(top: 12),
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                Get.to(() => MetasPage(
-                                      title: metas[index],
-                                      body: metasBody[index],
-                                    ));
-                              },
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  buildContactItem(
-                                    onTap: () {},
-                                    label: metas[index],
-                                    iconPath: Assets.icons.metaIcon.path,
-                                  ),
-                                  SizedBox(height: 16)
-                                ],
-                              ),
-                            );
-                          });
+                        padding: EdgeInsets.only(top: 12),
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              Get.to(() => MetasPage(title: metas[index], body: metasBody[index]));
+                            },
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                buildContactItem(
+                                  onTap: () {},
+                                  label: metas[index],
+                                  iconPath: Assets.icons.metaIcon.path,
+                                ),
+                                SizedBox(height: 16),
+                              ],
+                            ),
+                          );
+                        },
+                      );
                     } else {
                       return Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.mainPurpleColor,
-                        ),
+                        child: CircularProgressIndicator(color: AppColors.mainPurpleColor),
                       );
                     }
-                  }),
-                ],
-              )),
+                  },
+                ),
+              ],
+            ),
+          ),
 
           // Container(
           //   color: Colors.white,
@@ -437,14 +415,8 @@ Widget buildContactItem({
           child: Padding(
             padding: EdgeInsets.all(10),
             child: isSvg
-                ? SvgPicture.asset(
-                    iconPath,
-                    fit: BoxFit.contain,
-                  )
-                : Image.asset(
-                    iconPath,
-                    fit: BoxFit.contain,
-                  ),
+                ? SvgPicture.asset(iconPath, fit: BoxFit.contain)
+                : Image.asset(iconPath, fit: BoxFit.contain),
           ),
         ),
         const SizedBox(width: 12),
@@ -465,12 +437,7 @@ class ContactItem extends StatelessWidget {
   final String label;
   final String url;
 
-  const ContactItem({
-    super.key,
-    required this.iconPath,
-    required this.label,
-    required this.url,
-  });
+  const ContactItem({super.key, required this.iconPath, required this.label, required this.url});
 
   @override
   Widget build(BuildContext context) {
@@ -487,18 +454,11 @@ class ContactItem extends StatelessWidget {
             ),
             child: Padding(
               padding: EdgeInsets.all(10),
-              child: SvgPicture.asset(
-                iconPath,
-                fit: BoxFit.contain,
-              ),
+              child: SvgPicture.asset(iconPath, fit: BoxFit.contain),
             ),
           ),
           const SizedBox(width: 12),
-          Text(
-            label,
-            style: AppTextStyles.defaultButtonTextStyle,
-            textAlign: TextAlign.right,
-          ),
+          Text(label, style: AppTextStyles.defaultButtonTextStyle, textAlign: TextAlign.right),
         ],
       ),
     );

@@ -7,20 +7,15 @@ abstract interface class IBannersRemoteDS {
 }
 
 class BannersRemoteDSImpl implements IBannersRemoteDS {
-  const BannersRemoteDSImpl({
-    required this.restClient,
-  });
+  const BannersRemoteDSImpl({required this.restClient});
   final IRestClient restClient;
 
   @override
   Future<List<BannerModel>> getBanners() async {
     try {
-      final Map<String, dynamic> response =
-          await restClient.get('/list/banners');
+      final Map<String, dynamic> response = await restClient.get('/list/banners');
 
-      return (response['data'] as List)
-          .map((e) => BannerModel.fromJson(e))
-          .toList();
+      return (response['data'] as List).map((e) => BannerModel.fromJson(e)).toList();
     } catch (e, st) {
       TalkerLoggerUtil.talker.error('#getBanners- ', e, st);
       rethrow;

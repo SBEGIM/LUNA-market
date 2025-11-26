@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lottie/lottie.dart';
 import 'package:haji_market/src/core/presentation/widgets/buttons/custom_material_button.dart';
 import 'package:haji_market/src/core/theme/resources.dart';
 
@@ -38,8 +37,7 @@ class SuccessAlertDialog extends StatelessWidget {
     bool enableCloseButton = true,
     void Function(BuildContext context)? closeButtonOnTap,
     bool barrierDismissible = true,
-    SuccessAlertDialogLottieType successAlertDialogLottieType =
-        SuccessAlertDialogLottieType.done,
+    SuccessAlertDialogLottieType successAlertDialogLottieType = SuccessAlertDialogLottieType.done,
   }) {
     return showDialog(
       context: context,
@@ -63,12 +61,9 @@ class SuccessAlertDialog extends StatelessWidget {
       backgroundColor: AppColors.white,
       insetPadding: insetPadding ?? const EdgeInsets.symmetric(horizontal: 24),
       alignment: Alignment.center,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24)
-            .copyWith(bottom: 14, top: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 24).copyWith(bottom: 14, top: 14),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -99,19 +94,11 @@ class SuccessAlertDialog extends StatelessWidget {
             //   fit: BoxFit.cover,
             // ),
             if (title != null) ...[
-              Text(
-                title!,
-                textAlign: TextAlign.center,
-                style: AppTextStyles.title22W600H26,
-              ),
+              Text(title!, textAlign: TextAlign.center, style: AppTextStyles.title22W600H26),
               const Gap(12),
             ],
             if (subtitle != null) ...[
-              Text(
-                subtitle!,
-                textAlign: TextAlign.center,
-                style: AppTextStyles.subheadlineRegular,
-              ),
+              Text(subtitle!, textAlign: TextAlign.center, style: AppTextStyles.subheadlineRegular),
               const Gap(12),
             ],
             if (buttonsBuilder != null) buttonsBuilder!(context),

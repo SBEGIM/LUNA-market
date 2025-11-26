@@ -195,7 +195,7 @@ Widget buildSettingItem({
                       onChanged: onSwitchChanged,
                       inactiveThumbColor: Colors.white,
                       activeTrackColor: AppColors.mainPurpleColor,
-                      trackOutlineWidth: MaterialStateProperty.all(0.01),
+                      trackOutlineWidth: WidgetStateProperty.all(0.01),
                     ),
                   )
                 : (text == null

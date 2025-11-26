@@ -18,15 +18,13 @@ class AppSwitch extends StatelessWidget {
     this.height = 31,
 
     // Цвета
-    this.activeTrackColor =
-        const Color(0xFF6C45F3), // AppColors.mainPurpleColor
+    this.activeTrackColor = const Color(0xFF6C45F3), // AppColors.mainPurpleColor
     this.inactiveTrackColor = const Color(0x30808080),
     this.thumbColor = Colors.white,
 
     // Поведение/стили
     this.useMaterial3 = true,
-    this.compactHitTarget =
-        true, // уменьшает кликабельную область до реального размера
+    this.compactHitTarget = true, // уменьшает кликабельную область до реального размера
     this.staticThumb = true, // фиксированный круглый thumb
     this.thumbIconSize = 24,
 
@@ -61,8 +59,8 @@ class AppSwitch extends StatelessWidget {
       useMaterial3: useMaterial3,
       switchTheme: SwitchThemeData(
         // убираем бордер у трека
-        trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
-        trackOutlineWidth: MaterialStateProperty.all(0),
+        trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+        trackOutlineWidth: WidgetStateProperty.all(0),
       ),
     );
 
@@ -74,8 +72,7 @@ class AppSwitch extends StatelessWidget {
         child: Switch(
           value: value,
           onChanged: onChanged, // передай null, чтобы задизейблить
-
-          activeColor: thumbColor, // цвет круглого бегунка (ON)
+          activeThumbColor: thumbColor, // цвет круглого бегунка (ON)
           inactiveThumbColor: thumbColor, // цвет круглого бегунка (OFF)
           activeTrackColor: activeTrackColor, // цвет дорожки (ON)
           inactiveTrackColor: inactiveTrackColor, // цвет дорожки (OFF)
@@ -90,7 +87,7 @@ class AppSwitch extends StatelessWidget {
 
           // статичный белый кружок (без «дыхания»)
           thumbIcon: staticThumb
-              ? MaterialStateProperty.all(
+              ? WidgetStateProperty.all(
                   Icon(Icons.circle, size: thumbIconSize, color: thumbColor),
                 )
               : null,

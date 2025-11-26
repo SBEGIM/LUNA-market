@@ -12,7 +12,7 @@ import 'package:haji_market/src/feature/bloger/profile/presentation/widgets/show
 import 'package:haji_market/src/feature/drawer/presentation/widgets/client_show_image_list_widget.dart';
 import 'package:haji_market/src/feature/drawer/presentation/widgets/show_alert_account_widget.dart';
 import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_edit_admin_cubit.dart'
-    as editCubit;
+    as edit_cubit;
 import 'package:haji_market/src/feature/seller/profile/presentation/ui/seller_show_list_widget.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/edit_profile_page.dart';
 import 'package:haji_market/src/feature/seller/profile/presentation/widgets/seller_service_page.dart';
@@ -22,19 +22,18 @@ import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/feature/app/bloc/app_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../drawer/presentation/ui/about_us_page.dart';
-import '../../data/bloc/profile_statics_admin_cubit.dart';
+import 'package:haji_market/src/feature/drawer/presentation/ui/about_us_page.dart';
+import 'package:haji_market/src/feature/seller/profile/data/bloc/profile_statics_admin_cubit.dart';
 
 @RoutePage()
 class ProfileAdminPage extends StatefulWidget {
-  const ProfileAdminPage({Key? key}) : super(key: key);
+  const ProfileAdminPage({super.key});
 
   @override
   State<ProfileAdminPage> createState() => _ProfileAdminPageState();
 }
 
 class _ProfileAdminPageState extends State<ProfileAdminPage> {
-  final _box = GetStorage();
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
   bool change = false;
@@ -45,7 +44,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
         : await _picker.pickImage(source: ImageSource.gallery);
 
     print(' ${image!.path}');
-    BlocProvider.of<editCubit.ProfileEditAdminCubit>(context).edit(
+    BlocProvider.of<edit_cubit.ProfileEditAdminCubit>(context).edit(
       '',
       '',
       image.path,
@@ -93,45 +92,48 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.kGray1,
-        resizeToAvoidBottomInset: false,
-        // backgroundColor: AppColors.kBackgroundColor,
-        // appBar: AppBar(
-        //   iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
-        //   backgroundColor: Colors.white,
-        //   elevation: 0,
-        // leading: IconButton(
-        //   onPressed: () {
-        //     BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(
-        //         state: AppState.inAppUserState(index: 1)));
-        //   },
-        //   icon: const Icon(
-        //     Icons.arrow_back_ios,
-        //     color: AppColors.kPrimaryColor,
-        //   ),
-        // ),
-        // centerTitle: true,
-        // title: const Text(
-        //   'Профиль продавца',
-        //   style: TextStyle(
-        //     color: Colors.black,
-        //   ),
-        // ),
-        // actions: [
-        //   Padding(
-        //       padding: const EdgeInsets.only(right: 16.0),
-        //       child: SvgPicture.asset('assets/icons/notification.svg'))
-        // ],
-        // ),
-        body: ListView(children: [
+      backgroundColor: AppColors.kGray1,
+      resizeToAvoidBottomInset: false,
+      // backgroundColor: AppColors.kBackgroundColor,
+      // appBar: AppBar(
+      //   iconTheme: const IconThemeData(color: AppColors.kPrimaryColor),
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      // leading: IconButton(
+      //   onPressed: () {
+      //     BlocProvider.of<AppBloc>(context).add(const AppEvent.chageState(
+      //         state: AppState.inAppUserState(index: 1)));
+      //   },
+      //   icon: const Icon(
+      //     Icons.arrow_back_ios,
+      //     color: AppColors.kPrimaryColor,
+      //   ),
+      // ),
+      // centerTitle: true,
+      // title: const Text(
+      //   'Профиль продавца',
+      //   style: TextStyle(
+      //     color: Colors.black,
+      //   ),
+      // ),
+      // actions: [
+      //   Padding(
+      //       padding: const EdgeInsets.only(right: 16.0),
+      //       child: SvgPicture.asset('assets/icons/notification.svg'))
+      // ],
+      // ),
+      body: ListView(
+        children: [
           Column(
             children: [
               Container(
                 decoration: BoxDecoration(
-                    color: AppColors.kWhite,
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20))),
+                  color: AppColors.kWhite,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -142,17 +144,19 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       width: 100,
                       child: GestureDetector(
                         onTap: () {
-                          showClientImageOptions(
-                              context, false, 'Изменить фото профиля',
-                              (value) async {
+                          showClientImageOptions(context, false, 'Изменить фото профиля', (
+                            value,
+                          ) async {
                             if (value == 'image') {
-                              final ok = await showAccountAlert(context,
-                                  title: 'Изменить фото',
-                                  message: 'Изменить фото',
-                                  mode: AccountAlertMode.confirm,
-                                  cancelText: 'Галерея',
-                                  primaryText: 'Камера',
-                                  primaryColor: Colors.red);
+                              final ok = await showAccountAlert(
+                                context,
+                                title: 'Изменить фото',
+                                message: 'Изменить фото',
+                                mode: AccountAlertMode.confirm,
+                                cancelText: 'Галерея',
+                                primaryText: 'Камера',
+                                primaryColor: Colors.red,
+                              );
 
                               if (ok == true) {
                                 change = true;
@@ -193,8 +197,9 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                                 backgroundImage: _image != null
                                     ? FileImage(File(_image!.path))
                                     : NetworkImage(
-                                        'https://lunamarket.ru/storage/${GetStorage().read('seller_image')}',
-                                      ) as ImageProvider,
+                                            'https://lunamarket.ru/storage/${GetStorage().read('seller_image')}',
+                                          )
+                                          as ImageProvider,
                               ),
                             ),
                             Positioned(
@@ -214,24 +219,23 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                     Text(
                       '${GetStorage().read('seller_name')}',
                       style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.kGray900,
-                          fontSize: 16),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.kGray900,
+                        fontSize: 16,
+                      ),
                     ),
                     const SizedBox(height: 5),
                     GetStorage().read('seller_partner') == '1'
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                'Партнер',
-                                style: AppTextStyles.sellerNameTextStyle,
-                              ),
+                              Text('Партнер', style: AppTextStyles.sellerNameTextStyle),
                               SizedBox(width: 5),
                               SvgPicture.asset(Assets.icons.sellerIcon.path),
                             ],
                           )
                         : const SizedBox(),
+
                     // InkWell(
                     //   onTap: () async {
                     //     final data = await Get.to(ReqirectProfilePage());
@@ -248,13 +252,12 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                     //         fontWeight: FontWeight.w400),
                     //   ),
                     // ),
-
                     SizedBox(height: 12),
                     InkWell(
                       onTap: () {
-                        BlocProvider.of<AppBloc>(context).add(
-                            const AppEvent.chageState(
-                                state: AppState.inAppUserState(index: 1)));
+                        BlocProvider.of<AppBloc>(
+                          context,
+                        ).add(const AppEvent.chageState(state: AppState.inAppUserState(index: 1)));
                         // Navigator.push(
                         //   context,
                         //   MaterialPageRoute(builder: (context) => const Base(index: 1)),
@@ -265,10 +268,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                         width: 190,
                         decoration: BoxDecoration(
                           color: AppColors.kWhite,
-                          border: Border.all(
-                            color: AppColors.kGray200,
-                            width: 0.2,
-                          ),
+                          border: Border.all(color: AppColors.kGray200, width: 0.2),
                           borderRadius: BorderRadius.circular(8),
                           boxShadow: [
                             BoxShadow(
@@ -282,29 +282,19 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                         child: Row(
                           children: [
                             SizedBox(width: 13),
-                            Image.asset(
-                              Assets.icons.backClientIcon.path,
-                              height: 18,
-                              width: 18,
-                            ),
+                            Image.asset(Assets.icons.backClientIcon.path, height: 18, width: 18),
                             SizedBox(width: 9),
-                            Text(
-                              'Вернутся в маркет',
-                              style: AppTextStyles.size16Weight500,
-                            )
+                            Text('Вернутся в маркет', style: AppTextStyles.size16Weight500),
                           ],
                         ),
                       ),
                     ),
 
-                    SizedBox(height: 22)
+                    SizedBox(height: 22),
                   ],
                 ),
               ),
-              Container(
-                height: 12,
-                color: AppColors.kGray1,
-              ),
+              Container(height: 12, color: AppColors.kGray1),
               // BlocConsumer<ProfileStaticsAdminCubit, ProfileStaticsAdminState>(
               //   listener: (context, state) {},
               //   builder: (context, state) {
@@ -324,43 +314,37 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          context.pushRoute(TapeSellerRoute());
-                        },
-                        child: SizedBox(
-                          height: 82,
-                          width: 175,
-                          child: Image.asset(
-                            Assets.icons.frameVideoReview.path,
-                            scale: 2,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        context.pushRoute(TapeSellerRoute());
+                      },
+                      child: SizedBox(
                         height: 82,
                         width: 175,
-                        child: Image.asset(
-                          Assets.icons.framePromotion.path,
-                          scale: 2,
-                        ),
+                        child: Image.asset(Assets.icons.frameVideoReview.path, scale: 2),
                       ),
-                    ]),
+                    ),
+                    SizedBox(
+                      height: 82,
+                      width: 175,
+                      child: Image.asset(Assets.icons.framePromotion.path, scale: 2),
+                    ),
+                  ],
+                ),
               ),
 
-              SizedBox(
-                height: 12,
-              ),
+              SizedBox(height: 12),
 
               Container(
                 decoration: BoxDecoration(
                   color: AppColors.kWhite,
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20)),
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
                 ),
                 child: Column(
                   children: [
@@ -378,9 +362,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const StatisticsAdminShowPage()),
+                          MaterialPageRoute(builder: (context) => const StatisticsAdminShowPage()),
                         );
                       },
                       title: 'Аналитика продаж',
@@ -390,8 +372,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => SellerVisitCardPage()),
+                          MaterialPageRoute(builder: (context) => SellerVisitCardPage()),
                         );
                       },
                       title: 'Визитная карточка',
@@ -401,8 +382,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => SellerServicePage()),
+                          MaterialPageRoute(builder: (context) => SellerServicePage()),
                         );
                       },
                       title: 'Сервисы',
@@ -412,8 +392,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => const AboutUsPage()),
+                          MaterialPageRoute(builder: (context) => const AboutUsPage()),
                         );
                       },
                       title: 'LUNA market',
@@ -421,27 +400,19 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                     ),
                     buildProfileItem(
                       onTap: () {
-                        final List<String> options = [
-                          'Whats App',
-                          'Telegram',
-                          'Email'
-                        ];
-                        showModuleProfile(context, 'Техподдержка', options,
-                            (value) {
+                        final List<String> options = ['Whats App', 'Telegram', 'Email'];
+                        showModuleProfile(context, 'Техподдержка', options, (value) {
                           switch (value) {
                             case 'Whats App':
-                              launch("https://t.me/LUNAmarketAdmin",
-                                  forceSafariVC: false);
+                              launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false);
                               // do something
                               break;
                             case 'Telegram':
-                              launch("https://t.me/LUNAmarketAdmin",
-                                  forceSafariVC: false);
+                              launch("https://t.me/LUNAmarketAdmin", forceSafariVC: false);
                               // do something else
                               break;
                             case 'Email':
-                              launch("http://Lunamarket@inbox.ru",
-                                  forceSafariVC: false);
+                              launch("http://Lunamarket@inbox.ru", forceSafariVC: false);
                               break;
                           }
                         });
@@ -449,6 +420,7 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                       title: 'Техподдержка',
                       iconPath: Assets.icons.supportCenter.path,
                     ),
+
                     // buildProfileItem(
                     //   onTap: () {},
                     //   switchWidget: true,
@@ -474,15 +446,13 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
                     //   title: 'Вернутся в маркет',
                     //   iconPath: Assets.icons.sellerBack.path,
                     // ),
-
                     buildProfileItem(
-                      onTap: () =>
-                          showSellerSettingOptions(context, 'Настройка', () {}),
+                      onTap: () => showSellerSettingOptions(context, 'Настройка', () {}),
                       title: 'Настройка',
                       count: 4,
                       iconPath: Assets.icons.settingIcon.path,
                     ),
-                    SizedBox(height: 40)
+                    SizedBox(height: 40),
                     // DefaultButton(
                     //     text: 'Выйти из аккаунта ',
                     //     textStyle: AppTextStyles.defaultButtonTextStyle,
@@ -573,7 +543,9 @@ class _ProfileAdminPageState extends State<ProfileAdminPage> {
               // ),
             ],
           ),
-        ]));
+        ],
+      ),
+    );
   }
 }
 
@@ -595,15 +567,9 @@ Widget buildProfileItem({
         children: [
           Row(
             children: [
-              Image.asset(
-                iconPath,
-                height: 40,
-                width: 40,
-              ),
+              Image.asset(iconPath, height: 40, width: 40),
               const SizedBox(width: 12),
-              Text(title,
-                  style: AppTextStyles.size16Weight600
-                      .copyWith(color: Color(0xFF3A3A3C))),
+              Text(title, style: AppTextStyles.size16Weight600.copyWith(color: Color(0xFF3A3A3C))),
             ],
           ),
           switchWidget == true
@@ -614,32 +580,29 @@ Widget buildProfileItem({
                     onChanged: onSwitchChanged,
                     inactiveThumbColor: Colors.white,
                     activeTrackColor: AppColors.mainPurpleColor,
-                    trackOutlineWidth: MaterialStateProperty.all(0.01),
+                    trackOutlineWidth: WidgetStateProperty.all(0.01),
                   ),
                 )
               : (count == null
-                  ? SizedBox(
-                      width: 8,
-                      height: 14,
-                      child: Image.asset(
-                          Assets.icons.defaultArrowForwardIcon.path),
-                    )
-                  : Row(
-                      children: [
-                        Text(
-                          '$count',
-                          style: AppTextStyles.size16Weight400
-                              .copyWith(color: Color(0xFF3A3A3C)),
-                        ),
-                        SizedBox(width: 16),
-                        SizedBox(
-                          width: 8,
-                          height: 14,
-                          child: Image.asset(
-                              Assets.icons.defaultArrowForwardIcon.path),
-                        )
-                      ],
-                    ))
+                    ? SizedBox(
+                        width: 8,
+                        height: 14,
+                        child: Image.asset(Assets.icons.defaultArrowForwardIcon.path),
+                      )
+                    : Row(
+                        children: [
+                          Text(
+                            '$count',
+                            style: AppTextStyles.size16Weight400.copyWith(color: Color(0xFF3A3A3C)),
+                          ),
+                          SizedBox(width: 16),
+                          SizedBox(
+                            width: 8,
+                            height: 14,
+                            child: Image.asset(Assets.icons.defaultArrowForwardIcon.path),
+                          ),
+                        ],
+                      )),
         ],
       ),
     ),

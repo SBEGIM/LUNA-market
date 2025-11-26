@@ -5,7 +5,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:haji_market/src/feature/app/presentation/location_page.dart';
-import 'package:haji_market/src/feature/home/data/model/city_model.dart';
 
 part 'app_bloc.freezed.dart';
 
@@ -28,10 +27,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     );
   }
 
-  Future<void> _login(
-    _Logining event,
-    Emitter<AppState> emit,
-  ) async {
+  Future<void> _login(_Logining event, Emitter<AppState> emit) async {
     log('AppBloc _login', name: _tag);
 
     emit(const AppState.inAppUserState());
@@ -43,10 +39,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   //   return CityModel.fromJson(Map<String, dynamic>.from(data));
   // }
 
-  Future<void> _location(
-    _Location event,
-    Emitter<AppState> emit,
-  ) async {
+  Future<void> _location(_Location event, Emitter<AppState> emit) async {
     bool exists = GetStorage().hasData('user_location_code');
     // CityModel? city = loadCity();
     bool guest = GetStorage().hasData('user_guest');
@@ -82,10 +75,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
-  Future<void> _checkAuth(
-    _CheckAuth event,
-    Emitter<AppState> emit,
-  ) async {
+  Future<void> _checkAuth(_CheckAuth event, Emitter<AppState> emit) async {
     if (token) {
       print(true);
       emit(const AppState.inAppUserState());
@@ -94,10 +84,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
-  Future<void> _switchState(
-    _SwitchState event,
-    Emitter<AppState> emit,
-  ) async {
+  Future<void> _switchState(_SwitchState event, Emitter<AppState> emit) async {
     if (event.key) {
       emit(const AppState.inAppUserState(index: 1));
     } else {
@@ -105,20 +92,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
-  Future<void> _exit(
-    _Exiting event,
-    Emitter<AppState> emit,
-  ) async {
+  Future<void> _exit(_Exiting event, Emitter<AppState> emit) async {
     emit(const AppState.loadingState());
     // await _authRepository.clearUser();
     emit(const AppState.notAuthorizedState());
   }
 
-  Future<void> _changeState(
-    _ChangeState event,
-    Emitter<AppState> emit,
-  ) async =>
-      emit(event.state);
+  Future<void> _changeState(_ChangeState event, Emitter<AppState> emit) async => emit(event.state);
 }
 
 ///
@@ -133,9 +113,7 @@ class AppEvent with _$AppEvent {
   const factory AppEvent.exiting() = _Exiting;
   const factory AppEvent.logining() = _Logining;
   const factory AppEvent.location() = _Location;
-  const factory AppEvent.chageState({
-    required AppState state,
-  }) = _ChangeState;
+  const factory AppEvent.chageState({required AppState state}) = _ChangeState;
 }
 
 ///
@@ -147,25 +125,13 @@ class AppEvent with _$AppEvent {
 class AppState with _$AppState {
   const factory AppState.loadingState() = _LoadingState;
 
-  const factory AppState.notAuthorizedState({
-    bool? button,
-  }) = _NotAuthorizedState;
+  const factory AppState.notAuthorizedState({bool? button}) = _NotAuthorizedState;
 
-  const factory AppState.inAppUserState({
-    int? index,
-  }) = _InAppUserState;
-  const factory AppState.inAppBlogerState({
-    int? index,
-  }) = _InAppBlogerState;
-  const factory AppState.inAppAdminState({
-    int? index,
-  }) = _InAppAdminState;
+  const factory AppState.inAppUserState({int? index}) = _InAppUserState;
+  const factory AppState.inAppBlogerState({int? index}) = _InAppBlogerState;
+  const factory AppState.inAppAdminState({int? index}) = _InAppAdminState;
 
-  const factory AppState.inAppManagerState({
-    int? index,
-  }) = _InAppManagerState;
+  const factory AppState.inAppManagerState({int? index}) = _InAppManagerState;
 
-  const factory AppState.errorState({
-    required String message,
-  }) = _ErrorState;
+  const factory AppState.errorState({required String message}) = _ErrorState;
 }

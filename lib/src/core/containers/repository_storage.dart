@@ -19,8 +19,6 @@ import 'package:haji_market/src/core/rest_client/src/dio_rest_client/src/rest_cl
 abstract class IRepositoryStorage {
   // dao's
   IAuthDao get authDao;
-  // ISettingsDao get settingsDao;
-  // ITipsDao get tipsDao;
 
   /// Network
   IRestClient get restClient;
@@ -35,6 +33,7 @@ abstract class IRepositoryStorage {
   IAuthRemoteDS get authRemoteDS;
   IProfileRemoteDS get profileRemoteDS;
   ICatsRemoteDS get catsRemoteDS;
+  IBannersRemoteDS get bannersRemoteDS;
 
   void close();
 }
@@ -44,9 +43,9 @@ class RepositoryStorage implements IRepositoryStorage {
     required SharedPreferencesWithCache sharedPreferences,
     required PackageInfo packageInfo,
     required AppSettingsDatasource appSettingsDatasource,
-  })  : _sharedPreferences = sharedPreferences,
-        _packageInfo = packageInfo,
-        _appSettingsDatasource = appSettingsDatasource;
+  }) : _sharedPreferences = sharedPreferences,
+       _packageInfo = packageInfo,
+       _appSettingsDatasource = appSettingsDatasource;
   final SharedPreferencesWithCache _sharedPreferences;
   final PackageInfo _packageInfo;
   final AppSettingsDatasource _appSettingsDatasource;
@@ -65,64 +64,48 @@ class RepositoryStorage implements IRepositoryStorage {
   ///
   @override
   IRestClient get restClient => _restClient ??= RestClientDio(
-        baseUrl: 'https://lunamarket.ru/api', // TODO: Env.apiUrl,
-        dioClient: DioClient(
-          baseUrl: 'https://lunamartket.ru/api',
-          interceptor: const DioInterceptor(),
-          authDao: authDao,
-          packageInfo: _packageInfo,
-          appSettingsDS: _appSettingsDatasource,
-          // settings: SettingsDao(sharedPreferences: sharedPreferences),
-        ),
-      );
+    baseUrl: 'https://lunamarket.ru/api', // TODO: Env.apiUrl,
+    dioClient: DioClient(
+      baseUrl: 'https://lunamartket.ru/api',
+      interceptor: const DioInterceptor(),
+      authDao: authDao,
+      packageInfo: _packageInfo,
+      appSettingsDS: _appSettingsDatasource,
+      // settings: SettingsDao(sharedPreferences: sharedPreferences),
+    ),
+  );
 
   ///
   /// Repositories
   ///
   @override
-  IAuthRepository get authRepository => AuthRepositoryImpl(
-        remoteDS: authRemoteDS,
-        authDao: authDao,
-      );
+  IAuthRepository get authRepository =>
+      AuthRepositoryImpl(remoteDS: authRemoteDS, authDao: authDao);
 
   @override
-  IProfileRepository get profileRepository => ProfileRepositoryImpl(
-        remoteDS: profileRemoteDS,
-        authDao: authDao,
-      );
+  IProfileRepository get profileRepository =>
+      ProfileRepositoryImpl(remoteDS: profileRemoteDS, authDao: authDao);
 
   @override
-  ICatsRepository get catsRepository => CatsRepositoryImpl(
-        remoteDS: catsRemoteDS,
-      );
+  ICatsRepository get catsRepository => CatsRepositoryImpl(remoteDS: catsRemoteDS);
 
   @override
-  IBannersRepository get bannersRepository => BannersRepositoryImpl(
-        remoteDS: bannersRemoteDS,
-      );
+  IBannersRepository get bannersRepository => BannersRepositoryImpl(remoteDS: bannersRemoteDS);
 
   ///
   /// Remote datasources
   ///
   @override
-  IProfileRemoteDS get profileRemoteDS => ProfileRemoteDSImpl(
-        restClient: restClient,
-      );
+  IProfileRemoteDS get profileRemoteDS => ProfileRemoteDSImpl(restClient: restClient);
 
   @override
-  IAuthRemoteDS get authRemoteDS => AuthRemoteDSImpl(
-        restClient: restClient,
-      );
+  IAuthRemoteDS get authRemoteDS => AuthRemoteDSImpl(restClient: restClient);
 
   @override
-  ICatsRemoteDS get catsRemoteDS => CatsRemoteDSImpl(
-        restClient: restClient,
-      );
+  ICatsRemoteDS get catsRemoteDS => CatsRemoteDSImpl(restClient: restClient);
 
   @override
-  IBannersRemoteDS get bannersRemoteDS => BannersRemoteDSImpl(
-        restClient: restClient,
-      );
+  IBannersRemoteDS get bannersRemoteDS => BannersRemoteDSImpl(restClient: restClient);
 
   ///
   /// Data Access Object

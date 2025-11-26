@@ -22,10 +22,10 @@ Future<bool?> showBasketCountZeroAlert(
     context: context,
     barrierLabel: 'branded_alert',
     barrierDismissible: barrierDismissible,
-    barrierColor: Colors.black.withOpacity(0.35),
+    barrierColor: Colors.black.withValues(alpha: 0.35),
     transitionDuration: const Duration(milliseconds: 220),
-    pageBuilder: (_, __, ___) => const SizedBox.shrink(),
-    transitionBuilder: (ctx, anim, __, ___) {
+    pageBuilder: (_, _, _) => const SizedBox.shrink(),
+    transitionBuilder: (ctx, anim, _, _) {
       final curved = CurvedAnimation(
         parent: anim,
         curve: Curves.easeOutCubic,
@@ -54,8 +54,7 @@ Future<bool?> showBasketCountZeroAlert(
             ),
             Center(
               child: SlideTransition(
-                position: Tween(begin: const Offset(0, 0.04), end: Offset.zero)
-                    .animate(curved),
+                position: Tween(begin: const Offset(0, 0.04), end: Offset.zero).animate(curved),
                 child: Material(
                   color: Colors.transparent,
                   child: Container(
@@ -82,48 +81,49 @@ Future<bool?> showBasketCountZeroAlert(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(title,
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.size22Weight600),
+                              Text(
+                                title,
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.size22Weight600,
+                              ),
                               const SizedBox(height: 8),
                               Text(
                                 message,
                                 textAlign: TextAlign.center,
-                                style: AppTextStyles.size16Weight500
-                                    .copyWith(color: Color(0xff636366)),
+                                style: AppTextStyles.size16Weight500.copyWith(
+                                  color: Color(0xff636366),
+                                ),
                               ),
                               const SizedBox(height: 24),
                             ],
                           ),
                         ),
                         ClipRRect(
-                            borderRadius: const BorderRadius.vertical(
-                                bottom: Radius.circular(20)),
-                            child: Container(
-                              height: 52,
-                              width: double.infinity,
-                              margin: EdgeInsets.only(
-                                  left: 16, right: 16, bottom: 16),
-                              decoration: BoxDecoration(
-                                color: AppColors.mainPurpleColor,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: TextButton(
-                                onPressed: () => Navigator.of(ctx).pop(true),
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  foregroundColor:
-                                      primaryColor ?? Color(0xffFF3347),
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.zero),
+                          borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+                          child: Container(
+                            height: 52,
+                            width: double.infinity,
+                            margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                            decoration: BoxDecoration(
+                              color: AppColors.mainPurpleColor,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: TextButton(
+                              onPressed: () => Navigator.of(ctx).pop(true),
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                foregroundColor: primaryColor,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.zero,
                                 ),
-                                child: Text(primaryText,
-                                    style: AppTextStyles.size18Weight600
-                                        .copyWith(
-                                            color: primaryColor ??
-                                                AppColors.mainRedColor)),
                               ),
-                            )),
+                              child: Text(
+                                primaryText,
+                                style: AppTextStyles.size18Weight600.copyWith(color: primaryColor),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
