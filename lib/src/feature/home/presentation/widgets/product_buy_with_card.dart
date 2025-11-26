@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:haji_market/src/core/common/constants.dart';
 import 'package:haji_market/src/core/constant/generated/assets.gen.dart';
 import 'package:haji_market/src/feature/app/widgets/error_image_widget.dart';
 import 'package:haji_market/src/feature/product/data/model/product_model.dart';
 import 'package:intl/intl.dart';
-
-import '../../../favorite/bloc/favorite_cubit.dart';
+import 'package:haji_market/src/feature/favorite/bloc/favorite_cubit.dart';
 
 class ProductBuyWithCard extends StatefulWidget {
   final ProductModel product;
-  const ProductBuyWithCard({
-    required this.product,
-    Key? key,
-  }) : super(key: key);
+  const ProductBuyWithCard({required this.product, super.key});
 
   @override
   State<ProductBuyWithCard> createState() => _ProductBuyWithCardState();
 }
 
 class _ProductBuyWithCardState extends State<ProductBuyWithCard> {
-  credit(int price) {
+  int credit(int price) {
     final creditPrice = (price / 3);
     return creditPrice.toInt();
   }
@@ -34,14 +28,14 @@ class _ProductBuyWithCardState extends State<ProductBuyWithCard> {
 
   @override
   void initState() {
-    compoundPrice = (widget.product.price!.toInt() *
-            (((100 - widget.product.compound!.toInt())) / 100))
-        .toInt();
+    compoundPrice =
+        (widget.product.price!.toInt() * (((100 - widget.product.compound!.toInt())) / 100))
+            .toInt();
     inFavorite = widget.product.inFavorite as bool;
     procentPrice =
         ((widget.product.price?.toInt() ?? 0 - (widget.product.compound ?? 0)) /
-                widget.product.price!.toInt()) *
-            100;
+            widget.product.price!.toInt()) *
+        100;
     super.initState();
   }
 
@@ -55,8 +49,7 @@ class _ProductBuyWithCardState extends State<ProductBuyWithCard> {
     return Container(
       width: 173,
       margin: const EdgeInsets.only(right: 8.0),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -67,22 +60,18 @@ class _ProductBuyWithCardState extends State<ProductBuyWithCard> {
                 height: 144,
                 width: 144,
                 child: Image.network(
-                  widget.product.path?.length != 0
+                  widget.product.path?.isNotEmpty == true
                       ? "https://lunamarket.ru/storage/${widget.product.path?.first}"
                       : '',
                   height: 144,
                   width: 144,
                   alignment: Alignment.center,
                   errorBuilder: (context, error, stackTrace) =>
-                      const ErrorImageWidget(
-                    height: 144,
-                    width: 144,
-                  ),
+                      const ErrorImageWidget(height: 144, width: 144),
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.only(left: 8, right: 4, bottom: 8, top: 8),
+                padding: const EdgeInsets.only(left: 8, right: 4, bottom: 8, top: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -95,21 +84,17 @@ class _ProductBuyWithCardState extends State<ProductBuyWithCard> {
                             width: 60,
                             height: 26,
                             decoration: BoxDecoration(
-                                color: AppColors.kYellowDark,
-                                borderRadius: BorderRadius.circular(10)),
-                            alignment: Alignment.center,
-                            child: Text(
-                              '0·0·12',
-                              style: AppTextStyles.size13Weight500,
+                              color: AppColors.kYellowDark,
+                              borderRadius: BorderRadius.circular(10),
                             ),
+                            alignment: Alignment.center,
+                            child: Text('0·0·12', style: AppTextStyles.size13Weight500),
                           ),
 
                           GestureDetector(
                             onTap: () async {
-                              final favorite =
-                                  BlocProvider.of<FavoriteCubit>(context);
-                              await favorite
-                                  .favorite(widget.product.id.toString());
+                              final favorite = BlocProvider.of<FavoriteCubit>(context);
+                              await favorite.favorite(widget.product.id.toString());
                               setState(() {
                                 inFavorite = !inFavorite;
                               });
@@ -124,7 +109,7 @@ class _ProductBuyWithCardState extends State<ProductBuyWithCard> {
                                     : Color(0xffD1D1D6),
                               ),
                             ),
-                          )
+                          ),
                           // IconButton(
                           //     padding: EdgeInsets.zero,
                           //     onPressed: () async {
@@ -140,37 +125,30 @@ class _ProductBuyWithCardState extends State<ProductBuyWithCard> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
+                    const SizedBox(height: 4),
                     widget.product.point != 0
                         ? Container(
                             width: 52,
                             height: 22,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment(-0.6,
-                                      -1), // приблизительное направление 128.49°
-                                  end: Alignment(1, 1),
-                                  colors: [
-                                    Color(0xFF7D2DFF),
-                                    Color(0xFF41DDFF),
-                                  ],
-                                  stops: [
-                                    0.2685,
-                                    1.0
-                                  ], // соответствуют 26.85% и 100%
-                                ),
-                                borderRadius: BorderRadius.circular(10)),
+                              gradient: LinearGradient(
+                                begin: Alignment(-0.6, -1), // приблизительное направление 128.49°
+                                end: Alignment(1, 1),
+                                colors: [Color(0xFF7D2DFF), Color(0xFF41DDFF)],
+                                stops: [0.2685, 1.0], // соответствуют 26.85% и 100%
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             child: Text(
                               '${widget.product.point ?? 0}% Б',
                               textAlign: TextAlign.center,
-                              style: AppTextStyles.size13Weight500
-                                  .copyWith(color: AppColors.kWhite),
+                              style: AppTextStyles.size13Weight500.copyWith(
+                                color: AppColors.kWhite,
+                              ),
                             ),
                           )
-                        : const SizedBox.shrink()
+                        : const SizedBox.shrink(),
                     // widget.product.point != 0
                     // widget.product.point != 0
                     //     ? const SizedBox(height: 66)
@@ -212,13 +190,10 @@ class _ProductBuyWithCardState extends State<ProductBuyWithCard> {
                     '${widget.product.name}',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
-                    style: AppTextStyles.size14Weight400
-                        .copyWith(color: AppColors.kGray400),
+                    style: AppTextStyles.size14Weight400.copyWith(color: AppColors.kGray400),
                   ),
                 ),
-                const SizedBox(
-                  height: 3,
-                ),
+                const SizedBox(height: 3),
                 compoundPrice != 0
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -228,10 +203,11 @@ class _ProductBuyWithCardState extends State<ProductBuyWithCard> {
                             child: Text(
                               '${formatPrice(compoundPrice)} ₽ ',
                               style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 0,
-                                  fontSize: 16),
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 0,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                           Text(
@@ -256,9 +232,7 @@ class _ProductBuyWithCardState extends State<ProductBuyWithCard> {
                           fontSize: 14,
                         ),
                       ),
-                const SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 8),
                 Flexible(
                   fit: FlexFit.loose,
                   child: Container(
@@ -276,10 +250,10 @@ class _ProductBuyWithCardState extends State<ProductBuyWithCard> {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                )
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
